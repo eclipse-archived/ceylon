@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.stringtemp;
 
-class StringTemplate {
+class StringTemplate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     StringTemplate() {
     }
@@ -29,4 +29,10 @@ class StringTemplate {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.stringtemp.StringTemplate.class);
 }

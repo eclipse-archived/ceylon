@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Main {
+class Main implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Main() {
         .ceylon.language.print_.print(.ceylon.language.String.instance("first"));
@@ -11,4 +11,10 @@ class Main {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Main();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Main.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Main.class);
 }

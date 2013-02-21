@@ -5,14 +5,14 @@ final class methodArgumentNamedIncovation2_ {
     private methodArgumentNamedIncovation2_() {
     }
     
-    static <A, B>void methodArgumentNamedIncovation2(final A a) {
+    static <A, B>void methodArgumentNamedIncovation2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, final A a) {
         
         final class callFunction_ {
             
             private callFunction_() {
             }
             
-            <X, Y>void callFunction(final .ceylon.language.Callable<? extends X> f) {
+            <X, Y>void callFunction(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final .ceylon.language.Callable<? extends X> f) {
             }
         }
         final callFunction_ callFunction = new callFunction_();
@@ -27,7 +27,9 @@ final class methodArgumentNamedIncovation2_ {
                         return .ceylon.language.String.instance(.ceylon.language.Integer.toString(.ceylon.language.Integer.instance(i).power(.ceylon.language.Integer.instance(2L)).longValue()));
                     }
                 };
-                callFunction.<.ceylon.language.String, .ceylon.language.Integer>callFunction($arg$0$0);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
+                callFunction.<.ceylon.language.String, .ceylon.language.Integer>callFunction($arg$0$reified$0, $arg$0$reified$1, $arg$0$0);
             }
             returning null;
         );
@@ -42,7 +44,9 @@ final class methodArgumentNamedIncovation2_ {
                         return a;
                     }
                 };
-                callFunction.<A, B>callFunction($arg$1$0);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = $reifiedA;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$1 = $reifiedB;
+                callFunction.<A, B>callFunction($arg$1$reified$0, $arg$1$reified$1, $arg$1$0);
             }
             returning null;
         );

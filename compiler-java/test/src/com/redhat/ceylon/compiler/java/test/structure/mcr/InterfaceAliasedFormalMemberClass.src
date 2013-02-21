@@ -7,6 +7,7 @@ interface InterfaceAliasedFormalMemberClass {
     public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member Member$new();
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass qual);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass.class);
 }
 final class InterfaceAliasedFormalMemberClass$impl {
     
@@ -15,9 +16,14 @@ final class InterfaceAliasedFormalMemberClass$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass $this;
     
-    public abstract class Member {
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member.class));
         }
     }
     
@@ -30,7 +36,7 @@ final class InterfaceAliasedFormalMemberClass$impl {
         qual.Member$new();
     }
 }
-class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass {
+class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass {
     
     InterfaceAliasedFormalMemberClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl(this);
@@ -67,6 +73,11 @@ class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compil
         protected Member() {
             $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceAliasedFormalMemberClass$this.super();
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.Member.class));
+        }
     }
     
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub qual) {
@@ -88,4 +99,10 @@ class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compil
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.class);
 }

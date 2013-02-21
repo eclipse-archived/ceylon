@@ -5,8 +5,14 @@ class E extends .ceylon.language.Exception {
     E(final .ceylon.language.String description, final .java.lang.Throwable cause) {
         super(description, cause);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E.class);
 }
-class TryCatchSubclass {
+class TryCatchSubclass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     TryCatchSubclass() {
     }
@@ -34,4 +40,10 @@ class TryCatchSubclass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchSubclass.class);
 }

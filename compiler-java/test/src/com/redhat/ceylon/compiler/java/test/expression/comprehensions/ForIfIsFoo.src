@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ForIfIsFoo {
+class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ForIfIsFoo() {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
                     private .java.lang.Object x;
                     private boolean x$exhausted;
@@ -47,10 +47,10 @@ class ForIfIsFoo {
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = ys.getIterator();
                     private .java.lang.Object y;
                     private boolean y$exhausted;
@@ -91,4 +91,10 @@ class ForIfIsFoo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsFoo();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsFoo.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsFoo.class);
 }

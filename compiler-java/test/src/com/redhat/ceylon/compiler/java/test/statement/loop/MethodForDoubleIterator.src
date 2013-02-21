@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodForDoubleIterator {
+class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodForDoubleIterator() {
     }
     
     public final void m() {
         .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> $i$iter$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>>(new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a")), new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b")), new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"))).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> $i$iter$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a")), new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b")), new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"))).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)$elem$0).getKey().longValue();
             final .java.lang.String s = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)$elem$0).getItem().toString();
         }
@@ -17,4 +17,10 @@ class MethodForDoubleIterator {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForDoubleIterator();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForDoubleIterator.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodForDoubleIterator.class);
 }

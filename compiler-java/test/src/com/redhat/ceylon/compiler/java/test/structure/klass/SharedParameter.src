@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class SharedParameter {
+class SharedParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SharedParameter(final .java.lang.String s) {
         this.s = s;
@@ -14,4 +14,10 @@ class SharedParameter {
     private final .java.lang.String m$priv() {
         return s;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SharedParameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SharedParameter.class);
 }

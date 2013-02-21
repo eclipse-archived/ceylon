@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 interface AbstractSatisfier_I extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I.class);
 }
 final class AbstractSatisfier_I$impl {
     
@@ -11,14 +12,16 @@ final class AbstractSatisfier_I$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I $this;
 }
-abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
+abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
     
-    AbstractSatisfier() {
+    AbstractSatisfier(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Iterable)this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>((.ceylon.language.Container<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Container)this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Container<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this;
     
     @.java.lang.Override
@@ -68,8 +71,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -78,8 +81,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -98,8 +101,8 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -148,13 +151,13 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -177,5 +180,10 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     @.java.lang.Override
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier.class, $reifiedT);
     }
 }

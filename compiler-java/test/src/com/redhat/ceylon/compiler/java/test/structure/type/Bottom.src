@@ -34,7 +34,7 @@ final class toplevelInteger_ {
         }
     }
 }
-class BottomClass {
+class BottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BottomClass(final .java.lang.Object argObject, final long argInteger) {
         final .java.lang.Object attrObject = .ceylon.language.nothing_.getNothing$();
@@ -52,4 +52,10 @@ class BottomClass {
     private final void f$priv() {
         new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.getNothing$(), ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue());
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BottomClass.class);
 }

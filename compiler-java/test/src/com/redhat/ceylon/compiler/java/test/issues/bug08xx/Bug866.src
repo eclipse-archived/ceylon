@@ -12,10 +12,16 @@ interface Bug866_Visitable<Visited extends .com.redhat.ceylon.compiler.java.test
 }
 final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited>> {
     
-    Bug866_Visitable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this) {
+    Bug866_Visitable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedVisited, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this) {
+        this.$reifiedVisited = $reifiedVisited;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedVisited;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedVisited) {
+        this.$reifiedVisited = $reifiedVisited;
+    }
     
     private void visitChildren$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> dispatcher) {
         .java.lang.Object $elem$0;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class DefaultMethodSpecified {
+class DefaultMethodSpecified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultMethodSpecified() {
     }
@@ -14,6 +14,12 @@ class DefaultMethodSpecified {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified.class);
 }
 class DefaultMethodSpecifiedSub extends .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified {
     
@@ -30,4 +36,10 @@ class DefaultMethodSpecifiedSub extends .com.redhat.ceylon.compiler.java.test.st
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecifiedSub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecifiedSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecifiedSub.class);
 }

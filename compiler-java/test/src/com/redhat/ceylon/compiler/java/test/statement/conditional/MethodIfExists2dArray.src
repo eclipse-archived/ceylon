@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfExists2dArray {
+class MethodIfExists2dArray implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodIfExists2dArray() {
     }
     
     private final void ints$priv() {
-        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 2L, .ceylon.language.Integer.instance(0L)));
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor, long.class, 2L, .ceylon.language.Integer.instance(0L)));
         .ceylon.language.Array<.ceylon.language.Integer> $r$1;
         if (($r$1 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array<.ceylon.language.Integer> $r$2 = $r$1;
@@ -15,7 +15,7 @@ class MethodIfExists2dArray {
     }
     
     private final void strings$priv() {
-        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.java.lang.String.class, 2L, .ceylon.language.String.instance("")));
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.ceylon.language.String.$TypeDescriptor, .java.lang.String.class, 2L, .ceylon.language.String.instance("")));
         .ceylon.language.Array<.ceylon.language.String> $r$4;
         if (($r$4 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array<.ceylon.language.String> $r$5 = $r$4;
@@ -24,7 +24,7 @@ class MethodIfExists2dArray {
     }
     
     private final void nulls$priv() {
-        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, null));
+        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.ceylon.language.Null.$TypeDescriptor, .java.lang.Object.class, 2L, null));
         .ceylon.language.Array<.java.lang.Object> $r$7;
         if (($r$7 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array<.java.lang.Object> $r$8 = $r$7;
@@ -33,7 +33,7 @@ class MethodIfExists2dArray {
     }
     
     private final void objects$priv(final .java.lang.Object obj) {
-        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, obj));
+        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Object.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.ceylon.language.Object.$TypeDescriptor, .java.lang.Object.class, 2L, obj));
         .ceylon.language.Array<.java.lang.Object> $r$10;
         if (($r$10 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array<.java.lang.Object> $r$11 = $r$10;
@@ -42,7 +42,7 @@ class MethodIfExists2dArray {
     }
     
     private final void union$priv(final .java.lang.Object obj) {
-        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
+        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor)), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor), null, 2L, obj));
         .ceylon.language.Array $r$13;
         if (($r$13 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
             final .ceylon.language.Array $r$14 = $r$13;
@@ -54,4 +54,10 @@ class MethodIfExists2dArray {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists2dArray();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists2dArray.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists2dArray.class);
 }

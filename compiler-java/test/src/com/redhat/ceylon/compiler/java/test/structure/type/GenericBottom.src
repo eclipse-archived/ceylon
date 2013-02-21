@@ -1,11 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-class GenericBottom<T, U> {
+class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenericBottom(final .java.lang.Object argObject) {
+    GenericBottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .java.lang.Object argObject) {
+        this.$reifiedT = $reifiedT;
+        this.$reifiedU = $reifiedU;
         this.attrTp = (T).ceylon.language.nothing_.getNothing$();
         this.attrIntersection = .ceylon.language.nothing_.getNothing$();
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
     private final T attrTp;
     
     private final T getAttrTp$priv() {
@@ -34,12 +38,17 @@ class GenericBottom<T, U> {
     }
     
     private final void f$priv() {
-        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>(.ceylon.language.nothing_.getNothing$());
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>($reifiedT, $reifiedU, .ceylon.language.nothing_.getNothing$());
         T t = g.getAttrTp$priv();
         t = (T)g.getAttrIntersection$priv();
         t = g.methodTp$priv((T).ceylon.language.nothing_.getNothing$());
         t = (T)g.methodIntersection$priv(.ceylon.language.nothing_.getNothing$());
         t = g.getGetterTp$priv();
         t = (T)g.getGetterIntersection$priv();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom.class, $reifiedT, $reifiedU);
     }
 }

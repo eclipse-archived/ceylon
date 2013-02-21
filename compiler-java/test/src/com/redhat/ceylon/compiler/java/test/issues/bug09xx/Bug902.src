@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public abstract class Bug902 {
+public abstract class Bug902 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug902() {
         this.y = 5L;
@@ -14,4 +14,10 @@ public abstract class Bug902 {
     public final long getZ() {
         return getY$priv();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug902.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug902.class);
 }

@@ -1,13 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-public class TypeAliasWithTypeParametersClass<T> {
+public class TypeAliasWithTypeParametersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public TypeAliasWithTypeParametersClass() {
+    public TypeAliasWithTypeParametersClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass();
+        new .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass.class, $reifiedT);
     }
 }
 public interface TypeAliasWithTypeParametersInterface<T> {
@@ -16,10 +23,16 @@ public interface TypeAliasWithTypeParametersInterface<T> {
 }
 public final class TypeAliasWithTypeParametersInterface$impl<T> {
     
-    public TypeAliasWithTypeParametersInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this) {
+    public TypeAliasWithTypeParametersInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>")
@@ -89,7 +102,9 @@ final class typeAliasWithTypeParametersMethod3_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "V", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-    static <T, V>.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass<T> typeAliasWithTypeParametersMethod3(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    static <T, V>.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass<T> typeAliasWithTypeParametersMethod3(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
     final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass<T> f) {
         return f;
@@ -104,7 +119,9 @@ final class typeAliasWithTypeParametersMethod4_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "V", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-    static <T, V>.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<V> typeAliasWithTypeParametersMethod4(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    static <T, V>.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<V> typeAliasWithTypeParametersMethod4(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
     final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<V> f) {
         return f;

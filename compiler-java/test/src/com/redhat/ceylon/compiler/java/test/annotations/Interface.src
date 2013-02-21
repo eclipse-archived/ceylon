@@ -26,6 +26,8 @@ public interface TopInterface {
     public long concreteDefaultMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TopInterface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class TopInterface$impl {
@@ -90,6 +92,8 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     public abstract long concreteDefaultMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Interface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl {

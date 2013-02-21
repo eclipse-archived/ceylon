@@ -7,6 +7,7 @@ interface InterfaceDefaultMemberClass {
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member Member$new();
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass qual);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass.class);
 }
 final class InterfaceDefaultMemberClass$impl {
     
@@ -19,9 +20,14 @@ final class InterfaceDefaultMemberClass$impl {
         return new Member();
     }
     
-    public class Member {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member.class));
         }
     }
     
@@ -32,7 +38,7 @@ final class InterfaceDefaultMemberClass$impl {
         qual.Member$new();
     }
 }
-class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass {
+class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass {
     
     InterfaceMemberDefaultClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl(this);
@@ -59,6 +65,11 @@ class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.jav
         protected Member() {
             $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this.super();
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub.Member.class));
+        }
     }
     
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub qual) {
@@ -72,4 +83,10 @@ class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.jav
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub.class);
 }

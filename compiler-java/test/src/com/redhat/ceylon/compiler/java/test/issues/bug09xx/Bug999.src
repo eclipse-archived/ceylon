@@ -26,17 +26,26 @@ interface Bug999Interface<Key, Value> {
 }
 final class Bug999Interface$impl<Key, Value> {
     
-    Bug999Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this) {
+    Bug999Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this) {
+        this.$reifiedKey = $reifiedKey;
+        this.$reifiedValue = $reifiedValue;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+        this.$reifiedValue = $reifiedValue;
+        this.$reifiedKey = $reifiedKey;
+    }
 }
-class Bug999 implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
+class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
     
     Bug999(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.i = i;
         this.f = f;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, this);
         this.attr3 = .ceylon.language.Boolean.instance(true);
         this.attr4 = .ceylon.language.Boolean.instance(true);
         this.attr7 = true;
@@ -104,4 +113,10 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug
     public final boolean getAttr8() {
         return attr8;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999.class);
 }

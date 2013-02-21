@@ -11,7 +11,7 @@ final class bar_ {
         .bar_.bar();
     }
 }
-public class Bug214 {
+public class Bug214 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug214() {
         .bar_.bar();
@@ -21,4 +21,10 @@ public class Bug214 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .Bug214();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .Bug214.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.Bug214.class);
 }

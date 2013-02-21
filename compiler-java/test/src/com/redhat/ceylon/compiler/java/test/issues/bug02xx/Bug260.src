@@ -17,6 +17,7 @@ interface Bug260_Interface {
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 getAttr3();
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 m3();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface.class);
 }
 final class Bug260_Interface$impl {
     
@@ -28,6 +29,7 @@ final class Bug260_Interface$impl {
 interface Bug260_Interface2 {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2.class);
 }
 final class Bug260_Interface2$impl {
     
@@ -39,6 +41,7 @@ final class Bug260_Interface2$impl {
 interface Bug260_Interface3 {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface3$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3.class);
 }
 final class Bug260_Interface3$impl {
     
@@ -47,7 +50,7 @@ final class Bug260_Interface3$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 $this;
 }
-class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 {
+class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 {
     
     Bug260_Intersection() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl(this);
@@ -70,8 +73,14 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.test.issue
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection.class);
 }
-class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 {
+class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 {
     
     Bug260() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl(this);
@@ -135,4 +144,10 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260.class);
 }

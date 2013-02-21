@@ -22,7 +22,7 @@ final class topLevelMethodInvocationMethod2_ {
         return 1L;
     }
 }
-class ToplevelMethodInvocation {
+class ToplevelMethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ToplevelMethodInvocation() {
     }
@@ -36,4 +36,10 @@ class ToplevelMethodInvocation {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.ToplevelMethodInvocation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.ToplevelMethodInvocation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ToplevelMethodInvocation.class);
 }

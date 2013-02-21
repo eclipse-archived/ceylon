@@ -1,32 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug687 {
+class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug687() {
     }
     
-    private final <T>void method$priv(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    private final <T>void method$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
     
-    public final <T extends .ceylon.language.Number>void sort() {
+    public final <T extends .ceylon.language.Number>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$elements$1 = sort$elements();
-                sort($ceylontmp$elements$1);
+                .ceylon.language.Sequential<? extends T> $ceylontmp$elements$1 = sort$elements($reifiedT);
+                sort($reifiedT, $ceylontmp$elements$1);
             }
             returning null;
         );
     }
     
-    public final <T extends .ceylon.language.Number>.ceylon.language.Sequential<? extends T> sort$elements() {
+    public final <T extends .ceylon.language.Number>.ceylon.language.Sequential<? extends T> sort$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     
-    public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Sequential<? extends T> elements) {
+    public final <T extends .ceylon.language.Number>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> elements) {
     }
     
-    public final <T extends .ceylon.language.Number>void sort3(final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> elements) {
+    public final <T extends .ceylon.language.Number>void sort3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> elements) {
     }
     
     public final void sort2() {
@@ -48,12 +48,13 @@ class Bug687 {
     }
     
     private final void foo$priv(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
-        sort((.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
         (
             let
             {
                 .ceylon.language.Sequential $arg$4$0 = .ceylon.language.empty_.getEmpty$();
-                sort($arg$4$0);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                sort($arg$4$reified$0, $arg$4$0);
             }
             returning null;
         );
@@ -82,7 +83,7 @@ class Bug687 {
                 return (
                     let
                     {
-                        sort3($$elements);
+                        sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $$elements);
                     }
                     returning null;
                 );
@@ -95,4 +96,10 @@ class Bug687 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.class);
 }

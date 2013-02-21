@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug01xx;
 
-class Bug111 {
+class Bug111 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug111() {
     }
@@ -16,7 +16,7 @@ class Bug111 {
     }
     
     private final void m3$priv() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> nums = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> nums = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())));
         .ceylon.language.Sequential<? extends .ceylon.language.Integer> $nums$1;
         if (($nums$1 = nums) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $nums$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$nums$1;
@@ -28,4 +28,10 @@ class Bug111 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug01xx.Bug111();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug01xx.Bug111.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug01xx.Bug111.class);
 }

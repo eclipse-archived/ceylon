@@ -21,7 +21,7 @@ public final class objectArgumentNamedInvocation_ {
             let
             {
                 
-                final class o_ extends .java.lang.Object {
+                final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private o_() {
                         super();
@@ -37,6 +37,11 @@ public final class objectArgumentNamedInvocation_ {
                     @.java.lang.Override
                     public final int hashCode() {
                         return hash;
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                     }
                 }
                 final o_ $arg$0$0 = new o_();

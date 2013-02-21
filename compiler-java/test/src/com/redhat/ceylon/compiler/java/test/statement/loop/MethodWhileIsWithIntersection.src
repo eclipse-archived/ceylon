@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileIsIntersection {
+class MethodWhileIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWhileIsIntersection() {
     }
@@ -31,4 +31,10 @@ class MethodWhileIsIntersection {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsIntersection();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsIntersection.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsIntersection.class);
 }

@@ -15,7 +15,7 @@ final class checkedExceptionsInMethod_ {
         .com.redhat.ceylon.compiler.java.test.interop.checkedExceptionsInMethod_.checkedExceptionsInMethod();
     }
 }
-class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions {
+class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CheckedExceptions() {
         super();
@@ -29,4 +29,10 @@ class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.Ja
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.CheckedExceptions();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CheckedExceptions.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CheckedExceptions.class);
 }

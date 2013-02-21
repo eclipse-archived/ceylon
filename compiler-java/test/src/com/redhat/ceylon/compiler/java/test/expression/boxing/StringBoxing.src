@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class StringBoxing {
+class StringBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     StringBoxing() {
     }
@@ -44,4 +44,10 @@ class StringBoxing {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.boxing.StringBoxing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.StringBoxing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.StringBoxing.class);
 }

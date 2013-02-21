@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodSpecifierMethod {
+class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodSpecifierMethod() {
     }
@@ -87,25 +87,25 @@ class MethodSpecifierMethod {
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv() {
-        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2$priv() {
         return (
             let
             {
-                .ceylon.language.Sequential $arg$7$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequential $arg$7$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()));
             }
             returning oneSequencedParam$priv($arg$7$0);
         );
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3$priv() {
-        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -132,4 +132,10 @@ class MethodSpecifierMethod {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class AssertConditionListIsIs {
+class AssertConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AssertConditionListIsIs() {
     }
@@ -55,4 +55,10 @@ class AssertConditionListIsIs {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsIs();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsIs.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsIs.class);
 }

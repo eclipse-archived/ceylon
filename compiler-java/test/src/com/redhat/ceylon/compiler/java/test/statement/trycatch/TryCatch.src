@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class TryCatch {
+class TryCatch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     TryCatch() {
     }
@@ -23,4 +23,10 @@ class TryCatch {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.class);
 }

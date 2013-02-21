@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class AttributeAssign {
+class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AttributeAssign() {
         this.b1 = true;
@@ -52,4 +52,10 @@ class AttributeAssign {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeAssign.class);
 }

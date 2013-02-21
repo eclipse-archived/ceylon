@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-class ObjectArgumentNamedInvocationChained {
+class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ObjectArgumentNamedInvocationChained() {
     }
@@ -20,6 +20,14 @@ class ObjectArgumentNamedInvocationChained {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -43,7 +51,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         @.com.redhat.ceylon.compiler.java.metadata.Name("o")
                         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
-                        final class o_ extends .java.lang.Object {
+                        final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                             
                             private o_() {
                                 super();
@@ -75,6 +83,12 @@ public final class objectArgumentNamedInvocationChained_ {
                             public final int hashCode() {
                                 return hash;
                             }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
+                            }
                         }
                         final o_ $arg$1$0 = new o_();
                     }
@@ -85,7 +99,7 @@ public final class objectArgumentNamedInvocationChained_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("o")
                 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                final class o_ extends .java.lang.Object {
+                final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private o_() {
                         super();
@@ -116,6 +130,12 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final int hashCode() {
                         return hash;
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
                     }
                 }
                 final o_ $arg$0$0 = new o_();

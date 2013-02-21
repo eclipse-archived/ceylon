@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class ClassAlias_Foo {
+public class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public ClassAlias_Foo() {
     }
@@ -12,6 +12,14 @@ public class ClassAlias_Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAlias_Foo")

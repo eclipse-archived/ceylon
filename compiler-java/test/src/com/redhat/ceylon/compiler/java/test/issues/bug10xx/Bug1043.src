@@ -7,34 +7,48 @@ final class bug1043_ {
     
     static void bug1043() {
         
-        class Delegate<T> {
+        class Delegate<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            Delegate() {
+            Delegate(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+                this.$reifiedT = $reifiedT;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Delegate.class, $reifiedT);
             }
         }
         
         final class Consumer$impl<T> {
             
-            private final .ceylon.language.Sequential<? extends Delegate<? super T>> $init$dels() {
+            private final .ceylon.language.Sequential<? extends Delegate<? super T>> $init$dels(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
             }
         }
         
-        class Consumer<T> {
+        class Consumer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            Consumer() {
+            Consumer(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
                 (
                     let
                     {
                         Consumer$impl<? super T> $ceylontmp$impl$0 = new Consumer$impl<T>();
-                        .ceylon.language.Sequential<? extends Delegate<? super T>> $ceylontmp$dels$1 = $ceylontmp$impl$0.$init$dels();
-                        this($ceylontmp$dels$1);
+                        .ceylon.language.Sequential<? extends Delegate<? super T>> $ceylontmp$dels$1 = $ceylontmp$impl$0.$init$dels($reifiedT);
+                        this($reifiedT, $ceylontmp$dels$1);
                     }
                     returning null;
                 );
             }
             
-            Consumer(final .ceylon.language.Sequential<? extends Delegate<? super T>> dels) {
+            Consumer(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends Delegate<? super T>> dels) {
+                this.$reifiedT = $reifiedT;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Consumer.class, $reifiedT);
             }
         }
     }

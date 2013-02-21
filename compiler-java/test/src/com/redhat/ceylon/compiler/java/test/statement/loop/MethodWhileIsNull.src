@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileIsNull {
+class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWhileIsNull() {
     }
@@ -59,4 +59,10 @@ class MethodWhileIsNull {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNull.class);
 }

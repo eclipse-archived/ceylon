@@ -21,7 +21,7 @@ final class bug607mth_ {
         final cap_ cap = new cap_();
     }
 }
-class Bug607cls {
+class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug607cls() {
     }
@@ -46,4 +46,10 @@ class Bug607cls {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug607cls.class);
 }

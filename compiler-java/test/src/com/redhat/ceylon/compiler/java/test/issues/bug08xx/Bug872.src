@@ -11,6 +11,7 @@ public interface Visitor {
     public .java.lang.Object text(final .java.lang.String text);
     
     public void tag(final .java.lang.String name);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor.class);
 }
 public final class Visitor$impl {
     
@@ -49,6 +50,7 @@ public interface Visitable {
     public abstract .ceylon.language.Sequential visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name);
     
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable.class);
 }
 public final class Visitable$impl {
     
@@ -82,7 +84,7 @@ public final class Visitable$impl {
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
     }
 }
-public class Html implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     
     public Html() {
         (
@@ -171,8 +173,14 @@ public class Html implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.class);
 }
-public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     
     public Head() {
         (
@@ -239,10 +247,17 @@ public class Head implements .com.redhat.ceylon.compiler.java.test.issues.bug08x
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.class);
 }
 public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.class);
 }
 public final class Tag$impl {
     
@@ -254,6 +269,7 @@ public final class Tag$impl {
 public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.class);
 }
 public final class InlineTag$impl {
     
@@ -262,25 +278,27 @@ public final class InlineTag$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag $this;
 }
-public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     
-    public Container(final .java.lang.String name) {
+    public Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType, final .java.lang.String name) {
         (
             let
             {
-                .ceylon.language.Sequential $ceylontmp$initialTags$12 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.<TagType>$init$initialTags(name);
-                this(name, $ceylontmp$initialTags$12);
+                .ceylon.language.Sequential $ceylontmp$initialTags$12 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.<TagType>$init$initialTags($reifiedTagType, name);
+                this($reifiedTagType, name, $ceylontmp$initialTags$12);
             }
             returning null;
         );
     }
     
-    public Container(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
+    public Container(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType, final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
+        this.$reifiedTagType = $reifiedTagType;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
         this.tags = initialTags;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType;
     
-    public static <TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag>.ceylon.language.Sequential $init$initialTags(final .java.lang.String name) {
+    public static <TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag>.ceylon.language.Sequential $init$initialTags(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType, final .java.lang.String name) {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;
@@ -325,6 +343,11 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         visitAroundTags(visitor, "body", getTags());
         return null;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.class, $reifiedTagType);
+    }
 }
 public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> {
     
@@ -340,12 +363,18 @@ public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.C
     }
     
     public Body(final .ceylon.language.Sequential initialTags) {
-        super("body", initialTags);
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor, "body", initialTags);
     }
     
     public static .ceylon.language.Sequential $init$initialTags() {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.class);
 }
 public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
     
@@ -361,7 +390,7 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
     }
     
     public Block(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
-        super(name, initialTags);
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor, name, initialTags);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
     }
     
@@ -374,6 +403,12 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.class);
 }
 public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block {
     
@@ -395,6 +430,12 @@ public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bloc
     public static .ceylon.language.Sequential $init$tags() {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.class);
 }
 public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag {
     
@@ -410,7 +451,7 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
     }
     
     public Inline(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
-        super(name, initialTags);
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.$TypeDescriptor, name, initialTags);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
     }
@@ -430,6 +471,12 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.class);
 }
 public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline {
     
@@ -451,4 +498,10 @@ public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inli
     public static .ceylon.language.Sequential $init$tags() {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.class);
 }

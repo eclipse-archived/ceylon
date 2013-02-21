@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ForIfIsNull {
+class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ForIfIsNull() {
     }
@@ -14,10 +14,10 @@ class ForIfIsNull {
     }
     
     private final void m1$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = xs.getIterator();
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
@@ -55,10 +55,10 @@ class ForIfIsNull {
     }
     
     private final void m2$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = xs.getIterator();
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
@@ -96,10 +96,10 @@ class ForIfIsNull {
     }
     
     private final void m3$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = xs.getIterator();
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
@@ -134,10 +134,10 @@ class ForIfIsNull {
     }
     
     private final void m4$priv(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = xs.getIterator();
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
@@ -178,4 +178,10 @@ class ForIfIsNull {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull.class);
 }

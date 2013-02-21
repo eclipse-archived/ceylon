@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 interface VarianceTop {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceTop$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop.class);
 }
 final class VarianceTop$impl {
     
@@ -14,6 +15,7 @@ final class VarianceTop$impl {
 interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceMiddle$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle.class);
 }
 final class VarianceMiddle$impl {
     
@@ -25,6 +27,7 @@ final class VarianceMiddle$impl {
 interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceBottom$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom.class);
 }
 final class VarianceBottom$impl {
     
@@ -33,7 +36,7 @@ final class VarianceBottom$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this;
 }
-class VarianceClass {
+class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     VarianceClass(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle classParam) {
         this.classAttr = classParam;
@@ -47,6 +50,12 @@ class VarianceClass {
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle m(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
         return param;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceClass.class);
 }
 class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceClass {
     
@@ -65,4 +74,10 @@ class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.k
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom m(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
         return (.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom).ceylon.language.nothing_.getNothing$();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceSubClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceSubClass.class);
 }

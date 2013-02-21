@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileExistsSequence {
+class MethodWhileExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWhileExistsSequence() {
     }
@@ -20,4 +20,10 @@ class MethodWhileExistsSequence {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsSequence();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsSequence.class);
 }

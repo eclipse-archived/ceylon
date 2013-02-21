@@ -1,16 +1,22 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class EntryInstantiation {
+class EntryInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EntryInstantiation() {
     }
     
     public final .java.lang.Object m() {
-        return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+        return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.EntryInstantiation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.EntryInstantiation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.EntryInstantiation.class);
 }

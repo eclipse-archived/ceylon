@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodWithParam {
+class MethodWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWithParam() {
     }
@@ -15,4 +15,10 @@ class MethodWithParam {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithParam.class);
 }

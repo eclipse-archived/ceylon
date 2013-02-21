@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
-class Bug479 {
+class Bug479 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug479() {
         this.baseString = "John Doe";
@@ -37,4 +37,10 @@ class Bug479 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug479();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug479.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug479.class);
 }

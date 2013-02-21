@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-class Bug931BinaryOperator {
+class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug931BinaryOperator(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         this.f = f;
@@ -16,4 +16,10 @@ class Bug931BinaryOperator {
             returning f.$call($arg$0$0);
         ).longValue();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug931BinaryOperator.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug931BinaryOperator.class);
 }

@@ -26,6 +26,7 @@ interface Bug310 {
     public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug310$impl();
     
     public abstract long getI();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310.class);
 }
 final class Bug310$impl {
     

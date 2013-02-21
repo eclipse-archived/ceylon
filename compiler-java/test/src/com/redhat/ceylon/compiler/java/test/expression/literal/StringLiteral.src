@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.literal;
 
-class StringLiteral {
+class StringLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     StringLiteral() {
     }
@@ -17,4 +17,10 @@ class StringLiteral {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral.class);
 }

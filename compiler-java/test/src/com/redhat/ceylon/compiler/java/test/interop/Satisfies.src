@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class SatisfiesFileFilter implements .java.io.FileFilter {
+class SatisfiesFileFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FileFilter {
     
     SatisfiesFileFilter() {
     }
@@ -14,8 +14,14 @@ class SatisfiesFileFilter implements .java.io.FileFilter {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter.class);
 }
-class SatisfiesFilenameFilter implements .java.io.FilenameFilter {
+class SatisfiesFilenameFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FilenameFilter {
     
     SatisfiesFilenameFilter() {
     }
@@ -29,6 +35,12 @@ class SatisfiesFilenameFilter implements .java.io.FilenameFilter {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter.class);
 }
 final class test_ {
     
@@ -46,7 +58,7 @@ final class test_ {
         .com.redhat.ceylon.compiler.java.test.interop.test_.test();
     }
 }
-class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.interop.JavaInterface<.ceylon.language.Boolean, .ceylon.language.Integer> {
+class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaInterface<.ceylon.language.Boolean, .ceylon.language.Integer> {
     
     JavaInterfaceImpl() {
     }
@@ -120,4 +132,10 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.interop
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl.class);
 }

@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-class C<T> {
+class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C() {
+    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
         this.t = null;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private T t;
     
     public final T getT() {
@@ -17,7 +19,12 @@ class C<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.operator.C();
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.C.class, $reifiedT);
     }
 }
 final class m_ {
@@ -26,7 +33,7 @@ final class m_ {
     }
     
     static void m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object> c = new .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object>();
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object> c = new .com.redhat.ceylon.compiler.java.test.expression.operator.C<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor);
         final .java.lang.Object o = .ceylon.language.Integer.instance(1L);
         c.setT(o);
     }

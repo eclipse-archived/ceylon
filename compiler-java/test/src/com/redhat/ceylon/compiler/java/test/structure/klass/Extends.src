@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class Extends {
+class Extends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Extends() {
     }
@@ -9,6 +9,12 @@ class Extends {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Extends();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.Extends.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Extends.class);
 }
 class ExtendsB extends .com.redhat.ceylon.compiler.java.test.structure.klass.Extends {
     
@@ -20,4 +26,10 @@ class ExtendsB extends .com.redhat.ceylon.compiler.java.test.structure.klass.Ext
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsB();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsB.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsB.class);
 }

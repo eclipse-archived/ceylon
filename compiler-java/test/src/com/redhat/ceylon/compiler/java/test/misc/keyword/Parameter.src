@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
-class Parameter {
+class Parameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Parameter() {
     }
@@ -93,4 +93,10 @@ class Parameter {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.misc.keyword.Parameter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.misc.keyword.Parameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Parameter.class);
 }

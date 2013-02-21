@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class DefaultedVariableAttribute {
+class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultedVariableAttribute() {
         (
@@ -57,7 +57,7 @@ class DefaultedVariableAttribute {
     }
     
     public final .java.lang.String getFullName() {
-        return .ceylon.language.String.join(" ", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>((
+        return .ceylon.language.String.join(" ", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, (
             let
             {
                 .ceylon.language.String $ceylontmp5 = getFirstName$priv();
@@ -90,4 +90,10 @@ class DefaultedVariableAttribute {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.class);
 }

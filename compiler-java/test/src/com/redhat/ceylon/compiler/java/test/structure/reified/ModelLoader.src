@@ -13,8 +13,8 @@ final class reifiedInstantiateFromModelLoader_ {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c2 = (
             let
             {
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor;
                 long $arg$0$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$0$reified$0, $arg$0$reified$1);
                 long $arg$0$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b($arg$0$reified$0, $arg$0$reified$1, $arg$0$0);
             }
@@ -48,13 +48,13 @@ final class reifiedInstantiateFromModelLoader_ {
             let
             {
                 long $arg$1$1 = 5L;
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor;
                 long $arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$1$reified$0, $arg$1$reified$1);
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$1$reified$0, $arg$1$reified$1, $arg$1$0, $arg$1$1);
         );
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.java.lang.Object, .java.lang.Object> c5 = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType, .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.java.lang.Object, .java.lang.Object> c5 = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -73,14 +73,14 @@ final class reifiedMethodsFromModelLoader_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void reifiedMethodsFromModelLoader() {
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
-        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
         final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass mc = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass();
         mc.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
-        mc.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+        mc.method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
         mc.getMethodSpec().$call();
         mc.<.ceylon.language.Integer>methodWithOverloads(.ceylon.language.Integer.$TypeDescriptor);
         mc.<.ceylon.language.Integer>methodWithOverloads(.ceylon.language.Integer.$TypeDescriptor, 1L, 2L);
-        mc.methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType, 1L, 2L);
+        mc.methodWithOverloads(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1L, 2L);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

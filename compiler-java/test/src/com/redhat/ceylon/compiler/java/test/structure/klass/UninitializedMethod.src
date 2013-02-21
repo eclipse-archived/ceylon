@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public abstract class UninitializedMethod {
+public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public UninitializedMethod() {
         this.t = null;
@@ -10,4 +10,10 @@ public abstract class UninitializedMethod {
     private final long t$priv() {
         if (t == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return t.$call().longValue();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.UninitializedMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.UninitializedMethod.class);
 }

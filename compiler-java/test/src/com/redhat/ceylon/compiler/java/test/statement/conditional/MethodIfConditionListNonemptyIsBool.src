@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfConditionList {
+class MethodIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodIfConditionList() {
     }
@@ -36,4 +36,10 @@ class MethodIfConditionList {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.class);
 }

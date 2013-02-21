@@ -11,10 +11,16 @@ public interface InterfaceAliasWithTypeParameters_Foo<T> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class InterfaceAliasWithTypeParameters_Foo$impl<T> {
     
-    public InterfaceAliasWithTypeParameters_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T> $this) {
+    public InterfaceAliasWithTypeParameters_Foo$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<T>")

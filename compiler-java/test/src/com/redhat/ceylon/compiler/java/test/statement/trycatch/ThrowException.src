@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class ThrowException {
+class ThrowException implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ThrowException() {
     }
@@ -13,4 +13,10 @@ class ThrowException {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowException();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowException.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowException.class);
 }

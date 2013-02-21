@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class AnythingBoxing {
+class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnythingBoxing() {
         this.valueAnything = .ceylon.language.Integer.instance(1L);
@@ -286,4 +286,10 @@ class AnythingBoxing {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.AnythingBoxing.class);
 }

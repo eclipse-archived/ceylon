@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.literal;
 
-class NumericLiteral {
+class NumericLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     NumericLiteral() {
     }
@@ -32,4 +32,10 @@ class NumericLiteral {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral.class);
 }

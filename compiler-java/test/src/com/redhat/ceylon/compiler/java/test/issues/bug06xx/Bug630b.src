@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 {
+class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 {
     
     Bug630Impl() {
         super();
@@ -27,4 +27,10 @@ class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compile
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.class);
 }

@@ -10,36 +10,51 @@ interface QualifiedInstantiationInInterface<G> {
 }
 final class QualifiedInstantiationInInterface$impl<G> {
     
-    QualifiedInstantiationInInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $this) {
+    QualifiedInstantiationInInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $this) {
+        this.$reifiedG = $reifiedG;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG;
     private final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $this;
     
-    class Inner<T> {
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
+        this.$reifiedG = $reifiedG;
+    }
+    
+    class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Inner(final .java.lang.String s) {
+        Inner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String s) {
+            this.$reifiedT = $reifiedT;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface.class, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$reifiedG), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.Inner.class, $reifiedT));
         }
     }
     
     private void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> other = $this;
-        $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
-        other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
+        $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
+        other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$0$callable$ = $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
                 .java.lang.String $arg$0$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$0);
+            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$reified$0, $arg$0$0);
         );
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$1$callable$ = other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
                 .java.lang.String $arg$1$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$0);
+            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$reified$0, $arg$1$0);
         );
     }
     
@@ -47,44 +62,60 @@ final class QualifiedInstantiationInInterface$impl<G> {
         
         final class Local$impl<T> {
             
-            Local$impl(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $this) {
+            Local$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $this) {
+                this.$reifiedT = $reifiedT;
                 this.$this = $this;
             }
+            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
             private final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $this;
             
-            class LocalInner<X> {
+            public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+                this.$reifiedT = $reifiedT;
+            }
+            
+            class LocalInner<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
-                LocalInner(final .java.lang.String t) {
+                LocalInner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .java.lang.String t) {
+                    this.$reifiedX = $reifiedX;
+                }
+                private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local.class, Local$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local$impl.LocalInner.class, $reifiedX));
                 }
             }
             
             private void m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> l) {
-                (Local$impl<T>)$this.Local$impl().new LocalInner<.ceylon.language.Integer>("");
-                (Local$impl<.ceylon.language.String>)l.Local$impl().new LocalInner<.ceylon.language.Integer>("");
+                (Local$impl<T>)$this.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
+                (Local$impl<.ceylon.language.String>)l.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
                 (
                     let
                     {
                         Local$impl<T> $arg$2$callable$ = (Local$impl<T>)$this.Local$impl();
                         .java.lang.String $arg$2$0 = "";
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                     }
-                    returning $arg$2$callable$.new LocalInner<.ceylon.language.Integer>($arg$2$0);
+                    returning $arg$2$callable$.new LocalInner<.ceylon.language.Integer>($arg$2$reified$0, $arg$2$0);
                 );
                 (
                     let
                     {
                         Local$impl<.ceylon.language.String> $arg$3$callable$ = (Local$impl<.ceylon.language.String>)l.Local$impl();
                         .java.lang.String $arg$3$0 = "";
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                     }
-                    returning $arg$3$callable$.new LocalInner<.ceylon.language.Integer>($arg$3$0);
+                    returning $arg$3$callable$.new LocalInner<.ceylon.language.Integer>($arg$3$reified$0, $arg$3$0);
                 );
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
                 (
                     let
                     {
                         .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$4$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
                         .java.lang.String $arg$4$0 = "";
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
                     }
-                    returning $arg$4$callable$.new Inner<.ceylon.language.Integer>($arg$4$0);
+                    returning $arg$4$callable$.new Inner<.ceylon.language.Integer>($arg$4$reified$0, $arg$4$0);
                 );
             }
         }

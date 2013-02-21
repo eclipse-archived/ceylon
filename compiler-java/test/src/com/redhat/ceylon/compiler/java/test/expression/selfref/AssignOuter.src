@@ -31,6 +31,7 @@ interface AssignOuter {
     public abstract .ceylon.language.Integer getD();
     
     public abstract void setD(final .ceylon.language.Integer d);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter.class);
 }
 final class AssignOuter$impl {
     
@@ -166,7 +167,7 @@ interface AssignOuterClass$I {
     
     public void setCDefault(final long cDefault);
 }
-abstract class AssignOuterClass {
+abstract class AssignOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AssignOuterClass() {
     }
@@ -277,4 +278,10 @@ abstract class AssignOuterClass {
             );
         }
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass.class);
 }

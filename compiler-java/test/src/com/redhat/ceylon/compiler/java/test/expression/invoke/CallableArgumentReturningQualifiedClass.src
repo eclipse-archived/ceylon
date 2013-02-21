@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class CallableArgumentReturningQualifiedClass {
+class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CallableArgumentReturningQualifiedClass() {
     }
@@ -9,9 +9,14 @@ class CallableArgumentReturningQualifiedClass {
         return new D();
     }
     
-    public class D {
+    public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected D() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D.class));
         }
     }
     
@@ -32,4 +37,10 @@ class CallableArgumentReturningQualifiedClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.class);
 }

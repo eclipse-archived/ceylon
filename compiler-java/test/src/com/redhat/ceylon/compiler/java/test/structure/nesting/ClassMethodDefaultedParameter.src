@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
-class C<T> {
+class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C() {
+    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     private final void m$priv() {
         (
@@ -92,36 +94,36 @@ class C<T> {
         return i;
     }
     
-    private final <U>long m5$priv(final long i) {
+    private final <U>long m5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
         return (
             let
             {
-                T $ceylontmp$t$12 = m5$t(i);
-                U $ceylontmp$u$13 = m5$u(i, $ceylontmp$t$12);
+                T $ceylontmp$t$12 = m5$t($reifiedU, i);
+                U $ceylontmp$u$13 = m5$u($reifiedU, i, $ceylontmp$t$12);
             }
-            returning m5$priv(i, $ceylontmp$t$12, $ceylontmp$u$13);
+            returning m5$priv($reifiedU, i, $ceylontmp$t$12, $ceylontmp$u$13);
         );
     }
     
-    private final <U>T m5$t(final long i) {
+    private final <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
         return null;
     }
     
-    private final <U>long m5$priv(final long i, final T t) {
+    private final <U>long m5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t) {
         return (
             let
             {
-                U $ceylontmp$u$15 = m5$u(i, t);
+                U $ceylontmp$u$15 = m5$u($reifiedU, i, t);
             }
-            returning m5$priv(i, t, $ceylontmp$u$15);
+            returning m5$priv($reifiedU, i, t, $ceylontmp$u$15);
         );
     }
     
-    private final <U>U m5$u(final long i, final T t) {
+    private final <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t) {
         return null;
     }
     
-    private final <U>long m5$priv(final long i, final T t, final U u) {
+    private final <U>long m5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final T t, final U u) {
         return i;
     }
     
@@ -135,9 +137,9 @@ class C<T> {
         c.m3$priv(4L, 5L);
         c.m4$priv(5L);
         c.m4$priv(4L, 5L);
-        c.<.ceylon.language.String>m5$priv(5L);
-        c.<.ceylon.language.String>m5$priv(5L, null);
-        c.<.ceylon.language.String>m5$priv(5L, null, .ceylon.language.String.instance(""));
+        c.<.ceylon.language.String>m5$priv(.ceylon.language.String.$TypeDescriptor, 5L);
+        c.<.ceylon.language.String>m5$priv(.ceylon.language.String.$TypeDescriptor, 5L, null);
+        c.<.ceylon.language.String>m5$priv(.ceylon.language.String.$TypeDescriptor, 5L, null, .ceylon.language.String.instance(""));
     }
     
     private final void named$priv(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {
@@ -213,13 +215,18 @@ class C<T> {
         );
         m4$priv(5L);
         m4$priv(4L, 5L);
-        c.<.ceylon.language.String>m5$priv(5L);
-        <.ceylon.language.String>m5$priv(5L, null);
-        <.ceylon.language.String>m5$priv(5L, null, .ceylon.language.String.instance(""));
+        c.<.ceylon.language.String>m5$priv(.ceylon.language.String.$TypeDescriptor, 5L);
+        <.ceylon.language.String>m5$priv(.ceylon.language.String.$TypeDescriptor, 5L, null);
+        <.ceylon.language.String>m5$priv(.ceylon.language.String.$TypeDescriptor, 5L, null, .ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.C.class, $reifiedT);
     }
 }

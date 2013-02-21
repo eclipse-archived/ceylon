@@ -9,11 +9,12 @@ final class bug889_2_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-    static <T>void bug889_2(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    static <T>void bug889_2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
-        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> c = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889(t);
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> c = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reifiedT, t);
         boolean b = c.$call(t).booleanValue();
-        b = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889(t).$call(t).booleanValue();
+        b = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug889_.<T>bug889($reifiedT, t).$call(t).booleanValue();
     }
 }

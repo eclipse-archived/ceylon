@@ -3,11 +3,21 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-public class ClassAliasWithTypeParameters_Foo<T> {
+public class ClassAliasWithTypeParameters_Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public ClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    public ClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
+        this.$reifiedT = $reifiedT;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo.class, $reifiedT);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
@@ -33,8 +43,8 @@ final class classAliasWithTypeParametersMethod_ {
     }
     
     static void classAliasWithTypeParametersMethod() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
     }
     
     public static void main(.java.lang.String[] args) {

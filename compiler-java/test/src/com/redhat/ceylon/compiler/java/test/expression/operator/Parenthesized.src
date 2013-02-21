@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-public class Parenthesized {
+public class Parenthesized implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Parenthesized() {
     }
@@ -15,4 +15,10 @@ public class Parenthesized {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Parenthesized.class);
 }

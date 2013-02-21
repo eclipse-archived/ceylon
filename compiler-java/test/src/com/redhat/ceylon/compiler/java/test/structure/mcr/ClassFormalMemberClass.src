@@ -1,15 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-abstract class ClassFormalMemberClass {
+abstract class ClassFormalMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassFormalMemberClass() {
     }
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.Member Member$new();
     
-    public abstract class Member {
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.Member.class));
         }
     }
     
@@ -19,6 +24,12 @@ abstract class ClassFormalMemberClass {
         qual.Member$new();
         qual.Member$new();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.class);
 }
 class ClassFormalMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass {
     
@@ -36,6 +47,11 @@ class ClassFormalMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.s
         protected Member() {
             super();
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub.Member.class));
+        }
     }
     
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub qual) {
@@ -49,4 +65,10 @@ class ClassFormalMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.s
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub.class);
 }

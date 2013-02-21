@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class MethodErasure {
+class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodErasure() {
     }
@@ -40,4 +40,10 @@ class MethodErasure {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.class);
 }

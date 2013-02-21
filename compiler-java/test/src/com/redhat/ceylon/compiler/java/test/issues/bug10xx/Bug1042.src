@@ -6,10 +6,16 @@ interface Bug1042<T> {
 }
 final class Bug1042$impl<T> {
     
-    Bug1042$impl(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super T> $this) {
+    Bug1042$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
 }
 final class bug1042_ {
     

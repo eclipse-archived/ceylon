@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ForIfIsNullUnion {
+class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ForIfIsNullUnion() {
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor)){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
                     private .java.lang.Object x;
                     private boolean x$exhausted;
@@ -50,4 +50,10 @@ class ForIfIsNullUnion {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNullUnion.class);
 }

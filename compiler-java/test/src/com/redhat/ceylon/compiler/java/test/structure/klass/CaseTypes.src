@@ -1,9 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public abstract class CaseTypes {
+public abstract class CaseTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public CaseTypes(final .java.lang.String name) {
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes.class);
 }
 public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
@@ -21,6 +27,11 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.class);
     }
 }
 public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
@@ -40,11 +51,22 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.class);
+    }
 }
-public abstract class CaseTypes2 {
+public abstract class CaseTypes2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public CaseTypes2(final .java.lang.String name) {
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2.class);
 }
 public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
     
@@ -56,6 +78,12 @@ public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Foo();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.Foo.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Foo.class);
 }
 public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes2 {
     
@@ -67,10 +95,17 @@ public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Bar();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.Bar.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Bar.class);
 }
 public interface ICaseTypes {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes$impl $com$redhat$ceylon$compiler$java$test$structure$klass$ICaseTypes$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes.class);
 }
 public final class ICaseTypes$impl {
     
@@ -82,6 +117,7 @@ public final class ICaseTypes$impl {
 public interface IFoo extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.IFoo$impl $com$redhat$ceylon$compiler$java$test$structure$klass$IFoo$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.IFoo.class);
 }
 public final class IFoo$impl {
     
@@ -93,6 +129,7 @@ public final class IFoo$impl {
 public interface IBar extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.IBar$impl $com$redhat$ceylon$compiler$java$test$structure$klass$IBar$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.IBar.class);
 }
 public final class IBar$impl {
     

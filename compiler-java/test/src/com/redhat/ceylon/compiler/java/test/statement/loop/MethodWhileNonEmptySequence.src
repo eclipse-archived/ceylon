@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileNonEmptySequence {
+class MethodWhileNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWhileNonEmptySequence() {
     }
@@ -32,4 +32,10 @@ class MethodWhileNonEmptySequence {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileNonEmptySequence();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileNonEmptySequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileNonEmptySequence.class);
 }

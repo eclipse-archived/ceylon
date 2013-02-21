@@ -1,24 +1,28 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public class MutableList<T> {
+public class MutableList<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public MutableList() {
+    public MutableList(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final T item(final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cell) {
         return cell.getCar();
     }
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> Cell$new(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
-        return new Cell<T>(car, cdr);
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> Cell$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+        return new Cell<T>($reifiedT, car, cdr);
     }
     
-    public class Cell<T> {
+    public class Cell<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        protected Cell(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+        protected Cell(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+            this.$reifiedT = $reifiedT;
             this.car = car;
             this.cdr = cdr;
         }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
         private final T car;
         
         public final T getCar() {
@@ -29,10 +33,20 @@ public class MutableList<T> {
         public final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> getCdr() {
             return cdr;
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MutableList.class, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MutableList.Cell.class, $reifiedT));
+        }
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MutableList.class, $reifiedT);
     }
 }

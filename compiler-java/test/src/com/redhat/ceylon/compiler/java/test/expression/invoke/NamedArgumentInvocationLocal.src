@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public class NamedArgumentInvocationLocal {
+public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public NamedArgumentInvocationLocal() {
     }
@@ -50,8 +50,14 @@ public class NamedArgumentInvocationLocal {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.class);
 }
-class X {
+class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     X() {
     }
@@ -95,4 +101,10 @@ class X {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.X();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.X.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.X.class);
 }

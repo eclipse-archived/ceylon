@@ -34,7 +34,7 @@ interface Local$I {
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.I$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$impl();
 }
-class Local {
+class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Local() {
     }
@@ -67,7 +67,7 @@ class Local {
             }
         }
         
-        class LC {
+        class LC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             LC() {
                 (
@@ -102,7 +102,7 @@ class Local {
                 return 0L;
             }
             
-            class LCC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI {
+            class LCC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI {
                 
                 LCC() {
                     (
@@ -131,6 +131,16 @@ class Local {
                 public final long m() {
                     return mLocal$priv() + i + j + k;
                 }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LC.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LC.LCC.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LC.class);
             }
         }
         
@@ -157,7 +167,7 @@ class Local {
                 return 0L;
             }
             
-            class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII {
+            class LIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII {
                 
                 LIC() {
                     (
@@ -186,6 +196,11 @@ class Local {
                 public final long m() {
                     return mLocal$priv() + i + j;
                 }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LI$impl.LIC.class));
+                }
             }
         }
     }
@@ -194,7 +209,7 @@ class Local {
         return 0L;
     }
     
-    class C {
+    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         C() {
             (
@@ -236,7 +251,7 @@ class Local {
                 }
             }
             
-            class CL {
+            class CL implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 CL() {
                     (
@@ -271,7 +286,7 @@ class Local {
                     return 0L;
                 }
                 
-                class CLC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI {
+                class CLC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI {
                     
                     CLC() {
                         (
@@ -300,8 +315,23 @@ class Local {
                     public final long m() {
                         return mLocal$priv() + i + j + k + l;
                     }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(CL.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(CL.CLC.class));
+                    }
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(CL.class);
                 }
             }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C.class));
         }
     }
     
@@ -336,7 +366,7 @@ class Local {
                 }
             }
             
-            class IL {
+            class IL implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 IL() {
                     (
@@ -371,7 +401,7 @@ class Local {
                     return 0L;
                 }
                 
-                class ILC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI {
+                class ILC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI {
                     
                     ILC() {
                         (
@@ -400,6 +430,16 @@ class Local {
                     public final long m() {
                         return mLocal$priv() + i + j + k;
                     }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(IL.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(IL.ILC.class));
+                    }
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(IL.class);
                 }
             }
         }
@@ -409,4 +449,10 @@ class Local {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.nesting.Local();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local.class);
 }

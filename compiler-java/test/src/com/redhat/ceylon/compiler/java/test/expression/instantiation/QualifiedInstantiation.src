@@ -1,14 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class QualifiedInstantiation {
+class QualifiedInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     QualifiedInstantiation() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner;
     }
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner(final .java.lang.String s) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner.class));
         }
     }
     
@@ -37,4 +42,10 @@ class QualifiedInstantiation {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.class);
 }

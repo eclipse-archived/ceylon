@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug699 {
+class Bug699 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug699() {
-        final .ceylon.language.Singleton<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> singleton = new .ceylon.language.Singleton<.ceylon.language.Callable<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        final .ceylon.language.Singleton<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> singleton = new .ceylon.language.Singleton<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
@@ -17,4 +17,10 @@ class Bug699 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug699();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug699.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug699.class);
 }

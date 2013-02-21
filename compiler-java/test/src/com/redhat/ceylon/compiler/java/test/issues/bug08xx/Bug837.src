@@ -1,23 +1,25 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
-class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extends .java.lang.Object implements .ceylon.language.Sequence<Element> {
+class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
     
-    Bug837(final Element first, final long length) {
+    Bug837(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element first, final long length) {
         super();
+        this.$reifiedElement = $reifiedElement;
         this.first = first;
         this.length = length;
-        this.$ceylon$language$Sequence$this = new .ceylon.language.Sequence$impl<Element>(this);
-        this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<Element>(this);
-        this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>((.ceylon.language.Iterable<Element, .java.lang.Object>)(.ceylon.language.Iterable)this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>((.ceylon.language.Container<Element, .java.lang.Object>)(.ceylon.language.Container)this);
+        this.$ceylon$language$Sequence$this = new .ceylon.language.Sequence$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable<Element, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Container<Element, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(this);
-        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedElement), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor, $reifiedElement, this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedElement), (.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
         this.last = getFirst();
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     private final long length;
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
     
@@ -42,8 +44,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequence<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Sequence$this.collect(collecting);
+    public <Result>.ceylon.language.Sequence<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Sequence$this.collect($reifiedResult, collecting);
     }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this;
     
@@ -79,13 +81,13 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withLeading(final Other element) {
-        return $ceylon$language$List$this.withLeading(element);
+    public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withLeading($reifiedOther, element);
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final Other element) {
-        return $ceylon$language$List$this.withTrailing(element);
+    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
     
@@ -101,8 +103,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -111,8 +113,8 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -171,13 +173,13 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<Element, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -264,7 +266,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> getRest() {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>(getFirst().getSuccessor(), length - 1L);
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, getFirst().getSuccessor(), length - 1L);
     }
     
     @.java.lang.Override
@@ -310,5 +312,10 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public final boolean contains(final .java.lang.Object o) {
         return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837.class, $reifiedElement);
     }
 }

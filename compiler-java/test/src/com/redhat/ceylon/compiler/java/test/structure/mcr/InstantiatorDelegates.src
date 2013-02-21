@@ -34,18 +34,29 @@ interface InstantiatorDelegates<X> {
 }
 final class InstantiatorDelegates$impl<X> {
     
-    InstantiatorDelegates$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this) {
+    InstantiatorDelegates$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this) {
+        this.$reifiedX = $reifiedX;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedX = $reifiedX;
+    }
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new() {
         return new Nullary();
     }
     
-    public class Nullary {
+    public class Nullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Nullary() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Nullary.class));
         }
     }
     
@@ -53,9 +64,14 @@ final class InstantiatorDelegates$impl<X> {
         return new Unary(b);
     }
     
-    public class Unary {
+    public class Unary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Unary(final boolean b) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Unary.class));
         }
     }
     
@@ -77,9 +93,14 @@ final class InstantiatorDelegates$impl<X> {
         );
     }
     
-    public class Binary {
+    public class Binary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Binary(final boolean b, final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Binary.class));
         }
     }
     
@@ -116,9 +137,14 @@ final class InstantiatorDelegates$impl<X> {
         );
     }
     
-    public class Binary2 {
+    public class Binary2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Binary2(final boolean b, final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Binary2.class));
         }
     }
     
@@ -140,9 +166,14 @@ final class InstantiatorDelegates$impl<X> {
         );
     }
     
-    public class Sequenced {
+    public class Sequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Sequenced(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.Sequenced.class));
         }
     }
     
@@ -150,17 +181,24 @@ final class InstantiatorDelegates$impl<X> {
         return new TypeArg(x);
     }
     
-    public class TypeArg {
+    public class TypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected TypeArg(final X x) {
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.this.$reifiedX), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl.TypeArg.class));
+        }
     }
 }
-class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> {
+class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> {
     
-    InstantiatorDelegatesImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>(this);
+    InstantiatorDelegatesImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedX = $reifiedX;
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>($reifiedX, this);
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     protected final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this;
     
     @.java.lang.Override
@@ -240,7 +278,12 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.t
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl();
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl.class, $reifiedX);
     }
 }
 final class instantiatorDelegates_ {
@@ -320,23 +363,23 @@ final class instantiatorDelegates_ {
             }
             returning $arg$37$callable$.Sequenced$new($arg$37$0, $arg$37$1);
         );
-        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$38$callable$ = a;
                 boolean $arg$38$0 = true;
-                .ceylon.language.Sequential $arg$38$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+                .ceylon.language.Sequential $arg$38$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
             }
             returning $arg$38$callable$.Sequenced$new($arg$38$0, $arg$38$1);
         );
-        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<.ceylon.language.String> $arg$39$callable$ = a;
                 boolean $arg$39$0 = true;
-                .ceylon.language.Sequential $arg$39$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequential $arg$39$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.empty_.getEmpty$()));
             }
             returning $arg$39$callable$.Sequenced$new($arg$39$0, $arg$39$1);
         );

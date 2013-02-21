@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class VarargsMethodSpecifyingMethodWithIterable {
+class VarargsMethodSpecifyingMethodWithIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     VarargsMethodSpecifyingMethodWithIterable() {
     }
@@ -36,4 +36,10 @@ class VarargsMethodSpecifyingMethodWithIterable {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithIterable();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithIterable.class);
 }

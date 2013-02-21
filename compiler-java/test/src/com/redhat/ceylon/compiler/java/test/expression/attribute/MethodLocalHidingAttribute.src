@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class MethodLocalHidingAttribute {
+class MethodLocalHidingAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodLocalHidingAttribute() {
         final boolean b = true;
@@ -15,4 +15,10 @@ class MethodLocalHidingAttribute {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalHidingAttribute();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalHidingAttribute.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalHidingAttribute.class);
 }

@@ -12,10 +12,16 @@ interface OuterInterface<T> {
 }
 final class OuterInterface$impl<T> {
     
-    OuterInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
+    OuterInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
     
     private void private$priv() {
     }
@@ -27,7 +33,7 @@ final class OuterInterface$impl<T> {
         return null;
     }
     
-    class InnerClass {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         InnerClass() {
         }
@@ -42,6 +48,11 @@ final class OuterInterface$impl<T> {
             o.sharedFinal();
             o.sharedDefault();
             o.sharedFormal();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.InnerClass.class));
         }
     }
 }

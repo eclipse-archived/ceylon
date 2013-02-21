@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class SequencedTypeParamInvocation<T> {
+class SequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SequencedTypeParamInvocation() {
+    SequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void algo() {
         (
@@ -25,7 +27,12 @@ class SequencedTypeParamInvocation<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation.class, $reifiedT);
     }
 }
 final class sequencedTypeParamInvocationMethod_ {
@@ -34,7 +41,7 @@ final class sequencedTypeParamInvocationMethod_ {
     }
     
     static void sequencedTypeParamInvocationMethod() {
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<.ceylon.language.String>().algo(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y")));
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor).algo(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("x"), .ceylon.language.String.instance("y")));
     }
     
     public static void main(.java.lang.String[] args) {

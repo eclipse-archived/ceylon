@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-class Foo {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Foo() {
     }
@@ -12,6 +12,12 @@ class Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Foo();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.Foo.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Foo.class);
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     
@@ -26,6 +32,12 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Bar();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.Bar.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Bar.class);
 }
 class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     
@@ -40,44 +52,71 @@ class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Baz();
     }
-}
-class GenInv<T> {
     
-    GenInv() {
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.Baz.$TypeDescriptor;
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Baz.class);
+}
+class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    GenInv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.GenInv();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.GenInv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenInv.class, $reifiedT);
     }
 }
-class GenCov<T> {
+class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenCov() {
+    GenCov(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.GenCov();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.GenCov(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenCov.class, $reifiedT);
     }
 }
-class GenCon<T> {
+class GenCon<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenCon() {
+    GenCon(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.GenCon();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.GenCon(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenCon.class, $reifiedT);
     }
 }
 interface ISats {
@@ -85,6 +124,7 @@ interface ISats {
     public .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$impl();
     
     public abstract .java.lang.Object z();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ISats.class);
 }
 final class ISats$impl {
     
@@ -93,17 +133,24 @@ final class ISats$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats $this;
 }
-class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> {
+class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Sats() {
+    Sats(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.Sats();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.Sats(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Sats.class, $reifiedT);
     }
 }
 class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar implements .com.redhat.ceylon.compiler.java.test.structure.type.ISats {
@@ -128,30 +175,48 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.BarSats();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.BarSats.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BarSats.class);
 }
 class ExtAnything extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
     
     ExtAnything() {
-        super();
+        super(.ceylon.language.Anything.$TypeDescriptor);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtAnything();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.ExtAnything.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ExtAnything.class);
 }
 class ExtNothing extends .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<.java.lang.Object> {
     
     ExtNothing() {
-        super();
+        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtNothing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.ExtNothing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ExtNothing.class);
 }
-class Conversions {
+class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Conversions() {
     }
@@ -196,10 +261,17 @@ class Conversions {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Conversions();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.Conversions.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Conversions.class);
 }
 interface ISats2 {
     
     public .com.redhat.ceylon.compiler.java.test.structure.type.ISats2$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats2$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ISats2.class);
 }
 final class ISats2$impl {
     
@@ -208,16 +280,23 @@ final class ISats2$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats2 $this;
 }
-class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> {
+class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    UpperBoundErasure1() {
+    UpperBoundErasure1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
-    private final <T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2>void foo$priv() {
+    private final <T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2>void foo$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.type.UpperBoundErasure1();
+        new .com.redhat.ceylon.compiler.java.test.structure.type.UpperBoundErasure1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.UpperBoundErasure1.class, $reifiedT);
     }
 }

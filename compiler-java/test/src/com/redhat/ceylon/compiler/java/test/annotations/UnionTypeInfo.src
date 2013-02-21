@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class Foo {
+public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Foo() {
     }
@@ -12,10 +12,18 @@ public class Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Foo.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Foo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class Bar {
+public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bar() {
     }
@@ -25,9 +33,17 @@ public class Bar {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bar.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bar.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-class UnionTypeInfo {
+class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     UnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar", erased = true)
@@ -80,15 +96,31 @@ class UnionTypeInfo {
         final .java.lang.Object val = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
         return val;
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.UnionTypeInfo.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.UnionTypeInfo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class SharedUnionTypeInfo {
+public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public SharedUnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar", erased = true)
     final .java.lang.Object param) {
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SharedUnionTypeInfo.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SharedUnionTypeInfo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute

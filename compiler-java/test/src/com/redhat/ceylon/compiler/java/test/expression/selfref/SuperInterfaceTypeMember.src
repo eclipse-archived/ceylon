@@ -5,6 +5,7 @@ interface SuperInterfaceTypeMember {
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$impl();
     
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember.class);
 }
 final class SuperInterfaceTypeMember$impl {
     
@@ -17,13 +18,18 @@ final class SuperInterfaceTypeMember$impl {
         return new Inner();
     }
     
-    public class Inner {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Inner() {
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner.class));
+        }
     }
 }
-class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember {
+class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember {
     
     SuperInterfaceTypeMember_Sub() {
         this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl(this);
@@ -45,6 +51,11 @@ class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.t
         protected Inner() {
             $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this.super();
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.Inner.class));
+        }
     }
     
     private final void m$priv() {
@@ -55,4 +66,10 @@ class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.t
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.class);
 }

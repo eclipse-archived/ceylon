@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfExists {
+class MethodIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodIfExists() {
     }
@@ -27,4 +27,10 @@ class MethodIfExists {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists.class);
 }

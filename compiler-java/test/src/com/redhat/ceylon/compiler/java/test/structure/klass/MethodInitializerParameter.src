@@ -1,13 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class MethodInitializerParameter<T> {
+class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodInitializerParameter(final .ceylon.language.Callable<? extends .java.lang.Object> m, final .ceylon.language.Callable<? extends .java.lang.Object> m2, final .ceylon.language.Callable<? extends T> m3, final .ceylon.language.Callable<? extends .java.lang.Object> m4) {
+    MethodInitializerParameter(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> m, final .ceylon.language.Callable<? extends .java.lang.Object> m2, final .ceylon.language.Callable<? extends T> m3, final .ceylon.language.Callable<? extends .java.lang.Object> m4) {
+        this.$reifiedT = $reifiedT;
         this.m = m;
         this.m2 = m2;
         this.m3 = m3;
         this.m4 = m4;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .ceylon.language.Callable<? extends .java.lang.Object> m;
     
     private final void m$priv(final long i) {
@@ -57,5 +59,10 @@ class MethodInitializerParameter<T> {
     
     private final void m4$priv(final long i) {
         m4.$call(.ceylon.language.Integer.instance(i));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MethodInitializerParameter.class, $reifiedT);
     }
 }

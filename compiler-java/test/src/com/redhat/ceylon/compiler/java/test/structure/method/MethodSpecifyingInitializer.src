@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodSpecifierType {
+class MethodSpecifierType implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodSpecifierType() {
     }
@@ -13,4 +13,10 @@ class MethodSpecifierType {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType.class);
 }

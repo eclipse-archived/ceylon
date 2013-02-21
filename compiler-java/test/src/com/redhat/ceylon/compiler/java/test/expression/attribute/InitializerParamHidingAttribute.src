@@ -1,12 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class InitializerParamHidingAttribute {
+class InitializerParamHidingAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerParamHidingAttribute(final boolean b) {
         final boolean b2 = b;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute.class);
 }
-class InitializerParamHidingAttribute2 {
+class InitializerParamHidingAttribute2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerParamHidingAttribute2(final boolean b) {
         this.b = b;
@@ -22,4 +28,10 @@ class InitializerParamHidingAttribute2 {
     public final boolean getB2() {
         return b2;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute2.class);
 }

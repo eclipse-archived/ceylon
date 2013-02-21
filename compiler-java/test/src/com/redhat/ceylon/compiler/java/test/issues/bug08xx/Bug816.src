@@ -6,16 +6,26 @@ interface Bug816I<T> {
 }
 final class Bug816I$impl<T> {
     
-    Bug816I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends T> $this) {
+    Bug816I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends T> $this;
-}
-class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object> {
     
-    Bug816C() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)this);
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+}
+class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object> {
+    
+    Bug816C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2) {
+        this.$reifiedT1 = $reifiedT1;
+        this.$reifiedT2 = $reifiedT2;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedT1, $reifiedT2), (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this;
     
     @.java.lang.Override
@@ -25,7 +35,12 @@ class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.test.issues.bu
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C.class, $reifiedT1, $reifiedT2);
     }
 }
 final class f_ {
@@ -33,7 +48,7 @@ final class f_ {
     private f_() {
     }
     
-    static <X>void f(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends X> set) {
+    static <X>void f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends X> set) {
     }
 }
 final class test_ {
@@ -42,8 +57,8 @@ final class test_ {
     }
     
     static void test() {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C<.ceylon.language.String, .java.lang.Object> x = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C();
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.f_.<.ceylon.language.String>f((.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)x);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C<.ceylon.language.String, .java.lang.Object> x = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816C(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.f_.<.ceylon.language.String>f(.ceylon.language.String.$TypeDescriptor, (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)x);
     }
     
     public static void main(.java.lang.String[] args) {

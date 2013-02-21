@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class ExceptionAttr {
+class ExceptionAttr implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ExceptionAttr() {
         this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
@@ -19,4 +19,10 @@ class ExceptionAttr {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttr();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttr.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttr.class);
 }

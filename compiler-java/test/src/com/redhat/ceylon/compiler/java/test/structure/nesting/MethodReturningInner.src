@@ -8,10 +8,12 @@ interface MethodReturningInner$CI<T> {
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC m3();
 }
-class MethodReturningInner<T> {
+class MethodReturningInner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodReturningInner() {
+    MethodReturningInner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     final class CI$impl {
         
@@ -24,15 +26,25 @@ class MethodReturningInner<T> {
             return new CIC();
         }
         
-        public class CIC {
+        public class CIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected CIC() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.class, .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.CI$impl.CIC.class));
             }
         }
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner();
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.class, $reifiedT);
     }
 }

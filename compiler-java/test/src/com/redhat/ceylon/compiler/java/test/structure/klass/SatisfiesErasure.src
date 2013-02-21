@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class SatisfiesErasure {
+class SatisfiesErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SatisfiesErasure() {
     }
@@ -24,4 +24,10 @@ class SatisfiesErasure {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesErasure.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.import_;
 
-class ImportTypeAlias {
+class ImportTypeAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ImportTypeAlias() {
     }
@@ -13,4 +13,10 @@ class ImportTypeAlias {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeAlias.class);
 }

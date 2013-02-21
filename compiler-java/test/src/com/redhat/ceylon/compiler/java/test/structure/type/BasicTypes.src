@@ -260,7 +260,7 @@ public final class globalAttrOptionalCharacter_ {
         }
     }
 }
-class BasicTypes {
+class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BasicTypes(final long paramInteger, final double paramFloat, final .java.lang.String paramString, final boolean paramBoolean, final int paramCharacter, final .ceylon.language.Integer paramOptionalInteger, final .ceylon.language.Float paramOptionalFloat, final .ceylon.language.String paramOptionalString, final .ceylon.language.Boolean paramOptionalBoolean, final .ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrInteger;
@@ -447,20 +447,33 @@ class BasicTypes {
     private final .ceylon.language.Character methodOptionalCharacter$priv(final .ceylon.language.Character i) {
         return i;
     }
-}
-abstract class TypeParameterClass<ClassParam> {
     
-    TypeParameterClass(final ClassParam classParam) {
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.$TypeDescriptor;
     }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.class);
+}
+abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    TypeParameterClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam, final ClassParam classParam) {
+        this.$reifiedClassParam = $reifiedClassParam;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam;
     
     public abstract ClassParam getAttr();
     
     public abstract ClassParam classParamMethod(final ClassParam param);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass.class, $reifiedClassParam);
+    }
 }
 class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
     
     IntegerParameterClass(final .ceylon.language.Integer classParam) {
-        super(classParam);
+        super(.ceylon.language.Integer.$TypeDescriptor, classParam);
         this.attr = classParam;
     }
     private final .ceylon.language.Integer attr;
@@ -474,4 +487,10 @@ class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.struct
     public final .ceylon.language.Integer classParamMethod(final .ceylon.language.Integer param) {
         return param;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.class);
 }

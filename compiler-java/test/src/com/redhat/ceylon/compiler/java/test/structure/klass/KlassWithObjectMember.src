@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassWithObjectMember {
+class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassWithObjectMember(final .java.lang.String x) {
         this.x = x;
@@ -10,7 +10,7 @@ class KlassWithObjectMember {
     }
     private final .java.lang.String x;
     
-    final class localobj_ {
+    final class localobj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private localobj_() {
             this.f = x;
@@ -24,10 +24,15 @@ class KlassWithObjectMember {
         public final .java.lang.String m() {
             return x;
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_.class));
+        }
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ capturedobj;
     
-    final class capturedobj_ {
+    final class capturedobj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private capturedobj_() {
             this.f = x;
@@ -41,6 +46,11 @@ class KlassWithObjectMember {
         public final .java.lang.String m() {
             return x;
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_.class));
+        }
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ getCapturedobj$priv() {
@@ -48,7 +58,7 @@ class KlassWithObjectMember {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ sharedobj;
     
-    public final class sharedobj_ {
+    public final class sharedobj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private sharedobj_() {
             this.f = x;
@@ -62,6 +72,11 @@ class KlassWithObjectMember {
         public final .java.lang.String m() {
             return x;
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_.class));
+        }
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ getSharedobj() {
@@ -71,4 +86,10 @@ class KlassWithObjectMember {
     private final void m$priv() {
         getCapturedobj$priv().m();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.class);
 }

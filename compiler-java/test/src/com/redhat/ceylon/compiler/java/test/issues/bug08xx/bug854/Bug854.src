@@ -5,7 +5,7 @@ final class bug854_ {
     private bug854_() {
     }
     
-    static <T>T bug854(final T x) {
+    static <T>T bug854(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T x) {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x);
     }
 }
@@ -14,7 +14,7 @@ final class bug854b_ {
     private bug854b_() {
     }
     
-    static <T>T bug854b(final T x) {
+    static <T>T bug854b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T x) {
         return .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x));
     }
 }
@@ -23,13 +23,13 @@ final class x_ {
     private x_() {
     }
     
-    static <Element>.java.lang.Object x() {
+    static <Element>.java.lang.Object x(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         final .java.util.Iterator<Element> jit = .com.redhat.ceylon.compiler.java.Util.checkNull(new .java.util.ArrayList<Element>().iterator());
         return jit.next();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.x_.x();
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug854.x_.x(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class Klass {
+public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Klass(final long p1) {
@@ -71,6 +71,14 @@ public class Klass {
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Integer>")
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
-        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Klass.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Klass.class);
 }

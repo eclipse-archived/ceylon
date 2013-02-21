@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-abstract class ClassAttributeGetter {
+abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassAttributeGetter() {
     }
@@ -16,6 +16,12 @@ abstract class ClassAttributeGetter {
     public .java.lang.String getF3() {
         return "";
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter.class);
 }
 class SubClassAttributeGetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter {
     
@@ -32,4 +38,10 @@ class SubClassAttributeGetter extends .com.redhat.ceylon.compiler.java.test.stru
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetter.class);
 }

@@ -18,9 +18,15 @@ final class localTypeAliasMethod_ {
     static void localTypeAliasMethod() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-        class TypeAliasClass {
+        class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             TypeAliasClass() {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(TypeAliasClass.class);
             }
         }
         

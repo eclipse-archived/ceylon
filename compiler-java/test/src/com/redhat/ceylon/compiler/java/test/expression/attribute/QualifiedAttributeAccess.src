@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class QualifiedAttributeAccess {
+class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     QualifiedAttributeAccess() {
         this.b = true;
@@ -59,8 +59,14 @@ class QualifiedAttributeAccess {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.class);
 }
-class Foo {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Foo() {
         this.b = true;
@@ -75,4 +81,10 @@ class Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.class);
 }

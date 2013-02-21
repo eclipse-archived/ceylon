@@ -8,7 +8,7 @@ final class callableArgumentParameterQualified_f_ {
     static void callableArgumentParameterQualified_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-class CallableArgumentParameterQualified {
+class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CallableArgumentParameterQualified(final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
         this.bar = bar;
@@ -19,4 +19,10 @@ class CallableArgumentParameterQualified {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.bar);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.bar);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.class);
 }

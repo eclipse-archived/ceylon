@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class AssertIsFoo {
+class AssertIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AssertIsFoo() {
     }
@@ -39,4 +39,10 @@ class AssertIsFoo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsFoo();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsFoo.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsFoo.class);
 }

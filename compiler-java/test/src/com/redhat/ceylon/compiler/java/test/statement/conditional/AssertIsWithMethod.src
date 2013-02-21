@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class AssertIsWithMethod {
+class AssertIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AssertIsWithMethod() {
     }
@@ -27,4 +27,10 @@ class AssertIsWithMethod {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsWithMethod();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsWithMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsWithMethod.class);
 }

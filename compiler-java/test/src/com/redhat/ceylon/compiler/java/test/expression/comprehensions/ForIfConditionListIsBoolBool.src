@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ForIfConditionListIsBoolBool {
+class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ForIfConditionListIsBoolBool() {
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> zs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
                     private .java.lang.Object x;
                     private boolean x$exhausted;
@@ -76,10 +76,10 @@ class ForIfConditionListIsBoolBool {
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> synthetic$priv(final .ceylon.language.Sequential<? extends .java.lang.Object> xs, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> zs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
                     private .java.lang.Object x;
                     private boolean x$exhausted;
@@ -149,4 +149,10 @@ class ForIfConditionListIsBoolBool {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListIsBoolBool();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListIsBoolBool.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListIsBoolBool.class);
 }

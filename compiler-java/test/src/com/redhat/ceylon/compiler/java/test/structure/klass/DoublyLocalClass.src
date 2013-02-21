@@ -1,22 +1,32 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class DoublyLocalClass {
+class DoublyLocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DoublyLocalClass() {
     }
     
     private final void m$priv() {
         
-        class LocalClass {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             LocalClass() {
                 final LocalClass.Innermost i = new LocalClass.Innermost();
             }
             
-            class Innermost {
+            class Innermost implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 Innermost() {
                 }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.Innermost.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
             }
         }
     }
@@ -25,4 +35,10 @@ class DoublyLocalClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DoublyLocalClass.class);
 }

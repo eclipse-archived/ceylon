@@ -1,42 +1,58 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class C<X> {
+class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C() {
+    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedX = $reifiedX;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     
-    public final <Y>X f(final X x, final Y y) {
+    public final <Y>X f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.C();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.C.class, $reifiedX);
     }
 }
-class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> {
+class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodSpecifyingTopLevelWithTypeParamMixed() {
+    MethodSpecifyingTopLevelWithTypeParamMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedS = $reifiedS;
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> getC() {
-        return new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>();
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.method.C<S> getC2() {
-        return new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>($reifiedS);
     }
     
     private final .java.lang.String foo$priv(final .java.lang.String s, final long i) {
-        return getC().<.ceylon.language.Integer>f(.ceylon.language.String.instance(s), .ceylon.language.Integer.instance(i)).toString();
+        return getC().<.ceylon.language.Integer>f(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.instance(s), .ceylon.language.Integer.instance(i)).toString();
     }
     
     private final S bar$priv(final S x, final T y) {
-        return getC2().<T>f(x, y);
+        return getC2().<T>f($reifiedT, x, y);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParamMixed();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParamMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParamMixed.class, $reifiedS, $reifiedT);
     }
 }

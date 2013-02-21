@@ -1,14 +1,14 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-class Bug998 {
+class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug998(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.f = f;
-        this.rows = (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(){
+        this.rows = (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).getIterator();
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
                     
@@ -36,4 +36,10 @@ class Bug998 {
     public final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> getRows() {
         return rows;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug998.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug998.class);
 }

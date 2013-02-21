@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class FloatBoxing {
+class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     FloatBoxing() {
         this.attrFloat = 1.0;
@@ -15,7 +15,7 @@ class FloatBoxing {
         this.attrFloat = attrFloat;
     }
     
-    private final <T>T id$priv(final T x) {
+    private final <T>T id$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T x) {
         return x;
     }
     
@@ -26,9 +26,9 @@ class FloatBoxing {
         localAttrFloat = localAttrFloat;
         localAttrOptionalFloat = .ceylon.language.Float.instance(localAttrFloat);
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat);
-        localAttrFloat = <.ceylon.language.Float>id$priv(.ceylon.language.Float.instance(1.0)).doubleValue();
-        localAttrOptionalFloat = <.ceylon.language.Float>id$priv(.ceylon.language.Float.instance(1.0));
-        localAttrObject = <.ceylon.language.Float>id$priv(.ceylon.language.Float.instance(1.0));
+        localAttrFloat = <.ceylon.language.Float>id$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(1.0)).doubleValue();
+        localAttrOptionalFloat = <.ceylon.language.Float>id$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(1.0));
+        localAttrObject = <.ceylon.language.Float>id$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(1.0));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Float.instance(localAttrFloat);
         final double localAttrConstantFloat = localAttrFloat;
         .java.lang.Object $localAttrConstantObject$1;
@@ -67,4 +67,10 @@ class FloatBoxing {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.class);
 }

@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class InitializerObjectInStatement {
+class InitializerObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerObjectInStatement() {
         if (true) {
             final long i = 1L;
             
-            final class foo_ {
+            final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private foo_() {
                     this.string = .ceylon.language.Integer.toString(i);
@@ -16,6 +16,11 @@ class InitializerObjectInStatement {
                 @.java.lang.Override
                 public final .java.lang.String toString() {
                     return string;
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class);
                 }
             }
             final foo_ foo = new foo_();
@@ -27,4 +32,10 @@ class InitializerObjectInStatement {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerObjectInStatement();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerObjectInStatement.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerObjectInStatement.class);
 }

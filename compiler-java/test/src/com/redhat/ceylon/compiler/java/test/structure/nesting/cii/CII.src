@@ -8,26 +8,30 @@ interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boo
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI<T, X> $com$redhat$ceylon$compiler$java$test$structure$nesting$cii$C$CI$impl();
 }
-class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C() {
+    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedT = $reifiedT;
+        this.$reifiedX = $reifiedX;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     
-    private final <U>T m1$priv(final X b) {
+    private final <U>T m1$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b) {
         return (
             let
             {
-                U $ceylontmp$u$1 = m1$u(b);
+                U $ceylontmp$u$1 = m1$u($reifiedU, b);
             }
-            returning m1$priv(b, $ceylontmp$u$1);
+            returning m1$priv($reifiedU, b, $ceylontmp$u$1);
         );
     }
     
-    private final <U>U m1$u(final X b) {
+    private final <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b) {
         return null;
     }
     
-    private final <U>T m1$priv(final X b, final U u) {
+    private final <U>T m1$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -46,13 +50,18 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C$CI$CII<? extends T, ? super X> $this;
             
             private T m2$priv() {
-                return m1$priv(null);
+                return m1$priv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
             }
         }
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C();
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.cii.C.class, $reifiedT, $reifiedX);
     }
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileConditionListBoolIsBool {
+class MethodWhileConditionListBoolIsBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWhileConditionListBoolIsBool() {
     }
@@ -39,4 +39,10 @@ class MethodWhileConditionListBoolIsBool {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolIsBool();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolIsBool.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolIsBool.class);
 }

@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
-class ConstrainedTypeParam<T> {
+class ConstrainedTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ConstrainedTypeParam() {
+    ConstrainedTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     private final void method$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
     }
@@ -27,6 +29,11 @@ class ConstrainedTypeParam<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.lambda.ConstrainedTypeParam();
+        new .com.redhat.ceylon.compiler.java.test.expression.lambda.ConstrainedTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.lambda.ConstrainedTypeParam.class, $reifiedT);
     }
 }

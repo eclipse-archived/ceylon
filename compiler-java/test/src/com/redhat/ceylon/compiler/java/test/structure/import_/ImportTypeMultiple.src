@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.import_;
 
-class ImportTypeMultiple {
+class ImportTypeMultiple implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ImportTypeMultiple() {
     }
@@ -14,4 +14,10 @@ class ImportTypeMultiple {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeMultiple();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeMultiple.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportTypeMultiple.class);
 }

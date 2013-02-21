@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class SubclassInstantiationDefaultParam {
+class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SubclassInstantiationDefaultParam() {
         (
@@ -24,6 +24,12 @@ class SubclassInstantiationDefaultParam {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam.class);
 }
 class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam {
     
@@ -35,4 +41,10 @@ class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.j
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParamSub.class);
 }

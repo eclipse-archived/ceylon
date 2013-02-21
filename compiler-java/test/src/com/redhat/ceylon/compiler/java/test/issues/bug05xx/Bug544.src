@@ -1,9 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-class Bug544 {
+class Bug544 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug544(final .java.lang.String s) {
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544.class);
 }
 class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
@@ -16,6 +22,12 @@ class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues
     public final .java.lang.String getS$priv() {
         return s;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute.class);
 }
 class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
@@ -28,12 +40,24 @@ class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
     private final .java.lang.String m$priv() {
         return s;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Captured.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Captured.class);
 }
 class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544NonSharedAttr(final .java.lang.String s) {
         super(s);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544NonSharedAttr.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544NonSharedAttr.class);
 }
 final class s_ {
     
@@ -62,14 +86,26 @@ class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel.class);
 }
 class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Qualified(final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
         super(b.getS$priv());
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Qualified.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Qualified.class);
 }
-class Bug544ContainerClass {
+class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug544ContainerClass() {
         this.s = "";
@@ -85,18 +121,30 @@ class Bug544ContainerClass {
         Bug544CapturesFromOuterClass() {
             super(getS());
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.Bug544CapturesFromOuterClass.class));
+        }
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.class);
 }
 interface Bug544ContainerInterface {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Bug544ContainerInterface$impl();
     
     public abstract .java.lang.String getS();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface.class);
 }
 final class Bug544ContainerInterface$impl {
     
@@ -109,6 +157,11 @@ final class Bug544ContainerInterface$impl {
         
         Bug544CapturesFromOuterInterface() {
             super($this.getS());
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl.Bug544CapturesFromOuterInterface.class));
         }
     }
 }

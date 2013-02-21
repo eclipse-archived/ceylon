@@ -31,7 +31,7 @@ final class attributes_ {
         .com.redhat.ceylon.compiler.java.test.interop.attributes_.attributes();
     }
 }
-class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean {
+class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CeylonAttributes() {
         super();
@@ -104,4 +104,10 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes.class);
 }

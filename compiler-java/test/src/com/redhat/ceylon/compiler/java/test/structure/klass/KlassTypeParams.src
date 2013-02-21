@@ -1,11 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassTypeParams<U, V> {
+class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    KlassTypeParams(final U uu, final V vv) {
+    KlassTypeParams(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U uu, final V vv) {
+        this.$reifiedU = $reifiedU;
+        this.$reifiedV = $reifiedV;
         this.attr = uu;
         this.var = vv;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV;
     
     private final U foo$priv(final U u, final V v) {
         return u;
@@ -35,5 +39,10 @@ class KlassTypeParams<U, V> {
     
     private final void setGetset$priv(final V getset) {
         setVar$priv(getset);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParams.class, $reifiedU, $reifiedV);
     }
 }

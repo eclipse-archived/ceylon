@@ -74,7 +74,7 @@ final class bug605mth_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605mth_.bug605mth();
     }
 }
-class Bug605cls {
+class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug605cls() {
     }
@@ -122,6 +122,12 @@ class Bug605cls {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls.class);
 }
 final class hash_ {
     

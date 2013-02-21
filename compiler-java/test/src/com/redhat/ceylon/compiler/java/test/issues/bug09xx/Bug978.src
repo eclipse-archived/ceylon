@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-class Bug978 {
+class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug978(final .ceylon.language.Sequential<? extends .ceylon.language.String> strings) {
         this.strings = strings;
@@ -11,4 +11,10 @@ class Bug978 {
     public final .java.lang.String toString() {
         return .ceylon.language.String.join(", ", strings);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug978.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug978.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class NamedArgumentWithEmptySequence {
+class NamedArgumentWithEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     NamedArgumentWithEmptySequence() {
         (
@@ -36,4 +36,10 @@ class NamedArgumentWithEmptySequence {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence.class);
 }

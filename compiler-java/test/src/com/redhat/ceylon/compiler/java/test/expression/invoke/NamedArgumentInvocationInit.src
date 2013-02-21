@@ -1,16 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class NamedArgumentInvocationInit {
+class NamedArgumentInvocationInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     NamedArgumentInvocationInit(final .java.lang.String a, final long b) {
     }
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner(final boolean x, final .java.lang.String y, final long z) {
         }
         
         public final void m2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.Inner.class));
         }
     }
     
@@ -33,4 +38,10 @@ class NamedArgumentInvocationInit {
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.Inner($arg$1$0, $arg$1$1, $arg$1$2);
         ).m2();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.class);
 }

@@ -15,6 +15,7 @@ interface This {
     public abstract long m2$i2(final long i1);
     
     public long m2(final long i1, final long i2);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.class);
 }
 final class This$impl {
     
@@ -56,13 +57,18 @@ final class This$impl {
         return $this.m1() + $this.m1() + i1 + i2;
     }
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner() {
         }
         
         private final void m3$priv() {
             $this.m2(1L, 2L);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.Inner.class));
         }
     }
 }

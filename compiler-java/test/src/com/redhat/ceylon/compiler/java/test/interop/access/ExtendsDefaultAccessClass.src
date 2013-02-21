@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop.access;
 
-class ExtendsDefaultAccessClass extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass {
+class ExtendsDefaultAccessClass extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ExtendsDefaultAccessClass() {
         super();
@@ -10,4 +10,10 @@ class ExtendsDefaultAccessClass extends .com.redhat.ceylon.compiler.java.test.in
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.class);
 }

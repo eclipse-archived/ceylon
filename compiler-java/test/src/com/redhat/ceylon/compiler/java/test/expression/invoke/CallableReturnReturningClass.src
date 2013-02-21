@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class CallableReturnReturningClass {
+class CallableReturnReturningClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CallableReturnReturningClass() {
     }
@@ -9,6 +9,12 @@ class CallableReturnReturningClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass.class);
 }
 final class callableReturnReturningClass_bar_ {
     

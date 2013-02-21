@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class KeywordInPackage {
+class KeywordInPackage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInPackage() {
     }
@@ -9,4 +9,10 @@ class KeywordInPackage {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInPackage();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInPackage.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInPackage.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-class ClassDefaultMemberClassWithDefaultedParams {
+class ClassDefaultMemberClassWithDefaultedParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassDefaultMemberClassWithDefaultedParams() {
     }
@@ -23,9 +23,14 @@ class ClassDefaultMemberClassWithDefaultedParams {
         );
     }
     
-    public class Member {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member(final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member.class));
         }
     }
     
@@ -44,6 +49,12 @@ class ClassDefaultMemberClassWithDefaultedParams {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.class);
 }
 class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams {
     
@@ -72,6 +83,11 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
         protected Member(final long i) {
             super(i);
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member.class));
+        }
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member m2() {
@@ -89,4 +105,10 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.class);
 }

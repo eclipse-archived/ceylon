@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-abstract class ClassVariable {
+abstract class ClassVariable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassVariable() {
         .java.lang.String uncapturedvar;
@@ -35,6 +35,12 @@ abstract class ClassVariable {
     private final void m$priv() {
         setCapturedvar$priv("new value");
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable.class);
 }
 class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable {
     
@@ -58,4 +64,10 @@ class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.a
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable.class);
 }

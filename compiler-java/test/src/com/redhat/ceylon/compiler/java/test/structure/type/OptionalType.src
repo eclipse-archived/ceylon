@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-class OptionalType {
+class OptionalType implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     OptionalType() {
     }
@@ -14,4 +14,10 @@ class OptionalType {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.OptionalType();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.OptionalType.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.OptionalType.class);
 }

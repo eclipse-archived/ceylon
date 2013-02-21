@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodWithDefaultParams {
+class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWithDefaultParams() {
         this.prop = 42L;
@@ -171,6 +171,12 @@ class MethodWithDefaultParams {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams.class);
 }
 interface MethodWithDefaultParams2 {
     
@@ -225,6 +231,7 @@ interface MethodWithDefaultParams2 {
     public abstract .ceylon.language.Sequential<? extends .ceylon.language.Integer> f6$seq(final long n);
     
     public abstract .java.lang.Object f6(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2.class);
 }
 final class MethodWithDefaultParams2$impl {
     

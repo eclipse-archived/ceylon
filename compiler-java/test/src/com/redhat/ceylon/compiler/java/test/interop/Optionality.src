@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
+class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
     
     OptionalInterface(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
         this.prop1 = x;
@@ -28,11 +28,11 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                 final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$5 = $z$4;
             }
             final boolean b1 = $x$2.getProp1() != null;
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> existsInComprehension1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(){
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> existsInComprehension1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .ceylon.language.Null.$TypeDescriptor){
                 
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
-                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>($x$2).getIterator();
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
+                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), $x$2).getIterator();
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
                         private boolean obj$exhausted;
                         
@@ -71,11 +71,11 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                 final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $z$11 = $z$10;
             }
             final boolean b2 = $x$2.method($x$2) != null;
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> existsInComprehension2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(){
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> existsInComprehension2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .ceylon.language.Null.$TypeDescriptor){
                 
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
-                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>($x$2).getIterator();
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
+                        private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), $x$2).getIterator();
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
                         private boolean obj$exhausted;
                         
@@ -124,15 +124,15 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                 returning $ceylontmp16 != null ? $ceylontmp16 : $x$2;
             );
             final .java.lang.Object correspondenceCheck = .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getCorrespondence()).get($x$2);
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqCheck = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqNoCheck = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqCheckSpread = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqNoCheckSpread = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> comprehensionCheck = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(){
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqCheck = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqNoCheck = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqCheckSpread = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> seqNoCheckSpread = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()), .ceylon.language.empty_.getEmpty$());
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> comprehensionCheck = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                 
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
-                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
+                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
                         private .ceylon.language.Integer i;
                         private boolean i$exhausted;
                         
@@ -153,11 +153,11 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
                     };
                 }
             }.getSequence();
-            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> comprehensionNoCheck = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(){
+            final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> comprehensionNoCheck = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                 
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> getIterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(){
-                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
+                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).getIterator();
                         private .ceylon.language.Integer i;
                         private boolean i$exhausted;
                         
@@ -221,4 +221,10 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
     public final .ceylon.language.Correspondence<? super .java.lang.Object, ? extends .java.lang.Object> getCorrespondence() {
         return (.ceylon.language.Correspondence).ceylon.language.nothing_.getNothing$();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.class);
 }

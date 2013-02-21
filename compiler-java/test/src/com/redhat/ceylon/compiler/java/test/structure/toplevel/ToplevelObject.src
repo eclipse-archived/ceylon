@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class topLevelObject_ {
+final class topLevelObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private topLevelObject_() {
     }
@@ -18,6 +18,11 @@ final class topLevelObject_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.class);
     }
 }
 final class accessTopLevelObject_ {

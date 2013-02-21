@@ -5,6 +5,7 @@ interface Bug824_X {
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$impl();
     
     public .java.lang.String getName();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X.class);
 }
 final class Bug824_X$impl {
     
@@ -21,7 +22,7 @@ interface Bug824_Y {
 }
 interface Bug824_Z {
 }
-class Bug824_W implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
+class Bug824_W implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
     
     Bug824_W() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
@@ -42,8 +43,14 @@ class Bug824_W implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W.class);
 }
-class Bug824_W2 implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
+class Bug824_W2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
     
     Bug824_W2() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
@@ -64,4 +71,10 @@ class Bug824_W2 implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2.class);
 }

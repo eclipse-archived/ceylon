@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-public class NullHandlingOperators {
+public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public NullHandlingOperators() {
     }
     
-    private final <T>T box$priv(final T t) {
+    private final <T>T box$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         return t;
     }
     
@@ -24,7 +24,7 @@ public class NullHandlingOperators {
             {
                 .ceylon.language.Integer $ceylontmp1 = natOrNothing1;
             }
-            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box$priv(.ceylon.language.Integer.instance(0L));
+            returning $ceylontmp1 != null ? $ceylontmp1 : <.ceylon.language.Integer>box$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L));
         );
         .ceylon.language.Integer nullSafeMember = (
             let
@@ -127,7 +127,7 @@ public class NullHandlingOperators {
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp13 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.getEmpty$() : null);
             }
-            returning $ceylontmp13 != null ? $ceylontmp13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
+            returning $ceylontmp13 != null ? $ceylontmp13 : new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
     }
     
@@ -135,4 +135,10 @@ public class NullHandlingOperators {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.class);
 }

@@ -8,15 +8,20 @@ interface Objects$ObjectsI {
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Objects$ObjectsI$impl();
 }
-class Objects {
+class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Objects() {
         final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_ objects_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_();
     }
     
-    abstract class Dummy {
+    abstract class Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Dummy() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy.class));
         }
     }
     
@@ -26,9 +31,14 @@ class Objects {
             super();
         }
         
-        class DummyC {
+        class DummyC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             DummyC() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.DummyC.class));
             }
         }
         
@@ -39,9 +49,14 @@ class Objects {
             }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this;
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class));
+        }
     }
     
-    class ObjectsC {
+    class ObjectsC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         ObjectsC() {
             final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
@@ -52,9 +67,14 @@ class Objects {
             private objectsc_o_() {
                 super();
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_.class));
+            }
         }
         
-        class ObjectsCC {
+        class ObjectsCC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             ObjectsCC() {
                 final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
@@ -65,7 +85,22 @@ class Objects {
                 private objectscc_o_() {
                     super();
                 }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_.class));
+                }
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class));
         }
     }
     
@@ -76,7 +111,7 @@ class Objects {
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
         
-        class ObjectsIC {
+        class ObjectsIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             ObjectsIC() {
                 final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();
@@ -87,6 +122,16 @@ class Objects {
                 private objectsic_o_() {
                     super();
                 }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.class));
             }
         }
     }
@@ -98,6 +143,11 @@ class Objects {
             private local_o_() {
                 super();
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o_.class);
+            }
         }
         final local_o_ local_o = new local_o_();
         try {
@@ -106,6 +156,11 @@ class Objects {
                 
                 private local_o2_() {
                     super();
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o2_.class);
                 }
             }
             final local_o2_ local_o2 = new local_o2_();
@@ -117,4 +172,10 @@ class Objects {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.class);
 }

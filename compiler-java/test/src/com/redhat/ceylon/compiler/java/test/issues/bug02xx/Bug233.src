@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Java {
+class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Java implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug233_Ceylon(final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type arg) {
         super(arg);
@@ -16,4 +16,10 @@ class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx
             returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type();
         );
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.class);
 }

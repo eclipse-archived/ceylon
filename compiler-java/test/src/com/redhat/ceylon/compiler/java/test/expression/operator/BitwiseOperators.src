@@ -1,17 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> {
+abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> {
     
     BWMyInteger() {
         super();
-        this.$ceylon$language$Binary$this = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
-        this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Binary$this = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor, this);
     }
     protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$this;
     
@@ -76,6 +76,12 @@ abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language
     public .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$impl() {
         return $ceylon$language$Exponentiable$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.class);
 }
 final class bwToplevelN1_ {
     
@@ -140,7 +146,7 @@ final class bwToplevelI1_ {
         value[0] = bwToplevelI1;
     }
 }
-class BitwiseOperators {
+class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BitwiseOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
         this.initN = initN;
@@ -413,6 +419,12 @@ class BitwiseOperators {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.class);
 }
 class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
     
@@ -455,6 +467,12 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
         super.setBoxedN1(super.getBoxedN1().rightArithmeticShift(1L));
         return null;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.class);
 }
 final class bwToplevelGetterN1_ {
     

@@ -9,7 +9,7 @@ final class bug955_ {
         .ceylon.language.print_.print(str.$call());
     }
 }
-class Bug595 {
+class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug595(final .ceylon.language.Callable<? extends .ceylon.language.String> str, final .java.lang.String att) {
         this.str = str;
@@ -19,6 +19,12 @@ class Bug595 {
     private final .java.lang.String str$priv() {
         return str.$call().toString();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.class);
 }
 final class testbug955_ {
     

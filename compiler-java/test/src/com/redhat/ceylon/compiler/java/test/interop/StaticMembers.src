@@ -9,10 +9,10 @@ final class staticMethods_ {
         .java.io.File sync;
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
-        final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.java.io.File.listRoots()));
+        final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.io.File.class), .java.io.File.listRoots()));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", "", sync));
-        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(sync.listRoots()));
+        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.io.File.class), sync.listRoots()));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -59,7 +59,7 @@ final class staticMethodsAndSubClassesOnType_ {
         .com.redhat.ceylon.compiler.java.test.interop.staticMethodsAndSubClassesOnType_.staticMethodsAndSubClassesOnType();
     }
 }
-class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass {
+class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     StaticMethodsAndSubClasses() {
         super();
@@ -78,6 +78,12 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.class);
 }
 final class staticFields_ {
     

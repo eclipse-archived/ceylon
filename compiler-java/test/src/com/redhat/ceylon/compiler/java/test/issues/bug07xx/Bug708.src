@@ -9,20 +9,23 @@ final class bug708_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-    static <T>.java.lang.Object bug708() {
+    static <T>.java.lang.Object bug708(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         return null;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.bug708();
+        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.bug708(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }
-class Bug708<T> {
+class Bug708<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug708() {
+    Bug708(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final .java.lang.Object test() {
         return null;
@@ -30,7 +33,12 @@ class Bug708<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, $reifiedT);
     }
 }
 final class bug708extra1_ {
@@ -39,7 +47,7 @@ final class bug708extra1_ {
     }
     private static final .ceylon.language.String[] value;
     static {
-        value = new .ceylon.language.String[]{(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()};
+        value = new .ceylon.language.String[]{(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor)};
     }
     
     static .ceylon.language.String getBug708extra1$() {
@@ -56,7 +64,7 @@ final class bug708extra2_ {
     }
     private static final .ceylon.language.String[] value;
     static {
-        value = new .ceylon.language.String[]{(.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>().test()};
+        value = new .ceylon.language.String[]{(.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor).test()};
     }
     
     static .ceylon.language.String getBug708extra2$() {
@@ -73,7 +81,7 @@ final class bug708obj_ {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>()};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor)};
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> getBug708obj$() {
@@ -113,7 +121,7 @@ final class bug708seq_ {
     }
     private static final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
     static {
-        value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .ceylon.language.Empty>(new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(), .ceylon.language.empty_.getEmpty$())};
+        value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor), .ceylon.language.empty_.getEmpty$())};
     }
     
     static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> getBug708seq$() {
@@ -134,7 +142,7 @@ final class bug708extra4_ {
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> $spread$1$iterable = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
-                .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+                .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor));
                 .java.lang.Object $spread$1$iteration;
                 for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$1$iterator = $spread$1$iterable.getIterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
                     .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> $spread$1$element = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)$spread$1$iteration;
@@ -160,7 +168,7 @@ final class bug708_test_ {
     
     static void bug708_test() {
         .ceylon.language.String $s$3;
-        if (($s$3 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
+        if (($s$3 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor)) != null) {
             final .java.lang.String $s$4 = $s$3.toString();
         }
     }
@@ -172,33 +180,37 @@ final class bug708_test_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-class Bug708_Class<T> {
+class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug708_Class(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    Bug708_Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
     final .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("param2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
     final .java.lang.Object param2) {
+        this.$reifiedT = $reifiedT;
         this.param = param;
         this.param2 = param2;
         this.attr = param;
         .ceylon.language.String $s$6;
-        if (($s$6 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).param) != null) {
+        if (($s$6 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).param) != null) {
             final .java.lang.String $s$7 = $s$6.toString();
         }
         .ceylon.language.String $s$9;
-        if (($s$9 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
+        if (($s$9 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
             final .java.lang.String $s$10 = $s$9.toString();
         }
         .ceylon.language.String $s$12;
-        if (($s$12 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
+        if (($s$12 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
             final .java.lang.String $s$13 = $s$12.toString();
         }
         .ceylon.language.String $s$15;
-        if (($s$15 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
+        if (($s$15 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
             final .java.lang.String $s$16 = $s$15.toString();
         }
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .java.lang.Object param;
     private final .java.lang.Object attr;
     
@@ -220,24 +232,34 @@ class Bug708_Class<T> {
     public final .java.lang.Object getGetter() {
         return param;
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class.class, $reifiedT);
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Map<ceylon.language::Integer,ceylon.language::String|T>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {"ceylon.language::Object"}, caseTypes = {})})
-public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object> {
+public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object> {
     
-    public Bug708Map() {
+    public Bug708Map(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         super();
-        this.$ceylon$language$Map$this = new .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(this);
+        this.$reifiedT = $reifiedT;
+        this.$ceylon$language$Map$this = new .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT), this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT)), this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT)), .ceylon.language.Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT)), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT))), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT), this);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Map$this;
     
@@ -267,8 +289,9 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> mapItems(final .ceylon.language.Callable<? extends Result> mapping) {
-        return $ceylon$language$Map$this.mapItems(mapping);
+    public <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> mapItems(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> mapping) {
+        return $ceylon$language$Map$this.mapItems($reifiedResult, mapping);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this;
@@ -319,8 +342,9 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -331,8 +355,9 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public <Result>Result fold(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -355,8 +380,9 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -415,14 +441,16 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Container$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Container$this;
@@ -559,7 +587,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map.class, $reifiedT);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
@@ -570,7 +604,7 @@ final class bug708_cache_ {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>()};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor)};
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<ceylon.language::String>")

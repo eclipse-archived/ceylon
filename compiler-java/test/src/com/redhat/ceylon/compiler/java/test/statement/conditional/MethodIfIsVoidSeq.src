@@ -8,7 +8,7 @@ final class methodIfIsAnythingSeq_ {
     static void methodIfIsAnythingSeq() {
         final .java.lang.Object args = .ceylon.language.process_.getProcess$().getArguments();
         .java.lang.Object $args$1;
-        if (($args$1 = args) instanceof .ceylon.language.Sequential) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($args$1 = args, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Anything.$TypeDescriptor))) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> $args$2 = (.ceylon.language.Sequential)$args$1;
             .java.lang.Object $elem$3;
             for (.ceylon.language.Iterator<? extends .java.lang.Object> $arg$iter$4 = $args$2.getIterator(); !(($elem$3 = $arg$iter$4.next()) instanceof .ceylon.language.Finished); ) {

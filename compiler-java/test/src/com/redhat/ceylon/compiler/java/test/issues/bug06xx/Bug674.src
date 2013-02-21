@@ -17,10 +17,16 @@ final class bug674_ {
         
         final class X$impl<T> {
             
-            X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<T> $this) {
+            X$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<T> $this) {
+                this.$reifiedT = $reifiedT;
                 this.$this = $this;
             }
+            private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
             private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<T> $this;
+            
+            public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+                this.$reifiedT = $reifiedT;
+            }
         }
         
         final class Y$impl {

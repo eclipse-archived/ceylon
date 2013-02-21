@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class NamedArgumentInvocation {
+class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     NamedArgumentInvocation() {
         (
@@ -97,4 +97,10 @@ class NamedArgumentInvocation {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation.class);
 }

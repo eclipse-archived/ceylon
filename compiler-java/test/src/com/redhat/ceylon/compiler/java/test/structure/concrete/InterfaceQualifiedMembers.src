@@ -25,6 +25,7 @@ interface InterfaceQualifiedIncrement {
     public void setI3(final long i3);
     
     public long m3();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement.class);
 }
 final class InterfaceQualifiedIncrement$impl {
     
@@ -154,7 +155,7 @@ final class InterfaceQualifiedIncrement$impl {
         );
     }
     
-    class InnerC {
+    class InnerC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         InnerC() {
         }
@@ -241,6 +242,11 @@ final class InterfaceQualifiedIncrement$impl {
                 }
                 returning $ceylontmpopV31;
             );
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement$impl.InnerC.class));
         }
     }
     

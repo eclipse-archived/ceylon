@@ -7,7 +7,7 @@ public final class bug899_ {
     
     public static void bug899() {
         
-        final class o_ {
+        final class o_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private o_() {
                 this.i = 1L;
@@ -20,6 +20,11 @@ public final class bug899_ {
             
             public final long f() {
                 return getI$priv() + 1L;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
             }
         }
         final o_ o = new o_();

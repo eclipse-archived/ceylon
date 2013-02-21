@@ -6,7 +6,7 @@ final class bug588_ {
     }
     
     static void bug588() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> comparables = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("hello"), .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> comparables = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("hello"), .ceylon.language.empty_.getEmpty$());
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> $c$iter$1 = comparables.getIterator(); !(($elem$0 = $c$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)$elem$0;

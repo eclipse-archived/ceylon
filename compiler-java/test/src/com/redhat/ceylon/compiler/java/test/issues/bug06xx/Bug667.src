@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug667TopClass {
+class Bug667TopClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug667TopClass() {
     }
@@ -13,6 +13,12 @@ class Bug667TopClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass.class);
 }
 class Bug667BottomClass extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass {
     
@@ -30,6 +36,12 @@ class Bug667BottomClass extends .com.redhat.ceylon.compiler.java.test.issues.bug
     public final .ceylon.language.String perhaps() {
         return (.ceylon.language.String)n;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667BottomClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667BottomClass.class);
 }
 interface Bug667Interface<T> {
     
@@ -39,21 +51,29 @@ interface Bug667Interface<T> {
 }
 final class Bug667Interface$impl<T> {
     
-    Bug667Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this) {
+    Bug667Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
     
     public final T getGet() {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
     
-    Bug667Class(final Nada n) {
+    Bug667Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada, final Nada n) {
+        this.$reifiedNada = $reifiedNada;
         this.n = n;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, this);
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada;
     private final Nada n;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
     
@@ -66,18 +86,23 @@ class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.test.issues.
     public final .ceylon.language.String getGet() {
         return (.ceylon.language.String)n;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Class.class, $reifiedNada);
+    }
 }
 final class bug667Method_ {
     
     private bug667Method_() {
     }
     
-    static <Nada>void bug667Method(final Nada n) {
+    static <Nada>void bug667Method(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada, final Nada n) {
         
-        final class x_ implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+        final class x_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
             
             private x_() {
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, this);
             }
             
             @.java.lang.Override
@@ -89,6 +114,11 @@ final class bug667Method_ {
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$impl() {
                 return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(x_.class);
             }
         }
         final x_ x = new x_();

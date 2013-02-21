@@ -10,10 +10,19 @@ interface Scalable<T, S extends .com.redhat.ceylon.compiler.java.test.issues.bug
 }
 final class Scalable$impl<T, S extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S>> {
     
-    Scalable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> $this) {
+    Scalable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> $this) {
+        this.$reifiedT = $reifiedT;
+        this.$reifiedS = $reifiedS;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS) {
+        this.$reifiedS = $reifiedS;
+        this.$reifiedT = $reifiedT;
+    }
 }
 interface Numeric<T extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<T>> extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<T, T> {
     
@@ -31,10 +40,16 @@ interface Numeric<T extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx
 }
 final class Numeric$impl<T extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<T>> {
     
-    Numeric$impl(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<T> $this) {
+    Numeric$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
     
     public T scaleUp(final T t) {
         return t.times((T)$this);
@@ -49,14 +64,14 @@ final class scale_ {
     private scale_() {
     }
     
-    static <T, S extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S>>S scale(final T x, final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> y) {
+    static <T, S extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S>>S scale(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final T x, final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> y) {
         return y.scaleUp(x);
     }
 }
-abstract class Vector implements .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector> {
+abstract class Vector implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector> {
     
     Vector() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector>(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector.$TypeDescriptor, this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
     
@@ -64,12 +79,18 @@ abstract class Vector implements .com.redhat.ceylon.compiler.java.test.issues.bu
     public .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector.class);
 }
-abstract class Real implements .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<.java.lang.Object, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real> {
+abstract class Real implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<.java.lang.Object, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real> {
     
     Real() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Numeric$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>((.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>)(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable)this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Numeric$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real>)(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable)this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Numeric$this;
     
@@ -83,12 +104,18 @@ abstract class Real implements .com.redhat.ceylon.compiler.java.test.issues.bug1
     public .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.class);
 }
-abstract class Int implements .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int> {
+abstract class Int implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int> {
     
     Int() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Numeric$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int>(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Numeric$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int>(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int>(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Numeric$this;
     
@@ -112,6 +139,12 @@ abstract class Int implements .com.redhat.ceylon.compiler.java.test.issues.bug10
     public .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int> $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug10xx$Scalable$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.class);
 }
 final class bug1036_ {
     
@@ -119,8 +152,8 @@ final class bug1036_ {
     }
     
     static void bug1036(final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real real, final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector vector, final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int int) {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector vectorScaledUp = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.scale_.<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector>scale(real, vector);
-        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real realProduct = (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real).com.redhat.ceylon.compiler.java.test.issues.bug10xx.scale_.scale(real, (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable)real);
-        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real realScaledUp = (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real).com.redhat.ceylon.compiler.java.test.issues.bug10xx.scale_.scale(int, (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable)real);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector vectorScaledUp = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.scale_.<.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector>scale(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Vector.$TypeDescriptor, real, vector);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real realProduct = (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real).com.redhat.ceylon.compiler.java.test.issues.bug10xx.scale_.scale(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor), .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, real, (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable)real);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real realScaledUp = (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real).com.redhat.ceylon.compiler.java.test.issues.bug10xx.scale_.scale(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Int.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor), .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Real.$TypeDescriptor, int, (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable)real);
     }
 }

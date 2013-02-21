@@ -1,40 +1,56 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class QualifiedParameterisedInstantiation<G> {
+class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    QualifiedParameterisedInstantiation() {
+    QualifiedParameterisedInstantiation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
+        this.$reifiedG = $reifiedG;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG;
     
-    class Inner<T> {
+    class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Inner(final .java.lang.String s) {
+        Inner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String s) {
+            this.$reifiedT = $reifiedT;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this.$reifiedG), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.Inner.class, $reifiedT));
         }
     }
     
     private final void m$priv() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = this;
-        this.new Inner<.ceylon.language.Integer>("");
-        other.new Inner<.ceylon.language.Integer>("");
+        this.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
+        other.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, "");
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> $arg$0$callable$ = this;
                 .java.lang.String $arg$0$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$0);
+            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$reified$0, $arg$0$0);
         );
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> $arg$1$callable$ = other;
                 .java.lang.String $arg$1$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$0);
+            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$reified$0, $arg$1$0);
         );
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation();
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.class, $reifiedG);
     }
 }

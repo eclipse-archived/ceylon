@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("c")
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "cc", javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.cc_", packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")})
-class c_ {
+class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     c_() {
     }
@@ -11,9 +11,15 @@ class c_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Name("cc")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "c", javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_", packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")
-    class cc_ {
+    class cc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         cc_() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.cc_.class));
         }
     }
     
@@ -22,9 +28,15 @@ class c_ {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.Name("mc")
-        class mc_ {
+        class mc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             mc_() {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(mc_.class);
             }
         }
     }
@@ -34,4 +46,12 @@ class c_ {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.class);
 }

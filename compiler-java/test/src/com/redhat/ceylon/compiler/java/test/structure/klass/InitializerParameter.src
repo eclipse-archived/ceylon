@@ -1,7 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class InitializerParameter {
+class InitializerParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerParameter(final .java.lang.String f) {
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerParameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerParameter.class);
 }

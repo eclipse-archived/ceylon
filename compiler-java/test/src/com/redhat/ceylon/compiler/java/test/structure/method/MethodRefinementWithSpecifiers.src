@@ -39,6 +39,7 @@ interface MethodRefinementWithSpecifiers_Interface {
     public abstract .java.lang.Object f18();
     
     public abstract .java.lang.Object f19();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface.class);
 }
 final class MethodRefinementWithSpecifiers_Interface$impl {
     
@@ -79,7 +80,7 @@ final class methodRefinementWithSpecifiers_attributeMethod_ {
         }
     }
 }
-class MethodRefinementWithSpecifiers_ClassNoParam {
+class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodRefinementWithSpecifiers_ClassNoParam() {
     }
@@ -88,8 +89,14 @@ class MethodRefinementWithSpecifiers_ClassNoParam {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam.class);
 }
-class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
+class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
     
     MethodRefinementWithSpecifiers_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
@@ -105,9 +112,14 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
     }
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.Inner.class));
         }
     }
     
@@ -115,9 +127,14 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return new InnerShared();
     }
     
-    public class InnerShared {
+    public class InnerShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected InnerShared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.InnerShared.class));
         }
     }
     
@@ -241,6 +258,12 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     public final .java.lang.Object f19() {
         return arg;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Class.class);
 }
 final class arg2_ {
     
@@ -284,6 +307,7 @@ interface Bug891_Interface2 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.java.lang.Override
     public .java.lang.Object f19();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2.class);
 }
 final class Bug891_Interface2$impl {
     
@@ -292,9 +316,14 @@ final class Bug891_Interface2$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2 $this;
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.Inner.class));
         }
     }
     
@@ -302,9 +331,14 @@ final class Bug891_Interface2$impl {
         return new InnerShared();
     }
     
-    public class InnerShared {
+    public class InnerShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected InnerShared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.InnerShared.class));
         }
     }
     

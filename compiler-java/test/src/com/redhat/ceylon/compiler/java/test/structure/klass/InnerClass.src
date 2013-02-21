@@ -1,13 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class OuterClass {
+class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     OuterClass() {
     }
     
-    class InnerClass {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         InnerClass() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.OuterClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.OuterClass.InnerClass.class));
         }
     }
     
@@ -15,4 +20,10 @@ class OuterClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.OuterClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.OuterClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.OuterClass.class);
 }

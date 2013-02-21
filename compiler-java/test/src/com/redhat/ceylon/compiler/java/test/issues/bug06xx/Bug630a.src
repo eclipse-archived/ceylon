@@ -17,6 +17,8 @@ interface Bug630 {
     public boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug630$impl {

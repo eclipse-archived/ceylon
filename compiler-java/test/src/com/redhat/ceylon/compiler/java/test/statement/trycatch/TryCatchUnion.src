@@ -5,14 +5,26 @@ class E1 extends .ceylon.language.Exception {
     E1(final .ceylon.language.String description, final .java.lang.Throwable cause) {
         super(description, cause);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E1.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E1.class);
 }
 class E2 extends .ceylon.language.Exception {
     
     E2(final .ceylon.language.String description, final .java.lang.Throwable cause) {
         super(description, cause);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E2.class);
 }
-class TryCatchUnion {
+class TryCatchUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     TryCatchUnion() {
     }
@@ -37,4 +49,10 @@ class TryCatchUnion {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchUnion();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchUnion.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchUnion.class);
 }

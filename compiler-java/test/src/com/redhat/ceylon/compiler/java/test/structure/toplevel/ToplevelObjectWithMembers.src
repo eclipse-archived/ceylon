@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class topLevelObjectWithMembers_ {
+final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private topLevelObjectWithMembers_() {
         final boolean val = true;
@@ -57,5 +57,10 @@ final class topLevelObjectWithMembers_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
     }
 }

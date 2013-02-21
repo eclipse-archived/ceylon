@@ -176,7 +176,7 @@ final class bug609mth_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.bug609mth_.bug609mth();
     }
 }
-class Bug609cls {
+class Bug609cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug609cls() {
     }
@@ -254,4 +254,10 @@ class Bug609cls {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.Bug609cls();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.Bug609cls.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.Bug609cls.class);
 }

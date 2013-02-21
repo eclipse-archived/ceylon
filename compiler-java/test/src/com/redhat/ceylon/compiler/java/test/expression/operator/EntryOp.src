@@ -1,16 +1,22 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-public class EntryOp {
+public class EntryOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public EntryOp() {
     }
     
     private final void m$priv(final long n1, final long i2) {
-        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(i2));
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(i2));
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.EntryOp();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.EntryOp.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EntryOp.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class DefaultParameter {
+class DefaultParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultParameter(final .java.lang.String s) {
         this.s = s;
@@ -10,4 +10,10 @@ class DefaultParameter {
     public .java.lang.String getS() {
         return s;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultParameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultParameter.class);
 }

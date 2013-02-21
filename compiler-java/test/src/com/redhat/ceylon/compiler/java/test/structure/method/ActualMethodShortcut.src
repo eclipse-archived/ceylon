@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-abstract class ActualMethodShortcut {
+abstract class ActualMethodShortcut implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ActualMethodShortcut() {
     }
@@ -12,6 +12,12 @@ abstract class ActualMethodShortcut {
     public abstract .java.lang.Object foo(final .java.lang.String s);
     
     public abstract .java.lang.String foo2(final .java.lang.String s);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut.class);
 }
 class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcut {
     
@@ -60,4 +66,10 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.ActualMethodShortcutSub.class);
 }

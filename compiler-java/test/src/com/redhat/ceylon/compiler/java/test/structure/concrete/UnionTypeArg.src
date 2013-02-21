@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
+class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     UnionTypeArg() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.iterator = (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
@@ -51,8 +51,8 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable map(final .ceylon.language.Callable collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public .ceylon.language.Iterable map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -61,8 +61,8 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     }
     
     @.java.lang.Override
-    public .java.lang.Object fold(final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public .java.lang.Object fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -81,8 +81,8 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential collect(final .ceylon.language.Callable collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+    public .ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable collecting) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -131,13 +131,13 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public .ceylon.language.Iterable chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable defaultNullElements(final .java.lang.Object defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public .ceylon.language.Iterable defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final .java.lang.Object defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -172,12 +172,18 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object, .java
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg.class);
 }
-class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
+class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     UnionTypeArgOverride() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.iterator = (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
@@ -224,8 +230,8 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable map(final .ceylon.language.Callable collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public .ceylon.language.Iterable map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -244,8 +250,8 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential collect(final .ceylon.language.Callable collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+    public .ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable collecting) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -294,13 +300,13 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public .ceylon.language.Iterable chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable defaultNullElements(final .java.lang.Object defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public .ceylon.language.Iterable defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final .java.lang.Object defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -337,7 +343,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .java.lang.Object fold(final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
+    public .java.lang.Object fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -345,4 +351,10 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride.class);
 }

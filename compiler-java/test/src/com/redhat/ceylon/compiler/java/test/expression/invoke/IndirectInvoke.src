@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class IndirectInvoke<X> {
+class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    IndirectInvoke() {
+    IndirectInvoke(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedX = $reifiedX;
         this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
@@ -45,6 +46,7 @@ class IndirectInvoke<X> {
             }
         };
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     
     private final void mParameter$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect) {
         indirect.$call();
@@ -62,7 +64,7 @@ class IndirectInvoke<X> {
         indirect.$call(.ceylon.language.String.instance(""));
     }
     
-    private final <T>void mParameter5$priv(final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
+    private final <T>void mParameter5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> indirect, final T t) {
         indirect.$call(t);
     }
     
@@ -86,7 +88,7 @@ class IndirectInvoke<X> {
         return indirect.$call(.ceylon.language.String.instance("")).toString();
     }
     
-    private final <T>T mLocal5$priv(final .ceylon.language.Callable<? extends T> f, final T t) {
+    private final <T>T mLocal5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends T> f, final T t) {
         final .ceylon.language.Callable<? extends T> indirect = f;
         return indirect.$call(t);
     }
@@ -107,7 +109,7 @@ class IndirectInvoke<X> {
         return indirect.$call().$call(.ceylon.language.String.instance("")).toString();
     }
     
-    private final <T>T mMethod5$priv(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
+    private final <T>T mMethod5$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> indirect, final T t) {
         return indirect.$call().$call(t);
     }
     
@@ -198,6 +200,11 @@ class IndirectInvoke<X> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.IndirectInvoke.class, $reifiedX);
     }
 }

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-class NamedArgumentInvocationWithMethodReference {
+class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     NamedArgumentInvocationWithMethodReference() {
     }
@@ -46,4 +46,12 @@ class NamedArgumentInvocationWithMethodReference {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference.class);
 }

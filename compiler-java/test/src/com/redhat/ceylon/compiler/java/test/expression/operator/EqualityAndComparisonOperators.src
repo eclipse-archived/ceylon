@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 interface BasicOperatorsA {
     
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA$impl $com$redhat$ceylon$compiler$java$test$expression$operator$BasicOperatorsA$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA.class);
 }
 final class BasicOperatorsA$impl {
     
@@ -14,6 +15,7 @@ final class BasicOperatorsA$impl {
 interface BasicOperatorsB {
     
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB$impl $com$redhat$ceylon$compiler$java$test$expression$operator$BasicOperatorsB$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB.class);
 }
 final class BasicOperatorsB$impl {
     
@@ -22,17 +24,17 @@ final class BasicOperatorsB$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this;
 }
-public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
+public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
     
     public EqualityAndComparisonInteger() {
         super();
-        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
-        this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
+        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, this);
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this;
     
@@ -76,8 +78,14 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     public .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$impl() {
         return $ceylon$language$Comparable$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.class);
 }
-public class EqualityAndComparisonOperators {
+public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public EqualityAndComparisonOperators() {
     }
@@ -112,7 +120,7 @@ public class EqualityAndComparisonOperators {
             {
                 .ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1);
             }
-            returning new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0);
+            returning new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0);
         );
     }
     
@@ -122,7 +130,7 @@ public class EqualityAndComparisonOperators {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp1 = n1;
             }
-            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(n1, n2).contains($ceylontmp1);
+            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor), n1, n2).contains($ceylontmp1);
         ));
     }
     
@@ -191,4 +199,10 @@ public class EqualityAndComparisonOperators {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators.class);
 }

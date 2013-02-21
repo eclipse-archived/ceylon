@@ -6,17 +6,28 @@ interface Bug445<T> {
 }
 final class Bug445$impl<T> {
     
-    Bug445$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
+    Bug445$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this;
     
-    class Inner {
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner() {
         }
         
         private final void t$priv(final T t) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445.class, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.this.$reifiedT), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.Inner.class));
         }
     }
 }

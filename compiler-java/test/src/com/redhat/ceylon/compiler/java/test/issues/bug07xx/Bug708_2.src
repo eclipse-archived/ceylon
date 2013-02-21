@@ -7,19 +7,19 @@ final class bug708_2_ {
     
     static void bug708_2() {
         .ceylon.language.String $s$1;
-        if (($s$1 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
+        if (($s$1 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor)) != null) {
             final .java.lang.String $s$2 = $s$1.toString();
         }
         .ceylon.language.String $s$4;
-        if (($s$4 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
+        if (($s$4 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
             final .java.lang.String $s$5 = $s$4.toString();
         }
         .ceylon.language.String $s$7;
-        if (($s$7 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
+        if (($s$7 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
             final .java.lang.String $s$8 = $s$7.toString();
         }
         .ceylon.language.String $s$10;
-        if (($s$10 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
+        if (($s$10 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
             final .java.lang.String $s$11 = $s$10.toString();
         }
     }

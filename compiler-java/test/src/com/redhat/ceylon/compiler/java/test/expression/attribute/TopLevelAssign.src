@@ -42,7 +42,7 @@ public final class topLevelAssignB2_ {
         value[0] = topLevelAssignB2;
     }
 }
-class TopLevelAssign {
+class TopLevelAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     TopLevelAssign() {
     }
@@ -58,6 +58,12 @@ class TopLevelAssign {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.class);
 }
 final class topLevelAssignB3_ {
     

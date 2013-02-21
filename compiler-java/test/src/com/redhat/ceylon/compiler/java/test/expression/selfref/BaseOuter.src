@@ -5,6 +5,7 @@ public interface BaseOuter {
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$BaseOuter$impl();
     
     public .java.lang.Object getInverse();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.class);
 }
 public final class BaseOuter$impl {
     
@@ -15,7 +16,7 @@ public final class BaseOuter$impl {
     
     public final .java.lang.Object getInverse() {
         
-        final class inverse_ {
+        final class inverse_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private inverse_() {
             }
@@ -27,19 +28,24 @@ public final class BaseOuter$impl {
             public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item2() {
                 return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class);
+            }
         }
         final inverse_ inverse = new inverse_();
         return inverse;
     }
 }
-public abstract class BaseOuterClass {
+public abstract class BaseOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public BaseOuterClass() {
     }
     
     public .java.lang.Object getInverse() {
         
-        final class inverse_ {
+        final class inverse_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private inverse_() {
             }
@@ -51,8 +57,19 @@ public abstract class BaseOuterClass {
             public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass item2() {
                 return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.this;
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class);
+            }
         }
         final inverse_ inverse = new inverse_();
         return inverse;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.class);
 }

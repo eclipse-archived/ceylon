@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding;
 
-class EqualsHashOverriding {
+class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EqualsHashOverriding(final .java.lang.String s) {
         this.s = s;
@@ -25,8 +25,14 @@ class EqualsHashOverriding {
     public final int hashCode() {
         return .ceylon.language.String.hashCode(s);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.class);
 }
-class EqualsHashOverriding2 {
+class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EqualsHashOverriding2(final .java.lang.String s) {
         this.hash = (int)0L;
@@ -37,8 +43,14 @@ class EqualsHashOverriding2 {
     public final int hashCode() {
         return hash;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.class);
 }
-class EqualsHashOverriding3 {
+class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EqualsHashOverriding3(final .java.lang.String s) {
         hash = (int)0L;
@@ -49,4 +61,10 @@ class EqualsHashOverriding3 {
     public final int hashCode() {
         return hash;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding3.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding3.class);
 }

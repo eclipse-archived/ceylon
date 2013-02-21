@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-abstract class SuperClass {
+abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SuperClass() {
         this.a = 2L;
@@ -27,9 +27,14 @@ abstract class SuperClass {
         return new Local();
     }
     
-    public class Local {
+    public class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Local() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Local.class));
         }
     }
     
@@ -37,19 +42,35 @@ abstract class SuperClass {
         return new Default();
     }
     
-    public class Default {
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Default() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Default.class));
         }
     }
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Formal Formal$new();
     
-    public abstract class Formal {
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Formal() {
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Formal.class));
+        }
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.class);
 }
 abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass {
     
@@ -86,4 +107,10 @@ abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expr
         Local$new();
         Default$new();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass_Sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass_Sub.class);
 }

@@ -9,6 +9,7 @@ interface Bug994 extends .ceylon.language.Correspondence<.ceylon.language.Intege
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug994$impl();
     
     public .java.lang.Object m();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug994.class);
 }
 final class Bug994$impl {
     

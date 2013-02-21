@@ -1,28 +1,35 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class DefaultedAndTypeParams<X> {
+class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    DefaultedAndTypeParams(final X init) {
+    DefaultedAndTypeParams(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final X init) {
+        this.$reifiedX = $reifiedX;
         this.init = init;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     private final X init;
     
-    public final <Y>void m(final Y y) {
+    public final <Y>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y) {
         (
             let
             {
-                X $ceylontmp$x$1 = m$x(y);
-                m(y, $ceylontmp$x$1);
+                X $ceylontmp$x$1 = m$x($reifiedY, y);
+                m($reifiedY, y, $ceylontmp$x$1);
             }
             returning null;
         );
     }
     
-    public final <Y>X m$x(final Y y) {
+    public final <Y>X m$x(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y) {
         return init;
     }
     
-    public final <Y>void m(final Y y, final X x) {
+    public final <Y>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y, final X x) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams.class, $reifiedX);
     }
 }
 final class defaultedAndTypeParams_m_ {
@@ -31,17 +38,18 @@ final class defaultedAndTypeParams_m_ {
     }
     
     static void defaultedAndTypeParams_m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> i = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
-        i.<.ceylon.language.String>m(.ceylon.language.String.instance(""));
-        i.<.ceylon.language.String>m(.ceylon.language.String.instance(""), .ceylon.language.Integer.instance(2L));
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> i = new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
+        i.<.ceylon.language.String>m(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""));
+        i.<.ceylon.language.String>m(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.Integer.instance(2L));
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> $arg$2$callable$ = i;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> $arg$2$this$ = $arg$2$callable$;
                 .ceylon.language.String $arg$2$0 = .ceylon.language.String.instance("");
-                .ceylon.language.Integer $arg$2$1 = $arg$2$this$.m$x($arg$2$0);
-                $arg$2$callable$.<.ceylon.language.String>m($arg$2$0, $arg$2$1);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .ceylon.language.Integer $arg$2$1 = $arg$2$this$.m$x($arg$2$reified$0, $arg$2$0);
+                $arg$2$callable$.<.ceylon.language.String>m($arg$2$reified$0, $arg$2$0, $arg$2$1);
             }
             returning null;
         );
@@ -51,7 +59,8 @@ final class defaultedAndTypeParams_m_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndTypeParams<.ceylon.language.Integer> $arg$3$callable$ = i;
                 .ceylon.language.Integer $arg$3$1 = .ceylon.language.Integer.instance(2L);
                 .ceylon.language.String $arg$3$0 = .ceylon.language.String.instance("");
-                $arg$3$callable$.<.ceylon.language.String>m($arg$3$0, $arg$3$1);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                $arg$3$callable$.<.ceylon.language.String>m($arg$3$reified$0, $arg$3$0, $arg$3$1);
             }
             returning null;
         );

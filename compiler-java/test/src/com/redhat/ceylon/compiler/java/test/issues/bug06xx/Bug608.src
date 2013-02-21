@@ -7,7 +7,7 @@ final class bug608_ {
     
     static void bug608() {
         final .java.lang.ProcessBuilder b = new .java.lang.ProcessBuilder();
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> args = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> args = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
         b.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(args));
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> commandWithArgs = (
             let

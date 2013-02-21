@@ -5,25 +5,34 @@ final class methodSpecifyingTopLevelWithTypeParam_f_ {
     private methodSpecifyingTopLevelWithTypeParam_f_() {
     }
     
-    static <X, Y>X methodSpecifyingTopLevelWithTypeParam_f(final Y y) {
+    static <X, Y>X methodSpecifyingTopLevelWithTypeParam_f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y) {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class MethodSpecifyingTopLevelWithTypeParam<S, T> {
+class MethodSpecifyingTopLevelWithTypeParam<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodSpecifyingTopLevelWithTypeParam() {
+    MethodSpecifyingTopLevelWithTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedS = $reifiedS;
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     private final .java.lang.String foo$priv(final long i) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<.ceylon.language.String, .ceylon.language.Integer>methodSpecifyingTopLevelWithTypeParam_f(.ceylon.language.Integer.instance(i)).toString();
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<.ceylon.language.String, .ceylon.language.Integer>methodSpecifyingTopLevelWithTypeParam_f(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(i)).toString();
     }
     
     private final S bar$priv(final T y) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<S, T>methodSpecifyingTopLevelWithTypeParam_f(y);
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f_.<S, T>methodSpecifyingTopLevelWithTypeParam_f($reifiedS, $reifiedT, y);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingTopLevelWithTypeParam.class, $reifiedS, $reifiedT);
     }
 }

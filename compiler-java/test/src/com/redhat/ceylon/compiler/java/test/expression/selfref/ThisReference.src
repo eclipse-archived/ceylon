@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-class ThisReference {
+class ThisReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ThisReference() {
     }
@@ -17,4 +17,10 @@ class ThisReference {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public class DefaultedInitializerParameter {
+public class DefaultedInitializerParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public DefaultedInitializerParameter() {
         (
@@ -24,8 +24,14 @@ public class DefaultedInitializerParameter {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter.class);
 }
-class DefaultedInitializerParameter2 {
+class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultedInitializerParameter2(final long n) {
         (
@@ -44,8 +50,14 @@ class DefaultedInitializerParameter2 {
     static .java.lang.String $init$s(final long n) {
         return "test";
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter2.class);
 }
-class DefaultedInitializerParameter3 {
+class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultedInitializerParameter3() {
         (
@@ -85,8 +97,14 @@ class DefaultedInitializerParameter3 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.class);
 }
-class DefaultedInitializerParameter4 {
+class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultedInitializerParameter4() {
         (
@@ -126,8 +144,14 @@ class DefaultedInitializerParameter4 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.class);
 }
-class DefaultedInitializerParameter5 {
+class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DefaultedInitializerParameter5() {
         (
@@ -167,4 +191,10 @@ class DefaultedInitializerParameter5 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5.class);
 }

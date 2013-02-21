@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class KlassInMemberObject {
+public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public KlassInMemberObject() {
         this.member = new .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_();
@@ -14,7 +14,7 @@ public class KlassInMemberObject {
     @.com.redhat.ceylon.compiler.java.metadata.Name("member")
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    public final class member_ {
+    public final class member_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private member_() {
         }
@@ -27,10 +27,22 @@ public class KlassInMemberObject {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-        public class Klass {
+        public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected Klass() {
             }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.Klass.class));
+            }
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.class));
         }
     }
     
@@ -45,4 +57,12 @@ public class KlassInMemberObject {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.class);
 }

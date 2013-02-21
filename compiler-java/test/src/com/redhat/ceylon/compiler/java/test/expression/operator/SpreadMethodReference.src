@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-class SpreadMethodReference {
+class SpreadMethodReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SpreadMethodReference() {
     }
@@ -15,7 +15,7 @@ class SpreadMethodReference {
                     let
                     {
                         .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$1$iterable = seq;
-                        .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+                        .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
                         .java.lang.Object $spread$1$iteration;
                         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$1$iterator = $spread$1$iterable.getIterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
                             .ceylon.language.String $spread$1$element = (.ceylon.language.String)$spread$1$iteration;
@@ -32,4 +32,10 @@ class SpreadMethodReference {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference.class);
 }

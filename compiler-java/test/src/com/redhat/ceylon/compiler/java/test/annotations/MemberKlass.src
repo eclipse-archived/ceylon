@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class MemberKlass {
+public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public MemberKlass() {
     }
@@ -17,7 +17,7 @@ public class MemberKlass {
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberMember", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberKlass", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    public class Member {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
         }
@@ -30,10 +30,22 @@ public class MemberKlass {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-        public class MemberMember {
+        public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected MemberMember() {
             }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class));
+            }
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class));
         }
     }
     
@@ -42,4 +54,12 @@ public class MemberKlass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class);
 }

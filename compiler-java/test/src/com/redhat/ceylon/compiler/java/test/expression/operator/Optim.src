@@ -21,10 +21,20 @@ final class optimToplevelInteger_ {
         value[0] = optimToplevelInteger;
     }
 }
-abstract class OptimSuperclass<I, F, C, S, B> {
+abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    OptimSuperclass() {
+    OptimSuperclass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+        this.$reifiedI = $reifiedI;
+        this.$reifiedF = $reifiedF;
+        this.$reifiedC = $reifiedC;
+        this.$reifiedS = $reifiedS;
+        this.$reifiedB = $reifiedB;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB;
     
     public abstract .java.lang.Object boxedIntegerArithmetic(final I n2);
     
@@ -43,11 +53,16 @@ abstract class OptimSuperclass<I, F, C, S, B> {
     public abstract .java.lang.Object boxedCharacterComparison(final C c2);
     
     public abstract .java.lang.Object boxedBooleanComparison(final B b2);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass.class, $reifiedI, $reifiedF, $reifiedC, $reifiedS, $reifiedB);
+    }
 }
 class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<.ceylon.language.Integer, .ceylon.language.Float, .ceylon.language.Character, .ceylon.language.String, .ceylon.language.Boolean> {
     
     Optim() {
-        super();
+        super(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor);
         this.fieldInteger = 0L;
     }
     
@@ -59,7 +74,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return 1.0;
     }
     
-    private final <T>T getBoxed$priv(final T t) {
+    private final <T>T getBoxed$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         return t;
     }
     
@@ -99,10 +114,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         --n1;
         n1 = n2.getPositiveValue().longValue();
         n1 = 0L;
-        n1 = <.ceylon.language.Integer>getBoxed$priv(.ceylon.language.Integer.instance(1L)).getPositiveValue().longValue();
+        n1 = <.ceylon.language.Integer>getBoxed$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getPositiveValue().longValue();
         n1 = n2.getNegativeValue().longValue();
         n1 = 0L;
-        n1 = <.ceylon.language.Integer>getBoxed$priv(.ceylon.language.Integer.instance(1L)).getNegativeValue().longValue();
+        n1 = <.ceylon.language.Integer>getBoxed$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getNegativeValue().longValue();
         n1 = n2.plus(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.minus(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.times(.ceylon.language.Integer.instance(n3)).longValue();
@@ -170,10 +185,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         double n3 = 0.0;
         n1 = n2.getPositiveValue().doubleValue();
         n1 = 0.0;
-        n1 = <.ceylon.language.Float>getBoxed$priv(.ceylon.language.Float.instance(0.0)).getPositiveValue().doubleValue();
+        n1 = <.ceylon.language.Float>getBoxed$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(0.0)).getPositiveValue().doubleValue();
         n1 = n2.getNegativeValue().doubleValue();
         n1 = -0.0;
-        n1 = <.ceylon.language.Float>getBoxed$priv(.ceylon.language.Float.instance(0.0)).getNegativeValue().doubleValue();
+        n1 = <.ceylon.language.Float>getBoxed$priv(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(0.0)).getNegativeValue().doubleValue();
         n1 = n2.plus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.minus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.times(.ceylon.language.Float.instance(n3)).doubleValue();
@@ -569,4 +584,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.Optim();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Optim.class);
 }

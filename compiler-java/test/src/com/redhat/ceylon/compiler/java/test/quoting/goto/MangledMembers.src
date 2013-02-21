@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class MangledMembers_class {
+class MangledMembers_class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MangledMembers_class() {
     }
@@ -37,8 +37,14 @@ class MangledMembers_class {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class.class);
 }
-class MangledMembers_clone {
+class MangledMembers_clone implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MangledMembers_clone() {
     }
@@ -51,6 +57,12 @@ class MangledMembers_clone {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone.class);
 }
 interface MangledMembers_interface {
     
@@ -69,6 +81,7 @@ interface MangledMembers_interface {
     public abstract .java.lang.String $getClass();
     
     public abstract .java.lang.String $finalize();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface.class);
 }
 final class MangledMembers_interface$impl {
     

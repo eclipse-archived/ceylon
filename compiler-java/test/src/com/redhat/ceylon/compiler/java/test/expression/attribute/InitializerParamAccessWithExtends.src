@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class InitializerParamAccessWithExtends extends .java.lang.Object {
+class InitializerParamAccessWithExtends extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerParamAccessWithExtends(final boolean b) {
         super();
@@ -21,6 +21,12 @@ class InitializerParamAccessWithExtends extends .java.lang.Object {
     public final int hashCode() {
         return (int)0L;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.class);
 }
 class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
     
@@ -33,4 +39,10 @@ class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.jav
     private final boolean m$priv() {
         return b;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends2.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-class Bug954 {
+class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug954(final boolean b) {
         final long n = 2L;
@@ -83,6 +83,12 @@ class Bug954 {
     public final long puby(final long i) {
         if (puby == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return puby.$call(.ceylon.language.Integer.instance(i)).longValue();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Method

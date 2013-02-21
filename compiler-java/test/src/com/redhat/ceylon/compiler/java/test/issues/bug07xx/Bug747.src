@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug747Java")
-class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747Java {
+class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747Java implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug747() {
         super();
@@ -47,4 +47,12 @@ class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747.class);
 }

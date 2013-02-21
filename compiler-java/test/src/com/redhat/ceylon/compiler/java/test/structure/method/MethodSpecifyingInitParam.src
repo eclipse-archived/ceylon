@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodSpecifyingInitParam {
+class MethodSpecifyingInitParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodSpecifyingInitParam(final .ceylon.language.Callable<? extends .java.lang.Object> x) {
         this.x = x;
@@ -10,4 +10,10 @@ class MethodSpecifyingInitParam {
     private final .java.lang.Object foo$priv() {
         return x.$call();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class MyIdentifiable {
+class MyIdentifiable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MyIdentifiable() {
     }
@@ -9,4 +9,10 @@ class MyIdentifiable {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.MyIdentifiable();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.MyIdentifiable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.MyIdentifiable.class);
 }

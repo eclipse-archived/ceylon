@@ -1,16 +1,23 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-class C<T> {
+class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C() {
+    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.C.class, $reifiedT);
     }
 }
-class A {
+class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     A() {
     }
@@ -19,6 +26,12 @@ class A {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.A();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.A.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A.class);
 }
 final class test_ {
     
@@ -26,7 +39,7 @@ final class test_ {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>()};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A.$TypeDescriptor)};
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A> getTest$() {

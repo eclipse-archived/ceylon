@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodTypeParams {
+class MethodTypeParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodTypeParams() {
     }
     
-    private final <U, V>U f$priv(final U u, final V v) {
+    private final <U, V>U f$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U u, final V v) {
         return u;
     }
     
@@ -13,4 +13,10 @@ class MethodTypeParams {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodTypeParams();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodTypeParams.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodTypeParams.class);
 }

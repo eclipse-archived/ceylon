@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop.access;
 
-class RefinesProtectedAccessMethod extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers {
+class RefinesProtectedAccessMethod extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     RefinesProtectedAccessMethod() {
         super();
@@ -15,4 +15,10 @@ class RefinesProtectedAccessMethod extends .com.redhat.ceylon.compiler.java.test
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.access.RefinesProtectedAccessMethod();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.RefinesProtectedAccessMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.RefinesProtectedAccessMethod.class);
 }

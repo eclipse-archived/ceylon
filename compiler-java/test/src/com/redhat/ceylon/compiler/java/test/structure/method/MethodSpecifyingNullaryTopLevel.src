@@ -13,7 +13,7 @@ final class f_ {
         .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
     }
 }
-class MethodSpecifierTopLevel {
+class MethodSpecifierTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodSpecifierTopLevel() {
     }
@@ -32,4 +32,10 @@ class MethodSpecifierTopLevel {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.class);
 }

@@ -1,8 +1,14 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class InitializerParamAccessInInitializer {
+class InitializerParamAccessInInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerParamAccessInInitializer(final boolean b) {
         final boolean b2 = b;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessInInitializer.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessInInitializer.class);
 }

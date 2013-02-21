@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class InitializerVarargs {
+class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerVarargs(final .java.lang.String f) {
         (
@@ -23,4 +23,10 @@ class InitializerVarargs {
     static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$fs(final .java.lang.String f) {
         return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.class);
 }

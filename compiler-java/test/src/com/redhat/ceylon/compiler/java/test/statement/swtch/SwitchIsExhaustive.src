@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.swtch;
 
-class SwitchIsExhaustive {
+class SwitchIsExhaustive implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SwitchIsExhaustive() {
     }
@@ -30,4 +30,10 @@ class SwitchIsExhaustive {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsExhaustive.class);
 }

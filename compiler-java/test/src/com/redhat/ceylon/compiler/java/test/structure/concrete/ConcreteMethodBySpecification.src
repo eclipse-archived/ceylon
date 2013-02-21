@@ -35,6 +35,7 @@ interface ConcreteMethodBySpecification {
     public abstract long mDefaultMem$i();
     
     public long mDefaultMem(final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification.class);
 }
 final class ConcreteMethodBySpecification$impl {
     
@@ -102,6 +103,7 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
     public abstract long mDefaultSup$i();
     
     public long mDefaultSup(final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub.class);
 }
 final class ConcreteMethodBySpecificationSub$impl {
     
@@ -146,7 +148,7 @@ final class ConcreteMethodBySpecificationSub$impl {
         return $this.mFormal(i);
     }
 }
-class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub {
+class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub {
     
     ConcreteMethodBySpecificationImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl(this);
@@ -244,4 +246,10 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl.class);
 }

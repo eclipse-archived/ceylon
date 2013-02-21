@@ -17,7 +17,7 @@ final class bug997_ {
             }
         }
         final format_ format = new format_();
-        final .ceylon.language.Callable<? extends .java.lang.Object> printf = .ceylon.language.compose_.compose(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> printf = .ceylon.language.compose_.compose(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -39,7 +39,7 @@ final class bug997_ {
                 return .ceylon.language.String.instance(format.format($$first, $$second));
             }
         });
-        final .ceylon.language.Callable<? extends .java.lang.Object> greetme = .ceylon.language.shuffle_.shuffle(.ceylon.language.curry_.curry(printf)).$call(.ceylon.language.String.instance("Gavin"));
+        final .ceylon.language.Callable<? extends .java.lang.Object> greetme = .ceylon.language.shuffle_.shuffle(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.curry_.curry(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), printf)).$call(.ceylon.language.String.instance("Gavin"));
     }
     
     public static void main(.java.lang.String[] args) {

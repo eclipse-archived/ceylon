@@ -5,14 +5,14 @@ final class twoParamListsTP_ {
     private twoParamListsTP_() {
     }
     
-    static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .java.lang.String name) {
+    static <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T> & .ceylon.language.Invertable<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String name) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final T i = (T)$param$0;
                 .java.lang.Object $elem$0;
-                for (.ceylon.language.Iterator<? extends T> $x$iter$1 = new .ceylon.language.Range<T>(i.getNegativeValue(), i).getIterator(); !(($elem$0 = $x$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+                for (.ceylon.language.Iterator<? extends T> $x$iter$1 = new .ceylon.language.Range<T>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, $reifiedT), i.getNegativeValue(), i).getIterator(); !(($elem$0 = $x$iter$1.next()) instanceof .ceylon.language.Finished); ) {
                     final T x = (T)$elem$0;
                     .ceylon.language.print_.print(.ceylon.language.String.instance("hello " + name));
                 }
@@ -26,7 +26,7 @@ final class twoParamListsTP_simple_ {
     private twoParamListsTP_simple_() {
     }
     
-    static <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP_simple(final .java.lang.String name) {
+    static <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Callable<? extends .java.lang.Object> twoParamListsTP_simple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String name) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
             
             @.java.lang.Override

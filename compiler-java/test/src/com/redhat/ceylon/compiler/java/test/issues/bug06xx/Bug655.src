@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug655 {
+class Bug655 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug655() {
     }
@@ -31,4 +31,10 @@ class Bug655 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug655.class);
 }

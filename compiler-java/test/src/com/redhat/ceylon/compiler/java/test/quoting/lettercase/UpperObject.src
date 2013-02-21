@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public final class Object {
+public final class Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private Object() {
         this.InnerObject = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject();
@@ -13,7 +13,7 @@ public final class Object {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    public final class InnerObject {
+    public final class InnerObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private InnerObject() {
         }
@@ -21,6 +21,12 @@ public final class Object {
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
         public final void m() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject.class));
         }
     }
     
@@ -48,5 +54,11 @@ public final class Object {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class);
     }
 }

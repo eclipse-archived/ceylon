@@ -1,17 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-class ListImplementor<X> implements .ceylon.language.List<X> {
+class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<X> {
     
-    ListImplementor() {
-        this.$ceylon$language$List$this = new .ceylon.language.List$impl<X>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<X>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<X, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<X, .java.lang.Object>(this);
+    ListImplementor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedX = $reifiedX;
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<X>($reifiedX, this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<X>($reifiedX, this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<X, .java.lang.Object>($reifiedX, .ceylon.language.Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<X, .java.lang.Object>($reifiedX, .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends X>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends X>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, X>(this);
-        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends X>>(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedX), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends X>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, X>(.ceylon.language.Integer.$TypeDescriptor, $reifiedX, this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends X>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedX), this);
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     protected final .ceylon.language.List$impl<X> $ceylon$language$List$this;
     
     @.java.lang.Override
@@ -40,13 +42,13 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withLeading(final Other element) {
-        return $ceylon$language$List$this.withLeading(element);
+    public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withLeading($reifiedOther, element);
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final Other element) {
-        return $ceylon$language$List$this.withTrailing(element);
+    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
     protected final .ceylon.language.Collection$impl<X> $ceylon$language$Collection$this;
     
@@ -82,8 +84,8 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -92,8 +94,8 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -112,8 +114,8 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -162,13 +164,13 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<X, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -293,6 +295,11 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor();
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor.class, $reifiedX);
     }
 }

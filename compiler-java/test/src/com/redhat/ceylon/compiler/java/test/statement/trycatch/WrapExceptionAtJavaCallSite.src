@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class ReplaceExceptionAtJavaCallSite {
+class ReplaceExceptionAtJavaCallSite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ReplaceExceptionAtJavaCallSite() {
     }
@@ -18,4 +18,10 @@ class ReplaceExceptionAtJavaCallSite {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.class);
 }

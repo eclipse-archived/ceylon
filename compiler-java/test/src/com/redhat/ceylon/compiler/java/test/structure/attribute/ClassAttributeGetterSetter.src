@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-abstract class ClassAttributeGetterSetter {
+abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassAttributeGetterSetter() {
         this.f5 = "";
@@ -35,6 +35,12 @@ abstract class ClassAttributeGetterSetter {
     public .java.lang.String getF5() {
         return f5;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.class);
 }
 class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
     
@@ -71,4 +77,10 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.class);
 }

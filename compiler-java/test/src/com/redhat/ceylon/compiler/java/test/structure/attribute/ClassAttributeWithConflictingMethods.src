@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-abstract class ClassAttributeWithConflictingMethods {
+abstract class ClassAttributeWithConflictingMethods implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassAttributeWithConflictingMethods() {
         this.attr = "";
@@ -34,6 +34,12 @@ abstract class ClassAttributeWithConflictingMethods {
         $isAttr();
         this.$isAttr();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.class);
 }
 interface InterfaceAttributeWithConflictingMethods {
     
@@ -48,6 +54,7 @@ interface InterfaceAttributeWithConflictingMethods {
     public abstract .java.lang.String $getAttr();
     
     public abstract .java.lang.Object $setAttr(final .java.lang.String attr);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.class);
 }
 final class InterfaceAttributeWithConflictingMethods$impl {
     

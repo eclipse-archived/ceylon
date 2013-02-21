@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class ObjectInMethod {
+class ObjectInMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ObjectInMethod() {
     }
@@ -8,7 +8,7 @@ class ObjectInMethod {
     private final void m$priv() {
         final long i = 1L;
         
-        final class foo_ {
+        final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private foo_() {
                 this.string = .ceylon.language.Integer.toString(i);
@@ -19,6 +19,11 @@ class ObjectInMethod {
             public final .java.lang.String toString() {
                 return string;
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class);
+            }
         }
         final foo_ foo = new foo_();
         final .java.lang.String s = foo.toString();
@@ -28,4 +33,10 @@ class ObjectInMethod {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInMethod();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInMethod.class);
 }

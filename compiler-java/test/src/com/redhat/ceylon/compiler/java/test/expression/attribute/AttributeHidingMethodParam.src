@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class AttributeHidingMethodParam {
+class AttributeHidingMethodParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AttributeHidingMethodParam() {
         this.b = true;
@@ -19,4 +19,10 @@ class AttributeHidingMethodParam {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.class);
 }

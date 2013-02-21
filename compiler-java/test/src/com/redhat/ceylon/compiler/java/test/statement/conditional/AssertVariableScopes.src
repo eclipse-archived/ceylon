@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class AssertVariableScopes {
+class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AssertVariableScopes(final .java.lang.Object x, final .java.lang.Object y) {
         this.x = x;
@@ -142,4 +142,10 @@ class AssertVariableScopes {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
         .ceylon.language.String.terminal($y$35, 1L);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.class);
 }

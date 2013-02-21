@@ -6,7 +6,7 @@ final class zeroSequencedArgs_ {
     }
     
     static void zeroSequencedArgs() {
-        final .ceylon.language.SequenceBuilder<.ceylon.language.String> sb = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+        final .ceylon.language.SequenceBuilder<.ceylon.language.String> sb = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
         sb.appendAll();
     }
     

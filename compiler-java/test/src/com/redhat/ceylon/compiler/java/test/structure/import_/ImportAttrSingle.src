@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.import_;
 
-class ImportAttrSingle {
+class ImportAttrSingle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ImportAttrSingle() {
     }
@@ -13,4 +13,10 @@ class ImportAttrSingle {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.import_.ImportAttrSingle.class);
 }

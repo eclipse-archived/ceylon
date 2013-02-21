@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Bug283 {
+class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug283() {
         this.oi = .ceylon.language.Integer.instance(0L);
@@ -122,7 +122,7 @@ class Bug283 {
         );
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T>>void m3$priv(final T t0) {
+    private final <T extends .ceylon.language.Ordinal<? extends T>>void m3$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t0) {
         .ceylon.language.Ordinal<? extends T> t = t0;
         (
             let
@@ -162,4 +162,10 @@ class Bug283 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283.class);
 }

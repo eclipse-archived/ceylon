@@ -10,6 +10,12 @@ public class MyException extends .ceylon.language.Exception {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.MyException();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.MyException.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.MyException.class);
 }
 public final class testExceptions_ {
     
@@ -56,7 +62,7 @@ public final class testThrowable_ {
         }
     }
 }
-public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionsAndThrowable {
+public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionsAndThrowable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public ExceptionsAndThrowableRefinement() {
         super();
@@ -110,4 +116,10 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.ExceptionsAndThrowableRefinement();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ExceptionsAndThrowableRefinement.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ExceptionsAndThrowableRefinement.class);
 }

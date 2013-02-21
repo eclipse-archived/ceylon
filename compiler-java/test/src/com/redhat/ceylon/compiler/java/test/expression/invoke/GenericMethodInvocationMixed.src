@@ -1,62 +1,78 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public class GenericMethodInvocationMixedClass<U> {
+public class GenericMethodInvocationMixedClass<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public GenericMethodInvocationMixedClass() {
+    public GenericMethodInvocationMixedClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
+        this.$reifiedU = $reifiedU;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
     
-    public final <V>U bar(final U u, final V v) {
+    public final <V>U bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U u, final V v) {
         return u;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass.class, $reifiedU);
     }
 }
-class GenericMethodInvocationMixed<X> {
+class GenericMethodInvocationMixed<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenericMethodInvocationMixed() {
+    GenericMethodInvocationMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+        this.$reifiedX = $reifiedX;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     
     public final .java.lang.String m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>();
-        return k.<.ceylon.language.Integer>bar(.ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
+        return k.<.ceylon.language.Integer>bar(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.instance("hello"), .ceylon.language.Integer.instance(1L)).toString();
     }
     
     public final .java.lang.String m2() {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
         return (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> $arg$0$callable$ = k;
                 .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello");
                 .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning $arg$0$callable$.<.ceylon.language.Integer>bar($arg$0$0, $arg$0$1);
+            returning $arg$0$callable$.<.ceylon.language.Integer>bar($arg$0$reified$0, $arg$0$0, $arg$0$1);
         ).toString();
     }
     
-    public final <Y>void m3(final X x, final Y y) {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>();
-        k.<Y>bar(x, y);
+    public final <Y>void m3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y) {
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>($reifiedX);
+        k.<Y>bar($reifiedY, x, y);
     }
     
-    public final <Y>void m4(final X x, final Y y) {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>();
+    public final <Y>void m4(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y) {
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X>($reifiedX);
         (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<X> $arg$1$callable$ = k;
                 X $arg$1$0 = x;
                 Y $arg$1$1 = y;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = $reifiedY;
             }
-            returning $arg$1$callable$.<Y>bar($arg$1$0, $arg$1$1);
+            returning $arg$1$callable$.<Y>bar($arg$1$reified$0, $arg$1$0, $arg$1$1);
         );
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixed();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixed.class, $reifiedX);
     }
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-class InnerAttributeGetterSetter {
+class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InnerAttributeGetterSetter() {
     }
@@ -36,4 +36,10 @@ class InnerAttributeGetterSetter {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.class);
 }

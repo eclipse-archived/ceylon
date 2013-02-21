@@ -1,15 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class LocalClassOuterClass {
+class LocalClassOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     LocalClassOuterClass() {
     }
     
     private final void m$priv() {
         
-        class LocalClass {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             LocalClass() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
             }
         }
     }
@@ -18,4 +23,10 @@ class LocalClassOuterClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassOuterClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassOuterClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassOuterClass.class);
 }

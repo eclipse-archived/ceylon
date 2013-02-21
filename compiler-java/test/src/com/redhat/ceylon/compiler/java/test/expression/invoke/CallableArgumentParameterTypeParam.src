@@ -5,7 +5,7 @@ final class callableArgumentParameterTypeParam_f_ {
     private callableArgumentParameterTypeParam_f_() {
     }
     
-    static <T>void callableArgumentParameterTypeParam_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    static <T>void callableArgumentParameterTypeParam_f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
 final class callableArgumentParameterTypeParam_bar_ {
@@ -13,7 +13,7 @@ final class callableArgumentParameterTypeParam_bar_ {
     private callableArgumentParameterTypeParam_bar_() {
     }
     
-    static <X>void callableArgumentParameterTypeParam_bar(final X s) {
+    static <X>void callableArgumentParameterTypeParam_bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final X s) {
     }
 }
 final class callableArgumentParameterTypeParam_baz_ {
@@ -30,7 +30,7 @@ final class callableArgumentParameterTypeParam_m_ {
     }
     
     static void callableArgumentParameterTypeParam_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.String>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(String)"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.String>callableArgumentParameterTypeParam_f(.ceylon.language.String.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(String)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -38,13 +38,13 @@ final class callableArgumentParameterTypeParam_m_ {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar($$s);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor, $$s);
                     }
                     returning null;
                 );
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer)"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_f_.<.ceylon.language.Integer>callableArgumentParameterTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Integer)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

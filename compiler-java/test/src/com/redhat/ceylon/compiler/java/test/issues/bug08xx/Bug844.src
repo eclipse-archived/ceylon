@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
-public class Bug844_Top<Element> {
+public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public Bug844_Top() {
+    public Bug844_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
         this.firstAttribute = (Element).ceylon.language.nothing_.getNothing$();
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public Element first() {
         return (Element).ceylon.language.nothing_.getNothing$();
@@ -17,15 +19,24 @@ public class Bug844_Top<Element> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top.class, $reifiedElement);
     }
 }
 public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top<Element> {
     
-    public Bug844_Bottom(final First firstAttribute) {
-        super();
+    public Bug844_Bottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First firstAttribute) {
+        super($reifiedElement);
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedFirst = $reifiedFirst;
         this.firstAttribute = firstAttribute;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst;
     
     @.java.lang.Override
     public final First first() {
@@ -37,24 +48,35 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
     public final First getFirstAttribute() {
         return firstAttribute;
     }
-}
-public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .ceylon.language.Sequence<Element> {
     
-    public Bug844_Tuple(final First first, final .ceylon.language.Sequential<? extends Element> rest) {
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Bottom.class, $reifiedElement, $reifiedFirst);
+    }
+}
+public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
+    
+    public Bug844_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final First first, final .ceylon.language.Sequential<? extends Element> rest) {
         super();
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedFirst = $reifiedFirst;
+        this.$reifiedRest = $reifiedRest;
         this.first = first;
         this.rest = rest;
-        this.$ceylon$language$Sequence$this = new .ceylon.language.Sequence$impl<Element>(this);
-        this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<Element>(this);
-        this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>((.ceylon.language.Iterable<Element, .java.lang.Object>)(.ceylon.language.Iterable)this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>((.ceylon.language.Container<Element, .java.lang.Object>)(.ceylon.language.Container)this);
+        this.$ceylon$language$Sequence$this = new .ceylon.language.Sequence$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>($reifiedElement, this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable<Element, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Container<Element, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(this);
-        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedElement), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor, $reifiedElement, this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedElement), (.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest;
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
     
     @.java.lang.Override
@@ -78,8 +100,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequence<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Sequence$this.collect(collecting);
+    public <Result>.ceylon.language.Sequence<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Sequence$this.collect($reifiedResult, collecting);
     }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this;
     
@@ -110,13 +132,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withLeading(final Other element) {
-        return $ceylon$language$List$this.withLeading(element);
+    public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withLeading($reifiedOther, element);
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final Other element) {
-        return $ceylon$language$List$this.withTrailing(element);
+    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
     
@@ -142,8 +164,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -152,8 +174,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -212,13 +234,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<Element, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -337,7 +359,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends Element> getReversed() {
-        return (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).getReversed().<First>withTrailing(getFirst());
+        return (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)getRest()).getReversed().<First>withTrailing($reifiedFirst, getFirst());
     }
     
     @.java.lang.Override
@@ -345,7 +367,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp6 = from.compare(.ceylon.language.Integer.instance(0L)).asSmallAs() ? (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).segment(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(length).plus(from).minus(.ceylon.language.Integer.instance(1L)).longValue()).<First>withLeading(getFirst()) : null;
+                .ceylon.language.Sequential<? extends Element> $ceylontmp6 = from.compare(.ceylon.language.Integer.instance(0L)).asSmallAs() ? (.ceylon.language.Sequence<? extends Element>)((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).segment(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(length).plus(from).minus(.ceylon.language.Integer.instance(1L)).longValue()).<First>withLeading($reifiedFirst, getFirst()) : null;
             }
             returning $ceylontmp6 != null ? $ceylontmp6 : ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>>)(.ceylon.language.Ranged)getRest()).segment(from.minus(.ceylon.language.Integer.instance(1L)), length);
         );
@@ -375,5 +397,10 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends Element> getClone() {
         return this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Tuple.class, $reifiedElement, $reifiedFirst, $reifiedRest);
     }
 }

@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodForRange {
+class MethodForRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodForRange() {
     }
     
     public final void m() {
         .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Integer)$elem$0).longValue();
         }
     }
@@ -16,4 +16,10 @@ class MethodForRange {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForRange();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForRange.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodForRange.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Bug269 {
+class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug269() {
         this.string = "";
@@ -23,8 +23,14 @@ class Bug269 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.class);
 }
-class Bug269_2 {
+class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug269_2() {
     }
@@ -45,6 +51,12 @@ class Bug269_2 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.class);
 }
 final class string_ {
     

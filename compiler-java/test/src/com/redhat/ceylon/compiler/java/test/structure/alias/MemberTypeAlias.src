@@ -12,7 +12,7 @@ public interface MemberTypeAliasClass$TypeAliasInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias4", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias4", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias3", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias3", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAlias1", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias1", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "TypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class MemberTypeAliasClass {
+public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public MemberTypeAliasClass() {
     }
@@ -25,9 +25,15 @@ public class MemberTypeAliasClass {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    public class TypeAliasClass {
+    public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected TypeAliasClass() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass.class));
         }
     }
     
@@ -113,6 +119,14 @@ public class MemberTypeAliasClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
@@ -133,6 +147,8 @@ public interface MemberTypeAliasInterface {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass TypeAliasClass$new();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class MemberTypeAliasInterface$impl {
@@ -150,9 +166,15 @@ public final class MemberTypeAliasInterface$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberTypeAliasInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    public class TypeAliasClass {
+    public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected TypeAliasClass() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass.class));
         }
     }
     

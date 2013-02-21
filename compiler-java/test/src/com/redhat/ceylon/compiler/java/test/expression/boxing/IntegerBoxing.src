@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class IntegerBoxing {
+class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     IntegerBoxing() {
         this.attrInteger = 1L;
@@ -15,7 +15,7 @@ class IntegerBoxing {
         this.attrInteger = attrInteger;
     }
     
-    private final <T>T id$priv(final T x) {
+    private final <T>T id$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T x) {
         return x;
     }
     
@@ -26,9 +26,9 @@ class IntegerBoxing {
         localAttrInteger = localAttrInteger;
         localAttrOptionalInteger = localAttrInteger;
         localAttrObject = .ceylon.language.Integer.instance(localAttrInteger);
-        localAttrInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.instance(1L)).longValue();
-        localAttrOptionalInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.instance(1L)).longValue();
-        localAttrObject = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.instance(1L));
+        localAttrInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).longValue();
+        localAttrOptionalInteger = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).longValue();
+        localAttrObject = <.ceylon.language.Integer>id$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
         final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
         final long localAttrConstantInteger = localAttrInteger;
         .java.lang.Object $localAttrConstantObject$1;
@@ -111,4 +111,10 @@ class IntegerBoxing {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.class);
 }

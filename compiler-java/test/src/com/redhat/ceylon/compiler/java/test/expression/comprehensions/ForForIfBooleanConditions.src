@@ -6,11 +6,11 @@ final class forForIfBooleanConditions_ {
     }
     private static final .ceylon.language.Sequential<? extends .ceylon.language.Integer>[] value;
     static {
-        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
                     private .ceylon.language.Integer y;
                     private boolean y$exhausted;
                     
@@ -30,7 +30,7 @@ final class forForIfBooleanConditions_ {
                         if (y$exhausted) return false;
                         if (iter$1 != null) return true;
                         if (!this.y()) return false;
-                        iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
+                        iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
                         return true;
                     }
                     private .ceylon.language.Integer x;

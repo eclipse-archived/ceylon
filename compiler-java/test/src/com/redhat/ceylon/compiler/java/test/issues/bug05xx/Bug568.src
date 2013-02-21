@@ -12,7 +12,7 @@ final class bug568_ {
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $spread$1$iterable = childPaths;
-                .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>();
+                .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
                 .java.lang.Object $spread$1$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $spread$1$iterator = $spread$1$iterable.getIterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
                     .ceylon.language.Integer $spread$1$element = (.ceylon.language.Integer)$spread$1$iteration;

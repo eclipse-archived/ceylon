@@ -4,7 +4,7 @@ interface C$I {
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.C.I$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$C$I$impl();
 }
-class C {
+class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     C() {
     }
@@ -21,4 +21,10 @@ class C {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.nesting.C();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.C.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.C.class);
 }

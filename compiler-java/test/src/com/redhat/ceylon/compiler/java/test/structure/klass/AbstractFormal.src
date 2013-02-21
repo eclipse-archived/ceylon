@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-abstract class AbstractFormal {
+abstract class AbstractFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AbstractFormal() {
     }
@@ -25,6 +25,12 @@ abstract class AbstractFormal {
     public .java.lang.Object test4() {
         return null;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.AbstractFormal.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.AbstractFormal.class);
 }
 class ActualKlass extends .com.redhat.ceylon.compiler.java.test.structure.klass.AbstractFormal {
     
@@ -51,6 +57,12 @@ class ActualKlass extends .com.redhat.ceylon.compiler.java.test.structure.klass.
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ActualKlass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ActualKlass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ActualKlass.class);
 }
 class ActualSubKlass extends .com.redhat.ceylon.compiler.java.test.structure.klass.ActualKlass {
     
@@ -67,4 +79,10 @@ class ActualSubKlass extends .com.redhat.ceylon.compiler.java.test.structure.kla
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ActualSubKlass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ActualSubKlass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ActualSubKlass.class);
 }

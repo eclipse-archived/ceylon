@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodDefaultedParamCaptureInitParam {
+class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodDefaultedParamCaptureInitParam(final .java.lang.String s) {
         this.s = s;
@@ -24,4 +24,10 @@ class MethodDefaultedParamCaptureInitParam {
     private final .java.lang.String m$priv(final .java.lang.String t) {
         return t;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodDefaultedParamCaptureInitParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodDefaultedParamCaptureInitParam.class);
 }

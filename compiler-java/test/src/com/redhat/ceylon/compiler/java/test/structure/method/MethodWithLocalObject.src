@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodWithLocalObject {
+class MethodWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWithLocalObject() {
     }
@@ -8,13 +8,18 @@ class MethodWithLocalObject {
     private final void m$priv() {
         final .java.lang.String ss = "foo";
         
-        final class y_ {
+        final class y_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private y_() {
             }
             
             public final .java.lang.String m() {
                 return ss;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(y_.class);
             }
         }
         final y_ y = new y_();
@@ -25,4 +30,10 @@ class MethodWithLocalObject {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithLocalObject();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithLocalObject.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithLocalObject.class);
 }

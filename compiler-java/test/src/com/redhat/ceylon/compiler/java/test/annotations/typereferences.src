@@ -27,8 +27,14 @@ public interface References<T> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class References$impl<T> {
     
-    public References$impl(.com.redhat.ceylon.compiler.java.test.annotations.References<T> $this) {
+    public References$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.annotations.References<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.annotations.References<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
 }

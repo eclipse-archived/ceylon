@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassHiding {
+class KlassHiding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassHiding() {
     }
@@ -9,9 +9,14 @@ class KlassHiding {
         return new Inner();
     }
     
-    public class Inner {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding.Inner.class));
         }
     }
     
@@ -24,6 +29,12 @@ class KlassHiding {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding.class);
 }
 class KlassHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding {
     
@@ -31,9 +42,14 @@ class KlassHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.kla
         super();
     }
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub.Inner.class));
         }
     }
     
@@ -46,4 +62,10 @@ class KlassHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.kla
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub.class);
 }

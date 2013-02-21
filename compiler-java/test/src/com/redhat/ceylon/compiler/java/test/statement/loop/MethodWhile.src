@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhile {
+class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodWhile() {
     }
@@ -26,7 +26,7 @@ class MethodWhile {
     }
     
     public final void whileNonEmpty() {
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
         while (true) {
             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = seq) instanceof .ceylon.language.Sequence) {
@@ -51,4 +51,10 @@ class MethodWhile {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile.class);
 }

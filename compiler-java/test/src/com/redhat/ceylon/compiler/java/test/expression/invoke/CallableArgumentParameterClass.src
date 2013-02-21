@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class CallableArgumentParameterClass {
+class CallableArgumentParameterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CallableArgumentParameterClass() {
     }
@@ -9,6 +9,12 @@ class CallableArgumentParameterClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass.class);
 }
 final class callableArgumentParameterClass_f_ {
     

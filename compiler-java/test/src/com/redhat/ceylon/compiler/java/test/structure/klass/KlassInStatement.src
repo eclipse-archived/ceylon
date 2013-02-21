@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassInStatement {
+class KlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassInStatement() {
     }
@@ -9,7 +9,7 @@ class KlassInStatement {
         if (true) {
             final long i = 1L;
             
-            class KlassInStatement1 {
+            class KlassInStatement1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 KlassInStatement1() {
                 }
@@ -17,6 +17,11 @@ class KlassInStatement {
                 @.java.lang.Override
                 public final .java.lang.String toString() {
                     return .ceylon.language.Integer.toString(i);
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(KlassInStatement1.class);
                 }
             }
             final .java.lang.String s = new KlassInStatement1().toString();
@@ -27,4 +32,10 @@ class KlassInStatement {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement.class);
 }

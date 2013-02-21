@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 interface Container {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.Container.class);
 }
 final class Container$impl {
     
@@ -11,11 +12,11 @@ final class Container$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this;
 }
-class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.Container<.ceylon.language.Integer, .java.lang.Object> {
+class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.Container<.ceylon.language.Integer, .java.lang.Object> {
     
     NameCollision() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.empty = true;
     }
@@ -73,4 +74,10 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.c
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.NameCollision();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.NameCollision.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.NameCollision.class);
 }

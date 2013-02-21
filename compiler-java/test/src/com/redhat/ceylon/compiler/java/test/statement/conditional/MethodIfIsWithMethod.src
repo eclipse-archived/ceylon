@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfIsWithMethod {
+class MethodIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodIfIsWithMethod() {
     }
@@ -25,4 +25,10 @@ class MethodIfIsWithMethod {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsWithMethod();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsWithMethod.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsWithMethod.class);
 }

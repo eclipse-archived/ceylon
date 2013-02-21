@@ -1,30 +1,40 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class KeywordInInnerClass {
+class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInInnerClass() {
     }
     
     private final void m$priv() {
         
-        class Inner {
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             Inner() {
                 this.transient = new Inner.transient_();
             }
             private final Inner.transient_ transient;
             
-            final class transient_ {
+            final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private transient_() {
                 }
                 
                 public final void $enum() {
                 }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.transient_.class));
+                }
             }
             
             public final Inner.transient_ getTransient() {
                 return transient;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class);
             }
         }
         new Inner().getTransient().$enum();
@@ -34,4 +44,10 @@ class KeywordInInnerClass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInInnerClass();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInInnerClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInInnerClass.class);
 }

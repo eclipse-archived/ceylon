@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(value = "doc", arguments = {"class doc"})})
-class AnnonymousAnnotation {
+class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnonymousAnnotation(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -27,4 +27,12 @@ class AnnonymousAnnotation {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(value = "doc", arguments = {"method param doc"})})
     final .java.lang.String p) {
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnonymousAnnotation.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnonymousAnnotation.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
-class Bug323 {
+class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug323() {
     }
@@ -13,7 +13,7 @@ class Bug323 {
         return 4L;
     }
     
-    class Inner {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         Inner() {
             (
@@ -40,6 +40,11 @@ class Bug323 {
         
         Inner(final long f, final long g) {
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner.class));
+        }
     }
     
     private final void m$priv() {
@@ -53,4 +58,10 @@ class Bug323 {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.class);
 }

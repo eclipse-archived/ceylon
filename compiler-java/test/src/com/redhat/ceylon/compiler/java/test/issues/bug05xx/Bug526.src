@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-abstract class Bug526Top {
+abstract class Bug526Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug526Top() {
         this.defaultAttr = 3L;
@@ -37,6 +37,12 @@ abstract class Bug526Top {
     
     public void setDefaultSetter(final long defaultSetter) {
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top.class);
 }
 class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top {
     
@@ -117,6 +123,12 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1.class);
 }
 class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top {
     
@@ -179,4 +191,10 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2.class);
 }

@@ -6,6 +6,8 @@ public interface InterfaceAlias_Foo {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$InterfaceAlias_Foo$impl();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAlias_Foo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class InterfaceAlias_Foo$impl {

@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-abstract class RefiningAnythingMembersClass<T> {
+abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    RefiningAnythingMembersClass(final T t) {
+    RefiningAnythingMembersClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        this.$reifiedT = $reifiedT;
         this.t = t;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final T t;
     
     public final void notRefinable() {
@@ -47,11 +49,16 @@ abstract class RefiningAnythingMembersClass<T> {
     public abstract .java.lang.Object formalReturnsAnything();
     
     public abstract T formalReturnsT();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass.class, $reifiedT);
+    }
 }
 abstract class RefiningAnythingMembersClass_Boxed extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass<.java.lang.Object> {
     
     RefiningAnythingMembersClass_Boxed() {
-        super(.ceylon.language.Integer.instance(1L));
+        super(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
     }
     
     @.java.lang.Override
@@ -83,11 +90,17 @@ abstract class RefiningAnythingMembersClass_Boxed extends .com.redhat.ceylon.com
     public final .java.lang.Object formalReturnsT() {
         return .ceylon.language.Integer.instance(1L);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Boxed.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Boxed.class);
 }
 abstract class RefiningAnythingMembersClass_Unboxed extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass<.java.lang.Object> {
     
     RefiningAnythingMembersClass_Unboxed() {
-        super(.ceylon.language.Integer.instance(1L));
+        super(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
     }
     
     @.java.lang.Override
@@ -114,6 +127,12 @@ abstract class RefiningAnythingMembersClass_Unboxed extends .com.redhat.ceylon.c
     public final .java.lang.Object formalReturnsT() {
         return null;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Unboxed.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Unboxed.class);
 }
 interface RefiningAnythingMembersInterface<T> {
     
@@ -147,10 +166,16 @@ interface RefiningAnythingMembersInterface<T> {
 }
 final class RefiningAnythingMembersInterface$impl<T> {
     
-    RefiningAnythingMembersInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<T> $this) {
+    RefiningAnythingMembersInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
     
     public void notRefinable() {
     }
@@ -183,10 +208,10 @@ final class RefiningAnythingMembersInterface$impl<T> {
         return $this.getDefaultGetterT();
     }
 }
-abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
+abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
     
     RefiningAnythingMembersInterface_Boxed() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this;
     
@@ -249,11 +274,17 @@ abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.cey
     public final .java.lang.Object formalReturnsT() {
         return .ceylon.language.Integer.instance(1L);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Boxed.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Boxed.class);
 }
-abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
+abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
     
     RefiningAnythingMembersInterface_Unboxed() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this;
     
@@ -311,4 +342,10 @@ abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.c
     public final .java.lang.Object formalReturnsT() {
         return null;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Unboxed.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Unboxed.class);
 }

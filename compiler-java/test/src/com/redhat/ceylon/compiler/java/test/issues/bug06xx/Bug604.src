@@ -1,13 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge> {
+abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug604() {
+    Bug604(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
+        this.$reifiedN = $reifiedN;
+        this.$reifiedE = $reifiedE;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE;
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge Edge$new(final N n1, final N n2);
     
-    public abstract class Edge {
+    public abstract class Edge implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Edge(final N n1, final N n2) {
             this.n1 = n1;
@@ -27,11 +31,16 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         public final boolean touches(final N node) {
             return getN1().equals(node) || getN2().equals(node);
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedN, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedE), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.Edge.class));
+        }
     }
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node Node$new();
     
-    public abstract class Node {
+    public abstract class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Node() {
         }
@@ -39,5 +48,15 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         public boolean touches(final E edge) {
             return edge.touches((N)this);
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedN, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.this.$reifiedE), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.Node.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604.class, $reifiedN, $reifiedE);
     }
 }

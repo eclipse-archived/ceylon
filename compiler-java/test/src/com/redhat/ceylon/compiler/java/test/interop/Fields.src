@@ -54,7 +54,7 @@ final class fields_ {
         .com.redhat.ceylon.compiler.java.test.interop.fields_.fields();
     }
 }
-class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields {
+class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CeylonFields() {
         super();
@@ -102,4 +102,10 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.CeylonFields();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonFields.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonFields.class);
 }

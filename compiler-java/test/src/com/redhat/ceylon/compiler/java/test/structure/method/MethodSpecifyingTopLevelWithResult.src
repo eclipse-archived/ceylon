@@ -14,7 +14,7 @@ final class methodSpecifyingToplevelWithResult_f_ {
         .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f_.methodSpecifyingToplevelWithResult_f();
     }
 }
-class MethodSpecifyingToplevelWithResult {
+class MethodSpecifyingToplevelWithResult implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodSpecifyingToplevelWithResult() {
     }
@@ -27,4 +27,10 @@ class MethodSpecifyingToplevelWithResult {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult.class);
 }

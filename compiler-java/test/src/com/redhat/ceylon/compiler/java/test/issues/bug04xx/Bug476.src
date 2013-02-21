@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 interface Bug476A {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476A$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A.class);
 }
 final class Bug476A$impl {
     
@@ -14,6 +15,7 @@ final class Bug476A$impl {
 interface Bug476B extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476B$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B.class);
 }
 final class Bug476B$impl {
     
@@ -25,6 +27,7 @@ final class Bug476B$impl {
 interface Bug476C {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476C$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C.class);
 }
 final class Bug476C$impl {
     
@@ -33,10 +36,12 @@ final class Bug476C$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C $this;
 }
-abstract class Bug476Top<T> {
+abstract class Bug476Top<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug476Top() {
+    Bug476Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public abstract T m();
     
@@ -45,13 +50,22 @@ abstract class Bug476Top<T> {
     public abstract T getAttr();
     
     public abstract T getAttr2();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top.class, $reifiedT);
+    }
 }
 class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A> {
     
-    Bug476Bottom() {
-        super();
+    Bug476Bottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A.$TypeDescriptor);
+        this.$reifiedT = $reifiedT;
+        this.$reifiedU = $reifiedU;
         this.attr = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A).ceylon.language.nothing_.getNothing$();
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A m() {
@@ -83,22 +97,29 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Bottom();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Bottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Bottom.class, $reifiedT, $reifiedU);
     }
 }
-public abstract class Bug476<T> implements .ceylon.language.List<T> {
+public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
     
-    public Bug476() {
-        this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<T, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<T, .java.lang.Object>(this);
+    public Bug476(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>($reifiedT, this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>($reifiedT, this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reifiedT, .ceylon.language.Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<T, .java.lang.Object>($reifiedT, .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
-        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedT), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor, $reifiedT, this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedT), this);
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     protected final .ceylon.language.List$impl<T> $ceylon$language$List$this;
     
     @.java.lang.Override
@@ -132,13 +153,13 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withLeading(final Other element) {
-        return $ceylon$language$List$this.withLeading(element);
+    public <Other>.ceylon.language.Sequence withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withLeading($reifiedOther, element);
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Sequence withTrailing(final Other element) {
-        return $ceylon$language$List$this.withTrailing(element);
+    public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
+        return $ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
@@ -169,8 +190,8 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.map(collecting);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -179,8 +200,8 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -199,8 +220,8 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this.collect(collecting);
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
     @.java.lang.Override
@@ -249,13 +270,13 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain(other);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable<? extends Other, ? extends .java.lang.Object> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final Default defaultValue) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements(defaultValue);
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     
@@ -352,5 +373,10 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
         return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476.class, $reifiedT);
     }
 }

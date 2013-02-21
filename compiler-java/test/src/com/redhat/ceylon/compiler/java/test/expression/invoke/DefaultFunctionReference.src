@@ -122,7 +122,7 @@ final class defaultFunctionReference2_ {
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Sequential<ceylon.language::Object>>")
     final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        f.$call(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.java.lang.Object>(.ceylon.language.Integer.instance(1L)));
+        f.$call(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Integer.instance(1L)));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

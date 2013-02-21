@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public final class topLevelObjectShared_ {
+public final class topLevelObjectShared_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private topLevelObjectShared_() {
     }
@@ -18,6 +18,11 @@ public final class topLevelObjectShared_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.class);
     }
 }
 final class accessTopLevelObjectShared_ {

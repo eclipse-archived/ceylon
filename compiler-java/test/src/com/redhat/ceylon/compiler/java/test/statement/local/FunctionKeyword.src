@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.local;
 
-class FunctionKeyword {
+class FunctionKeyword implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     FunctionKeyword() {
     }
@@ -17,4 +17,10 @@ class FunctionKeyword {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.local.FunctionKeyword();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.local.FunctionKeyword.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.local.FunctionKeyword.class);
 }

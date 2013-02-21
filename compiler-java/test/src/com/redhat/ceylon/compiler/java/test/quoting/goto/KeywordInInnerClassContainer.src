@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-final class transient_ {
+final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private transient_() {
     }
@@ -9,17 +9,27 @@ final class transient_ {
         return new InnerClass_0();
     }
     
-    public class InnerClass_0 {
+    public class InnerClass_0 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected InnerClass_0() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.InnerClass_0.class));
         }
     }
     
     public final long getGoto() {
         
-        class InnerClass_1 {
+        class InnerClass_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             InnerClass_1() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass_1.class);
             }
         }
         final InnerClass_1 x = new InnerClass_1();
@@ -28,9 +38,14 @@ final class transient_ {
     
     public final void $strictfp() {
         
-        class InnerClass_2 {
+        class InnerClass_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             InnerClass_2() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass_2.class);
             }
         }
         final InnerClass_2 x = new InnerClass_2();
@@ -46,6 +61,11 @@ final class transient_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     }
 }
 final class m_ {

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-public final class transient_ {
+public final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private transient_() {
     }
@@ -15,5 +15,10 @@ public final class transient_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     }
 }

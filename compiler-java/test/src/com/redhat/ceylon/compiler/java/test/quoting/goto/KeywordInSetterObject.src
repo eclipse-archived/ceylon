@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class KeywordInSetterObject {
+class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInSetterObject() {
     }
@@ -11,9 +11,14 @@ class KeywordInSetterObject {
     
     private final void setI$priv(final long i) {
         
-        final class goto_ {
+        final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private goto_() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
             }
         }
         final goto_ goto = new goto_();
@@ -24,4 +29,10 @@ class KeywordInSetterObject {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInSetterObject();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInSetterObject.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInSetterObject.class);
 }

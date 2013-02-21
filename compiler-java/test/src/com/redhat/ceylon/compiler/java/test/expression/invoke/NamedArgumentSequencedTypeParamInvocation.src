@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class NamedArgumentSequencedTypeParamInvocation<T> {
+class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    NamedArgumentSequencedTypeParamInvocation() {
+    NamedArgumentSequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void algo() {
         (
@@ -25,7 +27,12 @@ class NamedArgumentSequencedTypeParamInvocation<T> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation.class, $reifiedT);
     }
 }
 final class foo_ {
@@ -37,8 +44,8 @@ final class foo_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> $arg$2$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>();
-                .ceylon.language.Sequential $arg$2$0 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("x"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.instance("y"), .ceylon.language.empty_.getEmpty$()));
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> $arg$2$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
+                .ceylon.language.Sequential $arg$2$0 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("x"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("y"), .ceylon.language.empty_.getEmpty$()));
                 $arg$2$callable$.algo($arg$2$0);
             }
             returning null;

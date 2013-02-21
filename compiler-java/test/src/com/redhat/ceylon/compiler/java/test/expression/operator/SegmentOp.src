@@ -1,27 +1,27 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-class SegmentOp {
+class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SegmentOp() {
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $int(final long start, final long length) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.instance(start), length);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(start), length);
         return segment;
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Character> $char(final int start, final long length) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Character> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Character>spreadOp(.ceylon.language.Character.instance(start), length);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Character> segment = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Character>spreadOp(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.instance(start), length);
         return segment;
     }
     
-    public final <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Sequential<? extends T> t(final T start, final long length) {
-        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp(start, length);
+    public final <T extends .ceylon.language.Ordinal<? extends T>>.ceylon.language.Sequential<? extends T> t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T start, final long length) {
+        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reifiedT, start, length);
         return segment;
     }
     
-    public final <T extends .ceylon.language.Ordinal<? extends T>, S>.ceylon.language.Sequential<? extends T> t2(final .java.lang.Object start, final long length) {
-        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp((T)start, length);
+    public final <T extends .ceylon.language.Ordinal<? extends T>, S>.ceylon.language.Sequential<? extends T> t2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final .java.lang.Object start, final long length) {
+        final .ceylon.language.Sequential<? extends T> segment = .com.redhat.ceylon.compiler.java.Util.<T>spreadOp($reifiedT, (T)start, length);
         return segment;
     }
     
@@ -29,4 +29,10 @@ class SegmentOp {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SegmentOp();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SegmentOp.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SegmentOp.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-class SuperReference {
+class SuperReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SuperReference() {
         this.a = 0L;
@@ -28,6 +28,12 @@ class SuperReference {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.class);
 }
 class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference {
     
@@ -53,4 +59,10 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.class);
 }

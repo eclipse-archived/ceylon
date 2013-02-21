@@ -5,6 +5,7 @@ public interface Bug904 {
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug904$impl();
     
     public .java.lang.Object getInverse();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904.class);
 }
 public final class Bug904$impl {
     
@@ -15,13 +16,18 @@ public final class Bug904$impl {
     
     public final .java.lang.Object getInverse() {
         
-        final class inverse_ {
+        final class inverse_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private inverse_() {
             }
             
             public final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904 item() {
                 return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904$impl.this.$this;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class);
             }
         }
         final inverse_ inverse = new inverse_();

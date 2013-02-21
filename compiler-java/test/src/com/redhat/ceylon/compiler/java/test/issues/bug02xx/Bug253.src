@@ -14,10 +14,16 @@ interface Boxer<T> {
 }
 final class Boxer$impl<T> {
     
-    Boxer$impl(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
+    Boxer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
     
     public final void setOne(final T one) {
         $this.setOne(one);
@@ -27,10 +33,10 @@ final class Boxer$impl<T> {
         $this.setTwo(two);
     }
 }
-class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
+class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
     
     IntBoxer() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer>(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
         this.one = .ceylon.language.Integer.instance(1L);
         this.two = .ceylon.language.Integer.instance(2L);
     }
@@ -67,6 +73,12 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.B
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer.class);
 }
 final class bug253_ {
     

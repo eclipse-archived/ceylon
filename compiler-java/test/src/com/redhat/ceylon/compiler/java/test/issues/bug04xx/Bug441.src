@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 interface IBug441 extends .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441.class);
 }
 final class IBug441$impl {
     
@@ -11,11 +12,11 @@ final class IBug441$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441 $this;
 }
-class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441> {
+class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441> {
     
     Bug441() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this = new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>((.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441.$TypeDescriptor, (.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>)(.ceylon.language.Cloneable)this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this;
     
@@ -39,4 +40,10 @@ class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBu
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.class);
 }

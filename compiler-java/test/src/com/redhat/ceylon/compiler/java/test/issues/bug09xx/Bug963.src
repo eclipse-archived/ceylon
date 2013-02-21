@@ -9,10 +9,16 @@ public interface Bug963<Element> extends .ceylon.language.List<Element> {
 }
 public final class Bug963$impl<Element> {
     
-    public Bug963$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this) {
+    public Bug963$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this) {
+        this.$reifiedElement = $reifiedElement;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
     
     public final long getSize() {
         return $this.$ceylon$language$List$impl().getSize();

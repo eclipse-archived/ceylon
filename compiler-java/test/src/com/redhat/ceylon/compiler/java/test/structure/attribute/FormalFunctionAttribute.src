@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-abstract class FormalFunctionAttribute {
+abstract class FormalFunctionAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     FormalFunctionAttribute() {
     }
@@ -10,4 +10,10 @@ abstract class FormalFunctionAttribute {
     public final void run() {
         getF().$call();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.FormalFunctionAttribute.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.FormalFunctionAttribute.class);
 }

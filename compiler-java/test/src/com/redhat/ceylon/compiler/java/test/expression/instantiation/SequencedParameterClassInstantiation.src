@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class SequencedParameterClassInstantiation {
+class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SequencedParameterClassInstantiation(final long a) {
         (
@@ -22,7 +22,13 @@ class SequencedParameterClassInstantiation {
     
     public final void m() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation a = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L);
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation b = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L)));
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation c = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation b = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)));
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation c = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.class);
 }

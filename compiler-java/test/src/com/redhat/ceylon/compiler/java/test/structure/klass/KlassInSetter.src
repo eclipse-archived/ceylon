@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassInSetter {
+class KlassInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassInSetter() {
     }
@@ -13,13 +13,18 @@ class KlassInSetter {
         if (true) {
             final long i = 1L;
             
-            class Bar {
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 Bar() {
                 }
                 
                 public final .java.lang.String bar() {
                     return .ceylon.language.Integer.toString(i);
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class);
                 }
             }
             new Bar().bar();
@@ -30,4 +35,10 @@ class KlassInSetter {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInSetter.class);
 }

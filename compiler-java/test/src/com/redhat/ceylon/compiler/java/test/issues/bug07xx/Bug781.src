@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
-class Bug781Class {
+class Bug781Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug781Class() {
     }
@@ -12,12 +12,19 @@ class Bug781Class {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class.class);
 }
 interface Bug781Interface {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug07xx$Bug781Interface$impl();
     
     public abstract .java.lang.Object i();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface.class);
 }
 final class Bug781Interface$impl {
     
@@ -26,16 +33,23 @@ final class Bug781Interface$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface $this;
 }
-class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
+class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug781_1(final T t) {
+    Bug781_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        this.$reifiedT = $reifiedT;
+        t.c();
+        t.i();
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    
+    private final <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         t.c();
         t.i();
     }
     
-    private final <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final T t) {
-        t.c();
-        t.i();
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_1.class, $reifiedT);
     }
 }
 interface Bug781_2<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
@@ -44,12 +58,18 @@ interface Bug781_2<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07x
 }
 final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
     
-    Bug781_2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this) {
+    Bug781_2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this) {
+        this.$reifiedT = $reifiedT;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this;
     
-    private <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final T t) {
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+    
+    private <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void m$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         t.c();
         t.i();
     }
@@ -59,7 +79,7 @@ public final class bug781_ {
     private bug781_() {
     }
     
-    public static <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void bug781(final T t) {
+    public static <T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface>void bug781(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         t.c();
         t.i();
     }

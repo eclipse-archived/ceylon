@@ -30,10 +30,19 @@ interface InterfaceErasure<Element, Absent> {
 }
 final class InterfaceErasure$impl<Element, Absent> {
     
-    InterfaceErasure$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, Absent> $this) {
+    InterfaceErasure$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, Absent> $this) {
+        this.$reifiedElement = $reifiedElement;
+        this.$reifiedAbsent = $reifiedAbsent;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent;
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, Absent> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
+        this.$reifiedAbsent = $reifiedAbsent;
+        this.$reifiedElement = $reifiedElement;
+    }
     
     public final .java.lang.Object getAttr() {
         return .ceylon.language.nothing_.getNothing$();
@@ -109,17 +118,24 @@ final class InterfaceErasure$impl<Element, Absent> {
         );
     }
     
-    public class Class {
+    public class Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Class(final .java.lang.Object p, final .java.lang.Object p2) {
         }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure.class, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl.this.$reifiedElement, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl.this.$reifiedAbsent), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl.Class.class));
+        }
     }
 }
-class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, .java.lang.Object> {
+class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, .java.lang.Object> {
     
-    InterfaceErasureImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>(this);
+    InterfaceErasureImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this;
     
     @.java.lang.Override
@@ -189,6 +205,11 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasureImpl();
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasureImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasureImpl.class, $reifiedElement);
     }
 }

@@ -9,7 +9,7 @@ final class bug261_ {
         long vk;
         long vl;
         
-        class Inner {
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             Inner() {
                 this.vi = 0L;
@@ -32,6 +32,11 @@ final class bug261_ {
             
             public final void setVj(final long vj) {
                 this.vj = vj;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class);
             }
         }
         final Inner inner = new Inner();

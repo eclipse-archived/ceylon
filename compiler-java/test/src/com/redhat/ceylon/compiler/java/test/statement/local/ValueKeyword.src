@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.local;
 
-class ValueKeyword {
+class ValueKeyword implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ValueKeyword() {
     }
@@ -19,4 +19,10 @@ class ValueKeyword {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.local.ValueKeyword.class);
 }

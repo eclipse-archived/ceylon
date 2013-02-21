@@ -5,7 +5,7 @@ final class getterArgumentNamedInvocationBoxing_ {
     private getterArgumentNamedInvocationBoxing_() {
     }
     
-    static <T>void getterArgumentNamedInvocationBoxing(final T t) {
+    static <T>void getterArgumentNamedInvocationBoxing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         (
             let
             {
@@ -22,8 +22,10 @@ final class getterArgumentNamedInvocationBoxing_ {
                 }
                 final $item$1 $item$1 = new $item$1();
                 final .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance($item$1.getItem());
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.Integer>($arg$0$0, $arg$0$1);
+            returning new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.Integer>($arg$0$reified$0, $arg$0$reified$1, $arg$0$0, $arg$0$1);
         );
         (
             let
@@ -41,8 +43,10 @@ final class getterArgumentNamedInvocationBoxing_ {
                 }
                 final $item$3 $item$3 = new $item$3();
                 final T $arg$2$1 = $item$3.getItem();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = $reifiedT;
             }
-            returning new .ceylon.language.Entry<.ceylon.language.String, T>($arg$2$0, $arg$2$1);
+            returning new .ceylon.language.Entry<.ceylon.language.String, T>($arg$2$reified$0, $arg$2$reified$1, $arg$2$0, $arg$2$1);
         );
     }
 }

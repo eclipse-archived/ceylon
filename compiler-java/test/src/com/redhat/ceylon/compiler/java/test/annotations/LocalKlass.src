@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class LocalKlass {
+public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public LocalKlass() {
     }
@@ -13,12 +13,16 @@ public class LocalKlass {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>>"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
-        class Local<T> implements .ceylon.language.Summable<Local<T>> {
+        class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>> {
             
-            Local() {
-                this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<Local<T>>(this);
+            Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+                this.$reifiedT = $reifiedT;
+                this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<Local<T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reifiedT), this);
                 this.i1 = 1L;
             }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             protected final .ceylon.language.Summable$impl<Local<T>> $ceylon$language$Summable$this;
             
@@ -81,6 +85,12 @@ public class LocalKlass {
             final Local<T> other) {
                 return (Local).ceylon.language.nothing_.getNothing$();
             }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reifiedT);
+            }
         }
     }
     
@@ -89,4 +99,12 @@ public class LocalKlass {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.LocalKlass();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.class);
 }

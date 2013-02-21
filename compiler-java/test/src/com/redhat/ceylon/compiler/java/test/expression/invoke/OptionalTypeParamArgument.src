@@ -1,16 +1,23 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class Foo<T> {
+class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Foo() {
+    Foo(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public final void bar(final T t) {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo();
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.Foo.class, $reifiedT);
     }
 }
 final class m_ {
@@ -19,7 +26,7 @@ final class m_ {
     }
     
     static void m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> f = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object>();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> f = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor);
         final .java.lang.Object o = .ceylon.language.Integer.instance(1L);
         f.bar(o);
         (

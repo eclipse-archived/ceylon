@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class MyInteger extends .java.lang.Object implements .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> {
+abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> {
     
     MyInteger() {
         super();
-        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
-        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
-        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
-        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
-        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
-        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
-        this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
+        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Enumerable$this = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
+        this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor, this);
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$this;
     
@@ -54,6 +54,12 @@ abstract class MyInteger extends .java.lang.Object implements .ceylon.language.I
     public .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Exponentiable$impl() {
         return $ceylon$language$Exponentiable$this;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.class);
 }
 final class toplevelN1_ {
     
@@ -118,7 +124,7 @@ final class toplevelI1_ {
         value[0] = toplevelI1;
     }
 }
-class ArithmeticOperators {
+class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
         this.initN = initN;
@@ -1008,6 +1014,12 @@ class ArithmeticOperators {
             returning $ceylontmpop95;
         );
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators.class);
 }
 class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators {
     
@@ -1168,6 +1180,12 @@ class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expre
         );
         return null;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperatorsSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperatorsSub.class);
 }
 final class toplevelGetterN1_ {
     

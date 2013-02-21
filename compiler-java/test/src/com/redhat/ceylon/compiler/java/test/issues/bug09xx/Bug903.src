@@ -17,6 +17,7 @@ public interface Bug903 {
     public abstract void setI(final long i);
     
     public .java.lang.Object foo();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.class);
 }
 public final class Bug903$impl {
     
@@ -31,7 +32,7 @@ public final class Bug903$impl {
     
     public .java.lang.Object foo() {
         
-        final class obj_ {
+        final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private obj_() {
             }
@@ -47,10 +48,15 @@ public final class Bug903$impl {
                 );
                 return $this.item(0L);
             }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class);
+            }
         }
         final obj_ obj = new obj_();
         
-        class C {
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             C() {
             }
@@ -65,6 +71,11 @@ public final class Bug903$impl {
                     returning $arg$1$callable$.item($arg$1$0);
                 );
                 return $this.item(0L);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class);
             }
         }
         

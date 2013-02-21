@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class BooleanBoxing {
+class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BooleanBoxing() {
     }
@@ -41,4 +41,10 @@ class BooleanBoxing {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.boxing.BooleanBoxing.class);
 }

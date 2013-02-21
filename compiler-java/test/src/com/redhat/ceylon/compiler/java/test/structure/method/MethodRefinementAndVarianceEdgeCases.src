@@ -1,39 +1,62 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MRAVEC_Invariant<Element> {
+class MRAVEC_Invariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MRAVEC_Invariant() {
+    MRAVEC_Invariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
     }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant();
-    }
-}
-class MRAVEC_Covariant<Element> {
-    
-    MRAVEC_Covariant() {
-    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant.class, $reifiedElement);
     }
 }
-class MRAVEC_Contravariant<Element> {
+class MRAVEC_Covariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MRAVEC_Contravariant() {
+    MRAVEC_Covariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant.class, $reifiedElement);
     }
 }
-class MRAVEC_Top<Element> {
+class MRAVEC_Contravariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MRAVEC_Top() {
+    MRAVEC_Contravariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant.class, $reifiedElement);
+    }
+}
+class MRAVEC_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    MRAVEC_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+        this.$reifiedElement = $reifiedElement;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public Element f() {
         return (Element).ceylon.language.nothing_.getNothing$();
@@ -53,13 +76,18 @@ class MRAVEC_Top<Element> {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top.class, $reifiedElement);
     }
 }
 class MRAVEC_BottomNull extends .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top<.java.lang.Object> {
     
     MRAVEC_BottomNull() {
-        super();
+        super(.ceylon.language.Null.$TypeDescriptor);
     }
     
     @.java.lang.Override
@@ -86,11 +114,17 @@ class MRAVEC_BottomNull extends .com.redhat.ceylon.compiler.java.test.structure.
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNull();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNull.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNull.class);
 }
 class MRAVEC_BottomNothing extends .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top<.java.lang.Object> {
     
     MRAVEC_BottomNothing() {
-        super();
+        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.java.lang.Override
@@ -117,11 +151,17 @@ class MRAVEC_BottomNothing extends .com.redhat.ceylon.compiler.java.test.structu
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNothing();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNothing.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNothing.class);
 }
 class MRAVEC_BottomAnything extends .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top<.java.lang.Object> {
     
     MRAVEC_BottomAnything() {
-        super();
+        super(.ceylon.language.Anything.$TypeDescriptor);
     }
     
     @.java.lang.Override
@@ -148,11 +188,17 @@ class MRAVEC_BottomAnything extends .com.redhat.ceylon.compiler.java.test.struct
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomAnything();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomAnything.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomAnything.class);
 }
 class MRAVEC_BottomErased extends .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top<.java.lang.Object> {
     
     MRAVEC_BottomErased() {
-        super();
+        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomErased.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNothing.$TypeDescriptor));
     }
     
     @.java.lang.Override
@@ -179,4 +225,10 @@ class MRAVEC_BottomErased extends .com.redhat.ceylon.compiler.java.test.structur
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomErased();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomErased.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomErased.class);
 }

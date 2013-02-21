@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-class ClassDefaultMemberClassReference {
+class ClassDefaultMemberClassReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassDefaultMemberClassReference() {
     }
@@ -9,9 +9,14 @@ class ClassDefaultMemberClassReference {
         return new Member();
     }
     
-    public class Member {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member.class));
         }
     }
     
@@ -40,4 +45,10 @@ class ClassDefaultMemberClassReference {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.class);
 }

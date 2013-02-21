@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-public abstract class LogicalOperatorsParent<B> {
+public abstract class LogicalOperatorsParent<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public LogicalOperatorsParent() {
+    public LogicalOperatorsParent(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+        this.$reifiedB = $reifiedB;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB;
     
     public abstract B getBoxedB1();
     
@@ -12,11 +14,16 @@ public abstract class LogicalOperatorsParent<B> {
     public abstract B getBoxedB2();
     
     public abstract void setBoxedB2(final B boxedB2);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsParent.class, $reifiedB);
+    }
 }
 public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsParent<.ceylon.language.Boolean> {
     
     public LogicalOperators() {
-        super();
+        super(.ceylon.language.Boolean.$TypeDescriptor);
         this.b1 = false;
         this.b2 = false;
         this.boxedB1 = .ceylon.language.Boolean.instance(getB1());
@@ -149,6 +156,12 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.class);
 }
 public class LogicalOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators {
     
@@ -202,4 +215,10 @@ public class LogicalOperatorsSub extends .com.redhat.ceylon.compiler.java.test.e
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-class ClassDefaultMemberClassSpecifier {
+class ClassDefaultMemberClassSpecifier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassDefaultMemberClassSpecifier(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other) {
         this.other = other;
@@ -11,9 +11,14 @@ class ClassDefaultMemberClassSpecifier {
         return new Member();
     }
     
-    public class Member {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member.class));
         }
     }
     
@@ -24,4 +29,10 @@ class ClassDefaultMemberClassSpecifier {
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2$priv() {
         return other.Member$new();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.class);
 }

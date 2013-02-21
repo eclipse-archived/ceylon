@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class ClassInstantiation {
+class ClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassInstantiation() {
     }
@@ -13,8 +13,14 @@ class ClassInstantiation {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation.class);
 }
-class ClassInstantiationWithParam {
+class ClassInstantiationWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassInstantiationWithParam(final long i) {
     }
@@ -22,8 +28,14 @@ class ClassInstantiationWithParam {
     public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam m() {
         return new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam(2L);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam.class);
 }
-class ClassInstantiationWithParams {
+class ClassInstantiationWithParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassInstantiationWithParams(final long i, final .java.lang.String j) {
     }
@@ -31,15 +43,26 @@ class ClassInstantiationWithParams {
     public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams m() {
         return new .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams(2L, "");
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams.class);
 }
-class InnerClassInstantiation {
+class InnerClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InnerClassInstantiation() {
     }
     
-    class InnerClass {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         InnerClass() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass.class));
         }
     }
     
@@ -51,17 +74,28 @@ class InnerClassInstantiation {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.class);
 }
-class LocalClassInstantiation {
+class LocalClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     LocalClassInstantiation() {
     }
     
     private final void m$priv() {
         
-        class LocalClass {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             LocalClass() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
             }
         }
         final LocalClass x = new LocalClass();
@@ -71,4 +105,10 @@ class LocalClassInstantiation {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation.class);
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class DeferredMethodInitializationMultipleSpecification {
+class DeferredMethodInitializationMultipleSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DeferredMethodInitializationMultipleSpecification(final boolean b) {
         this.s = null;
@@ -35,4 +35,10 @@ class DeferredMethodInitializationMultipleSpecification {
     private final .java.lang.String s$priv(final .java.lang.String name) {
         if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call(.ceylon.language.String.instance(name)).toString();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.DeferredMethodInitializationMultipleSpecification.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DeferredMethodInitializationMultipleSpecification.class);
 }

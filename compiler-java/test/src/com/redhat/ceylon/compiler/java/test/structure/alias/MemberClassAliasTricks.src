@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAliasToToplevel2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.MemberClassAliasToToplevel2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAliasToToplevel", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.MemberClassAliasToToplevel", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-public class MemberClassAliasTricks_Foo {
+public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public MemberClassAliasTricks_Foo() {
@@ -121,7 +121,7 @@ public class MemberClassAliasTricks_Foo {
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAliasToEnclosingMemberClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.MemberClassAliasToEnclosingMemberClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasTricks_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    public class Member {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
@@ -151,6 +151,12 @@ public class MemberClassAliasTricks_Foo {
         private final void test$priv() {
             final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m1 = MemberClassAliasToEnclosingMemberClass$new(1L, 2L);
         }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class));
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
@@ -165,6 +171,14 @@ public class MemberClassAliasTricks_Foo {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo();
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class);
 }
 final class memberClassAliasTricksMethod_ {
     

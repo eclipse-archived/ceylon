@@ -5,6 +5,7 @@ interface Bug329_Something {
     public .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$impl();
     
     public abstract .java.lang.Object getSomething();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something.class);
 }
 final class Bug329_Something$impl {
     
@@ -13,7 +14,7 @@ final class Bug329_Something$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something $this;
 }
-final class bug329_se_ implements .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
+final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     
     private bug329_se_() {
         this.something = .ceylon.language.String.instance("somethingElse");
@@ -43,8 +44,13 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.test.issues.b
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.class);
+    }
 }
-final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
+final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     
     private bug329_se2_() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something$impl(this);
@@ -71,5 +77,10 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.test.issues.
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.class);
     }
 }

@@ -9,6 +9,7 @@ interface SuperInterface {
     public void setI(final long i);
     
     public long m();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.class);
 }
 final class SuperInterface$impl {
     
@@ -28,7 +29,7 @@ final class SuperInterface$impl {
         return 2L;
     }
 }
-class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
+class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
     
     SuperInterface_Sub() {
         this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface$impl(this);
@@ -76,6 +77,12 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.test.expres
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.class);
 }
 interface SuperInterface_SubInterface extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
     
@@ -88,6 +95,7 @@ interface SuperInterface_SubInterface extends .com.redhat.ceylon.compiler.java.t
     
     @.java.lang.Override
     public .java.lang.String toString();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface.class);
 }
 final class SuperInterface_SubInterface$impl {
     

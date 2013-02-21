@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-class OuterReferenceSuper {
+class OuterReferenceSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     OuterReferenceSuper() {
     }
@@ -13,6 +13,12 @@ class OuterReferenceSuper {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper.class);
 }
 interface OuterReference$InnerIface {
     
@@ -32,7 +38,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
     }
     
-    class InnerClass {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         InnerClass() {
             (
@@ -65,6 +71,11 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         private final boolean m$priv(final boolean b) {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
             return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass.class));
         }
     }
     
@@ -104,7 +115,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             }
         }
         
-        class LocalClass {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             LocalClass() {
                 (
@@ -121,6 +132,11 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             LocalClass(final boolean b) {
                 .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
                 .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
             }
         }
         
@@ -161,4 +177,10 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.class);
 }

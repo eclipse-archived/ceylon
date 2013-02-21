@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.optimisations;
 
-class CharacterAsInteger {
+class CharacterAsInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     CharacterAsInteger() {
     }
@@ -13,4 +13,10 @@ class CharacterAsInteger {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.optimisations.CharacterAsInteger();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.optimisations.CharacterAsInteger.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.optimisations.CharacterAsInteger.class);
 }

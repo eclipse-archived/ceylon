@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ForIfExistsSequence {
+class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ForIfExistsSequence() {
     }
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
                     private .ceylon.language.Sequential<? extends .ceylon.language.Integer> x;
                     private boolean x$exhausted;
@@ -50,4 +50,10 @@ class ForIfExistsSequence {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsSequence();
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsSequence.class);
 }
