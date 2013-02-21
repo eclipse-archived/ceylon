@@ -15,8 +15,14 @@ public final class utilCalls_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> t3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -34,7 +40,8 @@ public final class utilCalls_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence();
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
@@ -42,8 +49,14 @@ public final class utilCalls_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -61,7 +74,8 @@ public final class utilCalls_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         };
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));

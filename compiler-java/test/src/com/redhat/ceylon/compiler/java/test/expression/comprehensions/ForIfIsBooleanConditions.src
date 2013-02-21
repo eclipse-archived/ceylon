@@ -9,8 +9,14 @@ final class forIfIsBooleanConditions_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> z = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = xs.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object x;
                     private boolean x$exhausted;
                     
@@ -43,7 +49,8 @@ final class forIfIsBooleanConditions_ {
                     public final .java.lang.Object next() {
                         return this.next1() ? .ceylon.language.Integer.instance($y$2 + 1L) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence();
     }

@@ -10,8 +10,14 @@ final class callablePositionalInvocationSequencedComprehension_ {
         foo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -29,14 +35,21 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         foo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = em.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = em.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -54,14 +67,21 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         bar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -79,14 +99,21 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         bar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = em.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = em.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -104,15 +131,22 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableFoo = foo;
         mCallableFoo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -130,14 +164,21 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         mCallableFoo.$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = em.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = em.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -155,15 +196,22 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableBar = bar;
         mCallableBar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -181,14 +229,21 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
         mCallableBar.$call(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = em.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = em.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -206,7 +261,8 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     public final .java.lang.Object next() {
                         return this.i() ? i : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence());
     }

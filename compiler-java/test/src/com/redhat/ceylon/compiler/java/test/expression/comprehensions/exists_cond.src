@@ -10,8 +10,14 @@ final class existsCond_ {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = seq.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Character.$TypeDescriptor);
+                        iter$0 = seq.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
                     private .ceylon.language.String x;
                     private boolean x$exhausted;
                     
@@ -55,7 +61,8 @@ final class existsCond_ {
                     public final .java.lang.Object next() {
                         return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$4)) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         });
     }

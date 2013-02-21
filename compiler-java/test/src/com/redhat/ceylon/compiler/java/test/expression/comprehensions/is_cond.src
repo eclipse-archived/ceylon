@@ -10,8 +10,14 @@ final class isCond_ {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator iter$0 = seq.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = seq.getIterator();
+                    }
+                    private final .ceylon.language.Iterator iter$0;
                     private .java.lang.Object x;
                     private boolean x$exhausted;
                     
@@ -42,7 +48,8 @@ final class isCond_ {
                     public final .java.lang.Object next() {
                         return this.next1() ? .ceylon.language.Integer.instance($x$2 * 2L) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         });
     }

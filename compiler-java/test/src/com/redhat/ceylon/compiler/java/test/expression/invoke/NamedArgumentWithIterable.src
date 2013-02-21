@@ -94,8 +94,14 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                 .ceylon.language.Iterable $arg$8$1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)).getIterator();
+                        
+                        final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                            
+                            $ComprehensionIterator$() {
+                                super(.ceylon.language.Integer.$TypeDescriptor);
+                                iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)).getIterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                             private .ceylon.language.Integer i;
                             private boolean i$exhausted;
                             
@@ -113,7 +119,8 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             public final .java.lang.Object next() {
                                 return this.i() ? i : .ceylon.language.finished_.getFinished$();
                             }
-                        };
+                        }
+                        return new $ComprehensionIterator$();
                     }
                 };
                 m$priv($arg$8$0, $arg$8$1);
@@ -127,8 +134,14 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                 .ceylon.language.Iterable $arg$10$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(4L)).getIterator();
+                        
+                        final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                            
+                            $ComprehensionIterator$() {
+                                super(.ceylon.language.Integer.$TypeDescriptor);
+                                iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(4L)).getIterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                             private .ceylon.language.Integer i;
                             private boolean i$exhausted;
                             
@@ -146,7 +159,8 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             public final .java.lang.Object next() {
                                 return this.i() ? i : .ceylon.language.finished_.getFinished$();
                             }
-                        };
+                        }
+                        return new $ComprehensionIterator$();
                     }
                 }, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 m$priv($arg$10$0, $arg$10$1);

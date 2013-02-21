@@ -9,8 +9,14 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.String.$TypeDescriptor);
+                        iter$0 = xs.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object x;
                     private boolean x$exhausted;
                     
@@ -38,7 +44,8 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public final .java.lang.Object next() {
                         return this.next1() ? .ceylon.language.String.instance(x.toString()) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         });
     }
@@ -47,8 +54,14 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = ys.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.String.$TypeDescriptor);
+                        iter$0 = ys.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object y;
                     private boolean y$exhausted;
                     
@@ -79,7 +92,8 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     public final .java.lang.Object next() {
                         return this.next1() ? .ceylon.language.String.instance($x$4.toString()) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         });
     }

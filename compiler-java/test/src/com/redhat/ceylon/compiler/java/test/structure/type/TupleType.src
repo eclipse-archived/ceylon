@@ -73,8 +73,14 @@ final class tupleTypeTest_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> comprehensionTuple = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = strings.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.String.$TypeDescriptor);
+                        iter$0 = strings.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
                     private .ceylon.language.String s;
                     private boolean s$exhausted;
                     
@@ -92,7 +98,8 @@ final class tupleTypeTest_ {
                     public final .java.lang.Object next() {
                         return this.s() ? s : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence();
     }

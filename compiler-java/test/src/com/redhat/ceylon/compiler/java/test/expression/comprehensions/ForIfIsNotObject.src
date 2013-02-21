@@ -13,8 +13,14 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = xs.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Object.$TypeDescriptor);
+                        iter$0 = xs.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object x;
                     private boolean x$exhausted;
                     
@@ -42,7 +48,8 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     public final .java.lang.Object next() {
                         return this.next1() ? nowt$priv(x) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         });
     }
@@ -51,8 +58,14 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0 = ys.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Object.$TypeDescriptor);
+                        iter$0 = ys.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
                     private .java.lang.Object y;
                     private boolean y$exhausted;
                     
@@ -83,7 +96,8 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     public final .java.lang.Object next() {
                         return this.next1() ? nowt$priv($x$4) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         });
     }

@@ -13,8 +13,14 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> iter$0 = xs.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = xs.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> iter$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod x;
                     private boolean x$exhausted;
                     
@@ -45,7 +51,8 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     public final .java.lang.Object next() {
                         return this.next1() ? .ceylon.language.Integer.instance($y$2) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence();
     }

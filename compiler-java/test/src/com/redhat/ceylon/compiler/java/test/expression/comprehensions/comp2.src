@@ -9,8 +9,14 @@ final class comp2_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> i = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = ints.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Integer.$TypeDescriptor);
+                        iter$0 = ints.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
                     private boolean i$exhausted;
                     
@@ -53,7 +59,8 @@ final class comp2_ {
                     public final .java.lang.Object next() {
                         return this.j() ? i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j)) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         };
     }

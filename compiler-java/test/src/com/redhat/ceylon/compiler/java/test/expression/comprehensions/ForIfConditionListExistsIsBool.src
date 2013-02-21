@@ -9,8 +9,14 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iter$0 = xs.getIterator();
+                
+                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean> {
+                    
+                    $ComprehensionIterator$() {
+                        super(.ceylon.language.Boolean.$TypeDescriptor);
+                        iter$0 = xs.getIterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iter$0;
                     private .ceylon.language.Sequential<? extends .java.lang.Object> x;
                     private boolean x$exhausted;
                     
@@ -48,7 +54,8 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     public final .java.lang.Object next() {
                         return this.next1() ? .ceylon.language.Boolean.instance($y$4 == 1L) : .ceylon.language.finished_.getFinished$();
                     }
-                };
+                }
+                return new $ComprehensionIterator$();
             }
         }.getSequence();
     }
