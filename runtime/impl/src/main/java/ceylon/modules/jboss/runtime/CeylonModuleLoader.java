@@ -343,4 +343,10 @@ public class CeylonModuleLoader extends ModuleLoader {
     public String toString() {
         return "Ceylon ModuleLoader: " + repository;
     }
+
+    public void setupRuntimeModuleSystem() throws ModuleLoadException {
+        org.jboss.modules.Module languageModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(LANGUAGE);
+        ArtifactResult languageModuleArtifactResult = findArtifact(LANGUAGE);
+        com.redhat.ceylon.compiler.java.Util.loadModule(LANGUAGE.getName(), LANGUAGE.getSlot(), languageModuleArtifactResult, SecurityActions.getClassLoader(languageModule));
+    }
 }

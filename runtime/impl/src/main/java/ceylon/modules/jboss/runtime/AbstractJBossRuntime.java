@@ -53,6 +53,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             throw cre;
         }
         try {
+            moduleLoader.setupRuntimeModuleSystem();
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
         } catch (ModuleNotFoundException e) {
