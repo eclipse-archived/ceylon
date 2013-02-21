@@ -17,8 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
 class Bug974() {
-    Iterable<String> b85 = {for (k->v in entries {"a","b","c","d","e"}) 
-                                if (k%2==0) v.uppercased};
+    value b85 = {for (e in entries {"a"}) e};
+    print(b85.sequence);
+    value f = {for (x in [""]*.size) x };
+    print(f.sequence);
 }

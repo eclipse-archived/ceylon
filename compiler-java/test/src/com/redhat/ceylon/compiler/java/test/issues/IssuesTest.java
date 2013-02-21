@@ -961,9 +961,8 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    // ? Javac bug
-    public void testBug974_fail() {
-        compareWithJavaSource("bug09xx/Bug974");
+    public void testBug974() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug974", "bug09xx/Bug974.ceylon");
     }
     
     @Test
