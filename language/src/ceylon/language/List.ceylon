@@ -58,7 +58,7 @@ shared interface List<out Element>
             variable Integer index = 0;
             shared actual Element|Finished next() {
                 if (index <= (lastIndex else -1)) {
-                    assert (exists elem = outer.get(index++));
+                    assert (is Element elem = outer.get(index++));
                     return elem;
                 }
                 else {
