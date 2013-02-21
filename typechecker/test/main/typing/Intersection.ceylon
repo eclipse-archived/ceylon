@@ -1,22 +1,27 @@
+import ceylon.language { S=String }
+
 class Intersection() {
+    
+    class String(S s) {}
+    class Float() {}
     
     interface X {
         shared String hello {
-            return "hello";
+            return String("hello");
         }
     }
     
     interface Y {
         shared String goodbye {
-            return "goodbye";
+            return String("goodbye");
         }
     }
     
     class XY() satisfies X & Y {}
     
     X&Y xy = XY();
-    @type:"String" value hi = xy.hello;
-    @type:"String" value bye = xy.goodbye;
+    @type:"Intersection.String" value hi = xy.hello;
+    @type:"Intersection.String" value bye = xy.goodbye;
     X x = xy;
     Y y = xy;
     
@@ -90,8 +95,8 @@ class Intersection() {
     WithParam<String&X|String&Y|Float&X|Float&Y> wp3 = WithIntersectionArg<String|Float,X|Y>();
     WithParam<String&X&Float|String&Y&Float|String&X&Integer|String&Y&Integer> wp4 = WithMoreIntersectionArg<String,X|Y,Float|Integer>();
     
-    @type:"String&Intersection.X|String&Intersection.Y" WithIntersectionArg<String,X|Y>().get();
-    @type:"String&Intersection.X|String&Intersection.Y|Float&Intersection.X|Float&Intersection.Y" WithIntersectionArg<String|Float,X|Y>().get();
+    @type:"Intersection.String&Intersection.X|Intersection.String&Intersection.Y" WithIntersectionArg<String,X|Y>().get();
+    @type:"Intersection.String&Intersection.X|Intersection.String&Intersection.Y|Intersection.Float&Intersection.X|Intersection.Float&Intersection.Y" WithIntersectionArg<String|Float,X|Y>().get();
     
     interface One {}
     interface Two {}
@@ -126,9 +131,11 @@ class Intersection() {
     @type:"Nothing" intersect(1, "hello");
     @type:"Nothing" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
-    Sequence<String> onestring = ["hello"];
-    @type:"Integer&Sequence<String>" intersect(1, onestring);
-    @type:"Nothing" intersect(1, ["hello"]);
+    String[] onestring = [String("hello")];
+    @type:"Intersection.Float&Sequential<Intersection.String>" intersect(Float(), onestring);
+    S[] ones = ["hello"];
+    @type:"Intersection.Float&Sequential<String>" intersect(Float(), ones);
+    @type:"Nothing" intersect(Float(), ["hello"]);
     @type:"Nothing" intersect(I({"hello"}), I({}));
     
     interface I1 {} 

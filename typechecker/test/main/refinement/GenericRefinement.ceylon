@@ -140,16 +140,30 @@ class GenericRefinement() {
     }
 
     interface BrokenConstraints {
+        interface I {} interface J {}
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
 		            given T satisfies Baz<T&S>;
 		}
-		class Bar() satisfies Foo<String> {
+		class Bar() satisfies Foo<I> {
 		    @error
 		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&Integer> {}
+		            given T satisfies Baz<T&J> {}
 		}
+    }
+    
+    interface UnBrokenConstraints {
+        interface I {} interface J {}
+        interface Baz<X> {}
+        interface Foo<S> {
+            shared formal void accept<T>(T t) 
+                    given T satisfies Baz<T&S>&J;
+        }
+        class Bar() satisfies Foo<I> {
+            shared actual void accept<T>(T t)
+                    given T satisfies Baz<T&I>&J {}
+        }
     }
     
     void meth<Absent>(Absent n) 

@@ -480,6 +480,50 @@ public class Util {
         TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
+        if (pd instanceof TypeParameter) {
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(pd.getSatisfiedTypes());
+            p = it.canonicalize().getType();
+            pd = p.getDeclaration();
+        }
+        if (qd instanceof TypeParameter) {
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(qd.getSatisfiedTypes());
+            q = it.canonicalize().getType();
+            qd = q.getDeclaration();
+        }
+        if (qd instanceof IntersectionType) {
+            for (ProducedType t: qd.getSatisfiedTypes()) {
+                if (emptyMeet(p,t, unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (pd instanceof IntersectionType) {
+            for (ProducedType t: pd.getSatisfiedTypes()) {
+                if (emptyMeet(q,t, unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (qd instanceof UnionType) {
+            for (ProducedType t: qd.getCaseTypes()) {
+                if (!emptyMeet(p,t, unit)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (pd instanceof UnionType) {
+            for (ProducedType t: pd.getCaseTypes()) {
+                if (!emptyMeet(q,t, unit)) {
+                    return false;
+                }
+            }
+            return true;
+        }
         if (pd instanceof Class && qd instanceof Class ||
             pd instanceof Interface && qd instanceof Class &&
                     qd.equals(nd) ||
@@ -490,23 +534,25 @@ public class Util {
             	return true;
             }
         }
-        if (pd.isFinal()) {
+        if (pd.isFinal()|!pd.isExtendable()) {
             if (pd.getTypeParameters().isEmpty() &&
                     !q.containsTypeParameters() &&
                     !p.isSubtypeOf(q)) {
             	return true;
             }
-            if (p.getSupertype(qd)==null) {
+            if (qd instanceof ClassOrInterface &&
+                    p.getSupertype(qd)==null) {
             	return true;
             }
         }
-        if (qd.isFinal()) { 
+        if (qd.isFinal()|!qd.isExtendable()) { 
             if (qd.getTypeParameters().isEmpty() &&
                     !p.containsTypeParameters() &&
                     !q.isSubtypeOf(p)) {
             	return true;
             }
-            if (q.getSupertype(pd)==null) {
+            if (pd instanceof ClassOrInterface &&
+                    q.getSupertype(pd)==null) {
             	return true;
             }
         }

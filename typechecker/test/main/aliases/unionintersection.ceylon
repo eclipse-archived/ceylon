@@ -1,12 +1,13 @@
 interface Cntnr => Container<Anything>; 
 
-alias Number => Integer|Float;
+class Inty() {} class Floaty() {}
+alias Number => Inty|Floaty;
 alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
 alias C => Container<Anything>&Category;
 alias E => Cntnr&Category;
 
-Number n = 1;
-Number x = 2.0;
+Number n = Inty();
+Number x = Floaty();
 [Float, Float] pair = nothing;
 ListLike<Float> list = pair;
 C c = list;
@@ -15,10 +16,10 @@ E e = list;
 shared alias Strings => List<String>;
 
 void local() {
-    alias Numbers => List<Integer|Float>;
-    Numbers numbers = [ 1, 3.0 ];
+    alias Numbers => List<Inty|Floaty>;
+    Numbers numbers = [ Inty(), Floaty() ];
     alias Ns => List<Number>;
-    Ns ns = [ 1, 3.0 ];
+    Ns ns = [ Inty(), Floaty() ];
 }
 
 class Outer() {
@@ -37,8 +38,8 @@ Outer2.Es es = Outer2().es;
 
 void testSwitch(Number nn, C cc) {
     switch (nn)
-    case (is Integer) {}
-    case (is Float) {}
+    case (is Inty) {}
+    case (is Floaty) {}
     print(cc.empty);
     print(cc.contains(1.0));
     print("hello" in cc);
@@ -46,37 +47,37 @@ void testSwitch(Number nn, C cc) {
 
 void testSwitch2(Number nn, E ee) {
     switch (nn)
-    case (is Integer) {}
-    case (is Float) {}
+    case (is Inty) {}
+    case (is Floaty) {}
     print(ee.empty);
     print(ee.contains(1.0));
     print("hello" in ee);
 }
 
 void testCanonicalization() {
-    Integer|Float i = n;
+    Inty|Floaty i = n;
     Number[] ns = [n];
     @type:"Null|Number" value temp = ns[0];
     print(temp);
-    Integer|Float|Null t = temp;
+    Inty|Floaty|Null t = temp;
     Number? num = t;
-    @type:"Number&Object" Number&Object no = t else 1.0;
+    @type:"Number&Object" Number&Object no = t else Floaty();
     @type:"Number" value no1 = no;
     @type:"Number" Number no2 = no;
-    @type:"Number" value noo = temp else 1.0;
+    @type:"Number" value noo = temp else Floaty();
     if (is Cntnr num) {
         @type:"Number&Cntnr" value nnn = num;
-        Integer&Cntnr|Float&Cntnr numif = num;
+        Inty&Cntnr|Floaty&Cntnr numif = num;
         Cntnr&Number nnnn = numif;
         switch (num)
-        case (is Integer) {
-            @type:"Cntnr&Integer" value nn = num;
+        case (is Inty) {
+            @type:"Cntnr&Inty" value nn = num;
         }
-        case (is Float) {
-            @type:"Cntnr&Float" value nn = num;
+        case (is Floaty) {
+            @type:"Cntnr&Floaty" value nn = num;
         }
     }
-    List<Integer|Float> list = ns;
+    List<Inty|Floaty> list = ns;
     List<Number> nums = list;
 }
 

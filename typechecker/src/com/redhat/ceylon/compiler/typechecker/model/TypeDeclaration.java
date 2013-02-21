@@ -565,7 +565,8 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public boolean isExtendable() {
-        return !equals(unit.getBooleanDeclaration()) &&
+        return !(this instanceof Class || this instanceof NothingType) ||
+                !equals(unit.getBooleanDeclaration()) &&
                 !equals(unit.getCharacterDeclaration()) &&
                 !equals(unit.getIntegerDeclaration()) &&
                 !equals(unit.getFloatDeclaration()) &&
@@ -574,7 +575,7 @@ public abstract class TypeDeclaration extends Declaration
                 !equals(unit.getRangeDeclaration()) &&
                 !equals(unit.getStringDeclaration()) &&
                 !equals(unit.getTupleDeclaration()) &&
-                !equals(unit.getNullDeclaration()) &&
+                /*!equals(unit.getNullDeclaration()) &&*/
                 !equals(unit.getNothingDeclaration());
     }
     

@@ -42,8 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassSpecifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -726,8 +724,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
-        TypeDeclaration td = that.getDeclarationModel();
-        ClassSpecifier cs = that.getClassSpecifier();
+        Class td = that.getDeclarationModel();
+        Tree.ClassSpecifier cs = that.getClassSpecifier();
         if (cs==null) {
             that.addError("missing class body or aliased class reference");
         }
@@ -762,7 +760,7 @@ public class TypeVisitor extends Visitor {
                         ct.addError("directly aliases itself: " + td.getName());
                         return;
                     }
-                    InvocationExpression ie = cs.getInvocationExpression();
+                    Tree.InvocationExpression ie = cs.getInvocationExpression();
                     if (ie!=null) {
                         //TODO: it would probably be better to leave
                         //      all this following  stuff to 
@@ -897,7 +895,7 @@ public class TypeVisitor extends Visitor {
             that.addError("alias may not extend a type");
             return;
         }
-        InvocationExpression ie = that.getInvocationExpression();
+        Tree.InvocationExpression ie = that.getInvocationExpression();
         Tree.SimpleType et = that.getType();
         if (et==null) {
             that.addError("malformed extended type");

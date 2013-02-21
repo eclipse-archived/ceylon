@@ -140,7 +140,7 @@ class Is() {
     Boolean c7 = e is [String,Integer];
     Boolean c8 = e is String();
     Boolean c9 = e is String(Integer);
-    Boolean c10 = e is String?;
+    @error Boolean c10 = e is String?;
     Boolean c11 = e is <Sized|Category>;
     
     String? s = null;

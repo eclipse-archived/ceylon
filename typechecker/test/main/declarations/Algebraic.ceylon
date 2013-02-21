@@ -205,6 +205,7 @@ class Class2() satisfies Interface & Sized {
 }
 class Class3() extends Class1() {}
 object object1 extends Class1() {}
+class Class4() {}
 
 void switchInterface(Interface i) {
     
@@ -237,9 +238,14 @@ void switchInterface(Interface i) {
     @error switch(i)
     case (is Class1) {}
         
-    //@error 
+    @error 
     switch(i)
     case (is String) {}
+    case (is Class1) {}
+    case (is Class2) {}
+        
+    switch(i)
+    case (is Class4) {}
     case (is Class1) {}
     case (is Class2) {}
         
@@ -442,4 +448,17 @@ void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String sss,Super1&Su
     case (is Super1|Null) {}
     switch (ssn)
     case (is EnumCase1|EnumCase2|Null) {}
+}
+
+void testLanguageModuleEffectivelyFinal<T>(T t) 
+        given T of String|Number|<String->Number> {
+    switch (t)
+    case(is String) {}
+    case(is Number) {}
+    case(is String->Number) {}
+}
+
+class RR<E>(E e) 
+        given E satisfies Ordinal<E> & Comparable<E>{
+    if (is Integer e) {}
 }
