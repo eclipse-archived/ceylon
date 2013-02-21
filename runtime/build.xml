@@ -47,7 +47,6 @@
     <property name="build.dist.lib" location="${build.dist}/lib"/>
     <property name="build.dist.repo" location="${build.dist}/repo"/>
     <property name="build.lib" location="${build.dir}/lib"/>
-    <property name="build.bootstrap" location="${build.dir}/test"/>
     <property name="build.test" location="${build.dir}/test"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
 
@@ -58,10 +57,6 @@
     <property name="runtime-impl.src" location="${basedir}/impl/src/main/java"/>
     <property name="runtime-spi.src" location="${basedir}/spi/src/main/java"/>
     <property name="runtime-bootstrap.src" location="${basedir}/bootstrap/src/main/java"/>
-
-    <!-- jar generated -->
-    <property name="bootstrap.jar" value="ceylon-runtime-bootstrap.jar"/>
-    <property name="bootstrap.lib" location="${build.lib}/${bootstrap.jar}"/>
 
     <property name="runtime-test.src" location="${basedir}/testsuite/src/test/java"/>
 
@@ -126,23 +121,17 @@
         <copy todir="${build.dist}">
             <fileset dir="${dist.dir}"/>
         </copy>
-        <chmod perm="0755">
-            <fileset dir="${build.dist}">
-                <include name="bin/ceylon"/>
-            </fileset>
-        </chmod>
-        <!-- Copy the libraries -->
-        <copy file="${bootstrap.lib}" tofile="${build.dist.lib}/${bootstrap.jar}"/>
         <!-- Copy the Ceylon runtime dependencies -->
         <copy file="${dist.dir}/repo/${javax-xml-stream.dir}/main/module.xml"
               tofile="${build.dist.repo}/${javax-xml-stream.dir}/main/module.xml"/>
         <copy file="${jboss-modules.lib}"
               tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
-        <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
+<!--        <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <copy file="${ceylon.maven-support.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
+-->
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal">
@@ -190,7 +179,7 @@
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <!-- Need an extra pass for Java 7 testing -->
-        <delete dir="${build.bootstrap}">
+        <delete dir="${build.classes}">
             <include name="**/*Main5.class"/>
             <include name="**/Java7Checker.class"/>
         </delete>
@@ -219,37 +208,8 @@
         </jar>
     </target>
 
-    <!-- Tasks related to building the runtime -->
-    <!-- Rule to build runtime classes from their Java sources -->
-    <target name="bootstrap.classes">
-        <mkdir dir="${build.bootstrap}"/>
-        <javac debug="true"
-               srcdir="${runtime-bootstrap.src}"
-               destdir="${build.bootstrap}"
-               classpathref="compiler.classpath"
-               source="1.5"
-               target="1.5"
-               includeantruntime="false">
-            <include name="**/Launcher.java"/>
-            <include name="**/CeylonClassLoader.java"/>
-        </javac>
-        <!-- Include META-INF -->
-        <copy todir="${build.bootstrap}">
-            <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
-        </copy>
-    </target>
-
-    <!-- Rule to build runtime jar -->
-    <target name="bootstrap.jar" depends="bootstrap.classes">
-        <mkdir dir="${build.lib}"/>
-        <jar destfile="${bootstrap.lib}" filesetmanifest="merge">
-            <fileset dir="${build.bootstrap}">
-            </fileset>
-        </jar>
-    </target>
-
     <!-- Rule to compile and test -->
-    <target name="build" depends="runtime.jar,bootstrap.jar"/>
+    <target name="build" depends="runtime.jar"/>
 
     <target name="compile.tests" depends="dist">
         <mkdir dir="${build.test}"/>
