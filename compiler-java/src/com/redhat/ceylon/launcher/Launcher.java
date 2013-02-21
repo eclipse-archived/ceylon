@@ -22,9 +22,19 @@ public class Launcher {
             System.setProperty("ceylon.system.version", ceylonSystemVersion);
         }
         
-        // Create the class loader that knows where to find all the Ceylon dependencies
-        CeylonClassLoader loader = new CeylonClassLoader();
-
+        // Check if we need to create a CeylonClassLoader or if we can use the existing one
+        CeylonClassLoader loader = null;
+        ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();;
+        if (currentClassLoader instanceof CeylonClassLoader) {
+            // Use existing class loader
+            loader = (CeylonClassLoader)currentClassLoader;
+        } else {
+            // Create the class loader that knows where to find all the Ceylon dependencies
+            loader = new CeylonClassLoader();
+            // Set context class loader for current thread
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+            
         // We actually need to construct and set a new class path for the compiler
         // which doesn't use the actual class path used by the JVM but it constructs
         // it's own list looking at the arguments passed on the command line or
@@ -49,9 +59,6 @@ public class Launcher {
                 System.err.println("INFO: path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
             }
         }
-        
-        // Set context class loader for current thread
-        Thread.currentThread().setContextClassLoader(loader);
         
         // Find the proper class and method to execute
         Class<?> mainClass = loader.loadClass("com.redhat.ceylon.tools.CeylonTool");
