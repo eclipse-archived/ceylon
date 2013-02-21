@@ -64,6 +64,7 @@ class TestList() satisfies List<String> {
     shared actual List<String> clone = {};
     shared actual String? get(Integer index) { return null; }
     shared actual Integer? lastIndex = null;
+    shared actual List<String> rest = [];
     shared actual List<String> reversed = {};
     shared actual List<String> segment(Integer from, Integer length) { return {}; }
     shared actual List<String> span(Integer from, Integer to) { return {}; }
