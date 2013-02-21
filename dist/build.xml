@@ -297,7 +297,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-language">
+    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,copy-js-compiler-libraries,copy-cmr-libraries">
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
