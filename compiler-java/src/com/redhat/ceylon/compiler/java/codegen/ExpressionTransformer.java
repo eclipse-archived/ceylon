@@ -801,6 +801,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(superType.getDeclaration() == expectedType.getDeclaration())
                 satisfiedTypes.add(superType);
         }
+        // discard the supertypes that have the same erasure
+        for(int i=0;i<satisfiedTypes.size();i++){
+            ProducedType pt = satisfiedTypes.get(i);
+            for(int j=i+1;j<satisfiedTypes.size();j++){
+                ProducedType other = satisfiedTypes.get(j);
+                if(pt.isExactly(other) || haveSameErasure(pt, other)){
+                    satisfiedTypes.remove(j);
+                    break;
+                }
+            }
+        }
         // we need at least two instantiations
         if(satisfiedTypes.size() <= 1)
             return null;
@@ -824,9 +835,38 @@ public class ExpressionTransformer extends AbstractTransformer {
         return RawCastVarianceResult;
     }
 
+    private boolean haveSameErasure(ProducedType pt, ProducedType other) {
+        TypeDeclaration decl1 = pt.getDeclaration();
+        TypeDeclaration decl2 = other.getDeclaration();
+        if(decl1 == null || decl2 == null)
+            return false;
+        // do we erase both to object?
+        boolean erased1 = willEraseToObject(pt);
+        boolean erased2 = willEraseToObject(other);
+        if(erased1)
+            return erased2;
+        if(erased2)
+            return false;
+        // declarations must be the same
+        if(!decl1.equals(decl2))
+            return false;
+        // now see their type arguments
+        java.util.List<ProducedType> tal1 = pt.getTypeArgumentList();
+        java.util.List<ProducedType> tal2 = other.getTypeArgumentList();
+        if(tal1.size() != tal2.size())
+            return false;
+        for(int i=0;i<tal1.size();i++){
+            if(!haveSameErasure(tal1.get(i), tal2.get(i)))
+                return false;
+        }
+        // all the same
+        return true;
+    }
+    
     //
     // Literals
     
+
     JCExpression ceylonLiteral(String s) {
         JCLiteral lit = make().Literal(s);
         return lit;
