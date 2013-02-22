@@ -42,7 +42,10 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -90,7 +93,10 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$x$4).common() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object y = this.y;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$x$4).common();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

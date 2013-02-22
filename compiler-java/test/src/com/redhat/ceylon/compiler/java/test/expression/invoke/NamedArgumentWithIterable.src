@@ -117,7 +117,10 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             }
                             
                             public final .java.lang.Object next() {
-                                return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return i;
+                                } else return .ceylon.language.finished_.getFinished$();
                             }
                         }
                         return new $ComprehensionIterator$();
@@ -157,7 +160,10 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             }
                             
                             public final .java.lang.Object next() {
-                                return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return i;
+                                } else return .ceylon.language.finished_.getFinished$();
                             }
                         }
                         return new $ComprehensionIterator$();

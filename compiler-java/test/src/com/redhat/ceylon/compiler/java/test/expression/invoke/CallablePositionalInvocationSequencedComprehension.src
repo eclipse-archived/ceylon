@@ -33,7 +33,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -65,7 +68,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -97,7 +103,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -129,7 +138,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -162,7 +174,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -194,7 +209,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -227,7 +245,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -259,7 +280,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

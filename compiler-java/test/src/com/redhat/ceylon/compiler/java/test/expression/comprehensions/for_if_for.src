@@ -67,7 +67,11 @@ final class forIfFor_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.y() ? x.times(y) : .ceylon.language.finished_.getFinished$();
+                        if (this.y()) {
+                            final .ceylon.language.Integer x = this.x;
+                            final .ceylon.language.Integer y = this.y;
+                            return x.times(y);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

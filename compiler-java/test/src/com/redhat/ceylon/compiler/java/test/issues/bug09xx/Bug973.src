@@ -46,7 +46,10 @@ final class bug973_ff_ {
                             }
                             
                             public final .java.lang.Object next() {
-                                return this.x() ? x : .ceylon.language.finished_.getFinished$();
+                                if (this.x()) {
+                                    final .ceylon.language.Integer x = this.x;
+                                    return x;
+                                } else return .ceylon.language.finished_.getFinished$();
                             }
                         }
                         return new $ComprehensionIterator$();

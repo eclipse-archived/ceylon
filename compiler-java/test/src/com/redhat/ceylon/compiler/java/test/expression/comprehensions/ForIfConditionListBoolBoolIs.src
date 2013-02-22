@@ -74,7 +74,11 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance($x$3).equals(z)) : .ceylon.language.finished_.getFinished$();
+                        if (this.next2()) {
+                            final .java.lang.Object x = this.x;
+                            final .ceylon.language.Integer z = this.z;
+                            return .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance($x$3).equals(z));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -151,7 +155,11 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance($y$7).equals(z)) : .ceylon.language.finished_.getFinished$();
+                        if (this.next2()) {
+                            final .java.lang.Object x = this.x;
+                            final .ceylon.language.Integer z = this.z;
+                            return .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance($y$7).equals(z));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

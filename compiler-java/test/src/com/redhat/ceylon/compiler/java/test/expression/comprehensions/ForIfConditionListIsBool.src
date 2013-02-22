@@ -47,7 +47,10 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2)) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -97,7 +100,10 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5)) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

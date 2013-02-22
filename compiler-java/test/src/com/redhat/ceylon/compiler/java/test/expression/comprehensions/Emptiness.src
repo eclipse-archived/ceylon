@@ -34,7 +34,10 @@ final class emptiness_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -66,7 +69,10 @@ final class emptiness_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -98,7 +104,10 @@ final class emptiness_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -130,7 +139,10 @@ final class emptiness_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -165,7 +177,10 @@ final class emptiness_ {
                             }
                             
                             public final .java.lang.Object next() {
-                                return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return i;
+                                } else return .ceylon.language.finished_.getFinished$();
                             }
                         }
                         return new $ComprehensionIterator$();
@@ -204,7 +219,10 @@ final class emptiness_ {
                             }
                             
                             public final .java.lang.Object next() {
-                                return this.i() ? i : .ceylon.language.finished_.getFinished$();
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return i;
+                                } else return .ceylon.language.finished_.getFinished$();
                             }
                         }
                         return new $ComprehensionIterator$();
@@ -269,7 +287,10 @@ final class emptinessParameterised_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.e() ? e : .ceylon.language.finished_.getFinished$();
+                        if (this.e()) {
+                            final Element e = this.e;
+                            return e;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -326,7 +347,11 @@ final class emptinessParameterised_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.f() ? new .ceylon.language.Tuple<Element, Element, .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>($reifiedElement, $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor), e, new .ceylon.language.Tuple<Element, Element, .ceylon.language.Empty>($reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor, f, .ceylon.language.empty_.getEmpty$())) : .ceylon.language.finished_.getFinished$();
+                        if (this.f()) {
+                            final Element e = this.e;
+                            final Element f = this.f;
+                            return new .ceylon.language.Tuple<Element, Element, .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>($reifiedElement, $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor), e, new .ceylon.language.Tuple<Element, Element, .ceylon.language.Empty>($reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor, f, .ceylon.language.empty_.getEmpty$()));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -371,7 +396,10 @@ final class emptinessParameterised_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $e$13 : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final Element e = this.e;
+                            return $e$13;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -403,7 +431,10 @@ final class emptinessParameterised_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.e() ? e : .ceylon.language.finished_.getFinished$();
+                        if (this.e()) {
+                            final Element e = this.e;
+                            return e;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

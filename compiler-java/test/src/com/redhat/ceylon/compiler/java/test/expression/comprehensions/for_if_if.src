@@ -52,7 +52,10 @@ final class forIfIf_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? x : .ceylon.language.finished_.getFinished$();
+                        if (this.next2()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return x;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

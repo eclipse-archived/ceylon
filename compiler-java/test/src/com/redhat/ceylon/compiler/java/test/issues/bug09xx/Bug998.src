@@ -30,7 +30,10 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.x() ? f.$call() : .ceylon.language.finished_.getFinished$();
+                        if (this.x()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return f.$call();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

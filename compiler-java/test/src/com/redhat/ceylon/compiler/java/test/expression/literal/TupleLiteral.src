@@ -39,7 +39,10 @@ class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.s() ? s : .ceylon.language.finished_.getFinished$();
+                        if (this.s()) {
+                            final .ceylon.language.String s = this.s;
+                            return s;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -71,7 +74,10 @@ class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.s() ? s : .ceylon.language.finished_.getFinished$();
+                        if (this.s()) {
+                            final .ceylon.language.String s = this.s;
+                            return s;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

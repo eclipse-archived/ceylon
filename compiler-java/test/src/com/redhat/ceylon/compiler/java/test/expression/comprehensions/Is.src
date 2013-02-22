@@ -188,7 +188,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $x$2.foo() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            return $x$2.foo();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -233,7 +236,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $x$5.foo() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            return $x$5.foo();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -275,7 +281,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -317,7 +326,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().common() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().common();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -359,7 +371,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -401,7 +416,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? x : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            return x;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

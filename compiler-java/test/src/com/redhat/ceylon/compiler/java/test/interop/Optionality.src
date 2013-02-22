@@ -67,7 +67,10 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.next1() ? $z$8 : .ceylon.language.finished_.getFinished$();
+                            if (this.next1()) {
+                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
+                                return $z$8;
+                            } else return .ceylon.language.finished_.getFinished$();
                         }
                     }
                     return new $ComprehensionIterator$();
@@ -117,7 +120,10 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.next1() ? $z$14 : .ceylon.language.finished_.getFinished$();
+                            if (this.next1()) {
+                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
+                                return $z$14;
+                            } else return .ceylon.language.finished_.getFinished$();
                         }
                     }
                     return new $ComprehensionIterator$();
@@ -168,7 +174,10 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.i() ? .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()) : .ceylon.language.finished_.getFinished$();
+                            if (this.i()) {
+                                final .ceylon.language.Integer i = this.i;
+                                return .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1());
+                            } else return .ceylon.language.finished_.getFinished$();
                         }
                     }
                     return new $ComprehensionIterator$();
@@ -200,7 +209,10 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         }
                         
                         public final .java.lang.Object next() {
-                            return this.i() ? .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()) : .ceylon.language.finished_.getFinished$();
+                            if (this.i()) {
+                                final .ceylon.language.Integer i = this.i;
+                                return .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1());
+                            } else return .ceylon.language.finished_.getFinished$();
                         }
                     }
                     return new $ComprehensionIterator$();

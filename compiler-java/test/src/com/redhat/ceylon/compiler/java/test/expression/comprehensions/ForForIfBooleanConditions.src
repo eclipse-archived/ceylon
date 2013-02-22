@@ -69,7 +69,11 @@ final class forForIfBooleanConditions_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? x.times(y) : .ceylon.language.finished_.getFinished$();
+                        if (this.next2()) {
+                            final .ceylon.language.Integer y = this.y;
+                            final .ceylon.language.Integer x = this.x;
+                            return x.times(y);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

@@ -46,7 +46,10 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt$priv(x) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return nowt$priv(x);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -94,7 +97,10 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt$priv($x$4) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object y = this.y;
+                            return nowt$priv($x$4);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

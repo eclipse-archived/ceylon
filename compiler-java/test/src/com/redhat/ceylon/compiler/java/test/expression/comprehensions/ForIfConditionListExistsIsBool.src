@@ -52,7 +52,10 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Boolean.instance($y$4 == 1L) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
+                            return .ceylon.language.Boolean.instance($y$4 == 1L);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

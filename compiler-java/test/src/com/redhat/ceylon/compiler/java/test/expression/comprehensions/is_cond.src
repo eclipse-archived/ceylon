@@ -46,7 +46,10 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance($x$2 * 2L) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.Integer.instance($x$2 * 2L);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

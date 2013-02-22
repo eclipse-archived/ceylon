@@ -53,7 +53,10 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance($x$2) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return .ceylon.language.Integer.instance($x$2);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -101,7 +104,10 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance($y$5) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return .ceylon.language.Integer.instance($y$5);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -146,7 +152,10 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance(nowt$priv(x)) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return .ceylon.language.Integer.instance(nowt$priv(x));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -194,7 +203,10 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance(nowt$priv($y$10)) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return .ceylon.language.Integer.instance(nowt$priv($y$10));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

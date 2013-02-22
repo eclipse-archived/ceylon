@@ -254,7 +254,10 @@ final class erasureCasting_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.c() ? c : .ceylon.language.finished_.getFinished$();
+                        if (this.c()) {
+                            final .ceylon.language.Integer c = this.c;
+                            return c;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -286,7 +289,10 @@ final class erasureCasting_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.c() ? c : .ceylon.language.finished_.getFinished$();
+                        if (this.c()) {
+                            final .ceylon.language.Integer c = this.c;
+                            return c;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

@@ -57,7 +57,11 @@ final class comp2_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.j() ? i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j)) : .ceylon.language.finished_.getFinished$();
+                        if (this.j()) {
+                            final .ceylon.language.Integer i = this.i;
+                            final .ceylon.language.Integer j = this.j;
+                            return i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j));
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

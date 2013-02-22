@@ -53,7 +53,10 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $y$2.foo() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
+                            return $y$2.foo();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -98,7 +101,10 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? nowt$priv($y$5) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
+                            return nowt$priv($y$5);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

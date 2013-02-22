@@ -49,7 +49,10 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance($y$2) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod x = this.x;
+                            return .ceylon.language.Integer.instance($y$2);
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

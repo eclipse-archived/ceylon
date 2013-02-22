@@ -44,7 +44,10 @@ class ForIfConditionListBoolBool implements .com.redhat.ceylon.compiler.java.run
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? x : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return x;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

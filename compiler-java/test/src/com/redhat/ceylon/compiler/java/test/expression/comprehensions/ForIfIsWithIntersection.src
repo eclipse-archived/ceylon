@@ -42,7 +42,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).common().toString()) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).common().toString());
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -84,7 +87,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().toString()) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x).foo().toString());
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -126,7 +132,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar().toString()) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x).bar().toString());
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -174,7 +183,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$8).common().toString()) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object y = this.y;
+                            return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$8).common().toString());
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -219,7 +231,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$11).foo().toString()) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object y = this.y;
+                            return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$11).foo().toString());
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
@@ -264,7 +279,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)$x$14).bar().toString()) : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .java.lang.Object y = this.y;
+                            return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)$x$14).bar().toString());
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

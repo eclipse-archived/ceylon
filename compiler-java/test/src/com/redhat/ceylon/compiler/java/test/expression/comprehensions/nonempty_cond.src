@@ -46,7 +46,10 @@ final class nonemptyCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $ints$2.getFirst() : .ceylon.language.finished_.getFinished$();
+                        if (this.next1()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return $ints$2.getFirst();
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();

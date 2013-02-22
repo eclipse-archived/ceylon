@@ -32,7 +32,10 @@ final class comp1_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.str() ? str : .ceylon.language.finished_.getFinished$();
+                        if (this.str()) {
+                            final .ceylon.language.String str = this.str;
+                            return str;
+                        } else return .ceylon.language.finished_.getFinished$();
                     }
                 }
                 return new $ComprehensionIterator$();
