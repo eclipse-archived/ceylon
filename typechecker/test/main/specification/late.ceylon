@@ -8,6 +8,7 @@ interface Late1 {
 class Child() {
     shared late Parent parent;
     @error print(parent);
+    shared Parent getParent() => parent;
 }
 class Parent(children) {
     shared Child* children;
@@ -27,6 +28,9 @@ interface Late2 {
 class Child() {
     shared late Parent parent;
     @error print(parent);
+    shared Parent getParent() {
+        return parent;
+    }
 }
 class Parent(children) {
     shared Child* children;
