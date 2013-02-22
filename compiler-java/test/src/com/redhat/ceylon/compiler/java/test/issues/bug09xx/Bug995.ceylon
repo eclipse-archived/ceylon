@@ -19,5 +19,5 @@
  */
 @nomodel
 void bug995() {
-    class S() => String();
+    abstract class S() => String();
 }
