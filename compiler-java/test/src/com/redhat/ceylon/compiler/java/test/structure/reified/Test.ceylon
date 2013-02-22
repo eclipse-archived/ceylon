@@ -13,4 +13,10 @@ void test<Key,Value>(Object obj){
     }
     if(is Key obj){
     }
+    // optimised away
+    if(is TestInterface<Anything,Anything> obj){
+    }
+    // not optimised
+    if(is TestInterface<Anything,Integer> obj){
+    }
 }

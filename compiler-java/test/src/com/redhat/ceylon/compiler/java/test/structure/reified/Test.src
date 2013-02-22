@@ -62,5 +62,13 @@ final class test_ {
         }
         if (.com.redhat.ceylon.compiler.java.Util.isReified(obj, $reifiedKey)) {
         }
+        .java.lang.Object $obj$9;
+        if (($obj$9 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$10 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$9;
+        }
+        .java.lang.Object $obj$12;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$12 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$13 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$12;
+        }
     }
 }
