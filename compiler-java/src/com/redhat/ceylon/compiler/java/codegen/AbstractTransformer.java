@@ -287,6 +287,11 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Literal(Long.valueOf(i));
     }
     
+    /** Makes a boxed Ceylon String */
+    JCExpression makeCeylonString(String s) {
+        return boxString(make().Literal(s));
+    }
+    
     JCExpression makeBoolean(boolean b) {
         JCExpression expr;
         if (b) {
