@@ -392,6 +392,10 @@
           <fileset dir="${build.classes}">
             <include name="com/redhat/ceylon/ant/**"/>
           </fileset>
+          <zipfileset src="${ceylon.common.lib}"/>
+          <zipfileset src="${ceylon.module-resolver.lib}"/>
+          <zipfileset src="${ceylon.typechecker.lib}"/>
+          <zipfileset src="${antlr.lib}"/>
         </jar>
     </target>
 
