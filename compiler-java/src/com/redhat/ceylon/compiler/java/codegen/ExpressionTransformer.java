@@ -3242,22 +3242,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType iteratorType = typeFact().getIteratorType(iteratedType);
             JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
                     List.<JCExpression>of(makeJavaType(iteratedType, JT_NO_PRIMITIVES)));
-            MethodDefinitionBuilder iteratorCtor = MethodDefinitionBuilder.constructor(gen());
-            iteratorCtor.body(make().Exec(make().Apply(null, naming.makeSuper(), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)))));
-            iteratorCtor.body(initIterator);
-            SyntheticName iteratorClassName = naming.synthetic("$ComprehensionIterator$");
-            JCClassDecl iteratorClass = make().ClassDef(
-                    make().Modifiers(Flags.FINAL), 
-                    iteratorClassName.asName(), // name 
-                    List.<JCTypeParameter>nil(), // type params
-                    iteratorTypeExpr, //extending
-                    List.<JCExpression>nil(), // implementing
-                    List.<JCTree>of(iteratorCtor.build()).appendList(fields));
-            JCExpression iterator = make().NewClass(null, List.<JCExpression>nil(), iteratorClassName.makeIdent(), 
-                    List.<JCExpression>nil(), 
-                    null);
+            JCExpression iterator = make().NewClass(null, List.<JCExpression>nil(), iteratorTypeExpr, 
+                    List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), 
+                    make().AnonymousClassDef(make().Modifiers(0), 
+                            fields.toList().prepend(
+                                    make().Block(0L, List.<JCStatement>of(initIterator)) 
+                                    )));
             JCBlock iteratorBlock = make().Block(0, List.<JCStatement>of(
-                    iteratorClass,
                     make().Return(iterator)));
             return make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
                     makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
