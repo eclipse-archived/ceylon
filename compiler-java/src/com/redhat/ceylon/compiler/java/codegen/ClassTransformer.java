@@ -1063,7 +1063,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // Generate getter in companion class
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true, lazy));
             }
-            if (Decl.isMutable(decl)) {
+            if (Decl.isVariable(decl)) {
                 if (!withinInterface || model.isShared()) {
                     // Generate setter in main class or interface (when shared)
                     classBuilder.attribute(makeSetter(decl, false, lazy));
@@ -1185,7 +1185,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= Decl.isMutable(cdecl) ? 0 : FINAL;
+        result |= Decl.isVariable(cdecl) ? 0 : FINAL;
         result |= PRIVATE;
 
         return result;
@@ -1194,7 +1194,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= Decl.isMutable(cdecl) ? 0 : FINAL;
+        result |= Decl.isVariable(cdecl) ? 0 : FINAL;
 
         return result;
     }

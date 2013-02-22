@@ -212,7 +212,7 @@ public class Decl {
         return decl.isActual();
     }
 
-    public static boolean isMutable(Tree.AttributeDeclaration decl) {
+    public static boolean isVariable(Tree.AttributeDeclaration decl) {
         return decl.getDeclarationModel().isVariable();
     }
 
