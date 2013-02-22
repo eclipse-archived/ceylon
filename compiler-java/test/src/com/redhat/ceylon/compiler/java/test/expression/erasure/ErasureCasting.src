@@ -169,10 +169,10 @@ final class erasureCasting_ {
         if (a instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised) {
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)a).t();
         }
-        final .ceylon.language.Sequential rawSequence = .ceylon.language.empty_.getEmpty$();
-        .ceylon.language.Sequential $rawSequence$6;
+        final .ceylon.language.Sequential<? extends .java.lang.Object> rawSequence = .ceylon.language.empty_.getEmpty$();
+        .ceylon.language.Sequential<? extends .java.lang.Object> $rawSequence$6;
         if (($rawSequence$6 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)rawSequence) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequence $rawSequence$7 = (.ceylon.language.Sequence)$rawSequence$6;
+            final .ceylon.language.Sequence<? extends .java.lang.Object> $rawSequence$7 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$rawSequence$6;
         }
         final boolean bool = ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
         .ceylon.language.String $nonOptionalString$9;
