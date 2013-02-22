@@ -94,6 +94,8 @@
         <pathelement path="${basedir}/../ceylon-js/build/lib/compiler.js.test.jar"/>
     </path>
 
+    <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+
     <!-- ################################################################## -->
     <!-- constant to declare a file binary for checksumsum -->
     <property name="checksum.binary-prefix" value=" *" />
@@ -106,10 +108,6 @@
         <basename file="${file}" property="filename"/>
         <checksum file="${file}" property="value" algorithm="sha1"/>
         <echo file="${file}.sha1" message="${value}"/>
-    </target>
-
-    <target name="ceylonc">
-        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
     </target>
 
     <!-- Rule to clean everything up -->
@@ -173,7 +171,7 @@
 
     <!-- Tasks related to building the ceylon.language module -->
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
-    <target name="ceylon.language.java" depends="ceylonc">
+    <target name="ceylon.language.java">
         <!-- toplevel types -->
         <ceylon-compile
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
@@ -252,6 +250,14 @@
         </java>
     </target>
 
+    <!-- Rule to generate the documentation from the Ceylon sources -->
+    <target name="ceylon.language.doc">
+        <ceylon-doc
+            executable="${ceylon.compiler.loc}/dist/bin/ceylon">
+            <sourcemodules dir="${module.language.src}"/>
+        </ceylon-doc>
+    </target>
+
     <!-- Rule to compile and test -->
     <target name="build" depends="ceylon.language.java,ceylon.language.js">
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
@@ -285,7 +291,7 @@
         <mkdir dir="${build.test}"/>
     </target>
 
-    <target name="compile.tests.java" depends="ceylon.language.java,ceylonc,compile.tests.setup">
+    <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup">
         <ceylon-compile
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             src="${test.src}"
@@ -347,7 +353,7 @@
         
     </target>
 
-    <target name="compile.tests.js" depends="ceylon.language.js,ceylonc,compile.tests.setup">
+    <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup">
         <ceylon-compile-js
             executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             src="${test.src}"
