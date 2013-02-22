@@ -328,12 +328,17 @@
     </javac>
   	<copy todir="${build.classes}">
       <fileset dir="${ceylonc.src}">
-        <include name="com/redhat/**/resources/**"/>
+      	<exclude name="com/redhat/**/*.utf8properties"/>
+      	<include name="com/redhat/**/resources/**"/>
       	<include name="com/redhat/**/*.properties"/>
       	<include name="com/redhat/ceylon/ant/antlib.xml"/>
         <include name="META-INF/**"/>
       </fileset>
   	</copy>
+  	<native2ascii dest="${build.classes}" src="${ceylonc.src}" 
+  	              encoding="UTF-8" ext=".properties">
+      <include name="com/redhat/**/*.utf8properties"/>
+    </native2ascii>
   </target>
 
   <!-- Rule to build compiler test classes from their Java sources -->

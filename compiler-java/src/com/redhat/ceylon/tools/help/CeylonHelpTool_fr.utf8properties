@@ -1,0 +1,10 @@
+summary=Affiche des informations d''aide sur les outils de `ceylon`
+
+description=Si un `<outil>` est donné, affiche l''aide de cet outil Ceylon sur \
+la sortie standard.\
+Si aucun `<outil>` n''est donné, affiche l''aide de la commande \
+`ceylon`.
+
+sections.remaining=##VOIR AUSSI\n\
+\n\
+* `ceylon doc-tool` pour générer la documentation sur les outils Ceylon.
