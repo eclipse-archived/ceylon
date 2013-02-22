@@ -196,7 +196,7 @@ final class erasureCasting_ {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyIntegerSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$12$iterable = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)nonEmptyStringSequence;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$12$iterable = nonEmptyStringSequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$12$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
                 .java.lang.Object $spread$12$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$12$iterator = $spread$12$iterable.getIterator(); !(($spread$12$iteration = $spread$12$iterator.next()) instanceof .ceylon.language.Finished); ) {

@@ -11,8 +11,8 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
         this.$ceylon$language$Sequential$this = new .ceylon.language.Sequential$impl<Element>($reifiedElement, this);
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable<Element, .java.lang.Object>)(.ceylon.language.Iterable)this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Container<Element, .java.lang.Object>)(.ceylon.language.Container)this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedElement), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor, $reifiedElement, this);
