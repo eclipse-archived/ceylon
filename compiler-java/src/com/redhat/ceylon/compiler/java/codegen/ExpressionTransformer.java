@@ -89,6 +89,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -3155,6 +3156,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ListBuffer<Substitution> fieldSubst = new ListBuffer<Substitution>();
         private JCExpression error;
         private JCStatement initIterator;
+        // A list of variable declarations local to the next() method so that
+        // the variable captured by whatever gets transformed there holds the value
+        // at *that point* on the iteration, and not the (variable) value of 
+        // the iterator. See #986
+        private final ListBuffer<JCStatement> valueCaptures = ListBuffer.<JCStatement>lb();
         public ComprehensionTransformation(final Comprehension comp, ProducedType elementType) {
             this.comp = comp;
             targetIterType = typeFact().getIterableType(elementType);
@@ -3196,16 +3202,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType iteratedType = typeFact().getIteratedType(targetIterType);
             
             //Define the next() method for the Iterator
-            fields.add(make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("next"),
-                makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
-                List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
-                    make().Return(
-                        make().Conditional(
-                            make().Apply(null, 
-                                ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
-                            transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType),
-                            makeFinished()))
-            )), null));
+            fields.add(makeNextMethod(iteratedType));
             //Define the inner iterator class
             
             JCMethodDecl getIterator = makeGetIterator(iteratedType);
@@ -3214,6 +3211,23 @@ public class ExpressionTransformer extends AbstractTransformer {
                 subs.close();
             }
             return iterable;
+        }
+        /**
+         * Builds the {@code next()} method of the {@code AbstractIterator}
+         */
+        private JCMethodDecl makeNextMethod(ProducedType iteratedType) {
+            if (valueCaptures.isEmpty()) {
+                valueCaptures.append(make().Exec(makeErroneous(this.comp, "Nothing captured")));
+            }
+            List<JCStatement> of = valueCaptures.append(make().Return(transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType))).toList();
+            JCStatement stmt = make().If(
+                    make().Apply(null,
+                        ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
+                    make().Block(0, of),
+                    make().Return(makeFinished()));
+            return make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("next"),
+                makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
+                List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(stmt)), null);
         }
         /**
          * Builds a {@code getIterator()} method which contains a local class 
@@ -3406,6 +3420,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //Add the item variable as a field in the iterator
                 Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
                 itemVar = naming.synthetic(item.getName());
+                valueCaptures.append(makeVar(Flags.FINAL, itemVar, 
+                        makeJavaType(item.getType(),JT_NO_PRIMITIVES), itemVar.makeIdentWithThis()));
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.asName(),
                         makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
                 fieldNames.add(itemVar.getName());
@@ -3454,18 +3470,29 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Value item = kviter.getValueVariable().getDeclarationModel();
                 //Assign the key and item to the corresponding fields with the proper type casts
                 //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
-                JCExpression castEntryExpr = make().TypeCast(
+                JCExpression castEntryExprKey = make().TypeCast(
                     makeJavaType(typeFact().getIteratedType(iterType)),
                     tmpItem.makeIdent());
-                elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
+                SyntheticName keyName = naming.synthetic(key.getName());
+                SyntheticName itemName = naming.synthetic(item.getName());
+                valueCaptures.append(makeVar(Flags.FINAL, keyName, 
+                        makeJavaType(key.getType(), JT_NO_PRIMITIVES), 
+                        keyName.makeIdentWithThis()));
+                valueCaptures.append(makeVar(Flags.FINAL, itemName, 
+                        makeJavaType(item.getType(), JT_NO_PRIMITIVES), 
+                        itemName.makeIdentWithThis()));
+                elseBody.add(make().Exec(make().Assign(keyName.makeIdent(),
                     make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
-                        make().Apply(null, makeSelect(castEntryExpr, "getKey"),
+                        make().Apply(null, makeSelect(castEntryExprKey, "getKey"),
                             List.<JCExpression>nil())
                 ))));
                 //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
-                elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(item.getName()),
+                JCExpression castEntryExprItem = make().TypeCast(
+                        makeJavaType(typeFact().getIteratedType(iterType)),
+                        tmpItem.makeIdent());
+                elseBody.add(make().Exec(make().Assign(itemName.makeIdent(),
                     make().TypeCast(makeJavaType(item.getType(), JT_NO_PRIMITIVES),
-                        make().Apply(null, makeSelect(castEntryExpr, "getItem"),
+                        make().Apply(null, makeSelect(castEntryExprItem, "getItem"),
                             List.<JCExpression>nil())
                 ))));
             }
