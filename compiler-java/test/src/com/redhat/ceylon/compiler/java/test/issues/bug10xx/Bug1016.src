@@ -7,7 +7,7 @@ final class bug1016_ {
     
     static void bug1016(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable) {
         .java.lang.Object $iterable$1;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($iterable$1 = iterable, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Anything.$TypeDescriptor))) {
+        if (($iterable$1 = iterable) instanceof .ceylon.language.Sequential) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> $iterable$2 = (.ceylon.language.Sequential)$iterable$1;
             final .ceylon.language.Sequence<? extends .java.lang.Object> sequence = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$iterable$2;
         }

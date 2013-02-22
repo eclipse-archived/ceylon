@@ -264,8 +264,8 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     
     @.java.lang.Override
     public final long getSize() {
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(getLast(), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Enumerable.class, .ceylon.language.Anything.$TypeDescriptor))) {
-            if (.com.redhat.ceylon.compiler.java.Util.isReified(getFirst(), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Enumerable.class, .ceylon.language.Anything.$TypeDescriptor))) {
+        if (getLast() instanceof .ceylon.language.Enumerable) {
+            if (getFirst() instanceof .ceylon.language.Enumerable) {
                 return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)last).getIntegerValue() - ((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)first).getIntegerValue()) + 1L;
             }
         }
