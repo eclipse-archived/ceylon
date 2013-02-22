@@ -17,17 +17,13 @@ initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential
 var origStrToString = String.prototype.toString;
 inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable,
         Cloneable);
-function SequenceString() {}
-initType(SequenceString, "ceylon.language::SequenceString", String$, Sequence);
-function EmptyString() {}
-initType(EmptyString, "ceylon.language::EmptyString", String$, Empty);
 var String$proto = String$.$$.prototype;
 String$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
 String$proto.getT$name = function() {
-    return ((this.length!==0)?SequenceString:EmptyString).$$.T$name;
+    return String$.$$.T$name;
 }
 String$proto.getT$all = function() {
-    return ((this.length!==0)?SequenceString:EmptyString).$$.T$all;
+    return String$.$$.T$all;
 }
 String$proto.toString = origStrToString;
 defineAttr(String$proto, 'string', function(){ return this; });
