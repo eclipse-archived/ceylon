@@ -992,6 +992,11 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug986() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug986", "bug09xx/Bug986.ceylon");
+    }
+    
+    @Test
     public void testBug991() {
         compareWithJavaSource("bug09xx/Bug991");
     }
