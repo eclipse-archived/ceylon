@@ -2579,7 +2579,8 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (type.getDeclaration() instanceof NothingType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
-            } else if (!type.getTypeArguments().isEmpty() || isTypeParameter(type)){
+            } else if ((!type.getTypeArguments().isEmpty() || isTypeParameter(type))
+                        && !canOptimiseReifiedTypeTest(type)){
                 // requires a little magic
                 return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(type)), null);
             } else {
@@ -2588,6 +2589,18 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return result;
+    }
+
+    private boolean canOptimiseReifiedTypeTest(ProducedType type) {
+        // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
+        if(type.getDeclaration() instanceof ClassOrInterface == false)
+            return false;
+        for(ProducedType ta : type.getTypeArgumentList()){
+            if(!isVoid(ta))
+                return false;
+        }
+        // they're all void we can optimise
+        return true;
     }
 
     JCExpression makeNonEmptyTest(JCExpression firstTimeExpr) {
