@@ -207,7 +207,7 @@ final class erasureCasting_ {
             returning $spread$12$sequenceBuilder.getSequence();
         );
         .java.lang.Object $elem$13;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $erasedValue$iter$14 = erasedSequence.getIterator(); !(($elem$13 = $erasedValue$iter$14.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $erasedValue$iter$14 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence).getIterator(); !(($elem$13 = $erasedValue$iter$14.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object erasedValue = (.java.lang.Object)$elem$13;
         }
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequenceOfInts = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(

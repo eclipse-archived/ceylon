@@ -25,7 +25,7 @@ final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.ja
     
     private void visitChildren$priv(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> dispatcher) {
         .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $child$iter$1 = $this.getIterator(); !(($elem$0 = $child$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $child$iter$1 = ((Visited)$this).getIterator(); !(($elem$0 = $child$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object child = (.java.lang.Object)$elem$0;
             .java.lang.Object $child$3;
             if (($child$3 = child) instanceof .ceylon.language.Integer) {
