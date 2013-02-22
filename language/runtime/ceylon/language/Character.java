@@ -21,8 +21,10 @@ public final class Character
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Character.class);
 
+    @Ignore
     public final int codePoint;
 
+    @Ignore
     private Character(int codePoint) {
         this.codePoint = codePoint;
     }

@@ -24,8 +24,10 @@ public final class Float
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Float.class);
 
+    @Ignore
     final double value;
     
+    @Ignore
     private Float(double d) {
         value = d;
     }

@@ -53,8 +53,10 @@ public class String
     @Ignore
     protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
+    @Ignore
     public final java.lang.String value;
 
+    @Ignore
     protected String(java.lang.String s) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);

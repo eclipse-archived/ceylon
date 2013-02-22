@@ -22,6 +22,7 @@ public abstract class Boolean implements ReifiedType {
         return b ? true_.getTrue$() : false_.getFalse$();
     }
 
+    @Ignore
     abstract public boolean booleanValue();
     
     @Ignore

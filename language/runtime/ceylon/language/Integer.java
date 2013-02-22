@@ -29,8 +29,10 @@ public final class Integer
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Integer.class);
 
+    @Ignore
     final long value;
 
+    @Ignore
     private Integer(long l) {
         value = l;
     }
