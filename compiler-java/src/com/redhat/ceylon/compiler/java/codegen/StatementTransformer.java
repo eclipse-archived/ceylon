@@ -1301,12 +1301,15 @@ public class StatementTransformer extends AbstractTransformer {
                 sequenceElementType = typeFact().getEntryType(variable.getType().getTypeModel(), 
                         valueVariable.getType().getTypeModel());
             }
+            ProducedType sequenceType = specifierExpression.getTypeModel().getSupertype(typeFact().getIterableDeclaration());
+            ProducedType expectedIterableType = typeFact().isNonemptyIterableType(sequenceType)
+                    ? typeFact().getNonemptyIterableType(sequenceElementType)
+                    : typeFact().getIterableType(sequenceElementType);
             JCExpression castElem = at(stmt).TypeCast(makeJavaType(sequenceElementType, CeylonTransformer.JT_NO_PRIMITIVES), elem_name.makeIdent());
             List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
             // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
-            // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
-            JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
+            JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, expectedIterableType);
             
             // final U n = $elem$X;
             // or
