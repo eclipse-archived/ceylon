@@ -43,8 +43,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -215,7 +213,15 @@ public class Decl {
     public static boolean isVariable(Tree.AttributeDeclaration decl) {
         return decl.getDeclarationModel().isVariable();
     }
+    
+    public static boolean isLate(Tree.AttributeDeclaration decl) {
+        return isLate(decl.getDeclarationModel());
+    }
 
+    public static boolean isLate(Value model) {
+        return model.isLate();
+    }
+    
     public static boolean isToplevel(Tree.Declaration decl) {
         return isToplevel(decl.getDeclarationModel());
     }
