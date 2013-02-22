@@ -70,6 +70,9 @@ class MyException(String? m, Exception? x)
  satisfies EmptyInterface {}
 
 @nomodel
+interface MyNumeric satisfies Numeric<MyNumeric> & Integral<MyNumeric> & Comparable<MyNumeric>{}
+
+@nomodel
 class Test(Integer&EmptyInterface n) {
     
     void takesTop(Top top){}
@@ -94,8 +97,8 @@ class Test(Integer&EmptyInterface n) {
     // WARNING: when the typechecker figures out that because Integer is final
     // the Integer&EmptyInterface type cannot exist, we'll need to change it to
     // something else
-    Left testIntersection(Integer&EmptyInterface p1,
-                          Integer&EmptyInterface|Null p1OrNull,
+    Left testIntersection(Number&EmptyInterface p1,
+                          Number&EmptyInterface|Null p1OrNull,
                           Sequence<Top&EmptyInterface>&EmptyInterface tops,
                           Null|Sequence<Top&EmptyInterface>&EmptyInterface topsOrNull,
                           Test&EmptyInterface erasedTest){
@@ -160,30 +163,30 @@ class Test(Integer&EmptyInterface n) {
         return middle;
     }
 
-    void testNullHandlingOperators(Integer&EmptyInterface p1,
-                                   Integer&EmptyInterface|Null p1OrNull){
+    void testNullHandlingOperators(Number&EmptyInterface p1,
+                                   Number&EmptyInterface|Null p1OrNull){
         // conditions
         if(exists p1OrNull){}
         variable Boolean bSync;
         bSync = p1OrNull exists;
         
         value p2 = p1OrNull else p1;
-        Integer n = p1OrNull else p1;
+        Number n = p1OrNull else p1;
         
         // FIXME: those operators are not yet supported
         //value p3 = p1OrNull?.remainder(p1);
         //value p4 = p1OrNull?.zero;
     }
 
-    void testArithmeticOperators(Integer&EmptyInterface p1,
+    void testArithmeticOperators(MyNumeric&EmptyInterface p1,
                                  Test&EmptyInterface erasedTest){
         // with boxing
-        Integer unboxed = p1;
-        Integer&EmptyInterface boxed = this.n;
+        MyNumeric unboxed = p1;
+        MyNumeric&EmptyInterface boxed = this.n;
 
         // arithmetic operators
-        variable Integer&EmptyInterface n = this.n;
-        variable Integer sync;
+        variable MyNumeric&EmptyInterface n = this.n;
+        variable MyNumeric sync;
         sync = n + n;
         sync = n - n;
         sync = n * n;
@@ -193,7 +196,7 @@ class Test(Integer&EmptyInterface n) {
         sync = +n;
     }
 
-    void testComparisonOperators(Integer&EmptyInterface p1,
+    void testComparisonOperators(MyNumeric&EmptyInterface p1,
                                  Test&EmptyInterface erasedTest,
                                  Category&EmptyInterface container){
         // equality operators
@@ -213,7 +216,7 @@ class Test(Integer&EmptyInterface n) {
 
     void testSequences(Integer&EmptyInterface p1,
                        Sequence<Left&Right>&EmptyInterface leftsAndRights,
-                       Sequence<Entry<Left&Right,Left&Right>&EmptyInterface>&EmptyInterface leftsAndRightsEntries,
+                       Sequence<Entry<Left&Right,Left&Right>>&EmptyInterface leftsAndRightsEntries,
                        Null|Sequence<Left&Right>&EmptyInterface topsOrNull){
         // sequence operators
         Empty|Sequence<Integer&EmptyInterface> naturals = [p1];
