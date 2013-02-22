@@ -3,21 +3,47 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "A", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {"ceylon.language::Number", "ceylon.language::Closeable"}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN, satisfies = {}, caseTypes = {"ceylon.language::Number", "ceylon.language::String"}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number"), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "D", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number|ceylon.language::String")})
-public class TypeParameters<A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D> {
+public class TypeParameters<A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public TypeParameters() {
+    public TypeParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
+        this.$reifiedA = $reifiedA;
+        this.$reifiedB = $reifiedB;
+        this.$reifiedC = $reifiedC;
+        this.$reifiedD = $reifiedD;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD;
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "A", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {"ceylon.language::Number", "ceylon.language::Closeable"}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN, satisfies = {}, caseTypes = {"ceylon.language::Number", "ceylon.language::String"}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number"), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "D", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number|ceylon.language::String")})
-    public final <A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D>void m() {
+    public final <A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D>void m(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.annotations.TypeParameters();
+        new .com.redhat.ceylon.compiler.java.test.annotations.TypeParameters(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeParameters.class, $reifiedA, $reifiedB, $reifiedC, $reifiedD);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
@@ -30,12 +56,16 @@ public final class typeParameters_ {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "A", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT, satisfies = {"ceylon.language::Number", "ceylon.language::Closeable"}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "B", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN, satisfies = {}, caseTypes = {"ceylon.language::Number", "ceylon.language::String"}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number"), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "D", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}, defaultValue = "ceylon.language::Number|ceylon.language::String")})
-    public static <A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D>void typeParameters() {
+    public static <A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D>void typeParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.annotations.typeParameters_.typeParameters();
+        .com.redhat.ceylon.compiler.java.test.annotations.typeParameters_.typeParameters(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }
