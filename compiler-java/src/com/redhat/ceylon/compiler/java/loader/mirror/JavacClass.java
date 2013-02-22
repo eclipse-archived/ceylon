@@ -135,6 +135,11 @@ public class JavacClass implements ClassMirror {
     }
 
     @Override
+    public boolean isFinal() {
+        return (classSymbol.flags() & Flags.FINAL) != 0;
+    }
+
+    @Override
     public List<MethodMirror> getDirectMethods() {
         if (methods == null) {
             List<MethodMirror> ret = new LinkedList<MethodMirror>();

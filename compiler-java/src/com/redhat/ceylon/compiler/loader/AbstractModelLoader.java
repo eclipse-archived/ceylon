@@ -609,6 +609,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setFormal(isAnnotated(classMirror, "formal"));
         klass.setDefault(isAnnotated(classMirror, "default"));
         klass.setActual(isAnnotated(classMirror, "actual"));
+        klass.setFinal(classMirror.isFinal());
         return klass;
     }
 

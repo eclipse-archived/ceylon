@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -97,6 +96,11 @@ public class ReflectionClass implements ClassMirror {
     @Override
     public boolean isStatic() {
         return Modifier.isStatic(klass.getModifiers());
+    }
+
+    @Override
+    public boolean isFinal() {
+        return Modifier.isFinal(klass.getModifiers());
     }
 
     @Override

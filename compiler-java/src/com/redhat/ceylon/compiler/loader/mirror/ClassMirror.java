@@ -131,4 +131,9 @@ public interface ClassMirror extends AnnotatedMirror {
      */
     boolean isJavaSource();
 
+    /**
+     * Returns true if this class is final
+     */
+    boolean isFinal();
+
 }

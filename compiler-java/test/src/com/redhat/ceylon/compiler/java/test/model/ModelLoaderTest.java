@@ -336,6 +336,8 @@ public class ModelLoaderTest extends CompilerTest {
             compareParameterLists(validDeclaration.getQualifiedNameString(), 
                     ((Class)validDeclaration).getParameterLists(), 
                     ((Class)modelDeclaration).getParameterLists());
+            // final
+            Assert.assertEquals(name+" [is final]", validDeclaration.isFinal(), modelDeclaration.isFinal());
         }else{
             // tests specific to interfaces
             Assert.assertTrue(name+" [is interface]", modelDeclaration instanceof Interface);
