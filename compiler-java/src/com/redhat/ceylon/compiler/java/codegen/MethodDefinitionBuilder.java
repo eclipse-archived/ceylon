@@ -195,7 +195,7 @@ public class MethodDefinitionBuilder {
     JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type, int flags) {
         if (typedDeclaration == null
                 || (!(typedDeclaration instanceof FunctionalParameter)
-                        && gen.isVoid(type))) {
+                        && gen.isAnything(type))) {
             if ((typedDeclaration instanceof Method)
                     && ((Method)typedDeclaration).isDeclaredVoid()
                     && !Strategy.useBoxedVoid((Method)typedDeclaration)) {

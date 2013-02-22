@@ -1073,11 +1073,11 @@ class NamedArgumentInvocation extends Invocation {
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         try {
-            gen.statementGen().noExpressionlessReturn = gen.isVoid(model.getType());
+            gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
                 body = gen.statementGen().transform(methodArg.getBlock()).getStatements();
                 if (!methodArg.getBlock().getDefinitelyReturns()) {
-                    if (gen.isVoid(model.getType())) {
+                    if (gen.isAnything(model.getType())) {
                         body = body.append(gen.make().Return(gen.makeNull()));
                     } else {
                         body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "non-void method doesn't definitely return")));

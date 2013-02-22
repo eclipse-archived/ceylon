@@ -415,12 +415,12 @@ public class Naming implements LocalId {
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
             && method.getParameterLists().get(0).getParameters().isEmpty()
-            && !gen().isVoid(method.getType()))
+            && !gen().isAnything(method.getType()))
             return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
            && method.getParameterLists().get(0).getParameters().size() == 1
-           && gen().isVoid(method.getType()))
+           && gen().isAnything(method.getType()))
             return quote(name);
         return name;
     }

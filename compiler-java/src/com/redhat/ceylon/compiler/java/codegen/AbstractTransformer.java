@@ -424,7 +424,7 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getSupertype(typeFact.getNullValueDeclaration().getTypeDeclaration()) != null;
     }
 
-    public boolean isVoid(ProducedType type) {
+    public boolean isAnything(ProducedType type) {
         return CodegenUtil.isVoid(type);
     }
 
@@ -2172,7 +2172,7 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxBoolean(expr);
         } else if (isCeylonArray(exprType)) {
             expr = boxArray(expr, typeFact.getArrayElementType(exprType));
-        } else if (isVoid(exprType)) {
+        } else if (isAnything(exprType)) {
             expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
         } else if (isOptional(exprType)) {
             // sometimes, due to interop we will get an unboxed java.lang.String whose Ceylon type
@@ -2561,7 +2561,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } else {
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
-            if (isVoid(type)){
+            if (isAnything(type)){
                 // everything is Void, it's the root of the hierarchy
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
             } else if (type.isExactly(typeFact().getNullDeclaration().getType())){
@@ -2596,7 +2596,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
         for(ProducedType ta : type.getTypeArgumentList()){
-            if(!isVoid(ta))
+            if(!isAnything(ta))
                 return false;
         }
         // they're all void we can optimise

@@ -326,11 +326,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
         try {
-            statementGen().noExpressionlessReturn = isVoid(model.getType());
+            statementGen().noExpressionlessReturn = isAnything(model.getType());
             if (functionArg.getBlock() != null) {
                 body = statementGen().transform(functionArg.getBlock()).getStatements();
                 if (!functionArg.getBlock().getDefinitelyReturns()) {
-                    if (isVoid(model.getType())) {
+                    if (isAnything(model.getType())) {
                         body = body.append(make().Return(makeNull()));
                     } else {
                         body = body.append(make().Return(makeErroneous(functionArg.getBlock(), "non-void method doesn't definitely return")));

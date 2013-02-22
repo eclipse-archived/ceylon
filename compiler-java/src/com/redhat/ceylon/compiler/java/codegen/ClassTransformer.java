@@ -718,7 +718,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean explicitReturn = false;
         Declaration member = typedMember.getDeclaration();
         ProducedType returnType = null;
-        if (!isVoid(methodType) 
+        if (!isAnything(methodType) 
                 || ((member instanceof Method || member instanceof Getter || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
                 || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
             explicitReturn = true;
@@ -1590,7 +1590,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             ProducedType resultType = model.getType();
-            returnNull = isVoid(resultType) && fa.getExpression().getUnboxed();
+            returnNull = isAnything(resultType) && fa.getExpression().getUnboxed();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             List<Substitution> substitutions = List.nil();
@@ -1607,7 +1607,7 @@ public class ClassTransformer extends AbstractTransformer {
                 subs.close();
             }
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
-            returnNull = isVoid(term.getTypeModel()) && term.getUnboxed();
+            returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
             Method method = methodDecl.getDeclarationModel();
             Tree.Term primary = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
             boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
@@ -1664,7 +1664,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean isVoid(Tree.Declaration def) {
         if (def instanceof Tree.AnyMethod) {
-            return gen().isVoid(((Tree.AnyMethod)def).getType().getTypeModel());
+            return gen().isAnything(((Tree.AnyMethod)def).getType().getTypeModel());
         } else if (def instanceof Tree.AnyClass) {
             // Consider classes void since ctors don't require a return statement
             return true;
@@ -1674,7 +1674,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     private boolean isVoid(Declaration def) {
         if (def instanceof Method) {
-            return gen().isVoid(((Method)def).getType());
+            return gen().isAnything(((Method)def).getType());
         } else if (def instanceof Class) {
             // Consider classes void since ctors don't require a return statement
             return true;
