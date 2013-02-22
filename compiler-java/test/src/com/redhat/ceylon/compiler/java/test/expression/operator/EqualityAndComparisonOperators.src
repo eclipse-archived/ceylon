@@ -140,58 +140,51 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp2 = .ceylon.language.Boolean.instance(sync);
+                .java.lang.Object $ceylontmp2 = foo;
             }
-            returning $ceylontmp2 instanceof .ceylon.language.Empty;
+            returning $ceylontmp2 instanceof .ceylon.language.Boolean;
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp3 = foo;
             }
-            returning $ceylontmp3 instanceof .ceylon.language.Boolean;
+            returning $ceylontmp3 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp3 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp4 = foo;
             }
-            returning $ceylontmp4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp4 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp5 = foo;
             }
-            returning $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp6 = foo;
             }
-            returning $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp7 = foo;
             }
-            returning $ceylontmp7 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp7 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+            returning .com.redhat.ceylon.compiler.java.Util.isBasic($ceylontmp7);
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp8 = foo;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isBasic($ceylontmp8);
-        );
-        sync = (
-            let
-            {
-                .java.lang.Object $ceylontmp9 = foo;
-            }
-            returning $ceylontmp9 instanceof .java.lang.Throwable;
+            returning $ceylontmp8 instanceof .java.lang.Throwable;
         );
     }
     

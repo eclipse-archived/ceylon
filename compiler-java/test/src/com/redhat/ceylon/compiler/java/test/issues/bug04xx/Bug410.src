@@ -7,13 +7,6 @@ final class bug410_ {
     
     static void bug410() {
         final .ceylon.language.Collection<? extends .ceylon.language.Character> s = .ceylon.language.String.instance("foo");
-        final boolean b = (
-            let
-            {
-                .java.lang.Object $ceylontmp0 = s;
-            }
-            returning $ceylontmp0 instanceof .java.lang.String;
-        );
     }
     
     public static void main(.java.lang.String[] args) {

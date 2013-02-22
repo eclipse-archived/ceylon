@@ -22,5 +22,7 @@ import java.lang {JString = String }
 @nomodel
 void bug410(){
     Collection<Character> s = "foo";
-    Boolean b = s is JString;
+    // test used to be required but now the typechecker figures out by itself that there's no intersection between
+    // those two types so the error can't happen anymore anyways
+    //Boolean b = s is JString;
 }
