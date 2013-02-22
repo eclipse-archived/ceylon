@@ -2595,8 +2595,8 @@ public abstract class AbstractTransformer implements Transformation {
         // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
-        for(ProducedType ta : type.getTypeArgumentList()){
-            if(!isAnything(ta))
+        for(Entry<TypeParameter, ProducedType> ta : type.getTypeArguments().entrySet()){
+            if(!ta.getKey().isCovariant() || !isAnything(ta.getValue()))
                 return false;
         }
         // they're all void we can optimise

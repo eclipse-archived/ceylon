@@ -20,6 +20,26 @@ public final class TestInterface$impl<Key, Value> {
         this.$reifiedKey = $reifiedKey;
     }
 }
+public interface TestInterface2<Key, Value> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface2$impl();
+}
+public final class TestInterface2$impl<Key, Value> {
+    
+    public TestInterface2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this) {
+        this.$reifiedKey = $reifiedKey;
+        this.$reifiedValue = $reifiedValue;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this;
+    
+    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+        this.$reifiedValue = $reifiedValue;
+        this.$reifiedKey = $reifiedKey;
+    }
+}
 public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, .ceylon.language.Integer> {
     
     public TestClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
@@ -63,12 +83,16 @@ final class test_ {
         if (.com.redhat.ceylon.compiler.java.Util.isReified(obj, $reifiedKey)) {
         }
         .java.lang.Object $obj$9;
-        if (($obj$9 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$10 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$9;
+        if (($obj$9 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends .java.lang.Object, ? extends .java.lang.Object> $obj$10 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2)$obj$9;
         }
         .java.lang.Object $obj$12;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$12 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$13 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$12;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$12 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .java.lang.Object> $obj$13 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$12;
+        }
+        .java.lang.Object $obj$15;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($obj$15 = obj, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<.java.lang.Object, .ceylon.language.Integer> $obj$16 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)$obj$15;
         }
     }
 }

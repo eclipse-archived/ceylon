@@ -2,6 +2,9 @@
 shared interface TestInterface<Key, Value>{}
 
 @nomodel
+shared interface TestInterface2<out Key, out Value>{}
+
+@nomodel
 shared class TestClass<Key, Value>() 
     satisfies TestInterface<Key, Integer>{}
 
@@ -14,9 +17,11 @@ void test<Key,Value>(Object obj){
     if(is Key obj){
     }
     // optimised away
-    if(is TestInterface<Anything,Anything> obj){
+    if(is TestInterface2<Anything,Anything> obj){
     }
     // not optimised
+    if(is TestInterface<Anything,Anything> obj){
+    }
     if(is TestInterface<Anything,Integer> obj){
     }
 }
