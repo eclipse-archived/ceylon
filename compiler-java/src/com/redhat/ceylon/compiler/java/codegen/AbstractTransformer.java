@@ -347,7 +347,10 @@ public abstract class AbstractTransformer implements Transformation {
         return make().VarDef(make().Modifiers(0), names().fromString(varName), typeExpr, valueExpr);
     }
     JCVariableDecl makeVar(Naming.SyntheticName varName, JCExpression typeExpr, JCExpression valueExpr) {
-        return make().VarDef(make().Modifiers(0), varName.asName(), typeExpr, valueExpr);
+        return makeVar(0L, varName, typeExpr, valueExpr);
+    }
+    JCVariableDecl makeVar(long mods, Naming.SyntheticName varName, JCExpression typeExpr, JCExpression valueExpr) {
+        return make().VarDef(make().Modifiers(mods), varName.asName(), typeExpr, valueExpr);
     }
     
     /** 
