@@ -29,7 +29,7 @@ Binary,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
 List,Tuple,ChainedIterator
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 
-Exception,NegativeNumberException,OverflowException,RecursiveInitializationException
+Exception,NegativeNumberException,OverflowException,InitializationException
 #Number
 Set,Range,Singleton,AssertionException
 Map,LazyMap,LazyList,LazySet
