@@ -123,11 +123,8 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
         return getOneSequencedParam$priv().$call(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Integer.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
                         iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
@@ -151,8 +148,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                             return i;
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence());
     }
@@ -182,11 +178,8 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
         return getSecondSequencedParam$priv().$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Integer.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
                         iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
@@ -210,8 +203,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                             return i;
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence());
     }

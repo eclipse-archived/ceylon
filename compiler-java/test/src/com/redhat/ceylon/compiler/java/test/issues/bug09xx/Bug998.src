@@ -7,11 +7,8 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.rows = (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Boolean.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
+                    {
                         iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
@@ -35,8 +32,7 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                             return f.$call();
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence();
     }

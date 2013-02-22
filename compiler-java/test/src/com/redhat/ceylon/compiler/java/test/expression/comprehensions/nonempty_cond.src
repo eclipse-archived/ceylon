@@ -10,11 +10,8 @@ final class nonemptyCond_ {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Integer.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                    {
                         iter$0 = ints.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
@@ -51,8 +48,7 @@ final class nonemptyCond_ {
                             return $ints$2.getFirst();
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         });
     }

@@ -9,11 +9,8 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Object.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -47,8 +44,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         });
     }
@@ -57,11 +53,8 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Object.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
+                    {
                         iter$0 = ys.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -98,8 +91,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$x$4).common();
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         });
     }

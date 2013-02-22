@@ -9,11 +9,8 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Object.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -50,8 +47,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                             return $x$2.foo();
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         });
     }
@@ -60,11 +56,8 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Object.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor){
+                    {
                         iter$0 = ys.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -101,8 +94,7 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                             return $x$5.foo();
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         });
     }

@@ -9,11 +9,8 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Boolean.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -81,8 +78,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                             return .ceylon.language.Boolean.instance($x1$3 == $y1$5);
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence();
     }
@@ -91,11 +87,8 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Boolean.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -163,8 +156,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                             return .ceylon.language.Boolean.instance($x$9 == $y$11);
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence();
     }

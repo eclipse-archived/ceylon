@@ -32,11 +32,8 @@ final class bug601_ {
                 .ceylon.language.Iterable $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                        
-                        final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String> {
-                            
-                            $ComprehensionIterator$() {
-                                super(.ceylon.language.String.$TypeDescriptor);
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                            {
                                 iter$0 = .ceylon.language.String.split("hello world").getIterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
@@ -60,8 +57,7 @@ final class bug601_ {
                                     return str;
                                 } else return .ceylon.language.finished_.getFinished$();
                             }
-                        }
-                        return new $ComprehensionIterator$();
+                        };
                     }
                 }, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("")));
             }

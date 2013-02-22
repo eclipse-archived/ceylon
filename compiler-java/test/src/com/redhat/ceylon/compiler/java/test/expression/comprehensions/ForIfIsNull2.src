@@ -9,11 +9,8 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.Boolean.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> iter$0;
@@ -47,8 +44,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                             return .ceylon.language.Boolean.instance(true);
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         });
     }

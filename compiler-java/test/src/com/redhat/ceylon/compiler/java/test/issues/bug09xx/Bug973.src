@@ -23,11 +23,8 @@ final class bug973_ff_ {
                 .ceylon.language.Iterable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
-                        
-                        final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer> {
-                            
-                            $ComprehensionIterator$() {
-                                super(.ceylon.language.Integer.$TypeDescriptor);
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
+                            {
                                 iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
@@ -51,8 +48,7 @@ final class bug973_ff_ {
                                     return x;
                                 } else return .ceylon.language.finished_.getFinished$();
                             }
-                        }
-                        return new $ComprehensionIterator$();
+                        };
                     }
                 };
             }

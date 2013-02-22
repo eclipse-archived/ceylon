@@ -9,11 +9,8 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.String.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator iter$0;
@@ -52,8 +49,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                             return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2));
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence();
     }
@@ -62,11 +58,8 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
-                
-                final class $ComprehensionIterator$ extends .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String> {
-                    
-                    $ComprehensionIterator$() {
-                        super(.ceylon.language.String.$TypeDescriptor);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
+                    {
                         iter$0 = xs.getIterator();
                     }
                     private final .ceylon.language.Iterator iter$0;
@@ -105,8 +98,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                             return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5));
                         } else return .ceylon.language.finished_.getFinished$();
                     }
-                }
-                return new $ComprehensionIterator$();
+                };
             }
         }.getSequence();
     }
