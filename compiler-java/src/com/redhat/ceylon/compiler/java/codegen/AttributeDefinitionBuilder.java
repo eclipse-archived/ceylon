@@ -25,6 +25,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -63,6 +66,8 @@ public class AttributeDefinitionBuilder {
     
     // do we need a constructor that takes the initial value? 
     private boolean valueConstructor;
+    
+    private boolean late;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -81,6 +86,7 @@ public class AttributeDefinitionBuilder {
         this.attrName = attrName;
         this.fieldName = fieldName;
         this.toplevel = toplevel;
+        this.late = attrType.isLate();
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
@@ -188,7 +194,7 @@ public class AttributeDefinitionBuilder {
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
                 owner.names().fromString(Naming.quoteIfJavaKeyword(fieldName)),
-                (toplevel) ? owner.make().TypeArray(attrType) : attrType,
+                (toplevel || late) ? owner.make().TypeArray(attrType) : attrType,
                 null
         );
     }
@@ -197,7 +203,7 @@ public class AttributeDefinitionBuilder {
         long flags = (modifiers & Flags.STATIC);
 
         JCTree.JCExpression varInit = variableInit;
-        if (toplevel) {
+        if (toplevel || late) {
             varInit = owner.make().NewArray(
                     attrTypeRaw,
                     List.<JCTree.JCExpression>nil(),
@@ -211,12 +217,19 @@ public class AttributeDefinitionBuilder {
 
     private JCTree.JCBlock generateDefaultGetterBlock() {
         JCTree.JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
-        if (toplevel) {
+        if (toplevel || late) {
             returnExpr = owner.make().Indexed(returnExpr, owner.make().Literal(0));
         }
-        JCTree.JCBlock block = owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
-        if (toplevel) {
-            JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationExceptionType), List.<JCTree.JCExpression>of(owner.makeCeylonString("Cyclic initialization"))));
+        JCReturn returnValue = owner.make().Return(returnExpr);
+        List<JCStatement> stmts;
+        
+        stmts = List.<JCTree.JCStatement>of(returnValue);   
+        
+        JCTree.JCBlock block = owner.make().Block(0L, stmts);
+        if (toplevel || late) {            
+            JCExpression msg = owner.makeCeylonString(late ? "Accessing uninitialized 'late' attribute" : "Cyclic initialization");
+            JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationExceptionType), 
+                    List.<JCExpression>of(msg)));
             JCTree.JCBlock catchBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(throwStmt));
             JCVariableDecl excepType = owner.makeVar("ex", owner.make().Type(owner.syms().nullPointerExceptionType), null);
             JCTree.JCCatch catcher = owner.make().Catch(excepType , catchBlock);
@@ -227,22 +240,46 @@ public class AttributeDefinitionBuilder {
     }
 
     public JCTree.JCBlock generateDefaultSetterBlock() {
-        JCTree.JCExpression fld;
+        JCExpression fld = fld();
+        if (toplevel || late) {
+            fld = owner.make().Indexed(fld, owner.make().Literal(0));
+        }
+        List<JCStatement> stmts = List.<JCTree.JCStatement>of(
+                owner.make().Exec(
+                        owner.make().Assign(
+                                fld,
+                                owner.makeUnquotedIdent(attrName))));
+        if (late) {
+            stmts = stmts.prepend(owner.make().Exec(
+                    owner.make().Assign(fld(), 
+                            owner.make().NewArray(this.attrType, 
+                                    List.<JCExpression>of(owner.make().Literal(1)), 
+                                    null))));
+            stmts = stmts.prepend(owner.make().If(generateLateInitializedPred(),
+                    owner.make().Throw(owner.makeNewClass( 
+                            owner.make().Type(owner.syms().ceylonInitializationExceptionType), 
+                            List.<JCExpression>of(owner.makeCeylonString("Re-initialization of 'late' attribute")))),
+                            null));
+        }
+        return owner.make().Block(0L, stmts);
+    }
+
+    private JCExpression fld() {
+        JCExpression fld;
         if (fieldName.equals(attrName)) {
             fld = owner.makeSelect("this", fieldName);
         } else {
             fld = owner.makeUnquotedIdent(fieldName);
         }
-        if (toplevel) {
-            fld = owner.make().Indexed(fld, owner.make().Literal(0));
-        }
-        return owner.make().Block(0L, List.<JCTree.JCStatement>of(
-                owner.make().Exec(
-                        owner.make().Assign(
-                                fld,
-                                owner.makeUnquotedIdent(attrName)))));
+        return fld;
     }
     
+    private JCExpression generateLateInitializedPred() {
+        return owner.make().Binary(JCTree.NE, 
+                fld(), 
+                owner.makeNull());
+    }
+
     public AttributeDefinitionBuilder modifiers(long... modifiers) {
         long mods = 0;
         for (long mod : modifiers) {

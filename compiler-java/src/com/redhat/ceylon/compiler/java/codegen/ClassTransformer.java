@@ -1037,6 +1037,9 @@ public class ClassTransformer extends AbstractTransformer {
                 flags |= JT_NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType, flags);
+            if (Decl.isLate(decl)) {
+                type = make().TypeArray(type);
+            }
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             
@@ -1063,7 +1066,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // Generate getter in companion class
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true, lazy));
             }
-            if (Decl.isVariable(decl)) {
+            if (Decl.isVariable(decl) || Decl.isLate(decl)) {
                 if (!withinInterface || model.isShared()) {
                     // Generate setter in main class or interface (when shared)
                     classBuilder.attribute(makeSetter(decl, false, lazy));
@@ -1185,7 +1188,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= Decl.isVariable(cdecl) ? 0 : FINAL;
+        result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
         result |= PRIVATE;
 
         return result;

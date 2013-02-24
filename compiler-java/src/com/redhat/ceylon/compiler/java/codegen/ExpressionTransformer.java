@@ -3123,7 +3123,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Deferred method initialization of a local function
             // The Callable field has the same name as the method, so use NA_MEMBER
             result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER), rhs);
-        } else if (variable && (Decl.isClassAttribute(decl))) {
+        } else if ((variable || decl.isLate()) && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
             if(Decl.isJavaField(decl)){
                 if (decl.isStaticallyImportable()) {

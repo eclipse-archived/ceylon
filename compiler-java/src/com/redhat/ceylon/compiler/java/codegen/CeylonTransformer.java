@@ -306,7 +306,7 @@ public class CeylonTransformer extends AbstractTransformer {
         } else {
             if (declarationModel instanceof Value) {
                 // For local and toplevel value attributes
-                if (!declarationModel.isVariable()) {
+                if (!declarationModel.isVariable() && !declarationModel.isLate()) {
                     builder.immutable();
                 }
             } else {
