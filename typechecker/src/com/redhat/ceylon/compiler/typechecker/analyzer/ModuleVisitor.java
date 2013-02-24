@@ -115,6 +115,9 @@ public class ModuleVisitor extends Visitor {
                 if (hasAnnotation(that.getAnnotationList(), "shared")) {
                     pkg.setShared(true);
                 }
+                else {
+                    pkg.setShared(false);
+                }
                 buildAnnotations(that.getAnnotationList(), pkg.getAnnotations());
             }
         }
