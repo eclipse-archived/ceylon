@@ -216,7 +216,7 @@ public class AttributeDefinitionBuilder {
         }
         JCTree.JCBlock block = owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
         if (toplevel) {
-            JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonRecursiveInitializationExceptionType), null));
+            JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationExceptionType), List.<JCTree.JCExpression>of(owner.makeCeylonString("Cyclic initialization"))));
             JCTree.JCBlock catchBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(throwStmt));
             JCVariableDecl excepType = owner.makeVar("ex", owner.make().Type(owner.syms().nullPointerExceptionType), null);
             JCTree.JCCatch catcher = owner.make().Catch(excepType , catchBlock);
