@@ -103,7 +103,7 @@ public final class globalAttrInteger_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -120,7 +120,7 @@ public final class globalAttrFloat_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -137,7 +137,7 @@ public final class globalAttrString_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -154,7 +154,7 @@ public final class globalAttrBoolean_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -171,7 +171,7 @@ public final class globalAttrCharacter_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -188,7 +188,7 @@ public final class globalAttrOptionalInteger_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -205,7 +205,7 @@ public final class globalAttrOptionalFloat_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -222,7 +222,7 @@ public final class globalAttrOptionalString_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -239,7 +239,7 @@ public final class globalAttrOptionalBoolean_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -256,7 +256,7 @@ public final class globalAttrOptionalCharacter_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }

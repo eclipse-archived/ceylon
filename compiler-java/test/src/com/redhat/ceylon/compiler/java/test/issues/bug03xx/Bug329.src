@@ -41,7 +41,7 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
     
@@ -75,7 +75,7 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.mode
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
     

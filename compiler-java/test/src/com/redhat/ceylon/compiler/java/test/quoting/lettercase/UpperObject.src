@@ -52,7 +52,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
     

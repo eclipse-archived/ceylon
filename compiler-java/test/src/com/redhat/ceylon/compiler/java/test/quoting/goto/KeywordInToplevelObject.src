@@ -13,7 +13,7 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
     

@@ -54,7 +54,7 @@ final class bug708extra1_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -71,7 +71,7 @@ final class bug708extra2_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -88,7 +88,7 @@ final class bug708obj_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -111,7 +111,7 @@ final class bug708extra3_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -128,7 +128,7 @@ final class bug708seq_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -157,7 +157,7 @@ final class bug708extra4_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
@@ -612,7 +612,7 @@ final class bug708_cache_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
