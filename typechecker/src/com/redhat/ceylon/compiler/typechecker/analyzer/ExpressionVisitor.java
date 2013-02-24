@@ -3745,9 +3745,11 @@ public class ExpressionVisitor extends Visitor {
             type = getSupertypeTypeDeclaration(that, sq);
         }
         if (type==null) {
-            that.addError("type does not exist: " + 
-                    name(that.getIdentifier()), 100);
-            unit.getUnresolvedReferences().add(that.getIdentifier());
+            if (!dynamic) {
+                that.addError("type does not exist: " + 
+                        name(that.getIdentifier()), 100);
+                unit.getUnresolvedReferences().add(that.getIdentifier());
+            }
         }
         else {
             that.setDeclaration(type);
