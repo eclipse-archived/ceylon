@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -146,6 +147,27 @@ public class CMRTest extends CompilerTest {
         compile("modules/def/A.ceylon");
         compile("modules/def/RequiresA.ceylon");
     }
+
+    @Test
+    public void testMdlModuleDefaultIncrementalNoPackage() throws IOException{
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath()+"/modules/def");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Collections.<String>emptyList(),
+                "modules/def/A.ceylon");
+        Boolean ret = task.call();
+        assertTrue(ret);
+
+        task = getCompilerTask(options, 
+                null,
+                Collections.<String>emptyList(),
+                "modules/def/RequiresA.ceylon");
+        ret = task.call();
+        assertTrue(ret);
+}
 
     @Test
     public void testMdlModuleOnlyInOutputRepo() throws IOException {
