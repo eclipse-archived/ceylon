@@ -29,19 +29,28 @@ public class InvocationGenerator {
     void generateInvocation(Tree.InvocationExpression that) {
         if (that.getNamedArgumentList()!=null) {
             Tree.NamedArgumentList argList = that.getNamedArgumentList();
-            gen.out("(");
-            Map<String, String> argVarNames = defineNamedArguments(argList);
-            that.getPrimary().visit(gen);
-            Tree.TypeArguments targs = that.getPrimary() instanceof Tree.BaseMemberOrTypeExpression ?
-                    ((Tree.BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
-            if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
-                if (mte.getDeclaration() instanceof Functional) {
-                    Functional f = (Functional) mte.getDeclaration();
-                    applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
+            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.MemberOrTypeExpression && ((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration() == null) {
+                //Call a native js constructor passing a native js object as parameter
+                that.getPrimary().visit(gen);
+                gen.out("(");
+                nativeObject(argList);
+                gen.out(")");
+            } else {
+                gen.out("(");
+                Map<String, String> argVarNames = defineNamedArguments(argList);
+                that.getPrimary().visit(gen);
+                Tree.TypeArguments targs = that.getPrimary() instanceof Tree.BaseMemberOrTypeExpression ?
+                        ((Tree.BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+                if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
+                    if (mte.getDeclaration() instanceof Functional) {
+                        Functional f = (Functional) mte.getDeclaration();
+                        applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
+                    }
                 }
+                gen.out(")");
+                
             }
-            gen.out(")");
         }
         else {
             Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
