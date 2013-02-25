@@ -58,18 +58,78 @@ public class ModuleValidator {
         for (Module module : modules) {
             dependencyTree.addLast(module);
             //we don't care about propagated dependency here as top modules are independent from one another
-            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), true);
+            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First);
             dependencyTree.pollLast();
         }
         moduleManager.addImplicitImports();
         executeExternalModulePhases();
     }
 
+    /**
+     * Used to represent import links with compiled modules
+     */
+    private enum ImportDepth {
+        /**
+         * Represents a module directly imported by a compiled module
+         */
+        First {
+            @Override
+            public ImportDepth forModuleImport(ModuleImport moduleImport) {
+                return Required;
+            }
+
+            @Override
+            public boolean isVisibleToCompiledModules() {
+                return true;
+            }
+        }, 
+        /**
+         * Represents a module indirectly imported by a compiled module, through a chain of exported/shared
+         * modules imported by a module imported directly by a compiled module
+         */
+        Required {
+            @Override
+            public ImportDepth forModuleImport(ModuleImport moduleImport) {
+                return moduleImport.isExport() ? Required : Transitive;
+            }
+
+            @Override
+            public boolean isVisibleToCompiledModules() {
+                return true;
+            }
+        }, 
+        /**
+         * Represents a module indirectly imported by a compiled module, but not visible to it because
+         * it was not shared/exported to it
+         */
+        Transitive {
+            @Override
+            public ImportDepth forModuleImport(ModuleImport moduleImport) {
+                return Transitive;
+            }
+
+            @Override
+            public boolean isVisibleToCompiledModules() {
+                return false;
+            }
+        };
+
+        /**
+         * Returns a new ImportDepth for the given module import
+         */
+        public abstract ImportDepth forModuleImport(ModuleImport moduleImport);
+
+        /**
+         * Returns true if this import is visible to the compiled modules
+         */
+        public abstract boolean isVisibleToCompiledModules();
+    }
+    
     private void verifyModuleDependencyTree(
             Collection<ModuleImport> moduleImports,
             LinkedList<Module> dependencyTree,
             List<Module> propagatedDependencies, 
-            boolean forCompiledModule) {
+            ImportDepth importDepth) {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
@@ -79,6 +139,7 @@ public class ModuleValidator {
                 return;
             }
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
+            ImportDepth newImportDepth = importDepth.forModuleImport(moduleImport);
             
             if ( ! module.isAvailable() ) {
                 //try and load the module from the repository
@@ -102,12 +163,13 @@ public class ModuleValidator {
                 }
                 else {
                     //parse module units and build module dependency and carry on
+                    boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
                     moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }
             }
             dependencyTree.addLast(module);
             List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
-            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, forCompiledModule & moduleImport.isExport() );
+            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, newImportDepth );
             //visible dependency += subModule + subModulePropagatedDependencies
             checkAndAddDependency(visibleDependencies, module, dependencyTree);
             for (Module submodule : subModulePropagatedDependencies) {
