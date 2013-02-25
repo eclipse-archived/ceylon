@@ -698,7 +698,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public synchronized LazyPackage findExistingPackage(Module module, String pkgName){
         String quotedPkgName = Util.quoteJavaKeywords(pkgName);
-        LazyPackage pkg = packagesByName.get(quotedPkgName);
+        LazyPackage pkg = findCachedPackage(module, quotedPkgName);
         if(pkg != null)
             return pkg;
         // special case for the jdk module
@@ -716,9 +716,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
     
+    private LazyPackage findCachedPackage(Module module, String quotedPkgName) {
+        LazyPackage pkg = packagesByName.get(quotedPkgName);
+        if(pkg != null){
+            // only return it if it matches the module we're looking for, because if it doesn't we have an issue already logged
+            // for a direct dependency on same module different versions logged, so no need to confuse this further
+            if(module != null && pkg.getModule() != null && !module.equals(pkg.getModule()))
+                return null;
+            return pkg;
+        }
+        return null;
+    }
+
     public synchronized LazyPackage findOrCreatePackage(Module module, final String pkgName) {
         String quotedPkgName = Util.quoteJavaKeywords(pkgName);
-        LazyPackage pkg = packagesByName.get(quotedPkgName);
+        LazyPackage pkg = findCachedPackage(module, quotedPkgName);
         if(pkg != null)
             return pkg;
         // try to find it from the module, perhaps it already got created and we didn't catch it
