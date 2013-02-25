@@ -2363,11 +2363,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return getPackage(((Declaration)decl).getContainer());
     }
     
-    public synchronized void logDuplicateModuleError(Module module, Module loadedModule) {
-        logError("Trying to import or compile two different versions of the same module: "+
-                module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")");
-    }
-    
     protected void logMissingOracleType(String type) {
         logVerbose("Hopefully harmless completion failure in model loader: "+type
                 +". This is most likely when the JDK depends on Oracle private classes that we can't find."

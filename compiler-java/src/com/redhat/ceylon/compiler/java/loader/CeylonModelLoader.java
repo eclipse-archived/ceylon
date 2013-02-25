@@ -368,11 +368,4 @@ public class CeylonModelLoader extends AbstractModelLoader {
         }
         return getOverriddenMethod(method, types) != null;
     }
-
-    @Override
-    public void logDuplicateModuleError(Module module, Module loadedModule) {
-        super.logDuplicateModuleError(module, loadedModule);
-        // let's just give up, otherwise typechecking will likely throw some more and confuse the users
-        throw new Abort();
-    }
 }
