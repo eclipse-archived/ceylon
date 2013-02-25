@@ -1259,7 +1259,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // In some cases, where all constructors are ignored, we can end up with no constructor, so
         // pretend we have one which takes no parameters (eg. ceylon.language.String).
-        if(klass instanceof Class && ((Class) klass).getParameterList() == null){
+        if(klass instanceof Class
+                && !klass.isAnonymous()
+                && ((Class) klass).getParameterList() == null){
             ((Class) klass).setParameterList(new ParameterList());
         }
         
