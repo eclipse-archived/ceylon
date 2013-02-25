@@ -494,6 +494,11 @@ public class StatementTest extends CompilerTest {
     public void testSwitchIsExhaustive(){
         compareWithJavaSource("swtch/SwitchIsExhaustive");
     }
+
+    @Test
+    public void testSwitchIsEnumeratedPrimitives(){
+        compareWithJavaSource("swtch/SwitchIsEnumeratedPrimitives");
+    }
     
     @Test
     public void testSwitchIsNonExhaustive(){
@@ -509,6 +514,7 @@ public class StatementTest extends CompilerTest {
     public void testSwitchMatch(){
         compareWithJavaSource("swtch/SwitchMatch");
     }
+    
     
     @Test
     public void testReturnAnonFunction(){

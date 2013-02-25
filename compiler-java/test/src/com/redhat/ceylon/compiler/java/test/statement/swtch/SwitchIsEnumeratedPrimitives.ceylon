@@ -18,13 +18,17 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Float bug1026<Number>(Number* numbers)
-        given Number of Integer | Float {
-    variable value sum=0.0;
-    for (n in numbers) {
+class SwitchIsEnumeratedPrimitive() {
+    void m<Number>(Number n) given Number of Integer | Float | Null {
         switch (n)
-        case (is Integer) { sum+=n; }
-        case (is Float) { sum+=n; }
+        case (is Integer) { 
+            Float f = n.float; 
+        }
+        case (is Float) { 
+            Float f = n;
+        }
+        case (is Null) { 
+            Float f = 0.0;
+        }
     }
-    return sum;
 }
