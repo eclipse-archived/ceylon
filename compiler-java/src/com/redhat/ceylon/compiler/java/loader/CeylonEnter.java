@@ -80,6 +80,7 @@ import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
@@ -299,6 +300,12 @@ public class CeylonEnter extends Enter {
         phasedUnitsManager.resolveDependencies();
         // now load package descriptors
         modelLoader.loadPackageDescriptors();
+        // at this point, abort if we had any errors logged
+        collectTreeErrors();
+        // if we didn't have any errors, we can go on, none were logged so they can't be re-logged and duplicated
+        // later on
+        if(log.nerrors > 0)
+            throw new Abort();
     }
     
     public void completeCeylonTrees(List<JCCompilationUnit> trees){
