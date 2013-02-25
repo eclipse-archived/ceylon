@@ -640,6 +640,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isWideningTypeArguments(ProducedType declType, ProducedType refinedDeclType, boolean allowSubtypes) {
+        if(declType == null || refinedDeclType == null)
+            return false;
         // make sure we work on simplified types, to avoid stuff like optional or size-1 unions
         declType = simplifyType(declType);
         refinedDeclType = simplifyType(refinedDeclType);
