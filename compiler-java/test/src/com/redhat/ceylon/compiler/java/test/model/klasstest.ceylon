@@ -22,3 +22,4 @@ KlassWithConstructor klass2 = KlassWithConstructor(2);
 void interfaceMethod(Interface iface){}
 NonSharedKlass nonSharedKlass = NonSharedKlass();
 void nonSharedInterfaceMethod(NonSharedInterface iface){}
+FinalKlass finalKlass = FinalKlass();

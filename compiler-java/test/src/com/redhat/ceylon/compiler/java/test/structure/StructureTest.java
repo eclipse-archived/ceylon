@@ -115,6 +115,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/AbstractFormal");
     }
     @Test
+    public void testKlsFinal(){
+        compareWithJavaSource("klass/Final");
+    }
+    @Test
     public void testKlsCaseTypes(){
         compareWithJavaSource("klass/CaseTypes");
     }
