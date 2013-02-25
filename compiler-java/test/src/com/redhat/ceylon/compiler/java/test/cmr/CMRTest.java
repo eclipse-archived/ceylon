@@ -142,6 +142,12 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlModuleDefaultIncremental() throws IOException{
+        compile("modules/def/A.ceylon");
+        compile("modules/def/RequiresA.ceylon");
+    }
+
+    @Test
     public void testMdlModuleOnlyInOutputRepo() throws IOException {
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6");
         assertFalse(carFile.exists());
