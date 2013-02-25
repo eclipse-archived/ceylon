@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ClassAttributeLate() {
+    }
+    private long[] lateAttr;
+    
+    public final long getLateAttr() {
+        try {
+            return lateAttr[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Accessing uninitialized \'late\' attribute"));
+        }
+    }
+    
+    public final void setLateAttr(final long lateAttr) {
+        if (this.lateAttr != null) throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Re-initialization of \'late\' attribute"));
+        this.lateAttr = new long[1];
+        this.lateAttr[0] = lateAttr;
+    }
+    private long[] lateVariableAttr;
+    
+    public final long getLateVariableAttr() {
+        try {
+            return lateVariableAttr[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Accessing uninitialized \'late\' attribute"));
+        }
+    }
+    
+    public final void setLateVariableAttr(final long lateVariableAttr) {
+        if (this.lateVariableAttr == null) this.lateVariableAttr = new long[1];
+        this.lateVariableAttr[0] = lateVariableAttr;
+    }
+    
+    private final void init$priv() {
+        setLateAttr(0L);
+        setLateVariableAttr(0L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.class);
+}
