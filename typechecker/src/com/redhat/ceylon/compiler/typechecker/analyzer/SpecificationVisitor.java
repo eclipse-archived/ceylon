@@ -186,8 +186,7 @@ public class SpecificationVisitor extends Visitor {
 						}
 					}
                     else if (!declaration.isNative()) {
-                        if (!isLate() || 
-                                !cannotSpecify) { //TODO: actually this should be isInterface()||isInDeclarationSection()
+                        if (!isLate() || !isForwardReferenceable()) {
                             if (isVariable()) {
                                 that.addError("not definitely initialized: " + 
                                         member.getName());                    
