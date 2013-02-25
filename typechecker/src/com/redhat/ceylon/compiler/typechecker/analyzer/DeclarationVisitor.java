@@ -891,6 +891,14 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a class, and may not be annotated abstract", 1600);
             }
         }
+        if (hasAnnotation(al, "final")) {
+            if (model instanceof Class) {
+                ((Class) model).setFinal(true);
+            }
+            else {
+                that.addError("declaration is not a class, and may not be annotated final", 1700);
+            }
+        }
         if (hasAnnotation(al, "variable")) {
             if (model instanceof Value) {
                 ((Value) model).setVariable(true);
