@@ -21,3 +21,6 @@
 void bug995() {
     abstract class S() => String();
 }
+
+@nomodel
+abstract class S() => String();
