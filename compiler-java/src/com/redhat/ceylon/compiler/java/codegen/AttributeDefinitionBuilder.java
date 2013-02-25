@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -68,6 +69,7 @@ public class AttributeDefinitionBuilder {
     private boolean valueConstructor;
     
     private boolean late;
+    private boolean variable;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -87,6 +89,7 @@ public class AttributeDefinitionBuilder {
         this.fieldName = fieldName;
         this.toplevel = toplevel;
         this.late = attrType.isLate();
+        this.variable = attrType.isVariable();
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
@@ -250,16 +253,22 @@ public class AttributeDefinitionBuilder {
                                 fld,
                                 owner.makeUnquotedIdent(attrName))));
         if (late) {
-            stmts = stmts.prepend(owner.make().Exec(
+            JCStatement init = owner.make().Exec(
                     owner.make().Assign(fld(), 
                             owner.make().NewArray(this.attrType, 
                                     List.<JCExpression>of(owner.make().Literal(1)), 
-                                    null))));
-            stmts = stmts.prepend(owner.make().If(generateLateInitializedPred(),
-                    owner.make().Throw(owner.makeNewClass( 
-                            owner.make().Type(owner.syms().ceylonInitializationExceptionType), 
-                            List.<JCExpression>of(owner.makeCeylonString("Re-initialization of 'late' attribute")))),
-                            null));
+                                    null)));
+            if (variable) {  
+                stmts = stmts.prepend(owner.make().If(generateLateInitializedPred(JCTree.EQ),
+                        init, null));
+            } else {
+                stmts = stmts.prepend(init);
+                stmts = stmts.prepend(owner.make().If(generateLateInitializedPred(JCTree.NE),
+                        owner.make().Throw(owner.makeNewClass( 
+                                owner.make().Type(owner.syms().ceylonInitializationExceptionType), 
+                                List.<JCExpression>of(owner.makeCeylonString("Re-initialization of 'late' attribute")))),
+                                null));
+            }
         }
         return owner.make().Block(0L, stmts);
     }
@@ -274,8 +283,8 @@ public class AttributeDefinitionBuilder {
         return fld;
     }
     
-    private JCExpression generateLateInitializedPred() {
-        return owner.make().Binary(JCTree.NE, 
+    private JCExpression generateLateInitializedPred(int cmp) {
+        return owner.make().Binary(cmp, 
                 fld(), 
                 owner.makeNull());
     }
