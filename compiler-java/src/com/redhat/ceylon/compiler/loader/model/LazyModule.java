@@ -67,9 +67,10 @@ public abstract class LazyModule extends Module {
                 return pkg;
         }
         // then try in dependencies
+        Set<Module> visited = new HashSet<Module>();
         for(ModuleImport dependency : getImports()){
             // we don't have to worry about the default module here since we can't depend on it
-            pkg = findPackageInImport(name, dependency);
+            pkg = findPackageInImport(name, dependency, visited);
             if(pkg != null)
                 return pkg;
         }
@@ -83,10 +84,26 @@ public abstract class LazyModule extends Module {
         return pkg;
     }
 
-    private Package findPackageInImport(String name, ModuleImport dependency) {
+    private Package findPackageInImport(String name, ModuleImport dependency, Set<Module> visited) {
         Module module = dependency.getModule();
+        // only visit modules once
+        if(!visited.add(module))
+            return null;
         if (module instanceof LazyModule) {
-            return findPackageInModule((LazyModule) dependency.getModule(), name);
+            // this is the equivalent of getDirectPackage, it does not recurse
+            Package pkg =  findPackageInModule((LazyModule) dependency.getModule(), name);
+            if(pkg != null)
+                return pkg;
+            // not found, try in its exported dependencies
+            for(ModuleImport dep : module.getImports()){
+                if(!dep.isExport())
+                    continue;
+                pkg = findPackageInImport(name, dep, visited);
+                if(pkg != null)
+                    return pkg;
+            }
+            // not found
+            return null;
         }
         else
             return module.getPackage(name);
