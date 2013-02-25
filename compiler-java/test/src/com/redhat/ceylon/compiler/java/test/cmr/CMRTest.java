@@ -54,7 +54,6 @@ import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
@@ -614,7 +613,8 @@ public class CMRTest extends CompilerTest {
                 "modules/multiversion/b/b/module.ceylon", "modules/multiversion/b/b/B.ceylon").call();
         Assert.assertEquals(Boolean.FALSE, result);
         
-        compareErrors(collector.get(Diagnostic.Kind.ERROR), new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
+        compareErrors(collector.get(Diagnostic.Kind.ERROR), 
+                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
     }
 
     @Test
@@ -636,7 +636,11 @@ public class CMRTest extends CompilerTest {
                 "modules/multiversion/c/cImportsATwice/module.ceylon", "modules/multiversion/c/cImportsATwice/C.ceylon").call();
         Assert.assertEquals(Boolean.FALSE, result);
         
-        compareErrors(collector.get(Diagnostic.Kind.ERROR), new CompilerError(-1, "Trying to import or compile two different versions of the same module: a (1 and 2)"));
+        compareErrors(collector.get(Diagnostic.Kind.ERROR), 
+                new CompilerError(20, "Module (transitively) imports conflicting versions of a. Version 2 and version 1 found and visible at the same time."),
+                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (1 and 2)"),
+                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (2 and 1)")
+        );
     }
 
     @Test
@@ -688,8 +692,8 @@ public class CMRTest extends CompilerTest {
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
                 new CompilerError(20, "Module (transitively) imports conflicting versions of a. Version 1 and version 2 found and visible at the same time."),
-                new CompilerError(21, "package not found in dependent modules: b"),
-                new CompilerError(23, "type declaration does not exist: B"));
+                new CompilerError(20, "Trying to import or compile two different versions of the same module: a (1 and 2)")
+        );
     }
 
     
