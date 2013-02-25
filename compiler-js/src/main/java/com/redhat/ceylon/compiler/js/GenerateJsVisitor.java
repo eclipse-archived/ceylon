@@ -1913,8 +1913,14 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(BaseTypeExpression that) {
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
-        qualify(that, that.getDeclaration());
-        out(names.name(that.getDeclaration()));
+        Declaration d = that.getDeclaration();
+        if (d == null && isInDynamicBlock()) {
+            //It's a native js type, call its constructor
+            out("new ", that.getIdentifier().getText());
+        } else {
+            qualify(that, d);
+            out(names.name(d));
+        }
     }
 
     @Override
