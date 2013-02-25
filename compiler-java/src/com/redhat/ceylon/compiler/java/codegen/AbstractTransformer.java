@@ -1657,7 +1657,8 @@ public abstract class AbstractTransformer implements Transformation {
             return declType;
         } else if ((declTypeDecl instanceof TypeParameter)
                 && (flags & TP_TO_BOUND) != 0) {
-            if (!declTypeDecl.getSatisfiedTypes().isEmpty()) {
+            if (!declTypeDecl.getSatisfiedTypes().isEmpty()
+                    && !willEraseToObject(declTypeDecl.getSatisfiedTypes().get(0))) {
                 // use upper bound
                 ProducedType upperBound = declTypeDecl.getSatisfiedTypes().get(0);
                 // make sure we apply the type arguments
