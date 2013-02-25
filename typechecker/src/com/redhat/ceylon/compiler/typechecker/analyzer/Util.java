@@ -340,21 +340,6 @@ class Util {
         }
     }
 
-    static String formatPath(List<Tree.Identifier> nodes) {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (Node node: nodes) {
-            if (first) {
-                first = false;
-            }
-            else {
-                sb.append(".");
-            }
-            sb.append(node.getText());
-        }
-        return sb.toString();
-    }
-
     static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
         if (al!=null) {
             AnonymousAnnotation aa = al.getAnonymousAnnotation();

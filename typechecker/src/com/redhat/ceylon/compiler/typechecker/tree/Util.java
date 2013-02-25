@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -59,6 +61,21 @@ public class Util {
         else {
             return false;
         }
+    }
+
+    public static String formatPath(List<Tree.Identifier> nodes) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (Node node: nodes) {
+            if (first) {
+                first = false;
+            }
+            else {
+                sb.append(".");
+            }
+            sb.append(node.getText());
+        }
+        return sb.toString();
     }
 
 }

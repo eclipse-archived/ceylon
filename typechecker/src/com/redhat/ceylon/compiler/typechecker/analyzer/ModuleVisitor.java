@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static java.util.Arrays.asList;
 
