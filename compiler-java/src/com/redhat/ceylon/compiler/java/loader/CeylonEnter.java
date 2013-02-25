@@ -442,7 +442,13 @@ public class CeylonEnter extends Enter {
         }
         
         phasedUnitsManager.extraPhasesApplied();
-        
+
+        collectTreeErrors();
+    }
+
+    private void collectTreeErrors() {
+        final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
                 @Override
