@@ -9,6 +9,7 @@ class Child() {
     shared late Parent parent;
     @error print(parent);
     shared Parent getParent() => parent;
+    shared void setParent(Parent p) => parent = p;
 }
 class Parent(children) {
     shared Child* children;
@@ -18,7 +19,7 @@ void create() {
     Child d = Child();
     Parent p = Parent(c, d);
     c.parent = p;
-    d.parent = p;
+    d.setParent(p);
 }
 
 }
@@ -30,6 +31,9 @@ class Child() {
     @error print(parent);
     shared Parent getParent() {
         return parent;
+    }
+    shared void setParent(Parent p) {
+        parent = p;
     }
 }
 class Parent(children) {

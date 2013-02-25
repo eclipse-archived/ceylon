@@ -466,6 +466,14 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("interfaces may not have simple attributes");
             }*/
         }
+        if (v.isLate()) {
+            if (v.isFormal()) {
+                that.addError("formal attribute may not be annotated late");
+            }
+            else if (!v.isClassOrInterfaceMember() && !v.isToplevel()) {
+                that.addError("block-local value may not be annotated late");
+            }
+        }
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         if ( v.isFormal() && sie!=null ) {
             that.addError("formal attributes may not have a value", 1307);

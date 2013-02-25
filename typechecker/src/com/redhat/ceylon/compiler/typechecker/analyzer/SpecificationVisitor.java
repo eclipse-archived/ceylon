@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
@@ -95,8 +96,8 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isLate() {
-        return (declaration instanceof Value)
-            && ((Value) declaration).isLate();
+        return (declaration instanceof MethodOrValue)
+            && ((MethodOrValue) declaration).isLate();
     }
     
     @Override
@@ -190,8 +191,10 @@ public class SpecificationVisitor extends Visitor {
                                     member.getName());                    
                         }
                         else {
-                            that.addError("not definitely specified: " + 
-                                    member.getName());
+                            if (!isLate() || !cannotSpecify) {
+                                that.addError("not definitely specified: " + 
+                                        member.getName());
+                            }
                         }
                     }
                 }
