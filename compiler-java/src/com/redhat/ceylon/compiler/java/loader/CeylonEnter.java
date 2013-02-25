@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -60,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.sun.tools.javac.code.Symbol;
@@ -301,7 +303,7 @@ public class CeylonEnter extends Enter {
         // now load package descriptors
         modelLoader.loadPackageDescriptors();
         // at this point, abort if we had any errors logged
-        collectTreeErrors();
+        collectTreeErrors(false);
         // if we didn't have any errors, we can go on, none were logged so they can't be re-logged and duplicated
         // later on
         if(log.nerrors > 0)
@@ -450,14 +452,14 @@ public class CeylonEnter extends Enter {
         
         phasedUnitsManager.extraPhasesApplied();
 
-        collectTreeErrors();
+        collectTreeErrors(true);
     }
 
-    private void collectTreeErrors() {
+    private void collectTreeErrors(boolean runAssertions) {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
         for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
+            pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu, runAssertions){
                 @Override
                 protected void out(UnexpectedError err) {
                     logError(getPosition(err.getTreeNode()), err.getMessage());
@@ -488,7 +490,7 @@ public class CeylonEnter extends Enter {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
         for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
+            pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu, false){
                 @Override
                 protected void out(UnexpectedError err) {
                     if(err instanceof CodeGenError){
@@ -532,9 +534,18 @@ public class CeylonEnter extends Enter {
 
     private class JavacAssertionVisitor extends AssertionVisitor {
         private CeylonPhasedUnit cpu;
-        JavacAssertionVisitor(CeylonPhasedUnit cpu){
+        private boolean runAssertions;
+        JavacAssertionVisitor(CeylonPhasedUnit cpu, boolean runAssertions){
             this.cpu = cpu;
+            this.runAssertions = runAssertions;
         }
+        
+        @Override
+        protected void checkType(Statement that, ProducedType type, Node typedNode) {
+            if(runAssertions)
+                super.checkType(that, type, typedNode);
+        }
+        
         protected Node getIdentifyingNode(Node node) {
             if (node instanceof Tree.Declaration) {
                 return ((Tree.Declaration) node).getIdentifier();
