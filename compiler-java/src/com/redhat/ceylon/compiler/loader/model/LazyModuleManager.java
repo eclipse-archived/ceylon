@@ -73,8 +73,14 @@ public abstract class LazyModuleManager extends ModuleManager {
             for(Module loadedModule : getContext().getModules().getListOfModules()){
                 if(loadedModule.getNameAsString().equals(moduleName)
                         && !loadedModule.getVersion().equals(module.getVersion())){
-                    getModelLoader().logDuplicateModuleError(module, loadedModule);
                     // abort
+                    // we need this error thrown rather than the typechecker error because the typechecker currently
+                    // allows more than we do, such as having direct imports of the same module with different versions
+                    // as long as they are not reexported, but we don't support that since they all go in the same
+                    // classpath (direct imports of compiled modules)
+                    String error = "Trying to import or compile two different versions of the same module: "+
+                            module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")";
+                    addErrorToModule(dependencyTree.getFirst(), error);
                     return;
                 }
             }
