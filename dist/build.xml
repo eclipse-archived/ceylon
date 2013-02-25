@@ -7,8 +7,8 @@
 
     <property file="build.properties"/>
     <property name="projects.dir" value="${basedir}/projects"/>
-    <property name="dist.dir" value="${basedir}/dist"/>
-    <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+    <property name="ceylon.dist.dir" value="${basedir}/dist"/>
+    <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
 
     <property name="modules" value="ceylon-common,ceylon-compiler,ceylon-spec,ceylon.language,ceylon-module-resolver,ceylon-runtime,ceylon-js" />
 
@@ -181,18 +181,18 @@ Used with another target such as 'package'">
     <target name="zip">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <zip destfile="${basedir}/${dist.name}.zip">
-            <zipfileset dir="${dist.dir}" prefix="${dist.name}">
+            <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
                 <exclude name="bin/ceylon*" />
             </zipfileset>
-            <zipfileset dir="${dist.dir}" filemode="755"  prefix="${dist.name}">
+            <zipfileset dir="${ceylon.dist.dir}" filemode="755"  prefix="${dist.name}">
                 <include name="bin/ceylon*" />
             </zipfileset>
         </zip>        
     </target>
     
     <target name="copy-compiler-binaries">
-        <mkdir dir="${dist.dir}/bin"/>
-        <copy todir="${dist.dir}/bin">
+        <mkdir dir="${ceylon.dist.dir}/bin"/>
+        <copy todir="${ceylon.dist.dir}/bin">
             <fileset dir="${ceylon-compiler.dir}/build/bin">
                 <include name="java.bat"/>
                 <include name="ceylon"/>
@@ -203,15 +203,15 @@ Used with another target such as 'package'">
             </fileset>
         </copy>
         <chmod perm="0755">
-            <fileset dir="${dist.dir}/bin">
+            <fileset dir="${ceylon.dist.dir}/bin">
                 <include name="ceylon"/>
             </fileset>
         </chmod>
     </target>
 
     <target name="copy-jvm-compiler-libraries">
-        <mkdir dir="${dist.dir}/lib"/>
-        <copy todir="${dist.dir}/lib">
+        <mkdir dir="${ceylon.dist.dir}/lib"/>
+        <copy todir="${ceylon.dist.dir}/lib">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
                 <include name="ceylon-bootstrap.jar"/>
                 <include name="antlr-*-complete.jar"/>
@@ -223,8 +223,8 @@ Used with another target such as 'package'">
     </target>
 
     <target name="copy-cmr-libraries">
-        <mkdir dir="${dist.dir}/lib"/>
-        <copy todir="${dist.dir}/lib">
+        <mkdir dir="${ceylon.dist.dir}/lib"/>
+        <copy todir="${ceylon.dist.dir}/lib">
             <fileset dir="${ceylon-module-resolver.dir}/lib">
                 <include name="sardine-*.jar"/>
                 <include name="httpclient-*.jar"/>
@@ -237,8 +237,8 @@ Used with another target such as 'package'">
     </target>
 
     <target name="copy-js-compiler-libraries">
-        <mkdir dir="${dist.dir}/lib"/>
-        <copy todir="${dist.dir}/lib">
+        <mkdir dir="${ceylon.dist.dir}/lib"/>
+        <copy todir="${ceylon.dist.dir}/lib">
             <fileset dir="${ceylon-js.dir}/lib">
                 <include name="json-smart-*.jar"/>
             </fileset>
@@ -246,8 +246,8 @@ Used with another target such as 'package'">
     </target>
 
     <target name="copy-samples">
-        <mkdir dir="${dist.dir}/samples"/>
-        <copy todir="${dist.dir}/samples">
+        <mkdir dir="${ceylon.dist.dir}/samples"/>
+        <copy todir="${ceylon.dist.dir}/samples">
             <fileset dir="samples">
                 <include name="helloworld/**"/>
                 <include name="no-module/**"/>
@@ -258,8 +258,8 @@ Used with another target such as 'package'">
     </target>
 	
     <target name="copy-templates">
-        <mkdir dir="${dist.dir}/templates"/>
-        <copy todir="${dist.dir}/templates">
+        <mkdir dir="${ceylon.dist.dir}/templates"/>
+        <copy todir="${ceylon.dist.dir}/templates">
             <fileset dir="templates">
                 <include name="**/*"/>
             </fileset>
@@ -267,7 +267,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="copy-licenses">
-        <copy todir="${dist.dir}">
+        <copy todir="${ceylon.dist.dir}">
             <fileset dir="${basedir}">
                 <include name="LICENSE-ASL" />
                 <include name="LICENSE-LGPL" />
@@ -281,12 +281,14 @@ Used with another target such as 'package'">
     <target name="install-compiler" depends="install-typechecker">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
     <target name="install-js" depends="install-typechecker">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
             <!-- Special property that will make the build skip the language module -->
             <property name="skip.language.module" value="true"/>
         </ant>
@@ -295,32 +297,37 @@ Used with another target such as 'package'">
     <target name="install-typechecker" depends="install-cmr">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
     <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,copy-js-compiler-libraries,copy-cmr-libraries">
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
     <target name="install-common">
         <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
     <target name="install-cmr" depends="install-common">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
     <target name="install-runtime" depends="install-cmr">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
-        <copy todir="${dist.dir}">
+        <copy todir="${ceylon.dist.dir}">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
             </fileset>
         </copy>
@@ -328,16 +335,16 @@ Used with another target such as 'package'">
 
     <target name="generate-spec">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/doc/en/spec">
+        <copy todir="${ceylon.dist.dir}/doc/en/spec">
             <fileset dir="${ceylon-spec.dir}/build/en"/>            
         </copy>
     </target>
 
     <target name="generate-apidoc">
-        <exec executable="${dist.dir}/bin/ceylon" failonerror="yes">
+        <exec executable="${ceylon.dist.dir}/bin/ceylon" failonerror="yes">
         	<arg value="--stacktraces"/>
         	<arg value="doc"/>
-            <arg value="--out=${dist.dir}/repo"/>
+            <arg value="--out=${ceylon.dist.dir}/repo"/>
             <arg value="--src=${ceylon.language.dir}/src/"/>
             <arg value="--source-code"/>
             <arg value="ceylon.language"/>
@@ -345,10 +352,10 @@ Used with another target such as 'package'">
     </target>
 
     <target name="generate-tooldoc">
-        <exec executable="${dist.dir}/bin/ceylon" failonerror="yes">
+        <exec executable="${ceylon.dist.dir}/bin/ceylon" failonerror="yes">
         	<arg value="--stacktraces"/>
             <arg value="doc-tool"/>
-            <arg value="--output=${dist.dir}/doc/en/toolset"/>
+            <arg value="--output=${ceylon.dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
             <arg value="--all-plumbing"/>
             <arg value="--all-porcelain"/>
@@ -524,7 +531,7 @@ You can now build the package by executing:
 
     <target name="clean"
             description="Cleans the distribution package">
-        <delete dir="${dist.dir}"/>
+        <delete dir="${ceylon.dist.dir}"/>
     </target>
 
     <target name="clean-all" depends="clean"
