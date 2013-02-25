@@ -58,7 +58,7 @@ public class RecoveryTest extends CompilerTest {
     @Test
     public void testRcvDuplicateDeclarations(){
         // this is https://github.com/ceylon/ceylon-compiler/issues/250
-        compile(2, "DuplicateDeclaration1.ceylon", "DuplicateDeclaration2.ceylon");
+        compile(1, "DuplicateDeclaration1.ceylon", "DuplicateDeclaration2.ceylon");
     }
 
     @Test
