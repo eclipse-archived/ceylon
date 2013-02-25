@@ -23,6 +23,7 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.dist.dir" location="${basedir}/../ceylon-dist/dist"/>
     
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
@@ -38,7 +39,7 @@
     <property name="ceylon.language.js" value="${ceylon.language.dir}/${ceylon.language.name}.js"/> 
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
-    <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-dist"/>
+    <property name="ceylon.compiler.loc" value="${ceylon.dist.dir}/bin/ceylon"/>
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
@@ -174,7 +175,7 @@
     <target name="ceylon.language.java">
         <!-- toplevel types -->
         <ceylon-compile
-            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            executable="${ceylon.compiler.loc}"
             verbose="false"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
@@ -253,7 +254,7 @@
     <!-- Rule to generate the documentation from the Ceylon sources -->
     <target name="ceylon.language.doc">
         <ceylon-doc
-            executable="${ceylon.compiler.loc}/dist/bin/ceylon">
+            executable="${ceylon.compiler.loc}">
             <sourcemodules dir="${module.language.src}"/>
         </ceylon-doc>
     </target>
@@ -273,7 +274,7 @@
         <delete dir="${build.test.repo}"/>
         <mkdir dir="${build.test.repo}"/>
         <copy todir="${build.test.repo}">
-            <fileset dir="${ceylon.compiler.loc}/dist/repo">
+            <fileset dir="${ceylon.dist.dir}/repo">
                 <exclude name="ceylon/language/**"/>
             </fileset>
         </copy>
@@ -283,7 +284,7 @@
             </fileset>
         </copy>
         <copy todir="${build.test.repo}">
-            <fileset dir="${ceylon.compiler.loc}/dist/repo">
+            <fileset dir="${ceylon.dist.dir}/repo">
                 <include name="ceylon/language/0.5/module.xml"/>
             </fileset>
         </copy>
@@ -293,7 +294,7 @@
 
     <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup">
         <ceylon-compile
-            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            executable="${ceylon.compiler.loc}"
             src="${test.src}"
             sysrep="${build.test.repo}"
             out="${build.test}">
@@ -315,7 +316,7 @@
     <target name="test.java" depends="compile.tests.java"
         description="compile and run the Java tests">
         <ceylon-run
-            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
         	run="runAndExit"
         	module="default"
@@ -355,7 +356,7 @@
 
     <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup">
         <ceylon-compile-js
-            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            executable="${ceylon.compiler.loc}"
             src="${test.src}"
             sysrep="${build.test.repo}"
             out="${build.test}">
@@ -368,7 +369,7 @@
     <target name="test.js" depends="compile.tests.js"
         description="Run tests on node.js (requires node)">
         <ceylon-run-js
-            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
+            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="default">
             <rep url="build/test" />
