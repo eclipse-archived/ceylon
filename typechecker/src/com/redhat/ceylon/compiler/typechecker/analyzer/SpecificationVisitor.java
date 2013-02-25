@@ -186,12 +186,12 @@ public class SpecificationVisitor extends Visitor {
 						}
 					}
                     else if (!declaration.isNative()) {
-                        if (isVariable()) {
-                            that.addError("not definitely initialized: " + 
-                                    member.getName());                    
-                        }
-                        else {
-                            if (!isLate() || !cannotSpecify) {
+                        if (!isLate() || !cannotSpecify) {
+                            if (isVariable()) {
+                                that.addError("not definitely initialized: " + 
+                                        member.getName());                    
+                            }
+                            else {
                                 that.addError("not definitely specified: " + 
                                         member.getName());
                             }
