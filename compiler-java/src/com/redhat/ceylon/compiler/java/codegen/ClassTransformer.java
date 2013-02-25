@@ -1136,7 +1136,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= transformDeclarationSharedFlags(cdecl);
-        result |= (cdecl.isAbstract() || cdecl.isFormal()) && (cdecl instanceof Class) ? ABSTRACT : 0;
+        result |= (cdecl.isAbstract() || cdecl.isFormal()) && (cdecl instanceof Class) && !cdecl.isAlias() ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         result |= cdecl.isAlias() && (cdecl instanceof Class) ? FINAL : 0;
 
