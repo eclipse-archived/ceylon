@@ -2310,6 +2310,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
 variadicType returns [Type type]
     : (unionType (PRODUCT_OP|SUM_OP))=>
       at=unionType
+      { $type = $at.type; }
       (
         PRODUCT_OP
         { SequencedType st = new SequencedType(null);
@@ -2323,8 +2324,13 @@ variadicType returns [Type type]
           st.setEndToken($SUM_OP);
           st.setAtLeastOne(true);
           $type = st; }
-      )
-    |
+      )?
+    | t=type
+      { $type = $t.type; }
+    ;
+
+defaultedType returns [Type type]
+    : (type (SPECIFY))=>
       t=type
       { $type = $t.type; }
       (
@@ -2334,18 +2340,20 @@ variadicType returns [Type type]
           st.setEndToken($SPECIFY);
           $type = st; }
       )?
+    | variadicType
+      { $type=$variadicType.type; }
     ;
 
 tupleType returns [TupleType type]
     : LBRACKET
       { $type = new TupleType($LBRACKET); }
       (
-        t1=variadicType
+        t1=defaultedType
         { $type.addElementType($t1.type); }
         (
           c=COMMA
           { $type.setEndToken($c); }
-          t2=variadicType
+          t2=defaultedType
           { $type.addElementType($t2.type);
             $type.setEndToken(null); }
         )*
@@ -2478,13 +2486,13 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
-            t1=variadicType
+            t1=defaultedType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
             (
               COMMA
               { bt.setEndToken($COMMA); }
-              t2=variadicType
+              t2=defaultedType
               { if ($t2.type!=null)
                     bt.addArgumentType($t2.type); }
             )*
