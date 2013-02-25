@@ -13,6 +13,10 @@ doc "Annotation to mark a class as abstract. An `abstract`
      class may have enumerated cases."
 shared Null abstract() { return null; }
 
+doc "Annotation to mark a class as final. A `final` 
+     class may not be extended."
+shared Null final() { return null; }
+
 doc "Annotation to mark a member of a type as refining a 
      member of a supertype."
 shared Null actual() { return null; }
