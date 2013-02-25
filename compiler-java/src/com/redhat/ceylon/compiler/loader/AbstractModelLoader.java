@@ -219,8 +219,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected boolean lastPartHasLowerInitial(String name) {
         int index = name.lastIndexOf('.');
-        if (index != -1 && index != name.length() - 1) {
-            char c = name.charAt(index+1);
+        if (index != -1){
+            name = name.substring(index+1);
+        }
+        if(!name.isEmpty()){
+            char c = name.charAt(0);
             return Util.isLowerCase(c);
         }
         return false;
