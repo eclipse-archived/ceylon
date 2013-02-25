@@ -1811,7 +1811,6 @@ public class StatementTransformer extends AbstractTransformer {
         ProducedType type = isCase.getType().getTypeModel();
         JCExpression cond = makeTypeTest(null, selectorAlias, type);
         
-        JCExpression toTypeExpr = makeJavaType(type);
         String name = isCase.getVariable().getIdentifier().getText();
 
         Naming.SyntheticName tmpVarName = selectorAlias;
@@ -1821,9 +1820,15 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression rawToTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
 
         // Substitute variable with the correct type to use in the rest of the code block
-        JCExpression tmpVarExpr = tmpVarName.makeIdent();
-
-        tmpVarExpr = unboxType(at(isCase).TypeCast(rawToTypeExpr, tmpVarExpr), type);
+        
+        JCExpression tmpVarExpr = at(isCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+        JCExpression toTypeExpr;
+        if (!willEraseToObject(isCase.getVariable().getType().getTypeModel())) {
+            toTypeExpr = makeJavaType(type);
+            tmpVarExpr = unboxType(tmpVarExpr, type);
+        } else {
+            toTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES);
+        }
         
         // The variable holding the result for the code inside the code block
         JCVariableDecl decl2 = at(isCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
