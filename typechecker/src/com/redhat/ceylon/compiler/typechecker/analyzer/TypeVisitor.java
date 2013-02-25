@@ -142,8 +142,9 @@ public class TypeVisitor extends Visitor {
                 //an imported module, to work around bug where
                 //default package thinks it can see stuff in
                 //all modules in the same source dir
+                Set<Module> visited = new HashSet<Module>();
                 for (ModuleImport mi: module.getImports()) {
-                    if (mi.getModule().equals(pkg.getModule())) {
+                    if (findModuleInTransitiveImports(mi.getModule(), pkg.getModule(), visited)) {
                         return pkg; 
                     }
                 }
@@ -167,6 +168,21 @@ public class TypeVisitor extends Visitor {
 //        }
 //    }
     
+    private boolean findModuleInTransitiveImports(Module moduleToVisit, Module moduleToFind, Set<Module> visited) {
+        if(!visited.add(moduleToVisit))
+            return false;
+        if(moduleToVisit.equals(moduleToFind))
+            return true;
+        for(ModuleImport imp : moduleToVisit.getImports()){
+            // skip non-exported modules
+            if(!imp.isExport())
+                return false;
+            if(findModuleInTransitiveImports(imp.getModule(), moduleToFind, visited))
+                return true;
+        }
+        return false;
+    }
+
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, 
             ImportList il) {
         if (member.getIdentifier()==null) {
