@@ -1136,9 +1136,11 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= transformDeclarationSharedFlags(cdecl);
-        result |= (cdecl.isAbstract() || cdecl.isFormal()) && (cdecl instanceof Class) && !cdecl.isAlias() ? ABSTRACT : 0;
+        // aliases cannot be abstract, especially since they're just placeholders
+        result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal()) && !cdecl.isAlias() ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
-        result |= cdecl.isAlias() && (cdecl instanceof Class) ? FINAL : 0;
+        // aliases are always final placeholders, final classes are also final
+        result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
 
         return result;
     }
