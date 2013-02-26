@@ -54,17 +54,27 @@ public class InvocationGenerator {
         }
         else {
             Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
+            boolean dyntype = false;
+            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.BaseTypeExpression
+                    && ((Tree.BaseTypeExpression)that.getPrimary()).getDeclaration() == null) {
+                //Could be a dynamic object, or a Ceylon one
+                gen.out(GenerateJsVisitor.getClAlias(), "dyntype(");
+                dyntype = true;
+            }
             that.getPrimary().visit(gen);
             if (gen.prototypeStyle && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
                 gen.out(".call(this");
                 if (!argList.getPositionalArguments().isEmpty()) {
                     gen.out(",");
                 }
-            }
-            else {
+            } else if (dyntype) {
+                if (!argList.getPositionalArguments().isEmpty()) {
+                    gen.out(",");
+                }
+            } else {
                 gen.out("(");
             }
-            argList.visit(gen);
+            generatePositionalArguments(argList, argList.getPositionalArguments(), false);
             Tree.TypeArguments targs = that.getPrimary() instanceof Tree.StaticMemberOrTypeExpression
                     ? ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
             if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
