@@ -132,7 +132,6 @@
 
   <target name="dist" depends="build"
     description="Create Ceylon compiler distribution">
-    <copy tofile="${build.dist}/${ceylon.compiler.jar}" file="${build.lib}/compiler.jar" />
     <antcall target="sha1sum">
       <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
     </antcall>    
@@ -257,7 +256,7 @@
     <artifact:writepom pomrefid="compiler.pom.tmp" file="${build.poms}/compiler.xml"/>
     <artifact:pom id="compiler.pom" file="${build.poms}/compiler.xml"/>
     <artifact:install pomrefid="compiler.pom"
-          file="${build.lib}/compiler.jar" />
+          file="${build.dist}/${ceylon.compiler.jar}" />
       
     </target>
 
@@ -366,7 +365,7 @@
     <!-- Rule to build compiler jar -->
     <target name="compiler.jar" depends="compiler.classes">
         <mkdir dir="${build.lib}"/>
-        <jar destfile="${build.lib}/compiler.jar">
+        <jar destfile="${build.dist}/${ceylon.compiler.jar}">
           <fileset dir="${build.classes}">
             <exclude name="ceylon/**"/>
             <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
