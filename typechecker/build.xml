@@ -374,7 +374,7 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.typechecker.repo}">
+        <copy todir="${ceylon.typechecker.repo}" overwrite="true">
             <fileset dir="${ceylon.typechecker.dist}"/>
         </copy>
     </target>
