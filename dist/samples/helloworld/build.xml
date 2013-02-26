@@ -3,17 +3,17 @@
     Sample Ceylon build script using Ant.
 -->
 <project name="project" default="default">
-	
-	<property name="ceylon.home" value="../.."/>
-    <property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar"/>
-	
-	<target name="ceylon-ant-taskdefs">
-	  <path id="ant-tasks">
-	    <pathelement location="${ceylon.ant.lib}"/>
-	  </path>
-      <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
-	</target>
-	
+
+    <property name="ceylon.home" value="../.." />
+    <property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar" />
+
+    <target name="ceylon-ant-taskdefs">
+        <path id="ant-tasks">
+            <pathelement location="${ceylon.ant.lib}" />
+        </path>
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks" />
+    </target>
+
     <target name="default" depends="doc, run">
     </target>
 
@@ -22,32 +22,32 @@
 
     <target name="compile" depends="ceylon-ant-taskdefs">
         <ceylon-compile>
-            <module name="com.example.helloworld"/>
+            <module name="com.example.helloworld" />
         </ceylon-compile>
     </target>
 
     <target name="compile-js" depends="ceylon-ant-taskdefs">
         <ceylon-compile-js>
-            <module name="com.example.helloworld"/>
+            <module name="com.example.helloworld" />
         </ceylon-compile-js>
     </target>
 
     <target name="doc" depends="ceylon-ant-taskdefs">
         <ceylon-doc>
-            <module name="com.example.helloworld"/>
+            <module name="com.example.helloworld" />
         </ceylon-doc>
     </target>
 
     <target name="run" depends="compile">
-        <ceylon-run module="com.example.helloworld/1.0.0"/>
+        <ceylon-run module="com.example.helloworld/1.0.0" />
     </target>
 
     <target name="run-js" depends="compile-js">
-        <ceylon-run-js module="com.example.helloworld/1.0.0"/>
+        <ceylon-run-js module="com.example.helloworld/1.0.0" />
     </target>
 
-	<target name="clean">
-    	<delete dir="modules"/>
+    <target name="clean">
+        <delete dir="modules" />
     </target>
 
 </project>
