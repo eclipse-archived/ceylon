@@ -68,7 +68,7 @@ public class SourceModules extends ProjectComponent {
             log("<sourcemodules> file " + file + "=> moduleName " + moduleName, Project.MSG_VERBOSE);
             Module mav = new Module();
             mav.setName(moduleName);
-            String version = new ModuleDescriptorReader(mav, dir).getModuleVersion();
+            String version = new ModuleDescriptorReader(mav.getName(), dir).getModuleVersion();
             log("<sourcemodules> file " + file + "=> module " + moduleName+"/"+version, Project.MSG_VERBOSE);
             mav.setVersion(version);
             result.add(mav);

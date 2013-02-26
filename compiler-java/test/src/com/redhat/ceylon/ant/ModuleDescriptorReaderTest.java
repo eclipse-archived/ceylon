@@ -31,7 +31,7 @@ public class ModuleDescriptorReaderTest {
 
     @Test
     public void testReadDescriptorA() {
-        ModuleDescriptorReader r = new ModuleDescriptorReader(new Module("com.redhat.ceylon.ant.modules.a"), new File("test/src"));
+        ModuleDescriptorReader r = new ModuleDescriptorReader("com.redhat.ceylon.ant.modules.a", new File("test/src"));
         Assert.assertEquals("1.0", r.getModuleVersion());
         Assert.assertEquals("com.redhat.ceylon.ant.modules.a", r.getModuleName());
         Assert.assertEquals("http://example.com/license", r.getModuleLicense());

@@ -84,7 +84,7 @@ abstract class LazyHelper {
             long newest = Long.MIN_VALUE;
             String version = null;
             for (File src : task.getSrc()) {
-                version = version != null ? version : new ModuleDescriptorReader(module, src).getModuleVersion();
+                version = version != null ? version : new ModuleDescriptorReader(module.getName(), src).getModuleVersion();
                 File srcModuleDir = new File(src, module.toDir().getPath());
                 newest = newestSourceFile(newest, srcModuleDir);
                 task.log("Newest file in " + srcModuleDir + " " + new Date(newest), Project.MSG_DEBUG);
@@ -138,7 +138,7 @@ abstract class LazyHelper {
                 continue;
             }
             for (File src : task.getSrc()) {
-                version = version != null ? version : new ModuleDescriptorReader(module, src).getModuleVersion();
+                version = version != null ? version : new ModuleDescriptorReader(module.getName(), src).getModuleVersion();
             }
             if (version == null) {
                 task.log("Unable to determine version (and hence timestamp) of " + module, Project.MSG_VERBOSE);

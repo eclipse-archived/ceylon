@@ -68,7 +68,7 @@ public class CeylonModuleDescriptorTask extends Task {
     @Override
     public void execute() throws BuildException {
         Java7Checker.check();
-        final ModuleDescriptorReader reader = new ModuleDescriptorReader(module, getSrc());
+        final ModuleDescriptorReader reader = new ModuleDescriptorReader(module.getName(), getSrc());
         if (versionProperty != null) {
             setProjectProperty(versionProperty, reader.getModuleVersion());
         }
