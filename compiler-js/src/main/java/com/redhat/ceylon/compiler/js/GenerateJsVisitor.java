@@ -118,6 +118,7 @@ public class GenerateJsVisitor extends Visitor
     
     private final TypeUtils types;
     private Writer out;
+    private final Writer originalOut;
     final boolean prototypeStyle;
     private CompilationUnit root;
     private static String clAlias="";
@@ -139,6 +140,7 @@ public class GenerateJsVisitor extends Visitor
     public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names,
             List<CommonToken> tokens, Map<String,String> imports, TypeUtils typeUtils) {
         this.out = out;
+        originalOut = out;
         this.prototypeStyle=prototypeStyle;
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
@@ -181,7 +183,8 @@ public class GenerateJsVisitor extends Visitor
             for (String s : codez) {
                 out.write(s);
             }
-            if (verbose) {
+            if (verbose && out == originalOut) {
+                //Print code to console (when printing to REAL output)
                 System.out.print(code);
                 for (String s : codez) {
                     System.out.print(s);
