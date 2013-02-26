@@ -195,7 +195,7 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.repo.dir}">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
             <fileset dir="${build.dist}"/>
             <fileset dir="${runtime}"/>
         </copy>
