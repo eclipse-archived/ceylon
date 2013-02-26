@@ -210,6 +210,7 @@
     <target name="compiler.classes">
         <mkdir dir="${build.classes}" />
         <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" includeantruntime="true">
+            <compilerarg value="-XDignore.symbol.file" />
             <exclude name="**/Java7Checker.java" />
             <exclude name="com/redhat/ceylon/tools/Tool.java" />
             <exclude name="com/redhat/ceylon/tools/Plugin.java" />
