@@ -2,7 +2,10 @@ package com.redhat.ceylon.launcher;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,19 +30,8 @@ public class Launcher {
             System.setProperty("ceylon.system.version", ceylonSystemVersion);
         }
         
-        // Check if we need to create a CeylonClassLoader or if we can use the existing one
-        CeylonClassLoader loader = null;
-        ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();;
-        if (currentClassLoader instanceof CeylonClassLoader) {
-            // Use existing class loader
-            loader = (CeylonClassLoader)currentClassLoader;
-        } else {
-            // Create the class loader that knows where to find all the Ceylon dependencies
-            loader = new CeylonClassLoader();
-            // Set context class loader for current thread
-            Thread.currentThread().setContextClassLoader(loader);
-        }
-            
+        CeylonClassLoader loader = getClassLoader();
+        
         // We actually need to construct and set a new class path for the compiler
         // which doesn't use the actual class path used by the JVM but it constructs
         // it's own list looking at the arguments passed on the command line or
@@ -52,11 +44,7 @@ public class Launcher {
             }
             classPath.append(f.getAbsolutePath());
         }
-        
-        // Set some important system properties
         System.setProperty("env.class.path", classPath.toString());
-        System.setProperty("ceylon.home", CeylonClassLoader.determineHome().getAbsolutePath());
-        System.setProperty("ceylon.system.repo", CeylonClassLoader.determineRepo().getAbsolutePath());
         
         // Total HACK to make an error with JBoss Modules go away
         Properties sp = System.getProperties();
@@ -84,6 +72,27 @@ public class Launcher {
         Object result = mainMethod.invoke(null, (Object)args);
         
         return ((Integer)result).intValue();
+    }
+    
+    public static CeylonClassLoader getClassLoader() throws MalformedURLException, FileNotFoundException, URISyntaxException {
+        // Check if we need to create a CeylonClassLoader or if we can use the existing one
+        CeylonClassLoader loader = null;
+        ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();;
+        if (currentClassLoader instanceof CeylonClassLoader) {
+            // Use existing class loader
+            loader = (CeylonClassLoader)currentClassLoader;
+        } else {
+            // Create the class loader that knows where to find all the Ceylon dependencies
+            loader = new CeylonClassLoader();
+            // Set context class loader for current thread
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+        
+        // Set some important system properties
+        System.setProperty("ceylon.home", CeylonClassLoader.determineHome().getAbsolutePath());
+        System.setProperty("ceylon.system.repo", CeylonClassLoader.determineRepo().getAbsolutePath());
+
+        return loader;
     }
     
     private static boolean hasArgument(final String[] args, final String test) {
