@@ -28,7 +28,6 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
 import com.redhat.ceylon.common.tool.Option;
@@ -176,7 +175,6 @@ public class CeylonTool implements Tool {
             version(System.out);
             return SC_OK;
         } else {
-            Java7Checker.check();
             return new CeylonTool().bootstrap(false, args);
         }
     }

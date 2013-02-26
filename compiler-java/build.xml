@@ -273,7 +273,6 @@
        encoding="UTF-8"
        classpathref="compiler.classpath"
        includeantruntime="true">
-      <exclude name="**/*Main5.java"/>
       <exclude name="**/Java7Checker.java"/>
       <exclude name="com/redhat/ceylon/tools/Tool.java"/>
       <exclude name="com/redhat/ceylon/tools/Plugin.java"/>
@@ -291,11 +290,10 @@
   	 programs they spawn. 
   	-->
   	<delete dir="${build.classes}">
-  	  <include name="**/*Main5.class"/>
-  	  <include name="**/Java7Checker.class"/>
-      <include name="com/redhat/ceylon/ant/**"/>
-      <include name="com/redhat/ceylon/launcher/Launcher.java"/>
-      <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
+          <include name="**/Java7Checker.class"/>
+          <include name="com/redhat/ceylon/ant/**"/>
+          <include name="com/redhat/ceylon/launcher/Launcher.java"/>
+          <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
   	</delete>
     <javac
        srcdir="${javac.src}:${ceylonc.src}"
@@ -306,7 +304,6 @@
        target="1.5"
        source="1.5"
        includeantruntime="true">
-      <include name="**/*Main5.java"/>
       <include name="**/Java7Checker.java"/>
       <include name="com/redhat/ceylon/tools/Tool.java"/>
       <include name="com/redhat/ceylon/tools/Plugin.java"/>
