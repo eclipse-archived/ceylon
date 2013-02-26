@@ -46,13 +46,9 @@
   <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
   <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}"/>
   <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}"/>
-  <property name="ceylon.ant.dir" value="com/redhat/ceylon/ant/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="ceylon.ant.jar" value="${ceylon.ant.dir}/com.redhat.ceylon.ant-${module.com.redhat.ceylon.compiler.version}.jar"/>
-  <property name="ceylon.ant.lib" location="${ceylon.repo.dir}/${ceylon.ant.jar}"/>
-  <property name="ceylon.ant.repo" value="${ceylon.repo.dir}/${ceylon.ant.dir}"/>
-  <property name="ceylon.ant.dist" value="${build.dist}/${ceylon.ant.dir}"/>
   <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
   <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
+  <property name="ceylon.bootstrap.lib" location="${build.lib}/ceylon-bootstrap.jar"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -94,7 +90,7 @@
   
   <path id="integrationtest.run.classpath">
     <path refid="test.compile.classpath"/>
-    <pathelement path="${ceylon.ant.lib}"/>
+    <pathelement path="${build.lib}/ceylon-ant.jar"/>
   </path>
 
   <path id="language.classpath">
@@ -140,10 +136,6 @@
     <antcall target="sha1sum">
       <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
     </antcall>    
-    <copy tofile="${build.dist}/${ceylon.ant.jar}" file="${build.lib}/ant.jar" />
-    <antcall target="sha1sum">
-      <param name="file" value="${build.dist}/${ceylon.ant.jar}" />
-    </antcall>    
   </target>
 
   <target name="publish"
@@ -154,9 +146,6 @@
   <target name="publish-internal" depends="init.repo">
     <copy todir="${ceylon.compiler.repo}">
       <fileset dir="${ceylon.compiler.dist}"/>
-    </copy>
-    <copy todir="${ceylon.ant.repo}">
-       <fileset dir="${ceylon.ant.dist}"/>
     </copy>
   </target>
   
@@ -391,16 +380,13 @@
     </target>
 
     <!-- Rule to build ant jar -->
-    <target name="ant.jar" depends="compiler.classes">
+    <target name="ant.jar" depends="compiler.classes,bootstrap.jar">
         <mkdir dir="${build.lib}"/>
-        <jar destfile="${build.lib}/ant.jar">
+        <jar destfile="${build.lib}/ceylon-ant.jar">
           <fileset dir="${build.classes}">
             <include name="com/redhat/ceylon/ant/**"/>
           </fileset>
-          <zipfileset src="${ceylon.common.lib}"/>
-          <zipfileset src="${ceylon.module-resolver.lib}"/>
-          <zipfileset src="${ceylon.typechecker.lib}"/>
-          <zipfileset src="${antlr.lib}"/>
+          <zipfileset src="${ceylon.bootstrap.lib}"/>
         </jar>
     </target>
 
