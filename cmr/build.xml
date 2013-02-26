@@ -162,10 +162,10 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.module-resolver.repo}">
+        <copy todir="${ceylon.module-resolver.repo}" overwrite="true">
             <fileset dir="${ceylon.module-resolver.dist}"/>
         </copy>
-        <copy todir="${ceylon.maven-support.repo}">
+        <copy todir="${ceylon.maven-support.repo}" overwrite="true">
             <fileset dir="${ceylon.maven-support.dist}"/>
         </copy>
     </target>
