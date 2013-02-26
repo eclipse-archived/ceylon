@@ -317,10 +317,10 @@
         <ceylon-run
             executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
-        	run="runAndExit"
-        	module="default"
-        	resultproperty="test.ceylon.result">
-        	<rep url="${build.test}"/>
+            run="runAndExit"
+            module="default"
+            resultproperty="test.ceylon.result">
+            <rep url="${build.test}"/>
         </ceylon-run>
         
         <condition property="test.fail.ceylon">
