@@ -194,6 +194,13 @@
             description="Publish Ceylon JS compiler module to default repo">
     </target>
 
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}">
+            <fileset dir="${build.dist}"/>
+            <fileset dir="${runtime}"/>
+        </copy>
+    </target>
+
     <target name="ide" depends="dist"
             description="Copies the JS compiler jar and language module into the ceylon-ide-eclipse project">
         <copy overwrite="true"
@@ -205,13 +212,6 @@
         <copy overwrite="true"
               file="${runtime}/${jslangmodule}.sha1"
               todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/ceylon/language/${module.com.redhat.ceylon.compiler.js.version}"/>
-    </target>
-
-    <target name="publish-internal">
-        <copy todir="${ceylon.repo.dir}">
-            <fileset dir="${build.dist}"/>
-            <fileset dir="${runtime}"/>
-        </copy>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
