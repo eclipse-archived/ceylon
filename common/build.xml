@@ -1,69 +1,56 @@
 <project name="Ceylon Common module" default="publish" basedir=".">
-    <property file="common-build.properties"/>
-    <property file="build.properties"/>
+    <property file="common-build.properties" />
+    <property file="build.properties" />
 
     <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build"/>
-    <property name="build.dist" value="${build.dir}/dist"/>
-    <property name="build.classes" location="${build.dir}/classes"/>
-	
-    <property name="src" location="src"/>
-    <property name="test.src" location="test/src"/>
-    <property name="test.reports" location="${build.dir}/test-reports"/>
-	
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="build.dist" value="${build.dir}/dist" />
+    <property name="build.classes" location="${build.dir}/classes" />
+
+    <property name="src" location="src" />
+    <property name="test.src" location="test/src" />
+    <property name="test.reports" location="${build.dir}/test-reports" />
+
     <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
-    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
-    <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}"/>
-    <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}"/>
-	
-	<property name="test.reports" location="${build}/test-reports"/>
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
+    <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}" />
+    <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}" />
+
+    <property name="test.reports" location="${build}/test-reports" />
 
     <!-- Classpath for the build tools. -->
     <path id="classpath">
     </path>
 
     <path id="test.run.classpath">
-        <pathelement path="${build.classes}"/>
-        <pathelement path="${junit.lib}"/>
+        <pathelement path="${build.classes}" />
+        <pathelement path="${junit.lib}" />
     </path>
 
     <!-- ################################################################## -->
 
     <target name="clean">
-        <delete dir="${build.dir}"/>
+        <delete dir="${build.dir}" />
     </target>
 
     <!-- project compilation -->
     <target name="compile" description="compile the type checker">
         <mkdir dir="${build.classes}" />
         <javac
-                srcdir="${src}"
-                destdir="${build.classes}"
-                debug="true"
-                classpathref="classpath">
-            <include name="**/*.java"/>
-        	<exclude name="com/redhat/ceylon/common/tool/Java7Checker.java"/>
-        	<exclude name="com/redhat/ceylon/common/tool/Tool.java"/>
-        </javac>
-    	<!-- some things are compiled with Java 1.5 -->
-    	<javac
-    		srcdir="${src}"
+            srcdir="${src}"
             destdir="${build.classes}"
             debug="true"
-            classpathref="classpath"
-	        target="1.5"
-	        source="1.5">
-              <include name="com/redhat/ceylon/common/tool/Java7Checker.java"/>
-              <include name="com/redhat/ceylon/common/tool/Tool.java"/>
-    	</javac>
-    	<copy todir="${build.classes}">
-    		<fileset dir="${src}">
-    			<include name="**/*"/>
-    			<exclude name="**/*.java"/>
-    		</fileset>
+            classpathref="classpath">
+            <include name="**/*.java" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${src}">
+                <include name="**/*" />
+                <exclude name="**/*.java" />
+            </fileset>
         </copy>
     </target>
 
@@ -72,39 +59,36 @@
     <!-- Helper target, used to create a sha1 checksum file  -->
     <!-- Requires 'file' as a parameter. -->
     <target name="sha1sum">
-        <fail unless="file"/>
-        <fail if="filename"/>
-        <fail if="value"/>
-        <basename file="${file}" property="filename"/>
-        <checksum file="${file}" property="value" algorithm="sha1"/>
-        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
-    </target>
-    
-    <!-- Repository targets -->
-    <target name="init.repo"
-            description="Init local ceylon repository and add ceylon.language">
-        <mkdir dir="${ceylon.common.repo}"/>
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}" />
     </target>
 
-    <target name="clean.repo"
-            description="Clean local ceylon repository">
-        <delete dir="${ceylon.common.repo}"/>
+    <!-- Repository targets -->
+    <target name="init.repo" description="Init local ceylon repository and add ceylon.language">
+        <mkdir dir="${ceylon.common.repo}" />
     </target>
-	
+
+    <target name="clean.repo" description="Clean local ceylon repository">
+        <delete dir="${ceylon.common.repo}" />
+    </target>
+
 
     <target name="ide" depends="dist">
-        <copy 
-            overwrite="true"
+        <copy overwrite="true"
             file="${build.dist}/${ceylon.common.jar}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar"/>
+            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
     </target>
-	
+
     <target name="dist" depends="compile">
-        <mkdir dir="${build.dist}"/>
-    	
+        <mkdir dir="${build.dist}" />
+
         <zip destfile="${build.dist}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
-                <include name="**/*"/>
+                <include name="**/*" />
             </fileset>
         </zip>
         <antcall target="sha1sum">
@@ -112,48 +96,51 @@
         </antcall>
     </target>
 
-    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"
-            description="Publish both type checker and ceylon.language template module">
+    <target name="publish"
+        depends="dist,clean.repo,init.repo,publish-internal"
+        description="Publish both type checker and ceylon.language template module">
     </target>
 
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.common.repo}" overwrite="true">
-            <fileset dir="${ceylon.common.dist}"/>
+            <fileset dir="${ceylon.common.dist}" />
         </copy>
     </target>
 
-	<target name="compile.tests">
+    <target name="compile.tests">
         <mkdir dir="${build.classes}" />
         <javac
-                srcdir="${test.src}"
-                destdir="${build.classes}"
-                debug="true"
-                classpathref="test.run.classpath">
-            <include name="**/*.java"/>
+            srcdir="${test.src}"
+            destdir="${build.classes}"
+            debug="true"
+            classpathref="test.run.classpath">
+            <include name="**/*.java" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${test.src}">
-                <exclude name="**/*.java"/>
+                <exclude name="**/*.java" />
             </fileset>
         </copy>
-	</target>
-	
-    <target name="test"
-            depends="publish,compile.tests"
-            description="Run tests">
-        <mkdir dir="${test.reports}"/>
-        <junit printsummary="yes" haltonfailure="no">
-          <classpath refid="test.run.classpath"/>
+    </target>
 
-          <formatter type="xml"/>
-          <test name="com.redhat.ceylon.common.test.AllTests" 
-          	fork="yes" todir="${test.reports}"/>
+    <target name="test"
+        depends="publish,compile.tests"
+        description="Run tests">
+        <mkdir dir="${test.reports}" />
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="test.run.classpath" />
+
+            <formatter type="xml" />
+            <test
+                name="com.redhat.ceylon.common.test.AllTests"
+                fork="yes"
+                todir="${test.reports}" />
         </junit>
         <junitreport todir="${test.reports}">
-          <fileset dir="${test.reports}">
-            <include name="TEST-*.xml"/>
-          </fileset>
-          <report format="frames" todir="${test.reports}"/>
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports}" />
         </junitreport>
     </target>
 </project>
