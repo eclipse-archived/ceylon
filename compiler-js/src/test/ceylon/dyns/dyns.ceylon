@@ -99,6 +99,15 @@ shared void test() {
             check("somethingThatDoesntExist" in e.message,
                 "Undefined/unknown dynamic exception message should mention somethingThatDoesntExist");
         }
+        value buf = Buffer(1);
+        check(buf.length==1, "Buffer length");
+        try {
+          value buf2 = MadeUpType(5);
+          check(buf2.length==666, "TuMama length");
+          fail("Can't instantiate this");
+        } catch (Exception e) {
+            check("MadeUpType" in e.message, "exception message should mention MadeUpType");
+        }
         results();
     }
 }
