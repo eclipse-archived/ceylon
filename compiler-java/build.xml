@@ -1,492 +1,404 @@
 <project name="Ceylon compiler" default="all" basedir=".">
 
-  <property file="../ceylon-common/common-build.properties"/>
-  <property file="build.properties"/>	
+    <property file="../ceylon-common/common-build.properties" />
+    <property file="build.properties" />
 
-  <property name="name" value="Ceylon compiler"/>
-  <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-  <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
-  <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-  <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
-  <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
-  <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
-  <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
-  <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
-  <property name="ceylon.language.car" value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
-  <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}"/>
-  <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
-  <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-  <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    <property name="name" value="Ceylon compiler" />
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
+    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}" />
+    <property name="ceylon.language.car" value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car" />
+    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}" />
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
 
-  <!-- The Java source files for the compiler -->
-  <property name="javac.src" location="langtools/src/share/classes"/>
-  <property name="ceylonc.src" location="src"/>
-  <property name="test.src" location="test/src"/>
-  <property name="test.ceylond.src" location="test/ceylondoc"/>
+    <!-- The Java source files for the compiler -->
+    <property name="javac.src" location="langtools/src/share/classes" />
+    <property name="ceylonc.src" location="src" />
+    <property name="test.src" location="test/src" />
+    <property name="test.ceylond.src" location="test/ceylondoc" />
 
-  <!-- Directories everything gets built into -->
-  <property name="build" location="build"/>
-  <property name="build.classes" location="${build}/classes"/>
-  <property name="build.ceylon.cars" location="${build}/ceylon-cars"/>
-  <property name="build.poms" location="${build}/poms"/>
-  <property name="build.bin" location="${build}/bin"/>  
-  <property name="build.lib" location="${build}/lib"/>
-  <property name="build.api" location="${build}/api"/>
-  <property name="build.dist" location="${build}/dist"/>
-  <property name="test.reports" location="${build}/test-reports"/>
+    <!-- Directories everything gets built into -->
+    <property name="build" location="build" />
+    <property name="build.classes" location="${build}/classes" />
+    <property name="build.ceylon.cars" location="${build}/ceylon-cars" />
+    <property name="build.poms" location="${build}/poms" />
+    <property name="build.bin" location="${build}/bin" />
+    <property name="build.lib" location="${build}/lib" />
+    <property name="build.api" location="${build}/api" />
+    <property name="build.dist" location="${build}/dist" />
+    <property name="test.reports" location="${build}/test-reports" />
 
-  <property name="markdown.version" value="0.8-c0dcd373ce"/>
-  <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar"/>
-  <property name="markdown-papers.version" value="1.2.7"/>
-  <property name="markdown-papers.lib" location="${base.path}/markdownpapers-core-${markdown-papers.version}.jar"/>
-    
-  <!-- Jarfiles everything ends up in -->
-  <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
-  <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
-  <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}"/>
-  <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}"/>
-  <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}"/>
-  <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car"/>
-  <property name="ceylon.bootstrap.lib" location="${build.lib}/ceylon-bootstrap.jar"/>
+    <property name="markdown.version" value="0.8-c0dcd373ce" />
+    <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar" />
+    <property name="markdown-papers.version" value="1.2.7" />
+    <property name="markdown-papers.lib" location="${base.path}/markdownpapers-core-${markdown-papers.version}.jar" />
 
-  <!-- The directory that parser tests live in, and
+    <!-- Jarfiles everything ends up in -->
+    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
+    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
+    <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}" />
+    <property name="ceylon.compiler.dist" value="${build.dist}/${ceylon.compiler.dir}" />
+    <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
+    <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car" />
+    <property name="ceylon.bootstrap.lib" location="${build.lib}/ceylon-bootstrap.jar" />
+
+    <!-- The directory that parser tests live in, and
        the directory test results get written into -->
-  <property name="parser.test.src" location="corpus/tests"/>
-  <property name="parser.test.dst" location="${build}/test/parser"/>
+    <property name="parser.test.src" location="corpus/tests" />
+    <property name="parser.test.dst" location="${build}/test/parser" />
 
-  <path id="compiler.classpath">
-    <pathelement path="${ceylon.common.lib}"/>
-    <pathelement path="${ceylon.module-resolver.lib}"/>
-    <pathelement path="${ceylon.typechecker.lib}"/>
-    <pathelement path="${ceylon.language.lib}"/>
-    <pathelement path="${antlr.lib}"/>
-    <pathelement path="${markdown.lib}"/>
-    <pathelement path="${markdown-papers.lib}"/>
-  </path>
+    <path id="compiler.classpath">
+        <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.module-resolver.lib}" />
+        <pathelement path="${ceylon.typechecker.lib}" />
+        <pathelement path="${ceylon.language.lib}" />
+        <pathelement path="${antlr.lib}" />
+        <pathelement path="${markdown.lib}" />
+        <pathelement path="${markdown-papers.lib}" />
+    </path>
 
-  <path id="test.compile.classpath">
-    <path refid="compiler.classpath"/>
-    <pathelement path="${build.classes}"/>
-    <pathelement path="${junit.lib}"/>
-    <pathelement path="${cmr-maven.lib}"/>
-  </path>
+    <path id="test.compile.classpath">
+        <path refid="compiler.classpath" />
+        <pathelement path="${build.classes}" />
+        <pathelement path="${junit.lib}" />
+        <pathelement path="${cmr-maven.lib}" />
+    </path>
 
-  <path id="test.run.classpath">
-    <path refid="test.compile.classpath"/>
-    <pathelement path="${ceylon.compiler.lib}"/>
-    <pathelement path="${ceylon.language.lib}"/>
-    <pathelement path="${ceylon-tests.car}"/>
-    <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
-    <pathelement path="${jandex.lib}"/>
-    <pathelement path="${slf4j-simple.lib}"/>
-    <pathelement path="${slf4j-api.lib}"/>
-    <pathelement path="${sardine.lib}"/>
-    <pathelement path="${httpcore.lib}"/>
-    <pathelement path="${httpclient.lib}"/>
-    <pathelement path="${commons-codec.lib}"/>
-    <pathelement path="${commons-logging.lib}"/>
-  </path>
-  
-  <path id="integrationtest.run.classpath">
-    <path refid="test.compile.classpath"/>
-    <pathelement path="${build.lib}/ceylon-ant.jar"/>
-  </path>
+    <path id="test.run.classpath">
+        <path refid="test.compile.classpath" />
+        <pathelement path="${ceylon.compiler.lib}" />
+        <pathelement path="${ceylon.language.lib}" />
+        <pathelement path="${ceylon-tests.car}" />
+        <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
+        <pathelement path="${jandex.lib}" />
+        <pathelement path="${slf4j-simple.lib}" />
+        <pathelement path="${slf4j-api.lib}" />
+        <pathelement path="${sardine.lib}" />
+        <pathelement path="${httpcore.lib}" />
+        <pathelement path="${httpclient.lib}" />
+        <pathelement path="${commons-codec.lib}" />
+        <pathelement path="${commons-logging.lib}" />
+    </path>
 
-  <path id="language.classpath">
-    <pathelement path="${language.jar}"/>
-    <pathelement path="${build.classes}"/>
-  </path>
+    <path id="integrationtest.run.classpath">
+        <path refid="test.compile.classpath" />
+        <pathelement path="${build.lib}/ceylon-ant.jar" />
+    </path>
 
-  <!-- ################################################################## -->
+    <path id="language.classpath">
+        <pathelement path="${language.jar}" />
+        <pathelement path="${build.classes}" />
+    </path>
 
-  <!-- constant to declare a file binary for checksumsum -->
-  <property name="checksum.binary-prefix" value=" *" />
-  <!-- Helper target, used to create a sha1 checksum file  -->
-  <!-- Requires 'file' as a parameter. -->
-  <target name="sha1sum">
-    <fail unless="file"/>
-    <fail if="filename"/>
-    <fail if="value"/>
-    <basename file="${file}" property="filename"/>
-    <checksum file="${file}" property="value" algorithm="sha1"/>
-    <echo file="${file}.sha1" message="${value}"/>
-  </target>
+    <!-- ################################################################## -->
 
-  <!-- Rule to clean everything up -->
-  <target name="clean">
-    <delete dir="${build}"/>
-    <delete dir="samples/helloworld/modules"/>
-    <delete dir="samples/no-module/modules"/>
-  </target>
-
-  <!-- Repository targets -->
-  <target name="init.repo"
-      description="Initialize the default local Ceylon module repository">
-    <mkdir dir="${ceylon.compiler.repo}"/>
-  </target>
-  <target name="clean.repo"
-     description="Clean default local Ceylon module repository">
-    <delete dir="${ceylon.compiler.repo}"/>
-  </target>
-
-  <target name="dist" depends="build"
-    description="Create Ceylon compiler distribution">
-    <antcall target="sha1sum">
-      <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
-    </antcall>    
-  </target>
-
-  <target name="publish"
-    depends="dist,clean.repo,init.repo,publish-internal"
-    description="Publish Ceylon compiler module to default repo">
-  </target>
-
-  <target name="publish-internal" depends="init.repo">
-    <copy todir="${ceylon.compiler.repo}" overwrite="true">
-      <fileset dir="${ceylon.compiler.dist}"/>
-    </copy>
-  </target>
-  
-  <target name="publish.maven" depends="publish"
-               description="install Ceylon compiler module to local maven repo"
-               unless="no-maven"
-               xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-    <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.3.jar" />
-    <!-- need to install compiler and all its dependencies in a mvn repo
-         before we can use mvn to build the plugin -->
-    <!-- Also to work around MANTTASKS-170 we have to write out the poms
-         to disk, rather than using in-memory -->
-    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
-                 uri="antlib:org.apache.maven.artifact.ant"
-                 classpathref="maven-ant-tasks.classpath" />
-
-    <mkdir dir="${build.poms}"/>
-
-    <artifact:pom id="antlr.pom.tmp"
-                groupId="org.ceylon-lang"
-                artifactId="antlr-complete"
-                name="antlr-complete"
-                version="${antlr.version}">
-    </artifact:pom>
-    <artifact:writepom pomrefid="antlr.pom.tmp" file="${build.poms}/antlr.xml"/>
-    <artifact:pom id="antlr.pom" file="${build.poms}/antlr.xml"/>
-    <artifact:install pomrefid="antlr.pom"
-                file="${antlr.lib}" />
-
-    <artifact:pom id="common.pom.tmp"
-                groupId="org.ceylon-lang" 
-                artifactId="ceylon-common" 
-                name="ceylon-common"
-                version="${module.com.redhat.ceylon.common.version}">
-    </artifact:pom>
-    <artifact:writepom pomrefid="common.pom.tmp" file="${build.poms}/common.xml"/>
-    <artifact:pom id="common.pom" file="${build.poms}/common.xml"/>
-    <artifact:install pomrefid="common.pom"
-                file="${ceylon.common.lib}" />
-
-    <artifact:pom id="typechecker.pom.tmp"
-                groupId="org.ceylon-lang" 
-                artifactId="ceylon-spec" 
-                name="ceylon-spec"
-                version="${module.com.redhat.ceylon.typechecker.version}">
-      <dependency groupId="org.ceylon-lang" 
-                  artifactId="antlr-complete" 
-                  version="${antlr.version}"/>
-    </artifact:pom>
-    <artifact:writepom pomrefid="typechecker.pom.tmp" file="${build.poms}/typechecker.xml"/>
-    <artifact:pom id="typechecker.pom" file="${build.poms}/typechecker.xml"/>
-    <artifact:install pomrefid="typechecker.pom"
-                file="${ceylon.typechecker.lib}" />
-
-    <artifact:pom id="module-resolver.pom.tmp"
-                groupId="org.ceylon-lang" 
-                artifactId="ceylon-module-resolver" 
-                name="ceylon-module-resolver"
-                version="${module.com.redhat.ceylon.module-resolver.version}">
-    </artifact:pom>
-    <artifact:writepom pomrefid="module-resolver.pom.tmp" file="${build.poms}/module-resolver.xml"/>
-    <artifact:pom id="module-resolver.pom" file="${build.poms}/module-resolver.xml"/>
-    <artifact:install pomrefid="module-resolver.pom"
-                file="${ceylon.module-resolver.lib}" />
-
-    <artifact:pom id="language.pom.tmp"
-                groupId="org.ceylon-lang" 
-                artifactId="ceylon.language" 
-                name="ceylon.language"
-                version="${module.ceylon.language.version}">
-    </artifact:pom>
-    <artifact:writepom pomrefid="language.pom.tmp" file="${build.poms}/language.xml"/>
-    <artifact:pom id="language.pom" file="${build.poms}/language.xml"/>
-    <artifact:install pomrefid="language.pom"
-                file="${ceylon.language.lib}" />
-      
-    <artifact:pom id="markdown.pom.tmp"
-                groupId="org.ceylon-lang" 
-                artifactId="markdown" 
-                name="markdown"
-                version="${markdown.version}">
-    </artifact:pom>
-    <artifact:writepom pomrefid="markdown.pom.tmp" file="${build.poms}/markdown.xml"/>
-    <artifact:pom id="markdown.pom" file="${build.poms}/markdown.xml"/>
-    <artifact:install pomrefid="markdown.pom"
-                file="${markdown.lib}" />
-      
-    <artifact:pom id="compiler.pom.tmp"
-                groupId="org.ceylon-lang" 
-                artifactId="ceylon-compiler" 
-                name="ceylon-compiler"
-                version="${module.com.redhat.ceylon.compiler.version}">
-      <dependency groupId="org.ceylon-lang" 
-          artifactId="ceylon-common" 
-          version="${module.com.redhat.ceylon.common.version}"/>
-      <dependency groupId="org.ceylon-lang" 
-          artifactId="ceylon-spec" 
-          version="${module.com.redhat.ceylon.typechecker.version}"/>
-      <dependency groupId="org.ceylon-lang" 
-          artifactId="ceylon-module-resolver" 
-          version="${module.com.redhat.ceylon.module-resolver.version}"/>
-      <dependency groupId="org.ceylon-lang" 
-          artifactId="ceylon.language" 
-          version="${module.ceylon.language.version}"/>
-      <dependency groupId="org.ceylon-lang" 
-          artifactId="markdown" 
-          version="${markdown.version}"/>
-    </artifact:pom>
-    <artifact:writepom pomrefid="compiler.pom.tmp" file="${build.poms}/compiler.xml"/>
-    <artifact:pom id="compiler.pom" file="${build.poms}/compiler.xml"/>
-    <artifact:install pomrefid="compiler.pom"
-          file="${build.dist}/${ceylon.compiler.jar}" />
-      
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
     </target>
 
-  <!-- Rule to compile and test -->
-  <target name="all" depends="test"/>
+    <!-- Rule to clean everything up -->
+    <target name="clean">
+        <delete dir="${build}" />
+        <delete dir="samples/helloworld/modules" />
+        <delete dir="samples/no-module/modules" />
+    </target>
 
-  <!-- Rule to build compiler classes from their Java sources -->
-  <target name="compiler.classes">
-    <mkdir dir="${build.classes}"/>
-    <javac
-       srcdir="${javac.src}:${ceylonc.src}"
-       destdir="${build.classes}"
-       debug="true"
-       encoding="UTF-8"
-       classpathref="compiler.classpath"
-       includeantruntime="true">
-      <exclude name="**/Java7Checker.java"/>
-      <exclude name="com/redhat/ceylon/tools/Tool.java"/>
-      <exclude name="com/redhat/ceylon/tools/Plugin.java"/>
-      <exclude name="com/redhat/ceylon/ant/**"/>
-      <exclude name="com/redhat/ceylon/launcher/Launcher.java"/>
-      <exclude name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
-      <include name="com/redhat/**"/>
-      <include name="com/sun/tools/javac/**"/>
-      <include name="com/sun/source/**"/>
-    </javac>
-  	<!-- 
-  	 We need a second compilation step to compile entry points compatible with Java 5
-  	 to be able to produce nice error messages for older Java versions. Same for ant
-  	 tasks, so that they can run on Java 5 and the error messages are left to the
-  	 programs they spawn. 
-  	-->
-  	<delete dir="${build.classes}">
-          <include name="**/Java7Checker.class"/>
-          <include name="com/redhat/ceylon/ant/**"/>
-          <include name="com/redhat/ceylon/launcher/Launcher.java"/>
-          <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
-  	</delete>
-    <javac
-       srcdir="${javac.src}:${ceylonc.src}"
-       destdir="${build.classes}"
-       debug="true"
-       encoding="UTF-8"
-       classpathref="compiler.classpath"
-       target="1.5"
-       source="1.5"
-       includeantruntime="true">
-      <include name="**/Java7Checker.java"/>
-      <include name="com/redhat/ceylon/tools/Tool.java"/>
-      <include name="com/redhat/ceylon/tools/Plugin.java"/>
-      <include name="com/redhat/ceylon/ant/**"/>
-      <include name="com/redhat/ceylon/launcher/Launcher.java"/>
-      <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java"/>
-    </javac>
-  	<copy todir="${build.classes}">
-      <fileset dir="${ceylonc.src}">
-      	<exclude name="com/redhat/**/*.utf8properties"/>
-      	<include name="com/redhat/**/resources/**"/>
-      	<include name="com/redhat/**/*.properties"/>
-      	<include name="com/redhat/ceylon/ant/antlib.xml"/>
-        <include name="META-INF/**"/>
-      </fileset>
-  	</copy>
-  	<native2ascii dest="${build.classes}" src="${ceylonc.src}" 
-  	              encoding="UTF-8" ext=".properties">
-      <include name="com/redhat/**/*.utf8properties"/>
-    </native2ascii>
-  </target>
+    <!-- Repository targets -->
+    <target name="init.repo" description="Initialize the default local Ceylon module repository">
+        <mkdir dir="${ceylon.compiler.repo}" />
+    </target>
+    <target name="clean.repo" description="Clean default local Ceylon module repository">
+        <delete dir="${ceylon.compiler.repo}" />
+    </target>
 
-  <!-- Rule to build compiler test classes from their Java sources -->
-  <target name="test.classes" depends="compiler.classes">
-    <mkdir dir="${build.classes}"/>
-    <javac
-       srcdir="${test.ceylond.src}"
-       destdir="${build.classes}"
-       debug="true"
-       encoding="UTF-8"
-       classpathref="test.compile.classpath"
-       includeantruntime="false">
-      <include name="com/redhat/ceylon/ceylondoc/test/**"/>
-    </javac>
-    <javac
-       srcdir="${test.src}"
-       destdir="${build.classes}"
-       debug="true"
-       encoding="UTF-8"
-       classpathref="test.compile.classpath"
-       includeantruntime="false">
-      <include name="com/redhat/ceylon/compiler/java/test/**"/>
-      <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**"/>
-      <include name="com/redhat/ceylon/tools/**"/>
-      <include name="com/redhat/ceylon/itest/**"/>
-      <include name="com/redhat/ceylon/ant/**"/>
-      <include name="com/redhat/ceylon/ceylondoc/test/**"/>
-    </javac>
-    <copy todir="${build.classes}">
-      <fileset dir="${test.src}">
-        <include name="META-INF/**"/>
-      </fileset>
-    </copy>
-  </target>
+    <target name="dist" depends="build" description="Create Ceylon compiler distribution">
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist}/${ceylon.compiler.jar}" />
+        </antcall>
+    </target>
+
+    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon compiler module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.compiler.repo}" overwrite="true">
+            <fileset dir="${ceylon.compiler.dist}" />
+        </copy>
+    </target>
+
+    <target name="publish.maven" depends="publish" description="install Ceylon compiler module to local maven repo" unless="no-maven" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+        <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.3.jar" />
+        <!-- need to install compiler and all its dependencies in a mvn repo
+         before we can use mvn to build the plugin -->
+        <!-- Also to work around MANTTASKS-170 we have to write out the poms
+         to disk, rather than using in-memory -->
+        <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
+
+        <mkdir dir="${build.poms}" />
+
+        <artifact:pom id="antlr.pom.tmp" groupId="org.ceylon-lang" artifactId="antlr-complete" name="antlr-complete" version="${antlr.version}">
+        </artifact:pom>
+        <artifact:writepom pomrefid="antlr.pom.tmp" file="${build.poms}/antlr.xml" />
+        <artifact:pom id="antlr.pom" file="${build.poms}/antlr.xml" />
+        <artifact:install pomrefid="antlr.pom" file="${antlr.lib}" />
+
+        <artifact:pom id="common.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-common" name="ceylon-common" version="${module.com.redhat.ceylon.common.version}">
+        </artifact:pom>
+        <artifact:writepom pomrefid="common.pom.tmp" file="${build.poms}/common.xml" />
+        <artifact:pom id="common.pom" file="${build.poms}/common.xml" />
+        <artifact:install pomrefid="common.pom" file="${ceylon.common.lib}" />
+
+        <artifact:pom id="typechecker.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-spec" name="ceylon-spec" version="${module.com.redhat.ceylon.typechecker.version}">
+            <dependency groupId="org.ceylon-lang" artifactId="antlr-complete" version="${antlr.version}" />
+        </artifact:pom>
+        <artifact:writepom pomrefid="typechecker.pom.tmp" file="${build.poms}/typechecker.xml" />
+        <artifact:pom id="typechecker.pom" file="${build.poms}/typechecker.xml" />
+        <artifact:install pomrefid="typechecker.pom" file="${ceylon.typechecker.lib}" />
+
+        <artifact:pom id="module-resolver.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-module-resolver" name="ceylon-module-resolver" version="${module.com.redhat.ceylon.module-resolver.version}">
+        </artifact:pom>
+        <artifact:writepom pomrefid="module-resolver.pom.tmp" file="${build.poms}/module-resolver.xml" />
+        <artifact:pom id="module-resolver.pom" file="${build.poms}/module-resolver.xml" />
+        <artifact:install pomrefid="module-resolver.pom" file="${ceylon.module-resolver.lib}" />
+
+        <artifact:pom id="language.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon.language" name="ceylon.language" version="${module.ceylon.language.version}">
+        </artifact:pom>
+        <artifact:writepom pomrefid="language.pom.tmp" file="${build.poms}/language.xml" />
+        <artifact:pom id="language.pom" file="${build.poms}/language.xml" />
+        <artifact:install pomrefid="language.pom" file="${ceylon.language.lib}" />
+
+        <artifact:pom id="markdown.pom.tmp" groupId="org.ceylon-lang" artifactId="markdown" name="markdown" version="${markdown.version}">
+        </artifact:pom>
+        <artifact:writepom pomrefid="markdown.pom.tmp" file="${build.poms}/markdown.xml" />
+        <artifact:pom id="markdown.pom" file="${build.poms}/markdown.xml" />
+        <artifact:install pomrefid="markdown.pom" file="${markdown.lib}" />
+
+        <artifact:pom id="compiler.pom.tmp" groupId="org.ceylon-lang" artifactId="ceylon-compiler" name="ceylon-compiler" version="${module.com.redhat.ceylon.compiler.version}">
+            <dependency groupId="org.ceylon-lang" artifactId="ceylon-common" version="${module.com.redhat.ceylon.common.version}" />
+            <dependency groupId="org.ceylon-lang" artifactId="ceylon-spec" version="${module.com.redhat.ceylon.typechecker.version}" />
+            <dependency groupId="org.ceylon-lang" artifactId="ceylon-module-resolver" version="${module.com.redhat.ceylon.module-resolver.version}" />
+            <dependency groupId="org.ceylon-lang" artifactId="ceylon.language" version="${module.ceylon.language.version}" />
+            <dependency groupId="org.ceylon-lang" artifactId="markdown" version="${markdown.version}" />
+        </artifact:pom>
+        <artifact:writepom pomrefid="compiler.pom.tmp" file="${build.poms}/compiler.xml" />
+        <artifact:pom id="compiler.pom" file="${build.poms}/compiler.xml" />
+        <artifact:install pomrefid="compiler.pom" file="${build.dist}/${ceylon.compiler.jar}" />
+
+    </target>
+
+    <!-- Rule to compile and test -->
+    <target name="all" depends="test" />
+
+    <!-- Rule to build compiler classes from their Java sources -->
+    <target name="compiler.classes">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" includeantruntime="true">
+            <exclude name="**/Java7Checker.java" />
+            <exclude name="com/redhat/ceylon/tools/Tool.java" />
+            <exclude name="com/redhat/ceylon/tools/Plugin.java" />
+            <exclude name="com/redhat/ceylon/ant/**" />
+            <exclude name="com/redhat/ceylon/launcher/Launcher.java" />
+            <exclude name="com/redhat/ceylon/launcher/CeylonClassLoader.java" />
+            <include name="com/redhat/**" />
+            <include name="com/sun/tools/javac/**" />
+            <include name="com/sun/source/**" />
+        </javac>
+        <!-- 
+          We need a second compilation step to compile entry points compatible with Java 5
+          to be able to produce nice error messages for older Java versions. Same for ant
+          tasks, so that they can run on Java 5 and the error messages are left to the
+          programs they spawn.
+        -->
+        <delete dir="${build.classes}">
+            <include name="**/Java7Checker.class" />
+            <include name="com/redhat/ceylon/ant/**" />
+            <include name="com/redhat/ceylon/launcher/Launcher.java" />
+            <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java" />
+        </delete>
+        <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.5" source="1.5" includeantruntime="true">
+            <include name="**/Java7Checker.java" />
+            <include name="com/redhat/ceylon/tools/Tool.java" />
+            <include name="com/redhat/ceylon/tools/Plugin.java" />
+            <include name="com/redhat/ceylon/ant/**" />
+            <include name="com/redhat/ceylon/launcher/Launcher.java" />
+            <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${ceylonc.src}">
+                <exclude name="com/redhat/**/*.utf8properties" />
+                <include name="com/redhat/**/resources/**" />
+                <include name="com/redhat/**/*.properties" />
+                <include name="com/redhat/ceylon/ant/antlib.xml" />
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+        <native2ascii dest="${build.classes}" src="${ceylonc.src}" encoding="UTF-8" ext=".properties">
+            <include name="com/redhat/**/*.utf8properties" />
+        </native2ascii>
+    </target>
+
+    <!-- Rule to build compiler test classes from their Java sources -->
+    <target name="test.classes" depends="compiler.classes">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${test.ceylond.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
+            <include name="com/redhat/ceylon/ceylondoc/test/**" />
+        </javac>
+        <javac srcdir="${test.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
+            <include name="com/redhat/ceylon/compiler/java/test/**" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
+            <include name="com/redhat/ceylon/tools/**" />
+            <include name="com/redhat/ceylon/itest/**" />
+            <include name="com/redhat/ceylon/ant/**" />
+            <include name="com/redhat/ceylon/ceylondoc/test/**" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${test.src}">
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+    </target>
 
     <!-- Rule to build compiler jar -->
     <target name="compiler.jar" depends="compiler.classes">
-        <mkdir dir="${build.lib}"/>
+        <mkdir dir="${build.lib}" />
         <jar destfile="${build.dist}/${ceylon.compiler.jar}">
-          <fileset dir="${build.classes}">
-            <exclude name="ceylon/**"/>
-            <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
-            <exclude name="com/redhat/ceylon/ant/**"/>
-            <exclude name="com/redhat/ceylon/launcher/**"/>
-          </fileset>
-          <fileset dir="${javac.src}">
-            <include name="com/sun/tools/javac/resources/*.properties"/>
-          </fileset>
+            <fileset dir="${build.classes}">
+                <exclude name="ceylon/**" />
+                <exclude name="com/redhat/ceylon/compiler/java/test/**" />
+                <exclude name="com/redhat/ceylon/ant/**" />
+                <exclude name="com/redhat/ceylon/launcher/**" />
+            </fileset>
+            <fileset dir="${javac.src}">
+                <include name="com/sun/tools/javac/resources/*.properties" />
+            </fileset>
         </jar>
     </target>
 
     <!-- Rule to build ant jar -->
     <target name="ant.jar" depends="compiler.classes,bootstrap.jar">
-        <mkdir dir="${build.lib}"/>
+        <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-ant.jar">
-          <fileset dir="${build.classes}">
-            <include name="com/redhat/ceylon/ant/**"/>
-          </fileset>
-          <zipfileset src="${ceylon.bootstrap.lib}"/>
+            <fileset dir="${build.classes}">
+                <include name="com/redhat/ceylon/ant/**" />
+            </fileset>
+            <zipfileset src="${ceylon.bootstrap.lib}" />
         </jar>
     </target>
 
     <!-- Rule to build runtime jar -->
     <target name="bootstrap.jar" depends="compiler.classes">
-        <mkdir dir="${build.lib}"/>
+        <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
             <fileset dir="${build.classes}">
-              <include name="com/redhat/ceylon/launcher/**"/>
-              <include name="META-INF/MANIFEST.MF"/>
+                <include name="com/redhat/ceylon/launcher/**" />
+                <include name="META-INF/MANIFEST.MF" />
             </fileset>
         </jar>
     </target>
 
-  <!-- Rule to build compiler jar -->
-  <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar">
-    <mkdir dir="${build.dist}"/>
-    <mkdir dir="${build.bin}"/>
-    <mkdir dir="${build.ceylon.cars}"/>
+    <!-- Rule to build compiler jar -->
+    <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar">
+        <mkdir dir="${build.dist}" />
+        <mkdir dir="${build.bin}" />
+        <mkdir dir="${build.ceylon.cars}" />
 
-    <copy todir="${build.bin}">
-        <fileset dir="${basedir}/bin">
-        </fileset>
-    </copy>
-    <chmod perm="0755">
-        <fileset dir="${build.bin}">
-            <include name="ceylon"/>
-        </fileset>
-    </chmod>
-    <copy todir="${build.lib}">
-        <fileset dir="${basedir}/lib">
-            <include name="antlr-*-complete.jar"/>
-            <include name="txtmark-*.jar"/>
-            <include name="markdownpapers-core-*.jar"/>
-        </fileset>
-    </copy>    
-  </target>
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+        </copy>
+        <chmod perm="0755">
+            <fileset dir="${build.bin}">
+                <include name="ceylon" />
+            </fileset>
+        </chmod>
+        <copy todir="${build.lib}">
+            <fileset dir="${basedir}/lib">
+                <include name="antlr-*-complete.jar" />
+                <include name="txtmark-*.jar" />
+                <include name="markdownpapers-core-*.jar" />
+            </fileset>
+        </copy>
+    </target>
 
-  <target name="-test.cond">
-    <condition property="dont.test.ast">
-      <contains string="${dont.test}" substring="ast"/>
-    </condition>
-    <condition property="dont.test.runtime">
-      <contains string="${dont.test}" substring="runtime"/>
-    </condition>
-    <condition property="dont.test.ceylond">
-      <contains string="${dont.test}" substring="ceylond"/>
-    </condition>  
-  </target>
-  
-  <!-- Runs the JUnit tests -->
-  <target name="-test.prepare" depends="publish,test.classes,-test.cond">
-    <mkdir dir="${test.reports}"/>
-  	<property name="bootclasspath" refid="test.run.classpath" />
-  </target>    
-    
-  <target name="test" depends="test.all"
-      description="Runs the tests and generates a test report.">
-    <junitreport todir="${test.reports}">
-      <fileset dir="${test.reports}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${test.reports}"/>
-    </junitreport>
-  </target>
+    <target name="-test.cond">
+        <condition property="dont.test.ast">
+            <contains string="${dont.test}" substring="ast" />
+        </condition>
+        <condition property="dont.test.runtime">
+            <contains string="${dont.test}" substring="runtime" />
+        </condition>
+        <condition property="dont.test.ceylond">
+            <contains string="${dont.test}" substring="ceylond" />
+        </condition>
+    </target>
 
-  <!-- Runs the JUnit tests -->
-  <target name="test.all" depends="-test.prepare">
-    <junit printsummary="yes" haltonfailure="no">
-      <classpath refid="test.run.classpath"/>
-      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
+    <!-- Runs the JUnit tests -->
+    <target name="-test.prepare" depends="publish,test.classes,-test.cond">
+        <mkdir dir="${test.reports}" />
+        <property name="bootclasspath" refid="test.run.classpath" />
+    </target>
 
-      <formatter type="xml"/>
+    <target name="test" depends="test.all" description="Runs the tests and generates a test report.">
+        <junitreport todir="${test.reports}">
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports}" />
+        </junitreport>
+    </target>
 
-      <batchtest fork="yes" todir="${test.reports}">
-        <fileset dir="${test.src}">
-          <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTests.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
-  
-  <path id="ceylon.tests.classpath">
-    <pathelement path="${junit.lib}"/>
-  </path>
+    <!-- Runs the JUnit tests -->
+    <target name="test.all" depends="-test.prepare">
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="test.run.classpath" />
+            <jvmarg value="-Xbootclasspath/p:${bootclasspath}" />
 
-  <target name="gavin" depends="ide">
-  </target>
-  <target name="ide" depends="dist">
-      <copy 
-          overwrite="true"
-          file="${build.dist}/${ceylon.compiler.jar}"
-          tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar"/>
-  </target>
-	<target name="ide-tests" depends="test.classes,ide">
+            <formatter type="xml" />
+
+            <batchtest fork="yes" todir="${test.reports}">
+                <fileset dir="${test.src}">
+                    <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTests.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <path id="ceylon.tests.classpath">
+        <pathelement path="${junit.lib}" />
+    </path>
+
+    <target name="gavin" depends="ide">
+    </target>
+    <target name="ide" depends="dist">
+        <copy overwrite="true" file="${build.dist}/${ceylon.compiler.jar}" tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar" />
+    </target>
+    <target name="ide-tests" depends="test.classes,ide">
 
         <jar destfile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
-          <fileset dir="${build.classes}">
-            <include name="com/redhat/ceylon/compiler/java/test/**"/>
-          </fileset>
+            <fileset dir="${build.classes}">
+                <include name="com/redhat/ceylon/compiler/java/test/**" />
+            </fileset>
         </jar>
-	      <delete dir ="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon"/>
-	      <copy todir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
-	          <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon"/>
-	      </copy>
-	  </target>
+        <delete dir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
+        <copy todir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+            <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon" />
+        </copy>
+    </target>
 </project>
