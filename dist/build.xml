@@ -76,18 +76,36 @@ Some more basic ant tasks:
             description="Publishes all sibling projects" />
     <target name="publish-all-quick" depends="siblings">
         <foreach list="${modules}"
-                 target="publish-all-item"
+                 target="publish-item"
                  param="project.item.name"
                  inheritall="true" />
     </target>
-    <target name="publish-all-item">
+    <target name="publish-item">
         <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <echo>Publishing ${project.item.name}</echo>
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
              target="publish-internal"
              dir="${projects.base.dir}/${project.item.name}"
-             inheritall="false"/>
+             inheritall="false">
+        </ant>
+    </target>
+
+    <target name="ide" depends="siblings">
+        <foreach list="${modules}"
+                 target="ide-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="ide-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Publishing ${project.item.name} to IDE</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="ide"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false">
+        </ant>
     </target>
 
     <target name="update-all" depends="siblings,git-update"
