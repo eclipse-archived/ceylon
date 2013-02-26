@@ -1925,8 +1925,10 @@ public class GenerateJsVisitor extends Visitor
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Declaration d = that.getDeclaration();
         if (d == null && isInDynamicBlock()) {
-            //It's a native js type, call its constructor
-            out("new ", that.getIdentifier().getText());
+            //It's a native js type but will be wrapped in dyntype() call
+            String id = that.getIdentifier().getText();
+            out("(typeof ", id, "==='undefined'?", clAlias,
+                    "throwexc('Undefined type ", id, "'):", id, ")");
         } else {
             qualify(that, d);
             out(names.name(d));
