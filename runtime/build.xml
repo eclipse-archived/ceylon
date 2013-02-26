@@ -178,21 +178,6 @@
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
-        <!-- Need an extra pass for Java 7 testing -->
-        <delete dir="${build.classes}">
-            <include name="**/*Main5.class"/>
-            <include name="**/Java7Checker.class"/>
-        </delete>
-        <javac debug="true"
-               srcdir="${runtime-bootstrap.src}"
-               destdir="${build.classes}"
-               classpathref="compiler.classpath"
-               source="1.5"
-               target="1.5"
-               includeantruntime="false">
-            <include name="**/*Main5.java"/>
-            <include name="**/Java7Checker.java"/>
-        </javac>
         <!-- Include META-INF -->
         <copy todir="${build.classes}">
             <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
