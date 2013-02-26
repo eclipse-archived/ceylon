@@ -143,7 +143,7 @@
   </target>
 
   <target name="publish-internal" depends="init.repo">
-    <copy todir="${ceylon.compiler.repo}">
+    <copy todir="${ceylon.compiler.repo}" overwrite="true">
       <fileset dir="${ceylon.compiler.dist}"/>
     </copy>
   </target>
