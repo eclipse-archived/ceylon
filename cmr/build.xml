@@ -161,7 +161,7 @@
             description="Publish Ceylon module-resolver module to default repo">
     </target>
 
-    <target name="publish-internal">
+    <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.module-resolver.repo}">
             <fileset dir="${ceylon.module-resolver.dist}"/>
         </copy>
