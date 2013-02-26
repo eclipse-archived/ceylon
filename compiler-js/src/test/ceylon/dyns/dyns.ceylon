@@ -92,6 +92,13 @@ shared void test() {
         n = Singleton(1);
         //check(n.getSize() == 1, "Ceylon method in dynamic type");
         check(n.size == 1, "Ceylon attribute in dynamic type");
+        try {
+            somethingThatDoesntExist.doSomething();
+            fail("A sensible exception should have been thrown");
+        } catch (Exception e) {
+            check("somethingThatDoesntExist" in e.message,
+                "Undefined/unknown dynamic exception message should mention somethingThatDoesntExist");
+        }
         results();
     }
 }
