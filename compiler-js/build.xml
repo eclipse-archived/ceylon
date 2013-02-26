@@ -77,11 +77,11 @@
             </classpath>
             <include name="**/*.java" />
         </javac>
-    	<copy todir="${build.classes}">
-    	    <fileset dir="${src}">
-    	    	<include name="META-INF/**/*"/>
-    	    </fileset>
-    	</copy>
+        <copy todir="${build.classes}">
+            <fileset dir="${src}">
+                <include name="META-INF/**/*"/>
+            </fileset>
+        </copy>
         <!-- 
          We need a second compilation step to compile entry points compatible with Java 5
          to be able to produce nice error messages for older Java versions 
