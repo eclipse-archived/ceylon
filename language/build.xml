@@ -154,7 +154,7 @@
     </target>
 
     <target name="publish-internal" depends="init.repo">
-        <copy todir="${ceylon.language.repo}">
+        <copy todir="${ceylon.language.repo}" overwrite="true">
             <fileset dir="${ceylon.language.dist}"/>
         </copy>
     </target>
