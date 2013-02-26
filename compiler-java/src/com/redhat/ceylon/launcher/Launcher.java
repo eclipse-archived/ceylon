@@ -58,6 +58,17 @@ public class Launcher {
         System.setProperty("ceylon.home", CeylonClassLoader.determineHome().getAbsolutePath());
         System.setProperty("ceylon.system.repo", CeylonClassLoader.determineRepo().getAbsolutePath());
         
+        // Total HACK to make an error with JBoss Modules go away
+        Properties sp = System.getProperties();
+        sp.remove("javax.xml.parsers.DocumentBuilderFactory");
+        sp.remove("javax.xml.parsers.SAXParserFactory");
+        sp.remove("javax.xml.stream.XMLInputFactory");
+        sp.remove("javax.xml.stream.XMLEventFactory");
+        sp.remove("javax.xml.transform.TransformerFactory");
+        sp.remove("javax.xml.stream.XMLOutputFactory");
+        sp.remove("javax.xml.datatype.DatatypeFactory");
+        sp.remove("org.xml.sax.driver");
+        
         if (hasArgument(args, "--verbose")) {
             System.err.println("INFO: Ceylon home directory is '" + CeylonClassLoader.determineHome() + "'");
             for (File f : cp) {
