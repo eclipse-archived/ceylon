@@ -46,7 +46,8 @@ import org.jboss.modules.ModuleLoader;
                 "    ceylon run com.example.foobar/1.0.0"
 )
 public class CeylonRunTool implements Tool {
-    private static final String CEYLON_RUNTIME = "ceylon.runtime:" + Versions.CEYLON_VERSION_NUMBER;
+    private static final String CEYLON_RUNTIME = "ceylon.runtime";
+    private static final String FULL_CEYLON_RUNTIME = CEYLON_RUNTIME + ":" + Versions.CEYLON_VERSION_NUMBER;
     private static volatile Module runtimeModule;
 
     private String moduleNameOptVersion;
@@ -116,7 +117,7 @@ public class CeylonRunTool implements Tool {
 
         argList.addAll(Arrays.asList(
                 "-mp", sysRep,
-                CEYLON_RUNTIME,
+                FULL_CEYLON_RUNTIME,
                 "+executable", "ceylon.modules.jboss.runtime.JBossRuntime")
         );
 
@@ -156,7 +157,7 @@ public class CeylonRunTool implements Tool {
                         org.jboss.modules.Main.main(args);
                         // set runtime module
                         ModuleLoader ml = Module.getBootModuleLoader();
-                        runtimeModule = ml.loadModule(ModuleIdentifier.create(CEYLON_RUNTIME));
+                        runtimeModule = ml.loadModule(ModuleIdentifier.create(CEYLON_RUNTIME, Versions.CEYLON_VERSION_NUMBER));
                     } else {
                         runtimeModule.run(args);
                     }
