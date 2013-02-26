@@ -197,8 +197,6 @@ Used with another target such as 'package'">
                 <include name="java.bat"/>
                 <include name="ceylon"/>
                 <include name="ceylon.bat"/>
-                <include name="ceylon-cp.sh"/>
-                <include name="ceylon-cp.bat"/>
                 <include name="ceylon-completion.bash"/>
             </fileset>
         </copy>
