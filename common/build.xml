@@ -116,7 +116,7 @@
             description="Publish both type checker and ceylon.language template module">
     </target>
 
-    <target name="publish-internal">
+    <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.common.repo}">
             <fileset dir="${ceylon.common.dist}"/>
         </copy>
