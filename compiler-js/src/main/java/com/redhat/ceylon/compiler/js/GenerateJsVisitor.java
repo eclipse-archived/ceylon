@@ -3452,9 +3452,26 @@ public class GenerateJsVisitor extends Visitor
     /** Generates the code for an anonymous function defined inside an argument list. */
     @Override
     public void visit(final FunctionArgument that) {
-        singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope());
+        if (that.getBlock() == null) {
+            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope());
+        } else {
+            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope());
+        }
     }
-    
+
+    private void multiStmtFunction(final List<ParameterList> paramLists,
+            final Block block, final Scope scope) {
+        generateParameterLists(paramLists, scope, new ParameterListCallback() {
+            @Override
+            public void completeFunction() {
+                beginBlock();
+                if (paramLists.size() == 1) { initSelf(scope); }
+                initParameters(paramLists.get(paramLists.size()-1), null);
+                visitStatements(block.getStatements());
+                endBlock();
+            }
+        });
+    }
     private void singleExprFunction(final List<ParameterList> paramLists,
                                     final Expression expr, final Scope scope) {
         generateParameterLists(paramLists, scope, new ParameterListCallback() {
