@@ -154,7 +154,7 @@
             description="Publish Ceylon language module to default repo">
     </target>
 
-    <target name="publish-internal">
+    <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.language.repo}">
             <fileset dir="${ceylon.language.dist}"/>
         </copy>
