@@ -7,10 +7,10 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Properties;
 
 public class Launcher {
-
+    private static volatile CeylonClassLoader ceylonClassLoader;
+    
     public static void main(String[] args) throws Throwable {
         System.exit(run(args));
     }
@@ -65,23 +65,21 @@ public class Launcher {
     
     public static CeylonClassLoader getClassLoader() throws MalformedURLException, FileNotFoundException, URISyntaxException {
         // Check if we need to create a CeylonClassLoader or if we can use the existing one
-        CeylonClassLoader loader = null;
-        ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();;
-        if (currentClassLoader instanceof CeylonClassLoader) {
-            // Use existing class loader
-            loader = (CeylonClassLoader)currentClassLoader;
-        } else {
-            // Create the class loader that knows where to find all the Ceylon dependencies
-            loader = new CeylonClassLoader();
-            // Set context class loader for current thread
-            Thread.currentThread().setContextClassLoader(loader);
+        synchronized (CeylonClassLoader.class) {
+            if (ceylonClassLoader == null) {
+                // Create the class loader that knows where to find all the Ceylon dependencies
+                ceylonClassLoader = new CeylonClassLoader();
+            }
         }
+        
+        // Set context class loader for current thread
+        Thread.currentThread().setContextClassLoader(ceylonClassLoader);
         
         // Set some important system properties
         System.setProperty("ceylon.home", CeylonClassLoader.determineHome().getAbsolutePath());
         System.setProperty("ceylon.system.repo", CeylonClassLoader.determineRepo().getAbsolutePath());
 
-        return loader;
+        return ceylonClassLoader;
     }
     
     private static boolean hasArgument(final String[] args, final String test) {
