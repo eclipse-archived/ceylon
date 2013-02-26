@@ -4,10 +4,15 @@ package com.redhat.ceylon.launcher;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Properties;
 
 public class Launcher {
 
     public static void main(String[] args) throws Throwable {
+        System.exit(run(args));
+    }
+
+    public static int run(String... args) throws Throwable {
         Java7Checker.check();
         
         // If the --sysrep option was set on the command line we set the corresponding system property
@@ -65,11 +70,9 @@ public class Launcher {
         Method mainMethod = mainClass.getMethod("start", args.getClass());
 
         // Invoke the actual ceylon tool
-        mainMethod.invoke(null, (Object)args);
-    }
-
-    public static void run(String... args) throws Throwable {
-        main(args);
+        Object result = mainMethod.invoke(null, (Object)args);
+        
+        return ((Integer)result).intValue();
     }
     
     private static boolean hasArgument(final String[] args, final String test) {
