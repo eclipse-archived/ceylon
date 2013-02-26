@@ -108,14 +108,12 @@
     <!-- ################################################################## -->
 
     <target name="clean"
-            description="Clean up everything."
-            depends="clean.doc,clean.antlr"/>
+            description="Clean up everything.">
+        <delete dir="${build.dir}"/>
+    </target>
 
     <target name="clean.doc">
-
-        <!-- Delete build directory. -->
-        <delete dir="${build.dir}"/>
-
+        <delete dir="${build.dir}/en"/>
     </target>
 
     <target name="clean.antlr">
@@ -375,7 +373,7 @@
             description="Publish type checker module to default repo">
     </target>
 
-    <target name="publish-internal">
+    <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.typechecker.repo}">
             <fileset dir="${ceylon.typechecker.dist}"/>
         </copy>
