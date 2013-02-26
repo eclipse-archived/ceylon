@@ -43,9 +43,6 @@
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
-    <property name="ceylon.ant.dir" value="com/redhat/ceylon/ant/${module.com.redhat.ceylon.compiler.version}"/>
-    <property name="ceylon.ant.jar" value="${ceylon.ant.dir}/com.redhat.ceylon.ant-${module.com.redhat.ceylon.compiler.version}.jar"/>
-    <property name="ceylon.ant.lib" location="${ceylon.repo.dir}/${ceylon.ant.jar}"/>
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
@@ -59,6 +56,8 @@
     <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+
+    <property name="ceylon.ant.lib" location="${ceylon.dist.dir}/lib/ceylon-ant.jar"/>
 
     <property name="tests.car" value="${build.test}/default/default.car"/>
 
