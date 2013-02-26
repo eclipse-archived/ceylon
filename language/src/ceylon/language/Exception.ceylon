@@ -22,7 +22,7 @@ shared native class Exception(description=null, cause=null) {
             description else cause?.message else "";
     
     shared actual default String string =>
-            className(this) + " \"' message '\"";
+            className(this) + " \"``message``\"";
     
     doc "Print the stack trace to the standard error of
          the virtual machine process."
