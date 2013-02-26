@@ -1617,7 +1617,14 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-        out(memberAccess(that, null));
+        String exp = memberAccess(that, null);
+        if (decl == null && isInDynamicBlock()) {
+            out("(typeof ", exp, "==='undefined'||", exp, "===null?",
+                    clAlias, "throwexc('Undefined or null reference: ", exp,
+                    "'):", exp, ")");
+        } else {
+            out(exp);
+        }
     }
 
     private boolean accessDirectly(Declaration d) {
