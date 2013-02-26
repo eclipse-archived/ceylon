@@ -453,7 +453,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
         
         // very special case for nothing that we need to "unbox" to a primitive type
-        if(exprType.getDeclaration() instanceof NothingType
+        if(exprType != null
+                && exprType.getDeclaration() instanceof NothingType
                 && boxingStrategy == BoxingStrategy.UNBOXED){
             // in this case we have to use the expected type
             ret = unboxType(ret, expectedType);
