@@ -468,28 +468,9 @@
     </junit>
   </target>
   
-  <target name="ant-tasks" depends="publish">
-    <path id="ant-tasks">
-      <pathelement location="${ceylon.ant.lib}"/>
-    </path>
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" classpathref="ant-tasks"/>
-    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" classpathref="ant-tasks"/>
-    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" classpathref="ant-tasks"/>
-  </target>
-	
   <path id="ceylon.tests.classpath">
     <pathelement path="${junit.lib}"/>
   </path>
-
-  <target name="api" depends="ant-tasks">
-    <ceylond
-      executable="${build.bin}/ceylon"
-      src="../ceylon.language/src"
-      out="${build.api}"
-      includeSourceCode="true">
-      <module name="ceylon.language"/>
-    </ceylond>
-  </target>
 
   <target name="gavin" depends="ide">
   </target>
