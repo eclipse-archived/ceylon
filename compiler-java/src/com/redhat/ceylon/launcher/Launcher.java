@@ -78,6 +78,7 @@ public class Launcher {
         // Set some important system properties
         System.setProperty("ceylon.home", CeylonClassLoader.determineHome().getAbsolutePath());
         System.setProperty("ceylon.system.repo", CeylonClassLoader.determineRepo().getAbsolutePath());
+        System.setProperty("ceylon.system.version", CeylonClassLoader.determineSystemVersion());
 
         return ceylonClassLoader;
     }
