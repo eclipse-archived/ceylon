@@ -34,8 +34,6 @@ set "JAVA_OPTS=%PREPEND_JAVA_OPTS% %JAVA_OPTS%"
 
 set "LIB=%CEYLON_HOME%\lib"
 
-echo %JAVA% %JAVA_OPTS% -jar "%LIB%\ceylon-bootstrap.jar" %*
-
 "%JAVA%" ^
     %JAVA_OPTS% ^
     -jar "%LIB%\ceylon-bootstrap.jar" ^
