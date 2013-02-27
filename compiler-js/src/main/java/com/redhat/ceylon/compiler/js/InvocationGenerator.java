@@ -31,11 +31,15 @@ public class InvocationGenerator {
         if (that.getNamedArgumentList()!=null) {
             Tree.NamedArgumentList argList = that.getNamedArgumentList();
             if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.MemberOrTypeExpression && ((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration() == null) {
+                final String fname = names.createTempVariable();
+                gen.out("(", fname, "=");
                 //Call a native js constructor passing a native js object as parameter
                 that.getPrimary().visit(gen);
-                gen.out("(");
+                gen.out(",", fname, ".$$===undefined?new ", fname, "(");
                 nativeObject(argList);
-                gen.out(")");
+                gen.out("):", fname, "(");
+                nativeObject(argList);
+                gen.out("))");
             } else {
                 gen.out("(");
                 Map<String, String> argVarNames = defineNamedArguments(argList);
