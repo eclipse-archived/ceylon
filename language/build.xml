@@ -149,7 +149,7 @@
 
     <!-- Repository targets -->
     <target name="publish"
-            depends="dist,clean.repo,init.repo,publish-internal"
+            depends="clean.repo,init.repo,dist,publish-internal"
             description="Publish Ceylon language module to default repo">
     </target>
 
