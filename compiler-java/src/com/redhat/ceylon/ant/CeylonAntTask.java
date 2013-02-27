@@ -21,7 +21,6 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.tools.ant.BuildException;
@@ -30,6 +29,8 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
+
+import com.redhat.ceylon.launcher.Launcher;
 
 /**
  * Baseclass for ant tasks which execute a ceylon tool in a subprocess.
@@ -101,20 +102,21 @@ public abstract class CeylonAntTask extends Task {
      */
     protected void executeCommandline(Commandline cmd) {
         try {
-            
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
             exe.setAntRun(getProject());
             exe.setWorkingDirectory(getProject().getBaseDir());
             log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
-            if (exe.getExitValue() != 0) {
+            int exitValue = exe.getExitValue();
+//            int exitValue = Launcher.run(cmd.getArguments());
+            if (exitValue != 0) {
                 String message = formatFailureMessage(cmd);
-                exitHandler.handleExit(this, exe.getExitValue(), message);
+                exitHandler.handleExit(this, exitValue, message);
             }else{
-                exitHandler.handleExit(this, exe.getExitValue(), null);
+                exitHandler.handleExit(this, exitValue, null);
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             throw new BuildException("Error running Ceylon compiler", e, getLocation());
         }
     }
