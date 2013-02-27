@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,34 +50,45 @@ public class InvocationGenerator {
                     }
                 }
                 gen.out(")");
-                
             }
         }
         else {
             Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            boolean dyntype = false;
-            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.BaseTypeExpression
-                    && ((Tree.BaseTypeExpression)that.getPrimary()).getDeclaration() == null) {
-                //Could be a dynamic object, or a Ceylon one
-                gen.out(GenerateJsVisitor.getClAlias(), "dyntype(");
-                dyntype = true;
-            }
-            that.getPrimary().visit(gen);
-            if (gen.prototypeStyle && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
-                gen.out(".call(this");
-                if (!argList.getPositionalArguments().isEmpty()) {
-                    gen.out(",");
-                }
-            } else if (dyntype) {
-                if (!argList.getPositionalArguments().isEmpty()) {
-                    gen.out(",");
-                }
-            } else {
-                gen.out("(");
-            }
-            generatePositionalArguments(argList, argList.getPositionalArguments(), false);
             Tree.TypeArguments targs = that.getPrimary() instanceof Tree.StaticMemberOrTypeExpression
                     ? ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.BaseTypeExpression
+                    && ((Tree.BaseTypeExpression)that.getPrimary()).getDeclaration() == null) {
+                gen.out("(");
+                //Could be a dynamic object, or a Ceylon one
+                //We might need to call "new" so we need to get all the args to pass directly later
+                final List<String> argnames = generatePositionalArguments(
+                        argList, argList.getPositionalArguments(), false, true);
+                if (!argnames.isEmpty()) {
+                    gen.out(",");
+                }
+                final String fname = names.createTempVariable();
+                gen.out(fname,"=");
+                that.getPrimary().visit(gen);
+                String fuckingargs = "";
+                if (!argnames.isEmpty()) {
+                    fuckingargs = argnames.toString().substring(1);
+                    fuckingargs = fuckingargs.substring(0, fuckingargs.length()-1);
+                }
+                gen.out(",", fname, ".$$===undefined?new ", fname, "(", fuckingargs, "):", fname, "(", fuckingargs, "))");
+                //TODO we lose type args for now
+                return;
+            } else {
+                that.getPrimary().visit(gen);
+                if (gen.prototypeStyle && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
+                    gen.out(".call(this");
+                    if (!argList.getPositionalArguments().isEmpty()) {
+                        gen.out(",");
+                    }
+                } else {
+                    gen.out("(");
+                }
+                generatePositionalArguments(argList, argList.getPositionalArguments(), false, false);
+            }
             if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
                 if (argList.getPositionalArguments().size() > 0) {
                     gen.out(",");
@@ -128,7 +140,7 @@ public class InvocationGenerator {
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
             gen.out(varName, "=");
-            generatePositionalArguments(argList, sarg.getPositionalArguments(), true);
+            generatePositionalArguments(argList, sarg.getPositionalArguments(), true, false);
             gen.out(",");
         }
         return argVarNames;
@@ -176,8 +188,12 @@ public class InvocationGenerator {
         }
     }
 
-    void generatePositionalArguments(Tree.ArgumentList that, List<Tree.PositionalArgument> args, final boolean forceSequenced) {
+    /** Generate a list of PositionalArguments, optionally assigning a variable name to each one
+     * and returning the variable names. */
+    List<String> generatePositionalArguments(Tree.ArgumentList that, List<Tree.PositionalArgument> args,
+            final boolean forceSequenced, final boolean generateVars) {
         if (!args.isEmpty()) {
+            final List<String> argvars = new ArrayList<String>(args.size());
             boolean first=true;
             boolean opened=false;
             ProducedType sequencedType=null;
@@ -207,8 +223,19 @@ public class InvocationGenerator {
                                 sequencedType = cases.get(0);
                             }
                         }
-                        if (!opened) gen.out("[");
+                        if (!opened) {
+                            if (generateVars) {
+                                final String argvar = names.createTempVariable();
+                                argvars.add(argvar);
+                                gen.out(argvar, "=");
+                            }
+                            gen.out("[");
+                        }
                         opened=true;
+                    } else if (generateVars) {
+                        final String argvar = names.createTempVariable();
+                        argvars.add(argvar);
+                        gen.out(argvar, "=");
                     }
                     int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
                     if (dyncheck) {
@@ -259,7 +286,9 @@ public class InvocationGenerator {
                 gen.closeSequenceWithReifiedType(that,
                         gen.getTypeUtils().wrapAsIterableArguments(sequencedType));
             }
+            return argvars;
         }
+        return Collections.emptyList();
     }
 
     /** Generate the code to create a native js object. */
