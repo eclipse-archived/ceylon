@@ -387,12 +387,21 @@ public class SpecificationVisitor extends Visitor {
             if (that.getSpecifierExpression()!=null) {
                 specify();
             }
-            else if (declaration.isToplevel() && !declaration.isNative()) {
+            else if (declaration.isToplevel() && 
+                    !declaration.isNative()) {
                 that.addError("toplevel function must be specified: " +
                         declaration.getName());
             }
+            else if (declaration.isClassMember() && 
+                    !declaration.isNative() && 
+                    !declaration.isFormal() && 
+                    declarationSection) {
+                that.addError("forward declaration may not occur in declaration section: " +
+                            declaration.getName());
+            }
             else if (declaration.isInterfaceMember() && 
-            		!declaration.isFormal() && !declaration.isNative()) {
+                    !declaration.isNative() &&
+            		!declaration.isFormal()) {
                 that.addError("interface method must be formal or specified: " +
                         declaration.getName(), 1400);
             }
@@ -462,7 +471,9 @@ public class SpecificationVisitor extends Visitor {
             if (sie!=null) {
                 specify();
             }
-            else if (declaration.isToplevel() && !isLate()) {
+            else if (declaration.isToplevel() && 
+                    !declaration.isNative() &&
+                    !isLate()) {
                 if (isVariable()) {
                     that.addError("toplevel variable value must be initialized: " +
                             declaration.getName());
@@ -471,6 +482,15 @@ public class SpecificationVisitor extends Visitor {
                     that.addError("toplevel value must be specified: " +
                             declaration.getName());
                 }
+            }
+            else if (declaration.isClassOrInterfaceMember() && 
+                    !declaration.isNative() &&
+                    !declaration.isFormal() &&
+                    !(declaration instanceof Value && 
+                            ((Value)declaration).getInitializerParameter()!=null) &&
+                    declarationSection) {
+                that.addError("forward declaration may not occur in declaration section: " +
+                            declaration.getName());
             }
         }
     }

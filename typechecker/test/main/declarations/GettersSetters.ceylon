@@ -20,8 +20,8 @@ interface GettersSetters {
     }
     
     class SettersWithDupeAttributes() {
-        String hi; 
-        String howdy;
+        @error String hi; 
+        @error String howdy;
         @error String hi { return "hi"; }
         @error assign hi {}
         @error assign howdy {  }

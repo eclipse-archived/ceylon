@@ -285,7 +285,7 @@ class MethodDefaultedParamCaptureInitParam2(@captured String s) {
 }
 
 class MethodDefaultedParamCaptureInitParam3(@captured String s) {
-    String m(String t = s);
+    @error String m(String t = s);
 }
 
 class MethodDefaultedParamCaptureInitParam4(@captured String s) {

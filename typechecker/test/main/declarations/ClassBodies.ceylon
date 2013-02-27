@@ -527,7 +527,7 @@ class ClassBodies() {
     }
     
     class GoodWithUninitialized() {
-        String name;
+        @error String name;
     }
     
     class Good2WithUninitialized() {
@@ -550,14 +550,14 @@ class ClassBodies() {
     }
     
     class Good5WithUninitialized() {
-        String name;
+        @error String name;
         void method() {
             return;
         }
     }
     
     class Good6WithUninitialized() {
-        String name;
+        @error String name;
         String method() {
             //Note: error not really necessary, 
             //      because captured by non-shared
@@ -585,7 +585,7 @@ class ClassBodies() {
     }
     
     class Bad9WithUninitialized() {
-        String name;
+        @error String name;
         String method() {
             @error return name;
         }

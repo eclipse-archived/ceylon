@@ -30,7 +30,7 @@ class Capturing4<T>(T t, Capturing4<T> c) {
     }
 }
 class Capturing5<out T>(T t, Capturing4<T> c) {
-    Consumer<T> consumer;
+    Consumer<T> consumer = nothing;
     shared void callIt() {}
 }
 
