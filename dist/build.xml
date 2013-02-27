@@ -189,7 +189,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-all" 
-            depends="install-compiler, install-js, copy-compiler-binaries, 
+            depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-jvm-compiler-libraries,
                      copy-js-compiler-libraries, copy-cmr-libraries, copy-licenses,
                      install-language, install-runtime"
@@ -208,6 +208,14 @@ Used with another target such as 'package'">
         </zip>        
     </target>
     
+    <target name="setup-repo">
+        <mkdir dir="${ceylon.dist.dir}/repo"/>
+        <copy todir="${ceylon.dist.dir}/repo">
+            <fileset dir="${ceylon-runtime.dir}/dist/repo">
+            </fileset>
+        </copy>
+    </target>
+
     <target name="copy-compiler-binaries">
         <mkdir dir="${ceylon.dist.dir}/bin"/>
         <copy todir="${ceylon.dist.dir}/bin">
