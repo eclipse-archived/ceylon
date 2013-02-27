@@ -957,6 +957,10 @@ TypeConstraints?
                 initializer,</para>
             </listitem>
             <listitem>
+                <para>a forward-declared method or attribute declaration not
+                annotated <literal>late</literal>,</para>
+            </listitem>
+            <listitem>
                 <para>an <literal>object</literal> declaration with a non-empty 
                 initializer section, or</para>
             </listitem>
