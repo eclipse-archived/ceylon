@@ -18,7 +18,7 @@ defineAttr(lang$proto, 'version', function() {
 defineAttr(lang$proto, 'majorVersion', function(){ return 0; });
 defineAttr(lang$proto, 'minorVersion', function(){ return 5; });
 defineAttr(lang$proto, 'releaseVersion', function(){ return 0; });
-defineAttr(lang$proto, 'versionName', function(){ return String$("Analytical Engine",11); });
+defineAttr(lang$proto, 'versionName', function(){ return String$("Zaphod Beeblebrox",11); });
 defineAttr(lang$proto, 'majorVersionBinary', function(){ return 4; });
 defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; });
 var languageString = String$("language", 7);
