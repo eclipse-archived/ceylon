@@ -124,37 +124,27 @@ public class LiteralVisitor extends Visitor {
     
     private static boolean stripIndent(final String text, final int start, 
             final StringBuilder result) {
-        boolean allTrimmed = true;
+        boolean correctlyIndented = true;
         int num = 0;
         for (String line: text.split("\n|\r\n?")) {
             if (num++==0) {
                 result.append(line);
             }
             else {
-                boolean trimIndent = true;
-                if (line.length()<start) {
-                    trimIndent = false;
-                }
-                else {
-                    for (int i=0; i<start; i++) {
-                        if (!isWhitespace(line.charAt(i))) {
-                            trimIndent = false;
-                            break;
-                        }
+                for (int i=0; i<line.length()&&i<start; i++) {
+                    if (!isWhitespace(line.charAt(i))) {
+                        correctlyIndented = false;
+                        break;
                     }
                 }
-                if (trimIndent) {
+                if (line.length()>=start) {
                     result.append(line.substring(start));
-                }
-                else {
-                    allTrimmed = false;
-                    result.append(line);
                 }
             }
             result.append("\n");
         }
         result.setLength(result.length()-1);
-        return allTrimmed;
+        return correctlyIndented;
     }
     
     private static Pattern re = Pattern.compile("\\\\(\\{#([^}]*)\\}|(.))");
