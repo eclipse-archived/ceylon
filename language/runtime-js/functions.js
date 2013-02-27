@@ -171,18 +171,6 @@ function add_type_arg(obj, name, type) {
 function throwexc(msg) {
     throw Exception(msg.getT$all?msg:String$(msg));
 }
-function dyntype(f) {
-    if (f===undefined) throw Exception(String$("Cannot instantiate undefined type",33));
-    var args = [].slice.call(arguments, 1);
-    if (f.$$===undefined) {
-        //Simulate "new"
-        var n = {};
-        n.__proto__=f.prototype;
-        var r = f.apply(n,args);
-        return r===undefined?n:r;
-    }
-    return f.apply(this,args);
-}
 exports.set_type_args=set_type_args;
 exports.add_type_arg=add_type_arg;
 exports.exists=exists;
@@ -191,4 +179,3 @@ exports.isOfType=isOfType;
 exports.className=className;
 exports.identityHash=identityHash;
 exports.throwexc=throwexc;
-exports.dyntype=dyntype;
