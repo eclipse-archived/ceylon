@@ -683,7 +683,7 @@ public class GenerateJsVisitor extends Visitor
                     (prototypeStyle && (getSuperMemberScope(extendedType.getType()) != null))
                         ? ".call(this," : "(");
 
-            invoker.generatePositionalArguments(argList, argList.getPositionalArguments(), false);
+            invoker.generatePositionalArguments(argList, argList.getPositionalArguments(), false, false);
             if (argList.getPositionalArguments().size() > 0) {
                 out(",");
             }
@@ -1957,7 +1957,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(PositionalArgumentList that) {
-        invoker.generatePositionalArguments(that, that.getPositionalArguments(), false);
+        invoker.generatePositionalArguments(that, that.getPositionalArguments(), false, false);
     }
 
     /** Box a term, visit it, unbox it. */
