@@ -102,14 +102,14 @@ public abstract class CeylonAntTask extends Task {
      */
     protected void executeCommandline(Commandline cmd) {
         try {
-            Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
-            exe.setAntRun(getProject());
-            exe.setWorkingDirectory(getProject().getBaseDir());
-            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
-            exe.setCommandline(cmd.getCommandline());
-            exe.execute();
-            int exitValue = exe.getExitValue();
-//            int exitValue = Launcher.run(cmd.getArguments());
+//            Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
+//            exe.setAntRun(getProject());
+//            exe.setWorkingDirectory(getProject().getBaseDir());
+//            log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
+//            exe.setCommandline(cmd.getCommandline());
+//            exe.execute();
+//            int exitValue = exe.getExitValue();
+            int exitValue = Launcher.run(cmd.getArguments());
             if (exitValue != 0) {
                 String message = formatFailureMessage(cmd);
                 exitHandler.handleExit(this, exitValue, message);
