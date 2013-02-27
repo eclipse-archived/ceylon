@@ -32,27 +32,33 @@ public class LiteralVisitor extends Visitor {
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
-        StringBuilder result = new StringBuilder();
         if (type!=STRING_MID && type!=STRING_END) {
             indent = getIndentPosition(that);
         }
-        boolean allTrimmed = stripIndent(text, indent, result);
-        if (!allTrimmed) {
-            that.addError("multiline string content should align be aligned with start of string: string begins at character position " + indent);
-        }
         if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
-            that.setText(result.substring(3,result.length()-3));
+            text = text.substring(3,text.length()-3);
+        }
+        else if (type==STRING_MID) {
+            text = text.substring(2, text.length()-2);
+        }
+        else if (type==STRING_END) {
+            text = text.substring(2, text.length()-1);
+        }
+        else if (type==STRING_START) {
+            text = text.substring(1, text.length()-2);
         }
         else {
-            interpolateEscapes(result, that);
-            if (type==STRING_END || type==STRING_MID) {
-                result.deleteCharAt(0);
-            }
-            if (type==STRING_START || type==STRING_MID) {
-                result.deleteCharAt(result.length()-1);
-            }
-            that.setText(result.substring(1, result.length()-1));
+            text = text.substring(1, text.length()-1);
         }
+        StringBuilder result = new StringBuilder();
+        boolean allTrimmed = stripIndent(text, indent, result);
+        if (!allTrimmed) {
+            that.addError("multiline string content should align with start of string: string begins at character position " + indent);
+        }
+        if (type!=VERBATIM_STRING && type!=AVERBATIM_STRING) {
+            interpolateEscapes(result, that);
+        }
+        that.setText(result.toString());
         if (type!=STRING_MID && type!=STRING_START) {
             indent = 0;
         }
