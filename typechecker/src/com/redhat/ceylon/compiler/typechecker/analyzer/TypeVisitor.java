@@ -192,7 +192,6 @@ public class TypeVisitor extends Visitor {
                 i.setAlias(dec.getName());
                 i.setDeclaration(dec);
                 i.setWildcardImport(true);
-                //TODO: do we need something like this here:
                 addWildcardImport(til, dec, i);
             }
         }
