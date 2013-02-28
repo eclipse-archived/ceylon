@@ -2,10 +2,13 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 
 public class ControlBlock extends Element implements Scope {
+    
     private int id;
+    
     public void setId(int id) {
         this.id = id;
     }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ControlBlock) {
@@ -17,4 +20,5 @@ public class ControlBlock extends Element implements Scope {
             return false;
         }
     }
+    
 }

@@ -8,7 +8,8 @@ public class NamedArgumentList extends Element implements Scope {
 	
     private ParameterList parameterList;
     private List<String> argumentNames = new ArrayList<String>();
-    
+    private int id;
+        
     public ParameterList getParameterList() {
         return parameterList;
     }
@@ -32,6 +33,22 @@ public class NamedArgumentList extends Element implements Scope {
     
     public List<String> getArgumentNames() {
         return argumentNames;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NamedArgumentList) {
+            NamedArgumentList that = (NamedArgumentList) obj;
+            return id==that.id && 
+                    getContainer().equals(that.getContainer());
+        }
+        else {
+            return false;
+        }
     }
     
 }

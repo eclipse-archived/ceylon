@@ -728,6 +728,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.NamedArgumentList that) {
         NamedArgumentList nal = new NamedArgumentList();
+        nal.setId(id++);
         for (Tree.NamedArgument na: that.getNamedArguments()) {
             if (na.getIdentifier()!=null) {
                 nal.getArgumentNames().add(na.getIdentifier().getText());
