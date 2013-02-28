@@ -50,6 +50,9 @@ public class UsageVisitor extends Visitor {
         		for (ImportMemberOrType m: imtl.getImportMemberOrTypes()) {
 					referenced=referenced||referenced(m);
         		}
+        		if (imtl.getImportWildcard()!=null) {
+        		    referenced = true;
+        		}
         	}
         }
 		return referenced;

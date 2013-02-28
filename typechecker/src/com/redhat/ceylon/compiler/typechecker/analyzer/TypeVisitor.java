@@ -80,20 +80,18 @@ public class TypeVisitor extends Visitor {
                 for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
                 }
-                if (imtl.getImportWildcard()==null) {
-                    if (imtl.getImportMemberOrTypes().isEmpty()) {
-                        imtl.addError("empty import list");
-                    }
-                }
-                else {
+                if (imtl.getImportWildcard()!=null) {
                     importAllMembers(importedPackage, names, il);
+                } 
+                else if (imtl.getImportMemberOrTypes().isEmpty()) {
+                    imtl.addError("empty import list");
                 }
             }
         }
     }
 
-    private void importAllMembers(Package importedPackage, Set<String> ignoredMembers, 
-            ImportList il) {
+    private void importAllMembers(Package importedPackage, 
+            Set<String> ignoredMembers, ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
             if (dec.isShared() && !dec.isAnonymous() && 
                     !ignoredMembers.contains(dec.getName()) &&
@@ -168,7 +166,8 @@ public class TypeVisitor extends Visitor {
 //        }
 //    }
     
-    private boolean findModuleInTransitiveImports(Module moduleToVisit, Module moduleToFind, Set<Module> visited) {
+    private boolean findModuleInTransitiveImports(Module moduleToVisit, 
+            Module moduleToFind, Set<Module> visited) {
         if(!visited.add(moduleToVisit))
             return false;
         if(moduleToVisit.equals(moduleToFind))
@@ -183,8 +182,24 @@ public class TypeVisitor extends Visitor {
         return false;
     }
 
-    private String importMember(Tree.ImportMemberOrType member, Package importedPackage, 
-            ImportList il) {
+    private void importAllMembers(TypeDeclaration importedType, 
+            Set<String> ignoredMembers, ImportList til) {
+        for (Declaration dec: importedType.getMembers()) {
+            if (dec.isShared() && dec.isStaticallyImportable() && 
+                    !dec.isAnonymous() && 
+                    !ignoredMembers.contains(dec.getName())) {
+                Import i = new Import();
+                i.setAlias(dec.getName());
+                i.setDeclaration(dec);
+                i.setWildcardImport(true);
+                //TODO: do we need something like this here:
+                addWildcardImport(til, dec, i);
+            }
+        }
+    }
+
+    private String importMember(Tree.ImportMemberOrType member,
+            Package importedPackage, ImportList il) {
         if (member.getIdentifier()==null) {
             return null;
         }
@@ -246,15 +261,20 @@ public class TypeVisitor extends Visitor {
     public void importMembers(Tree.ImportMemberOrType member, Declaration d) {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
-            if (imtl.getImportMemberOrTypes().isEmpty()) {
-                imtl.addError("empty import list");
-            }
         	if (d instanceof TypeDeclaration) {
+                Set<String> names = new HashSet<String>();
                 ImportList til = imtl.getImportList();
-                til.setImportedScope((TypeDeclaration) d);
+                TypeDeclaration td = (TypeDeclaration) d;
+                til.setImportedScope(td);
         		for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
-        			importMember(submember, (TypeDeclaration) d, til);
+        			names.add(importMember(submember, td, til));
             	}
+                if (imtl.getImportWildcard()!=null) {
+                    importAllMembers(td, names, til);
+                }
+                else if (imtl.getImportMemberOrTypes().isEmpty()) {
+                    imtl.addError("empty import list");
+                }
             }
         	else {
         		imtl.addError("member alias list must follow a type");
@@ -277,10 +297,10 @@ public class TypeVisitor extends Visitor {
         }
     }
 
-    private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d, 
-            ImportList il) {
+    private String importMember(Tree.ImportMemberOrType member, 
+            TypeDeclaration d, ImportList il) {
         if (member.getIdentifier()==null) {
-            return;
+            return null;
         }
         Import i = new Import();
         member.setImportModel(i);
@@ -329,6 +349,7 @@ public class TypeVisitor extends Visitor {
         }
         importMembers(member, m);
         //imtl.addError("member aliases may not have member aliases");
+        return name;
     }
 
     private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
