@@ -1048,6 +1048,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
     	Specification s = new Specification();
+    	s.setId(id++);
     	visitElement(that, s);
     	Scope o = enterScope(s);
         super.visit(that);
