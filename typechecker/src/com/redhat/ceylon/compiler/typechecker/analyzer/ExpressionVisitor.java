@@ -2980,9 +2980,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null && 
                 !rhst.isUnknown() && !lhst.isUnknown()) {
-            checkSupertype(lhst, unit.getObjectDeclaration(), that.getLeftTerm(), 
+            ProducedType ot = unit.getObjectDeclaration().getType();
+            checkAssignable(lhst, ot, that.getLeftTerm(), 
                     "operand expression must not be an optional type");
-            checkSupertype(rhst, unit.getObjectDeclaration(), that.getRightTerm(), 
+            checkAssignable(rhst, ot, that.getRightTerm(), 
                     "operand expression must not be an optional type");
             that.setTypeModel( unit.getEntryType(lhst, rhst) );
         }
@@ -2994,10 +2995,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null && 
                 !rhst.isUnknown() && !lhst.isUnknown()) {
-            checkSupertype(lhst, td, that.getLeftTerm(), 
+            checkAssignable(lhst, td.getType(), that.getLeftTerm(), 
                     "operand expression must be of type " + td.getName());
-            checkSupertype(rhst, td, that.getRightTerm(), 
-                    "operand expression must not be of type" + td.getName());
+            checkAssignable(rhst, td.getType(), that.getRightTerm(), 
+                    "operand expression must be of type " + td.getName());
         }
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
