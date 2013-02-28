@@ -2300,7 +2300,9 @@ public class GenerateJsVisitor extends Visitor
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("=");
+            int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
             that.getRightTerm().visit(this);
+            boxUnboxEnd(box);
             return;
         }
         out("(");
@@ -3709,11 +3711,19 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Tree.DynamicClause that) {
+    public void visit(Tree.DynamicStatement that) {
         dynblock++;
-        out("/*Begin dynamic block*/");
-        super.visit(that);
-        out("/*End dynamic block*/");
+        if (dynblock == 1) {
+            out("/*Begin dynamic block*/");
+            endLine();
+        }
+        for (Tree.Statement stmt : that.getDynamicClause().getBlock().getStatements()) {
+            stmt.visit(this);
+        }
+        if (dynblock == 1) {
+            out("/*End dynamic block*/");
+            endLine();
+        }
         dynblock--;
     }
 
