@@ -163,4 +163,9 @@ interface InitializerParams {
         withSequencedParam("hello", "world");
     }
     
+    class TestNewSyntax(name, proc) {
+        shared String proc(String s);
+        shared String name;
+    }
+    
 }

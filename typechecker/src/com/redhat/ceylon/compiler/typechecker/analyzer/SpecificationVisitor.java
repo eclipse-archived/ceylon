@@ -395,6 +395,7 @@ public class SpecificationVisitor extends Visitor {
             else if (declaration.isClassMember() && 
                     !declaration.isNative() && 
                     !declaration.isFormal() && 
+                    that.getDeclarationModel().getInitializerParameter()==null &&
                     declarationSection) {
                 that.addError("forward declaration may not occur in declaration section: " +
                             declaration.getName());
