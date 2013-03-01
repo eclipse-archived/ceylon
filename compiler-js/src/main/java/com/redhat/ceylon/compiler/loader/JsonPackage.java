@@ -749,6 +749,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 d.setDefault(true);
             } else if ("native".equals(name)) {
                 d.setNative(true);
+            } else if ("late".equals(name) && d instanceof Value) {
+                ((Value)d).setLate(true);
             }
             Annotation ann = new Annotation();
             ann.setName(name);

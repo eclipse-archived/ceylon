@@ -1363,7 +1363,7 @@ public class GenerateJsVisitor extends Visitor
         }
         if (!d.isFormal()) {
             comment(that);
-            final boolean isLate = hasAnnotationByName(d, "late");
+            final boolean isLate = d.isLate();
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             if (prototypeStyle && d.isClassOrInterfaceMember()) {
@@ -1464,7 +1464,7 @@ public class GenerateJsVisitor extends Visitor
             }
         } else {
             if (isCaptured(decl)) {
-                final boolean isLate = hasAnnotationByName(decl, "late");
+                final boolean isLate = decl.isLate();
                 if (defineAsProperty(decl)) {
                     out(clAlias, "defineAttr(");
                     outerSelf(decl);
@@ -1526,7 +1526,7 @@ public class GenerateJsVisitor extends Visitor
             if (d.getContainer() instanceof Functional) {
                 classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
             }
-            final boolean isLate = hasAnnotationByName(d, "late");
+            final boolean isLate = d.isLate();
             if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
                         || classParam != null || isLate) {
                 if (that.getSpecifierOrInitializerExpression()
