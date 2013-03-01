@@ -918,10 +918,16 @@ public class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "late")) {
             if (model instanceof Value) {
-                ((Value) model).setLate(true);
+                if (that instanceof Tree.AttributeDeclaration && 
+                        ((Tree.AttributeDeclaration) that).getSpecifierOrInitializerExpression()==null) {
+                    ((Value) model).setLate(true);
+                }
+                else {
+                    that.addError("value is not an uninitialized reference, and may not be annotated late");
+                }
             }
             else {
-            	that.addError("declaration is not a reference value, and may not be annotated late");
+            	that.addError("declaration is not a value, and may not be annotated late");
             }
         }
         if (model instanceof Value) {
