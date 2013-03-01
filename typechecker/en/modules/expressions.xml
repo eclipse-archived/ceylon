@@ -1880,8 +1880,9 @@ createItemMethod.intercept()
             <entry><literal>lhs &identical; rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
-            <entry><literal>Identifiable</literal></entry>
-            <entry><literal>Identifiable</literal></entry>
+            <entry><literal>X given X satisfies Identifiable</literal></entry>
+            <entry><literal>Y given Y satisfies Identifiable</literal>
+            where <literal>X&amp;Y</literal> is not <literal>Nothing</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
@@ -1963,7 +1964,7 @@ createItemMethod.intercept()
             <entry></entry>
             <entry>any type which is not a subtype of 
             <literal>T</literal>, whose intersection with 
-            <literal>T</literal> is not <literal>Bottom</literal></entry>
+            <literal>T</literal> is not <literal>Nothing</literal></entry>
             <entry>any literal type <literal>T</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
