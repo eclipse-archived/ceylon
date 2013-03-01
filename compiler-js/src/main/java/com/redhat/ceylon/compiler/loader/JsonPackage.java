@@ -749,14 +749,13 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 d.setDefault(true);
             } else if ("native".equals(name)) {
                 d.setNative(true);
-            } else {
-                Annotation ann = new Annotation();
-                ann.setName(name);
-                for (String arg : e.getValue()) {
-                    ann.addPositionalArgment(arg);
-                }
-                d.getAnnotations().add(ann);
             }
+            Annotation ann = new Annotation();
+            ann.setName(name);
+            for (String arg : e.getValue()) {
+                ann.addPositionalArgment(arg);
+            }
+            d.getAnnotations().add(ann);
         }
         //This is to avoid problems with private declarations while
         //compiling the language module
