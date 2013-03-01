@@ -57,7 +57,7 @@ class Operators() {
     
     @error value x16 = "foo" == null;
     
-    @type:"Boolean" value x17 = Y() === X();
+    @type:"Boolean" value x17 = X() === X();
     
     @error value x18 = "foo" === 12;
     
@@ -372,5 +372,16 @@ class Operators() {
     for (@error me in set) {}
     {Object*} map = nothing;
     for (@error k->v in map) {}
-        
+    
+    [String+] strings1 = [""];
+    @type:"Null" value null1 = strings1[-1];
+    @type:"String" value notNull1 = strings1[0];
+    @type:"Null|String" value maybe1 = strings1[1];
+    String[] strings2 = [""];
+    @type:"Null" value null2 = strings2[-1];
+    @type:"Null|String" value notNull2 = strings2[0];
+    @type:"Null|String" value maybe2 = strings2[1];
+    
+    @error value disjointIdentity = X() === Y();
+    @error value noIdentity = 1 === 1;
 }

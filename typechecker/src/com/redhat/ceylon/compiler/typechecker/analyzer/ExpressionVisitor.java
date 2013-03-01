@@ -2917,26 +2917,23 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
 
-    private void visitComparisonOperator(Tree.BinaryOperatorExpression that, 
-            TypeDeclaration type) {
+    private void checkComparable(Tree.BinaryOperatorExpression that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null && 
-                !rhst.isUnknown() && !lhst.isUnknown()) {
-            checkOperandTypes(lhst, rhst, type, that, 
-                    "operand expressions must be comparable");
-        }
-        that.setTypeModel( unit.getBooleanDeclaration().getType() );            
-    }
-    
-    private void visitCompareOperator(Tree.CompareOp that) {
-        ProducedType lhst = leftType(that);
-        ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null && 
+        if (rhst!=null && lhst!=null && 
                 !rhst.isUnknown() && !lhst.isUnknown()) {
             checkOperandTypes(lhst, rhst, unit.getComparableDeclaration(), that, 
                     "operand expressions must be comparable");
         }
+    }
+    
+    private void visitComparisonOperator(Tree.BinaryOperatorExpression that) {
+        checkComparable(that);
+        that.setTypeModel( unit.getBooleanDeclaration().getType() );            
+    }
+
+    private void visitCompareOperator(Tree.CompareOp that) {
+        checkComparable(that);
         that.setTypeModel( unit.getComparisonDeclaration().getType() );            
     }
     
@@ -2964,7 +2961,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitSegmentOperator(Tree.SegmentOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null && 
+        if (rhst!=null && lhst!=null && 
                 !rhst.isUnknown() && !lhst.isUnknown()) {
             ProducedType ot = checkSupertype(lhst, unit.getOrdinalDeclaration(), 
                     that.getLeftTerm(), "left operand must be of ordinal type");
@@ -2980,7 +2977,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitEntryOperator(Tree.EntryOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
-        if ( rhst!=null && lhst!=null && 
+        if (rhst!=null && lhst!=null && 
                 !rhst.isUnknown() && !lhst.isUnknown()) {
             ProducedType ot = unit.getObjectDeclaration().getType();
             checkAssignable(lhst, ot, that.getLeftTerm(), 
@@ -2991,16 +2988,36 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitEqualityOperator(Tree.BinaryOperatorExpression that, 
-            TypeDeclaration td) {
+    private void visitIdentityOperator(Tree.BinaryOperatorExpression that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null && 
                 !rhst.isUnknown() && !lhst.isUnknown()) {
-            checkAssignable(lhst, td.getType(), that.getLeftTerm(), 
-                    "operand expression must be of type " + td.getName());
-            checkAssignable(rhst, td.getType(), that.getRightTerm(), 
-                    "operand expression must be of type " + td.getName());
+            TypeDeclaration id = unit.getIdentifiableDeclaration();
+            checkAssignable(lhst, id.getType(), that.getLeftTerm(), 
+                    "operand expression must be of type Identifiable");
+            checkAssignable(rhst, id.getType(), that.getRightTerm(), 
+                    "operand expression must be of type Identifiable");
+            if (intersectionType(lhst, rhst, unit).isNothing()) {
+                that.addError("values of disjoint types are never identical: " +
+                        lhst.getProducedTypeName(unit) + 
+                        " has empty intersection with " +
+                        rhst.getProducedTypeName(unit));
+            }
+        }
+        that.setTypeModel(unit.getBooleanDeclaration().getType());
+    }
+    
+    private void visitEqualityOperator(Tree.BinaryOperatorExpression that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null && 
+                !rhst.isUnknown() && !lhst.isUnknown()) {
+            TypeDeclaration od = unit.getObjectDeclaration();
+            checkAssignable(lhst, od.getType(), that.getLeftTerm(), 
+                    "operand expression must be of type Object");
+            checkAssignable(rhst, od.getType(), that.getRightTerm(), 
+                    "operand expression must be of type Object");
         }
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
@@ -3372,17 +3389,17 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        visitEqualityOperator(that, unit.getObjectDeclaration());
+        visitEqualityOperator(that);
     }
 
     @Override public void visit(Tree.ComparisonOp that) {
         super.visit(that);
-        visitComparisonOperator(that, unit.getComparableDeclaration());
+        visitComparisonOperator(that);
     }
 
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
-        visitEqualityOperator(that, unit.getIdentifiableDeclaration());
+        visitIdentityOperator(that);
     }
 
     @Override public void visit(Tree.CompareOp that) {
