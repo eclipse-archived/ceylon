@@ -20,6 +20,13 @@ then
     CEYLON_HOME="$DIR/.."
 fi
 
+if test -z "$JAVA_HOME"
+then 
+    JAVA="java"
+else
+    JAVA="$JAVA_HOME/bin/java"
+fi
+
 # Make sure we have java installed
 if hash java 2>&-
 then
@@ -40,7 +47,7 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
-exec java \
+exec $JAVA \
  $JAVA_OPTS \
  -jar "$LIB/ceylon-bootstrap.jar" \
  "$@"
