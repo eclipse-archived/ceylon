@@ -227,6 +227,17 @@ defineAttr(Comparison$proto, 'string', function(){ return this.name; });
 
 //#include annotations.js
 
+function NativeException(e) {
+    var that = new NativeException.$$;
+    if (typeof e === 'string') {
+        that.message = String$(e);
+    } else if (e) {
+        that.message = String$(e.toString());
+    }
+    return that;
+}
+initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
+
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.Object=Object$;
