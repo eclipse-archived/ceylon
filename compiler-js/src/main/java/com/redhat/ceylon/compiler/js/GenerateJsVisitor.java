@@ -18,7 +18,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
@@ -660,12 +659,6 @@ public class GenerateJsVisitor extends Visitor
                         superSetterRef(dec,d,suffix);
                     }
                 }
-                else if (dec instanceof Getter) {
-                    superGetterRef(dec,d,suffix);
-                    if (((Getter) dec).isVariable()) {
-                        superSetterRef(dec,d,suffix);
-                    }
-                }
                 else {
                     superRef(dec,d,suffix);
                 }
@@ -1235,7 +1228,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(AttributeGetterDefinition that) {
-        Getter d = that.getDeclarationModel();
+        Value d = that.getDeclarationModel();
         if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
         comment(that);
         if (defineAsProperty(d)) {
@@ -1243,10 +1236,16 @@ public class GenerateJsVisitor extends Visitor
             outerSelf(d);
             out(",'", names.name(d), "',function()");
             super.visit(that);
-            final AttributeSetterDefinition setterDef = associatedSetterDefinition(that);
+            final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
             if (setterDef != null) {
                 out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-                super.visit(setterDef);
+                if (setterDef.getSpecifierExpression() == null) {
+                    super.visit(setterDef);
+                } else {
+                    out("{return ");
+                    setterDef.getSpecifierExpression().visit(this);
+                    out(";}");
+                }
             }
             out(");");
         }
@@ -1259,23 +1258,29 @@ public class GenerateJsVisitor extends Visitor
 
     private void addGetterToPrototype(TypeDeclaration outer,
             AttributeGetterDefinition that) {
-        Getter d = that.getDeclarationModel();
+        Value d = that.getDeclarationModel();
         if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
         comment(that);
         out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
                 "',function()");
         super.visit(that);
-        final AttributeSetterDefinition setterDef = associatedSetterDefinition(that);
+        final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
         if (setterDef != null) {
             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-            super.visit(setterDef);
+            if (setterDef.getSpecifierExpression() == null) {
+                super.visit(setterDef);
+            } else {
+                out("{return ");
+                setterDef.getSpecifierExpression().visit(this);
+                out(";}");
+            }
         }
         out(");");
     }
     
     private AttributeSetterDefinition associatedSetterDefinition(
-            AttributeGetterDefinition getterDef) {
-        final Setter setter = getterDef.getDeclarationModel().getSetter();
+            Value valueDecl) {
+        final Setter setter = valueDecl.getSetter();
         if ((setter != null) && (currentStatements != null)) {
             for (Statement stmt : currentStatements) {
                 if (stmt instanceof AttributeSetterDefinition) {
@@ -1309,7 +1314,13 @@ public class GenerateJsVisitor extends Visitor
         if ((prototypeStyle&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
         out("var ", names.setter(d.getGetter()), "=function(", names.name(d.getParameter()), ")");
-        super.visit(that);
+        if (that.getSpecifierExpression() == null) {
+            that.getBlock().visit(this);
+        } else {
+            out("{return ");
+            that.getSpecifierExpression().visit(this);
+            out(";}");
+        }
         if (!shareSetter(d)) { out(";"); }
     }
 
@@ -1378,7 +1389,7 @@ public class GenerateJsVisitor extends Visitor
                 if (property) {
                     out(clAlias, "defineAttr(");
                     outerSelf(d);
-                    out(",'", names.name(d), "',function(){ return ");
+                    out(",'", names.name(d), "',function(){return ");
                 } else {
                     out("var ", names.getter(d), "=function(){return ");                    
                 }
@@ -1387,6 +1398,19 @@ public class GenerateJsVisitor extends Visitor
                 boxUnboxEnd(boxType);
                 out(";}");
                 if (property) {
+                    if (d.isVariable()) {
+                        Tree.AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
+                        if (setterDef != null) {
+                            out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
+                            if (setterDef.getSpecifierExpression() == null) {
+                                super.visit(setterDef);
+                            } else {
+                                out("{return ");
+                                setterDef.getSpecifierExpression().visit(this);
+                                out(";}");
+                            }
+                        }
+                    }
                     out(");");
                     endLine();
                 } else {
@@ -1516,8 +1540,24 @@ public class GenerateJsVisitor extends Visitor
                     Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                     int boxType = boxStart(expr.getTerm());
                     expr.visit(this);
+                    endLine(true);
                     boxUnboxEnd(boxType);
                     endBlock();
+                    if (d.isVariable()) {
+                        Tree.AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
+                        if (setterDef != null) {
+                            out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
+                            if (setterDef.getSpecifierExpression() == null) {
+                                super.visit(setterDef);
+                            } else {
+                                out("{");
+                                initSelf(that.getScope());
+                                out("return ");
+                                setterDef.getSpecifierExpression().visit(this);
+                                out(";}");
+                            }
+                        }
+                    }
                     out(")");
                     endLine(true);
                 }
@@ -3034,7 +3074,7 @@ public class GenerateJsVisitor extends Visitor
 
    private boolean hasSimpleGetterSetter(Declaration decl) {
        return (dynblock > 0 && TypeUtils.isUnknown(decl)) ||
-               !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal());
+               !((decl instanceof Value) || (decl instanceof Setter) || decl.isFormal());
    }
 
    private void prefixIncrementOrDecrement(Term term, String functionName) {
