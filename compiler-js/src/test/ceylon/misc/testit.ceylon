@@ -38,6 +38,7 @@ shared void test() {
     value v2 = var();
     test_objects();
     testAliasing();
+    testLate();
     //testReifiedGenerics();
     results();
 }
