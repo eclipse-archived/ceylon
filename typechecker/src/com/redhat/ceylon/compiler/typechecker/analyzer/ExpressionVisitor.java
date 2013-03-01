@@ -2068,7 +2068,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
-        if (prf==null || !prf.isFunctional()) {
+        if (prf==null || !prf.isFunctional() || 
+                //type parameters are not really callable even though they are Functional
+                prf.getDeclaration() instanceof TypeParameter) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null && !pt.isUnknown()) {
                 if (checkCallable(pt, that.getPrimary(), 
@@ -2136,11 +2138,11 @@ public class ExpressionVisitor extends Visitor {
         List<ParameterList> pls = dec.getParameterLists();
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
-                that.addError("type cannot be instantiated: " + 
+                that.addError("type has no parameter list: " + 
                         dec.getName(unit));
             }
             else {
-                that.addError("member cannot be invoked: " +
+                that.addError("function has no parameter list: " +
                         dec.getName(unit));
             }
         }
@@ -3955,7 +3957,7 @@ public class ExpressionVisitor extends Visitor {
             //      with sequenced type parameters
             type = t.getDeclaration();
 //        }
-        if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
+        if (acceptsTypeArguments(type, typeArgs, tal, that)) {
             ProducedType ft = isAbstractType(t) ?
                     unit.getAnythingDeclaration().getType() : //TODO: set the correct metatype
                     t.getFullType();

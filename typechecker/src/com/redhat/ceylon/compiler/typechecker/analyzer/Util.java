@@ -8,12 +8,16 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -191,13 +195,32 @@ class Util {
     }
     
     static boolean checkCallable(ProducedType type, Node node, String message) {
+        Unit unit = node.getUnit();
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, message);
             return false;
         }
-        else if (!type.getDeclaration().getUnit().isCallableType(type)) {
+        else if (!unit.isCallableType(type)) {
             if (!hasError(node)) {
-                node.addError(message + message(type, " is not a subtype of Callable", node.getUnit()));
+                String extra = message(type, " is not a subtype of Callable", unit);
+                if (node instanceof Tree.StaticMemberOrTypeExpression) {
+                    Declaration d = ((Tree.StaticMemberOrTypeExpression) node).getDeclaration();
+                    if (d instanceof Interface) {
+                        extra = ": " + d.getName() + " is an interface";
+                    }
+                    else if (d instanceof TypeAlias) {
+                        extra = ": " + d.getName() + " is a type alias";
+                    }
+                    else if (d instanceof TypeParameter) {
+                        extra = ": " + d.getName() + " is a type parameter";
+                    }
+                    else if (d instanceof Getter||d instanceof Value) {
+                        extra = ": value " + d.getName() + " has type " + 
+                                type.getProducedTypeName(unit) + 
+                                " which is not a subtype of Callable";
+                    }
+                }
+                node.addError(message + extra);
             }
             return false;
         }
