@@ -1352,14 +1352,19 @@ public class GenerateJsVisitor extends Visitor
         }
         if (!d.isFormal()) {
             comment(that);
+            final boolean isLate = hasAnnotationByName(d, "late");
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             if (prototypeStyle && d.isClassOrInterfaceMember()) {
-                if ((specInitExpr != null)
-                        && !(specInitExpr instanceof LazySpecifierExpression)) {
+                if ((specInitExpr != null
+                        && !(specInitExpr instanceof LazySpecifierExpression)) || isLate) {
                     outerSelf(d);
                     out(".", names.privateName(d), "=");
-                    super.visit(that);
+                    if (isLate) {
+                        out("undefined");
+                    } else {
+                        super.visit(that);
+                    }
                     endLine(true);
                 } else if (classParam != null) {
                     outerSelf(d);
@@ -1391,14 +1396,17 @@ public class GenerateJsVisitor extends Visitor
             }
             else {
                 if ((specInitExpr != null) || (classParam != null) || !d.isMember()
-                            || d.isVariable()) {
+                            || d.isVariable() || isLate) {
                     generateAttributeGetter(d, specInitExpr, classParam);
                 }
-                if (d.isVariable() && !defineAsProperty(d)) {
+                if ((d.isVariable() || isLate) && !defineAsProperty(d)) {
                     final String varName = names.name(d);
                     String paramVarName = names.createTempVariable(d.getName());
-                    out("var ", names.setter(d), "=function(", paramVarName, "){return ");
-                    out(varName, "=", paramVarName, ";};");
+                    out("var ", names.setter(d), "=function(", paramVarName, "){");
+                    if (isLate) {
+                        generateImmutableAttributeReassignmentCheck(varName, names.name(d));
+                    }
+                    out("return ", varName, "=", paramVarName, ";};");
                     endLine();
                     shareSetter(d);
                 }
@@ -1432,13 +1440,22 @@ public class GenerateJsVisitor extends Visitor
             }
         } else {
             if (isCaptured(decl)) {
+                final boolean isLate = hasAnnotationByName(decl, "late");
                 if (defineAsProperty(decl)) {
                     out(clAlias, "defineAttr(");
                     outerSelf(decl);
-                    out(",'", varName, "',function(){return ", varName, ";}");
-                    if (decl.isVariable()) {
+                    out(",'", varName, "',function(){");
+                    if (isLate) {
+                        generateUnitializedAttributeReadCheck(varName, names.name(decl));
+                    }
+                    out("return ", varName, ";}");
+                    if (decl.isVariable() || isLate) {
                         final String par = names.createTempVariable(decl.getName());
-                        out(",function(", par, "){return ", varName, "=", par, ";}");
+                        out(",function(", par, "){");
+                        if (isLate && !decl.isVariable()) {
+                            generateImmutableAttributeReassignmentCheck(varName, names.name(decl));
+                        }
+                        out("return ", varName, "=", par, ";}");
                     }
                     out(");");
                     endLine();
@@ -1453,7 +1470,28 @@ public class GenerateJsVisitor extends Visitor
             }
         }
     }
-    
+
+    void generateUnitializedAttributeReadCheck(String privname, String pubname) {
+        //TODO we can later optimize this, to replace this getter with the plain one
+        //once the value has been defined
+        out("if (", privname, "===undefined)throw ", clAlias, "InitializationException(");
+        if (JsCompiler.compilingLanguageModule) {
+            out("String$('");
+        } else {
+            out(clAlias, "String('");
+        }
+        out("Attempt to read unitialized attribute «", pubname, "»'));");
+    }
+    void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
+        out("if(", privname, "!==undefined)throw ", clAlias, "InitializationException(");
+        if (JsCompiler.compilingLanguageModule) {
+            out("String$('");
+        } else {
+            out(clAlias, "String('");
+        }
+        out("Attempt to reassign immutable attribute «", pubname, "»'));");
+    }
+
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
@@ -1464,8 +1502,9 @@ public class GenerateJsVisitor extends Visitor
             if (d.getContainer() instanceof Functional) {
                 classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
             }
+            final boolean isLate = hasAnnotationByName(d, "late");
             if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
-                        || (classParam != null)) {
+                        || classParam != null || isLate) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
@@ -1483,11 +1522,20 @@ public class GenerateJsVisitor extends Visitor
                     endLine(true);
                 }
                 else {
+                    final String privname = names.privateName(d);
                     out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
-                            "',function(){return this.", names.privateName(d), ";}");
-                    if (d.isVariable()) {
+                            "',function(){");
+                    if (isLate) {
+                        generateUnitializedAttributeReadCheck("this."+privname, names.name(d));
+                    }
+                    out("return this.", privname, ";}");
+                    if (d.isVariable() || isLate) {
                         final String param = names.createTempVariable(d.getName());
-                        out(",function(", param, "){return this.", names.privateName(d),
+                        out(",function(", param, "){");
+                        if (isLate && !d.isVariable()) {
+                            generateImmutableAttributeReassignmentCheck("this."+privname, names.name(d));
+                        }
+                        out("return this.", privname,
                                 "=", param, ";}");
                     }
                     out(");");
