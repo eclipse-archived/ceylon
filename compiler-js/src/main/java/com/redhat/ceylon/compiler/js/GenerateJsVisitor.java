@@ -3303,6 +3303,10 @@ public class GenerateJsVisitor extends Visitor
             String catchVarName = names.createTempVariable("ex");
             out("catch(", catchVarName, ")");
             beginBlock();
+            //Check if it's native and if so, wrap it
+            out("if (", catchVarName, ".getT$name === undefined) ", catchVarName, "=",
+                    clAlias, "NativeException(", catchVarName, ")");
+            endLine(true);
             boolean firstCatch = true;
             for (CatchClause catchClause : that.getCatchClauses()) {
                 Variable variable = catchClause.getCatchVariable().getVariable();
