@@ -131,7 +131,7 @@
         of extends satisfies adapts abstracts
         in out
         return break continue throw
-        assert
+        assert dynamic
         if else switch case for while try catch finally then
         this outer super
         is exists nonempty
