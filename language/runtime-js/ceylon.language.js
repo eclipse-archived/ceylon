@@ -229,11 +229,15 @@ defineAttr(Comparison$proto, 'string', function(){ return this.name; });
 
 function NativeException(e) {
     var that = new NativeException.$$;
+    var msg;
     if (typeof e === 'string') {
-        that.message = String$(e);
+        msg = String$(e);
     } else if (e) {
-        that.message = String$(e.toString());
+        msg = String$(e.toString());
+    } else {
+        msg = String$("Native JavaScript Exception",27);
     }
+    Exception(msg,null,that);
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
@@ -249,6 +253,7 @@ exports.Comparison=Comparison;
 exports.getNull=getNull;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
+exports.NativeException=NativeException;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
