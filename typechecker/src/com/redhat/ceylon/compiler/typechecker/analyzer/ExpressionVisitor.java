@@ -449,7 +449,7 @@ public class ExpressionVisitor extends Visitor {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
             String help=" (assign to a new local value to narrow type)";
-            if (!(d instanceof Value || d instanceof Getter || d instanceof ValueParameter)) {
+            if (!(d instanceof Value || d instanceof ValueParameter)) {
                 ref.addError("referenced declaration is not a value: " + 
                         d.getName(unit), 3100);
             }
@@ -465,7 +465,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean isNonConstant(Declaration d) {
-        return d instanceof Getter || d instanceof Value && 
+        return d instanceof Value && 
                 (((Value) d).isVariable() || ((Value) d).isTransient());
     }
     
@@ -604,11 +604,16 @@ public class ExpressionVisitor extends Visitor {
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         Tree.Type type = that.getType();
         inferType(that, sie);
+        Value dec = that.getDeclarationModel();
         if (type!=null) {
             ProducedType t = type.getTypeModel();
             if (!t.isUnknown()) {
-                checkType(t, that.getDeclarationModel().getName(), sie, 2100);
+                checkType(t, dec.getName(), sie, 2100);
             }
+        }
+        Setter setter = dec.getSetter();
+        if (setter!=null) {
+            setter.getParameter().setType(dec.getType());
         }
     }
     
@@ -1020,13 +1025,14 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
-        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
+        Getter dec = that.getDeclarationModel();
+        Declaration od = beginReturnDeclaration(dec);
         super.visit(that);
-        endReturnScope(rt, that.getDeclarationModel());
+        endReturnScope(rt, dec);
         endReturnDeclaration(od);
-        Setter setter = that.getDeclarationModel().getSetter();
+        Setter setter = dec.getSetter();
         if (setter!=null) {
-            setter.getParameter().setType(that.getDeclarationModel().getType());
+            setter.getParameter().setType(dec.getType());
         }
     }
 
@@ -1054,10 +1060,21 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.AttributeSetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
-        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
+        Setter sd = that.getDeclarationModel();
+        Declaration od = beginReturnDeclaration(sd);
         super.visit(that);
         endReturnDeclaration(od);
-        endReturnScope(rt, that.getDeclarationModel());
+        endReturnScope(rt, sd);
+        Tree.SpecifierExpression se = that.getSpecifierExpression();
+        if (se!=null) {
+            Tree.Expression e = se.getExpression();
+            if (e!=null) {
+                if (!isSatementExpression(e)) {
+                    se.addError("function is declared void so specified expression must be a statement: " +
+                            sd.getName());
+                }
+            }
+        }
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
@@ -3314,7 +3331,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
             if (pr!=null) {
                 Declaration dec = pr.getDeclaration();
-                if (!(dec instanceof Value | dec instanceof Getter)) {
+                if (!(dec instanceof Value)) {
                     that.addError("member cannot be assigned: " 
                             + dec.getName(unit));
                 }

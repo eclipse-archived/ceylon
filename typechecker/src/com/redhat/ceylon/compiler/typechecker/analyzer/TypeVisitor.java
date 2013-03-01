@@ -1184,7 +1184,8 @@ public class TypeVisitor extends Visitor {
             if (a==null) {
                 that.addError("parameter declaration does not exist: " + d.getName());
             }
-            else if (!(a instanceof Value) && !(a instanceof Method)) {
+            else if (!(a instanceof Value && !((Value)a).isTransient()) && 
+                    !(a instanceof Method)) {
                 that.addError("parameter is not a reference value or function: " + d.getName());
             }
             else if (a.isFormal()) {

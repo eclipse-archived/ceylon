@@ -100,4 +100,9 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         return null;
     }
     
+    @Override
+    public void setSetter(Setter setter) {
+        throw new UnsupportedOperationException();
+    }
+
 }

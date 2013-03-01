@@ -6,21 +6,10 @@ package com.redhat.ceylon.compiler.typechecker.model;
  *
  * @author Gavin King
  */
-public class Getter extends MethodOrValue implements Scope {
-
-	private Setter setter;
-
-    public Setter getSetter() {
-        return setter;
-    }
-
-    public void setSetter(Setter setter) {
-        this.setter = setter;
-    }
-
+@Deprecated
+public class Getter extends Value implements Scope {
     @Override
-    public boolean isVariable() {
-        return setter!=null;
+    public boolean isTransient() {
+        return true;
     }
-    
 }

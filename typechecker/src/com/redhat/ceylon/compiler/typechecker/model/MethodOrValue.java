@@ -30,4 +30,6 @@ public abstract class MethodOrValue extends TypedDeclaration {
         return true;
     }
 
+    public abstract void setSetter(Setter setter);
+
 }

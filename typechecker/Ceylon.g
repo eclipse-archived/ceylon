@@ -372,10 +372,14 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       ( 
         block
         { $declaration.setBlock($block.block); }
-      | { displayRecognitionError(getTokenNames(), 
-              new MismatchedTokenException(LBRACE, input)); }
+      | (
+          lazySpecifier
+          { $declaration.setSpecifierExpression($lazySpecifier.specifierExpression); }
+        )?
+        { expecting=SEMICOLON; }
         SEMICOLON
-        { $declaration.setEndToken($SEMICOLON); }
+        { $declaration.setEndToken($SEMICOLON); 
+          expecting=-1; }
       )
     ;
 

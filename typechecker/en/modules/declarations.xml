@@ -2059,14 +2059,10 @@ case (hexadecimal) {
         </section>
         
         <section id="getterswithblocks">
-            <title>Getters with blocks</title>
+            <title>Getters</title>
             
             <para>A getter implementation may be a block.</para>
             
-            <para>Every conditional execution path of the block must end in a
-            <literal>return</literal> directive that specifies an expression assignable 
-            to the type of the value, or in a <literal>throw</literal> directive.</para>
-                                
             <programlisting>shared Float total {
     variable Float sum = 0.0;
     for (li in lineItems) {
@@ -2075,39 +2071,44 @@ case (hexadecimal) {
     return sum;
 }</programlisting>
             
-        </section>
-                
-        <section id="getterswithspecifiers">
-            <title>Getters with specifiers</title>
+            <para>Every conditional execution path of the block must end in a
+            <literal>return</literal> directive that specifies an expression assignable 
+            to the type of the value, or in a <literal>throw</literal> directive.</para>
+                                
+            <para>Alternatively, a getter implementation may be a lazy specifier, that
+            is, an expression specified using <literal>=&gt;</literal>. The type of the 
+            specified expression must be assignable to the type of the value.</para>
             
-        <para>Alternatively, a getter implementation may be a lazy specifier, that
-        is, an expression specified using <literal>=&gt;</literal>. The type of the 
-        specified expression must be assignable to the type of the value.</para>
-        
-        <programlisting>Name name => Name(firstName, initial, lastName);</programlisting>
+            <programlisting>Name name => Name(firstName, initial, lastName);</programlisting>
         
         </section>
         
         <section id="attributesetters">
             <title>Setters</title>
             
-            <para>A Setter is a callable block of code that accepts a single value 
-            and does not return a value. The block may not contain a 
-            <literal>return</literal> directive that specifies an expression.</para>
+            <para>A setter defines how the value of a getter is assigned.</para>
             
-            <programlisting>SetterDeclaration: "assign" MemberName Block</programlisting>
+            <programlisting>SetterDeclaration: "assign" MemberName (Block | LazySpecifier)</programlisting>
             
             <para>The name specified in a setter declaration must be the name of a
             matching getter that directly occurs earlier in the body containing the 
             setter declaration. If a getter has a setter, we say that the value is 
             <emphasis>variable</emphasis>.</para>
             
-            <para>An attribute setter defines how the value is assigned. Within the
-            body of the setter, a value reference to the getter evaluates to the
-            value being assigned.</para>
+            <para>Within the body of the setter, a value reference to the getter 
+            evaluates to the value being assigned.</para>
+            
+            <para>A setter implementation may be a block. The block may not contain 
+            a return directive that specifies an expression.</para>
             
             <programlisting>shared String name { return join(firstName, lastName); }
-shared assign name { firstName=first(name); lastName=last(name); }</programlisting>
+assign name { firstName=first(name); lastName=last(name); }</programlisting>
+            
+            <para>Alternatively, a setter implementation may be a lazy specifier. The 
+            specified expression must be a legal statement.</para>
+            
+            <programlisting>shared String name => join(n[0], n[1]);
+assign name => n = [first(name), last(name)];</programlisting>
             
             <para>A setter may not be annotated <literal>shared</literal>, 
             <literal>default</literal> or <literal>actual</literal>. The visibility 

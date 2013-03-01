@@ -214,7 +214,7 @@ class Util {
                     else if (d instanceof TypeParameter) {
                         extra = ": " + d.getName() + " is a type parameter";
                     }
-                    else if (d instanceof Getter||d instanceof Value) {
+                    else if (d instanceof Value) {
                         extra = ": value " + d.getName() + " has type " + 
                                 type.getProducedTypeName(unit) + 
                                 " which is not a subtype of Callable";

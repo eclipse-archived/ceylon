@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 
 /**
- * Represents s simple attribute or local.
+ * Represents a simple attribute or local.
  *
  * @author Gavin King
  */
@@ -13,17 +13,20 @@ public class Value extends MethodOrValue {
     private boolean captured;
     private boolean late;
 
-    /*public boolean isFormal() {
-         return formal;
-     }
+    private Setter setter;
 
-     public void setFormal(boolean formal) {
-         this.formal = formal;
-     }*/
-
+    public Setter getSetter() {
+        return setter;
+    }
+    
+    @Override
+    public void setSetter(Setter setter) {
+        this.setter = setter;
+    }
+    
     @Override
     public boolean isVariable() {
-        return variable;
+        return variable || setter!=null;
     }
 
     public void setVariable(boolean variable) {

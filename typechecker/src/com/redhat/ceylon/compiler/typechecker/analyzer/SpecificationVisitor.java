@@ -310,7 +310,9 @@ public class SpecificationVisitor extends Visitor {
 	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null, false);
 	        if (member==declaration) {
             	boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
-            	if (declaration instanceof Value && lazy!=((Value)declaration).isTransient()) {
+            	if (declaration instanceof Value && 
+            	        !((Value)declaration).isVariable() && 
+            	        lazy!=((Value)declaration).isTransient()) {
             		that.addError("value must be specified using =>");
             	}
 	            if (!lazy) that.getSpecifierExpression().visit(this);

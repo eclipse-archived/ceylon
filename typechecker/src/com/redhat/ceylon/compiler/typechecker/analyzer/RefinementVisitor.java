@@ -370,8 +370,7 @@ public class RefinementVisitor extends Visitor {
                 that.addError("shared declaration is not a function, value, class, interface, or alias", 1200);
             }
             
-            boolean mayBeRefined = 
-                    dec instanceof Getter || 
+            boolean mayBeRefined =
                     dec instanceof Value || 
                     dec instanceof Method ||
                     dec instanceof Class ||

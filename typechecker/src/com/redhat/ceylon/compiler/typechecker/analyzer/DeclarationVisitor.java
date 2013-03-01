@@ -168,11 +168,11 @@ public class DeclarationVisitor extends Visitor {
                 if (member==null) {
                     that.addError("setter with no matching getter: " + model.getName());
                 }
-                else if (!(member instanceof Getter)) {
+                else if (!(member instanceof Value && ((Value)member).isTransient())) {
                     that.addError("setter name does not resolve to matching getter: " + model.getName());
                 }
                 else {
-                    Getter getter = (Getter) member;
+                    Value getter = (Value) member;
                     setter.setGetter(getter);
                     if (getter.isVariable()) {
                         that.addError("duplicate setter for getter: " + model.getName());
@@ -580,6 +580,11 @@ public class DeclarationVisitor extends Visitor {
         s.setParameter(p);
         super.visit(that);
         exitScope(o);
+        
+        if (that.getSpecifierExpression()==null &&
+                that.getBlock()==null) {
+            that.addError("setter declaration must have a body or => specifier");
+        }
     }
 
     @Override

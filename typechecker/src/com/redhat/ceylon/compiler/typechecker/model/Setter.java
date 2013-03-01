@@ -9,14 +9,14 @@ import java.util.List;
  */
 public class Setter extends MethodOrValue implements Scope {
 
-	private Getter getter;
+	private Value getter;
 	private ValueParameter parameter;
 
-    public Getter getGetter() {
+    public Value getGetter() {
         return getter;
     }
 
-    public void setGetter(Getter getter) {
+    public void setGetter(Value getter) {
         this.getter = getter;
     }
     
@@ -56,6 +56,11 @@ public class Setter extends MethodOrValue implements Scope {
     @Override
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.SETTER;
+    }
+    
+    @Override
+    public void setSetter(Setter setter) {
+        throw new UnsupportedOperationException();
     }
 
 }

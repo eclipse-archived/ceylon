@@ -175,7 +175,8 @@
 
 "An value setter declaration."
 ^(ATTRIBUTE_SETTER_DEFINITION:TYPED_DECLARATION
-    BLOCK
+    BLOCK?
+    SPECIFIER_EXPRESSION?
     Setter declarationModel;)
 
 "Any kind of function declaration."

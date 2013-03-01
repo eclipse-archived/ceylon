@@ -44,4 +44,22 @@ interface GettersSetters {
         @error SharedGetterSetter().greeting = "hi";
     }
     
+    class FatArrowSetter(n) {
+        variable String n;
+        String name => n;
+        assign name => n=name;
+    }
+        
+    class BrokenSetter1(n) {
+        variable String n;
+        String name => n;
+        @error assign name;
+    }
+        
+    class BrokenSetter2(n) {
+        variable String n;
+        String name => n;
+        @error assign name => "hello" + "world";
+    }
+        
 }
