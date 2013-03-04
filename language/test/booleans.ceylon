@@ -2,7 +2,6 @@ shared void booleans() {
     check(true==true, "boolean equals");
     check(true===true, "boolean identical");
     check(false!=true, "boolean not equals");
-    check(!false===true, "boolean not identical");
     check(true.string=="true", "true string");
     check(false.string=="false", "false string");
     check((1==1)==true, "boolean equals");
