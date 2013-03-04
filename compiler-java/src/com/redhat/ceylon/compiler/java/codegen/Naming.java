@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -104,6 +103,10 @@ public class Naming implements LocalId {
     }
 
     private static final HashSet<String> QUOTABLE_METHOD_NAMES;
+
+    private static final List<String> COM_REDHAT_CEYLON_LANGUAGE_PACKAGE = 
+            Arrays.asList(new String[]{"com", "redhat", "ceylon", "compiler", "java", "language"});
+    
     static {
         QUOTABLE_METHOD_NAMES = new HashSet<>(Arrays.asList(
                 "hashCode",
@@ -256,7 +259,11 @@ public class Naming implements LocalId {
         Collections.reverse(l);
         
         if (flags.contains(DeclNameFlag.QUALIFIED)) {
-            final List<String> packageName = ((Package) s).getName();
+            final List<String> packageName;
+            if(!AbstractTransformer.isJavaArray(decl.getType()))
+                packageName = ((Package) s).getName();
+            else
+                packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;
             if (!packageName.get(0).isEmpty()) {
                 helper.select("");
             }
