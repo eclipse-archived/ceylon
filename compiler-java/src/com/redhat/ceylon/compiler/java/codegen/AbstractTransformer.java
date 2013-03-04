@@ -1019,6 +1019,9 @@ public abstract class AbstractTransformer implements Transformation {
     /** For use when generating a type argument. Implies {@code JT_NO_PRIMITIVES} */
     static final int JT_TYPE_ARGUMENT = JT_NO_PRIMITIVES | __JT_TYPE_ARGUMENT;
 
+    /** For use when we want a value type class. */
+    static final int JT_VALUE_TYPE = 1 << 11;
+
     /**
      * This function is used solely for method return types and parameters 
      */
@@ -1114,6 +1117,8 @@ public abstract class AbstractTransformer implements Transformation {
                 //&& (flags & TYPE_ARGUMENT) == 0){
             // special case to get rid of $true and $false types
             type = typeFact.getBooleanDeclaration().getType();
+        } else if ((flags & JT_VALUE_TYPE) == 0 && isJavaArray(type)){
+            return getJavaArrayElementType(type, flags);
         }
         
         JCExpression jt = null;
@@ -1198,6 +1203,56 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         return (jt != null) ? jt : makeErroneous();
+    }
+
+    public static boolean isJavaArray(ProducedType type) {
+        if(type == null || type.getDeclaration() instanceof Class == false)
+            return false;
+        Class c = (Class) type.getDeclaration();
+        String name = c.getQualifiedNameString();
+        return name.equals("java.lang::ObjectArray")
+                || name.equals("java.lang::ByteArray")
+                || name.equals("java.lang::ShortArray")
+                || name.equals("java.lang::IntArray")
+                || name.equals("java.lang::LongArray")
+                || name.equals("java.lang::FloatArray")
+                || name.equals("java.lang::DoubleArray")
+                || name.equals("java.lang::BooleanArray")
+                || name.equals("java.lang::CharArray");
+    }
+
+    private JCExpression getJavaArrayElementType(ProducedType type, int flags) {
+        if(type == null || type.getDeclaration() instanceof Class == false)
+            return makeErroneous(null, "Compiler bug: type is not a Java array: " + type);
+        Class c = (Class) type.getDeclaration();
+        String name = c.getQualifiedNameString();
+        if(name.equals("java.lang::ObjectArray")){
+            // fetch its type parameter
+            if(type.getTypeArgumentList().size() != 1)
+                return makeErroneous(null, "Compiler bug: missing parameter type to Java ObjectArray: " + type);
+            ProducedType elementType = type.getTypeArgumentList().get(0);
+            if(elementType == null)
+                return makeErroneous(null, "Compiler bug: null parameter type to Java ObjectArray: " + type);
+            return make().TypeArray(makeJavaType(elementType, flags | JT_TYPE_ARGUMENT));
+        }else if(name.equals("java.lang::ByteArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.BYTE));
+        }else if(name.equals("java.lang::ShortArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.SHORT));
+        }else if(name.equals("java.lang::IntArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.INT));
+        }else if(name.equals("java.lang::LongArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.LONG));
+        }else if(name.equals("java.lang::FloatArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.FLOAT));
+        }else if(name.equals("java.lang::DoubleArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.DOUBLE));
+        }else if(name.equals("java.lang::BooleanArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.BOOLEAN));
+        }else if(name.equals("java.lang::CharArray")){
+            return make().TypeArray(make().TypeIdent(TypeTags.CHAR));
+        }else {
+            return makeErroneous(null, "Compiler bug: unknown Java array type: " + type);
+        }
     }
 
     public JCExpression makeParameterisedType(ProducedType type, ProducedType generalType, final int flags, 
