@@ -20,7 +20,11 @@ public @interface TypeInfo {
     
     /**
      * Whether the Ceylon type has been erased.
-     * @return
      */
     boolean erased() default false;
+    
+    /**
+     * Set to true to get the same special handling as Java method return types wrt. null elements 
+     */
+    boolean uncheckedNull() default false;
 }
