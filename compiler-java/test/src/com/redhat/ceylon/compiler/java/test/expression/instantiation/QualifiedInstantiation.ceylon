@@ -21,7 +21,7 @@
 class QualifiedInstantiation() {
     class Inner(String s) {
     }
-    Inner inner;
+    Inner inner = Inner("");
     void m(QualifiedInstantiation q) {
         this.Inner("");
         q.Inner("");

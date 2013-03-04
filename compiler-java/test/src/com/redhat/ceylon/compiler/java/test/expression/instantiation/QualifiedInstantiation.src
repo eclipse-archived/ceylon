@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 class QualifiedInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     QualifiedInstantiation() {
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner;
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner("");
     }
     
     class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
