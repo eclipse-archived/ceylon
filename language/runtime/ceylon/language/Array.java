@@ -177,14 +177,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Ignore
-    public static Array<String> instance(java.lang.String[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<String>(String.$TypeDescriptor, array);
-    }
-
-    @Ignore
     public static <T> Array<T> instance(TypeDescriptor $reifiedT, T[] array) {
         if (array == null) {
             return null;
@@ -221,8 +213,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             return (Array<T>) instance(Util.toBooleanArray((Iterable<? extends Boolean, ? extends java.lang.Object>) elements));
         } else if (typeClass == char.class) {
             return (Array<T>) instance(Util.toCharArray((Iterable<? extends Character, ? extends java.lang.Object>) elements));
-        } else if (typeClass == java.lang.String.class) {
-            return (Array<T>) instance(Util.toJavaStringArray((Iterable<? extends String, ? extends java.lang.Object>) elements));
         } else {
             return (Array<T>) instance($reifiedT, (T[]) Util.toArray(elements, typeClass));
         }
@@ -280,12 +270,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             if (element != null) {
              // FIXME: this is invalid
                 Arrays.fill(arr, (char)((Character)element).intValue());
-            }
-            return (Array<T>) instance(arr);
-        } else if (typeClass == java.lang.String.class) {
-            java.lang.String[] arr = new java.lang.String[size];
-            if (element != null) {
-                Arrays.fill(arr, ((String)element).toString());
             }
             return (Array<T>) instance(arr);
         } else {
@@ -350,8 +334,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
             } else if (typeClass == boolean.class) {
                 rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == java.lang.String.class) {
-                rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
             } else {
                 rval = new Array<Element>($reifiedElement, Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
             }
@@ -386,8 +368,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 return new Array<Element>($reifiedElement, Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else if (typeClass == boolean.class) {
                 return new Array<Element>($reifiedElement, Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (typeClass == java.lang.String.class) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else {
                 return new Array<Element>($reifiedElement, Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             }
@@ -481,8 +461,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             return (Element) Float.instance(((double[])array)[index]);
         } else if (typeClass == boolean.class) {
             return (Element) Boolean.instance(((boolean[])array)[index]);
-        } else if (typeClass == java.lang.String.class) {
-            return (Element) String.instance(((java.lang.String[])array)[index]);
         } else {
             return ((Element[])array)[index];
         }
@@ -514,8 +492,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 ((double[])array)[idx] = ((Float)element).doubleValue();
             } else if (typeClass == boolean.class) {
                 ((boolean[])array)[idx] = ((Boolean)element).booleanValue();
-            } else if (typeClass == java.lang.String.class) {
-                ((java.lang.String[])array)[idx] = ((String)element).toString();
             } else {
                 ((Element[])array)[idx] = element;
             }
@@ -693,8 +669,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 return new Array<Element>($reifiedElement, Arrays.copyOfRange((double[])array, 1, (int)getSize()));
             } else if (array instanceof boolean[]) {
                 return new Array<Element>($reifiedElement, Arrays.copyOfRange((boolean[])array, 1, (int)getSize()));
-            } else if (array instanceof java.lang.String[]) {
-                return new Array<Element>($reifiedElement, Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize()));
             } else {
                 return new Array<Element>($reifiedElement, Arrays.copyOfRange((Element[])array, 1, (int)getSize()));
             }
@@ -770,13 +744,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         } else if (array instanceof boolean[]) {
             boolean[] __a = (boolean[])array;
             boolean[] rev = new boolean[__a.length];
-            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
-                rev[i] = __a[j];
-            }
-            return new Array<Element>($reifiedElement, rev);
-        } else if (array instanceof java.lang.String[]) {
-            java.lang.String[] __a = (java.lang.String[])array;
-            java.lang.String[] rev = new java.lang.String[__a.length];
             for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
                 rev[i] = __a[j];
             }
