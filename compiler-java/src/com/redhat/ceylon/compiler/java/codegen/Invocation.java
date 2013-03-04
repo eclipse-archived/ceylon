@@ -96,7 +96,15 @@ abstract class Invocation {
         
         if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
             this.qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
-            this.onValueType = Decl.isValueTypeDecl(getQmePrimary());
+            // don't use the value type mechanism for optimised Java arrays get/set invocations
+            if(this.qmePrimary != null 
+                    && gen.isJavaArray(this.qmePrimary.getTypeModel())
+                    && (primaryDeclaration.getName().equals("get")
+                        || primaryDeclaration.getName().equals("set"))) {
+                this.onValueType = false;
+            } else {
+                this.onValueType = Decl.isValueTypeDecl(getQmePrimary());
+            }
         } else {
             this.qmePrimary = null;
             this.onValueType = false;
@@ -1206,8 +1214,15 @@ class NamedArgumentInvocation extends Invocation {
                 }
                 final JCExpression argExpr;
                 if (param.isDefaulted()) {
-                    argExpr = makeDefaultedArgumentMethodCall(param);
-                    hasDefaulted |= true;
+                    // special handling for "element" optional param of java array constructors
+                    if(getPrimaryDeclaration() instanceof Class
+                            && gen.isJavaArray(((Class)getPrimaryDeclaration()).getType())){
+                        // default values are hard-coded to Java default values, and are actually ignored
+                        continue;
+                    }else{
+                        argExpr = makeDefaultedArgumentMethodCall(param);
+                        hasDefaulted |= true;
+                    }
                 } else if (param.isSequenced()) {
                     // FIXME: this special case is just plain weird, it looks very wrong
                     if (getPrimaryDeclaration() instanceof FunctionalParameter) {

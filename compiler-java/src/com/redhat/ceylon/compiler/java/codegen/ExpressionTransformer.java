@@ -1843,7 +1843,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         withinInvocation(false);
         // Implicit arguments
-        result = invocation.addReifiedArguments(result);
+        // except for Java array constructors
+        if(invocation.getPrimaryDeclaration() instanceof Class == false
+                || !isJavaArray(((Class) invocation.getPrimaryDeclaration()).getType())){
+            result = invocation.addReifiedArguments(result);
+        }
         if (needsTypeInfoArgument(invocation)) {
             result = result.append(new ExpressionAndType(makeTypeInfoArgument(invocation), make().Type(syms().classType)));
         }
@@ -2143,9 +2147,17 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
-        if (invocation.isOnValueType()) {
+        if(invocation.getQmePrimary() != null && isJavaArray(invocation.getQmePrimary().getTypeModel())){
+            if(transformedPrimary.selector.equals("get"))
+                callBuilder.arrayRead(transformedPrimary.expr);
+            else if(transformedPrimary.selector.equals("set"))
+                callBuilder.arrayWrite(transformedPrimary.expr);
+            else
+                return makeErroneous(invocation.getNode(), "Compiler bug: don't know what to do with array selector: "+transformedPrimary.selector);
+        } else if (invocation.isOnValueType()) {
             JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
+
         } else {
             callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
         }
@@ -2207,7 +2219,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else {
             ProducedType classType = (ProducedType)type.getTarget();
-            callBuilder.instantiate(makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW));
+            JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
+            if(isJavaArray(classType)){
+                callBuilder.javaArrayInstance(typeExpr);
+            }else{
+                callBuilder.instantiate(typeExpr);
+            }
             if (stacksUninitializedOperand(invocation) 
                     && hasBackwardBranches()) {
                 callBuilder.argumentHandling(CallBuilder.CB_ALIAS_ARGS | CallBuilder.CB_LET, naming.alias("uninit"));
@@ -2833,8 +2850,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (expr instanceof Tree.QualifiedMemberOrTypeExpression) {
                     qmePrimary = ((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary();
                 }
-                if (Decl.isValueTypeDecl(qmePrimary)) {
-                    JCExpression primTypeExpr = makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
+                if (Decl.isValueTypeDecl(qmePrimary)
+                        // Java arrays length property does not go via value types
+                        && (!isJavaArray(qmePrimary.getTypeModel())
+                                || !"length".equals(selector))) {
+                    JCExpression primTypeExpr = makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
                     result = makeQualIdent(primTypeExpr, selector);
                     result = make().Apply(List.<JCTree.JCExpression>nil(),
                             result,
