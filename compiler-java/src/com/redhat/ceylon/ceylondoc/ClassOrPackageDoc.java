@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -122,7 +123,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
     
     private boolean isConstantValue(Declaration d) {
-        if( d instanceof Value ) {
+        if(Decl.isValue(d)) {
             Value value = (Value) d;
             if( value.isShared() && !value.isVariable() ) {
                 Unit unit = value.getUnit();

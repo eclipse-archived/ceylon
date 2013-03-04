@@ -182,8 +182,8 @@ abstract class Invocation {
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {
             if (this instanceof IndirectInvocationBuilder
-                    && (getPrimaryDeclaration() instanceof Getter
-                            || ((getPrimaryDeclaration() instanceof Value) && Decl.isCaptured(getPrimaryDeclaration()))
+                    && (Decl.isGetter(getPrimaryDeclaration())
+                            || (Decl.isValue(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
                             && !Decl.isLocal(getPrimaryDeclaration()))) {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 
@@ -1124,7 +1124,7 @@ class NamedArgumentInvocation extends Invocation {
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
         Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
-        final Getter model = attrArg.getDeclarationModel();
+        final Value model = attrArg.getDeclarationModel();
         final String name = model.getName();
         final Naming.SyntheticName alias = gen.naming.alias(name);
         final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), attrArg.getBlock(), attrArg.getSpecifierExpression(), null);

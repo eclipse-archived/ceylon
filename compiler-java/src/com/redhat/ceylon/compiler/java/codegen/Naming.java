@@ -454,7 +454,7 @@ public class Naming implements LocalId {
     public static String getSetterName(Declaration decl){
         // use the refined decl except when the current declaration is variable and the refined isn't
         Declaration refinedDecl = decl.getRefinedDeclaration();
-        if (decl instanceof Value && refinedDecl instanceof Value) {
+        if (Decl.isValue(decl) && Decl.isValue(refinedDecl)) {
             Value v = (Value)decl;
             Value rv = (Value)refinedDecl;
             if (!v.isVariable() || rv.isVariable()) {
@@ -504,7 +504,7 @@ public class Naming implements LocalId {
     static String getAliasedParameterName(Parameter parameter) {
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(parameter);
         if (mov instanceof Method
-                || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
+                || Decl.isValue(mov) && mov.isVariable() && mov.isCaptured()) {
             return parameter.getName()+"$";
         }
         return parameter.getName();
@@ -796,8 +796,7 @@ public class Naming implements LocalId {
         } else if ((namingOptions & NA_GETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no getter");
             expr = makeQualIdent(expr, getGetterName(decl));
-        } else if (decl instanceof Getter
-                || decl instanceof Value) {
+        } else if (decl instanceof Value) {
             if (gen().isCeylonCallable(decl.getType())) {
                 expr = makeQualIdent(expr, decl.getName());
             } else {
@@ -884,8 +883,8 @@ public class Naming implements LocalId {
             name = ((LazyClass)decl).getRealName();
         } else if (decl instanceof LazyInterface) {
             name = ((LazyInterface)decl).getRealName();
-        } else if (decl instanceof Getter) {
-            name = getAttrClassName((Getter)decl, namingOptions);
+        } else if (Decl.isGetter(decl)) {
+            name = getAttrClassName((Value)decl, namingOptions);
         } else if (decl instanceof Setter) {
             name = getAttrClassName((Setter)decl, namingOptions);
         } else {
@@ -928,13 +927,7 @@ public class Naming implements LocalId {
         return selector(decl, 0);
     }
     String selector(TypedDeclaration decl, int namingOptions) {
-        if (decl instanceof Getter) {
-            if ((namingOptions & NA_SETTER) != 0) {
-                return getSetterName(decl);
-            } else {
-                return getGetterName(decl);
-            }
-        } else if (decl instanceof Value) {
+        if (decl instanceof Value) {
             if ((namingOptions & NA_SETTER) != 0) {
                 return getSetterName(decl);
             } else {
@@ -962,7 +955,7 @@ public class Naming implements LocalId {
                 "Unsupported namingOption");
         String name = decl.getName();
         if (Decl.isLocal(decl)) {
-            if ((decl instanceof Getter && (namingOptions & NA_SETTER) == 0)
+            if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
             		|| (namingOptions & NA_GETTER) != 0){
                 name = name + "$getter";
             } else if ((decl instanceof Setter && (namingOptions & NA_GETTER) == 0)
@@ -1016,7 +1009,7 @@ public class Naming implements LocalId {
     /** Generates an ident for the getter method of a Value */
     JCExpression makeLanguageValue(String string) {
         Declaration decl = gen().typeFact().getLanguageModuleDeclaration(string);
-        Assert.that(decl instanceof Value);
+        Assert.that(Decl.isValue(decl));
         return makeSelect(makeName((Value)decl, NA_FQ | NA_WRAPPER), getGetterName(decl));
     }
     

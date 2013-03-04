@@ -308,16 +308,16 @@ public class MethodDefinitionBuilder {
         String aliasedName = paramName;
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         int mods = 0;
-        if (!(mov instanceof Value) || !mov.isVariable() || mov.isCaptured()) {
+        if (!Decl.isValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
         }
         if (mov instanceof Method
-                || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
+                || Decl.isValue(mov) && mov.isVariable() && mov.isCaptured()) {
             aliasedName = Naming.getAliasedParameterName(param);
         }
         TypedDeclaration nonWideningDecl;
         ProducedType nonWideningType;
-        if (mov instanceof Value) {
+        if (Decl.isValue(mov)) {
             ProducedTypedReference typedRef = gen.getTypedReference(mov);
             ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
             nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);

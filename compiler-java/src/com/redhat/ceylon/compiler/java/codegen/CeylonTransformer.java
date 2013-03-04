@@ -304,7 +304,7 @@ public class CeylonTransformer extends AbstractTransformer {
             builder.setterBlock(setterBlock);
             builder.skipGetter();
         } else {
-            if (declarationModel instanceof Value) {
+            if (Decl.isValue(declarationModel)) {
                 // For local and toplevel value attributes
                 if (!declarationModel.isVariable() && !declarationModel.isLate()) {
                     builder.immutable();
@@ -355,7 +355,7 @@ public class CeylonTransformer extends AbstractTransformer {
             TypedDeclaration declarationModel, String attrName,
             final Tree.SpecifierOrInitializerExpression expression) {
         JCTree.JCExpression initialValue = null;
-        if (declarationModel instanceof Value) {
+        if (Decl.isValue(declarationModel)) {
             if (expression != null) {
                 initialValue = expressionGen().transformExpression(
                         expression.getExpression(), 

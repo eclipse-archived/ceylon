@@ -30,7 +30,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
@@ -42,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
@@ -68,6 +68,26 @@ public class Decl {
      */
     public static Scope container(Declaration decl) {
         return decl.getContainer();
+    }
+    
+    /**
+     * Determines whether the declaration's is a getter (a transient value)
+     * @param decl The declaration
+     * @return true if the declaration is a getter
+     */
+    public static boolean isGetter(Declaration decl) {
+        return (decl instanceof Value) && ((Value)decl).isTransient();
+//        return (decl instanceof Getter);
+    }
+
+    /**
+     * Determines whether the declaration's is a non-transient value (not a getter)
+     * @param decl The declaration
+     * @return true if the declaration is a value
+     */
+    public static boolean isValue(Declaration decl) {
+        return (decl instanceof Value) && !((Value)decl).isTransient();
+//        return (decl instanceof Value) && !(decl instanceof Getter);
     }
 
     /**
@@ -112,7 +132,8 @@ public class Decl {
      * @return true if the declaration is within a getter
      */
     public static boolean withinGetter(Declaration decl) {
-        return container(decl) instanceof Getter;
+        Scope s = container(decl);
+        return isGetter((Declaration)s);
     }
     
     /**
@@ -286,11 +307,9 @@ public class Decl {
     }
         
     public static boolean isClassAttribute(Declaration decl) {
-        return (withinClassOrInterface(decl)) && 
-                (decl instanceof Getter 
-                        || decl instanceof Setter 
-                        || decl instanceof Value) && 
-                (decl.isCaptured() || decl.isShared());
+        return (withinClassOrInterface(decl))
+                && (Decl.isValue(decl) || decl instanceof Setter)
+                && (decl.isCaptured() || decl.isShared());
     }
 
     public static boolean isOverloaded(Declaration decl) {
@@ -428,7 +447,7 @@ public class Decl {
      * via a {@code VariableBox}
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
-        return attr instanceof Value
+        return Decl.isValue(attr)
                 && isLocal(attr)
                 && attr.isVariable()
                 && attr.isCaptured();

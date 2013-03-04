@@ -55,6 +55,7 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -429,11 +430,11 @@ public class CeylonDocTool implements Tool {
         } else if (obj instanceof Interface) {
             return "interface";
         } else if (obj instanceof AttributeDeclaration
-                || obj instanceof Getter) {
+                || (obj instanceof Declaration && Decl.isGetter((Declaration)obj))) {
             return "attribute";
         } else if (obj instanceof Method) {
             return "function";
-        } else if (obj instanceof Value) {
+        } else if (obj instanceof Declaration && Decl.isValue((Declaration)obj)) {
             return "value";
         } else if (obj instanceof Package) {
             return "package";

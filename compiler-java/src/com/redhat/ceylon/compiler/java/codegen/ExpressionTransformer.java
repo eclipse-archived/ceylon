@@ -2705,23 +2705,23 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !(decl instanceof FunctionalParameter) // A functional parameter will already be Callable-wrapped
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl);
-        } else if (decl instanceof Getter) {
+        } else if (Decl.isGetter(decl)) {
             // invoke the getter
             if (decl.isToplevel()) {
                 primaryExpr = null;
-                qualExpr = naming.makeName((Getter)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
+                qualExpr = naming.makeName((Value)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
             } else if (decl.isClassMember()
                         || decl.isInterfaceMember()) {
-                selector = naming.selector((Getter)decl);
+                selector = naming.selector((Value)decl);
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
-                    primaryExpr = naming.makeQualifiedName(primaryExpr, (Getter)decl, Naming.NA_Q_LOCAL_INSTANCE);
+                    primaryExpr = naming.makeQualifiedName(primaryExpr, (Value)decl, Naming.NA_Q_LOCAL_INSTANCE);
                 }
-                selector = naming.selector((Getter)decl);
+                selector = naming.selector((Value)decl);
             }
-        } else if (decl instanceof Value) {
+        } else if (Decl.isValue(decl)) {
             if (decl.isToplevel()) {
                 // ERASURE
                 if ("null".equals(decl.getName())) {
@@ -3114,7 +3114,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (decl.isToplevel()) {
             // must use top level setter
             lhs = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER);
-        } else if ((decl instanceof Getter)) {
+        } else if (Decl.isGetter(decl)) {
             // must use the setter
             if (Decl.isLocal(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);

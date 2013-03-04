@@ -34,6 +34,7 @@ import com.github.rjeschke.txtmark.BlockEmitter;
 import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
 import com.github.rjeschke.txtmark.SpanEmitter;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -212,7 +213,7 @@ public class Util {
                 modifiers.append("default ");
             }
         }
-        if (d instanceof Value) {
+        if (Decl.isValue(d)) {
             Value v = (Value) d;
             if (v.isVariable()) {
                 modifiers.append("variable ");

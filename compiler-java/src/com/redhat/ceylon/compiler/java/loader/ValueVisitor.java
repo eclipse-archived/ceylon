@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.loader;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -73,7 +74,7 @@ public class ValueVisitor extends Visitor {
             }
             TypedDeclaration d = (TypedDeclaration) decl;
             if (d==declaration) {
-                if (d instanceof Value) {
+                if (Decl.isValue(d)) {
                     ((Value) d).setCaptured(true);
                 }
                 else if (d instanceof Parameter) {

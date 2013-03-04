@@ -445,7 +445,7 @@ public class ClassDefinitionBuilder {
                         && ((ValueParameter)decl).isHidden()
                         && (decl.getContainer() instanceof TypeDeclaration)) {
             Declaration member = ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null, false);
-            if (member instanceof Value 
+            if (Decl.isValue(member) 
                     && Strategy.createField((ValueParameter)decl, (Value)member)) {
                 // The field itself is created by the ClassTransformer
                 init.append(gen.make().Exec(

@@ -338,7 +338,7 @@ public class ClassTransformer extends AbstractTransformer {
         Assert.that(decl.getContainer() instanceof Class);
         JCExpression type;
         MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
-        if (attr instanceof Value) {
+        if (Decl.isValue(attr)) {
             ProducedTypedReference typedRef = getTypedReference(attr);
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             ProducedType paramType = nonWideningType(typedRef, nonWideningTypedRef);
@@ -560,14 +560,12 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.method(concreteMemberDelegate);
                      
                 }
-            } else if (member instanceof Getter
-                    || member instanceof Setter
-                    || member instanceof Value) {
+            } else if (member instanceof Value
+                    || member instanceof Setter) {
                 TypedDeclaration attr = (TypedDeclaration)member;
                 final ProducedTypedReference typedMember = satisfiedType.getTypedMember(attr, null);
                 if (needsCompanionDelegate(model, member)) {
-                    if (member instanceof Value 
-                            || member instanceof Getter) {
+                    if (member instanceof Value) {
                         final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
@@ -591,7 +589,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 ((Setter) member).getTypeErased());
                         classBuilder.method(setterDelegate);
                     }
-                    if (member instanceof Value 
+                    if (Decl.isValue(member) 
                             && ((Value)attr).isVariable()) {
                         // I don't *think* this can happen because although a 
                         // variable Value can be declared on an interface it 
@@ -685,8 +683,8 @@ public class ClassTransformer extends AbstractTransformer {
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
         final boolean mostRefined;
         Declaration m = model.getMember(member.getName(), null, false);
-        if (member instanceof Setter && m instanceof Getter) {
-            mostRefined = member.equals(((Getter)m).getSetter());
+        if (member instanceof Setter && Decl.isGetter(m)) {
+            mostRefined = member.equals(((Value)m).getSetter());
         } else {
             mostRefined = member.equals(m);
         }
@@ -719,7 +717,7 @@ public class ClassTransformer extends AbstractTransformer {
         Declaration member = typedMember.getDeclaration();
         ProducedType returnType = null;
         if (!isAnything(methodType) 
-                || ((member instanceof Method || member instanceof Getter || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
+                || ((member instanceof Method || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
                 || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
             explicitReturn = true;
             if (typedMember instanceof ProducedTypedReference) {
@@ -927,7 +925,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.BaseMemberExpression expr = (BaseMemberExpression) baseMemberTerm;
             Declaration decl = expr.getDeclaration();
             
-            if (decl instanceof Value) {
+            if (Decl.isValue(decl)) {
                 // Now build a "fake" declaration for the attribute
                 Tree.AttributeDeclaration attrDecl = new Tree.AttributeDeclaration(null);
                 attrDecl.setDeclarationModel((Value)decl);

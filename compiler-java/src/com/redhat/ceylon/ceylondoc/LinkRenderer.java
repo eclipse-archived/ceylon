@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -292,7 +293,7 @@ public class LinkRenderer {
     }
 
     private boolean isValueWithTypeObject(Declaration decl) {
-        if (decl instanceof Value) {
+        if (Decl.isValue(decl)) {
             TypeDeclaration typeDeclaration = ((Value) decl).getTypeDeclaration();
             if (typeDeclaration instanceof Class && typeDeclaration.isAnonymous()) {
                 return true;
@@ -304,7 +305,7 @@ public class LinkRenderer {
     private boolean isParameter(Declaration decl) {
         if(decl instanceof Parameter)
             return true;
-        if(decl instanceof Value == false)
+        if(Decl.isValue(decl) == false)
             return false;
         Value value = (Value)decl;
         return !value.isToplevel() && !value.isClassOrInterfaceMember();

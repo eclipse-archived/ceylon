@@ -167,7 +167,7 @@ class CodegenUtil {
         if(decl == null) // typechecker error
             return false;
         // make sure we don't try to optimise things which can't be optimised
-        return decl instanceof Value
+        return Decl.isValue(decl)
                 && !decl.isToplevel()
                 && !decl.isClassOrInterfaceMember()
                 && !decl.isCaptured()

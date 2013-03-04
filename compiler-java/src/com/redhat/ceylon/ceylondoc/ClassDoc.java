@@ -75,7 +75,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private MemberSpecification attributeSpecification = new MemberSpecification() {
         @Override
         public boolean isSatisfiedBy(Declaration decl) {
-            return decl instanceof Value || decl instanceof Getter;
+            return decl instanceof Value;
         }
     };
 
@@ -111,8 +111,6 @@ public class ClassDoc extends ClassOrPackageDoc {
             if (tool.shouldInclude(m)) {
                 if (m instanceof Value) {
                     attributes.add((Value) m);
-                } else if (m instanceof Getter) {
-                    attributes.add((Getter) m);
                 } else if(m instanceof Parameter ) {
                     attributes.add((Parameter) m);
                 } else if (m instanceof Method) {

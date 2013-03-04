@@ -85,9 +85,9 @@ public class ModelLoaderTest extends CompilerTest {
         String prefix;
         if(decl instanceof ClassOrInterface)
             prefix = "C";
-        else if(decl instanceof Value)
+        else if(Decl.isValue(decl))
             prefix = "V";
-        else if(decl instanceof Getter)
+        else if(Decl.isGetter(decl))
             prefix = "G";
         else if(decl instanceof Setter)
             prefix = "S";
@@ -142,7 +142,7 @@ public class ModelLoaderTest extends CompilerTest {
                     for(Entry<String, Declaration> entry : decls.entrySet()){
                         String quotedQualifiedName = entry.getKey().substring(1);
                         Declaration modelDeclaration = modelLoader.getDeclaration(quotedQualifiedName, 
-                                entry.getValue() instanceof Value ? DeclarationType.VALUE : DeclarationType.TYPE);
+                                Decl.isValue(entry.getValue()) ? DeclarationType.VALUE : DeclarationType.TYPE);
                         Assert.assertNotNull(modelDeclaration);
                         // make sure we loaded them exactly the same
                         compareDeclarations(entry.getValue(), modelDeclaration);
@@ -208,7 +208,7 @@ public class ModelLoaderTest extends CompilerTest {
         if(!validDeclaration.isShared() && !(validDeclaration instanceof TypeParameter)){
             boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
             // we may replace Getter or Setter with Value, no harm done
-            sameType |= validDeclaration instanceof Getter && modelDeclaration instanceof Value;
+            sameType |= validDeclaration instanceof Value && modelDeclaration instanceof Value;
             sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
             Assert.assertTrue(name+" [type]", sameType);
             return;
@@ -223,7 +223,7 @@ public class ModelLoaderTest extends CompilerTest {
         }else if(validDeclaration instanceof Method){
             Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Method);
             compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
-        }else if(validDeclaration instanceof Value || validDeclaration instanceof Getter || validDeclaration instanceof Setter){
+        }else if(validDeclaration instanceof Value || validDeclaration instanceof Setter){
             Assert.assertTrue(name+" [Attribute]", modelDeclaration instanceof Value);
             compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
         }else if(validDeclaration instanceof TypeParameter){
@@ -398,10 +398,10 @@ public class ModelLoaderTest extends CompilerTest {
                     && member.getName().equals(name)){
                 // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
                 // class with the same name so we ignore it
-                if(referenceMember instanceof Value && member instanceof Class)
+                if(Decl.isValue(referenceMember) && member instanceof Class)
                     continue;
                 // the opposite is also true
-                if(referenceMember instanceof Class && member instanceof Value)
+                if(referenceMember instanceof Class && Decl.isValue(member))
                     continue;
                 // otherwise we found it
                 return member;

@@ -1232,7 +1232,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String name = getJavaAttributeName(setter.getName());
             Declaration decl = klass.getMember(name, null, false);
             boolean foundGetter = false;
-            if (decl != null && decl instanceof Value) {
+            if (decl != null && Decl.isValue(decl)) {
                 Value value = (Value)decl;
                 VariableMirror setterParam = setter.getParameters().get(0);
                 try{
@@ -1268,7 +1268,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Now marry-up attributes and parameters)
         if (klass instanceof Class) {
             for (Declaration m : klass.getMembers()) {
-                if (m instanceof Value) {
+                if (Decl.isValue(m)) {
                     Value v = (Value)m;
                     Parameter p = ((Class)klass).getParameter(v.getName());
                     if (p instanceof ValueParameter) {
@@ -2287,7 +2287,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(relativeName != null && pkg != null){
                     Declaration declaration = pkg.getDirectMember(relativeName, null, false);
                     // if we get a value, we want its type
-                    if(declaration instanceof Value
+                    if(Decl.isValue(declaration)
                             && ((Value)declaration).getTypeDeclaration().getName().equals(relativeName))
                         declaration = ((Value)declaration).getTypeDeclaration();
                     if(declaration instanceof TypeDeclaration)
@@ -2319,7 +2319,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Package pkg : languageModule.getPackages()){
             Declaration member = pkg.getDirectMember(simpleName, null, false);
             // if we get a value, we want its type
-            if(member instanceof Value
+            if(Decl.isValue(member)
                     && ((Value)member).getTypeDeclaration().getName().equals(simpleName)){
                 member = ((Value)member).getTypeDeclaration();
             }

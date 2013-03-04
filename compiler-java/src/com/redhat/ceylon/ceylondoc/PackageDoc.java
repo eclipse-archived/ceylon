@@ -69,7 +69,7 @@ public class PackageDoc extends ClassOrPackageDoc {
                 } else {
                     classes.add(c);
                 }
-            } else if (m instanceof Value || m instanceof Getter) {
+            } else if (m instanceof Value) {
                 attributes.add((MethodOrValue) m);
             } else if (m instanceof Method) {
                 methods.add((Method) m);
