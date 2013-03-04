@@ -2213,8 +2213,6 @@ public abstract class AbstractTransformer implements Transformation {
             expr = unboxCharacter(expr, isJavaCharacter);
         } else if (isCeylonBoolean(exprType)) {
             expr = unboxBoolean(expr);
-        } else if (isCeylonArray(exprType)) {
-            expr = unboxArray(expr);
         } else if (isOptional(exprType)) {
             exprType = typeFact().getDefiniteType(exprType);
             if (isCeylonString(exprType)){
@@ -2235,8 +2233,6 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxCharacter(expr);
         } else if (isCeylonBoolean(exprType)) {
             expr = boxBoolean(expr);
-        } else if (isCeylonArray(exprType)) {
-            expr = boxArray(expr, typeFact.getArrayElementType(exprType));
         } else if (isAnything(exprType)) {
             expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
         } else if (isOptional(exprType)) {
@@ -2268,12 +2264,6 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation boxBoolean(JCExpression value) {
         return makeBoxType(value, syms().ceylonBooleanType);
-    }
-    
-    private JCTree.JCMethodInvocation boxArray(JCExpression value, ProducedType type) {
-        JCExpression typeExpr = makeJavaType(type, JT_TYPE_ARGUMENT);
-        return make().Apply(List.<JCExpression>of(typeExpr), makeSelect(makeIdent(syms().ceylonArrayType), "instance"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(type), value));
     }
     
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
@@ -2329,10 +2319,6 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation unboxBoolean(JCExpression value) {
         return makeUnboxType(value, "booleanValue");
-    }
-    
-    private JCTree.JCMethodInvocation unboxArray(JCExpression value) {
-        return makeUnboxType(value, "toArray");
     }
     
     private JCTree.JCMethodInvocation makeUnboxType(JCExpression value, String unboxMethodName) {
