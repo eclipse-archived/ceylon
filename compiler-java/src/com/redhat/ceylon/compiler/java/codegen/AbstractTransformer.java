@@ -816,6 +816,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean hasErasureResolved(ProducedType type) {
+        if(type == null)
+            return false;
         TypeDeclaration declaration = type.getDeclaration();
         if(declaration == null)
             return false;
