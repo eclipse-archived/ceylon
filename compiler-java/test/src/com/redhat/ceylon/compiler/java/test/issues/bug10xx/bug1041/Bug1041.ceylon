@@ -18,7 +18,39 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug1041() {
-    value elvisOp1 = Bug1041Java().prop?.size;
-    value elvisOp2 = Bug1041Java().method(4)?.size;
+class Bug1041<T>() {
+    shared String? stringProp = null;
+    shared String? stringMethod() => null;
+    shared T? taProp = null;
+    shared T? taMethod() => null;
+    
+    shared void java(Bug1041Java<Integer> java) {
+        value elvisOp1 = java.stringProp?.size;
+        value elvisOp2 = java.stringMethod()?.size;
+        value elvisOp3 = java.taProp?.integer;
+        value elvisOp4 = java.taMethod()?.integer;
+        value elseOp1 = java.stringProp else "";
+        value elseOp2 = java.stringMethod() else "";
+        value elseOp3 = java.taProp else 0;
+        value elseOp4 = java.taMethod() else 0;
+        Boolean existsOp1 = java.stringProp exists;
+        Boolean existsOp2 = java.stringMethod() exists;
+        Boolean existsOp3 = java.taProp exists;
+        Boolean existsOp4 = java.taMethod() exists;
+    }
+    
+    shared void ceylon(Bug1041<Integer> java) {
+        value elvisOp1 = java.stringProp?.size;
+        value elvisOp2 = java.stringMethod()?.size;
+        value elvisOp3 = java.taProp?.integer;
+        value elvisOp4 = java.taMethod()?.integer;
+        value elseOp1 = java.stringProp else "";
+        value elseOp2 = java.stringMethod() else "";
+        value elseOp3 = java.taProp else 0;
+        value elseOp4 = java.taMethod() else 0;
+        Boolean existsOp1 = java.stringProp exists;
+        Boolean existsOp2 = java.stringMethod() exists;
+        Boolean existsOp3 = java.taProp exists;
+        Boolean existsOp4 = java.taMethod() exists;
+    }
 }
