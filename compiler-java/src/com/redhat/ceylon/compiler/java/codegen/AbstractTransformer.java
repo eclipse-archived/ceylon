@@ -1083,8 +1083,8 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().Type(syms().throwableType);
             }
-        } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_NO_PRIMITIVES | JT_CLASS_NEW)) == 0 
-                && (!isOptional(type) || isJavaString(type))) {
+        } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_NO_PRIMITIVES | JT_CLASS_NEW)) == 0
+                && ((isCeylonBasicType(type) && !isOptional(type)) || isJavaString(type))) {
             if (isCeylonString(type) || isJavaString(type)) {
                 return make().Type(syms().stringType);
             } else if (isCeylonBoolean(type)) {
