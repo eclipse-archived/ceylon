@@ -745,4 +745,11 @@ public class Util {
         Arrays.fill(array, val);
         return array;
     }
+
+    /**
+     * Returns a runtime exception. To be used by implementors of Java array methods used to make sure they are never called
+     */
+    public static RuntimeException makeJavaArrayWrapperException() {
+        return new RuntimeException("Internal error: should never be called");
+    }
 }
