@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -698,5 +699,50 @@ public class Util {
             seq = seq.getRest();
         }
         return seq;
+    }
+    
+    public static boolean[] fillArray(boolean[] array, boolean val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static byte[] fillArray(byte[] array, byte val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static short[] fillArray(short[] array, short val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static int[] fillArray(int[] array, int val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static long[] fillArray(long[] array, long val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static float[] fillArray(float[] array, float val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static double[] fillArray(double[] array, double val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static char[] fillArray(char[] array, char val){
+        Arrays.fill(array, val);
+        return array;
+    }
+    
+    public static java.lang.Object[] fillArray(java.lang.Object[] array, java.lang.Object val){
+        Arrays.fill(array, val);
+        return array;
     }
 }
