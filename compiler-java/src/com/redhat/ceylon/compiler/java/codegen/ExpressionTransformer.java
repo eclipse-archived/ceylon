@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -2759,7 +2760,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 && primaryExpr == null
                                 && withinSuperInvocation.getDeclarationModel() == decl.getContainer());
                 if (mustUseField){
-                    selector = decl.getName();
+                    if(decl instanceof FieldValue)
+                        selector = ((FieldValue)decl).getRealName();
+                    else
+                        selector = decl.getName();
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties

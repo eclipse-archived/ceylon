@@ -28,5 +28,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class FieldValue extends Value {
+    
+    private String fieldName;
 
+    public FieldValue(String fieldName){
+        this.fieldName = fieldName;
+    }
+
+    public String getRealName(){
+        return fieldName;
+    }
 }

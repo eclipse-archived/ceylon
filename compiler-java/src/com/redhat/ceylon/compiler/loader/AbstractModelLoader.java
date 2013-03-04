@@ -1531,9 +1531,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void addValue(ClassOrInterface klass, FieldMirror fieldMirror, boolean isCeylon) {
         // make sure it's a FieldValue so we can figure it out in the backend
-        Value value = new FieldValue();
+        Value value = new FieldValue(fieldMirror.getName());
         value.setContainer(klass);
-        value.setName(fieldMirror.getName());
+        // use the name annotation if present (used by Java arrays)
+        String nameAnnotation = getAnnotationStringValue(fieldMirror, CEYLON_NAME_ANNOTATION);
+        value.setName(nameAnnotation != null ? nameAnnotation : fieldMirror.getName());
         value.setUnit(klass.getUnit());
         value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected());
         value.setProtectedVisibility(fieldMirror.isProtected());
