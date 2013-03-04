@@ -2011,14 +2011,39 @@ comparisonExpression returns [Term term]
     : ee1=existenceEmptinessExpression
       { $term = $ee1.term; }
       (
-        comparisonOperator 
-        { $comparisonOperator.operator.setLeftTerm($term);
-          $term = $comparisonOperator.operator; }
+        co1=comparisonOperator 
+        { $co1.operator.setLeftTerm($term);
+          $term = $co1.operator; }
         ee2=existenceEmptinessExpression
-        { $comparisonOperator.operator.setRightTerm($ee2.term); }
+        { $co1.operator.setRightTerm($ee2.term); }
+      | lo1=largerOperator 
+        { $lo1.operator.setLeftTerm($term);
+          $term = $lo1.operator; }
+        ee3=existenceEmptinessExpression
+        { $lo1.operator.setRightTerm($ee3.term); }
+      | so1=smallerOperator 
+        { $so1.operator.setLeftTerm($term);
+          $term = $so1.operator; }
+        ee4=existenceEmptinessExpression
+        { $so1.operator.setRightTerm($ee4.term); }
+        ( 
+          so2=smallerOperator
+          ee5=existenceEmptinessExpression
+          { WithinOp w = new WithinOp(null); 
+            Bound lb = $so1.operator instanceof SmallerOp ?
+                new OpenBound(null) : new ClosedBound(null);
+            lb.setTerm($ee1.term);
+            Bound ub = $so2.operator instanceof SmallerOp ?
+                new OpenBound(null) : new ClosedBound(null);
+            ub.setTerm($ee5.term);
+            w.setLowerBound(lb);
+            w.setUpperBound(ub);
+            w.setTerm($ee4.term);
+            $term = w; }
+        )?
       | to1=typeOperator
         { $to1.operator.setTerm($ee1.term); 
-          $term = $to1.operator;}
+          $term = $to1.operator; }
         t1=type
         { $to1.operator.setType($t1.type); }
       )?
@@ -2030,17 +2055,23 @@ comparisonExpression returns [Term term]
       { $to2.operator.setTerm($ee3.term); }*/
     ;
 
-comparisonOperator returns [BinaryOperatorExpression operator]
-    : COMPARE_OP 
-      { $operator = new CompareOp($COMPARE_OP); }
-    | SMALL_AS_OP
+smallerOperator returns [ComparisonOp operator]
+    : SMALL_AS_OP
       { $operator = new SmallAsOp($SMALL_AS_OP); }
-    | LARGE_AS_OP
+    | SMALLER_OP
+      { $operator = new SmallerOp($SMALLER_OP); }
+    ;
+
+largerOperator returns [ComparisonOp operator]
+    : LARGE_AS_OP
       { $operator = new LargeAsOp($LARGE_AS_OP); }
     | LARGER_OP
       { $operator = new LargerOp($LARGER_OP); }
-    | SMALLER_OP
-      { $operator = new SmallerOp($SMALLER_OP); }
+    ;
+
+comparisonOperator returns [BinaryOperatorExpression operator]
+    : COMPARE_OP 
+      { $operator = new CompareOp($COMPARE_OP); }
     | IN_OP
       { $operator = new InOp($IN_OP); }
     ;

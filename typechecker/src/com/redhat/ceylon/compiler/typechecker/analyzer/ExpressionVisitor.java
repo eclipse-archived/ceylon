@@ -2954,6 +2954,21 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel( unit.getComparisonDeclaration().getType() );            
     }
     
+    private void visitWithinOperator(Tree.WithinOp that) {
+        Term lbt = that.getLowerBound().getTerm();
+        Term ubt = that.getUpperBound().getTerm();
+        ProducedType lhst = lbt==null ? null : lbt.getTypeModel();
+        ProducedType rhst = ubt==null ? null : ubt.getTypeModel();
+        ProducedType t = that.getTerm().getTypeModel();
+        if (t!=null && !t.isUnknown() &&
+            lhst!=null && !lhst.isUnknown() &&
+            rhst!=null && !rhst.isUnknown()) {
+            checkOperandTypes(t, lhst, rhst, unit.getComparableDeclaration(), 
+                    that, "operand expressions must be comparable");
+        }
+        that.setTypeModel( unit.getBooleanDeclaration().getType() );            
+    }
+
     private void visitRangeOperator(Tree.RangeOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -3060,9 +3075,24 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration td, Node node, String message) {
         ProducedType lhsst = checkSupertype(lhst, td, node, message);
         if (lhsst!=null) {
-            ProducedType t = lhsst.getTypeArgumentList().get(0);
-            checkAssignable(rhst, t, node, message);
-            return t;
+            ProducedType at = lhsst.getTypeArgumentList().get(0);
+            checkAssignable(rhst, at, node, message);
+            return at;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    private ProducedType checkOperandTypes(ProducedType t, 
+            ProducedType lhst, ProducedType rhst, 
+            TypeDeclaration td, Node node, String message) {
+        ProducedType st = checkSupertype(t, td, node, message);
+        if (st!=null) {
+            ProducedType at = st.getTypeArgumentList().get(0);
+            checkAssignable(lhst, at, node, message);
+            checkAssignable(rhst, at, node, message);
+            return at;
         }
         else {
             return null;
@@ -3412,6 +3442,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ComparisonOp that) {
         super.visit(that);
         visitComparisonOperator(that);
+    }
+
+    @Override public void visit(Tree.WithinOp that) {
+        super.visit(that);
+        visitWithinOperator(that);
     }
 
     @Override public void visit(Tree.IdenticalOp that) {
