@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -13,7 +15,10 @@ public class CallBuilder {
 
     private enum Kind {
         APPLY,
-        NEW
+        NEW,
+        ARRAY_READ,
+        ARRAY_WRITE,
+        NEW_ARRAY
     }
     
     public static final int CB_ALIAS_ARGS = 1<<0;
@@ -45,7 +50,21 @@ public class CallBuilder {
         CallBuilder builder = new CallBuilder(gen);
         return builder;
     }
-    
+
+    public CallBuilder arrayRead(JCExpression expr) {
+        this.methodOrClass = expr;
+        this.instantiateQualfier = null;
+        this.kind = Kind.ARRAY_READ;
+        return this;
+    }
+
+    public CallBuilder arrayWrite(JCExpression expr) {
+        this.methodOrClass = expr;
+        this.instantiateQualfier = null;
+        this.kind = Kind.ARRAY_WRITE;
+        return this;
+    }
+
     public CallBuilder invoke(JCExpression fn) {
         this.methodOrClass = fn;
         this.instantiateQualfier = null;
@@ -63,7 +82,14 @@ public class CallBuilder {
         this.kind = Kind.NEW;
         return this;
     }
-    
+
+    public CallBuilder javaArrayInstance(JCExpression type) {
+        this.methodOrClass = type;
+        this.instantiateQualfier = null;
+        this.kind = Kind.NEW_ARRAY;
+        return this;
+    }
+
     public CallBuilder typeArgument(JCExpression expr) {
         this.typeargs.append(expr);
         return this;
@@ -181,6 +207,21 @@ public class CallBuilder {
         case NEW:
             result = gen.make().NewClass(newEncl, null, this.methodOrClass, arguments, null);
             break;
+        case ARRAY_READ:
+            result = gen.make().Indexed(this.methodOrClass, arguments.head);
+            break;
+        case ARRAY_WRITE:
+            result = gen.make().Assign(gen.make().Indexed(this.methodOrClass, arguments.head), arguments.tail.head);
+            break;
+        case NEW_ARRAY:
+            // methodOrClass must be a ArrayType, so we get the element type out
+            JCExpression elementTypeExpr = ((JCTree.JCArrayTypeTree)this.methodOrClass).elemtype;
+            result = gen.make().NewArray(elementTypeExpr, List.of(arguments.head), null);
+            if(arguments.tail.nonEmpty()){
+                // must fill it
+                result = gen.makeUtilInvocation("fillArray", List.of(result, arguments.tail.head), null);
+            }
+            break;
         
         default:
             throw Assert.fail();
@@ -209,5 +250,4 @@ public class CallBuilder {
     public void voidMethod(boolean voidMethod) {
         this.voidMethod = voidMethod;
     }
-        
 }
