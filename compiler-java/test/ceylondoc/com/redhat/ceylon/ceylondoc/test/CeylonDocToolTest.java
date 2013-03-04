@@ -389,7 +389,7 @@ public class CeylonDocToolTest {
                 "ceylon.collection", 
                 "ceylon.dbc",
                 "ceylon.io",
-                "ceylon.util", 
+                "ceylon.interop.java", 
                 "ceylon.net",
                 "ceylon.json", 
                 "ceylon.process",
