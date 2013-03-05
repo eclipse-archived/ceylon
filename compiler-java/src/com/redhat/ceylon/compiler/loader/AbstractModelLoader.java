@@ -1771,7 +1771,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(isVariadic){
                     // possibly make it optional
                     TypeMirror variadicType = typeMirror.getComponentType();
-                    type = obtainType(variadicType, (Scope)decl, TypeLocation.TYPE_PARAM, VarianceLocation.CONTRAVARIANT);
+                    // we pretend it's toplevel because we want to get magic string conversion for variadic methods
+                    type = obtainType(variadicType, (Scope)decl, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
                     if(!isCeylon && !variadicType.isPrimitive()){
                         // Java parameters are all optional unless primitives
                         ProducedType optionalType = typeFactory.getOptionalType(type);
