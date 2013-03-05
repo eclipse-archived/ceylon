@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -845,8 +846,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(erased2)
             return false;
         // declarations must be the same
-        if(!decl1.equals(decl2))
+        // (use simplifyType() so we ignore the difference between T and T?)
+        if (!simplifyType(pt).getDeclaration().equals(simplifyType(other).getDeclaration())) {
             return false;
+        }
         // now see their type arguments
         java.util.List<ProducedType> tal1 = pt.getTypeArgumentList();
         java.util.List<ProducedType> tal2 = other.getTypeArgumentList();
