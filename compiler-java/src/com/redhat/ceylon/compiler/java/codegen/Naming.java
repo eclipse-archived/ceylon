@@ -260,7 +260,8 @@ public class Naming implements LocalId {
         
         if (flags.contains(DeclNameFlag.QUALIFIED)) {
             final List<String> packageName;
-            if(!AbstractTransformer.isJavaArray(decl))
+            if(!AbstractTransformer.isJavaArray(decl)
+                    && !AbstractTransformer.isJavaArrays(decl))
                 packageName = ((Package) s).getName();
             else
                 packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;
@@ -832,7 +833,12 @@ public class Naming implements LocalId {
             Scope s = decl.getContainer();
             while (s != null) {
                 if (s instanceof Package) {
-                    final List<String> packageName = ((Package) s).getName();
+                    final List<String> packageName;
+                    if(!AbstractTransformer.isJavaArrays(decl.getTypeDeclaration()))
+                        packageName = ((Package) s).getName();
+                    else
+                        packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;
+
                     if (!packageName.get(0).isEmpty()) {
                         expr = maker.Ident(names.empty);
                     }

@@ -1230,6 +1230,14 @@ public abstract class AbstractTransformer implements Transformation {
                 || name.equals("java.lang::CharArray");
     }
 
+    public static boolean isJavaArrays(TypeDeclaration decl) {
+        if(decl instanceof Class == false)
+            return false;
+        Class c = (Class) decl;
+        String name = c.getQualifiedNameString();
+        return name.equals("java.lang::arrays");
+    }
+
     private JCExpression getJavaArrayElementType(ProducedType type, int flags) {
         if(type == null)
             return makeErroneous(null, "Compiler bug: type is not a Java array: " + type);

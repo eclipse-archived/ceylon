@@ -164,6 +164,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
 
+    // this one has no "_" postfix because that's how we look it up
+    private static final String JAVA_LANG_ARRAYS = "java.lang.arrays";
     private static final String JAVA_LANG_BYTE_ARRAY = "java.lang.ByteArray";
     private static final String JAVA_LANG_SHORT_ARRAY = "java.lang.ShortArray";
     private static final String JAVA_LANG_INT_ARRAY = "java.lang.IntArray";
@@ -174,6 +176,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String JAVA_LANG_BOOLEAN_ARRAY = "java.lang.BooleanArray";
     private static final String JAVA_LANG_OBJECT_ARRAY = "java.lang.ObjectArray";
 
+    // this one has the "_" postfix because that's what we translate it to
+    private static final String CEYLON_ARRAYS = "com.redhat.ceylon.compiler.java.language.arrays_";
     private static final String CEYLON_BYTE_ARRAY = "com.redhat.ceylon.compiler.java.language.ByteArray";
     private static final String CEYLON_SHORT_ARRAY = "com.redhat.ceylon.compiler.java.language.ShortArray";
     private static final String CEYLON_INT_ARRAY = "com.redhat.ceylon.compiler.java.language.IntArray";
@@ -244,7 +248,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || JAVA_LANG_LONG_ARRAY.equals(name)
                 || JAVA_LANG_FLOAT_ARRAY.equals(name)
                 || JAVA_LANG_DOUBLE_ARRAY.equals(name)
-                || JAVA_LANG_CHAR_ARRAY.equals(name)) {
+                || JAVA_LANG_CHAR_ARRAY.equals(name)
+                || JAVA_LANG_ARRAYS.equals(name)) {
                 // turn them into their real class location (get rid of the "java.lang" prefix)
                 name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
             }
@@ -417,6 +422,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || qualifiedName.equals(CEYLON_FLOAT_ARRAY)
                 || qualifiedName.equals(CEYLON_DOUBLE_ARRAY)
                 || qualifiedName.equals(CEYLON_CHAR_ARRAY)
+                || qualifiedName.equals(CEYLON_ARRAYS)
                 )
             pkgName = "java.lang";
         else
