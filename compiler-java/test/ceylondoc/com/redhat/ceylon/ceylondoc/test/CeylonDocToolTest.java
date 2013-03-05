@@ -394,6 +394,7 @@ public class CeylonDocToolTest {
                 "ceylon.json", 
                 "ceylon.process",
                 "ceylon.math",
+                "ceylon.time",
                 "ceylon.test",
         };
         
