@@ -653,7 +653,7 @@ public class GenerateJsVisitor extends Visitor
             for (Declaration dec: decs) {
                 if (!typeDecl.isMember(dec)) { continue; }
                 String suffix = names.scopeSuffix(dec.getContainer());
-                if (dec instanceof Value) {
+                if (dec instanceof Value && ((Value)dec).isTransient()) {
                     superGetterRef(dec,d,suffix);
                     if (((Value) dec).isVariable()) {
                         superSetterRef(dec,d,suffix);
@@ -3118,7 +3118,7 @@ public class GenerateJsVisitor extends Visitor
 
    private boolean hasSimpleGetterSetter(Declaration decl) {
        return (dynblock > 0 && TypeUtils.isUnknown(decl)) ||
-               !((decl instanceof Value) || (decl instanceof Setter) || decl.isFormal());
+               !((decl instanceof Value && ((Value)decl).isTransient()) || (decl instanceof Setter) || decl.isFormal());
    }
 
    private void prefixIncrementOrDecrement(Term term, String functionName) {
