@@ -525,11 +525,13 @@
         <programlisting>PackageDescriptor: Annotations "package" FullPackageName ";"</programlisting>
         
         <para>A <literal>package</literal> may be annotated <literal>shared</literal>. 
-        A <literal>shared</literal> package is visible outside the containing module. 
-        The package descriptor is optional for unshared packages.</para>
+        A <literal>shared</literal> package is visible outside the containing module,
+        that is, in any module which imports the containing module.</para>
         
-        <programlisting>doc "The typesafe query API."
-license 'http://www.gnu.org/licenses/lgpl.html'
+        <para>The package descriptor is optional for unshared packages.</para>
+        
+        <programlisting>"The typesafe query API."
+license "http://www.gnu.org/licenses/lgpl.html"
 shared package org.hibernate.query;</programlisting>
 
     </section>
@@ -545,7 +547,13 @@ shared package org.hibernate.query;</programlisting>
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
         toplevel method or class with no parameters.</para-->
         
-        <programlisting>ModuleDescriptor: Annotations "module" FullPackageName QuotedLiteral ModuleBody</programlisting>
+        <programlisting>ModuleDescriptor: Annotations "module" (FullPackageName|QuotedLiteral) QuotedLiteral ModuleBody</programlisting>
+        
+        <para>The name of the imported module may be specified using the usual syntax
+        for a module name, or as a quoted literal, to allow interoperation with
+        legacy module repositories existing outside the Ceylon ecosystem.</para>
+        
+        <comment><para>Note: this enables interoperation with Maven.</para></comment>
         
         <para>The quoted literal after the module name specifies the version of the
         module.</para>
@@ -561,17 +569,35 @@ shared package org.hibernate.query;</programlisting>
         <para>An imported module may be annotated <literal>optional</literal> and/or
         <literal>shared</literal>.</para>
         
+        <itemizedlist>
+            <listitem>
+                <para>If module <literal>x</literal> has a <literal>shared</literal> 
+                import of module <literal>y</literal>, then any module that imports
+                <literal>x</literal> implicitly imports <literal>y</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If module <literal>x</literal> has an <literal>optional</literal>
+                import of module <literal>y</literal>, then <literal>x</literal> may
+                be executed even if <literal>y</literal> is not available at runtime.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If a declaration belonging to module <literal>x</literal> is visible 
+        outside the module and involves types imported from a different module
+        <literal>y</literal>, then the module import of <literal>y</literal> in the
+        module descriptor for <literal>x</literal> must be <literal>shared</literal>.</para>
+        
         <comment><para>TODO: define the semantics of these annotations here.</para></comment>
         
-        <programlisting>doc "The best-ever ORM solution!"
-license 'http://www.gnu.org/licenses/lgpl.html'
+        <programlisting>"The best-ever ORM solution!"
+license "http://www.gnu.org/licenses/lgpl.html"
 module org.hibernate '3.0.0.beta' {
     shared import ceylon.language '1.0.1';
     import javax.sql '4.0';
 }</programlisting>
 
-        <programlisting>doc "The test suite for Hibernate"
-license 'http://www.gnu.org/licenses/lgpl.html'
+        <programlisting>"The test suite for Hibernate"
+license "http://www.gnu.org/licenses/lgpl.html"
 module org.hibernate.test '3.0.0.beta' {
     import org.hibernate '3.0.0.beta';
     TestSuite().run();
