@@ -7,13 +7,34 @@ final class testFiles_ {
     
     static void testFiles() {
         final .java.io.File f = new .java.io.File(".");
-        final .ceylon.language.Array<.java.io.File> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.io.File.class), f.listFiles()));
-        final .java.io.File f2 = items.get(.ceylon.language.Integer.instance(0L));
+        final .java.io.File[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(f.listFiles());
+        final .java.io.File f2 = items[(int)0L];
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.testFiles_.testFiles();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class booleanArray_ {
+    
+    private booleanArray_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::BooleanArray")
+    static boolean[] booleanArray(@.com.redhat.ceylon.compiler.java.metadata.Name("values")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
+    final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> values) {
+        final boolean[] ret = new boolean[(int)values.getSize()];
+        long idx = 0L;
+        .java.lang.Object $elem$0;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $val$iter$1 = values.getIterator(); !(($elem$0 = $val$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final boolean val = ((.ceylon.language.Boolean)$elem$0).booleanValue();
+            ret[(int)idx++] = val;
+        }
+        return ret;
     }
 }
 final class test_booleans_ {
@@ -23,30 +44,52 @@ final class test_booleans_ {
     
     static void test_booleans() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Boolean> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor, java.return_booleans()));
-        final .ceylon.language.Boolean b = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Boolean b3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Boolean $b$1;
-        if (($b$1 = b) != null) {
-            final boolean $b$2 = $b$1.booleanValue();
-            items.setItem(1L, .ceylon.language.Boolean.instance($b$2));
+        final boolean[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_booleans());
+        final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(items[(int)0L]);
+        .ceylon.language.Boolean $b$3;
+        if (($b$3 = b) != null) {
+            final boolean $b$4 = $b$3.booleanValue();
+            items[(int)1L] = $b$4;
         }
-        .java.lang.Object $elem$3;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $b2$iter$4 = items.getIterator(); !(($elem$3 = $b2$iter$4.next()) instanceof .ceylon.language.Finished); ) {
-            final boolean b2 = ((.ceylon.language.Boolean)$elem$3).booleanValue();
-            .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b2));
-        }
-        java.take_booleans((boolean[])items.toArray());
-        java.take_booleans((boolean[])(
+        final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> it = .ceylon.language.String.instance("foo");
+        java.take_booleans(items);
+        java.take_booleans(.com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray(new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(false), .ceylon.language.empty_.getEmpty$())))));
+        java.take_booleans((
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$5$reified$0 = .ceylon.language.Boolean.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$5$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
+                .ceylon.language.Iterable $arg$5$0 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
             }
-            returning .ceylon.language.array_.<.ceylon.language.Boolean>array($arg$5$reified$0, boolean.class, $arg$5$0);
-        ).toArray());
-        java.take_booleans((boolean[]).ceylon.language.array_.<.ceylon.language.Boolean>array(.ceylon.language.Boolean.$TypeDescriptor, boolean.class, new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Boolean.instance(true), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(false), .ceylon.language.empty_.getEmpty$())))).toArray());
-        java.take_booleans((boolean[]).ceylon.language.array_.<.ceylon.language.Boolean>array(.ceylon.language.Boolean.$TypeDescriptor, boolean.class, (.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()).toArray());
+            returning .com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray($arg$5$0);
+        ));
+        (
+            let
+            {
+                int $arg$6$0 = (int)2L;
+            }
+            returning new boolean[$arg$6$0];
+        );
+        final long i = items.length;
+        final .ceylon.language.Array<.ceylon.language.Boolean> arr = .com.redhat.ceylon.compiler.java.language.BooleanArray.getArray(items);
+        final boolean[][] matrix = new boolean[(int)10L][];
+        .java.lang.Object $elem$7;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $x$iter$8 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L), matrix.length).getIterator(); !(($elem$7 = $x$iter$8.next()) instanceof .ceylon.language.Finished); ) {
+            final long x = ((.ceylon.language.Integer)$elem$7).longValue();
+            matrix[(int)x] = new boolean[(int)2L];
+        }
+        final .ceylon.language.Array<boolean[]> boolArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<boolean[]>.getArray(matrix);
+        final .java.lang.Object o = items;
+        .java.lang.Object $o$10;
+        if (($o$10 = o) instanceof boolean[]) {
+            final boolean[] $o$11 = (boolean[])$o$10;
+        }
+        .java.lang.Object $o$13;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$13 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor))) {
+            final boolean[][] $o$14 = (boolean[][])$o$13;
+        }
+        .java.lang.Object $o$16;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$16 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Boolean.$TypeDescriptor)))) {
+            final .ceylon.language.Boolean[][] $o$17 = (.ceylon.language.Boolean[][])$o$16;
+        }
     }
     
     public static void main(.java.lang.String[] args) {
@@ -61,20 +104,14 @@ final class test_JBooleans_ {
     
     static void test_JBooleans() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Boolean> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Boolean>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Boolean.class), java.return_Booleans()));
-        final .java.lang.Boolean b = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Boolean b3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Boolean $b$7;
-        if (($b$7 = b) != null) {
-            final .java.lang.Boolean $b$8 = $b$7;
-            items.setItem(1L, $b$8);
+        final .java.lang.Boolean[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Booleans());
+        final .java.lang.Boolean b = items[(int)0L];
+        .java.lang.Boolean $b$19;
+        if (($b$19 = b) != null) {
+            final .java.lang.Boolean $b$20 = $b$19;
+            items[(int)1L] = $b$20;
         }
-        .java.lang.Object $elem$9;
-        for (.ceylon.language.Iterator<? extends .java.lang.Boolean> $b2$iter$10 = items.getIterator(); !(($elem$9 = $b2$iter$10.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Boolean b2 = (.java.lang.Boolean)$elem$9;
-            .ceylon.language.print_.print(b2);
-        }
-        java.take_Booleans((.java.lang.Boolean[])items.toArray());
+        java.take_Booleans(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -89,20 +126,14 @@ final class test_bytes_ {
     
     static void test_bytes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, java.return_bytes()));
-        final .ceylon.language.Integer n = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Integer n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$12;
-        if (($n$12 = n) != null) {
-            final long $n$13 = $n$12.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$13));
+        final byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_bytes());
+        final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
+        .ceylon.language.Integer $n$22;
+        if (($n$22 = n) != null) {
+            final long $n$23 = $n$22.longValue();
+            items[(int)1L] = (byte)$n$23;
         }
-        .java.lang.Object $elem$14;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$15 = items.getIterator(); !(($elem$14 = $n2$iter$15.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$14).longValue();
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
-        }
-        java.take_bytes((byte[])items.toArray());
+        java.take_bytes(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -117,20 +148,14 @@ final class test_JBytes_ {
     
     static void test_JBytes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Byte> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Byte>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Byte.class), java.return_Bytes()));
-        final .java.lang.Byte n = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Byte n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Byte $n$17;
-        if (($n$17 = n) != null) {
-            final .java.lang.Byte $n$18 = $n$17;
-            items.setItem(1L, $n$18);
+        final .java.lang.Byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Bytes());
+        final .java.lang.Byte n = items[(int)0L];
+        .java.lang.Byte $n$25;
+        if (($n$25 = n) != null) {
+            final .java.lang.Byte $n$26 = $n$25;
+            items[(int)1L] = $n$26;
         }
-        .java.lang.Object $elem$19;
-        for (.ceylon.language.Iterator<? extends .java.lang.Byte> $n2$iter$20 = items.getIterator(); !(($elem$19 = $n2$iter$20.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Byte n2 = (.java.lang.Byte)$elem$19;
-            .ceylon.language.print_.print(n2);
-        }
-        java.take_Bytes((.java.lang.Byte[])items.toArray());
+        java.take_Bytes(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -145,20 +170,14 @@ final class test_shorts_ {
     
     static void test_shorts() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, java.return_shorts()));
-        final .ceylon.language.Integer n = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Integer n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$22;
-        if (($n$22 = n) != null) {
-            final long $n$23 = $n$22.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$23));
+        final short[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_shorts());
+        final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
+        .ceylon.language.Integer $n$28;
+        if (($n$28 = n) != null) {
+            final long $n$29 = $n$28.longValue();
+            items[(int)1L] = (short)$n$29;
         }
-        .java.lang.Object $elem$24;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$25 = items.getIterator(); !(($elem$24 = $n2$iter$25.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$24).longValue();
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
-        }
-        java.take_shorts((short[])items.toArray());
+        java.take_shorts(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -173,20 +192,14 @@ final class test_JShorts_ {
     
     static void test_JShorts() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Short> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Short>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Short.class), java.return_Shorts()));
-        final .java.lang.Short n = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Short n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Short $n$27;
-        if (($n$27 = n) != null) {
-            final .java.lang.Short $n$28 = $n$27;
-            items.setItem(1L, $n$28);
+        final .java.lang.Short[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Shorts());
+        final .java.lang.Short n = items[(int)0L];
+        .java.lang.Short $n$31;
+        if (($n$31 = n) != null) {
+            final .java.lang.Short $n$32 = $n$31;
+            items[(int)1L] = $n$32;
         }
-        .java.lang.Object $elem$29;
-        for (.ceylon.language.Iterator<? extends .java.lang.Short> $n2$iter$30 = items.getIterator(); !(($elem$29 = $n2$iter$30.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Short n2 = (.java.lang.Short)$elem$29;
-            .ceylon.language.print_.print(n2);
-        }
-        java.take_Shorts((.java.lang.Short[])items.toArray());
+        java.take_Shorts(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -201,20 +214,14 @@ final class test_ints_ {
     
     static void test_ints() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, java.return_ints()));
-        final .ceylon.language.Integer n = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Integer n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$32;
-        if (($n$32 = n) != null) {
-            final long $n$33 = $n$32.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$33));
+        final int[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_ints());
+        final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
+        .ceylon.language.Integer $n$34;
+        if (($n$34 = n) != null) {
+            final long $n$35 = $n$34.longValue();
+            items[(int)1L] = (int)$n$35;
         }
-        .java.lang.Object $elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$35 = items.getIterator(); !(($elem$34 = $n2$iter$35.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$34).longValue();
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
-        }
-        java.take_ints((int[])items.toArray());
+        java.take_ints(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -229,20 +236,14 @@ final class test_JIntegers_ {
     
     static void test_JIntegers() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Integer>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Integer.class), java.return_Integers()));
-        final .java.lang.Integer n = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Integer n3 = items.get(.ceylon.language.Integer.instance(0L));
+        final .java.lang.Integer[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Integers());
+        final .java.lang.Integer n = items[(int)0L];
         .java.lang.Integer $n$37;
         if (($n$37 = n) != null) {
             final .java.lang.Integer $n$38 = $n$37;
-            items.setItem(1L, $n$38);
+            items[(int)1L] = $n$38;
         }
-        .java.lang.Object $elem$39;
-        for (.ceylon.language.Iterator<? extends .java.lang.Integer> $n2$iter$40 = items.getIterator(); !(($elem$39 = $n2$iter$40.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Integer n2 = (.java.lang.Integer)$elem$39;
-            .ceylon.language.print_.print(n2);
-        }
-        java.take_Integers((.java.lang.Integer[])items.toArray());
+        java.take_Integers(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -257,30 +258,14 @@ final class test_longs_ {
     
     static void test_longs() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, java.return_longs()));
-        final .ceylon.language.Integer n = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Integer n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$42;
-        if (($n$42 = n) != null) {
-            final long $n$43 = $n$42.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$43));
+        final long[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_longs());
+        final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
+        .ceylon.language.Integer $n$40;
+        if (($n$40 = n) != null) {
+            final long $n$41 = $n$40.longValue();
+            items[(int)1L] = (int)$n$41;
         }
-        .java.lang.Object $elem$44;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$45 = items.getIterator(); !(($elem$44 = $n2$iter$45.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$44).longValue();
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
-        }
-        java.take_longs((long[])items.toArray());
-        java.take_longs((long[])(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$46$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$46$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-            }
-            returning .ceylon.language.array_.<.ceylon.language.Integer>array($arg$46$reified$0, long.class, $arg$46$0);
-        ).toArray());
-        java.take_longs((long[]).ceylon.language.array_.<.ceylon.language.Integer>array(.ceylon.language.Integer.$TypeDescriptor, long.class, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$())))).toArray());
-        java.take_longs((long[]).ceylon.language.array_.<.ceylon.language.Integer>array(.ceylon.language.Integer.$TypeDescriptor, long.class, (.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()).toArray());
+        java.take_longs(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -295,20 +280,14 @@ final class test_JLongs_ {
     
     static void test_JLongs() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Long> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Long>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), java.return_Longs()));
-        final .java.lang.Long n = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Long n3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Long $n$48;
-        if (($n$48 = n) != null) {
-            final .java.lang.Long $n$49 = $n$48;
-            items.setItem(1L, $n$49);
+        final .java.lang.Long[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Longs());
+        final .java.lang.Long n = items[(int)0L];
+        .java.lang.Long $n$43;
+        if (($n$43 = n) != null) {
+            final .java.lang.Long $n$44 = $n$43;
+            items[(int)1L] = $n$44;
         }
-        .java.lang.Object $elem$50;
-        for (.ceylon.language.Iterator<? extends .java.lang.Long> $n2$iter$51 = items.getIterator(); !(($elem$50 = $n2$iter$51.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Long n2 = (.java.lang.Long)$elem$50;
-            .ceylon.language.print_.print(n2);
-        }
-        java.take_Longs((.java.lang.Long[])items.toArray());
+        java.take_Longs(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -323,20 +302,14 @@ final class test_floats_ {
     
     static void test_floats() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Float> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Float>instance(.ceylon.language.Float.$TypeDescriptor, java.return_floats()));
-        final .ceylon.language.Float f = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Float f3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Float $f$53;
-        if (($f$53 = f) != null) {
-            final double $f$54 = $f$53.doubleValue();
-            items.setItem(1L, .ceylon.language.Float.instance($f$54));
+        final float[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_floats());
+        final .ceylon.language.Float f = .ceylon.language.Float.instance(items[(int)0L]);
+        .ceylon.language.Float $f$46;
+        if (($f$46 = f) != null) {
+            final double $f$47 = $f$46.doubleValue();
+            items[(int)1L] = (float)$f$47;
         }
-        .java.lang.Object $elem$55;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$56 = items.getIterator(); !(($elem$55 = $f2$iter$56.next()) instanceof .ceylon.language.Finished); ) {
-            final double f2 = ((.ceylon.language.Float)$elem$55).doubleValue();
-            .ceylon.language.print_.print(.ceylon.language.Float.instance(f2));
-        }
-        java.take_floats((float[])items.toArray());
+        java.take_floats(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -351,20 +324,14 @@ final class test_JFloats_ {
     
     static void test_JFloats() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Float> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Float>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Float.class), java.return_Floats()));
-        final .java.lang.Float f = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Float f3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Float $f$58;
-        if (($f$58 = f) != null) {
-            final .java.lang.Float $f$59 = $f$58;
-            items.setItem(1L, $f$59);
+        final .java.lang.Float[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Floats());
+        final .java.lang.Float f = items[(int)0L];
+        .java.lang.Float $f$49;
+        if (($f$49 = f) != null) {
+            final .java.lang.Float $f$50 = $f$49;
+            items[(int)1L] = $f$50;
         }
-        .java.lang.Object $elem$60;
-        for (.ceylon.language.Iterator<? extends .java.lang.Float> $f2$iter$61 = items.getIterator(); !(($elem$60 = $f2$iter$61.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Float f2 = (.java.lang.Float)$elem$60;
-            .ceylon.language.print_.print(f2);
-        }
-        java.take_Floats((.java.lang.Float[])items.toArray());
+        java.take_Floats(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -379,30 +346,14 @@ final class test_doubles_ {
     
     static void test_doubles() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Float> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Float>instance(.ceylon.language.Float.$TypeDescriptor, java.return_doubles()));
-        final .ceylon.language.Float f = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Float f3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Float $f$63;
-        if (($f$63 = f) != null) {
-            final double $f$64 = $f$63.doubleValue();
-            items.setItem(1L, .ceylon.language.Float.instance($f$64));
+        final double[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_doubles());
+        final .ceylon.language.Float f = .ceylon.language.Float.instance(items[(int)0L]);
+        .ceylon.language.Float $f$52;
+        if (($f$52 = f) != null) {
+            final double $f$53 = $f$52.doubleValue();
+            items[(int)1L] = $f$53;
         }
-        .java.lang.Object $elem$65;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$66 = items.getIterator(); !(($elem$65 = $f2$iter$66.next()) instanceof .ceylon.language.Finished); ) {
-            final double f2 = ((.ceylon.language.Float)$elem$65).doubleValue();
-            .ceylon.language.print_.print(.ceylon.language.Float.instance(f2));
-        }
-        java.take_doubles((double[])items.toArray());
-        java.take_doubles((double[])(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$67$reified$0 = .ceylon.language.Float.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$67$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0));
-            }
-            returning .ceylon.language.array_.<.ceylon.language.Float>array($arg$67$reified$0, double.class, $arg$67$0);
-        ).toArray());
-        java.take_doubles((double[]).ceylon.language.array_.<.ceylon.language.Float>array(.ceylon.language.Float.$TypeDescriptor, double.class, new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Float.instance(1.0), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Float.instance(2.0), new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Float.instance(3.0), .ceylon.language.empty_.getEmpty$())))).toArray());
-        java.take_doubles((double[]).ceylon.language.array_.<.ceylon.language.Float>array(.ceylon.language.Float.$TypeDescriptor, double.class, (.ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()).toArray());
+        java.take_doubles(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -417,20 +368,14 @@ final class test_JDoubles_ {
     
     static void test_JDoubles() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Double> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Double>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Double.class), java.return_Doubles()));
-        final .java.lang.Double f = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Double f3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Double $f$69;
-        if (($f$69 = f) != null) {
-            final .java.lang.Double $f$70 = $f$69;
-            items.setItem(1L, $f$70);
+        final .java.lang.Double[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Doubles());
+        final .java.lang.Double f = items[(int)0L];
+        .java.lang.Double $f$55;
+        if (($f$55 = f) != null) {
+            final .java.lang.Double $f$56 = $f$55;
+            items[(int)1L] = $f$56;
         }
-        .java.lang.Object $elem$71;
-        for (.ceylon.language.Iterator<? extends .java.lang.Double> $f2$iter$72 = items.getIterator(); !(($elem$71 = $f2$iter$72.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Double f2 = (.java.lang.Double)$elem$71;
-            .ceylon.language.print_.print(f2);
-        }
-        java.take_Doubles((.java.lang.Double[])items.toArray());
+        java.take_Doubles(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -445,30 +390,14 @@ final class test_chars_ {
     
     static void test_chars() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Character> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Character>instance(.ceylon.language.Character.$TypeDescriptor, java.return_chars()));
-        final .ceylon.language.Character c = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.Character c3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Character $c$74;
-        if (($c$74 = c) != null) {
-            final int $c$75 = $c$74.intValue();
-            items.setItem(1L, .ceylon.language.Character.instance($c$75));
+        final char[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_chars());
+        final .ceylon.language.Character c = .ceylon.language.Character.instance(items[(int)0L]);
+        .ceylon.language.Character $c$58;
+        if (($c$58 = c) != null) {
+            final int $c$59 = $c$58.intValue();
+            items[(int)1L] = (char)$c$59;
         }
-        .java.lang.Object $elem$76;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Character> $c2$iter$77 = items.getIterator(); !(($elem$76 = $c2$iter$77.next()) instanceof .ceylon.language.Finished); ) {
-            final int c2 = ((.ceylon.language.Character)$elem$76).intValue();
-            .ceylon.language.print_.print(.ceylon.language.Character.instance(c2));
-        }
-        java.take_chars((char[])items.toArray());
-        java.take_chars((char[])(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$78$reified$0 = .ceylon.language.Character.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$78$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.instance(97), .ceylon.language.Character.instance(98), .ceylon.language.Character.instance(99));
-            }
-            returning .ceylon.language.array_.<.ceylon.language.Character>array($arg$78$reified$0, int.class, $arg$78$0);
-        ).toArray());
-        java.take_chars((char[]).ceylon.language.array_.<.ceylon.language.Character>array(.ceylon.language.Character.$TypeDescriptor, int.class, new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Character.instance(97), new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Empty>>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Character.instance(98), new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Empty>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Character.instance(99), .ceylon.language.empty_.getEmpty$())))).toArray());
-        java.take_chars((char[]).ceylon.language.array_.<.ceylon.language.Character>array(.ceylon.language.Character.$TypeDescriptor, int.class, (.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()).toArray());
+        java.take_chars(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -483,20 +412,14 @@ final class test_JCharacters_ {
     
     static void test_JCharacters() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Character> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Character>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Character.class), java.return_Characters()));
-        final .java.lang.Character c = items.get(.ceylon.language.Integer.instance(0L));
-        final .java.lang.Character c3 = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Character $c$80;
-        if (($c$80 = c) != null) {
-            final .java.lang.Character $c$81 = $c$80;
-            items.setItem(1L, $c$81);
+        final .java.lang.Character[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Characters());
+        final .java.lang.Character c = items[(int)0L];
+        .java.lang.Character $c$61;
+        if (($c$61 = c) != null) {
+            final .java.lang.Character $c$62 = $c$61;
+            items[(int)1L] = $c$62;
         }
-        .java.lang.Object $elem$82;
-        for (.ceylon.language.Iterator<? extends .java.lang.Character> $c2$iter$83 = items.getIterator(); !(($elem$82 = $c2$iter$83.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Character c2 = (.java.lang.Character)$elem$82;
-            .ceylon.language.print_.print(c2);
-        }
-        java.take_Characters((.java.lang.Character[])items.toArray());
+        java.take_Characters(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -511,30 +434,14 @@ final class test_Strings_ {
     
     static void test_Strings() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.String> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, java.return_Strings()));
-        final .ceylon.language.String s = items.get(.ceylon.language.Integer.instance(0L));
-        final .ceylon.language.String s3 = items.get(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.String $s$85;
-        if (($s$85 = s) != null) {
-            final .java.lang.String $s$86 = $s$85.toString();
-            items.setItem(1L, .ceylon.language.String.instance($s$86));
+        final .java.lang.String[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Strings());
+        final .java.lang.String s = items[(int)0L];
+        .java.lang.String $s$64;
+        if (($s$64 = s) != null) {
+            final .java.lang.String $s$65 = $s$64;
+            items[(int)1L] = $s$65;
         }
-        .java.lang.Object $elem$87;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s2$iter$88 = items.getIterator(); !(($elem$87 = $s2$iter$88.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.String s2 = ((.ceylon.language.String)$elem$87).toString();
-            .ceylon.language.print_.print(.ceylon.language.String.instance(s2));
-        }
-        java.take_Strings((.java.lang.String[])items.toArray());
-        java.take_Strings((.java.lang.String[])(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$89$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$89$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"));
-            }
-            returning .ceylon.language.array_.<.ceylon.language.String>array($arg$89$reified$0, .java.lang.String.class, $arg$89$0);
-        ).toArray());
-        java.take_Strings((.java.lang.String[]).ceylon.language.array_.<.ceylon.language.String>array(.ceylon.language.String.$TypeDescriptor, .java.lang.String.class, new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.String.instance("aap"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("noot"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("mies"), .ceylon.language.empty_.getEmpty$())))).toArray());
-        java.take_Strings((.java.lang.String[]).ceylon.language.array_.<.ceylon.language.String>array(.ceylon.language.String.$TypeDescriptor, .java.lang.String.class, (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$()).toArray());
+        java.take_Strings(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -549,29 +456,16 @@ final class test_Objects_ {
     
     static void test_Objects() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Object> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor, java.return_Objects()));
-        final .java.lang.Object o = items.get(.ceylon.language.Integer.instance(0L));
-        .java.lang.Object $o$91;
-        if (($o$91 = o) != null) {
-            final .java.lang.Object $o$92 = $o$91;
-            items.setItem(1L, $o$92);
+        final .java.lang.Object[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Objects());
+        final .java.lang.Object o = items[(int)0L];
+        final .java.lang.Object o2 = .com.redhat.ceylon.compiler.java.Util.checkNull(items[(int)0L]);
+        .java.lang.Object $o$67;
+        if (($o$67 = o) != null) {
+            final .java.lang.Object $o$68 = $o$67;
+            items[(int)1L] = $o$68;
+            items[(int)1L] = null;
         }
-        .java.lang.Object $elem$93;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o2$iter$94 = items.getIterator(); !(($elem$93 = $o2$iter$94.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object o2 = (.java.lang.Object)$elem$93;
-            .ceylon.language.print_.print(o2);
-        }
-        java.take_Objects((.java.lang.Object[])items.toArray());
-        java.take_Objects((.java.lang.Object[])(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$95$reified$0 = .ceylon.language.Object.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$95$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"));
-            }
-            returning .ceylon.language.array_.array($arg$95$reified$0, .java.lang.Object.class, $arg$95$0);
-        ).toArray());
-        java.take_Objects((.java.lang.Object[]).ceylon.language.array_.array(.ceylon.language.Object.$TypeDescriptor, .java.lang.Object.class, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"))).toArray());
-        java.take_Objects((.java.lang.Object[]).ceylon.language.array_.array(.ceylon.language.Object.$TypeDescriptor, .java.lang.Object.class, .ceylon.language.empty_.getEmpty$()).toArray());
+        java.take_Objects(items);
     }
     
     public static void main(.java.lang.String[] args) {

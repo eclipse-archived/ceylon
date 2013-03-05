@@ -9,10 +9,10 @@ final class staticMethods_ {
         .java.io.File sync;
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
-        final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.io.File.class), .java.io.File.listRoots()));
+        final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", "", sync));
-        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.io.File.class), sync.listRoots()));
+        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.listRoots());
     }
     
     public static void main(.java.lang.String[] args) {

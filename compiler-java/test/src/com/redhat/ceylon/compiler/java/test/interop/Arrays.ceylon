@@ -25,7 +25,17 @@ import java.lang {
     JLong = Long,
     JFloat = Float,
     JDouble = Double,
-    JCharacter = Character
+    JCharacter = Character,
+    JString = String,
+    BooleanArray,
+    ByteArray,
+    ShortArray,
+    IntArray,
+    LongArray,
+    FloatArray,
+    DoubleArray,
+    CharArray,
+    ObjectArray
 }
 import com.redhat.ceylon.compiler.java.test.interop { TypesJava }
 import java.io { File }
@@ -33,258 +43,257 @@ import java.io { File }
 @nomodel
 void testFiles() {
     File f = File(".");
-    Array<File> items = f.listFiles();
+    ObjectArray<File> items = f.listFiles();
     File? f2 = items.get(0);
+}
+
+BooleanArray booleanArray({Boolean*} values){
+    BooleanArray ret = BooleanArray(values.size);
+    variable Integer idx = 0;
+    for(val in values){
+        ret.set(idx++, val);
+    }
+    return ret;
 }
 
 @nomodel
 void test_booleans() {
     TypesJava java = TypesJava();
-    Array<Boolean> items = java.return_booleans();
+    BooleanArray items = java.return_booleans();
     Boolean? b = items.get(0);
-    Boolean? b3 = items[0];
+    //Boolean? b3 = items[0];
     if (exists b) {
-        items.setItem(1, b);
+        items.set(1, b);
     }
-    for (Boolean b2 in items) { print(b2); }
+    Iterable<Character> it = "foo";
+    //for (Boolean b2 in items) { print(b2); }
     java.take_booleans(items);
-    java.take_booleans(array {true, true, false });
-    java.take_booleans(array([true, true, false]));
-    java.take_booleans(array<Boolean>({}));
+    java.take_booleans(booleanArray([true, true, false]));
+    java.take_booleans(booleanArray{});
+    BooleanArray{size=2;};
+    Integer i = items.size;
+    Array<Boolean> arr = items.array;
+    
+    // multi-dimensional array
+    ObjectArray<BooleanArray> matrix = ObjectArray<BooleanArray>(10);
+    for(x in 0:matrix.size){
+        matrix.set(x, BooleanArray(2));
+    }
+    Array<BooleanArray> boolArray = matrix.array;
+    
+    // reified stuff
+    Object o = items;
+    if(is BooleanArray o){
+    }
+    if(is ObjectArray<BooleanArray> o){
+    }
+    if(is ObjectArray<ObjectArray<Boolean>> o){
+    }
 }
 
 @nomodel
 void test_JBooleans() {
     TypesJava java = TypesJava();
-    Array<JBoolean> items = java.return_Booleans();
+    ObjectArray<JBoolean> items = java.return_Booleans();
     JBoolean? b = items.get(0);
-    JBoolean? b3 = items[0];
     if (exists b) {
-        items.setItem(1, b);
+        items.set(1, b);
     }
-    for (JBoolean b2 in items) { print(b2); }
+    //for (JBoolean b2 in items) { print(b2); }
     java.take_Booleans(items);
 }
 
 @nomodel
 void test_bytes() {
     TypesJava java = TypesJava();
-    Array<Integer> items = java.return_bytes();
+    ByteArray items = java.return_bytes();
     Integer? n = items.get(0);
-    Integer? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (Integer n2 in items) { print(n2); }
+    //for (Integer n2 in items) { print(n2); }
     java.take_bytes(items);
 }
 
 @nomodel
 void test_JBytes() {
     TypesJava java = TypesJava();
-    Array<JByte> items = java.return_Bytes();
+    ObjectArray<JByte> items = java.return_Bytes();
     JByte? n = items.get(0);
-    JByte? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (JByte n2 in items) { print(n2); }
+    //for (JByte n2 in items) { print(n2); }
     java.take_Bytes(items);
 }
 
 @nomodel
 void test_shorts() {
     TypesJava java = TypesJava();
-    Array<Integer> items = java.return_shorts();
+    ShortArray items = java.return_shorts();
     Integer? n = items.get(0);
-    Integer? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (Integer n2 in items) { print(n2); }
+    //for (Integer n2 in items) { print(n2); }
     java.take_shorts(items);
 }
 
 @nomodel
 void test_JShorts() {
     TypesJava java = TypesJava();
-    Array<JShort> items = java.return_Shorts();
+    ObjectArray<JShort> items = java.return_Shorts();
     JShort? n = items.get(0);
-    JShort? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (JShort n2 in items) { print(n2); }
+    //for (JShort n2 in items) { print(n2); }
     java.take_Shorts(items);
 }
 
 @nomodel
 void test_ints() {
     TypesJava java = TypesJava();
-    Array<Integer> items = java.return_ints();
+    IntArray items = java.return_ints();
     Integer? n = items.get(0);
-    Integer? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (Integer n2 in items) { print(n2); }
+    //for (Integer n2 in items) { print(n2); }
     java.take_ints(items);
 }
 
 @nomodel
 void test_JIntegers() {
     TypesJava java = TypesJava();
-    Array<JInteger> items = java.return_Integers();
+    ObjectArray<JInteger> items = java.return_Integers();
     JInteger? n = items.get(0);
-    JInteger? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (JInteger n2 in items) { print(n2); }
+    //for (JInteger n2 in items) { print(n2); }
     java.take_Integers(items);
 }
 
 @nomodel
 void test_longs() {
     TypesJava java = TypesJava();
-    Array<Integer> items = java.return_longs();
+    LongArray items = java.return_longs();
     Integer? n = items.get(0);
-    Integer? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (Integer n2 in items) { print(n2); }
+    //for (Integer n2 in items) { print(n2); }
     java.take_longs(items);
-    java.take_longs(array { 1, 2, 3 });
-    java.take_longs(array([1, 2, 3]));
-    java.take_longs(array<Integer>({}));
 }
 
 @nomodel
 void test_JLongs() {
     TypesJava java = TypesJava();
-    Array<JLong> items = java.return_Longs();
+    ObjectArray<JLong> items = java.return_Longs();
     JLong? n = items.get(0);
-    JLong? n3 = items[0];
     if (exists n) {
-        items.setItem(1, n);
+        items.set(1, n);
     }
-    for (JLong n2 in items) { print(n2); }
+    //for (JLong n2 in items) { print(n2); }
     java.take_Longs(items);
 }
 
 @nomodel
 void test_floats() {
     TypesJava java = TypesJava();
-    Array<Float> items = java.return_floats();
+    FloatArray items = java.return_floats();
     Float? f = items.get(0);
-    Float? f3 = items[0];
     if (exists f) {
-        items.setItem(1, f);
+        items.set(1, f);
     }
-    for (Float f2 in items) { print(f2); }
+    //for (Float f2 in items) { print(f2); }
     java.take_floats(items);
 }
 
 @nomodel
 void test_JFloats() {
     TypesJava java = TypesJava();
-    Array<JFloat> items = java.return_Floats();
+    ObjectArray<JFloat> items = java.return_Floats();
     JFloat? f = items.get(0);
-    JFloat? f3 = items[0];
     if (exists f) {
-        items.setItem(1, f);
+        items.set(1, f);
     }
-    for (JFloat f2 in items) { print(f2); }
+    //for (JFloat f2 in items) { print(f2); }
     java.take_Floats(items);
 }
 
 @nomodel
 void test_doubles() {
     TypesJava java = TypesJava();
-    Array<Float> items = java.return_doubles();
+    DoubleArray items = java.return_doubles();
     Float? f = items.get(0);
-    Float? f3 = items[0];
     if (exists f) {
-        items.setItem(1, f);
+        items.set(1, f);
     }
-    for (Float f2 in items) { print(f2); }
+    //for (Float f2 in items) { print(f2); }
     java.take_doubles(items);
-    java.take_doubles(array { 1.0, 2.0, 3.0});
-    java.take_doubles(array([1.0, 2.0, 3.0]));
-    java.take_doubles(array<Float>({}));
 }
 
 @nomodel
 void test_JDoubles() {
     TypesJava java = TypesJava();
-    Array<JDouble> items = java.return_Doubles();
+    ObjectArray<JDouble> items = java.return_Doubles();
     JDouble? f = items.get(0);
-    JDouble? f3 = items[0];
     if (exists f) {
-        items.setItem(1, f);
+        items.set(1, f);
     }
-    for (JDouble f2 in items) { print(f2); }
+    //for (JDouble f2 in items) { print(f2); }
     java.take_Doubles(items);
 }
 
 @nomodel
 void test_chars() {
     TypesJava java = TypesJava();
-    Array<Character> items = java.return_chars();
+    CharArray items = java.return_chars();
     Character? c = items.get(0);
-    Character? c3 = items[0];
     if (exists c) {
-        items.setItem(1, c);
+        items.set(1, c);
     }
-    for (Character c2 in items) { print(c2); }
+    //for (Character c2 in items) { print(c2); }
     java.take_chars(items);
-    java.take_chars(array { 'a', 'b', 'c'});
-    java.take_chars(array(['a', 'b', 'c']));
-    java.take_chars(array<Character>({}));
 }
 
 @nomodel
 void test_JCharacters() {
     TypesJava java = TypesJava();
-    Array<JCharacter> items = java.return_Characters();
+    ObjectArray<JCharacter> items = java.return_Characters();
     JCharacter? c = items.get(0);
-    JCharacter? c3 = items[0];
     if (exists c) {
-        items.setItem(1, c);
+        items.set(1, c);
     }
-    for (JCharacter c2 in items) { print(c2); }
+    //for (JCharacter c2 in items) { print(c2); }
     java.take_Characters(items);
 }
 
 @nomodel
 void test_Strings() {
     TypesJava java = TypesJava();
-    Array<String> items = java.return_Strings();
-    String? s = items.get(0);
-    String? s3 = items[0];
+    ObjectArray<JString> items = java.return_Strings();
+    JString? s = items.get(0);
     if (exists s) {
-        items.setItem(1, s);
+        items.set(1, s);
     }
-    for (String s2 in items) { print(s2); }
+    //for (String s2 in items) { print(s2); }
     java.take_Strings(items);
-    java.take_Strings(array { "aap", "noot", "mies" });
-    java.take_Strings(array(["aap", "noot", "mies"]));
-    java.take_Strings(array<String>({}));
 }
 
 @nomodel
 void test_Objects() {
     TypesJava java = TypesJava();
-    Array<Object> items = java.return_Objects();
+    ObjectArray<Object> items = java.return_Objects();
     Object? o = items.get(0);
+    Object o2 = items.get(0);
     if (exists o) {
-        items.setItem(1, o);
+        items.set(1, o);
+        items.set(1, null);
     }
-    for (Object o2 in items) { print(o2); }
+    //for (Object o2 in items) { print(o2); }
     java.take_Objects(items);
-    java.take_Objects(array<Object> { "aap", "noot", "mies"});
-    java.take_Objects(array<Object>({"aap", "noot", "mies"}));
-    java.take_Objects(array<Object>({}));
 }
 

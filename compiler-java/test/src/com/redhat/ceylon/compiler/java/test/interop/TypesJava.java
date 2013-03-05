@@ -69,6 +69,8 @@ public class TypesJava {
     String[] return_Strings() { return new String[] { "aap", "noot", "mies", "" }; };
     Object[] return_Objects() { return new Object[] { "aap", 'b', 1.5d, 3 }; };
 
+    java.util.List<Object[]> return_ObjectArrayList() { return null; }
+    
     void take_booleans(boolean[] val) { };
     void take_Booleans(Boolean[] val) { };
     void take_bytes(byte[] val) { };
