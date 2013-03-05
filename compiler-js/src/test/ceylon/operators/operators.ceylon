@@ -136,6 +136,19 @@ void testComparisonOperators() {
     check(b3, "small as");
     b4 = "str1" >= "str1";
     check(b4, "large as");
+    //within
+    value a = 0;
+    value c = 10;
+    check(a < 5 < c, "``a``<5<``c``");
+    check(a <= 0 < c, "``a``<=0<``c``");
+    check(a < 10 <= c, "``a``<10<=``c``");
+    check(a <= 0 <= c, "``a``<=0<=``c``");
+    check(a <= 10 <= c, "``a``<=10<=``c``");
+    check(!(a < 15 < c), "``a``<15<``c`` WTF");
+    check(!(a <= 10 < c), "``a``<=10<``c`` WTF");
+    check(!(a < 0 <= c), "``a``<0<=``c`` WTF");
+    check(!(a <= 11 <= c), "``a``<=11<=``c`` WTF");
+    check(!(a <= -1 <= c), "``a``<=-1<=``c`` WTF");
 }
 
 void testOtherOperators() {

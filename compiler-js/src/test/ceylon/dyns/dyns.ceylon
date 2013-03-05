@@ -108,8 +108,17 @@ shared void test() {
         } catch (Exception e) {
             check("MadeUpType" in e.message, "exception message should mention MadeUpType");
         }
-        results();
+        check(Math.random()>=0, "dynamic >=");
+        check(Math.random()<=1, "dynamic <=");
+        check(Math.random()>-1, "dynamic >");
+        check(Math.random()<1.1, "dynamic <");
+
+        check(0<Math.random()+1<2,  "dynamic a< b< c");
+        check(0<=Math.random()<=1,  "dynamic a<=b<=c");
+        check(0<Math.random()+1<=2, "dynamic a< b<=c");
+        check(0<=Math.random()<1.1, "dynamic a<=b< c");
     }
+    results();
 }
 
 void nogo() {
