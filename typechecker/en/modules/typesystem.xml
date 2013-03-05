@@ -1214,6 +1214,20 @@ Item item = comp of Item;</programlisting>
         type.</para>
         
     </section>
+    
+    <section>
+        <title>Disjoint types</title>
+        
+        <para>Two types are said to be <emphasis>disjoint</emphasis> if it is impossible
+        to have a value that is an instance of both types. If <literal>X</literal> and 
+        <literal>Y</literal> are disjoint, then their intersection <literal>X&amp;Y</literal>
+        is the bottom type <literal>Nothing</literal>.</para>
+        
+        <comment><para>TODO: write down the rules the typechecker uses to determine if 
+        two types are disjoint, which depends on analysis of inheritance and enumeration, 
+        and of intersection of invariant type instantiations.</para></comment>
+        
+    </section>
         
     </section>
 
@@ -1572,9 +1586,9 @@ Item item = comp of Item;</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>an <emphasis>upper bound</emphasis>, <literal>given X satisfies T</literal>, 
+                <para>An <emphasis>upper bound</emphasis>, <literal>given X satisfies T</literal>, 
                 specifies that the type parameter <literal>X</literal> is a subtype of 
-                a given type <literal>T</literal>,</para>
+                a given type <literal>T</literal>.</para>
             </listitem>
             <!--
             <listitem>
@@ -1584,9 +1598,9 @@ Item item = comp of Item;</programlisting>
             </listitem>
             -->
             <listitem>
-                <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T|U|V</literal>
+                <para>An <emphasis>enumerated bound</emphasis>, <literal>given X of T|U|V</literal>
                 specifies that the type parameter <literal>X</literal> represents one 
-                of the enumerated types,</para>
+                of the enumerated types.</para>
             </listitem>
             <!--
             <listitem>
@@ -1603,6 +1617,10 @@ Item item = comp of Item;</programlisting>
             </listitem>
             -->
         </itemizedlist>
+        
+        <para>The types listed in an enumerated bound must be mutually disjoint.</para>
+        
+        <comment><para>TODO: should we allow unions in upper bounds?</para></comment>
         
         <para>A single <literal>given</literal> clause may specify multiple constraints
         on a certain type parameter. For example, it may specify multiple upper bounds
@@ -1650,7 +1668,7 @@ Item item = comp of Item;</programlisting>
         return chars.first.uppercased..chars.last.uppercased;
     }
 }]]></programlisting>
-        
+
         <comment><para>TODO: do we need lower bound type constraints? With union types
         they don't appear to be anywhere near as useful.</para></comment>
         
