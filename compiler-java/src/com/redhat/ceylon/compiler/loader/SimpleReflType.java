@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.lang.model.type.TypeKind;
@@ -36,10 +36,12 @@ public class SimpleReflType implements TypeMirror {
 
     private String name;
     private TypeKind kind;
+    private TypeMirror[] typeParameters;
 
-    public SimpleReflType(String name, TypeKind kind) {
+    public SimpleReflType(String name, TypeKind kind, TypeMirror... typeParameters) {
         this.name = name;
         this.kind = kind;
+        this.typeParameters = typeParameters;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class SimpleReflType implements TypeMirror {
 
     @Override
     public List<TypeMirror> getTypeArguments() {
-        return Collections.emptyList();
+        return Arrays.asList(typeParameters);
     }
 
     @Override
