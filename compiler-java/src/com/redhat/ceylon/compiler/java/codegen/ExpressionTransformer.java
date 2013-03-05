@@ -1193,7 +1193,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we don't care about the left erased type, since equals() is on Object
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null);
         // we don't care about the right erased type, since equals() is on Object
-        JCExpression expr = transformOverridableBinaryOperator(op, operator, optimisationStrategy, left, null);
+        JCExpression expr = transformOverridableBinaryOperator(op.getRightTerm(), null, operator, optimisationStrategy, left);
         return at(op).Unary(JCTree.NOT, expr);
     }
 
@@ -1332,19 +1332,27 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(op, this);
 
+        at(op);
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), leftType);
-        return transformOverridableBinaryOperator(op, operator, optimisationStrategy, left, rightType);
+        JCExpression right = transformExpression(op.getRightTerm(), optimisationStrategy.getBoxingStrategy(), rightType);
+        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, op.getRightTerm());
     }
 
-    private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, 
-            OperatorTranslation originalOperator, OptimisationStrategy optimisatonStrategy, 
-            JCExpression left, ProducedType rightType) {
+    private JCExpression transformOverridableBinaryOperator(Tree.Term rightTerm, ProducedType rightType,
+            OperatorTranslation operator, OptimisationStrategy optimisationStrategy, 
+            JCExpression left) {
+        JCExpression right = transformExpression(rightTerm, optimisationStrategy.getBoxingStrategy(), rightType);
+        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, rightTerm);
+    }
+
+    private JCExpression transformOverridableBinaryOperator(OperatorTranslation originalOperator,
+            OptimisationStrategy optimisationStrategy, 
+            JCExpression left, JCExpression right,
+            Tree.Term rightTerm) {
         JCExpression result = null;
         
-        JCExpression right = transformExpression(op.getRightTerm(), optimisatonStrategy.getBoxingStrategy(), rightType);
-
         // optimise if we can
-        if(optimisatonStrategy.useJavaOperator()){
+        if(optimisationStrategy.useJavaOperator()){
             return make().Binary(originalOperator.javacOperator, left, right);
         }
 
@@ -1369,14 +1377,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(originalOperator == OperatorTranslation.BINARY_UNION 
                 || originalOperator == OperatorTranslation.BINARY_INTERSECTION
                 || originalOperator == OperatorTranslation.BINARY_COMPLEMENT){
-            ProducedType otherSetElementType = typeFact().getIteratedType(op.getRightTerm().getTypeModel());
+            ProducedType otherSetElementType = typeFact().getIteratedType(rightTerm.getTypeModel());
             args = args.prepend(makeReifiedTypeArgument(otherSetElementType));
         }
         
-        result = at(op).Apply(null, makeSelect(left, actualOperator.ceylonMethod), args);
+        result = make().Apply(null, makeSelect(left, actualOperator.ceylonMethod), args);
 
         if (loseComparison) {
-            result = at(op).Apply(null, makeSelect(result, originalOperator.ceylonMethod), List.<JCExpression> nil());
+            result = make().Apply(null, makeSelect(result, originalOperator.ceylonMethod), List.<JCExpression> nil());
         }
 
         return result;
@@ -1417,9 +1425,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                JCExpression ret = transformOverridableBinaryOperator(op, operator.binaryOperator, 
+                JCExpression ret = transformOverridableBinaryOperator(op.getRightTerm(), rightType,
+                        operator.binaryOperator, 
                         boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE, 
-                        previousValue, rightType);
+                        previousValue);
                 ret = unAutoPromote(ret, rightType);
                 return ret;
             }
@@ -1437,7 +1446,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, valueType, valueType, new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
-            	JCExpression result = transformOverridableBinaryOperator(op, operator.binaryOperator, OptimisationStrategy.NONE, previousValue, null);
+            	JCExpression result = transformOverridableBinaryOperator(op.getRightTerm(), null, operator.binaryOperator, OptimisationStrategy.NONE, previousValue);
             	return result;
             }
         });
