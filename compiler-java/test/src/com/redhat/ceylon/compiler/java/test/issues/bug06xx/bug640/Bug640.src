@@ -6,33 +6,34 @@ public final class bug640_ {
     }
     
     public static void bug640() {
-        final .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept> x = (
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept[] x = (
             let
             {
+                .com.redhat.ceylon.compiler.java.language.arrays_ $arg$0$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.getArrays$();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class);
                 .ceylon.language.Iterable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class), new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept());
             }
-            returning .ceylon.language.array_.<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>array($arg$0$reified$0, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class, $arg$0$0);
+            returning $arg$0$callable$.<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>toObjectArray($arg$0$reified$0, $arg$0$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().accepts((.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept[])x.toArray());
-        final .ceylon.language.Array<.ceylon.language.String> y = (
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().accepts(x);
+        final .java.lang.String[] y = (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.language.arrays_ $arg$1$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.getArrays$();
                 .ceylon.language.Iterable $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"));
             }
-            returning .ceylon.language.array_.<.ceylon.language.String>array($arg$1$reified$0, .java.lang.String.class, $arg$1$0);
+            returning $arg$1$callable$.toJavaStringArray($arg$1$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().strings((.java.lang.String[])y.toArray());
-        final .ceylon.language.Array<.ceylon.language.Integer> z = (
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().strings(y);
+        final long[] z = (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.language.arrays_ $arg$2$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.getArrays$();
                 .ceylon.language.Iterable $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
-            returning .ceylon.language.array_.<.ceylon.language.Integer>array($arg$2$reified$0, long.class, $arg$2$0);
+            returning $arg$2$callable$.toLongArray($arg$2$0);
         );
-        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().longs((long[])z.toArray());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept().longs(z);
     }
     
     public static void main(.java.lang.String[] args) {

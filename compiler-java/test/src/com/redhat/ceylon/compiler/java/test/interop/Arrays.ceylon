@@ -35,7 +35,8 @@ import java.lang {
     FloatArray,
     DoubleArray,
     CharArray,
-    ObjectArray
+    ObjectArray,
+    arrays
 }
 import com.redhat.ceylon.compiler.java.test.interop { TypesJava }
 import java.io { File }
@@ -47,6 +48,7 @@ void testFiles() {
     File? f2 = items.get(0);
 }
 
+// make sure we can write that
 BooleanArray booleanArray({Boolean*} values){
     BooleanArray ret = BooleanArray(values.size);
     variable Integer idx = 0;
@@ -70,9 +72,11 @@ void test_booleans() {
     java.take_booleans(items);
     java.take_booleans(booleanArray([true, true, false]));
     java.take_booleans(booleanArray{});
+    java.take_booleans(arrays.toBooleanArray{true, true, false});
     BooleanArray{size=2;};
     Integer i = items.size;
     Array<Boolean> arr = items.array;
+    assert(items === arrays.asBooleanArray(arr));
     
     // multi-dimensional array
     ObjectArray<BooleanArray> matrix = ObjectArray<BooleanArray>(10);
@@ -257,6 +261,10 @@ void test_chars() {
     }
     //for (Character c2 in items) { print(c2); }
     java.take_chars(items);
+    
+    IntArray ints = java.return_ints();
+    Array<Character> chars = ints.codePointArray;
+    assert(arrays.asCodePointArray(chars) == ints);
 }
 
 @nomodel
@@ -281,6 +289,13 @@ void test_Strings() {
     }
     //for (String s2 in items) { print(s2); }
     java.take_Strings(items);
+    
+    ObjectArray<String> ceylonStrings = arrays.javaStringArrayToCeylonStringArray(items);
+    Array<String> ceylonStringArray = ceylonStrings.array;
+    ObjectArray<JString> javaStrings = arrays.ceylonStringArrayToJavaStringArray(ceylonStrings);
+    Array<JString> javaStringArray = javaStrings.array;
+    ObjectArray<JString> javaStrings2 = arrays.toJavaStringArray(ceylonStringArray);
+    ObjectArray<String> ceylonStrings2 = arrays.toStringArray(javaStringArray);
 }
 
 @nomodel
