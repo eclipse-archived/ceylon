@@ -1278,9 +1278,7 @@ Item item = comp of Item;</programlisting>
         
         <programlisting>TypeParameter: Variance? TypeName ("=" Type)</programlisting>
         
-        <para>Every type parameter has a name. A parameter of a type schema has a specified 
-        <emphasis>variance</emphasis>. A parameter of a function schema does not have a
-        variance.</para>
+        <para>Every type parameter has a name and a <emphasis>variance</emphasis>.</para>
         
         <programlisting>Variance: "out" | "in"</programlisting>
         
@@ -1333,8 +1331,13 @@ Item item = comp of Item;</programlisting>
         described in Tate et al.</para></comment>
         
         <para>To determine if a type expression occurs in a covariant or contravariant 
-        position, we first consider how the type occurs syntactically. We examine each 
-        <literal>shared</literal> member of the parameterized type schema.</para> 
+        position, we first consider how the type occurs syntactically.</para> 
+        
+        <para>For a generic function we examine the return type of the function, which
+        is a covariant position.</para>
+        
+        <para>For a generic type schema we examine each <literal>shared</literal> 
+        member along with extended/satisfied types and case types:</para> 
         
         <itemizedlist>
             <listitem>
