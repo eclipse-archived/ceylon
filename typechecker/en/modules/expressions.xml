@@ -1614,7 +1614,7 @@ createItemMethod.intercept()
                 <literal>of</literal>,
                 <literal>satisfies</literal>
                 </entry>
-                <entry>Binary</entry>
+                <entry>Binary (and ternary)</entry>
                 <entry>None</entry>
             </row>
             <row>
@@ -1998,6 +1998,35 @@ createItemMethod.intercept()
         <comment><para>TODO: Should we have allow the operators <literal>&lt;=</literal> 
         and <literal>&gt;=</literal> to handle partial orders? A particular usecase is
         <literal>Set</literal> comparison.</para></comment>
+        
+        <para>A <emphasis>bounded comparison</emphasis> is an abbreviation 
+        for two binary comparisons:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>l&lt;x&lt;u</literal> means 
+                <literal>x&gt;l &amp;&amp; x&lt;u</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>l&lt;=x&lt;u</literal> means 
+                <literal>x&gt;=l &amp;&amp; x&lt;u</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>l&lt;x&lt;=u</literal> means 
+                <literal>x&gt;l &amp;&amp; x&lt;=u</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>l&lt;=x&lt;=u</literal> means 
+                <literal>x&gt;=l &amp;&amp; x&lt;=u</literal></para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>for expressions <literal>l</literal>, <literal>u</literal>, 
+        and <literal>x</literal>.</para>
+        
+        <para>These abbreviations have the same precedence as the binary 
+        <literal>&lt;</literal> and <literal>&lt;=</literal> operators, and, 
+        like the binary forms, are not associative.</para>
         
     </section>
                 
