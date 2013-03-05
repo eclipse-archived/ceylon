@@ -21,12 +21,12 @@ import java.lang { ObjectArray, LongArray, arrays }
 
 @nomodel
 shared void bug640() {
-    value x = arrays.toObjectArray { Accept(), Accept(), Accept() };
-    Accept().accepts(x);
-    value y = arrays.toJavaStringArray { "aap", "noot", "mies" };
-    Accept().strings(y);
-    value z = arrays.toLongArray { 1, 2, 3 };
-    Accept().longs(z);
+    value x = array { Accept(), Accept(), Accept() };
+    Accept().accepts(arrays.toObjectArray(x));
+    value y = array { "aap", "noot", "mies" };
+    Accept().strings(arrays.toJavaStringArray(y));
+    value z = array { 1, 2, 3 };
+    Accept().longs(arrays.toLongArray(z));
 }
 @nomodel
 shared void bug640gen<T>(SequenceBuilder<T> sb) {
