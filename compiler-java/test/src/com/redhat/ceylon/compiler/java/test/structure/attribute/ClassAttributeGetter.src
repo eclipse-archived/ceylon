@@ -17,6 +17,18 @@ abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.
         return "";
     }
     
+    private final .java.lang.String getF4$priv() {
+        return "";
+    }
+    
+    public final .java.lang.String getF5() {
+        return "";
+    }
+    
+    public .java.lang.String getF6() {
+        return "";
+    }
+    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
         return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter.$TypeDescriptor;
@@ -31,6 +43,11 @@ class SubClassAttributeGetter extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.java.lang.Override
     public final .java.lang.String getF3() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF6() {
         return "";
     }
     

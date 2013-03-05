@@ -1,26 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-final class bug247_toplevel_ {
-    
-    private bug247_toplevel_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getBug247_toplevel$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setBug247_toplevel(final long bug247_toplevel) {
-        value[0] = bug247_toplevel;
-    }
-}
 final class bug247_ {
     
     private bug247_() {
@@ -40,5 +19,26 @@ final class bug247_ {
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_.bug247();
+    }
+}
+final class bug247_toplevel_ {
+    
+    private bug247_toplevel_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBug247_toplevel$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setBug247_toplevel(final long bug247_toplevel) {
+        value[0] = bug247_toplevel;
     }
 }

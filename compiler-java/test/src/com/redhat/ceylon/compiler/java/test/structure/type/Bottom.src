@@ -1,5 +1,30 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
+class BottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    BottomClass(final .java.lang.Object argObject, final long argInteger) {
+        final .java.lang.Object attrObject = .ceylon.language.nothing_.getNothing$();
+        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
+    }
+    
+    private final .java.lang.Object methodObject$priv(final .java.lang.Object o) {
+        return .ceylon.language.nothing_.getNothing$();
+    }
+    
+    private final long methodInteger$priv(final long i) {
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
+    }
+    
+    private final void f$priv() {
+        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.getNothing$(), ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BottomClass.class);
+}
 final class toplevelObject_ {
     
     private toplevelObject_() {
@@ -33,29 +58,4 @@ final class toplevelInteger_ {
             throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
-}
-class BottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-    
-    BottomClass(final .java.lang.Object argObject, final long argInteger) {
-        final .java.lang.Object attrObject = .ceylon.language.nothing_.getNothing$();
-        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
-    }
-    
-    private final .java.lang.Object methodObject$priv(final .java.lang.Object o) {
-        return .ceylon.language.nothing_.getNothing$();
-    }
-    
-    private final long methodInteger$priv(final long i) {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
-    }
-    
-    private final void f$priv() {
-        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.getNothing$(), ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue());
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass.$TypeDescriptor;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BottomClass.class);
 }

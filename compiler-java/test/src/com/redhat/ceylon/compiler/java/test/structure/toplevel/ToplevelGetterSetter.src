@@ -1,15 +1,37 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
+final class topLevelGetterSetterX_ {
+    
+    private topLevelGetterSetterX_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getTopLevelGetterSetterX$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setTopLevelGetterSetterX(final long topLevelGetterSetterX) {
+        value[0] = topLevelGetterSetterX;
+    }
+}
 final class topLevelGetterSetter_ {
     
     private topLevelGetterSetter_() {
     }
     
     static long getTopLevelGetterSetter$() {
-        return 0L;
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
     }
     
     static void setTopLevelGetterSetter(final long topLevelGetterSetter) {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX(topLevelGetterSetter);
     }
 }
 public final class topLevelGetterSetterShared_ {
@@ -18,9 +40,50 @@ public final class topLevelGetterSetterShared_ {
     }
     
     public static long getTopLevelGetterSetterShared$() {
-        return 0L;
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
     }
     
     public static void setTopLevelGetterSetterShared(final long topLevelGetterSetterShared) {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX(topLevelGetterSetterShared);
+    }
+}
+final class topLevelGetterSetter2_ {
+    
+    private topLevelGetterSetter2_() {
+    }
+    
+    static long getTopLevelGetterSetter2$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
+    }
+    
+    static void setTopLevelGetterSetter2(final long topLevelGetterSetter2) {
+        (
+            let
+            {
+                long $ceylontmpop0 = topLevelGetterSetter2;
+                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX($ceylontmpop0);
+            }
+            returning $ceylontmpop0;
+        );
+    }
+}
+public final class topLevelGetterSetterShared2_ {
+    
+    private topLevelGetterSetterShared2_() {
+    }
+    
+    public static long getTopLevelGetterSetterShared2$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
+    }
+    
+    public static void setTopLevelGetterSetterShared2(final long topLevelGetterSetterShared2) {
+        (
+            let
+            {
+                long $ceylontmpop1 = topLevelGetterSetterShared2;
+                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX($ceylontmpop1);
+            }
+            returning $ceylontmpop1;
+        );
     }
 }

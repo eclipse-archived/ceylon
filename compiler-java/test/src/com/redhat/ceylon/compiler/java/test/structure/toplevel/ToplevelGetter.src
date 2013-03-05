@@ -18,3 +18,21 @@ public final class topLevelGetterShared_ {
         return 0L;
     }
 }
+final class topLevelGetter2_ {
+    
+    private topLevelGetter2_() {
+    }
+    
+    static long getTopLevelGetter2$() {
+        return 0L;
+    }
+}
+public final class topLevelGetterShared2_ {
+    
+    private topLevelGetterShared2_() {
+    }
+    
+    public static long getTopLevelGetterShared2$() {
+        return 0L;
+    }
+}

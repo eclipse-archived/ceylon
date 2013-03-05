@@ -90,176 +90,6 @@ public final class globalMethodOptionalCharacter_ {
         return i;
     }
 }
-public final class globalAttrInteger_ {
-    
-    private globalAttrInteger_() {
-    }
-    private static final long[] value;
-    static {
-        value = new long[]{1L};
-    }
-    
-    public static long getGlobalAttrInteger$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrFloat_ {
-    
-    private globalAttrFloat_() {
-    }
-    private static final double[] value;
-    static {
-        value = new double[]{1.0};
-    }
-    
-    public static double getGlobalAttrFloat$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrString_ {
-    
-    private globalAttrString_() {
-    }
-    private static final .java.lang.String[] value;
-    static {
-        value = new .java.lang.String[]{"a"};
-    }
-    
-    public static .java.lang.String getGlobalAttrString$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrBoolean_ {
-    
-    private globalAttrBoolean_() {
-    }
-    private static final boolean[] value;
-    static {
-        value = new boolean[]{true};
-    }
-    
-    public static boolean getGlobalAttrBoolean$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrCharacter_ {
-    
-    private globalAttrCharacter_() {
-    }
-    private static final int[] value;
-    static {
-        value = new int[]{97};
-    }
-    
-    public static int getGlobalAttrCharacter$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrOptionalInteger_ {
-    
-    private globalAttrOptionalInteger_() {
-    }
-    private static final .ceylon.language.Integer[] value;
-    static {
-        value = new .ceylon.language.Integer[]{null};
-    }
-    
-    public static .ceylon.language.Integer getGlobalAttrOptionalInteger$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrOptionalFloat_ {
-    
-    private globalAttrOptionalFloat_() {
-    }
-    private static final .ceylon.language.Float[] value;
-    static {
-        value = new .ceylon.language.Float[]{null};
-    }
-    
-    public static .ceylon.language.Float getGlobalAttrOptionalFloat$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrOptionalString_ {
-    
-    private globalAttrOptionalString_() {
-    }
-    private static final .ceylon.language.String[] value;
-    static {
-        value = new .ceylon.language.String[]{null};
-    }
-    
-    public static .ceylon.language.String getGlobalAttrOptionalString$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrOptionalBoolean_ {
-    
-    private globalAttrOptionalBoolean_() {
-    }
-    private static final .ceylon.language.Boolean[] value;
-    static {
-        value = new .ceylon.language.Boolean[]{null};
-    }
-    
-    public static .ceylon.language.Boolean getGlobalAttrOptionalBoolean$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
-public final class globalAttrOptionalCharacter_ {
-    
-    private globalAttrOptionalCharacter_() {
-    }
-    private static final .ceylon.language.Character[] value;
-    static {
-        value = new .ceylon.language.Character[]{null};
-    }
-    
-    public static .ceylon.language.Character getGlobalAttrOptionalCharacter$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
 class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BasicTypes(final long paramInteger, final double paramFloat, final .java.lang.String paramString, final boolean paramBoolean, final int paramCharacter, final .ceylon.language.Integer paramOptionalInteger, final .ceylon.language.Float paramOptionalFloat, final .ceylon.language.String paramOptionalString, final .ceylon.language.Boolean paramOptionalBoolean, final .ceylon.language.Character paramOptionalCharacter) {
@@ -493,4 +323,174 @@ class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.struct
         return .com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.$TypeDescriptor;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.class);
+}
+public final class globalAttrInteger_ {
+    
+    private globalAttrInteger_() {
+    }
+    private static final long[] value;
+    static {
+        value = new long[]{1L};
+    }
+    
+    public static long getGlobalAttrInteger$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrFloat_ {
+    
+    private globalAttrFloat_() {
+    }
+    private static final double[] value;
+    static {
+        value = new double[]{1.0};
+    }
+    
+    public static double getGlobalAttrFloat$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrString_ {
+    
+    private globalAttrString_() {
+    }
+    private static final .java.lang.String[] value;
+    static {
+        value = new .java.lang.String[]{"a"};
+    }
+    
+    public static .java.lang.String getGlobalAttrString$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrBoolean_ {
+    
+    private globalAttrBoolean_() {
+    }
+    private static final boolean[] value;
+    static {
+        value = new boolean[]{true};
+    }
+    
+    public static boolean getGlobalAttrBoolean$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrCharacter_ {
+    
+    private globalAttrCharacter_() {
+    }
+    private static final int[] value;
+    static {
+        value = new int[]{97};
+    }
+    
+    public static int getGlobalAttrCharacter$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrOptionalInteger_ {
+    
+    private globalAttrOptionalInteger_() {
+    }
+    private static final .ceylon.language.Integer[] value;
+    static {
+        value = new .ceylon.language.Integer[]{null};
+    }
+    
+    public static .ceylon.language.Integer getGlobalAttrOptionalInteger$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrOptionalFloat_ {
+    
+    private globalAttrOptionalFloat_() {
+    }
+    private static final .ceylon.language.Float[] value;
+    static {
+        value = new .ceylon.language.Float[]{null};
+    }
+    
+    public static .ceylon.language.Float getGlobalAttrOptionalFloat$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrOptionalString_ {
+    
+    private globalAttrOptionalString_() {
+    }
+    private static final .ceylon.language.String[] value;
+    static {
+        value = new .ceylon.language.String[]{null};
+    }
+    
+    public static .ceylon.language.String getGlobalAttrOptionalString$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrOptionalBoolean_ {
+    
+    private globalAttrOptionalBoolean_() {
+    }
+    private static final .ceylon.language.Boolean[] value;
+    static {
+        value = new .ceylon.language.Boolean[]{null};
+    }
+    
+    public static .ceylon.language.Boolean getGlobalAttrOptionalBoolean$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+public final class globalAttrOptionalCharacter_ {
+    
+    private globalAttrOptionalCharacter_() {
+    }
+    private static final .ceylon.language.Character[] value;
+    static {
+        value = new .ceylon.language.Character[]{null};
+    }
+    
+    public static .ceylon.language.Character getGlobalAttrOptionalCharacter$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
 }

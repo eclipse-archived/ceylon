@@ -1,5 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
+final class keywordInToplevelAssignment_ {
+    
+    private keywordInToplevelAssignment_() {
+    }
+    
+    static void keywordInToplevelAssignment() {
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.setGoto(1L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.keywordInToplevelAssignment_.keywordInToplevelAssignment();
+    }
+}
 final class goto_ {
     
     private goto_() {
@@ -19,19 +33,5 @@ final class goto_ {
     
     static void setGoto(final long goto) {
         value[0] = goto;
-    }
-}
-final class keywordInToplevelAssignment_ {
-    
-    private keywordInToplevelAssignment_() {
-    }
-    
-    static void keywordInToplevelAssignment() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.setGoto(1L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.keywordInToplevelAssignment_.keywordInToplevelAssignment();
     }
 }

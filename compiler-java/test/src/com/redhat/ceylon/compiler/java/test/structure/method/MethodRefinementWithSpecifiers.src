@@ -63,23 +63,6 @@ final class methodRefinementWithSpecifiers_returnsMethod_ {
         };
     }
 }
-final class methodRefinementWithSpecifiers_attributeMethod_ {
-    
-    private methodRefinementWithSpecifiers_attributeMethod_() {
-    }
-    private static final .ceylon.language.Callable<? extends .java.lang.Object>[] value;
-    static {
-        value = new .ceylon.language.Callable[]{.com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod()};
-    }
-    
-    static .ceylon.language.Callable<? extends .java.lang.Object> getMethodRefinementWithSpecifiers_attributeMethod$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
 class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodRefinementWithSpecifiers_ClassNoParam() {
@@ -431,5 +414,22 @@ final class Bug891_Interface2$impl {
                 );
             }
         };
+    }
+}
+final class methodRefinementWithSpecifiers_attributeMethod_ {
+    
+    private methodRefinementWithSpecifiers_attributeMethod_() {
+    }
+    private static final .ceylon.language.Callable<? extends .java.lang.Object>[] value;
+    static {
+        value = new .ceylon.language.Callable[]{.com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod()};
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> getMethodRefinementWithSpecifiers_attributeMethod$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
     }
 }

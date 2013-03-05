@@ -61,69 +61,6 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.class);
 }
-final class toplevelN1_ {
-    
-    private toplevelN1_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getToplevelN1$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setToplevelN1(final long toplevelN1) {
-        value[0] = toplevelN1;
-    }
-}
-final class toplevelN2_ {
-    
-    private toplevelN2_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getToplevelN2$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setToplevelN2(final long toplevelN2) {
-        value[0] = toplevelN2;
-    }
-}
-final class toplevelI1_ {
-    
-    private toplevelI1_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getToplevelI1$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setToplevelI1(final long toplevelI1) {
-        value[0] = toplevelI1;
-    }
-}
 class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
@@ -1186,6 +1123,69 @@ class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expre
         return .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperatorsSub.$TypeDescriptor;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperatorsSub.class);
+}
+final class toplevelN1_ {
+    
+    private toplevelN1_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getToplevelN1$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setToplevelN1(final long toplevelN1) {
+        value[0] = toplevelN1;
+    }
+}
+final class toplevelN2_ {
+    
+    private toplevelN2_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getToplevelN2$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setToplevelN2(final long toplevelN2) {
+        value[0] = toplevelN2;
+    }
+}
+final class toplevelI1_ {
+    
+    private toplevelI1_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getToplevelI1$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setToplevelI1(final long toplevelI1) {
+        value[0] = toplevelI1;
+    }
 }
 final class toplevelGetterN1_ {
     

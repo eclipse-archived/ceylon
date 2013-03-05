@@ -1,5 +1,28 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
+class TopLevelAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    TopLevelAssign() {
+    }
+    
+    private final void m$priv() {
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.setTopLevelAssignB1(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.setTopLevelAssignB2(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.setTopLevelAssignB3(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4_.setTopLevelAssignB4(false);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.class);
+}
 final class topLevelAssignB1_ {
     
     private topLevelAssignB1_() {
@@ -41,29 +64,6 @@ public final class topLevelAssignB2_ {
     public static void setTopLevelAssignB2(final boolean topLevelAssignB2) {
         value[0] = topLevelAssignB2;
     }
-}
-class TopLevelAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-    
-    TopLevelAssign() {
-    }
-    
-    private final void m$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.setTopLevelAssignB1(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.setTopLevelAssignB2(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.setTopLevelAssignB3(false);
-        .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4_.setTopLevelAssignB4(false);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.$TypeDescriptor;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.class);
 }
 final class topLevelAssignB3_ {
     

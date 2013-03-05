@@ -1,5 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
+final class toplevelAttributeLateInit_ {
+    
+    private toplevelAttributeLateInit_() {
+    }
+    
+    static void toplevelAttributeLateInit() {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.setToplevelAttributeLate(0L);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.setToplevelAttributeLateVariable(0L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateInit_.toplevelAttributeLateInit();
+    }
+}
 final class toplevelAttributeLate_ {
     
     private toplevelAttributeLate_() {
@@ -37,20 +52,5 @@ final class toplevelAttributeLateVariable_ {
     static void setToplevelAttributeLateVariable(final long toplevelAttributeLateVariable) {
         if (value == null) value = new long[1];
         value[0] = toplevelAttributeLateVariable;
-    }
-}
-final class toplevelAttributeLateInit_ {
-    
-    private toplevelAttributeLateInit_() {
-    }
-    
-    static void toplevelAttributeLateInit() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.setToplevelAttributeLate(0L);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.setToplevelAttributeLateVariable(0L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateInit_.toplevelAttributeLateInit();
     }
 }

@@ -1,5 +1,28 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
+class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    TopLevelAccess() {
+    }
+    
+    private final void m$priv() {
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.getB1$();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.getB2$();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.getB3$();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.getB4$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.class);
+}
 final class b1_ {
     
     private b1_() {
@@ -33,29 +56,6 @@ public final class b2_ {
             throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
-}
-class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-    
-    TopLevelAccess() {
-    }
-    
-    private final void m$priv() {
-        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.getB1$();
-        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.getB2$();
-        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.getB3$();
-        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.getB4$();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.$TypeDescriptor;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.class);
 }
 final class b3_ {
     

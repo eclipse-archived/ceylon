@@ -83,69 +83,6 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.class);
 }
-final class bwToplevelN1_ {
-    
-    private bwToplevelN1_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getBwToplevelN1$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setBwToplevelN1(final long bwToplevelN1) {
-        value[0] = bwToplevelN1;
-    }
-}
-final class bwToplevelN2_ {
-    
-    private bwToplevelN2_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getBwToplevelN2$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setBwToplevelN2(final long bwToplevelN2) {
-        value[0] = bwToplevelN2;
-    }
-}
-final class bwToplevelI1_ {
-    
-    private bwToplevelI1_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getBwToplevelI1$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setBwToplevelI1(final long bwToplevelI1) {
-        value[0] = bwToplevelI1;
-    }
-}
 class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BitwiseOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
@@ -473,6 +410,69 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
         return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.$TypeDescriptor;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.class);
+}
+final class bwToplevelN1_ {
+    
+    private bwToplevelN1_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBwToplevelN1$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setBwToplevelN1(final long bwToplevelN1) {
+        value[0] = bwToplevelN1;
+    }
+}
+final class bwToplevelN2_ {
+    
+    private bwToplevelN2_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBwToplevelN2$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setBwToplevelN2(final long bwToplevelN2) {
+        value[0] = bwToplevelN2;
+    }
+}
+final class bwToplevelI1_ {
+    
+    private bwToplevelI1_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBwToplevelI1$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setBwToplevelI1(final long bwToplevelI1) {
+        value[0] = bwToplevelI1;
+    }
 }
 final class bwToplevelGetterN1_ {
     

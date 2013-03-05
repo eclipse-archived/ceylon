@@ -215,27 +215,6 @@ final class EmptyInterface$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface $this;
 }
-final class topLevelLeftAttribute_ {
-    
-    private topLevelLeftAttribute_() {
-    }
-    private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[] value;
-    static {
-        value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
-    }
-    
-    static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left getTopLevelLeftAttribute$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setTopLevelLeftAttribute(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
-        value[0] = topLevelLeftAttribute;
-    }
-}
 class MyException extends .ceylon.language.Exception implements .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface {
     
     MyException(final .ceylon.language.String m, final .java.lang.Throwable x) {
@@ -586,4 +565,25 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return .com.redhat.ceylon.compiler.java.test.expression.erasure.Test.$TypeDescriptor;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Test.class);
+}
+final class topLevelLeftAttribute_ {
+    
+    private topLevelLeftAttribute_() {
+    }
+    private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left getTopLevelLeftAttribute$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setTopLevelLeftAttribute(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
+        value[0] = topLevelLeftAttribute;
+    }
 }

@@ -1,5 +1,20 @@
 package bug148_2;
 
+public final class bug148_2_ {
+    
+    private bug148_2_() {
+    }
+    
+    public static void bug148_2() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.Integer.toString(.bug148_2.f_.getF$())));
+        .bug148_2.f_.setF(3L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .bug148_2.bug148_2_.bug148_2();
+    }
+}
 final class f_ {
     
     private f_() {
@@ -19,20 +34,5 @@ final class f_ {
     
     static void setF(final long f) {
         value[0] = f;
-    }
-}
-public final class bug148_2_ {
-    
-    private bug148_2_() {
-    }
-    
-    public static void bug148_2() {
-        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.Integer.toString(.bug148_2.f_.getF$())));
-        .bug148_2.f_.setF(3L);
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        .bug148_2.bug148_2_.bug148_2();
     }
 }

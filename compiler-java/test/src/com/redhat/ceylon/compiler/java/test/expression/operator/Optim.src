@@ -1,26 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-final class optimToplevelInteger_ {
-    
-    private optimToplevelInteger_() {
-    }
-    private static long[] value;
-    static {
-        value = new long[]{0L};
-    }
-    
-    static long getOptimToplevelInteger$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-    
-    static void setOptimToplevelInteger(final long optimToplevelInteger) {
-        value[0] = optimToplevelInteger;
-    }
-}
 abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     OptimSuperclass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
@@ -590,4 +569,25 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.$TypeDescriptor;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.Optim.class);
+}
+final class optimToplevelInteger_ {
+    
+    private optimToplevelInteger_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getOptimToplevelInteger$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    static void setOptimToplevelInteger(final long optimToplevelInteger) {
+        value[0] = optimToplevelInteger;
+    }
 }

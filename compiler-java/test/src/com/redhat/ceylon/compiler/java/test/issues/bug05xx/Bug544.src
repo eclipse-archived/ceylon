@@ -59,23 +59,6 @@ class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.b
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544NonSharedAttr.class);
 }
-final class s_ {
-    
-    private s_() {
-    }
-    private static final .java.lang.String[] value;
-    static {
-        value = new .java.lang.String[]{""};
-    }
-    
-    static .java.lang.String getS$() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
-        }
-    }
-}
 class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Toplevel() {
@@ -162,6 +145,23 @@ final class Bug544ContainerInterface$impl {
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl.Bug544CapturesFromOuterInterface.class));
+        }
+    }
+}
+final class s_ {
+    
+    private s_() {
+    }
+    private static final .java.lang.String[] value;
+    static {
+        value = new .java.lang.String[]{""};
+    }
+    
+    static .java.lang.String getS$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
         }
     }
 }
