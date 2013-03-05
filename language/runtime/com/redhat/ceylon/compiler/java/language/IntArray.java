@@ -59,6 +59,16 @@ public final class IntArray implements ReifiedType {
     }
 
     @Ignore
+    public static ceylon.language.Array<ceylon.language.Character> getCodePointArray(int[] array){
+        return Array.instanceForCodePoints(array);
+    }
+
+    @TypeInfo("ceylon.language::Array<ceylon.language::Character>")
+    public ceylon.language.Array<ceylon.language.Character> getCodePointArray(){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         throw Util.makeJavaArrayWrapperException();
