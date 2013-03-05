@@ -28,6 +28,9 @@ import com.redhat.ceylon.common.Versions;
  */
 public class CeylonClassLoader extends URLClassLoader {
     
+    private static final String CEYLON_REPO = "repo";
+    private static final String CEYLON_LIBS = "lib";
+
     public CeylonClassLoader() throws URISyntaxException, MalformedURLException, FileNotFoundException {
         super(getClassPathUrls());
     }
@@ -94,15 +97,24 @@ public class CeylonClassLoader extends URLClassLoader {
             ceylonHomeStr = System.getenv("CEYLON_HOME");
         }
         if (ceylonHomeStr == null) {
-            // Finally try to deduce it from the location of the current JAR file
+            // Then try to deduce it from the location of the current JAR file
+            // (asuming $CEYLON_HOME/lib/ceylon-bootstrap.jar)
             File jar = new File(CeylonClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             ceylonHome = jar.getParentFile().getParentFile();
+            if (!checkHome(ceylonHome)) {
+                // As a last ditch effort see if we can find "ceylon" in the system's shell
+                // path and decuce the home folder from that (asuming $CEYLON_HOME/bin/ceylon)
+                File script = findCeylonScript();
+                if (script != null) {
+                    ceylonHome = script.getParentFile().getParentFile();
+                }
+            }
         } else {
             ceylonHome = new File(ceylonHomeStr);
         }
         return ceylonHome;
     }
-    
+
     public static File determineRepo() throws URISyntaxException {
         // Determine the Ceylon system repository folder
         File ceylonRepo;
@@ -110,7 +122,7 @@ public class CeylonClassLoader extends URLClassLoader {
         if (ceylonSystemRepo != null) {
             ceylonRepo = new File(ceylonSystemRepo);
         } else {
-            ceylonRepo = new File(determineHome(), "repo");
+            ceylonRepo = new File(determineHome(), CEYLON_REPO);
         }
         return ceylonRepo;
     }
@@ -122,7 +134,7 @@ public class CeylonClassLoader extends URLClassLoader {
         if (ceylonSystemRepo != null) {
             ceylonLib = new File(ceylonSystemRepo);
         } else {
-            ceylonLib = new File(determineHome(), "lib");
+            ceylonLib = new File(determineHome(), CEYLON_LIBS);
         }
         return ceylonLib;
     }
@@ -135,6 +147,34 @@ public class CeylonClassLoader extends URLClassLoader {
             ceylonSystemVersion = Versions.CEYLON_VERSION_NUMBER;
         }
         return ceylonSystemVersion;
+    }
+    
+    private static File findCeylonScript() {
+        String path = System.getenv("PATH");
+        if (path != null) {
+            String ceylonScriptName;
+            if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+                ceylonScriptName = "ceylon.bat";
+            } else {
+                ceylonScriptName = "ceylon";
+            }
+            String[] elems = path.split(File.pathSeparator);
+            for (String elem : elems) {
+                File script = new File(elem, ceylonScriptName);
+                if (script.isFile()) {
+                    try {
+                        return script.getCanonicalFile();
+                    } catch (IOException e) {
+                        // Ignore errors and keep on trying
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    private static boolean checkHome(File ceylonHome) {
+        return (new File(ceylonHome, CEYLON_REPO)).isDirectory() && (new File(ceylonHome, CEYLON_LIBS)).isDirectory();
     }
     
     private static File getRepoJar(File repo, String moduleName, String version) {
