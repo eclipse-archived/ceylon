@@ -1208,40 +1208,47 @@ TypeConstraints?
         </itemizedlist>
         
         <para>A member class of a subtype <emphasis>refines</emphasis> a member 
-        class of a supertype if the first member class:</para>
+        class of a supertype if the member class of the supertype is
+        <literal>shared</literal> and the two classes have the same name. The 
+        first class is called the <emphasis>refining</emphasis> class, and the 
+        second class is called the <emphasis>refined</emphasis> class.</para>
+        
+        <para>Then the refining class must, after substitution of type arguments 
+        specified in the <literal>extends</literal> or <literal>satisfies</literal> 
+        clause of the class to which the member class belongs:</para>
+            
+        <itemizedlist>
+            <listitem>
+                <para>have the same number of type parameters as the class it 
+                refines, and for each type parameter the intersection of its
+                upper bounds must be a supertype of the intersection of the 
+                upper bounds of the corresponding type parameter of the class
+                it refines,</para>
+            </listitem>
+            <listitem>
+                <para>have a parameter list with the same signature as the 
+                class it refines, and</para>
+            </listitem>
+             <listitem>
+                <para>directly or indirectly extend the class it refines.</para>
+            </listitem>
+        </itemizedlist>
+            
+        <para>Furthermore:</para>
         
         <itemizedlist>
             <listitem>
-                <para>is annotated <literal>actual</literal>,</para>
+                <para>the refining class must be annotated <literal>actual</literal>, 
+                and</para>
             </listitem>
             <listitem>
-                <para>has the same name as the member class it refines, and</para>
+                <para>the refined class must be annotated <literal>formal</literal>
+                or <literal>default</literal>.</para>
             </listitem>
-            <listitem>
-                <para>has a parameter list with the same signature as the member 
-                class it refines, after substitution of type arguments specified 
-                in the <literal>extends</literal> or <literal>satisfies</literal>
-                clause, and either</para>
-            </listitem>
-            <listitem>
-                <para>directly or indirectly extends the member class it refines.</para>
-            </listitem>
-            <!--
-            <listitem>
-               <para>extends the superclass of the member class it refines and 
-               satisfies all interfaces satisfied by the member class it 
-               refines, where the member class it refines is a 
-               <literal>formal</literal> member class with no body.</para>
-            </listitem>
-            -->
         </itemizedlist>
         
-        <para>Finally, the refined member class must be visible to the member
-        class annotated <literal>actual</literal>.</para>
-        
         <para>If a member class is annotated <literal>actual</literal>, it must 
-        refine some class defined by a supertype, and the class it refines 
-        must be either <literal>formal</literal> or <literal>default</literal>.</para>
+        refine some member class of a supertype.</para>
             
         <para>A member class may not, directly or indirectly, refine two different
         member classes not themselves annotated <literal>actual</literal>.</para>
@@ -1890,48 +1897,58 @@ case (hexadecimal) {
             </listitem>
             </itemizedlist>           
             
-            <para>A method of a subtype <emphasis>refines</emphasis> a method of
-            a supertype if the first method:</para>
+            <para>A method of a subtype <emphasis>refines</emphasis> a method of a 
+            supertype if the method of the supertype is <literal>shared</literal> 
+            and the two methods have the same name. The first method is called the
+            <emphasis>refining</emphasis> method, and the second method is called
+            the <emphasis>refined</emphasis> method.</para>
+            
+            <para>Then the refining method must, after substitution of type arguments 
+            specified in the <literal>extends</literal> or <literal>satisfies</literal> 
+            clause of the class to which the method belongs:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>is annotated <literal>actual</literal>,</para>
+                    <para>have the same number of type parameters as the method it 
+                    refines, and for each type parameter the intersection of its
+                    upper bounds must be a supertype of the intersection of the 
+                    upper bounds of the corresponding type parameter of the method
+                    it refines,</para>
                 </listitem>
                 <listitem>
-                    <para>has the same name as the method it refines,</para>
-                </listitem>
-                <listitem>
-                    <para>has the same number of parameter lists, with the same
-                    signatures, as the method it refines, after substitution of 
-                    type arguments specified in the <literal>extends</literal> or 
-                    <literal>satisfies</literal> clause of the class, and</para>
+                    <para>have the same number of parameter lists, with the same
+                    signatures, as the method it refines, and</para>
                 </listitem>
                  <listitem>
-                    <para>has a return type that is assignable to the return type 
-                    of the method it refines in the compilation unit containing
-                    the method annotated <literal>actual</literal>, after 
-                    substitution of type arguments specified in the 
-                    <literal>extends</literal> or <literal>satisfies</literal> 
-                    clause of the class.</para>
+                    <para>have a return type that is assignable to the return type 
+                    of the method it refines.</para>
                 </listitem>
             </itemizedlist>
             
             <comment><para>TODO: we would like to eventually support contravariant
             refinement of method parameter types.</para></comment>
             
-            <para>Finally, the refined method must be visible to the method
-            annotated <literal>actual</literal>.</para>
+            <para>Furthermore:</para>
             
-            <para>If a method is annotated <literal>actual</literal>, it must 
-            refine some method defined by a supertype, and the method it refines 
-            must be either <literal>formal</literal> or 
-            <literal>default</literal>.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>the refining method must be annotated <literal>actual</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>the refined method must be annotated <literal>formal</literal>
+                    or <literal>default</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
-            <para>A method may not, directly or indirectly, refine two different
+            <para>If a method is annotated <literal>actual</literal>, it must refine 
+            some method defined by a supertype.</para>
+            
+            <para>A method may not, directly or indirectly, refine two different 
             methods not themselves annotated <literal>actual</literal>.</para>
-        
-            <para>Then invocation of the method is polymorphic, and the actual
-            method invoked depends upon the concrete type of the class instance.</para>
+            
+            <para>Then invocation of the method is polymorphic, and the actual method 
+            invoked depends upon the concrete type of the class instance.</para>
             
             <programlisting>shared abstract class AbstractSquareRooter() {
     shared formal Float squareRoot(Float x);
@@ -2285,46 +2302,50 @@ print(greeting);</programlisting>
             <comment><para>TODO: are you allowed to refine a getter or setter without also 
             refining its matching setter or getter?</para></comment>
             
-            <para>An attribute of a subtype <emphasis>refines</emphasis> an attribute of
-            a supertype if the first attribute:</para>
+            <para>An attribute of a subtype <emphasis>refines</emphasis> an attribute
+            of a supertype if the attribute of the supertype is <literal>shared</literal> 
+            and the two attributes have the same name. The first attribute is called the 
+            <emphasis>refining</emphasis> attribute, and the second attribute is called 
+            the <emphasis>refined</emphasis> attribute.</para>
+            
+            <para>Then the refining attribute must, after substitution of type arguments 
+            specified in the <literal>extends</literal> or <literal>satisfies</literal> 
+            clause of the class to which the attribute belongs:</para>
             
             <itemizedlist>
-                <listitem>
-                    <para>is annotated <literal>actual</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para>has the same name as the attribute it refines,</para>
+                 <listitem>
+                    <para>have <emphasis>exactly the same type</emphasis> as the 
+                    attribute it refines, if the attribute it refines is variable, 
+                    or</para>
                 </listitem>
                  <listitem>
-                    <para>has a type that is assignable to the type of the attribute it 
-                    refines in the compilation unit containing the attribute annotated 
-                    <literal>actual</literal>, after substitution of type arguments 
-                    specified in the <literal>extends</literal> or <literal>satisfies</literal> 
-                    clause of the class,</para>
-                </listitem>
-                 <listitem>
-                    <para>or has <emphasis>exactly the same type</emphasis> as the 
-                    attribute it refines, after substitution of type arguments specified 
-                    in the <literal>extends</literal> or <literal>satisfies</literal> clause
-                    of the class, if the attribute it refines is <literal>variable</literal>, 
-                    and</para>
+                    <para>have a type that is assignable to the type of the attribute it 
+                    refines, if the attribute it refines is not variable, and</para>
                 </listitem>
                 <listitem>
-                    <para>is variable, if the attribute it refines is variable.</para>
+                    <para>be variable, if the attribute it refines is variable.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>Finally, the refined attribute must be visible to the attribute 
-            annotated <literal>actual</literal>.</para>
-        
+            <para>Furthermore:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the refining attribute must be annotated <literal>actual</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>the refined attribute must be annotated <literal>formal</literal>
+                    or <literal>default</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
             <para>If an attribute is annotated <literal>actual</literal>, it must 
-            refine some attribute defined by a supertype, and the attribute it 
-            refines must be either <literal>formal</literal> or 
-            <literal>default</literal>.</para>
+            refine some attribute defined by a supertype.</para>
             
             <para>An attribute may not, directly or indirectly, refine two different
             attributes not themselves annotated <literal>actual</literal>.</para>
-        
+            
             <para>A non-variable attribute may be refined by a variable attribute.</para>
             
             <comment><para>TODO: Is that really allowed? It could break the superclass.
