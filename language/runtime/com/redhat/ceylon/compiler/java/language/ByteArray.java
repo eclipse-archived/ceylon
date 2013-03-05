@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 @Ceylon(major = 4)
-@Class(extendsType="ceylon.language::Object")
+@Class
 @ValueType
 public final class ByteArray implements ReifiedType {
     
