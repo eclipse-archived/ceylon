@@ -1829,7 +1829,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 || typeFact().isIntersection(simpleType)) {
             return makeNull();
         } else {
-            typeExpr = makeJavaType(type, JT_RAW);
+            typeExpr = makeJavaType(type, JT_RAW | JT_NO_PRIMITIVES);
             return makeSelect(typeExpr, "class");
         }
     }
