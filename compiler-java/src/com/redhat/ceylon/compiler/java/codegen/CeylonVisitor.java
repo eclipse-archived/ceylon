@@ -118,12 +118,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         boolean annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinPackage(decl)) {
-            // Toplevel attributes
-            appendList(gen.transform(decl));
-        } else if (Decl.withinClassOrInterface(decl)) {
+        if (Decl.withinClassOrInterface(decl)) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
+        } else if (Decl.isToplevel(decl)) {
+            topattrBuilder.add(decl);
         } else if (Decl.isLocal(decl) 
                 && Decl.isCaptured(decl) 
                 && decl.getDeclarationModel().isVariable()) {
