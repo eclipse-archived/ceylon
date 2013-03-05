@@ -2897,8 +2897,8 @@ public class GenerateJsVisitor extends Visitor
             box(that.getLeftTerm());
             out(",", rtmp, "=");
             box(that.getRightTerm());
-            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, "!==",
-                    clAlias, "getLarger()))||", ltmp, "<=", rtmp, ")");
+            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
+                    clAlias, "getLarger())||", ltmp, "<=", rtmp, ")");
         } else {
             out("(");
             leftCompareRight(that);
@@ -2916,8 +2916,8 @@ public class GenerateJsVisitor extends Visitor
             box(that.getLeftTerm());
             out(",", rtmp, "=");
             box(that.getRightTerm());
-            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, "!==",
-                    clAlias, "getSmaller()))||", ltmp, ">=", rtmp, ")");
+            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
+                    clAlias, "getSmaller())||", ltmp, ">=", rtmp, ")");
         } else {
             out("(");
             leftCompareRight(that);
@@ -2925,6 +2925,50 @@ public class GenerateJsVisitor extends Visitor
             out(")");
         }
     }
+    public void visit(final Tree.WithinOp that) {
+        final String ttmp = names.createTempVariable();
+        out("(", ttmp, "=");
+        box(that.getTerm());
+        out(",");
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getTerm().getTypeModel())) {
+            final String tmpl = names.createTempVariable();
+            final String tmpu = names.createTempVariable();
+            out(tmpl, "=");
+            box(that.getLowerBound().getTerm());
+            out(",", tmpu, "=");
+            box(that.getUpperBound().getTerm());
+            out(",((", ttmp, ".compare&&",ttmp,".compare(", tmpl);
+            if (that.getLowerBound() instanceof Tree.OpenBound) {
+                out(")===", clAlias, "getLarger())||", ttmp, ">", tmpl, ")");
+            } else {
+                out(")!==", clAlias, "getSmaller())||", ttmp, ">=", tmpl, ")");
+            }
+            out("&&((", ttmp, ".compare&&",ttmp,".compare(", tmpu);
+            if (that.getUpperBound() instanceof Tree.OpenBound) {
+                out(")===", clAlias, "getSmaller())||", ttmp, "<", tmpu, ")");
+            } else {
+                out(")!==", clAlias, "getLarger())||", ttmp, "<=", tmpu, ")");
+            }
+        } else {
+            out(ttmp, ".compare(");
+            box(that.getLowerBound().getTerm());
+            if (that.getLowerBound() instanceof Tree.OpenBound) {
+                out(")===", clAlias, "getLarger()");
+            } else {
+                out(")!==", clAlias, "getSmaller()");
+            }
+            out("&&");
+            out(ttmp, ".compare(");
+            box(that.getUpperBound().getTerm());
+            if (that.getUpperBound() instanceof Tree.OpenBound) {
+                out(")===", clAlias, "getSmaller()");
+            } else {
+                out(")!==", clAlias, "getLarger()");
+            }
+        }
+        out(")");
+    }
+
     /** Outputs the CL equivalent of 'a==b' in JS. */
     private void leftEqualsRight(BinaryOperatorExpression that) {
         binaryOp(that, new BinaryOpGenerator() {
@@ -3829,5 +3873,6 @@ public class GenerateJsVisitor extends Visitor
     boolean isInDynamicBlock() {
         return dynblock > 0;
     }
+
 }
 
