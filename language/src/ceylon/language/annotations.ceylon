@@ -3,9 +3,8 @@ doc "Annotation to mark a type or member as shared. A `shared`
      is declared."
 shared Null shared() { return null; }
 
-doc "Annotation to mark an attribute as variable. A `variable` 
-     attribute must be assigned with `=` and may be 
-     reassigned over time." 
+doc "Annotation to mark an value as variable. A `variable` 
+     value must be assigned multiple times." 
 shared Null variable() { return null; }
 
 doc "Annotation to mark a class as abstract. An `abstract` 
@@ -13,8 +12,8 @@ doc "Annotation to mark a class as abstract. An `abstract`
      class may have enumerated cases."
 shared Null abstract() { return null; }
 
-doc "Annotation to mark a class as final. A `final` 
-     class may not be extended."
+doc "Annotation to mark a class as final. A `final` class 
+     may not be extended."
 shared Null final() { return null; }
 
 doc "Annotation to mark a member of a type as refining a 
@@ -31,7 +30,7 @@ doc "Annotation to mark a member whose implementation may be
 shared Null default() { return null; }
 
 doc "Annotation to disable definite initialization analysis
-     for a simple attribute."  
+     for a reference."  
 shared Null late() { return null; }
 
 doc "Annotation to mark a member whose implementation is 
@@ -64,6 +63,6 @@ doc "Annotation to specify the URL of the license of a module
      or package." 
 shared Null license(String url) { return null; }
 
-shared Null export() { return null; }
-
+doc "Annotation to specify that a module can be executed 
+     even if the annotated dependency is not available."
 shared Null optional() { return null; }
