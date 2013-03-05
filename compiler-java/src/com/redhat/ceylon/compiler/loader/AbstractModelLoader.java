@@ -157,12 +157,42 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
     private static final TypeMirror DOUBLE_TYPE = simpleObjectType("java.lang.Double");
     private static final TypeMirror CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
-    
+
     private static final TypeMirror PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
     private static final TypeMirror CHARACTER_TYPE = simpleObjectType("java.lang.Character");
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
     private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
+
+    private static final String JAVA_LANG_BYTE_ARRAY = "java.lang.ByteArray";
+    private static final String JAVA_LANG_SHORT_ARRAY = "java.lang.ShortArray";
+    private static final String JAVA_LANG_INT_ARRAY = "java.lang.IntArray";
+    private static final String JAVA_LANG_LONG_ARRAY = "java.lang.LongArray";
+    private static final String JAVA_LANG_FLOAT_ARRAY = "java.lang.FloatArray";
+    private static final String JAVA_LANG_DOUBLE_ARRAY = "java.lang.DoubleArray";
+    private static final String JAVA_LANG_CHAR_ARRAY = "java.lang.CharArray";
+    private static final String JAVA_LANG_BOOLEAN_ARRAY = "java.lang.BooleanArray";
+    private static final String JAVA_LANG_OBJECT_ARRAY = "java.lang.ObjectArray";
+
+    private static final String CEYLON_BYTE_ARRAY = "com.redhat.ceylon.compiler.java.language.ByteArray";
+    private static final String CEYLON_SHORT_ARRAY = "com.redhat.ceylon.compiler.java.language.ShortArray";
+    private static final String CEYLON_INT_ARRAY = "com.redhat.ceylon.compiler.java.language.IntArray";
+    private static final String CEYLON_LONG_ARRAY = "com.redhat.ceylon.compiler.java.language.LongArray";
+    private static final String CEYLON_FLOAT_ARRAY = "com.redhat.ceylon.compiler.java.language.FloatArray";
+    private static final String CEYLON_DOUBLE_ARRAY = "com.redhat.ceylon.compiler.java.language.DoubleArray";
+    private static final String CEYLON_CHAR_ARRAY = "com.redhat.ceylon.compiler.java.language.CharArray";
+    private static final String CEYLON_BOOLEAN_ARRAY = "com.redhat.ceylon.compiler.java.language.BooleanArray";
+    private static final String CEYLON_OBJECT_ARRAY = "com.redhat.ceylon.compiler.java.language.ObjectArray";
+
+    private static final TypeMirror JAVA_BYTE_ARRAY_TYPE = simpleObjectType("java.lang.ByteArray");
+    private static final TypeMirror JAVA_SHORT_ARRAY_TYPE = simpleObjectType("java.lang.ShortArray");
+    private static final TypeMirror JAVA_INT_ARRAY_TYPE = simpleObjectType("java.lang.IntArray");
+    private static final TypeMirror JAVA_LONG_ARRAY_TYPE = simpleObjectType("java.lang.LongArray");
+    private static final TypeMirror JAVA_FLOAT_ARRAY_TYPE = simpleObjectType("java.lang.FloatArray");
+    private static final TypeMirror JAVA_DOUBLE_ARRAY_TYPE = simpleObjectType("java.lang.DoubleArray");
+    private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleObjectType("java.lang.CharArray");
+    private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleObjectType("java.lang.BooleanArray");
+    private static final TypeMirror JAVA_OBJECT_ARRAY_TYPE = simpleObjectType("java.lang.ObjectArray");
 
     private static TypeMirror simpleObjectType(String name) {
         return new SimpleReflType(name, TypeKind.DECLARED);
@@ -205,6 +235,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public synchronized final ClassMirror lookupClassMirror(String name){
         timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
+            // Java array classes are not where we expect them
+            if (JAVA_LANG_OBJECT_ARRAY.equals(name)
+                || JAVA_LANG_BOOLEAN_ARRAY.equals(name)
+                || JAVA_LANG_BYTE_ARRAY.equals(name)
+                || JAVA_LANG_SHORT_ARRAY.equals(name)
+                || JAVA_LANG_INT_ARRAY.equals(name)
+                || JAVA_LANG_LONG_ARRAY.equals(name)
+                || JAVA_LANG_FLOAT_ARRAY.equals(name)
+                || JAVA_LANG_DOUBLE_ARRAY.equals(name)
+                || JAVA_LANG_CHAR_ARRAY.equals(name)) {
+                // turn them into their real class location (get rid of the "java.lang" prefix)
+                name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
+            }
             // we use containsKey to be able to cache null results
             if(classMirrorCache.containsKey(name))
                 return classMirrorCache.get(name);
@@ -334,7 +377,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case FLOAT:   typeName = "java.lang.Float"; break;
         case DOUBLE:  typeName = "java.lang.Double"; break;
         case ARRAY:
-            return typeFactory.getLanguageModuleDeclaration("Array");
+            return ((Class)convertToDeclaration(JAVA_LANG_OBJECT_ARRAY, DeclarationType.TYPE));
         case DECLARED:
             typeName = type.getQualifiedName();
             break;
@@ -362,7 +405,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         // find its module
-        String pkgName = classMirror.getPackage().getQualifiedName();
+        String pkgName;
+        String qualifiedName = classMirror.getQualifiedName();
+        // Java array classes we pretend come from java.lang
+        if(qualifiedName.equals(CEYLON_OBJECT_ARRAY)
+                || qualifiedName.equals(CEYLON_BOOLEAN_ARRAY)
+                || qualifiedName.equals(CEYLON_BYTE_ARRAY)
+                || qualifiedName.equals(CEYLON_SHORT_ARRAY)
+                || qualifiedName.equals(CEYLON_INT_ARRAY)
+                || qualifiedName.equals(CEYLON_LONG_ARRAY)
+                || qualifiedName.equals(CEYLON_FLOAT_ARRAY)
+                || qualifiedName.equals(CEYLON_DOUBLE_ARRAY)
+                || qualifiedName.equals(CEYLON_CHAR_ARRAY)
+                )
+            pkgName = "java.lang";
+        else
+            pkgName = classMirror.getPackage().getQualifiedName();
         Module module = findModuleForPackage(pkgName);
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
@@ -1704,27 +1762,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setName(paramName);
             TypeMirror typeMirror = paramMirror.getType();
             try{
-                ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl, VarianceLocation.CONTRAVARIANT);
+                ProducedType type;
                 if(isVariadic){
-                    // we have a varargs param, we should have an Array<T> type, which we need to turn into Iterable<T>
-                    if(type.getDeclaration() != typeFactory.getArrayDeclaration()
-                            || type.getTypeArgumentList().isEmpty()){
-                        logError("Variadic argument is not of type Array<T>, this is most likely a bug in the compiler");
-                    }else{
-                        // get its first type param
-                        type = type.getTypeArgumentList().get(0);
-                        // possibly make it optional
-                        TypeMirror variadicType = typeMirror.getComponentType();
-                        if(!isCeylon && !variadicType.isPrimitive()){
-                            // Java parameters are all optional unless primitives
-                            ProducedType optionalType = typeFactory.getOptionalType(type);
-                            optionalType.setUnderlyingType(type.getUnderlyingType());
-                            type = optionalType;
-                        }
-                        // turn it into a Sequential<T>
-                        type = typeFactory.getSequentialType(type);
+                    // possibly make it optional
+                    TypeMirror variadicType = typeMirror.getComponentType();
+                    type = obtainType(variadicType, (Scope)decl, TypeLocation.TYPE_PARAM, VarianceLocation.CONTRAVARIANT);
+                    if(!isCeylon && !variadicType.isPrimitive()){
+                        // Java parameters are all optional unless primitives
+                        ProducedType optionalType = typeFactory.getOptionalType(type);
+                        optionalType.setUnderlyingType(type.getUnderlyingType());
+                        type = optionalType;
                     }
+                    // turn it into a Sequential<T>
+                    type = typeFactory.getSequentialType(type);
                 }else{
+                    type = obtainType(typeMirror, paramMirror, (Scope) decl, VarianceLocation.CONTRAVARIANT);
                     // variadic params may technically be null in Java, but it Ceylon sequenced params may not
                     // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
                     // in the java side so let's not allow this
@@ -1735,7 +1787,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         type = optionalType;
                     }
                 }
-                parameter.setType(type );
+                parameter.setType(type);
             }catch(TypeParserException x){
                 logError("Invalid type signature for parameter "+paramName+" of "+container.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
                 throw x;
@@ -2188,6 +2240,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
         } else if (sameType(type, OBJECT_TYPE)) {
             type = CEYLON_OBJECT_TYPE;
+            
+        } else if (type.getKind() == TypeKind.ARRAY && location != TypeLocation.TYPE_PARAM) {
+
+            TypeMirror ct = type.getComponentType();
+            
+            if (sameType(ct, PRIM_BOOLEAN_TYPE)) {
+                type = JAVA_BOOLEAN_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_BYTE_TYPE)) {
+                type = JAVA_BYTE_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_SHORT_TYPE)) {
+                type = JAVA_SHORT_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_INT_TYPE)) { 
+                type = JAVA_INT_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_LONG_TYPE)) { 
+                type = JAVA_LONG_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_FLOAT_TYPE)) {
+                type = JAVA_FLOAT_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_DOUBLE_TYPE)) {
+                type = JAVA_DOUBLE_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_CHAR_TYPE)) {
+                type = JAVA_CHAR_ARRAY_TYPE;
+            } else {
+                // object array
+                type = new SimpleReflType(JAVA_LANG_OBJECT_ARRAY, TypeKind.DECLARED, ct);
+            }
         }
         
         ProducedType ret = getType(type, scope, variance);
@@ -2218,45 +2295,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ProducedType getType(TypeMirror type, Scope scope, VarianceLocation variance) {
         Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
         TypeDeclaration declaration = (TypeDeclaration) decl;
-        if (type.getKind() == TypeKind.ARRAY) {
-            List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
-            TypeMirror ct = type.getComponentType();
-            // Although we are putting that type into a type param, we have special handling
-            // for arrays and so we should treat it as a toplevel (magic boxing of strings)
-            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TOPLEVEL, variance);
-            typeArguments.add(ctpt);
-            ProducedType arrayType = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
-            if (ctpt.getUnderlyingType() != null) {
-                arrayType.setUnderlyingType(ctpt.getUnderlyingType() + "[]");
-            }
-            return arrayType;
-        } else {
-            List<TypeMirror> javacTypeArguments = type.getTypeArguments();
-            if(!javacTypeArguments.isEmpty()){
-                List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
-                for(TypeMirror typeArgument : javacTypeArguments){
-                    // if a single type argument is a wildcard, we erase to Object
-                    if(typeArgument.getKind() == TypeKind.WILDCARD){
-                        if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
-                            TypeMirror bound = typeArgument.getUpperBound();
-                            if(bound == null)
-                                bound = typeArgument.getLowerBound();
-                            // if it has no bound let's take Object
-                            if(bound == null){
-                                // add the type arg and move to the next one
-                                typeArguments.add(typeFactory.getObjectDeclaration().getType());
-                                continue;
-                            }
-                            typeArgument = bound;
-                        }else
-                            return typeFactory.getObjectDeclaration().getType();
-                    }
-                    typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance));
+        List<TypeMirror> javacTypeArguments = type.getTypeArguments();
+        if(!javacTypeArguments.isEmpty()){
+            List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
+            for(TypeMirror typeArgument : javacTypeArguments){
+                // if a single type argument is a wildcard, we erase to Object
+                if(typeArgument.getKind() == TypeKind.WILDCARD){
+                    if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
+                        TypeMirror bound = typeArgument.getUpperBound();
+                        if(bound == null)
+                            bound = typeArgument.getLowerBound();
+                        // if it has no bound let's take Object
+                        if(bound == null){
+                            // add the type arg and move to the next one
+                            typeArguments.add(typeFactory.getObjectDeclaration().getType());
+                            continue;
+                        }
+                        typeArgument = bound;
+                    }else
+                        return typeFactory.getObjectDeclaration().getType();
                 }
-                return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+                typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance));
             }
-            return declaration.getType();
+            return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
         }
+        return declaration.getType();
     }
 
     private ProducedType getQualifyingType(TypeDeclaration declaration) {
