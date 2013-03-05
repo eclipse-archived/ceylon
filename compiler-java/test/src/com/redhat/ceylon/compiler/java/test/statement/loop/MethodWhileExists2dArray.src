@@ -6,7 +6,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final void ints$priv() {
-        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor, long.class, 2L, .ceylon.language.Integer.instance(0L)));
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.class, 2L, .ceylon.language.Integer.instance(0L)));
         while (true) {
             .ceylon.language.Array<.ceylon.language.Integer> $r$0;
             if (($r$0 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
@@ -17,7 +17,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final void strings$priv() {
-        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.ceylon.language.String.$TypeDescriptor, .java.lang.String.class, 2L, .ceylon.language.String.instance("")));
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.class, 2L, .ceylon.language.String.instance("")));
         while (true) {
             .ceylon.language.Array<.ceylon.language.String> $r$2;
             if (($r$2 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
