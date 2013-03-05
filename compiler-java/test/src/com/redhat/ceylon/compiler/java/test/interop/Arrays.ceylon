@@ -77,6 +77,11 @@ void test_booleans() {
     Integer i = items.size;
     Array<Boolean> arr = items.array;
     assert(items === arrays.asBooleanArray(arr));
+
+    items.copyTo(items);
+    items.copyTo(items, 0, 0, items.size);
+    items.copyTo{destination = items;};
+    items.copyTo{destination = items; sourcePosition = 0; destinationPosition = 0;};
     
     // multi-dimensional array
     ObjectArray<BooleanArray> matrix = ObjectArray<BooleanArray>(10);
