@@ -58,6 +58,7 @@ public final class ShortArray implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         throw Util.makeJavaArrayWrapperException();

@@ -54,6 +54,7 @@ public final class ObjectArray<T> implements ReifiedType {
         return null;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         throw Util.makeJavaArrayWrapperException();
