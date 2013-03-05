@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.lang { JString = String, ObjectArray } 
+
 @nomodel
 shared void bug817() {
     bug817_1();
@@ -25,7 +27,7 @@ shared void bug817() {
 
 shared void bug817_1() {
     try {
-        Array<String> names = NullArray().names();
+        ObjectArray<JString> names = NullArray().names();
     } catch (Exception ex) {
         return;
     }
@@ -33,7 +35,7 @@ shared void bug817_1() {
 }
 
 shared void bug817_2() {
-    Array<String>? names = NullArray().names();
+    ObjectArray<JString>? names = NullArray().names();
     if (exists names) {
         throw Exception("Exists on `null` array has evaluated to `true`!");
     }
