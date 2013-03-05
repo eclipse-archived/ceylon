@@ -1294,6 +1294,41 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(op, op.getUnit().getComparableDeclaration());
     }
 
+    public JCExpression transform(Tree.WithinOp op) {
+        OperatorTranslation operator = Operators.getOperator(Tree.AndOp.class);
+        OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
+
+        JCExpression lower = transformBound(op.getTerm(), op.getLowerBound(), false);
+        JCExpression upper = transformBound(op.getTerm(), op.getUpperBound(), true);
+        
+        at(op);
+        return transformOverridableBinaryOperator(operator, optimisationStrategy, lower, upper, null);
+    }
+
+    public JCExpression transformBound(Tree.Term term, Tree.Bound bound, boolean isUpper) {
+        OperatorTranslation operator;
+        if (isUpper) {
+            if (bound instanceof Tree.OpenBound) {
+                operator = Operators.getOperator(Tree.SmallerOp.class);
+            } else {
+                operator = Operators.getOperator(Tree.SmallAsOp.class);
+            }
+        } else {
+            if (bound instanceof Tree.OpenBound) {
+                operator = Operators.getOperator(Tree.LargeAsOp.class);
+            } else {
+                operator = Operators.getOperator(Tree.LargerOp.class);
+            }
+        }
+        OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(bound, term, bound.getTerm(), this);
+
+        JCExpression left = transformExpression(term, optimisationStrategy.getBoxingStrategy(), null);
+        JCExpression right = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
+        
+        at(bound);
+        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null);
+    }
+
     // Arithmetic operators
     
     public JCExpression transform(Tree.ArithmeticOp op) {

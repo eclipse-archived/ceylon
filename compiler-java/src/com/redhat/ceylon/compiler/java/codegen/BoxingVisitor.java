@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Bound;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
@@ -60,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpres
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class BoxingVisitor extends Visitor {
@@ -334,6 +336,21 @@ public abstract class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(ComparisonOp that) {
+        super.visit(that);
+        // this is not conditional
+        CodegenUtil.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(WithinOp that) {
+        super.visit(that);
+        // Does it matter which Bound we choose?
+        propagateFromTerm(that, that.getLowerBound());
+        underlyingType(that.getLowerBound());
+    }
+
+    @Override
+    public void visit(Bound that) {
         super.visit(that);
         // this is not conditional
         CodegenUtil.markUnBoxed(that);
