@@ -59,59 +59,59 @@ public final class LongArray implements ReifiedType {
     }
 
     @Ignore
-    public static void copyTo(boolean[] array, boolean[] destination){
+    public static void copyTo(long[] array, long[] destination){
         System.arraycopy(array, 0, destination, 0, array.length);
     }
 
     @Ignore
-    public static void copyTo(boolean[] array, boolean[] destination, int sourcePosition){
+    public static void copyTo(long[] array, long[] destination, int sourcePosition){
         System.arraycopy(array, sourcePosition, destination, 0, array.length);
     }
 
     @Ignore
-    public static void copyTo(boolean[] array, boolean[] destination, int sourcePosition, int destinationPosition){
+    public static void copyTo(long[] array, long[] destination, int sourcePosition, int destinationPosition){
         System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length);
     }
 
     @Ignore
-    public static void copyTo(boolean[] array, boolean[] destination, int sourcePosition, int destinationPosition, int length){
+    public static void copyTo(long[] array, long[] destination, int sourcePosition, int destinationPosition, int length){
         System.arraycopy(array, sourcePosition, destination, destinationPosition, length);
     }
 
     @Ignore
-    public int copyTo$sourcePosition(boolean[] destination){
+    public int copyTo$sourcePosition(long[] destination){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$destinationPosition(boolean[] destination, int sourcePosition){
+    public int copyTo$destinationPosition(long[] destination, int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$length(boolean[] destination, int sourcePosition, int destinationPosition){
+    public int copyTo$length(long[] destination, int sourcePosition, int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(boolean[] destination){
+    public void copyTo(long[] destination){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(boolean[] destination, 
+    public void copyTo(long[] destination, 
                        int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(boolean[] destination, 
+    public void copyTo(long[] destination, 
                        int sourcePosition, 
                        int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
-    public void copyTo(@Name("destination") boolean[] destination, 
+    public void copyTo(@Name("destination") long[] destination, 
                        @Name("sourcePosition") @Defaulted int sourcePosition, 
                        @Name("destinationPosition") @Defaulted int destinationPosition, 
                        @Name("length") @Defaulted int length){
