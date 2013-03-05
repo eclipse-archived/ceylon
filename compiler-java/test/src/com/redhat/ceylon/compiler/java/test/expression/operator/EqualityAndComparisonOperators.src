@@ -188,6 +188,23 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         );
     }
     
+    private final void withinUnboxed$priv() {
+        boolean sync = false;
+        final long x = 0L;
+        sync = x >= 0L && x < 1L;
+        sync = x > 0L && x < 1L;
+        sync = x >= 0L && x <= 1L;
+        sync = x > 0L && x <= 1L;
+    }
+    
+    private final void withinBoxed$priv(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger x, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger l, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger u) {
+        boolean sync = false;
+        sync = x.compare(l).asLargeAs() && x.compare(u).smallerThan();
+        sync = x.compare(l).largerThan() && x.compare(u).smallerThan();
+        sync = x.compare(l).asLargeAs() && x.compare(u).asSmallAs();
+        sync = x.compare(l).largerThan() && x.compare(u).asSmallAs();
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonOperators();

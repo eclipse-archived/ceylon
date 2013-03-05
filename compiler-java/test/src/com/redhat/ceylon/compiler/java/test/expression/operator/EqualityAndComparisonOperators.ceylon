@@ -92,4 +92,21 @@ shared class EqualityAndComparisonOperators() {
         // type parameters
         //M5: sync = is Sequence<Boolean> foo;
     }
+
+    void withinUnboxed() {
+        variable Boolean sync = false;
+        Integer x = 0;
+        sync = 0 < x < 1;
+        sync = 0 <= x < 1;
+        sync = 0 < x <= 1;
+        sync = 0 <= x <= 1;
+    }
+
+    void withinBoxed(EqualityAndComparisonInteger x, EqualityAndComparisonInteger l, EqualityAndComparisonInteger u) {
+        variable Boolean sync = false;
+        sync = l < x < u;
+        sync = l <= x < u;
+        sync = l < x <= u;
+        sync = l <= x <= u;
+    }
 }
