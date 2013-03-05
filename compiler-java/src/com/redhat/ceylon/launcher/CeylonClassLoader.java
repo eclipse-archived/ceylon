@@ -98,12 +98,12 @@ public class CeylonClassLoader extends URLClassLoader {
         }
         if (ceylonHomeStr == null) {
             // Then try to deduce it from the location of the current JAR file
-            // (asuming $CEYLON_HOME/lib/ceylon-bootstrap.jar)
+            // (assuming $CEYLON_HOME/lib/ceylon-bootstrap.jar)
             File jar = new File(CeylonClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             ceylonHome = jar.getParentFile().getParentFile();
             if (!checkHome(ceylonHome)) {
                 // As a last ditch effort see if we can find "ceylon" in the system's shell
-                // path and decuce the home folder from that (asuming $CEYLON_HOME/bin/ceylon)
+                // path and decuce the home folder from that (assuming $CEYLON_HOME/bin/ceylon)
                 File script = findCeylonScript();
                 if (script != null) {
                     ceylonHome = script.getParentFile().getParentFile();
