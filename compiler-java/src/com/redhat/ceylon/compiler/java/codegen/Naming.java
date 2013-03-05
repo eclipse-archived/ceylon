@@ -260,7 +260,7 @@ public class Naming implements LocalId {
         
         if (flags.contains(DeclNameFlag.QUALIFIED)) {
             final List<String> packageName;
-            if(!AbstractTransformer.isJavaArray(decl.getType()))
+            if(!AbstractTransformer.isJavaArray(decl))
                 packageName = ((Package) s).getName();
             else
                 packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;

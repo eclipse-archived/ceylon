@@ -1205,10 +1205,19 @@ public abstract class AbstractTransformer implements Transformation {
         return (jt != null) ? jt : makeErroneous();
     }
 
-    public static boolean isJavaArray(ProducedType type) {
-        if(type == null || type.getDeclaration() instanceof Class == false)
+    public boolean isJavaArray(ProducedType type) {
+        if(type == null)
             return false;
-        Class c = (Class) type.getDeclaration();
+        type = simplifyType(type);
+        if(type == null)
+            return false;
+        return isJavaArray(type.getDeclaration());
+    }
+
+    public static boolean isJavaArray(TypeDeclaration decl) {
+        if(decl instanceof Class == false)
+            return false;
+        Class c = (Class) decl;
         String name = c.getQualifiedNameString();
         return name.equals("java.lang::ObjectArray")
                 || name.equals("java.lang::ByteArray")
@@ -1222,6 +1231,9 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private JCExpression getJavaArrayElementType(ProducedType type, int flags) {
+        if(type == null)
+            return makeErroneous(null, "Compiler bug: type is not a Java array: " + type);
+        type = simplifyType(type);
         if(type == null || type.getDeclaration() instanceof Class == false)
             return makeErroneous(null, "Compiler bug: type is not a Java array: " + type);
         Class c = (Class) type.getDeclaration();
