@@ -415,6 +415,10 @@ TypeConstraints?
         <para>The type of a parameter list containing just a variadic parameter of type
         <literal>T</literal> is <literal>T[]</literal>.</para>
         
+        <comment><para>TODO: should we allow nonempty variadic parameters? For example:</para>
+        <programlisting>Float max(Float+ floats)</programlisting>
+        </comment>
+        
         </section>
         
         <section id="valueparameters">
