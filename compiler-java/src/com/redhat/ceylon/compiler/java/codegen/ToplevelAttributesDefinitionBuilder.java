@@ -29,18 +29,22 @@ import com.sun.tools.javac.util.ListBuffer;
 
 public class ToplevelAttributesDefinitionBuilder {
     private CeylonTransformer gen;
-    private ArrayList<Tree.AttributeGetterDefinition> getters;
+    private ArrayList<Tree.AnyAttribute> attribs;
     private HashMap<String, Tree.AttributeSetterDefinition> setters;
     
     
     public ToplevelAttributesDefinitionBuilder(CeylonTransformer gen) {
         this.gen = gen;
-        getters = new ArrayList<Tree.AttributeGetterDefinition>();
+        attribs = new ArrayList<Tree.AnyAttribute>();
         setters = new HashMap<String, Tree.AttributeSetterDefinition>();
     }
 
+    public void add(Tree.AttributeDeclaration decl) {
+        attribs.add(decl);
+    }
+    
     public void add(Tree.AttributeGetterDefinition decl) {
-        getters.add(decl);
+        attribs.add(decl);
     }
     
     public void add(Tree.AttributeSetterDefinition decl) {
@@ -50,11 +54,11 @@ public class ToplevelAttributesDefinitionBuilder {
     
     public ListBuffer<JCTree> build() {
         ListBuffer<JCTree> result = ListBuffer.lb();
-        for (Tree.AttributeGetterDefinition getter : getters) {
-            boolean annots = gen.checkCompilerAnnotations(getter);
-            String attrName = getter.getIdentifier().getText();
+        for (Tree.AnyAttribute attrib : attribs) {
+            boolean annots = gen.checkCompilerAnnotations(attrib);
+            String attrName = attrib.getIdentifier().getText();
             Tree.AttributeSetterDefinition setter = setters.get(attrName);
-            result.appendList(gen.transformAttribute(getter, setter));
+            result.appendList(gen.transformAttribute(attrib, setter));
             gen.resetCompilerAnnotations(annots);
         }
         return result;
