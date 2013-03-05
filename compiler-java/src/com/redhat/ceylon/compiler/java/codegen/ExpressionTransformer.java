@@ -2147,7 +2147,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
-        if(invocation.getQmePrimary() != null && isJavaArray(invocation.getQmePrimary().getTypeModel())){
+        if(invocation.getQmePrimary() != null 
+                && isJavaArray(invocation.getQmePrimary().getTypeModel())
+                && transformedPrimary.selector != null
+                && (transformedPrimary.selector.equals("get")
+                    || transformedPrimary.selector.equals("set"))){
             if(transformedPrimary.selector.equals("get"))
                 callBuilder.arrayRead(transformedPrimary.expr);
             else if(transformedPrimary.selector.equals("set"))
@@ -2155,7 +2159,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             else
                 return makeErroneous(invocation.getNode(), "Compiler bug: don't know what to do with array selector: "+transformedPrimary.selector);
         } else if (invocation.isOnValueType()) {
-            JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES);
+            JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
 
         } else {

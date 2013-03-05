@@ -1219,6 +1219,24 @@ class NamedArgumentInvocation extends Invocation {
                             && gen.isJavaArray(((Class)getPrimaryDeclaration()).getType())){
                         // default values are hard-coded to Java default values, and are actually ignored
                         continue;
+                    }else if(getQmePrimary() != null 
+                             && gen.isJavaArray(getQmePrimary().getTypeModel())){
+                        // we support array methods with optional parameters
+                        if(getPrimaryDeclaration() instanceof Method
+                                && getPrimaryDeclaration().getName().equals("copyTo")){
+                            if(param.getName().equals("sourcePosition")
+                                    || param.getName().equals("destinationPosition")){
+                                argExpr = gen.makeInteger(0);
+                                hasDefaulted |= true;
+                            }else if(param.getName().equals("length")){
+                                argExpr = gen.makeSelect(varBaseName.suffixedBy("$this$").makeIdent(), "length");
+                                hasDefaulted |= true;
+                            }else{
+                                argExpr = gen.makeErroneous(this.getNode(), "parameter to copyTo method of Java array type not supported: "+param.getName());
+                            }
+                        }else{
+                            argExpr = gen.makeErroneous(this.getNode(), "virtual method of Java array type not supported: "+getPrimaryDeclaration());
+                        }
                     }else{
                         argExpr = makeDefaultedArgumentMethodCall(param);
                         hasDefaulted |= true;
