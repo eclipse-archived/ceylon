@@ -2247,7 +2247,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if (sameType(type, OBJECT_TYPE)) {
             type = CEYLON_OBJECT_TYPE;
             
-        } else if (type.getKind() == TypeKind.ARRAY && location != TypeLocation.TYPE_PARAM) {
+        } else if (type.getKind() == TypeKind.ARRAY) {
 
             TypeMirror ct = type.getComponentType();
             
