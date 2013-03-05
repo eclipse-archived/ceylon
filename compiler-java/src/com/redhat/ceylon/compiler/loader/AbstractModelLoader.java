@@ -1845,9 +1845,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         try{
             MethodMirror meth = null;
             for (MethodMirror m : value.classMirror.getDirectMethods()) {
-                // We skip members marked with @Ignore
-                if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                    continue;
+                // Do not skip members marked with @Ignore, because the getter is supposed to be ignored
 
                 if (m.getName().equals(
                         Naming.getGetterName(value))
