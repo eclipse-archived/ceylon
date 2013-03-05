@@ -121,6 +121,14 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Ignore
+    public static Array<Character> instanceForCodePoints(int[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<Character>(Character.$TypeDescriptor, array);
+    }
+
+    @Ignore
     public static Array<Integer> instance(byte[] array) {
         if (array == null) {
             return null;
@@ -452,7 +460,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         } else if (typeClass == short.class) {
             return (Element) Integer.instance(((short[])array)[index]);
         } else if (typeClass == int.class) {
-            return (Element) Integer.instance(((int[])array)[index]);
+            int val = ((int[])array)[index];
+            if($reifiedElement == Character.$TypeDescriptor)
+                return (Element) Character.instance(val);
+            else
+                return (Element) Integer.instance(val);
         } else if (typeClass == long.class) {
             return (Element) Integer.instance(((long[])array)[index]);
         } else if (typeClass == float.class) {
@@ -482,7 +494,10 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 ((short[])array)[idx] = (short) ((Integer)element).longValue();
             } else if (typeClass == int.class) {
                 // FIXME Another unsafe conversion
-                ((int[])array)[idx] = (int) ((Integer)element).longValue();
+                if(element instanceof Character)
+                    ((int[])array)[idx] = (int) ((Character)element).intValue();
+                else
+                    ((int[])array)[idx] = (int) ((Integer)element).longValue();
             } else if (typeClass == long.class) {
                 ((long[])array)[idx] = ((Integer)element).longValue();
             } else if (typeClass == float.class) {
