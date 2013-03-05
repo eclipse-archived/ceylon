@@ -1451,7 +1451,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         try{
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method, VarianceLocation.COVARIANT);
             method.setType(type);
-            method.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
+            method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
             method.setDeclaredAnything(methodMirror.isDeclaredVoid());
             type.setRaw(methodMirror.getReturnType().isRaw());
         }catch(TypeParserException x){
@@ -1606,7 +1606,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         try{
             ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
-            value.setUncheckedNullType(!isCeylon && !fieldMirror.getType().isPrimitive());
+            value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
             type.setRaw(fieldMirror.getType().isRaw());
         }catch(TypeParserException x){
             logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
@@ -1627,7 +1627,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         try{
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
-            value.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
+            value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
             type.setRaw(methodMirror.getReturnType().isRaw());
         }catch(TypeParserException x){
             logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
@@ -1637,6 +1637,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
+    }
+
+    private boolean isUncheckedNull(AnnotatedMirror methodMirror) {
+        Boolean unchecked = getAnnotationBooleanValue(methodMirror, CEYLON_TYPE_INFO_ANNOTATION, "uncheckedNull");
+        return unchecked != null && unchecked.booleanValue();
     }
 
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
