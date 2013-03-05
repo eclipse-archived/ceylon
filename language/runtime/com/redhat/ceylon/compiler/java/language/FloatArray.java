@@ -59,6 +59,66 @@ public final class FloatArray implements ReifiedType {
     }
 
     @Ignore
+    public static void copyTo(float[] array, float[] destination){
+        System.arraycopy(array, 0, destination, 0, array.length);
+    }
+
+    @Ignore
+    public static void copyTo(float[] array, float[] destination, int sourcePosition){
+        System.arraycopy(array, sourcePosition, destination, 0, array.length);
+    }
+
+    @Ignore
+    public static void copyTo(float[] array, float[] destination, int sourcePosition, int destinationPosition){
+        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length);
+    }
+
+    @Ignore
+    public static void copyTo(float[] array, float[] destination, int sourcePosition, int destinationPosition, int length){
+        System.arraycopy(array, sourcePosition, destination, destinationPosition, length);
+    }
+
+    @Ignore
+    public int copyTo$sourcePosition(float[] destination){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public int copyTo$destinationPosition(float[] destination, int sourcePosition){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public int copyTo$length(float[] destination, int sourcePosition, int destinationPosition){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public void copyTo(float[] destination){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public void copyTo(float[] destination, 
+                       int sourcePosition){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public void copyTo(float[] destination, 
+                       int sourcePosition, 
+                       int destinationPosition){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    public void copyTo(@Name("destination") float[] destination, 
+                       @Name("sourcePosition") @Defaulted int sourcePosition, 
+                       @Name("destinationPosition") @Defaulted int destinationPosition, 
+                       @Name("length") @Defaulted int length){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         throw Util.makeJavaArrayWrapperException();
