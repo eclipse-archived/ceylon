@@ -1105,10 +1105,9 @@ Float|Integer num = one;</programlisting></comment>
         <itemizedlist>
         <listitem>
             <para>An interface or <literal>abstract</literal> class may optionally 
-            specify an enumerated list of subtypes, in which case every 
-            non-<literal>abstract</literal> subclass of the interface or 
-            <literal>abstract</literal> class must be a subtype of exactly one of 
-            the enumerated subtypes.</para>
+            specify an enumerated list of subtypes, in which case every subclass of 
+            the interface or <literal>abstract</literal> class must be a subtype of 
+            exactly one of the enumerated subtypes.</para>
         </listitem>
         <listitem>
             <para>Likewise, a type parameter may specify an enumerated list of all

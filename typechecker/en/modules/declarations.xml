@@ -665,9 +665,9 @@ TypeConstraints?
         case may be an <literal>abstract</literal> class. Each case must be a subtype 
         of the interface type.</para>
                 
-        <para>If an interface has an <literal>of</literal> clause, then every 
-        non-<literal>abstract</literal> subclass of the interface must be subclass 
-        of one of the enumerated cases.</para>
+        <para>If an interface has an <literal>of</literal> clause, then every interface 
+        or class which is a subtype of the interface must be subtype of exactly one of 
+        the enumerated cases.</para>
                 
     </section>
     
@@ -1442,9 +1442,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         be an <literal>abstract</literal> class. Each case must be a subclass of 
         the class.</para>
                         
-        <para>If a class has an <literal>of</literal> clause, then every 
-        non-<literal>abstract</literal> subclass of the class must be a subtype 
-        of one of the enumerated cases.</para>
+        <para>If a class has an <literal>of</literal> clause, then another class 
+        may not directly <literal>extend</literal> the class unless it is of one 
+        of the enumerated cases of the class.</para>
         
         <para>A non-<literal>abstract</literal> class may not have an <literal>of</literal> 
         clause.<!--A <literal>final</literal> class may not have an <literal>of</literal> 
