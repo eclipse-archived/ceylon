@@ -2121,8 +2121,8 @@ case (hexadecimal) {
             <programlisting>shared String name { return join(firstName, lastName); }
 assign name { firstName=first(name); lastName=last(name); }</programlisting>
             
-            <para>Alternatively, a setter implementation may be a lazy specifier. The 
-            specified expression must be a legal statement.</para>
+            <para>Alternatively, a setter implementation may be a lazy specifier. 
+            The specified expression must be a legal statement.</para>
             
             <programlisting>shared String name => join(n[0], n[1]);
 assign name => n = [first(name), last(name)];</programlisting>
@@ -2131,6 +2131,18 @@ assign name => n = [first(name), last(name)];</programlisting>
             <literal>default</literal> or <literal>actual</literal>. The visibility 
             and refinement modifiers of an attribute with a setter are specified by 
             annotating the matching getter.</para>
+            
+            <comment><para>TODO: should we allow un-<literal>shared</literal> setters 
+            for <literal>shared</literal> getters? Then you would have to explicitly
+            annotate the setter if you want it to be <literal>shared</literal>.</para></comment>
+            
+            <comment><para>TODO: should we allow a setter for a reference? For example:</para>
+            <programlisting>shared variable String name = "";
+assign name {
+    assert (0&lt;name.size&lt;=30);
+    this.name = name;
+}</programlisting>
+            </comment>
             
             <comment><para>TODO: should we require that the corresponding getter be 
             annotated <literal>variable</literal>?</para></comment>
