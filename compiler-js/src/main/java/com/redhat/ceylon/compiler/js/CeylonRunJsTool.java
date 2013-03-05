@@ -220,7 +220,7 @@ public class CeylonRunJsTool implements Tool {
 
         final boolean isDefault = module.equals("default");
         //The timeout is to have enough time to start reading on the process streams
-        final String eval = String.format("setTimeout(function(){},50);require('%s%s/%s%s').%s();",
+        final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};require('%s%s/%s%s').%s();",
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
                 module,
