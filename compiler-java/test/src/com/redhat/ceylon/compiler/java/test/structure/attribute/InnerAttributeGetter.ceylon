@@ -26,4 +26,9 @@ class InnerAttributeGetter() {
         }
         Integer n = innerGetter;
     }
+    void m2() {
+        value m = 2;
+        Integer innerGetter => m;
+        Integer n = innerGetter;
+    }
 }

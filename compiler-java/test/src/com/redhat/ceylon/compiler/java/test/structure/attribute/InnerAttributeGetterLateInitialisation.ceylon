@@ -27,4 +27,10 @@ class InnerAttributeGetterLateInitialisation() {
         }
         Integer n = innerGetter;
     }
+    void m2() {
+        Integer m;
+        m = 2;
+        Integer innerGetter => m;
+        Integer n = innerGetter;
+    }
 }

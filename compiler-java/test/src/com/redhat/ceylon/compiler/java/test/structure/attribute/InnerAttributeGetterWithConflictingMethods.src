@@ -32,6 +32,33 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
         final long n2 = getX.getX();
     }
     
+    private final void m2$priv() {
+        
+        final class x$getter_ {
+            
+            private x$getter_() {
+            }
+            
+            long getX() {
+                return 2L;
+            }
+        }
+        final x$getter_ x$getter_ = new x$getter_();
+        
+        final class getX_ {
+            
+            private getX_() {
+            }
+            
+            long getX() {
+                return x$getter_.getX();
+            }
+        }
+        final getX_ getX = new getX_();
+        final long n = x$getter_.getX();
+        final long n2 = getX.getX();
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterWithConflictingMethods();

@@ -32,6 +32,42 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
         innerGetterSetter$setter_.setInnerGetterSetter(1L);
     }
     
+    private final void m2$priv() {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong m_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        
+        final class innerGetterSetter$getter_ {
+            
+            private innerGetterSetter$getter_() {
+            }
+            
+            long getInnerGetterSetter() {
+                return m_.ref;
+            }
+        }
+        final innerGetterSetter$getter_ innerGetterSetter$getter_ = new innerGetterSetter$getter_();
+        
+        final class innerGetterSetter$setter_ {
+            
+            private innerGetterSetter$setter_() {
+            }
+            private long value;
+            
+            void setInnerGetterSetter(final long innerGetterSetter) {
+                (
+                    let
+                    {
+                        long $ceylontmpop0 = innerGetterSetter;
+                        m_.ref = $ceylontmpop0;
+                    }
+                    returning $ceylontmpop0;
+                );
+            }
+        }
+        final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
+        final long n = innerGetterSetter$getter_.getInnerGetterSetter();
+        innerGetterSetter$setter_.setInnerGetterSetter(1L);
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter();

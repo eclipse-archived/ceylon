@@ -29,4 +29,10 @@ class InnerAttributeGetterWithConflictingMethods() {
         Integer n = x;
         Integer n2 = getX();
     }
+    void m2() {
+        Integer x => 2;
+        Integer getX() => x;
+        Integer n = x;
+        Integer n2 = getX();
+    }
 }

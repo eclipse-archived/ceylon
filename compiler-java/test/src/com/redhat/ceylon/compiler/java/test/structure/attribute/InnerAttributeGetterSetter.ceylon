@@ -27,4 +27,11 @@ class InnerAttributeGetterSetter() {
         Integer n = innerGetterSetter;
         innerGetterSetter = 1;
     }
+    void m2() {
+        variable Integer m = 0;
+        Integer innerGetterSetter => m;
+        assign innerGetterSetter => m = innerGetterSetter;
+        Integer n = innerGetterSetter;
+        innerGetterSetter = 1;
+    }
 }
