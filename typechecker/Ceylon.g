@@ -2687,13 +2687,13 @@ conditions returns [ConditionList conditionList]
     ;
 
 condition returns [Condition condition]
-    : (EXISTS)=>existsCondition
+    : existsCondition
       { $condition=$existsCondition.condition; }
-    | (NONEMPTY)=>nonemptyCondition
+    | nonemptyCondition
       { $condition=$nonemptyCondition.condition; }
-    | (NOT_OP? IS_OP)=>isCondition 
+    | isCondition 
       { $condition=$isCondition.condition; }
-    | (SATISFIES)=>satisfiesCondition
+    | satisfiesCondition
       { $condition=$satisfiesCondition.condition; }
     | booleanCondition
       { $condition=$booleanCondition.condition; }
