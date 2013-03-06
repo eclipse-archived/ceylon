@@ -1215,7 +1215,7 @@ Item item = comp of Item;</programlisting>
         
     </section>
     
-    <section>
+    <section id="disjointtypes">
         <title>Disjoint types</title>
         
         <para>Two types are said to be <emphasis>disjoint</emphasis> if it is impossible
@@ -1223,9 +1223,49 @@ Item item = comp of Item;</programlisting>
         <literal>Y</literal> are disjoint, then their intersection <literal>X&amp;Y</literal>
         is the bottom type <literal>Nothing</literal>.</para>
         
-        <comment><para>TODO: write down the rules the typechecker uses to determine if 
-        two types are disjoint, which depends on analysis of inheritance and enumeration, 
-        and of intersection of invariant type instantiations.</para></comment>
+        <para>Two types <literal>X</literal> and <literal>Y</literal> are disjoint if
+        either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>X</literal> and <literal>Y</literal> are both classes and
+                <literal>X</literal> is not a subclass of <literal>Y</literal> and 
+                <literal>Y</literal> is not a subclass of <literal>X</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>X</literal> is the class <literal>Null</literal> and 
+                <literal>Y</literal> is an interface,</para>
+            </listitem>
+            <listitem>
+                <para><literal>X</literal> is a type parameter and <literal>Y</literal> 
+                and the intersection of the upper bounds of <literal>X</literal> are 
+                disjoint,</para>
+            </listitem>
+            <listitem>
+                <para><literal>X</literal> is an union type <literal>A|B</literal> and 
+                both <literal>Y</literal> and <literal>A</literal> are disjoint and 
+                <literal>Y</literal> and <literal>B</literal> are disjoint,</para>
+            </listitem>
+            <listitem>
+                <para><literal>X</literal> is an intersection type <literal>A&amp;B</literal> 
+                and either <literal>Y</literal> and <literal>A</literal> are disjoint or
+                <literal>Y</literal> and <literal>B</literal> are disjoint, or</para>
+            </listitem>
+            <listitem>
+                <para>for some parameterized type <literal>Z&lt;T&gt;</literal> where 
+                <literal>Z</literal> is invariant in <literal>T</literal>, 
+                <literal>X</literal> is an invariant subtype of <literal>Z&lt;A&gt;</literal> 
+                and <literal>Y</literal> is an invariant subtype of <literal>Z&lt;B&gt;</literal> 
+                and <literal>A</literal> is not exactly <literal>B</literal>, and neither
+                <literal>A</literal> nor <literal>B</literal> involve type parameters.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: In addition, the compiler does some reasoning about classes
+        that are "effectively final", that is, anonymous classes, <literal>final</literal> 
+        Java classes, and the special classes in the language module which can't be 
+        extended. We should probably add a <literal>final</literal> annotation and make
+        the notional of finality part of the type system.</para></comment>
         
     </section>
         
