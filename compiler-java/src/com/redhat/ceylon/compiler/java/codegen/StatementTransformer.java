@@ -1391,7 +1391,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         // ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
         // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
-        JCExpression getIter = at(node).Apply(null, makeSelect(iterableExpr, "getIterator"), List.<JCExpression> nil());
+        JCExpression getIter = at(node).Apply(null, makeSelect(iterableExpr, "iterator"), List.<JCExpression> nil());
         getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iteratorType, true, BoxingStrategy.BOXED, iteratorType);
         JCVariableDecl iteratorDecl = at(node).VarDef(make().Modifiers(0), iterName.asName(), iteratorTypeExpr, getIter);
         

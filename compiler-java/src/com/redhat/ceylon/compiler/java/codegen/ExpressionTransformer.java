@@ -3336,7 +3336,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                     )));
             JCBlock iteratorBlock = make().Block(0, List.<JCStatement>of(
                     make().Return(iterator)));
-            return make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
+            return make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("iterator"),
                     makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
                 List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                 iteratorBlock, null);
@@ -3464,7 +3464,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
                     null));
                 fieldNames.add(iterVar.getName());
-                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "iterator"), 
                         List.<JCExpression>nil())));
             } else {
                 //The subsequent iterators need to be inside a method,
@@ -3483,7 +3483,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                   null),
                         make().Exec(make().Assign(iterVar.makeIdent(), 
                                                   make().Apply(null,
-                                                               makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                                                               makeSelect(transformExpression(specexpr.getExpression()), "iterator"), 
                                                                List.<JCExpression>nil()))),
                         make().Return(makeBoolean(true))
                 ));
