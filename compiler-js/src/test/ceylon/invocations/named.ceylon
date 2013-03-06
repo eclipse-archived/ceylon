@@ -21,9 +21,8 @@ String order(String product, Integer count=1, Float discount=0.0,
 void testNamedArguments() {
   check(namedFunc {
     object iter satisfies Iterable<Integer> {
-      shared actual Iterator<Integer> iterator {
-        return { 1, 3, 5, 8, 9 }.iterator;
-      }
+      shared actual Iterator<Integer> iterator() =>
+          { 1, 3, 5, 8, 9 }.iterator();
     }
     String desc {
       return "Even";
@@ -34,8 +33,8 @@ void testNamedArguments() {
   } == "Even: 8", "named arguments 1");
   check(namedFunc {
     object iter satisfies Iterable<Integer> {
-      shared actual Iterator<Integer> iterator {
-        return { 2, 4, 6, 8, 9, 10 }.iterator;
+      shared actual Iterator<Integer> iterator() {
+        return { 2, 4, 6, 8, 9, 10 }.iterator();
       }
     }
     String desc {

@@ -43,7 +43,7 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     } else {
         grid=[[1]];
     }
-    shared actual Iterator<[Integer+]> iterator { return grid.iterator; }
+    shared actual Iterator<[Integer+]> iterator() { return grid.iterator(); }
     shared actual String string = grid.string;
     shared actual Integer hash = grid.hash;
     shared actual Boolean equals(Object other) => grid.equals(other);

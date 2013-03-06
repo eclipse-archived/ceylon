@@ -168,7 +168,7 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Element last => seq.last;
     shared actual Integer size => seq.size;
     shared actual Boolean contains(Object x) => seq.contains(x);
-    shared actual Iterator<Element> iterator => seq.iterator;
+    shared actual Iterator<Element> iterator() => seq.iterator();
 }
 
 void testIfNonempty() {
