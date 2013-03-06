@@ -1095,8 +1095,8 @@ public class ClassTransformer extends AbstractTransformer {
             builder.notActual();
         
         if (Decl.withinClass(decl) || forCompanion) {
-            JCBlock body = statementGen().transform(decl.getBlock());
-            builder.setterBlock(body);
+            JCBlock setterBlock = makeSetterBlock(decl.getDeclarationModel(), decl.getBlock(), decl.getSpecifierExpression());
+            builder.setterBlock(setterBlock);
         } else {
             builder.isFormal(true);
         }
