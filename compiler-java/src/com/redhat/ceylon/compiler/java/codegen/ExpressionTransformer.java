@@ -2865,6 +2865,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                     qmePrimary = ((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary();
                 }
                 if (Decl.isValueTypeDecl(qmePrimary)
+                        // Safe operators always work on boxed things, so don't use value types
+                        && (expr instanceof Tree.QualifiedMemberOrTypeExpression == false
+                            || ((Tree.QualifiedMemberOrTypeExpression)expr).getMemberOperator() instanceof Tree.SafeMemberOp == false)
+                        // We never want to use value types on boxed things, unless they are java arrays
+                        && (CodegenUtil.isUnBoxed(qmePrimary) || isJavaArray(qmePrimary.getTypeModel()))
                         // Java arrays length property does not go via value types
                         && (!isJavaArray(qmePrimary.getTypeModel())
                                 || !"length".equals(selector))) {
