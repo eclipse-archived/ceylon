@@ -221,6 +221,17 @@ void testIterables() {
     } else { fail("Iterable.group 6"); }
     check(gr2.defines(false), "Iterable.group 8");*/
 
+	// string
+	value ia = {};
+	value ib = { 1, 2, 3, 4, 5 };
+	value ic = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
+	value ix = combine(plus<Integer>, ia, ia);
+	value iy = combine(plus<Integer>, ib, ib);
+	value iz = combine(plus<Integer>, ic, ic);
+    check(ix.string=="{}", "Iterable.string [1]");
+    check(iy.string=="{ 2, 4, 6, 8, 10 }", "Iterable.string [2]");
+    check(iz.string=="{ 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, ... }", "Iterable.string [3]");
+	
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
