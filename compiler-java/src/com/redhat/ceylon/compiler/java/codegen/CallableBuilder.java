@@ -25,6 +25,7 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_
 
 import java.util.ArrayList;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -74,7 +75,7 @@ public class CallableBuilder {
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
             Tree.ParameterList parameterListTree, 
             ProducedType callableTypeModel) {
-        JCExpression transformedExpr = gen.expressionGen().transformExpression(expr);
+        JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts);
     }
