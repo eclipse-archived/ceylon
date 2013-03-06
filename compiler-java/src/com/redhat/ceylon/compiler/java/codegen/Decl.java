@@ -232,7 +232,7 @@ public class Decl {
     }
 
     public static boolean isVariable(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isVariable();
+        return decl.getDeclarationModel().isVariable() && decl.getDeclarationModel().getSetter() == null;
     }
     
     public static boolean isLate(Tree.AttributeDeclaration decl) {
