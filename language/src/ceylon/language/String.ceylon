@@ -67,8 +67,8 @@ shared native abstract class String()
     shared formal {String*} split(
             doc "A predicate that determines if a character
                  is a separator characters at which to split.
-                 Default to split at any Unicode whitespace
-                 character."
+                 Default to split at any 
+                 [[whitespace|Character.whitespace]] character."
             {Character*}|Boolean(Character) separator 
                     = (Character ch) => ch.whitespace,
             doc "Specifies that the separator characters
@@ -92,11 +92,13 @@ shared native abstract class String()
     doc "Split the string into lines of text."
     shared formal {String*} lines;
 
-    doc "This string, after discarding whitespace from the 
+    doc "This string, after discarding 
+         [[whitespace|Character.whitespace]] from the 
          beginning and end of the string."
     shared formal String trimmed;
 
-    doc "This string, after collapsing strings of whitespace 
+    doc "This string, after collapsing strings of 
+         [[whitespace|Character.whitespace]]
          into single space characters and discarding whitespace 
          from the beginning and end of the string."
     shared formal String normalized;
