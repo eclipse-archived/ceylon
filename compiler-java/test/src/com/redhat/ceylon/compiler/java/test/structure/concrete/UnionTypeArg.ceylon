@@ -19,11 +19,11 @@
  */
 @nomodel
 class UnionTypeArg() satisfies Iterable<String|Integer>{
-    shared actual Iterator<String|Integer> iterator = nothing;
+    shared actual Iterator<String|Integer> iterator() => nothing;
 }
 @nomodel
 class UnionTypeArgOverride() satisfies Iterable<String|Integer>{
-    shared actual Iterator<String|Integer> iterator = nothing;
+    shared actual Iterator<String|Integer> iterator() => nothing;
     shared actual default String|Integer? find(Boolean selecting(String|Integer elem)) {
         throw;
     }

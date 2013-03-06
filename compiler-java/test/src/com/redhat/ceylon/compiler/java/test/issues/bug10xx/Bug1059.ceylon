@@ -21,9 +21,9 @@
 shared class Bug1059<SomeType>(i) 
     given SomeType satisfies Object {
     Boolean(String) i;
-    shared Iterator<SomeType> iterator {
+    shared Iterator<SomeType> iterator() {
         if (is SomeType i) {
-            return Singleton<SomeType>(i).iterator; //Backend error
+            return Singleton<SomeType>(i).iterator(); //Backend error
             //return Singleton(i).iterator; // This turned out to give no compiler error. 
         }
         return nothing;

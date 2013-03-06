@@ -22,5 +22,5 @@ class CollectionImpl<out Element>() satisfies Collection<Element> {
         return nothing;
     }
     shared actual Integer size = 0;
-    shared actual Iterator<Element> iterator = nothing;
+    shared actual Iterator<Element> iterator() => nothing;
 }

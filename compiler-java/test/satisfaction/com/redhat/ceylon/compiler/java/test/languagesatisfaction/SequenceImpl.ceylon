@@ -60,7 +60,7 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
     shared actual Integer size => 0;
     shared actual Boolean contains(Object element) => false;
     
-    shared actual Iterator<Element> iterator => nothing;
+    shared actual Iterator<Element> iterator() => nothing;
     
 
 }

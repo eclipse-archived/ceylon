@@ -28,7 +28,7 @@ class DefaultedVariableAttribute(firstName=null, lastName=null) {
     }
 
     assign fullName {
-        value tokens = fullName.split().iterator;
+        value tokens = fullName.split().iterator();
         if (is String first = tokens.next()) {
             firstName = first;
         }

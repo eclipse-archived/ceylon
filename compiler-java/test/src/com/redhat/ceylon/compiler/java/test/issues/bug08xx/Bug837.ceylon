@@ -62,7 +62,7 @@ class Bug837<Element>(first, Integer length)
         return this; 
     }
     
-    shared actual Iterator<Element> iterator => nothing;
+    shared actual Iterator<Element> iterator() => nothing;
     shared actual Integer size => nothing;
 
     shared actual Boolean contains(Object o) => nothing;

@@ -21,7 +21,7 @@
 class Bug626() satisfies Iterable<Nothing[]> {
     shared actual Boolean equals(Object that) {return nothing;}
     shared actual Integer hash = nothing;
-    shared actual Iterator<Nothing[]> iterator = nothing;
+    shared actual Iterator<Nothing[]> iterator() => nothing;
 }
 
 @nomodel

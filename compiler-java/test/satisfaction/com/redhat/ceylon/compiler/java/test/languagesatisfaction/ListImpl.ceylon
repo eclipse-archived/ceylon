@@ -40,6 +40,6 @@ class ListImpl<out Element>() extends Object() satisfies List<Element> {
     shared actual ListImpl<Element> reversed {
         throw;
     }
-    shared actual Iterator<Element> iterator => nothing;
+    shared actual Iterator<Element> iterator() => nothing;
     shared actual List<Element> rest => nothing;
 }

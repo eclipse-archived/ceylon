@@ -19,14 +19,14 @@
  */
 @nomodel
 class Bug979Iterable({String*} strings) satisfies {String*} {
-    shared actual Iterator<String> iterator { return strings.iterator; }
+    shared actual Iterator<String> iterator() { return strings.iterator(); }
 }
 @nomodel
 class Bug979Set({String*} strings) 
     extends Object() 
     satisfies Set<String> {
 
-    shared actual Iterator<String> iterator { return strings.iterator; }
+    shared actual Iterator<String> iterator() { return strings.iterator(); }
 
     shared actual Set<String> clone => this;
 

@@ -26,7 +26,7 @@ class MapImpl<out Key,out Item>() extends Object()
         return nothing;
     }
     
-    shared actual Iterator<Entry<Key,Item>> iterator = nothing;
+    shared actual Iterator<Entry<Key,Item>> iterator() => nothing;
     
     shared actual Integer size = 0;
     

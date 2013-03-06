@@ -21,7 +21,7 @@ class SetImpl<out Element>() extends Object() satisfies Set<Element>
         given Element satisfies Object {
 
     shared actual SetImpl<Element> clone = nothing;
-    shared actual Iterator<Element> iterator = nothing;
+    shared actual Iterator<Element> iterator() => nothing;
     shared actual Integer size = nothing;
 
     shared actual Set<Element|Other> union<Other>(Set<Other> set) 
