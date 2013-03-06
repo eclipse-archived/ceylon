@@ -142,6 +142,7 @@ public class InteropTest extends CompilerTest {
     }
 
     // depends on #612
+    @Ignore("M6: depends on https://github.com/ceylon/ceylon-compiler/issues/612")
     @Test
     public void testIopVariance2_fail(){
         compile("JavaVariance.java");
@@ -231,6 +232,7 @@ public class InteropTest extends CompilerTest {
         compile("access/RefinesDefaultAccessMethod.ceylon");
     }
     
+    @Ignore("M6: https://github.com/ceylon/ceylon-spec/issues/625")
     @Test
     public void testIopRefinesDefaultAccessMethodWithShared_fail(){
         compile("access/JavaAccessModifiers.java");

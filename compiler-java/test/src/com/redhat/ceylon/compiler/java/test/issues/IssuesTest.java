@@ -649,6 +649,7 @@ public class IssuesTest extends CompilerTest {
                 new CompilerError(26, "member does not have the same number of parameters as the member it refines: getComponentAt"));
     }
     
+    @Ignore("M6: https://github.com/ceylon/ceylon-compiler/issues/714")
     @Test
     public void testBug714_fail() {
         compareWithJavaSource("bug07xx/Bug714");
@@ -991,6 +992,7 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug09xx/Bug979");
     }
 
+    @Ignore("M6: https://github.com/ceylon/ceylon-compiler/issues/985")
     @Test
     public void testBug985_fail() {
         compareWithJavaSource("bug09xx/Bug985");

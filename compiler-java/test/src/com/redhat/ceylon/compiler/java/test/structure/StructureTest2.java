@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -382,6 +383,7 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("concrete/LazySpec");
     }
 
+    @Ignore("M6")
     @Test
     public void testCncCapturedTypeParam_fail(){
         compareWithJavaSource("concrete/CapturedTypeParam");
