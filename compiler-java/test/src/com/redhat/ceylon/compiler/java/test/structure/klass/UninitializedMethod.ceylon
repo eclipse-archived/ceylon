@@ -20,4 +20,5 @@
 @nomodel
 shared abstract class UninitializedMethod() {
     Integer t();
+    print("hello");
 }

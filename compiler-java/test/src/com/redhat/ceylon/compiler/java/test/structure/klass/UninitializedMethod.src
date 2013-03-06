@@ -4,6 +4,7 @@ public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler
     
     public UninitializedMethod() {
         this.t = null;
+        .ceylon.language.print_.print(.ceylon.language.String.instance("hello"));
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> t;
     
