@@ -141,4 +141,6 @@ shared class Tuple<out Element, out First, out Rest=[]>
         }
     }
     
+    shared actual default String string => Sequential::string;
+    
 }

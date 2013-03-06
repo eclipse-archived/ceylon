@@ -434,8 +434,21 @@ shared native interface Iterable<out Element, out Absent=Null>
                      which to group the specified element."
                 Grouping grouping(Element elem))
             given Grouping satisfies Object;*/
+        
+    doc "A string of form `\"{ x, y, z }\"` where `x`, `y`, 
+         and `z` are the `string` representations of the 
+         elements of this collection, as produced by the
+         iterator of the collection, or the string `\"{}\"` 
+         if this iterable is empty. If the number of items
+         is very large only a certain amount of them might
+         be shown followed by \"...\"."
+    shared actual default String string =>
+            empty then "{}" else "{ ``limitedCommaList(this.taking(31), 30)`` }";
     
 }
+
+String limitedCommaList({Anything*} elements, Integer maxLength) =>
+			commaList(elements.taking(maxLength)) + ((elements.size > maxLength) then ", ..." else "");
 
 Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {
