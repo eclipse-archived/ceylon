@@ -165,16 +165,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
 
     // this one has no "_" postfix because that's how we look it up
-    private static final String JAVA_LANG_ARRAYS = "java.lang.arrays";
-    private static final String JAVA_LANG_BYTE_ARRAY = "java.lang.ByteArray";
-    private static final String JAVA_LANG_SHORT_ARRAY = "java.lang.ShortArray";
-    private static final String JAVA_LANG_INT_ARRAY = "java.lang.IntArray";
-    private static final String JAVA_LANG_LONG_ARRAY = "java.lang.LongArray";
-    private static final String JAVA_LANG_FLOAT_ARRAY = "java.lang.FloatArray";
-    private static final String JAVA_LANG_DOUBLE_ARRAY = "java.lang.DoubleArray";
-    private static final String JAVA_LANG_CHAR_ARRAY = "java.lang.CharArray";
-    private static final String JAVA_LANG_BOOLEAN_ARRAY = "java.lang.BooleanArray";
-    private static final String JAVA_LANG_OBJECT_ARRAY = "java.lang.ObjectArray";
+    protected static final String JAVA_LANG_ARRAYS = "java.lang.arrays";
+    protected static final String JAVA_LANG_BYTE_ARRAY = "java.lang.ByteArray";
+    protected static final String JAVA_LANG_SHORT_ARRAY = "java.lang.ShortArray";
+    protected static final String JAVA_LANG_INT_ARRAY = "java.lang.IntArray";
+    protected static final String JAVA_LANG_LONG_ARRAY = "java.lang.LongArray";
+    protected static final String JAVA_LANG_FLOAT_ARRAY = "java.lang.FloatArray";
+    protected static final String JAVA_LANG_DOUBLE_ARRAY = "java.lang.DoubleArray";
+    protected static final String JAVA_LANG_CHAR_ARRAY = "java.lang.CharArray";
+    protected static final String JAVA_LANG_BOOLEAN_ARRAY = "java.lang.BooleanArray";
+    protected static final String JAVA_LANG_OBJECT_ARRAY = "java.lang.ObjectArray";
 
     // this one has the "_" postfix because that's what we translate it to
     private static final String CEYLON_ARRAYS = "com.redhat.ceylon.compiler.java.language.arrays_";
