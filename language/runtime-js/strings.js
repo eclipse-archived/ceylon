@@ -613,9 +613,12 @@ Character$proto.distanceFrom = function(other) {
     return this.value - other.value;
 }
 
-function StringBuilder() {
+function StringBuilder(/*String...*/comps) {
     var that = new StringBuilder.$$;
     that.value = "";
+    if (comps !== undefined) {
+        that.appendAll(comps);
+    }
     return that;
 }
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
