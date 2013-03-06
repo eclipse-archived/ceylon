@@ -11,6 +11,10 @@ shared native class StringBuilder(String* strings) {
     doc "Append the characters in the given string."
     shared native StringBuilder append(String string);
     
+    for (s in strings) {
+        append(s);
+    }
+    
     doc "Append the characters in the given strings."
     shared StringBuilder appendAll(String* strings) {
         for (s in strings) {
@@ -18,8 +22,6 @@ shared native class StringBuilder(String* strings) {
         }
         return this;
     }
-    
-    appendAll(strings);
     
     doc "Append the given character."
     shared StringBuilder appendCharacter(Character character) {

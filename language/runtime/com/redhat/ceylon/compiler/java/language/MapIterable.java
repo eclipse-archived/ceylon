@@ -74,7 +74,7 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
             super($reifiedResult);
         }
 
-        final Iterator<? extends Element> orig = iterable.getIterator();
+        final Iterator<? extends Element> orig = iterable.iterator();
         java.lang.Object elem;
         
         public java.lang.Object next() {
@@ -90,8 +90,8 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
             return TypeDescriptor.klass(MapIterator.class);
         }
     }
-    public Iterator<? extends Result> getIterator() { return new MapIterator(); }
-    public boolean getEmpty() { return getIterator().next() instanceof Finished; }
+    public Iterator<? extends Result> iterator() { return new MapIterator(); }
+    public boolean getEmpty() { return iterator().next() instanceof Finished; }
     
     @Override
     @Ignore

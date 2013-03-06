@@ -448,12 +448,12 @@ public class String
 
     @Override
     @TypeInfo("ceylon.language::Iterator<ceylon.language::Character>")
-    public Iterator<Character> getIterator() {
-        return getIterator(value);
+    public Iterator<Character> iterator() {
+        return iterator(value);
     }
 
     @Ignore
-    public static Iterator<Character> getIterator(final java.lang.String value) {
+    public static Iterator<Character> iterator(final java.lang.String value) {
         class StringIterator extends AbstractIterator<Character> implements ReifiedType {
 
             public StringIterator() {
@@ -747,7 +747,7 @@ public class String
     @Ignore
     public static java.lang.String join(java.lang.String value, Sequential<? extends String> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
-        Iterator<? extends String> it = strings.getIterator();
+        Iterator<? extends String> it = strings.iterator();
         java.lang.Object elem = it.next();
         if (elem != finished_.getFinished$()) {
             result.append(elem);
@@ -1402,7 +1402,7 @@ public class String
 
 
         @Override
-        public Iterator<? extends String> getIterator() {
+        public Iterator<? extends String> iterator() {
             abstract class TokenIterator extends AbstractIterator<String> implements ReifiedType {
                 
                 public TokenIterator() {
@@ -1520,7 +1520,7 @@ public class String
                             return false;
                         int charCodePoint = java.lang.Character.codePointAt(chars, index);
                         java.lang.Object $tmp;
-                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character, ? extends java.lang.Object>)separator).getIterator();
+                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character, ? extends java.lang.Object>)separator).iterator();
                                 !(($tmp = iter.next()) instanceof Finished);) {
                             if (((Character)$tmp).getInteger() == charCodePoint) {
                                 return true;
@@ -1539,7 +1539,7 @@ public class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == finished_.getFinished$();
+            return iterator().next() == finished_.getFinished$();
         }
 
         @Override
@@ -1720,7 +1720,7 @@ public class String
         }
 
         @Override
-        public Iterator<? extends Integer> getIterator() {
+        public Iterator<? extends Integer> iterator() {
             class OccurrenceIterator extends AbstractIterator<Integer> implements ReifiedType {
                 public OccurrenceIterator() {
                     super(Integer.$TypeDescriptor);
@@ -1755,7 +1755,7 @@ public class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == finished_.getFinished$();
+            return iterator().next() == finished_.getFinished$();
         }
 
         @Override

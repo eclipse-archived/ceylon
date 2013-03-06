@@ -16,7 +16,7 @@ shared interface Empty of e
                      Cloneable<[]> {
     
     doc "Returns an iterator that is already exhausted."
-    shared actual Iterator<Nothing> iterator => emptyIterator;
+    shared actual Iterator<Nothing> iterator() => emptyIterator;
     
     doc "Returns `null` for any given index."
     shared actual Null get(Integer index) => null;

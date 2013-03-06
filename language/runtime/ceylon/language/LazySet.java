@@ -108,7 +108,7 @@ public class LazySet<Element> implements Set<Element>, ReifiedType {
         //This is to avoid counting duplicates
         HashSet<Element> s = new HashSet<Element>();
         java.lang.Object $tmp;
-        for (Iterator<? extends Element> i = elems.getIterator(); !(($tmp = i.next()) instanceof Finished);) {
+        for (Iterator<? extends Element> i = elems.iterator(); !(($tmp = i.next()) instanceof Finished);) {
             s.add((Element)$tmp);
         }
         return s.size();
@@ -117,8 +117,8 @@ public class LazySet<Element> implements Set<Element>, ReifiedType {
     @Override
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Iterator<Element>")
-    public Iterator<? extends Element> getIterator() {
-        return elems.getIterator();
+    public Iterator<? extends Element> iterator() {
+        return elems.iterator();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

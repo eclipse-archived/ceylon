@@ -52,7 +52,7 @@ shared interface List<out Element>
          the sequence has index `0`."
     shared actual formal Element? get(Integer index);
     
-    shared actual default Iterator<Element> iterator {
+    shared actual default Iterator<Element> iterator() {
         object listIterator
                 satisfies Iterator<Element> {
             variable Integer index = 0;

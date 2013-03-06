@@ -26,7 +26,7 @@ final class internalFirst_ {
             @Name("values")
     @TypeInfo("ceylon.language::Iterable<Value,Absent>")
     final Iterable<? extends Value, ?> values) {
-        java.lang.Object first = values.getIterator().next();
+        java.lang.Object first = values.iterator().next();
         if (first instanceof Finished) {
         	//TODO: assertion
             return null;

@@ -277,7 +277,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    public Iterator<Element> getIterator() {
+    public Iterator<Element> iterator() {
         return new ArrayListIterator();
     }
 

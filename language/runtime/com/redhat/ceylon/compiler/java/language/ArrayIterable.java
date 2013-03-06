@@ -141,7 +141,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         Element[] elems = (Element[]) new Object[(int) (inArray + restSequence.getSize())];
         System.arraycopy(array, (int)first, elems, 0, inArray);
         // then copy the rest
-        Iterator<?> iterator = restSequence.getIterator();
+        Iterator<?> iterator = restSequence.iterator();
         Object val;
         int i = inArray;
         while((val = iterator.next()) != finished_.getFinished$()){
@@ -151,7 +151,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Override
-    public Iterator<? extends Element> getIterator() {
+    public Iterator<? extends Element> iterator() {
         return new ArrayIterableIterator();
     }
 
@@ -171,7 +171,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
                 return array[(int) idx++];
             }else if(restIterator == null){
                 // we just moved to the iterator
-                restIterator = (Iterator<Element>) rest.getIterator();
+                restIterator = (Iterator<Element>) rest.iterator();
             }
             // no need to keep increasing idx 
             return restIterator.next();
@@ -287,7 +287,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Ignore
     public java.lang.String toString() {
         StringBuilder sb = new StringBuilder("{");
-        Iterator<? extends Element> iterator = getIterator();
+        Iterator<? extends Element> iterator = iterator();
         Object elem;
         boolean first = true;
         while((elem = iterator.next()) != finished_.getFinished$()){
@@ -308,8 +308,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         if(that instanceof Iterable == false)
             return false;
         Iterable other = (Iterable) that;
-        Iterator<? extends Element> myIterator = getIterator();
-        Iterator otherIterator = other.getIterator();
+        Iterator<? extends Element> myIterator = iterator();
+        Iterator otherIterator = other.iterator();
         Object myElem;
         while((myElem = myIterator.next()) != finished_.getFinished$()){
             Object otherElem;
@@ -331,7 +331,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Override
     @Ignore
     public int hashCode() {
-        Iterator<? extends Element> iterator = getIterator();
+        Iterator<? extends Element> iterator = iterator();
         Object elem;
         int hash = 17;
         while((elem = iterator.next()) != finished_.getFinished$()){

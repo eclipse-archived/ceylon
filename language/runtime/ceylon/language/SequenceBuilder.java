@@ -57,7 +57,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     	    }
     	}
     	java.lang.Object elem;
-    	for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+    	for (Iterator<? extends Element> iter=elements.iterator(); !((elem = iter.next()) instanceof Finished);) {
     	    list.add((Element) elem);
     	}
     	return this;

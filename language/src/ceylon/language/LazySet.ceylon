@@ -24,7 +24,7 @@ shared class LazySet<out Element>({Element*} elems)
         return c;
     }
     
-    shared actual Iterator<Element> iterator => elems.iterator;
+    shared actual Iterator<Element> iterator() => elems.iterator();
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object =>

@@ -283,7 +283,7 @@ public final class process_ {
     @TypeInfo("ceylon.language::Null|ceylon.language::String")
     public String namedArgumentValue(@Name("name") java.lang.String name) {
         if (name.isEmpty()) return null;
-        Iterator<? extends String> iterator = args.getIterator();
+        Iterator<? extends String> iterator = args.iterator();
         java.lang.Object next;
         while ((next = iterator.next()) instanceof String) {
             java.lang.String arg = ((String) next).value;
@@ -305,7 +305,7 @@ public final class process_ {
     
     public boolean namedArgumentPresent(@Name("name") java.lang.String name) {
         if (name.isEmpty()) return false;
-        Iterator<? extends String> iterator = args.getIterator();
+        Iterator<? extends String> iterator = args.iterator();
         java.lang.Object next;
         while ((next = iterator.next()) instanceof String) {
             java.lang.String arg = ((String) next).value;

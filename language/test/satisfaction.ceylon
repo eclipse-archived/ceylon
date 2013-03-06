@@ -10,7 +10,7 @@ class MyCategory() satisfies Category {
 class MyCollection() satisfies Collection<Character> {
     value s = "hello";
     shared actual Integer size { return s.size; }
-    shared actual Iterator<Character> iterator { return s.iterator; }
+    shared actual Iterator<Character> iterator() { return s.iterator(); }
     shared actual MyCollection clone { return MyCollection(); }
 }
 class MyComparable() satisfies Comparable<MyComparable> {

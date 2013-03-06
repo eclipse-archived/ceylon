@@ -85,7 +85,7 @@ shared class Range<Element>(first, last)
     }
     
     doc "An iterator for the elements of the range."
-    shared actual Iterator<Element> iterator {
+    shared actual Iterator<Element> iterator() {
         class RangeIterator()
                 satisfies Iterator<Element> {
             variable Element|Finished current = first;

@@ -27,7 +27,7 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
         super($reifiedElement);
     	list = new ArrayList<Element>((int) elements.getSize()+2);
         java.lang.Object elem;
-        for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+        for (Iterator<? extends Element> iter=elements.iterator(); !((elem = iter.next()) instanceof Finished);) {
     		list.add((Element) elem);
     	}
         this.$reifiedElement = $reifiedElement;

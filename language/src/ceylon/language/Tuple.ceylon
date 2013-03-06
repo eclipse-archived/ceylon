@@ -116,7 +116,7 @@ shared class Tuple<out Element, out First, out Rest=[]>
     
     shared actual Tuple<Element,First,Rest> clone => this;
     
-    shared actual default Iterator<Element> iterator {
+    shared actual default Iterator<Element> iterator() {
         object iterator satisfies Iterator<Element> {
             variable Element[] current = outer;
             shared actual Element|Finished next() {

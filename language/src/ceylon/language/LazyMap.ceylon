@@ -17,8 +17,8 @@ shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
     shared actual Item? get(Object key) =>
             entries.find((Key->Item e) => e.key==key)?.item;
     
-    shared actual Iterator<Key->Item> iterator =>
-            entries.iterator;
+    shared actual Iterator<Key->Item> iterator() =>
+            entries.iterator();
     
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that) {

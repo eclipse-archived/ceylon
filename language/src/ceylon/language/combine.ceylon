@@ -8,10 +8,10 @@ shared Iterable<Result,Absent> combine<Result,Absent,Element,OtherElement>(
         given Absent satisfies Null {
     
     class CombineIterable() satisfies Iterable<Result,Absent> {
-        shared actual Iterator<Result> iterator {
+        shared actual Iterator<Result> iterator() {
             class CombineIterator() satisfies Iterator<Result> {
-                value iter = elements.iterator;
-                value otherIter = otherElements.iterator;
+                value iter = elements.iterator();
+                value otherIter = otherElements.iterator();
                 shared actual Result|Finished next() {
                     value elem = iter.next();
                     value otherElem = otherIter.next();

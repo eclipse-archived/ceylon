@@ -20,7 +20,7 @@ public final class string_ {
         } else {
             java.lang.StringBuilder sb = new java.lang.StringBuilder();
             java.lang.Object $tmp;
-            for (Iterator<? extends Character> $val$iter$0 = characters.getIterator(); 
+            for (Iterator<? extends Character> $val$iter$0 = characters.iterator(); 
                     !(($tmp = $val$iter$0.next()) instanceof Finished);) {
                 sb.append($tmp);
             }

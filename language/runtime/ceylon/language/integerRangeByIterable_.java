@@ -45,7 +45,7 @@ final class integerRangeByIterable_ {
             @Override
             @Annotations(@Annotation("formal"))
             @TypeInfo("ceylon.language::Iterator<Element>")
-            public Iterator<? extends Element> getIterator() {
+            public Iterator<? extends Element> iterator() {
 
                 return new AbstractIterator<Element>($reifiedElement) {
                     long current = r.getFirst().longValue();

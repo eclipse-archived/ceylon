@@ -405,7 +405,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Override
-    public Iterator<Element> getIterator() {
+    public Iterator<Element> iterator() {
         class ArrayIterator extends AbstractIterator<Element> implements ReifiedType {
             
             public ArrayIterator() {
@@ -602,7 +602,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
-        Iterator<Element> iter = getIterator();
+        Iterator<Element> iter = iterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
             if (elem != null && element.equals(element)) {
@@ -617,7 +617,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
-        Iterator<Element> iter = getIterator();
+        Iterator<Element> iter = iterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
             if (elem != null && selecting.$call(elem).booleanValue()) {

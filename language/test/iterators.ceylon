@@ -1,12 +1,15 @@
 class Pair(String one, String two) satisfies {String*} {
-    shared actual object iterator satisfies Iterator<String> {
-        variable Integer i=0;
-        shared actual String|Finished next() {
-            i++;
-            if (i==1) { return one; }
-            if (i==2) { return two; }
-            return finished;
+    shared actual Iterator<String> iterator() {
+        object iterator satisfies Iterator<String> {
+            variable Integer i=0;
+            shared actual String|Finished next() {
+                i++;
+                if (i==1) { return one; }
+                if (i==2) { return two; }
+                return finished;
+            }
         }
+        return iterator;
     }
     shared actual Boolean empty = false;
 }
@@ -83,9 +86,9 @@ void iterators() {
     value seq = { 1, 2, 3, 4, 5 };
     value range = 95..100;
     value sing = Singleton(10);
-    value iter1 = seq.iterator;
-    value iter2 = range.iterator;
-    value iter3 = sing.iterator;
+    value iter1 = seq.iterator();
+    value iter2 = range.iterator();
+    value iter3 = sing.iterator();
     check(iter1.next()==1, "seq.iter");
     iter1.next(); iter1.next(); iter1.next();
     check(iter1.next()==5, "seq.iter");

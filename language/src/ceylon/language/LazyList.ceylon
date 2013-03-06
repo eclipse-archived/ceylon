@@ -21,8 +21,8 @@ shared class LazyList<out Element>({Element*} elems)
     
     shared actual List<Element> rest => LazyList(elems.rest);
     
-    shared actual Iterator<Element> iterator => 
-            elems.iterator;
+    shared actual Iterator<Element> iterator() => 
+            elems.iterator();
     
     doc "Returns a `List` with the elements of this `List` 
          in reverse order. This operation will create copy 

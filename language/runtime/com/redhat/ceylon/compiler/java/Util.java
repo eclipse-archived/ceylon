@@ -259,7 +259,7 @@ public class Util {
     public static <T> List<T> collectIterable(Iterable<? extends T, ? extends java.lang.Object> sequence) {
         List<T> list = new LinkedList<T>();
         if (sequence != null) {
-            Iterator<? extends T> iterator = sequence.getIterator();
+            Iterator<? extends T> iterator = sequence.iterator();
             Object o; 
             while((o = iterator.next()) != finished_.getFinished$()){
                 list.add((T)o);
@@ -643,7 +643,7 @@ public class Util {
         int total = (int) (rest.getSize() + elements.length);
         T[] newArray = (T[]) new Object[total];
         System.arraycopy(elements, 0, newArray, 0, elements.length);
-        Iterator<? extends T> iterator = rest.getIterator();
+        Iterator<? extends T> iterator = rest.iterator();
         int i = elements.length;
         for(Object elem; (elem = iterator.next()) != finished_.getFinished$(); i++){
             newArray[i] = (T) elem;

@@ -54,7 +54,7 @@ void comprehensions() {
     check(b601=={"hello", "world"}, "ceylon-compiler #601 [1]");
   } else { fail("ceylon-compiler #601 [2]"); }
   Iterable<String> b85 = {for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased};
-  Iterator<String> iter85 = b85.iterator;
+  Iterator<String> iter85 = b85.iterator();
   if (is String x=iter85.next()) {
     check(x=="A", "ceylon-language #85");
   } else { fail("ceylon-language #85"); }

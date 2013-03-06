@@ -8,7 +8,7 @@ void iterate<Element>(List<Element> list)
 void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String message)
     given T satisfies Object {
     
-    Iterator<T> bIterator = bIterable.iterator;
+    Iterator<T> bIterator = bIterable.iterator();
     for(T a in aIterable){
         T|Finished b = bIterator.next();
         check(b != finished, "``message``: Iterator B empty while expecting '``a``'");
@@ -243,8 +243,8 @@ shared void strings() {
     
     check(!"".split((Character c) => c.whitespace, true).empty, "\"\".split((Character c) c.whitespace,true) is empty");
     check(!"hello".split((Character c) => c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
-    check("hello world".split((Character c) => c.whitespace, true).iterator.next()=="hello", "string split first 3.1");
-    check("hello world".split(" ", true).iterator.next()=="hello", "string split first 3.2");
+    check("hello world".split((Character c) => c.whitespace, true).iterator().next()=="hello", "string split first 3.1");
+    check("hello world".split(" ", true).iterator().next()=="hello", "string split first 3.2");
     check("hello world".split((Character c) => c==' ').sequence.size==2, "string split discarding [1]");
     check("hello world".split((Character c) => c==' ', false).sequence.size==3, "string split including [1]");
     check("hello world".split().sequence.size==2, "string split default");
@@ -309,7 +309,7 @@ shared void strings() {
     //Lines
     value mls = "a
                  b";
-    value lines = mls.lines.iterator;
+    value lines = mls.lines.iterator();
     check(mls.size==3, "multiline.size==3");
     if (is String _s=lines.next()) {
         check(_s=="a", "multiline.lines[0]=='a'");
@@ -320,7 +320,7 @@ shared void strings() {
     check(mls.normalized=="a b", "multiline.normalized");
 
     //Occurrences
-    value occurs = hello.occurrences("l").iterator;
+    value occurs = hello.occurrences("l").iterator();
     if (is Integer p=occurs.next()) {
         check(p==2, "occurrences[0]");
     } else { fail("occurrences 1"); }
@@ -330,7 +330,7 @@ shared void strings() {
     if (!occurs.next() is Finished) {
         fail("occurrences 3");
     }
-    if (!hello.occurrences("X").iterator.next() is Finished) {
+    if (!hello.occurrences("X").iterator().next() is Finished) {
         fail("occurrences 4");
     }
     //Unicode escapes

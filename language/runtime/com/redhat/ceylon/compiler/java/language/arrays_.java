@@ -531,7 +531,7 @@ public final class arrays_ {
             throw new RuntimeException("Invalid source array type: "+array.toArray());
         }
         String[] dst = new String[(int) values.getSize()];
-        Iterator<? extends java.lang.String> iterator = values.getIterator();
+        Iterator<? extends java.lang.String> iterator = values.iterator();
         for(int i=0;i<dst.length;i++){
             java.lang.Object o = iterator.next();
             if(o == finished_.getFinished$())

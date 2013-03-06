@@ -76,12 +76,12 @@ shared native interface Iterable<out Element, out Absent=Null>
     
     doc "An iterator for the elements belonging to this 
          container."
-    shared formal Iterator<Element> iterator;
+    shared formal Iterator<Element> iterator();
     
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
     shared actual default Boolean empty =>
-            iterator.next() is Finished;
+            iterator().next() is Finished;
     
     shared default Integer size => count((Element e) => true);
     
@@ -90,7 +90,7 @@ shared native interface Iterable<out Element, out Absent=Null>
     
     doc "The first element returned by the iterator, if any.
          This should always produce the same value as
-         `iterable.iterator.head`."
+         `iterable.iterator().head`."
     shared actual default Absent|Element first =>
             internalFirst(this);
     
@@ -252,14 +252,14 @@ shared native interface Iterable<out Element, out Absent=Null>
         }
         else {
             object iterable satisfies {Element*} {
-                shared actual Iterator<Element> iterator {
-                    value iter = outer.iterator;
+                shared actual Iterator<Element> iterator() {
+                    value iter = outer.iterator();
                     variable value i=0;
                     while (i++<skip && !iter.next() is Finished) {}
                     return iter;
                 }
                 shared actual Element? first {
-                    if (!is Finished first = iterator.next()) {
+                    if (!is Finished first = iterator().next()) {
                         return first;
                     }
                     else {
@@ -283,8 +283,8 @@ shared native interface Iterable<out Element, out Absent=Null>
         }
         else {
             object iterable satisfies {Element*} {
-                shared actual Iterator<Element> iterator {
-                    value iter = outer.iterator;
+                shared actual Iterator<Element> iterator() {
+                    value iter = outer.iterator();
                     object iterator satisfies Iterator<Element> {
                         variable value i=0;
                         actual shared Element|Finished next() {
@@ -321,8 +321,8 @@ shared native interface Iterable<out Element, out Absent=Null>
         } 
         else {
             object iterable satisfies Iterable<Element,Absent> {
-                shared actual Iterator<Element> iterator {
-                    value iter = outer.iterator;
+                shared actual Iterator<Element> iterator() {
+                    value iter = outer.iterator();
                     object iterator satisfies Iterator<Element> {
                         shared actual Element|Finished next() {
                             value next = iter.next();
@@ -379,9 +379,9 @@ shared native interface Iterable<out Element, out Absent=Null>
         object indexes
                 satisfies {<Integer->Element&Object>*} {
                 value orig = outer;
-            shared actual Iterator<Integer->Element&Object> iterator {
+            shared actual Iterator<Integer->Element&Object> iterator() {
                 object iterator satisfies Iterator<Integer->Element&Object> {
-                    value iter = orig.iterator;
+                    value iter = orig.iterator();
                     variable value i=0;
                     shared actual <Integer->Element&Object>|Finished next() {
                         variable value next = iter.next();
@@ -408,7 +408,7 @@ shared native interface Iterable<out Element, out Absent=Null>
          order."
     shared default {Element|Other*} chain<Other>({Other*} other) {
         object chained satisfies {Element|Other*} {
-            shared actual Iterator<Element|Other> iterator =>
+            shared actual Iterator<Element|Other> iterator() =>
                     ChainedIterator(outer, other);
         }
         return chained;

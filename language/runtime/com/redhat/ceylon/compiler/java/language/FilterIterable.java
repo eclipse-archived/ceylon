@@ -74,7 +74,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
             super($reifiedElement);
         }
 
-        final Iterator<? extends Element> iter = iterable.getIterator();
+        final Iterator<? extends Element> iter = iterable.iterator();
 
         public java.lang.Object next() {
             java.lang.Object elem = iter.next();
@@ -91,8 +91,8 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
             return TypeDescriptor.klass(FilterIterator.class, $reifiedElement);
         }
     }
-    public Iterator<? extends Element> getIterator() { return new FilterIterator(); }
-    public boolean getEmpty() { return getIterator().next() instanceof Finished; }
+    public Iterator<? extends Element> iterator() { return new FilterIterator(); }
+    public boolean getEmpty() { return iterator().next() instanceof Finished; }
     @Override
     @Ignore
     public long getSize() {

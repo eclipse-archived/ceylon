@@ -51,7 +51,7 @@ public class StringBuilder implements ReifiedType {
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     Sequential<? extends String> strings) {
         java.lang.Object elem;
-        for (Iterator<? extends String> iter=strings.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+        for (Iterator<? extends String> iter=strings.iterator(); !((elem = iter.next()) instanceof Finished);) {
             builder.append(elem);
         }
         return this;

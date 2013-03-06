@@ -199,7 +199,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Override
     @Annotations(@Annotation("formal"))
     @TypeInfo("ceylon.language::Iterator<Element>")
-    public Iterator<? extends Entry<? extends Key, ? extends Item>> getIterator() {
+    public Iterator<? extends Entry<? extends Key, ? extends Item>> iterator() {
         return new AbstractIterator<Entry<? extends Key, ? extends Item>>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem)){
             private final java.util.Iterator<? extends java.util.Map.Entry<? extends Key, ? extends Item>> inner = m.entrySet().iterator();
             
