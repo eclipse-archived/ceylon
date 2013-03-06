@@ -105,9 +105,9 @@ String$proto.shorterThan = function(length) {
     this.codePoints = countCodepoints(this);
     return this.codePoints<length;
 }
-defineAttr(String$proto, 'iterator', function() {
+String$proto.iterator= function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
-});
+}
 String$proto.get = function(index) {
     if (index<0 || index>=this.length) {return null}
     var i = 0;
@@ -282,7 +282,7 @@ defineAttr(String$proto, 'keys', function() {
 });
 String$proto.join = function(strings) {
     if (strings === undefined) {return String$("", 0)}
-    var it = strings.iterator;
+    var it = strings.iterator();
     var str = it.next();
     if (str === getFinished()) {return String$("", 0);}
     if (this.codePoints === undefined) {this.codePoints = countCodepoints(this)}
@@ -317,7 +317,7 @@ String$proto.$split = function(sep, discard, group) {
     }
     if (isOfType(sep, {t:Iterable})) {
         var sepChars = {}
-        var it = sep.iterator;
+        var it = sep.iterator();
         var c; while ((c=it.next()) !== getFinished()) {sepChars[c.value] = true}
         for (var i=0; i<this.length;) {
             var j = i;

@@ -116,19 +116,19 @@ Array$proto.contains = function(elem) {
     }
     return false;
 }
-defineAttr(Array$proto, 'iterator', function() {
+Array$proto.iterator = function() {
     var $$$index$$$ = 0;
     var $$$arr$$$ = this;
     return new ComprehensionIterator(function() {
         return ($$$index$$$ === $$$arr$$$.length) ? getFinished() : $$$arr$$$[$$$index$$$++];
     }, this.$$targs$$);
-});
+};
 
 exports.ArrayList=ArrayList;
 exports.array=function(elems, $$$ptypes) {
     var e=[];
     if (!(elems === null || elems === undefined)) {
-        var iter=elems.iterator;
+        var iter=elems.iterator();
         var item;while((item=iter.next())!==getFinished()) {
             e.push(item);
         }
@@ -173,7 +173,7 @@ defineAttr(SequenceBuilder$proto, 'sequence', function() {
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     if (arr === undefined) return;
-    var iter = arr.iterator;
+    var iter = arr.iterator();
     var e; while ((e = iter.next()) !== getFinished()) {
         this.seq.push(e);
     }

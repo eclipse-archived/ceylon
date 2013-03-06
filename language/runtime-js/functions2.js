@@ -5,7 +5,7 @@ function StringBuilder(){}//IGNORE
 function string(/*Iterable<Character>*/chars) {
     if (chars === undefined) return String$('',0);
     var s = StringBuilder();
-    var iter = chars.iterator;
+    var iter = chars.iterator();
     var c; while ((c = iter.next()) !== getFinished()) {
         s.appendCharacter(c);
     }
@@ -15,7 +15,7 @@ function string(/*Iterable<Character>*/chars) {
 function internalSort(comp, elems, $$$mptypes) {
     if (elems===undefined) {return getEmpty();}
     var arr = [];
-    var it = elems.iterator;
+    var it = elems.iterator();
     var e;
     while ((e=it.next()) !== getFinished()) {arr.push(e);}
     if (arr.length === 0) {return getEmpty();}

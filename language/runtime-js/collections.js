@@ -26,9 +26,9 @@ function $init$Comprehension() {
 }
 $init$Comprehension();
 var Comprehension$proto = Comprehension.$$.prototype;
-defineAttr(Comprehension$proto, 'iterator', function() {
+Comprehension$proto.iterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
-});
+}
 defineAttr(Comprehension$proto, 'sequence', function() {
     var sb = SequenceBuilder(this.$$targs$$);
     sb.appendAll(this);
