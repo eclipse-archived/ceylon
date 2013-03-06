@@ -19,7 +19,7 @@ final class methodArgumentNamedIncovation_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call(final .java.lang.Object $param$0) {

@@ -38,7 +38,7 @@ final class anonymousStatementFunction_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -62,7 +62,7 @@ final class anonymousStatementFunction_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.Float> $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>("Float()"){
+                .ceylon.language.Callable $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>("Float()"){
                     
                     @.java.lang.Override
                     public .ceylon.language.Float $call(final .java.lang.Object $param$0) {
