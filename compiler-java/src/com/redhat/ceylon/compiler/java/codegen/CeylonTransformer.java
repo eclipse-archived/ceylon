@@ -230,9 +230,9 @@ public class CeylonTransformer extends AbstractTransformer {
             Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
             block = gdef.getBlock();
         } else if (decl instanceof Tree.AttributeSetterDefinition) {
-            expression = null;
             Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             block = sdef.getBlock();
+            expression = sdef.getSpecifierExpression();
             if (Decl.isLocal(decl)) {
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
