@@ -7,7 +7,7 @@ class AssertIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public final void m(final .java.lang.Object x) {
         if (!(x == null)) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x"));
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Null x"));
         .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
     }
     
@@ -16,7 +16,7 @@ class AssertIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.
         .java.lang.Object $x$3 = null;
         if (!(($x$3 = y) == null)) {
             $x$4 = $x$3;
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x=y"));
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Null x=y"));
         .ceylon.language.print_.print(.ceylon.language.String.instance($x$4.toString()));
     }
     

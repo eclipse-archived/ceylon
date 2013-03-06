@@ -7,7 +7,7 @@ class AssertIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public final void m(final .java.lang.Object x) {
         if (!(x != null)) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Object x"));
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Object x"));
         .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
         .ceylon.language.print_.print(x);
     }
@@ -17,7 +17,7 @@ class AssertIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.mode
         .java.lang.Object $x$3 = null;
         if (!(($x$3 = y) != null)) {
             $x$4 = $x$3;
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Object x=y"));
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Object x=y"));
         .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
         .ceylon.language.print_.print($x$4);
     }
