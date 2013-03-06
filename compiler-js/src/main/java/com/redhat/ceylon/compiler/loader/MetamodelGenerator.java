@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -484,14 +483,14 @@ public class MetamodelGenerator {
             return null;
         }
         m.put(KEY_NAME, d.getName());
-        m.put(KEY_METATYPE, d instanceof Getter ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
+        m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType()));
         encodeAnnotations(d, m);
         parent.put(d.getName(), m);
         return m;
     }
 
-    public void encodeGetter(Getter d) {
+    public void encodeValue(Value d) {
         encodeAttributeOrGetter(d);
     }
 

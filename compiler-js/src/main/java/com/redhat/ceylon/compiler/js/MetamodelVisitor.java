@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.js;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -77,7 +76,7 @@ public class MetamodelVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         if (errorFree(that)) {
-            gen.encodeGetter(that.getDeclarationModel());
+            gen.encodeValue(that.getDeclarationModel());
         }
     }
 

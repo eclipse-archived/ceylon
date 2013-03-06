@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -412,7 +411,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     private MethodOrValue loadAttribute(String name, Map<String, Object> m, Scope parent,
             List<TypeParameter> typeParameters) {
         String metatype = (String)m.get(MetamodelGenerator.KEY_METATYPE);
-        MethodOrValue d = MetamodelGenerator.METATYPE_GETTER.equals(metatype) ? new Getter() : new Value();
+        Value d = new Value();
+        d.setTransient(MetamodelGenerator.METATYPE_GETTER.equals(metatype));
         d.setName(name);
         d.setContainer(parent);
         d.setUnit(unit);
