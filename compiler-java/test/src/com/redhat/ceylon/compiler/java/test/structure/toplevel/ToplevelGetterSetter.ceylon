@@ -18,16 +18,28 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+variable Integer topLevelGetterSetterX = 0;
+@nomodel
 Integer topLevelGetterSetter {
-    return 0;
+    return topLevelGetterSetterX;
 }
 @nomodel
 shared Integer topLevelGetterSetterShared {
-    return 0;
+    return topLevelGetterSetterX;
 }
 @nomodel
 assign topLevelGetterSetter {
+    topLevelGetterSetterX = topLevelGetterSetter;
 }
 @nomodel
 assign topLevelGetterSetterShared {
+    topLevelGetterSetterX = topLevelGetterSetterShared;
 }
+@nomodel
+Integer topLevelGetterSetter2 => topLevelGetterSetterX;
+@nomodel
+shared Integer topLevelGetterSetterShared2 => topLevelGetterSetterX;
+@nomodel
+assign topLevelGetterSetter2 => topLevelGetterSetterX = topLevelGetterSetter2;
+@nomodel
+assign topLevelGetterSetterShared2 => topLevelGetterSetterX = topLevelGetterSetterShared2;

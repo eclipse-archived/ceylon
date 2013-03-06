@@ -25,3 +25,7 @@ Integer topLevelGetter {
 shared Integer topLevelGetterShared {
     return 0;
 }
+@nomodel
+Integer topLevelGetter2 => 0;
+@nomodel
+shared Integer topLevelGetterShared2 => 0;
