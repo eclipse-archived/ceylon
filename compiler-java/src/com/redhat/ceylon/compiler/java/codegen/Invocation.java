@@ -1108,7 +1108,7 @@ class NamedArgumentInvocation extends Invocation {
                 methodArg.getParameterLists().get(0),
                 gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
         JCNewClass callable = callableBuilder.build();
-        JCExpression typeExpr = gen.makeJavaType(callableType);
+        JCExpression typeExpr = gen.makeJavaType(callableType, JT_RAW);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
         
         statements = ListBuffer.<JCStatement>of(varDecl);
