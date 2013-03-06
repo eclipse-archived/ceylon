@@ -2705,66 +2705,50 @@ booleanCondition returns [BooleanCondition condition]
       { $condition.setExpression($expression.expression); }
     ;
     
-existsCondition returns [Condition condition]
-    @init { ExistsCondition ec = null; }
-    : (EXISTS compilerAnnotations (declarationStart|specificationStart)) =>
-      e2=EXISTS 
-      { ec = new ExistsCondition($e2); 
-        $condition = ec; }
-      specifiedVariable 
-      { ec.setVariable($specifiedVariable.variable); }
-    | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
-      e1=EXISTS
-      { ec = new ExistsCondition($e1); 
-        $condition = ec; }
-      impliedVariable
-      { ec.setVariable($impliedVariable.variable); }
+existsCondition returns [ExistsCondition condition]
+    : EXISTS 
+      { $condition = new ExistsCondition($EXISTS); }
+    ( (compilerAnnotations (declarationStart|specificationStart)) =>
+        specifiedVariable 
+        { $condition.setVariable($specifiedVariable.variable); }
+      | //(EXISTS LIDENTIFIER (RPAREN|COMMA)) =>
+        impliedVariable
+        { $condition.setVariable($impliedVariable.variable); }
+    )
     ;
     
-nonemptyCondition returns [Condition condition]
-    @init { NonemptyCondition nc = null; }
-    : (NONEMPTY compilerAnnotations (declarationStart|specificationStart)) =>
-      n2=NONEMPTY 
-      { nc = new NonemptyCondition($n2); 
-        $condition = nc; }
+nonemptyCondition returns [NonemptyCondition condition]
+    : NONEMPTY 
+      { $condition = new NonemptyCondition($NONEMPTY); }
+    ( (compilerAnnotations (declarationStart|specificationStart)) =>
       specifiedVariable 
-      { nc.setVariable($specifiedVariable.variable); }
+      { $condition.setVariable($specifiedVariable.variable); }
     | //(NONEMPTY LIDENTIFIER (RPAREN|COMMA)) =>
-      n1=NONEMPTY 
-      { nc = new NonemptyCondition($n1); 
-        $condition = nc; }
       impliedVariable 
-      { nc.setVariable($impliedVariable.variable); }
+      { $condition.setVariable($impliedVariable.variable); }
+    )
     ;
 
-isCondition returns [Condition condition]
-    @init { IsCondition ic = null;
-            boolean not = false; }
-    : (NOT_OP? IS_OP type LIDENTIFIER SPECIFY) =>
-      (n2=NOT_OP { not=true; })?
-      i2=IS_OP 
-      { ic = new IsCondition($i2);
-        ic.setNot(not); 
-        $condition = ic; }
-      t2=type
-      { ic.setType($t2.type);
-        Variable v = new Variable(null);
+isCondition returns [IsCondition condition]
+    @init { boolean not = false; }
+    : (NOT_OP { not=true; })?
+      IS_OP 
+      { $condition = new IsCondition($IS_OP);
+        $condition.setNot(not); }
+      type
+      { $condition.setType($type.type); }
+    ( (LIDENTIFIER SPECIFY) =>
+      { Variable v = new Variable(null);
         v.setType(new ValueModifier(null)); 
-        ic.setVariable(v); }
+        $condition.setVariable(v); }
       memberName
-      { ic.getVariable().setIdentifier($memberName.identifier); }
+      { $condition.getVariable().setIdentifier($memberName.identifier); }
       specifier
-      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); }
     | //(NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) =>
-      (n1=NOT_OP { not=true; })?
-      i1=IS_OP
-      { ic = new IsCondition($i1); 
-        ic.setNot(not);
-        $condition = ic; }
-      t1=type
-      { ic.setType($t1.type); }
       impliedVariable 
-      { ic.setVariable($impliedVariable.variable); }
+      { $condition.setVariable($impliedVariable.variable); }
+    )
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
