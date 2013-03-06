@@ -53,11 +53,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     public .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$impl() {
         return $ceylon$language$Sequential$this;
     }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Sequential$this.toString();
-    }
     protected final .ceylon.language.List$impl<Element> $ceylon$language$List$this;
     
     @.java.lang.Override
@@ -312,6 +307,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public final boolean contains(final .java.lang.Object o) {
         return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
     }
     
     @.java.lang.Override

@@ -66,4 +66,6 @@ class Bug837<Element>(first, Integer length)
     shared actual Integer size => nothing;
 
     shared actual Boolean contains(Object o) => nothing;
+    
+    shared actual default String string => nothing;
 }

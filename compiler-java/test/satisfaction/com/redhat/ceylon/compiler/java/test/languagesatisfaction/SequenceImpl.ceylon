@@ -62,5 +62,6 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
     
     shared actual Iterator<Element> iterator() => nothing;
     
+    shared actual default String string => nothing;
 
 }
