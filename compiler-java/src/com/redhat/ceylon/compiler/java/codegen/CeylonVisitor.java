@@ -124,8 +124,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
         } else if (Decl.isLocal(decl) 
-                && Decl.isCaptured(decl) 
-                && decl.getDeclarationModel().isVariable()) {
+                && ((Decl.isCaptured(decl) && Decl.isVariable(decl))
+                        || Decl.isTransient(decl)
+                        || Decl.hasSetter(decl))) {
             // Captured local attributes get turned into an inner getter/setter class
             appendList(gen.transform(decl));
         } else {
