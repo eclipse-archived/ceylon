@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+public final class bug867_ {
+    
+    private bug867_() {
+    }
+    
+    public static void bug867() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Hello\nworld"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Hello\nworld"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug867_.bug867();
+    }
+}
