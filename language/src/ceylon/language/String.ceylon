@@ -5,7 +5,7 @@ doc "A string of characters. Each character in the string is
      A string is a `Category` of its `Character`s, and of
      its substrings:
      
-         `w` in greeting 
+         'w' in greeting 
          \"hello\" in greeting
      
      Strings are summable:
