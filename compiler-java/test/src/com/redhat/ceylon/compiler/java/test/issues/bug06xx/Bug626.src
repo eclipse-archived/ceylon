@@ -7,7 +7,6 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
-        this.iterator = (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -173,11 +172,10 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public final int hashCode() {
         return hash;
     }
-    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> getIterator() {
-        return iterator;
+    public final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> iterator() {
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {

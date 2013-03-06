@@ -6,7 +6,6 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.iterator = (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -161,11 +160,10 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
-    private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator getIterator() {
-        return iterator;
+    public final .ceylon.language.Iterator iterator() {
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -185,7 +183,6 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Null.$TypeDescriptor, this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.iterator = (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -330,11 +327,10 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
-    private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator getIterator() {
-        return iterator;
+    public final .ceylon.language.Iterator iterator() {
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     
     @.java.lang.Override

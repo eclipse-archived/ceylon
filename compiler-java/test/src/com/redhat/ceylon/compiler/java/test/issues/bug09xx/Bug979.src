@@ -164,8 +164,8 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends .ceylon.language.String> getIterator() {
-        return strings.getIterator();
+    public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+        return strings.iterator();
     }
     
     @.java.lang.Override
@@ -385,8 +385,8 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends .ceylon.language.String> getIterator() {
-        return strings.getIterator();
+    public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+        return strings.iterator();
     }
     
     @.java.lang.Override

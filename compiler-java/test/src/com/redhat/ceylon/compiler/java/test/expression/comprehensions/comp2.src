@@ -8,10 +8,10 @@ final class comp2_ {
     static void comp2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> i = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = ints.getIterator();
+                        iter$0 = ints.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -33,7 +33,7 @@ final class comp2_ {
                         if (i$exhausted) return false;
                         if (iter$1 != null) return true;
                         if (!this.i()) return false;
-                        iter$1 = ints.getIterator();
+                        iter$1 = ints.iterator();
                         return true;
                     }
                     private .ceylon.language.Integer j;

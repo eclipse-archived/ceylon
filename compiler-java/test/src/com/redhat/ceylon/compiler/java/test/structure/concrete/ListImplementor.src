@@ -284,7 +284,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends X> getIterator() {
+    public final .ceylon.language.Iterator<? extends X> iterator() {
         throw new .ceylon.language.Exception(null, null);
     }
     

@@ -300,7 +300,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends Element> getIterator() {
+    public final .ceylon.language.Iterator<? extends Element> iterator() {
         return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }
     

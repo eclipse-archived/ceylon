@@ -7,7 +7,7 @@ final class bug509_ {
     
     static boolean bug509(final .ceylon.language.Sequential<? extends .java.lang.Object> objs) {
         .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $obj$iter$1 = objs.getIterator(); !(($elem$0 = $obj$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $obj$iter$1 = objs.iterator(); !(($elem$0 = $obj$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object obj = (.java.lang.Object)$elem$0;
             if (obj.equals(.ceylon.language.Integer.instance(1L))) {
                 return true;

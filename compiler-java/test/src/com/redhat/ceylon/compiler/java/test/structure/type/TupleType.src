@@ -72,10 +72,10 @@ final class tupleTypeTest_ {
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> threeTupleEllipsis = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.String.$TypeDescriptor)), .ceylon.language.String.instance("a"), new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.instance(1L), strings));
         final .ceylon.language.Sequential<? extends .ceylon.language.String> comprehensionTuple = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
-            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
                     {
-                        iter$0 = strings.getIterator();
+                        iter$0 = strings.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
                     private .ceylon.language.String s;

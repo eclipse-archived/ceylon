@@ -8,10 +8,10 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
     public final void m(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = xs.getIterator();
+                        iter$0 = xs.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> iter$0;
                     private .ceylon.language.Sequential<? extends .ceylon.language.Integer> x;
@@ -55,10 +55,10 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
     public final void mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> xs) {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = xs.getIterator();
+                        iter$0 = xs.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> iter$0;
                     private .ceylon.language.Sequential<? extends .ceylon.language.Integer> x;

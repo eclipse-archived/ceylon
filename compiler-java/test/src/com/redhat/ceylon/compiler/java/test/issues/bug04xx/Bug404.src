@@ -24,7 +24,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                         .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$1$iterable = empty;
                         .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$1$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
                         .java.lang.Object $spread$1$iteration;
-                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$1$iterator = $spread$1$iterable.getIterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$1$iterator = $spread$1$iterable.iterator(); !(($spread$1$iteration = $spread$1$iterator.next()) instanceof .ceylon.language.Finished); ) {
                             .ceylon.language.String $spread$1$element = (.ceylon.language.String)$spread$1$iteration;
                             $spread$1$sequenceBuilder.append(.ceylon.language.String.instance($spread$1$element.getUppercased()));
                         }
@@ -44,7 +44,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                         .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$3$iterable = full;
                         .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$3$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
                         .java.lang.Object $spread$3$iteration;
-                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$3$iterator = $spread$3$iterable.getIterator(); !(($spread$3$iteration = $spread$3$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$3$iterator = $spread$3$iterable.iterator(); !(($spread$3$iteration = $spread$3$iterator.next()) instanceof .ceylon.language.Finished); ) {
                             .ceylon.language.String $spread$3$element = (.ceylon.language.String)$spread$3$iteration;
                             $spread$3$sequenceBuilder.append(.ceylon.language.String.instance($spread$3$element.getUppercased()));
                         }
@@ -60,7 +60,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $spread$5$iterable = full;
                 .ceylon.language.SequenceBuilder<.ceylon.language.String> $spread$5$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
                 .java.lang.Object $spread$5$iteration;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$5$iterator = $spread$5$iterable.getIterator(); !(($spread$5$iteration = $spread$5$iterator.next()) instanceof .ceylon.language.Finished); ) {
+                for (.ceylon.language.Iterator<? extends .ceylon.language.String> $spread$5$iterator = $spread$5$iterable.iterator(); !(($spread$5$iteration = $spread$5$iterator.next()) instanceof .ceylon.language.Finished); ) {
                     .ceylon.language.String $spread$5$element = (.ceylon.language.String)$spread$5$iteration;
                     $spread$5$sequenceBuilder.append(.ceylon.language.String.instance($spread$5$element.getUppercased()));
                 }

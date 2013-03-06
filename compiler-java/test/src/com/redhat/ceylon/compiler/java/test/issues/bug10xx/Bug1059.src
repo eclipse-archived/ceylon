@@ -13,9 +13,9 @@ public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runti
         return i;
     }
     
-    public final .ceylon.language.Iterator<? extends SomeType> getIterator() {
+    public final .ceylon.language.Iterator<? extends SomeType> iterator() {
         if (.com.redhat.ceylon.compiler.java.Util.isReified(getI$priv(), $reifiedSomeType)) {
-            return new .ceylon.language.Singleton<SomeType>($reifiedSomeType, (SomeType)i).getIterator();
+            return new .ceylon.language.Singleton<SomeType>($reifiedSomeType, (SomeType)i).iterator();
         }
         return (.ceylon.language.Iterator).ceylon.language.nothing_.getNothing$();
     }

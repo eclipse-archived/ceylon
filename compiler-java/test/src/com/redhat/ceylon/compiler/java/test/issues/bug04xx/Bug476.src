@@ -138,8 +138,8 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterator<? extends T> getIterator() {
-        return $ceylon$language$List$this.getIterator();
+    public .ceylon.language.Iterator<? extends T> iterator() {
+        return $ceylon$language$List$this.iterator();
     }
     
     @.java.lang.Override

@@ -8,10 +8,10 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> m$priv(final .ceylon.language.Sequence xs) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
-            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
                     {
-                        iter$0 = xs.getIterator();
+                        iter$0 = xs.iterator();
                     }
                     private final .ceylon.language.Iterator iter$0;
                     private .java.lang.Object x;
@@ -57,10 +57,10 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> synthetic$priv(final .ceylon.language.Sequence xs) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
-            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
                     {
-                        iter$0 = xs.getIterator();
+                        iter$0 = xs.iterator();
                     }
                     private final .ceylon.language.Iterator iter$0;
                     private .java.lang.Object x;

@@ -84,12 +84,12 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     private final void disabled$priv() {
         long sum = 0L;
         .java.lang.Object $elem$32;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$32 = $i$iter$33.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !(($elem$32 = $i$iter$33.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Integer)$elem$32).longValue();
             sum += i;
         }
         .java.lang.Object $elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$34 = $i$iter$35.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !(($elem$34 = $i$iter$35.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Integer)$elem$34).longValue();
             sum += i;
         }

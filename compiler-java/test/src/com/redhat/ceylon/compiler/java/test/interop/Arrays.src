@@ -30,7 +30,7 @@ final class booleanArray_ {
         final boolean[] ret = new boolean[(int)values.getSize()];
         long idx = 0L;
         .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $val$iter$1 = values.getIterator(); !(($elem$0 = $val$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $val$iter$1 = values.iterator(); !(($elem$0 = $val$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final boolean val = ((.ceylon.language.Boolean)$elem$0).booleanValue();
             ret[(int)idx++] = val;
         }
@@ -110,7 +110,7 @@ final class test_booleans_ {
         );
         final boolean[][] matrix = new boolean[(int)10L][];
         .java.lang.Object $elem$11;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $x$iter$12 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L), matrix.length).getIterator(); !(($elem$11 = $x$iter$12.next()) instanceof .ceylon.language.Finished); ) {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $x$iter$12 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(0L), matrix.length).iterator(); !(($elem$11 = $x$iter$12.next()) instanceof .ceylon.language.Finished); ) {
             final long x = ((.ceylon.language.Integer)$elem$11).longValue();
             matrix[(int)x] = new boolean[(int)2L];
         }

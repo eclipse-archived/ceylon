@@ -8,10 +8,10 @@ final class comp1_ {
     static {
         value = new .ceylon.language.Sequential[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
-            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
                     {
-                        iter$0 = .ceylon.language.String.split("hello world").getIterator();
+                        iter$0 = .ceylon.language.String.split("hello world").iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
                     private .ceylon.language.String str;

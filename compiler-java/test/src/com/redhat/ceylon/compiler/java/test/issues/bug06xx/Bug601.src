@@ -31,10 +31,10 @@ final class bug601_ {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                 .ceylon.language.Iterable $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
                     
-                    public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                    public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
                             {
-                                iter$0 = .ceylon.language.String.split("hello world").getIterator();
+                                iter$0 = .ceylon.language.String.split("hello world").iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0;
                             private .ceylon.language.String str;
