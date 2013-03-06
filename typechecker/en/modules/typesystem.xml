@@ -1779,6 +1779,12 @@ Item item = comp of Item;</programlisting>
         the constraints of the type parameter, or there is no explicit type argument and
         type parameter has a default type argument.</para>
         
+        <comment><para>Note: this is too heavy-handed. There is no reason to enforce the 
+        type constraint in any place other than generic class instantiations, generic 
+        function invocations, <literal>extends</literal>, and <literal>satisfies</literal>. 
+        However, this restriction makes interoperation with Java generics more 
+        straightforward.</para></comment>
+        
     </section>
         
         <section id="producedtypes">

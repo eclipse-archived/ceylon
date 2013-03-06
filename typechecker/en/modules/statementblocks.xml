@@ -1316,7 +1316,11 @@ else {
             <programlisting>ConditionList: "(" Condition ("," Condition) ")"</programlisting>
             
             <para>A condition in the list may refer to a condition variable defined earlier in the list.</para>
-        
+            
+            <comment><para>TODO: are we going to support <literal>satisfies</literal> conditions on 
+            type parameters, for example, <literal>if (Element satisfies Object)</literal>, to allow
+            refinement of its upper bounds?</para></comment>
+            
         </section>
         
         <section id="booleanconditions">
@@ -1345,8 +1349,8 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <para>In the case of an assignability or existence condition, the type of the variable may be 
-            inferred.</para>
+            <para>In the case of an assignability or existence condition, the type of the variable 
+            may be inferred.</para>
                     
             <programlisting>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</programlisting>
             
