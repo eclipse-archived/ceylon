@@ -2647,9 +2647,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return makeErroneous();
-        BoxingStrategy boxing = (Decl.isValueTypeDecl(expr.getPrimary())) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-        JCExpression result = transformExpression(expr.getPrimary(), boxing, 
-                expr.getTarget().getQualifyingType());
+        ProducedType type = expr.getTarget().getQualifyingType();
+        if(expr.getMemberOperator() instanceof Tree.SafeMemberOp && !isOptional(type)){
+            ProducedType optionalType = typeFact().getOptionalType(type);
+            optionalType.setUnderlyingType(type.getUnderlyingType());
+            type = optionalType;
+        }
+        BoxingStrategy boxing = expr.getMemberOperator() instanceof Tree.SafeMemberOp == false 
+                && Decl.isValueTypeDecl(expr.getPrimary())
+                && CodegenUtil.isUnBoxed(expr.getPrimary())
+                ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+        JCExpression result = transformExpression(expr.getPrimary(), boxing, type);
         
         return result;
     }
