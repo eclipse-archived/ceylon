@@ -364,6 +364,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, 
                 ProducedType expectedType, int flags) {
         ProducedType exprType = expr.getTypeModel();
+        if(hasUncheckedNulls(expr) && !isOptional(exprType))
+            exprType = typeFact().getOptionalType(exprType);
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         boolean exprErased = CodegenUtil.hasTypeErased(expr);
         return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, boxingStrategy, expectedType, flags);
