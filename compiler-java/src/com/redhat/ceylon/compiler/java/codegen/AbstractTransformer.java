@@ -78,6 +78,7 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -346,6 +347,37 @@ public abstract class AbstractTransformer implements Transformation {
             args = List.<JCTree.JCExpression>nil();
         }
         return make().NewClass(null, null, clazz, args, null);
+    }
+
+    JCBlock makeGetterBlock(TypedDeclaration declarationModel,
+            final Tree.Block block,
+            final Tree.SpecifierOrInitializerExpression expression) {
+        List<JCStatement> stats;
+        if (block != null) {
+            stats = statementGen().transformStmts(block.getStatements());
+        } else {
+            BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
+            ProducedType type = declarationModel.getType();
+            JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), boxing, type);
+            stats = List.<JCStatement>of(make().Return(transExpr));
+        }
+        JCBlock getterBlock = make().Block(0, stats);
+        return getterBlock;
+    }
+
+    JCBlock makeSetterBlock(TypedDeclaration declarationModel,
+            final Tree.Block block,
+            final Tree.SpecifierOrInitializerExpression expression) {
+        List<JCStatement> stats;
+        if (block != null) {
+            stats = statementGen().transformStmts(block.getStatements());
+        } else {
+            ProducedType type = declarationModel.getType();
+            JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), BoxingStrategy.INDIFFERENT, type);
+            stats = List.<JCStatement>of(make().Exec(transExpr));
+        }
+        JCBlock setterBlock = make().Block(0, stats);
+        return setterBlock;
     }
 
     JCVariableDecl makeVar(String varName, JCExpression typeExpr, JCExpression valueExpr) {

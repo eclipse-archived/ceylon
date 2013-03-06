@@ -29,7 +29,6 @@ import javax.tools.JavaFileObject;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -42,7 +41,6 @@ import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -299,7 +297,7 @@ public class CeylonTransformer extends AbstractTransformer {
         if (declarationModel instanceof Setter
                 || declarationModel instanceof Parameter) {
             // For local setters
-            JCBlock setterBlock = buildSetterBlock(declarationModel, block, expression);
+            JCBlock setterBlock = makeSetterBlock(declarationModel, block, expression);
             builder.setterBlock(setterBlock);
             builder.skipGetter();
         } else {
@@ -310,7 +308,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 }
             } else {
                 // For local and toplevel getters
-                JCBlock getterBlock = buildGetterBlock(declarationModel, block, expression);
+                JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
                 builder.getterBlock(getterBlock);
                 
                 if (Decl.isLocal(declarationModel)) {
@@ -319,7 +317,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 } else {
                     // For toplevel getters
                     if (setterDecl != null) {
-                        JCBlock setterBlock = buildSetterBlock(setterDecl.getDeclarationModel(),
+                        JCBlock setterBlock = makeSetterBlock(setterDecl.getDeclarationModel(),
                                 setterDecl.getBlock(), setterDecl.getSpecifierExpression());
                         builder.setterBlock(setterBlock);
                     } else {
@@ -340,37 +338,6 @@ public class CeylonTransformer extends AbstractTransformer {
             builder.is(Flags.STATIC, true);
             return builder.build();
         }
-    }
-
-    private JCBlock buildGetterBlock(TypedDeclaration declarationModel,
-            final Tree.Block block,
-            final Tree.SpecifierOrInitializerExpression expression) {
-        List<JCStatement> stats;
-        if (block != null) {
-            stats = statementGen().transformStmts(block.getStatements());
-        } else {
-            BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
-            ProducedType type = declarationModel.getType();
-            JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), boxing, type);
-            stats = List.<JCStatement>of(make().Return(transExpr));
-        }
-        JCBlock getterBlock = make().Block(0, stats);
-        return getterBlock;
-    }
-
-    private JCBlock buildSetterBlock(TypedDeclaration declarationModel,
-            final Tree.Block block,
-            final Tree.SpecifierOrInitializerExpression expression) {
-        List<JCStatement> stats;
-        if (block != null) {
-            stats = statementGen().transformStmts(block.getStatements());
-        } else {
-            ProducedType type = declarationModel.getType();
-            JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), BoxingStrategy.INDIFFERENT, type);
-            stats = List.<JCStatement>of(make().Exec(transExpr));
-        }
-        JCBlock setterBlock = make().Block(0, stats);
-        return setterBlock;
     }
     
     private JCTree.JCExpression transformValueInit(
