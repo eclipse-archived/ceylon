@@ -9,9 +9,15 @@ final class bug850_ {
         final .java.lang.String x = (
             let
             {
-                .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug850.Bug850().foo());
+                .ceylon.language.String $ceylontmp1 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp0 = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug850.Bug850().foo();
+                    }
+                    returning $ceylontmp0 != null ? .ceylon.language.String.instance($ceylontmp0) : null;
+                );
             }
-            returning $ceylontmp0 != null ? $ceylontmp0 : .ceylon.language.String.instance("");
+            returning $ceylontmp1 != null ? $ceylontmp1 : .ceylon.language.String.instance("");
         ).toString();
     }
     
