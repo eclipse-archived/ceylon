@@ -2310,7 +2310,14 @@ public class ExpressionVisitor extends Visitor {
 //      if (p.isSequenced()) pt = unit.getIteratedType(pt);
         if (argType!=null && pt!=null && 
                 !argType.isUnknown() && !pt.isUnknown()) {
-            checkAssignable(argType, pt, a,
+            Node node;
+            if (a instanceof Tree.SpecifiedArgument) {
+                node = ((Tree.SpecifiedArgument) a).getSpecifierExpression();
+            }
+            else {
+                node = a;
+            }
+            checkAssignable(argType, pt, node,
                     "named argument must be assignable to parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit), 
                             2100);
