@@ -1083,7 +1083,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug1041_fail() {
+    public void testBug1041() {
         compile("bug10xx/bug1041/Bug1041Java.java");
         compareWithJavaSource("bug10xx/bug1041/Bug1041");
     }

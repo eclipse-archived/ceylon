@@ -18,6 +18,16 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+abstract class Buffer<T>() {
+    shared formal T get();
+}
+
+@nomodel
+class ByteBuffer() extends Buffer<Integer>(){
+    shared actual Integer get(){ return 1; }
+}
+
+@nomodel
 class Bug1041<T>() {
     shared String? stringProp = null;
     shared String? stringMethod() => null;
@@ -37,6 +47,8 @@ class Bug1041<T>() {
         Boolean existsOp2 = java.stringMethod() exists;
         Boolean existsOp3 = java.taProp exists;
         Boolean existsOp4 = java.taMethod() exists;
+        // make sure we didn't break value type invocations in the process
+        value b = ByteBuffer().get().and($00111111);
     }
     
     shared void ceylon(Bug1041<Integer> java) {

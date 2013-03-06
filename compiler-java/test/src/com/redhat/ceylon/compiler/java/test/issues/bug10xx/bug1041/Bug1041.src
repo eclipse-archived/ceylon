@@ -1,29 +1,238 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041;
 
-final class bug1041_ {
+abstract class Buffer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    private bug1041_() {
+    Buffer(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    
+    public abstract T get();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Buffer.class, $reifiedT);
+    }
+}
+class ByteBuffer extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Buffer<.ceylon.language.Integer> {
+    
+    ByteBuffer() {
+        super(.ceylon.language.Integer.$TypeDescriptor);
     }
     
-    static void bug1041() {
-        final .ceylon.language.Integer elvisOp1 = (
-            let
-            {
-                .java.lang.String $safe$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041Java().getProp());
-            }
-            returning $safe$0 != null ? .ceylon.language.Integer.instance(.ceylon.language.String.getSize($safe$0)) : null;
-        );
-        final .ceylon.language.Integer elvisOp2 = (
-            let
-            {
-                .java.lang.String $safe$1 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041Java().method((int)4L));
-            }
-            returning $safe$1 != null ? .ceylon.language.Integer.instance(.ceylon.language.String.getSize($safe$1)) : null;
-        );
+    @.java.lang.Override
+    public final .ceylon.language.Integer get() {
+        return .ceylon.language.Integer.instance(1L);
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.bug1041_.bug1041();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.class);
+}
+class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1041(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+        this.stringProp = null;
+        this.taProp = null;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .ceylon.language.String stringProp;
+    
+    public final .ceylon.language.String getStringProp() {
+        return stringProp;
+    }
+    
+    public final .ceylon.language.String stringMethod() {
+        return null;
+    }
+    private final T taProp;
+    
+    public final T getTaProp() {
+        return taProp;
+    }
+    
+    public final T taMethod() {
+        return null;
+    }
+    
+    public final void java(final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041Java<.ceylon.language.Integer> java) {
+        final .ceylon.language.Integer elvisOp1 = (
+            let
+            {
+                .ceylon.language.String $safe$1 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp0 = java.getStringProp();
+                    }
+                    returning $ceylontmp0 != null ? .ceylon.language.String.instance($ceylontmp0) : null;
+                );
+            }
+            returning $safe$1 != null ? .ceylon.language.Integer.instance($safe$1.getSize()) : null;
+        );
+        final .ceylon.language.Integer elvisOp2 = (
+            let
+            {
+                .ceylon.language.String $safe$3 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp2 = java.stringMethod();
+                    }
+                    returning $ceylontmp2 != null ? .ceylon.language.String.instance($ceylontmp2) : null;
+                );
+            }
+            returning $safe$3 != null ? .ceylon.language.Integer.instance($safe$3.getSize()) : null;
+        );
+        final .ceylon.language.Integer elvisOp3 = (
+            let
+            {
+                .ceylon.language.Integer $safe$4 = java.getTaProp();
+            }
+            returning $safe$4 != null ? .ceylon.language.Integer.instance($safe$4.getInteger()) : null;
+        );
+        final .ceylon.language.Integer elvisOp4 = (
+            let
+            {
+                .ceylon.language.Integer $safe$5 = java.taMethod();
+            }
+            returning $safe$5 != null ? .ceylon.language.Integer.instance($safe$5.getInteger()) : null;
+        );
+        final .java.lang.String elseOp1 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp7 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp6 = java.getStringProp();
+                    }
+                    returning $ceylontmp6 != null ? .ceylon.language.String.instance($ceylontmp6) : null;
+                );
+            }
+            returning $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.String.instance("");
+        ).toString();
+        final .java.lang.String elseOp2 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp9 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp8 = java.stringMethod();
+                    }
+                    returning $ceylontmp8 != null ? .ceylon.language.String.instance($ceylontmp8) : null;
+                );
+            }
+            returning $ceylontmp9 != null ? $ceylontmp9 : .ceylon.language.String.instance("");
+        ).toString();
+        final long elseOp3 = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp10 = java.getTaProp();
+            }
+            returning $ceylontmp10 != null ? $ceylontmp10 : .ceylon.language.Integer.instance(0L);
+        ).longValue();
+        final long elseOp4 = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp11 = java.taMethod();
+            }
+            returning $ceylontmp11 != null ? $ceylontmp11 : .ceylon.language.Integer.instance(0L);
+        ).longValue();
+        final boolean existsOp1 = (
+            let
+            {
+                .java.lang.String $ceylontmp12 = java.getStringProp();
+            }
+            returning $ceylontmp12 != null ? .ceylon.language.String.instance($ceylontmp12) : null;
+        ) != null;
+        final boolean existsOp2 = (
+            let
+            {
+                .java.lang.String $ceylontmp13 = java.stringMethod();
+            }
+            returning $ceylontmp13 != null ? .ceylon.language.String.instance($ceylontmp13) : null;
+        ) != null;
+        final boolean existsOp3 = java.getTaProp() != null;
+        final boolean existsOp4 = java.taMethod() != null;
+        final long b = new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer().get().and(.ceylon.language.Integer.instance(63L)).longValue();
+    }
+    
+    public final void ceylon(final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041<.ceylon.language.Integer> java) {
+        final .ceylon.language.Integer elvisOp1 = (
+            let
+            {
+                .ceylon.language.String $safe$14 = java.getStringProp();
+            }
+            returning $safe$14 != null ? .ceylon.language.Integer.instance($safe$14.getSize()) : null;
+        );
+        final .ceylon.language.Integer elvisOp2 = (
+            let
+            {
+                .ceylon.language.String $safe$15 = java.stringMethod();
+            }
+            returning $safe$15 != null ? .ceylon.language.Integer.instance($safe$15.getSize()) : null;
+        );
+        final .ceylon.language.Integer elvisOp3 = (
+            let
+            {
+                .ceylon.language.Integer $safe$16 = java.getTaProp();
+            }
+            returning $safe$16 != null ? .ceylon.language.Integer.instance($safe$16.getInteger()) : null;
+        );
+        final .ceylon.language.Integer elvisOp4 = (
+            let
+            {
+                .ceylon.language.Integer $safe$17 = java.taMethod();
+            }
+            returning $safe$17 != null ? .ceylon.language.Integer.instance($safe$17.getInteger()) : null;
+        );
+        final .java.lang.String elseOp1 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp18 = java.getStringProp();
+            }
+            returning $ceylontmp18 != null ? $ceylontmp18 : .ceylon.language.String.instance("");
+        ).toString();
+        final .java.lang.String elseOp2 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp19 = java.stringMethod();
+            }
+            returning $ceylontmp19 != null ? $ceylontmp19 : .ceylon.language.String.instance("");
+        ).toString();
+        final long elseOp3 = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp20 = java.getTaProp();
+            }
+            returning $ceylontmp20 != null ? $ceylontmp20 : .ceylon.language.Integer.instance(0L);
+        ).longValue();
+        final long elseOp4 = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp21 = java.taMethod();
+            }
+            returning $ceylontmp21 != null ? $ceylontmp21 : .ceylon.language.Integer.instance(0L);
+        ).longValue();
+        final boolean existsOp1 = java.getStringProp() != null;
+        final boolean existsOp2 = java.stringMethod() != null;
+        final boolean existsOp3 = java.getTaProp() != null;
+        final boolean existsOp4 = java.taMethod() != null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.Bug1041.class, $reifiedT);
     }
 }
