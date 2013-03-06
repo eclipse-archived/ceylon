@@ -2730,11 +2730,14 @@ nonemptyCondition returns [NonemptyCondition condition]
     ;
 
 isCondition returns [IsCondition condition]
-    @init { boolean not = false; }
-    : (NOT_OP { not=true; })?
+    : (
+        NOT_OP
+        { $condition = new IsCondition($NOT_OP);
+          $condition.setNot(true); }
+      )?
       IS_OP 
-      { $condition = new IsCondition($IS_OP);
-        $condition.setNot(not); }
+      { if ($condition==null)
+            $condition = new IsCondition($IS_OP); }
       type
       { $condition.setType($type.type); }
     ( (LIDENTIFIER SPECIFY) =>
