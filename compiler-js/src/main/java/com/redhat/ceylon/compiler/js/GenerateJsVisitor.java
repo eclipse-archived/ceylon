@@ -1823,7 +1823,7 @@ public class GenerateJsVisitor extends Visitor
         String iter = names.createTempVariable("it");
         out("var ", iter, "=");
         super.visit(that);
-        out(".iterator;"); endLine();
+        out(".iterator();"); endLine();
         //Iterate
         String elem = names.createTempVariable("elem");
         out("var ", elem, ";"); endLine();
@@ -3396,7 +3396,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out("var ", iterVar, " = ");
         iterable.visit(this);
-        out(".iterator;");
+        out(".iterator();");
         endLine();
         out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished())");
         beginBlock();

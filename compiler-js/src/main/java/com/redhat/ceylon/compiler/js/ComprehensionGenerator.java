@@ -80,7 +80,7 @@ class ComprehensionGenerator {
             if (loopIndex == 0) {
                 gen.out("=");
                 loop.forIterator.getSpecifierExpression().visit(gen);
-                gen.out(".iterator");
+                gen.out(".iterator()");
             }
             gen.out(";"); gen.endLine();
 
@@ -142,7 +142,7 @@ class ComprehensionGenerator {
                     ComprehensionLoopInfo nextLoop = loops.get(loopIndex+1);
                     gen.out(nextLoop.itVarName, "=");
                     nextLoop.forIterator.getSpecifierExpression().visit(gen);
-                    gen.out(".iterator;"); gen.endLine();
+                    gen.out(".iterator();"); gen.endLine();
                     gen.out("next$", nextLoop.valueVarName, "();"); gen.endLine();
                 }
 
