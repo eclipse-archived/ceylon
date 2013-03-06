@@ -1040,13 +1040,13 @@ class NamedArgumentInvocation extends Invocation {
             Parameter declaredParam = namedArg.getParameter();
             Naming.SyntheticName argName = argName(declaredParam);
             if (namedArg instanceof Tree.SpecifiedArgument) {
-                bindSpecifiedArgument(namedArg, declaredParam, argName);
+                bindSpecifiedArgument((Tree.SpecifiedArgument)namedArg, declaredParam, argName);
             } else if (namedArg instanceof Tree.MethodArgument) {
-                bindMethodArgument(namedArg, declaredParam, argName);
+                bindMethodArgument((Tree.MethodArgument)namedArg, declaredParam, argName);
             } else if (namedArg instanceof Tree.ObjectArgument) {
-                bindObjectArgument(namedArg, declaredParam, argName);
+                bindObjectArgument((Tree.ObjectArgument)namedArg, declaredParam, argName);
             } else if (namedArg instanceof Tree.AttributeArgument) {
-                bindAttributeArgument(namedArg, declaredParam, argName);
+                bindAttributeArgument((Tree.AttributeArgument)namedArg, declaredParam, argName);
             } else {
                 throw new RuntimeException("" + namedArg);
             }
@@ -1054,10 +1054,9 @@ class NamedArgumentInvocation extends Invocation {
         }
     }
 
-    private void bindSpecifiedArgument(Tree.NamedArgument namedArg,
+    private void bindSpecifiedArgument(Tree.SpecifiedArgument specifiedArg,
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
-        Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
         Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
         ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
@@ -1073,10 +1072,9 @@ class NamedArgumentInvocation extends Invocation {
         bind(declaredParam, argName, gen.makeJavaType(type, flags), statements.toList());
     }
 
-    private void bindMethodArgument(Tree.NamedArgument namedArg,
+    private void bindMethodArgument(Tree.MethodArgument methodArg,
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
-        Tree.MethodArgument methodArg = (Tree.MethodArgument)namedArg;
         Method model = methodArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
@@ -1117,10 +1115,9 @@ class NamedArgumentInvocation extends Invocation {
         bind(declaredParam, argName, gen.makeJavaType(callableType), statements.toList());
     }
 
-    private void bindObjectArgument(Tree.NamedArgument namedArg,
+    private void bindObjectArgument(Tree.ObjectArgument objectArg,
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
-        Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
         List<JCTree> object = gen.classGen().transformObjectArgument(objectArg);
         // No need to worry about boxing (it cannot be a boxed type) 
         JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName.getName(), Naming.quoteClassName(objectArg.getIdentifier().getText()), false);
@@ -1128,10 +1125,9 @@ class NamedArgumentInvocation extends Invocation {
         bind(declaredParam, argName, gen.makeJavaType(objectArg.getType().getTypeModel()), statements.toList());
     }
 
-    private void bindAttributeArgument(Tree.NamedArgument namedArg,
+    private void bindAttributeArgument(Tree.AttributeArgument attrArg,
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
-        Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
         final Value model = attrArg.getDeclarationModel();
         final String name = model.getName();
         final Naming.SyntheticName alias = gen.naming.alias(name);
