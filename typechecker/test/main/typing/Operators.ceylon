@@ -384,4 +384,9 @@ class Operators() {
     
     @error value disjointIdentity = X() === Y();
     @error value noIdentity = 1 === 1;
+    
+    @type:"Boolean" value within1 = 0<"hello".size<=10;
+    @type:"Boolean" value within2 = 0<="hello".size<10;
+    @error @type:"Boolean" value within3 = 0<"hello".size<"oops";
+    @error @type:"Boolean" value within3 = "oops"<="hello".size<=10;
 }
