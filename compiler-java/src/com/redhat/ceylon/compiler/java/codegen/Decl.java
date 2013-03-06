@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
@@ -231,8 +230,16 @@ public class Decl {
         return decl.isActual();
     }
 
+    public static boolean isTransient(Tree.AttributeDeclaration decl) {
+        return decl.getDeclarationModel().isTransient();
+    }
+
     public static boolean isVariable(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isVariable() && decl.getDeclarationModel().getSetter() == null;
+        return decl.getDeclarationModel().isVariable() && !hasSetter(decl);
+    }
+    
+    public static boolean hasSetter(Tree.AttributeDeclaration decl) {
+        return decl.getDeclarationModel().getSetter() != null;
     }
     
     public static boolean isLate(Tree.AttributeDeclaration decl) {
