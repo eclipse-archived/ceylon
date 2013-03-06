@@ -28,10 +28,14 @@ abstract class ClassAttributeGetter(){
     shared default String f3 {
         return "";
     }
+    String f4 => "";
+    shared String f5 => "";
+    shared default String f6 => "";
 }
 @nomodel
 class SubClassAttributeGetter() extends ClassAttributeGetter() {
     shared actual String f3 {
         return "";
     }
+    shared actual String f6 => "";
 }

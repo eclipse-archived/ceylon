@@ -38,6 +38,14 @@ abstract class ClassAttributeGetterSetter(){
     assign f4 {
     }
     shared default String f5 = "";
+    String f6 => "";
+    assign f6 => f2 = f6;
+    shared String f7 => "";
+    assign f7 => f2 = f7;
+    shared default String f8 => "";
+    shared default String f9 => "";
+    assign f9 => f2 = f9;
+    shared default String f10 = "";
 }
 @nomodel
 class SubClassAttributeGetterSetter() extends ClassAttributeGetterSetter() {
@@ -56,4 +64,10 @@ class SubClassAttributeGetterSetter() extends ClassAttributeGetterSetter() {
     }
     assign f5 {
     }
+    shared actual String f8 => "";
+    assign f8 => f2 = f8;
+    shared actual String f9 => "";
+    assign f9 => f2 = f9;
+    shared actual String f10 => "";
+    assign f10 => f2 = f10;
 }

@@ -4,6 +4,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
     
     ClassAttributeGetterSetter() {
         this.f5 = "";
+        this.f10 = "";
     }
     
     private final .java.lang.String getF$priv() {
@@ -34,6 +35,60 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
     
     public .java.lang.String getF5() {
         return f5;
+    }
+    
+    private final .java.lang.String getF6$priv() {
+        return "";
+    }
+    
+    private final void setF6$priv(final .java.lang.String f6) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmpop0 = f6;
+                setF2($ceylontmpop0);
+            }
+            returning $ceylontmpop0;
+        );
+    }
+    
+    public final .java.lang.String getF7() {
+        return "";
+    }
+    
+    public final void setF7(final .java.lang.String f7) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmpop1 = f7;
+                setF2($ceylontmpop1);
+            }
+            returning $ceylontmpop1;
+        );
+    }
+    
+    public .java.lang.String getF8() {
+        return "";
+    }
+    
+    public .java.lang.String getF9() {
+        return "";
+    }
+    
+    public void setF9(final .java.lang.String f9) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmpop2 = f9;
+                setF2($ceylontmpop2);
+            }
+            returning $ceylontmpop2;
+        );
+    }
+    private final .java.lang.String f10;
+    
+    public .java.lang.String getF10() {
+        return f10;
     }
     
     @.java.lang.Override
@@ -71,6 +126,55 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
     }
     
     public final void setF5(final .java.lang.String f5) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF8() {
+        return "";
+    }
+    
+    public final void setF8(final .java.lang.String f8) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmpop3 = f8;
+                setF2($ceylontmpop3);
+            }
+            returning $ceylontmpop3;
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF9() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final void setF9(final .java.lang.String f9) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmpop4 = f9;
+                setF2($ceylontmpop4);
+            }
+            returning $ceylontmpop4;
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF10() {
+        return "";
+    }
+    
+    public final void setF10(final .java.lang.String f10) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmpop5 = f10;
+                setF2($ceylontmpop5);
+            }
+            returning $ceylontmpop5;
+        );
     }
     
     public static void main(.java.lang.String[] args) {
