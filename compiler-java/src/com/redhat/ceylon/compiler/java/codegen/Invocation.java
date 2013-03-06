@@ -103,7 +103,8 @@ abstract class Invocation {
                         || primaryDeclaration.getName().equals("set"))) {
                 this.onValueType = false;
             } else {
-                this.onValueType = Decl.isValueTypeDecl(getQmePrimary());
+                this.onValueType = Decl.isValueTypeDecl(this.qmePrimary)
+                        && (CodegenUtil.isUnBoxed(this.qmePrimary) || gen.isJavaArray(this.qmePrimary.getTypeModel()));
             }
         } else {
             this.qmePrimary = null;
