@@ -2,7 +2,7 @@ doc "Since strings are immutable, this class is used for
      constructing a string by incrementally appending 
      characters to the empty string. This class is mutable 
      but threadsafe."
-shared native class StringBuilder() {
+shared native class StringBuilder(String* strings) {
     
     doc "The resulting string. If no characters have been
          appended, the empty string."
@@ -18,6 +18,8 @@ shared native class StringBuilder() {
         }
         return this;
     }
+    
+    appendAll(strings);
     
     doc "Append the given character."
     shared StringBuilder appendCharacter(Character character) {

@@ -18,6 +18,23 @@ public class StringBuilder implements ReifiedType {
 
     final java.lang.StringBuilder builder = new java.lang.StringBuilder();
     
+    @Ignore
+    public StringBuilder() {
+        this((Sequential)empty_.getEmpty$());
+    }
+    
+    public StringBuilder(
+            @Sequenced @Name("strings") 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
+            ceylon.language.Sequential<? extends String> strings) {
+        appendAll(strings);
+    }
+    
+    @Ignore
+    public static Sequential<? extends String> $init$strings() {
+        return (Sequential)empty_.getEmpty$();
+    }
+    
     @Override
     public final java.lang.String toString() {
         return builder.toString();
@@ -42,6 +59,10 @@ public class StringBuilder implements ReifiedType {
     @Ignore
     public final StringBuilder appendAll() {
         return this;
+    }
+    @Ignore
+    public Sequential<? extends String> appendAll$strings() {
+        return (Sequential)empty_.getEmpty$();
     }
     
     @TypeInfo("ceylon.language::StringBuilder")

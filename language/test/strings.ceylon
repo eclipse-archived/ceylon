@@ -351,4 +351,7 @@ shared void strings() {
 
     check(string ([]) == "", "string()");
     check(string {'h', 'i'}=="hi", "string(h,i)");
+    
+    check("123" == StringBuilder("1", "2", "3").string, "StringBuilder(1, 2, 3)");
+    check("" == StringBuilder{}.appendAll{}.string, "StringBuilder{}");
 }
