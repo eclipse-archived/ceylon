@@ -1,3 +1,5 @@
+import ceylon.language { internalFirst = first }
+
 doc "Abstract supertype of containers whose elements may be 
      iterated. An iterable container need not be finite, but
      its elements must at least be countable. There may not
