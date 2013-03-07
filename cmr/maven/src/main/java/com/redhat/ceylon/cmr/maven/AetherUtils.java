@@ -28,8 +28,10 @@ import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.spi.Node;
+import org.jboss.shrinkwrap.resolver.api.ConfiguredResolverSystemFactory;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.Resolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
@@ -167,9 +169,13 @@ public class AetherUtils {
     }
 
     private MavenResolverSystem getResolver() {
+        ClassLoader classLoader = AetherUtils.class.getClassLoader();
+        ConfiguredResolverSystemFactory<MavenResolverSystem, ConfigurableMavenResolverSystem> factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader);
+
         if (settingsXml.startsWith("classpath:"))
-            return Maven.configureResolver().fromClassloaderResource(settingsXml.substring(10));
-        return Maven.configureResolver().fromFile(settingsXml);
+            return factory.fromClassloaderResource(settingsXml.substring(10));
+
+        return factory.fromFile(settingsXml);
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
