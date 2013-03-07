@@ -130,6 +130,16 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable leadBy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .java.lang.Object leading) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.leadBy($reifiedOther, leading);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable trailedBy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .java.lang.Object trailing) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.trailedBy($reifiedOther, trailing);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .ceylon.language.Iterable other) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
@@ -299,6 +309,16 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterable getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable leadBy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .java.lang.Object leading) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.leadBy($reifiedOther, leading);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable trailedBy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .java.lang.Object trailing) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.trailedBy($reifiedOther, trailing);
     }
     
     @.java.lang.Override
