@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
@@ -19,7 +20,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     private CachedTOCJars jars = new CachedTOCJars();
 
     public RuntimeModelLoader(ModuleManager moduleManager, Modules modules) {
-        super(moduleManager, modules);
+        super(moduleManager, modules, new JULLogger());
     }
 
     @Override
