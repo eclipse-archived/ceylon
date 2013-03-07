@@ -17,10 +17,16 @@
 
 package ceylon.modules.jboss.runtime;
 
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+import org.jboss.modules.ModuleNotFoundException;
+
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
+
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
@@ -28,12 +34,6 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
-import org.jboss.modules.Module;
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
-import org.jboss.modules.ModuleNotFoundException;
-import org.jboss.modules.log.ModuleLogger;
-import org.jboss.modules.log.StreamModuleLogger;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -45,7 +45,6 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
         ModuleIdentifier moduleIdentifier;
         try {
-            Module.setModuleLogger(new StreamModuleLogger(System.out));
             moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
         } catch (IllegalArgumentException x) {
             CeylonRuntimeException cre = new CeylonRuntimeException("Invalid module name or version: contains invalid characters");
