@@ -22,7 +22,10 @@ import java.security.ProtectionDomain;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+
+import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoadException;
 
 /**
  * Per module Util registry.
@@ -39,9 +42,12 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
     private final ModuleIdentifier mi;
     private final ArtifactResult result;
 
-    public UtilRegistryTransformer(ModuleIdentifier mi, ArtifactResult result) {
+    private ModuleIdentifier runtime;
+
+    public UtilRegistryTransformer(ModuleIdentifier mi, ArtifactResult result, ModuleIdentifier runtime) {
         this.mi = mi;
         this.result = result;
+        this.runtime = runtime;
     }
 
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -49,7 +55,34 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
             synchronized (this) {
                 if (done == false) {
                     done = true;
-                    registerModule(mi.getName(), mi.getSlot(), result, loader);
+                    ClassLoader runtimeClassLoader = null;
+                    try {
+                        Module runtimeModule = org.jboss.modules.Module.getBootModuleLoader().loadModule(runtime);
+                        runtimeClassLoader = runtimeModule.getClassLoader();
+                    } catch (ModuleLoadException e) {
+                        e.printStackTrace();
+                    }
+                    ClassLoader oldClassLoader = null;
+                    boolean setClassLoader = false;
+                    if(runtimeClassLoader != null){
+                        try {
+                            oldClassLoader = SecurityActions.setContextClassLoader(runtimeClassLoader);
+                            setClassLoader = true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try{
+                        registerModule(mi.getName(), mi.getSlot(), result, loader);
+                    }finally{
+                        if(setClassLoader){
+                            try {
+                                SecurityActions.setContextClassLoader(oldClassLoader);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
             }
         }

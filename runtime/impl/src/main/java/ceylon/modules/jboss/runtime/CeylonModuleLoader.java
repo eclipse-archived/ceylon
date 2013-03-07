@@ -292,7 +292,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             dependencies.put(moduleIdentifier, deps);
 
-            builder.setClassFileTransformer(new UtilRegistryTransformer(moduleIdentifier, artifact));
+            builder.setClassFileTransformer(new UtilRegistryTransformer(moduleIdentifier, artifact, RUNTIME));
 
             return builder.create();
         } catch (Exception e) {
