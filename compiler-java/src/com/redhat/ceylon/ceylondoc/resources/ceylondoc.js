@@ -529,15 +529,15 @@ function getUrlVars() {
 
 
 /*
- * highlight anchor target
+ * highlight and expand anchor target
  */
 $(document).ready(function() {
     $(window).bind('hashchange', function() {
-        highlightAnchorTarget();
+        highlightAndExpandAnchorTarget();
     });
-    highlightAnchorTarget();
+    highlightAndExpandAnchorTarget();
 
-    function highlightAnchorTarget() {
+    function highlightAndExpandAnchorTarget() {
         var highlightedSpan = $('td > span.highlight');
         if (highlightedSpan.length > 0) {
             var highlightedTd = highlightedSpan.parent();
@@ -550,6 +550,11 @@ $(document).ready(function() {
             var td = $(anchor);
             if (td.is('td')) {
                 td.wrapInner('<span class="highlight" />');
+                
+                var tr = td.parent();
+                if( tr.is('tr') && tr.hasClass('row-collapsible') ) {
+                    $('.link-collapsible', tr).click();
+                }                
             }
         }
     }
