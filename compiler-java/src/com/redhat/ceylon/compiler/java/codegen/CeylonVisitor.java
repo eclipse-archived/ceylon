@@ -78,6 +78,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ClassOrInterface decl) {
         if(hasClassErrors(decl))
             return;
+    	if (Decl.isNative(decl) && Decl.isToplevel(decl))
+    		return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         
         if (Decl.withinClassOrInterface(decl)) {
@@ -105,6 +107,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectDefinition decl) {
         if(hasErrors(decl))
             return;
+    	if (Decl.isNative(decl) && Decl.isToplevel(decl))
+    		return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transformObjectDefinition(decl, classBuilder));
@@ -122,7 +126,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
         } else if (Decl.isToplevel(decl)) {
-            topattrBuilder.add(decl);
+        	if (!Decl.isNative(decl)) {
+        		topattrBuilder.add(decl);
+        	}
         } else if (Decl.isLocal(decl) 
                 && ((Decl.isCaptured(decl) && Decl.isVariable(decl))
                         || Decl.isTransient(decl)
@@ -146,7 +152,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(gen.classGen().transform(decl, true));
         } else if (Decl.isToplevel(decl)) {
-            topattrBuilder.add(decl);
+        	if (!Decl.isNative(decl)) {
+        		topattrBuilder.add(decl);
+        	}
         } else {
             appendList(gen.transform(decl));
         }
@@ -163,21 +171,25 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(gen.classGen().transform(decl, true));
         } else if (Decl.isToplevel(decl)) {
-            topattrBuilder.add(decl);
+        	if (!Decl.isNative(decl)) {
+        		topattrBuilder.add(decl);
+        	}
         } else {
             appendList(gen.transform(decl));
         }
         gen.resetCompilerAnnotations(annots);
     }
 
-    public void visit(Tree.AnyMethod meth) {
-        if(hasErrors(meth))
+    public void visit(Tree.AnyMethod decl) {
+        if(hasErrors(decl))
             return;
-        boolean annots = gen.checkCompilerAnnotations(meth);
-        if (Decl.withinClassOrInterface(meth)) {
-            classBuilder.method(meth);
+    	if (Decl.isNative(decl) && Decl.isToplevel(decl))
+    		return;
+        boolean annots = gen.checkCompilerAnnotations(decl);
+        if (Decl.withinClassOrInterface(decl)) {
+            classBuilder.method(decl);
         } else {
-            appendList(gen.classGen().transformWrappedMethod(meth));
+            appendList(gen.classGen().transformWrappedMethod(decl));
         }
         gen.resetCompilerAnnotations(annots);
     }

@@ -258,6 +258,14 @@ public class Decl {
         return decl.isToplevel();
     }
     
+    public static boolean isNative(Tree.Declaration decl) {
+        return isNative(decl.getDeclarationModel());
+    }
+    
+    public static boolean isNative(Declaration decl) {
+        return decl.isNative();
+    }
+    
     /**
      * Determines whether the declaration is local to a method,
      * getter, setter or class initializer.
