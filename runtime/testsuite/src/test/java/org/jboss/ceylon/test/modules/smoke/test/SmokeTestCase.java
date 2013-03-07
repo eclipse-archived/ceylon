@@ -39,6 +39,13 @@ public class SmokeTestCase extends ModulesTest {
     }
 
     @Test
+    public void swingModule() throws Throwable {
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jboss.swing-1.0.0.CR1.car");
+        module.addClasses(org.jboss.swing.module_.class, org.jboss.swing.run_.class);
+        testArchive(module);
+    }
+
+    @Test
     public void filteredAndCycleModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
         module.addClasses(eu.cloud.clazz.module_.class, eu.cloud.clazz.run_.class);
