@@ -87,7 +87,7 @@ shared native abstract class String()
     
     doc "Join the given strings, using this string as a 
          separator."
-    shared formal String join(String* strings);
+    shared formal String join({String*} strings);
     
     doc "Split the string into lines of text."
     shared formal {String*} lines;

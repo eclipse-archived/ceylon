@@ -227,12 +227,12 @@ shared void strings() {
     check(min(["abc", "xyz", "foo", "bar"])=="abc", "strings min");
     check(max(["abc", "xyz", "foo", "bar"])=="xyz", "strings max");
     
-    check(", ".join()=="", "string join no strings");
-    check(", ".join("foo")=="foo", "string join one string");
-    check(", ".join("foo", "bar", "baz")=="foo, bar, baz", "string join");
-    check(",".join(for (c in "") c.string)=="", "string join empty comprehension");
-    check(",".join(for (c in "A") c.string)=="A", "string join comprehension 1");
-    check(",".join(for (c in "ABC") c.string)=="A,B,C", "string join comprehension 2");
+    check(", ".join({})=="", "string join no strings");
+    check(", ".join({"foo"})=="foo", "string join one string");
+    check(", ".join({"foo", "bar", "baz"})=="foo, bar, baz", "string join");
+    check(",".join({for (c in "") c.string})=="", "string join empty comprehension");
+    check(",".join({for (c in "A") c.string})=="A", "string join comprehension 1");
+    check(",".join({for (c in "ABC") c.string})=="A,B,C", "string join comprehension 2");
     
     check("hello world".startsWith(hello), "string starts with 1");
     check("hello world".endsWith("world"), "string ends with 1");

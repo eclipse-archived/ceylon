@@ -11,7 +11,6 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -808,14 +807,14 @@ public class String
     }
 
     @TypeInfo("ceylon.language::String")
-    public java.lang.String join(@Name("strings") @Sequenced
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    Sequential<? extends String> strings) {
+    public java.lang.String join(@Name("strings") 
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
+    Iterable<? extends String,? extends Object> strings) {
         return join(value, strings);
     }
 
     @Ignore
-    public static java.lang.String join(java.lang.String value, Sequential<? extends String> strings) {
+    public static java.lang.String join(java.lang.String value, Iterable<? extends String, ? extends java.lang.Object> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.iterator();
         java.lang.Object elem = it.next();

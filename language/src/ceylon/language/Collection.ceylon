@@ -55,6 +55,6 @@ shared interface Collection<out Element>
 }
 
 String commaList({Anything*} elements) =>
-        ", ".join ( for (element in elements)
-                    element?.string else "null" );
+        ", ".join ({ for (element in elements)
+                    element?.string else "null" });
 
