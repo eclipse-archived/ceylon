@@ -32,6 +32,8 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleNotFoundException;
+import org.jboss.modules.log.ModuleLogger;
+import org.jboss.modules.log.StreamModuleLogger;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -43,6 +45,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
         ModuleIdentifier moduleIdentifier;
         try {
+            Module.setModuleLogger(new StreamModuleLogger(System.out));
             moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
         } catch (IllegalArgumentException x) {
             CeylonRuntimeException cre = new CeylonRuntimeException("Invalid module name or version: contains invalid characters");
