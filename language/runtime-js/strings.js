@@ -126,13 +126,53 @@ defineAttr(String$proto, 'trimmed', function() {
         do {--to} while (from<to && (this.charCodeAt(to) in $WS));
         ++to;
     }
-    if (from===0 && to===this.length) {return this}
+    if (from===0 && to===this.length) {return this;}
     var result = String$(this.substring(from, to));
     if (this.codePoints !== undefined) {
         result.codePoints = this.codePoints - from - this.length + to;
     }
     return result;
 });
+String$proto.trimCharacters = function(/*Category*/chars) {
+    var from = 0;
+    while (from<this.length && chars.contains(this.get(from))) {++from}
+    var to = this.length;
+    if (from < to) {
+        do {--to} while (from<to && chars.contains(this.get(to)));
+        ++to;
+    }
+    if (from===0 && to===this.length) {return this;}
+    var result = String$(this.substring(from, to));
+    if (this.codePoints !== undefined) {
+        result.codePoints = this.codePoints - from - this.length + to;
+    }
+    return result;
+}
+String$proto.trimLeadingCharacters = function(/*Category*/chars) {
+    var from = 0;
+    while (from<this.length && chars.contains(this.get(from))) {++from}
+    if (from===0) {return this;}
+    var result = String$(this.substring(from, this.length));
+    if (this.codePoints !== undefined) {
+        result.codePoints = this.codePoints - from;
+    }
+    return result;
+}
+String$proto.trimTrailingCharacters = function(/*Category*/chars) {
+    var to = this.length;
+    if (to > 0) {
+        do {--to} while (to>=0 && chars.contains(this.get(to)));
+        ++to;
+    }
+    if (to===this.length) {return this;}
+    else if (to===0) { return String$("",0); }
+    var result = String$(this.substring(0, to));
+    if (this.codePoints !== undefined) {
+        result.codePoints = this.codePoints - this.length + to;
+    }
+    return result;
+}
+
 String$proto.initial = function(length) {
     if (length >= this.codePoints) {return this}
     var count = 0;
@@ -281,7 +321,6 @@ defineAttr(String$proto, 'keys', function() {
     return this.size > 0 ? Range(0, this.size.predecessor, [{t:Integer}]) : getEmpty();
 });
 String$proto.join = function(strings) {
-    if (strings === undefined) {return String$("", 0)}
     var it = strings.iterator();
     var str = it.next();
     if (str === getFinished()) {return String$("", 0);}
