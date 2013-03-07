@@ -190,7 +190,8 @@
                 <include name="ceylon/language/arrayOfSize_.java"/>
                 <include name="ceylon/language/copyArray_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
-                <include name="ceylon/language/Boolean.java"/>
+                <exclude name="ceylon/language/Boolean.ceylon"/>
+                <exclude name="ceylon/language/booleans.ceylon"/>
                 <include name="ceylon/language/true_.java"/>
                 <include name="ceylon/language/false_.java"/>
                 <exclude name="ceylon/language/Callable.ceylon"/>
