@@ -72,7 +72,7 @@ doc "Abstract supertype of containers whose elements may be
      Eager operations normally return a sequence."
 see (Collection)
 by "Gavin"
-shared native interface Iterable<out Element, out Absent=Null>
+shared interface Iterable<out Element, out Absent=Null>
         satisfies Container<Element,Absent> 
         given Absent satisfies Null {
     

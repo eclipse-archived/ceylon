@@ -1,4 +1,4 @@
-native class Keys<in Key, out Item>(Correspondence<Key,Item> correspondence) 
+class Keys<in Key, out Item>(Correspondence<Key,Item> correspondence) 
         satisfies Category 
         given Key satisfies Object {
     shared actual Boolean contains(Object key) {
