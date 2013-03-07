@@ -1,8 +1,7 @@
-doc "A sequence with exactly one element."
+doc "A sequence with exactly one element, which may be null."
 shared class Singleton<out Element>(Element element)
         extends Object()
-        satisfies [Element+]
-        given Element satisfies Object {
+        satisfies [Element+] {
     
     doc "Returns `0`."
     shared actual Integer lastIndex => 0;
@@ -53,7 +52,7 @@ shared class Singleton<out Element>(Element element)
         return SingletonIterator();
     }
     
-    shared actual String string => "[``element.string``]";
+    shared actual String string => "[`` element?.string else "null" ``]";
     
     doc "Returns a `Singleton` if the given starting index 
          is `0` and the given `length` is greater than `0`.
@@ -83,22 +82,29 @@ shared class Singleton<out Element>(Element element)
          that `List` has only one element which is equal to 
          this `Singleton`\'s element."
     shared actual Boolean equals(Object that) {
-        if (is List<Anything> that) {
-            if (that.size==1) {
-                if (exists elem = that.first) {
-                    return elem==element;
+        if (exists element) {
+            if (is List<Anything> that) {
+                if (that.size==1) {
+                    if (exists elem = that.first) {
+                        return elem==element;
+                    }
                 }
             }
-        }
+            return false;
+        } 
         return false;
     }
     
-    shared actual Integer hash => 31 + element.hash;
+    shared actual Integer hash => 31 + (element?.hash else 0);
     
     doc "Returns `true` if the specified element is this 
          `Singleton`\'s element."
-    shared actual Boolean contains(Object element) =>
-            this.element==element;
+    shared actual Boolean contains(Object element) {
+        if (exists e=this.element) {
+            return e==element;
+        }
+        return false;
+    }
     
     doc "Returns `1` if this `Singleton`\'s element
          satisfies the predicate, or `0` otherwise."
@@ -119,8 +125,12 @@ shared class Singleton<out Element>(Element element)
                     accumulating(initial, element);
     
     shared actual Element? find
-            (Boolean selecting(Element e)) =>
-                    selecting(element) then element;
+            (Boolean selecting(Element e)) {
+        if (selecting(element)) {
+            return element;
+        }
+        return null;
+    }
     
     shared actual default Element? findLast
             (Boolean selecting(Element elem)) => 
@@ -143,8 +153,12 @@ shared class Singleton<out Element>(Element element)
     shared actual Singleton<Element>|Empty taking(Integer take) =>
             take>0 then this else {};
     
-    doc "Returns the Singleton itself, since a Singleton
-         cannot contain a null."
-    shared actual Singleton<Element> coalesced => this;
+    doc "Returns the Singleton itself, or empty"
+    shared actual {<Element&Object>*} coalesced {
+        if (is Singleton<Object> self=this) {
+            return self;
+        }
+        return {};
+    }
     
 }

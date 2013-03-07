@@ -76,6 +76,82 @@ void test_singleton() {
     //}
 }
 
+void test_nullsingleton() {
+    Anything[] singleton = Singleton(null);
+    check(singleton.size==1, "nullsingleton size");
+    check(!singleton.empty, "nullsingleton empty");
+    check(singleton.defines(0), "nullsingleton defines");
+    check(!singleton.defines(1), "nullsingleton defines");
+    check(singleton.string=="[null]", "nullsingleton string");
+    // Because Singleton(null) != Singleton(null) since null hasn't equals() 
+    //check(singleton.reversed==singleton, "nullsingleton reversed");
+    check(singleton nonempty, "nullsingleton nonempty");
+    if (nonempty singleton) {
+        check(!(singleton.first exists), "nullsingleton first");
+        check(singleton.lastIndex==0, "sequence last index");
+        //check(!singleton.rest nonempty, "singleton rest empty");
+        /*if (nonempty rest = singleton.rest) {
+            fail("singleton rest empty");
+        }*/
+        for (element in singleton.reversed) {
+        }
+        Sequence<Anything> s = singleton.sequence;
+    }
+    else {
+        fail("singleton nonempty");
+    }
+    variable value j=0;
+    for (x in singleton) {
+        check(!(x exists), "nullsingleton iteration");
+        j=j+1;
+    }
+    check(j==1, "nullsingleton iteration");
+    if (exists str=singleton[0]) {
+        fail("nullsingleton item");
+    }
+    
+    if (exists str=singleton.get(0)) {
+        fail("nullsingleton item");
+    }
+    else {
+    }
+    if (exists str=singleton[1]) {
+        fail("nullsingleton item");
+    }
+    if (exists str=singleton.get(1)) {
+        fail("nullsingleton item");
+    }
+
+    check(singleton.span(0, 1) nonempty, "nonempty nullsingleton span(0,1)");
+    check(singleton.span(0, 0) nonempty, "nonempty nullsingleton span(0,0)");
+    check(singleton.spanFrom(0) nonempty, "nonempty nullsingleton spanFrom(0)");
+    check(!singleton.spanFrom(1) nonempty, "nonempty nullsingleton spanFrom(1)");
+    check(singleton.spanTo(0) nonempty, "nonempty nullsingleton spanTo(0)");
+    check(singleton.spanTo(1) nonempty, "nonempty nullsingleton spanTo(1)");
+    check(singleton.segment(0, 1) nonempty, "nonempty nullsingleton segment(0,1)");
+    check(singleton.span(0, 3).string=="[null]", "nullsingleton span(0,3).string");
+    check(singleton.segment(0, 3).string=="[null]", "nullsingleton segment(0,3).string");
+    check(!singleton.span(1, 1) nonempty, "!nonempty nullsingleton span(1,1)");
+    check(!singleton.spanFrom(1) nonempty, "!nonempty nullsingleton spanFrom(1)");
+    check(!singleton.segment(1, 1) nonempty, "!nonempty nullsingleton segment(1,1)");
+    check(singleton.span(0, 0) nonempty, "nonempty nullsingleton span(0,0)");
+    check(singleton.span(0, 10) nonempty, "nonempty nullsingleton span(0,10)");
+    check(!singleton.segment(0, 0) nonempty, "!nonempty nullsingleton segment(0,0)");
+    check(!singleton.segment(0, -1) nonempty, "!nonempty nullsingleton segment(0,-1)");
+
+    check(singleton.keys.contains(0), "nullsingleton keys.contains(0)");
+    check(!singleton.keys.contains(1), "!nullsingleton keys.contains(1)");
+    check(!singleton.keys.contains(2), "!nullsingleton keys.contains(2)");
+    
+    // Disabled: does not pass typechecker on M3.1
+    //value ss = Singleton("Trompon").span(0, 0);
+    //switch(ss)
+    //case (is Empty) {}
+    //case (is Singleton<String>) {
+    //    String first = ss.first;
+    //}
+}
+
 void test_join() {
     value l1 = { "join", 1,2,3};
     value l2 = { 4,5,6 };
@@ -307,6 +383,7 @@ shared void sequences() {
     check(s==2&&f==2, "union sequence iteration");
 
     test_singleton();
+    test_nullsingleton();
 
     Sequential<String?> nulls = [ null, "hello", null, "world" ];
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
