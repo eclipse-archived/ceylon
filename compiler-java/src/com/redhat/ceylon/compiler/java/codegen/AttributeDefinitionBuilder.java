@@ -104,7 +104,7 @@ public class AttributeDefinitionBuilder {
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
             .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
-            .parameter(Flags.FINAL, null, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0);
+            .parameter(Flags.FINAL, null, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0, true);
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 

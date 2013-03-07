@@ -36,7 +36,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -268,26 +267,27 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder parameter(long modifiers, java.util.List<Annotation> annos, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
-        return parameter(modifiers, annos, name, name, decl, nonWideningDecl, nonWideningType, flags);
+    public MethodDefinitionBuilder parameter(long modifiers, java.util.List<Annotation> annos, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags, boolean canWiden) {
+        return parameter(modifiers, annos, name, name, decl, nonWideningDecl, nonWideningType, flags, canWiden);
     }
     
-    private MethodDefinitionBuilder parameter(long modifiers, java.util.List<Annotation> annos, String name, String aliasedName, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
+    private MethodDefinitionBuilder parameter(long modifiers, java.util.List<Annotation> annos, String name, String aliasedName, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags, boolean canWiden) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
         pdb.modifiers(modifiers);
         pdb.modelAnnotations(annos);
         pdb.aliasName(aliasedName);
         pdb.sequenced(decl instanceof Parameter && ((Parameter)decl).isSequenced());
         pdb.defaulted(decl instanceof Parameter && ((Parameter)decl).isDefaulted());
-        pdb.type(paramType(nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl));
+        pdb.type(paramType(nonWideningDecl, nonWideningType, flags, canWiden), gen.makeJavaTypeAnnotations(decl));
         return parameter(pdb);
     }
 
     private JCExpression paramType(TypedDeclaration nonWideningDecl,
-            ProducedType nonWideningType, int flags) {
+            ProducedType nonWideningType, int flags, boolean canWiden) {
         // keep in sync with gen.willEraseToBestBounds()
-        if (gen.typeFact().isUnion(nonWideningType) 
-                || gen.typeFact().isIntersection(nonWideningType)) {
+        if (canWiden
+                && (gen.typeFact().isUnion(nonWideningType) 
+                        || gen.typeFact().isIntersection(nonWideningType))) {
             final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType().getDeclaration();
             if (refinedTypeDecl instanceof TypeParameter
                     && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
@@ -298,12 +298,12 @@ public class MethodDefinitionBuilder {
         return type;
     }
     
-    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags) {
+    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags, boolean canWiden) {
         String name = paramDecl.getName();
-        return parameter(mods, paramDecl.getAnnotations(), name, paramDecl, paramDecl, paramType, flags);
+        return parameter(mods, paramDecl.getAnnotations(), name, paramDecl, paramDecl, paramType, flags, canWiden);
     }
     
-    public MethodDefinitionBuilder parameter(Parameter param, int flags) {
+    public MethodDefinitionBuilder parameter(Parameter param, int flags, boolean canWiden) {
         String paramName = param.getName();
         String aliasedName = paramName;
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
@@ -327,14 +327,15 @@ public class MethodDefinitionBuilder {
             nonWideningDecl = param;
         }
         // make sure we don't accidentally narrow parameters that would be erased in the topmost declaration
-        // see 
-        TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param);
-        if(refinedParameter != param){
-            // if the supertype method itself got erased to Object, we can't do better than this
-            if(gen.willEraseToObject(refinedParameter.getType()) && !gen.willEraseToBestBounds(param))
-                nonWideningType = gen.typeFact().getObjectDeclaration().getType();
+        if(canWiden){
+            TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param);
+            if(refinedParameter != param){
+                // if the supertype method itself got erased to Object, we can't do better than this
+                if(gen.willEraseToObject(refinedParameter.getType()) && !gen.willEraseToBestBounds(param))
+                    nonWideningType = gen.typeFact().getObjectDeclaration().getType();
+            }
         }
-        return parameter(mods, param.getAnnotations(), paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags);
+        return parameter(mods, param.getAnnotations(), paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags, canWiden);
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {
