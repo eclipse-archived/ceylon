@@ -268,10 +268,17 @@ javax.swing.event
 javax.swing.filechooser
 javax.swing.plaf
 javax.swing.plaf.basic
+javax.swing.plaf.basic.icons
 javax.swing.plaf.metal
+javax.swing.plaf.metal.icons
+javax.swing.plaf.metal.icons.ocean
+javax.swing.plaf.metal.sounds
 javax.swing.plaf.multi
+javax.swing.plaf.multi.doc-files
 javax.swing.plaf.nimbus
+javax.swing.plaf.nimbus.doc-files
 javax.swing.plaf.synth
+javax.swing.plaf.synth.doc-files
 javax.swing.table
 javax.swing.text
 javax.swing.text.html

@@ -336,11 +336,15 @@ sun.swing.text
 sun.swing.text.html
 com.sun.java.swing
 com.sun.java.swing.plaf.gtk
+com.sun.java.swing.plaf.gtk.icons
 com.sun.java.swing.plaf.gtk.resources
+com.sun.java.swing.plaf.gtk.resources.metacity.SwingFallbackTheme.metacity-1
 com.sun.java.swing.plaf.motif
+com.sun.java.swing.plaf.motif.icons
 com.sun.java.swing.plaf.motif.resources
 com.sun.java.swing.plaf.nimbus
 com.sun.java.swing.plaf.windows
+com.sun.java.swing.plaf.windows.icons
 com.sun.java.swing.plaf.windows.resources
 com.sun.swing.internal.plaf.basic.resources
 com.sun.swing.internal.plaf.metal.resources
