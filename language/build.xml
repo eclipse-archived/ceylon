@@ -191,9 +191,6 @@
                 <include name="ceylon/language/copyArray_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
-                <exclude name="ceylon/language/booleans.ceylon"/>
-                <include name="ceylon/language/true_.java"/>
-                <include name="ceylon/language/false_.java"/>
                 <exclude name="ceylon/language/Callable.ceylon"/>
                 <include name="ceylon/language/Callable.java"/>
                 <exclude name="ceylon/language/Character.ceylon"/>
@@ -233,6 +230,9 @@
                 <!-- These are problem files we hope to be able to compile some day -->
                 <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
                 <include name="ceylon/language/LazySet.java"/>
+                <exclude name="ceylon/language/booleans.ceylon"/> <!-- COMPILE ERROR (boxing?) -->
+                <include name="ceylon/language/true_.java"/>
+                <include name="ceylon/language/false_.java"/>
             </files>
         </ceylon-compile>
     </target>
