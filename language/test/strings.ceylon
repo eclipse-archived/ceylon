@@ -354,4 +354,19 @@ shared void strings() {
     
     check("123" == StringBuilder("1", "2", "3").string, "StringBuilder(1, 2, 3)");
     check("" == StringBuilder{}.appendAll{}.string, "StringBuilder{}");
+    
+    check("" == "abccba".trimLeadingCharacters("abc"), "trimLeadingCharacters(abc) ``"abccba".trimLeadingCharacters("abc")``");
+    check("ccba" == "abccba".trimLeadingCharacters("ab"), "trimLeadingCharacters(ab) ``"abccba".trimLeadingCharacters("ab")``");
+    check("bccba" == "abccba".trimLeadingCharacters("ac"), "trimLeadingCharacters(ac) ``"abccba".trimLeadingCharacters("ac")``");
+    check("abccba" == "abccba".trimLeadingCharacters("x"), "trimLeadingCharacters(x) ``"abccba".trimLeadingCharacters("x")``");
+    
+    check("" == "abccba".trimTrailingCharacters("abc"), "trimTrailingCharacters(abc)");
+    check("abcc" == "abccba".trimTrailingCharacters("ab"), "trimTrailingCharacters(ab)");
+    check("abccb" == "abccba".trimTrailingCharacters("ac"), "trimTrailingCharacters(ac)");
+    check("abccba" == "abccba".trimTrailingCharacters("x"), "trimTrailingCharacters(x)");
+    
+    check("" == "abccba".trimCharacters("abc"), "trimCharacters(abc) ``"abccba".trimCharacters("abc")``");
+    check("cc" == "abccba".trimCharacters("ab"), "trimCharacters(ab) ``"abccba".trimCharacters("ab")``");
+    check("bccb" == "abccba".trimCharacters("ac"), "trimCharacters(ac) ``"abccba".trimCharacters("ac")``");
+    check("abccba" == "abccba".trimCharacters("x"), "trimCharacters(x) ``"abccba".trimCharacters("x")``");
 }
