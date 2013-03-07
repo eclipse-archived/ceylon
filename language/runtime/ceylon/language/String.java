@@ -679,6 +679,53 @@ public class String
         return trimCharacters(value, Character.WHITESPACE);
     }
     
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String trimLeadingCharacters(
+            @TypeInfo("ceylon.language::Category<ceylon.language::Character>")
+            @Name("characters")
+            ceylon.language.Category characters) {
+        return trimLeadingCharacters(value, characters);
+    }
+    @Ignore
+    public static java.lang.String trimLeadingCharacters(java.lang.String value, ceylon.language.Category characters) {
+        int from = 0;
+        while (from < value.length()) {
+            int c = java.lang.Character.codePointAt(value, from);
+            if (!characters.contains(Character.instance(c))) {
+                break;
+            }
+            from += java.lang.Character.charCount(c);
+        }
+        return value.substring(from);
+    }
+    
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String trimTrailingCharacters(
+            @TypeInfo("ceylon.language::Category<ceylon.language::Character>")
+            @Name("characters")
+            ceylon.language.Category characters) {
+        return trimTrailingCharacters(value, characters);
+    }
+    @Ignore
+    public static java.lang.String trimTrailingCharacters(java.lang.String value, ceylon.language.Category characters) {
+        int to = value.length();
+        while (to > 0) {
+            int c = java.lang.Character.codePointBefore(value, to);
+            if (!characters.contains(Character.instance(c))) {
+                break;
+            }
+            to -= java.lang.Character.charCount(c);
+        }
+        return value.substring(0, to);
+    }
+    
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String trimCharacters(
+            @TypeInfo("ceylon.language::Category<ceylon.language::Character>")
+            @Name("characters")
+            ceylon.language.Category characters) {
+        return trimCharacters(value, characters);
+    }
     @Ignore
     public static java.lang.String trimCharacters(java.lang.String value, ceylon.language.Category characters) {
         int from = 0;

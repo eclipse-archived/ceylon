@@ -96,6 +96,19 @@ shared native abstract class String()
          [[whitespace|Character.whitespace]] from the 
          beginning and end of the string."
     shared formal String trimmed;
+    
+    doc "This string, after discarding the given 
+         characters from the beginning and end 
+         of the string"
+    shared formal String trimCharacters(Category characters);
+    
+    doc "This string, after discarding the given 
+         characters from the beginning of the string"
+    shared formal String trimLeadingCharacters(Category characters);
+    
+    doc "This string, after discarding the given 
+         characters from the end of the string"
+    shared formal String trimTrailingCharacters(Category characters);
 
     doc "This string, after collapsing strings of 
          [[whitespace|Character.whitespace]]
