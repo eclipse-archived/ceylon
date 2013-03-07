@@ -86,8 +86,8 @@ public class MiscTest extends CompilerTest {
         for (String ex : new String[] {
                 // Native files
                 "Array", "Boolean", "Callable", "Character", "className",
-                "Exception", "flatten", "Float", "identityHash", "Integer", "internalFirst", "internalSort", 
-                "Keys", "language", "process", "integerRangeByIterable",
+                "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
+                "language", "process", "integerRangeByIterable",
                 "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten",
                 // Problem files
                 "LazySet"
