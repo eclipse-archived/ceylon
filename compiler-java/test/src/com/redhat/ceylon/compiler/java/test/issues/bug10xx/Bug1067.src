@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f$) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$g$1 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$init$g(f$);
+                this(f$, $ceylontmp$g$1);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        this.f = f;
+        this.g = g;
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> $init$g(final .java.lang.Object f$) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return null;
+            }
+        };
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    private final void f$priv() {
+        f.$call();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> g;
+    
+    private final void g$priv() {
+        g.$call();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.class);
+}
