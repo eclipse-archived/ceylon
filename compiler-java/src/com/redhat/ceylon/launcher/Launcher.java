@@ -7,6 +7,10 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Launcher {
     private static volatile CeylonClassLoader ceylonClassLoader;
@@ -46,7 +50,10 @@ public class Launcher {
         }
         System.setProperty("env.class.path", classPath.toString());
         
-        if (hasArgument(args, "--verbose")) {
+        boolean verbose = hasArgument(args, "--verbose");
+        initGlobalLogger(verbose);
+        
+        if (verbose) {
             System.err.println("INFO: Ceylon home directory is '" + CeylonClassLoader.determineHome() + "'");
             for (File f : cp) {
                 System.err.println("INFO: path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
@@ -102,5 +109,25 @@ public class Launcher {
             }
         }
         return null;
+    }
+    
+    private static void initGlobalLogger(boolean verbose) {
+        try {
+            for (Handler handler : Logger.getLogger("").getHandlers()) {
+                // This is a hack, but at least it works. With a property file our log
+                // formatter has to be in the boot class path. This way it doesn't.
+                if (handler instanceof ConsoleHandler) {
+                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
+                    if (verbose) {
+                        handler.setLevel(Level.ALL);
+                    }
+                }
+            }
+            if (verbose) {
+                Logger.getLogger("com.redhat.ceylon.cmr").setLevel(Level.ALL);
+            }
+        } catch (Throwable ex) {
+            System.err.println("Warning: log configuration failed: " + ex.getMessage());
+        }
     }
 }
