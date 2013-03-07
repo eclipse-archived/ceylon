@@ -23,13 +23,13 @@ public class Launcher {
         Java7Checker.check();
         
         // If the --sysrep option was set on the command line we set the corresponding system property
-        String ceylonSystemRepo = getArgument(args, "--sysrep");
+        String ceylonSystemRepo = getArgument(args, "--sysrep", false);
         if (ceylonSystemRepo != null) {
             System.setProperty("ceylon.system.repo", ceylonSystemRepo);
         }
         
         // If the --system option was set on the command line we set the corresponding system property
-        String ceylonSystemVersion = getArgument(args, "--system");
+        String ceylonSystemVersion = getArgument(args, "--system", false);
         if (ceylonSystemVersion != null) {
             System.setProperty("ceylon.system.version", ceylonSystemVersion);
         }
@@ -50,7 +50,7 @@ public class Launcher {
         }
         System.setProperty("env.class.path", classPath.toString());
         
-        boolean verbose = hasArgument(args, "--verbose");
+        boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
         initGlobalLogger(verbose);
         
         if (verbose) {
@@ -99,9 +99,9 @@ public class Launcher {
         return false;
     }
     
-    private static String getArgument(final String[] args, final String test) {
+    private static String getArgument(final String[] args, final String test, boolean optionalArgument) {
         for (int i=0; i < args.length; i++) {
-            if (i < (args.length - 1) && args[i].equals(test)) {
+            if (!optionalArgument && i < (args.length - 1) && args[i].equals(test)) {
                 return args[i + 1];
             }
             if (args[i].startsWith(test + "=")) {
