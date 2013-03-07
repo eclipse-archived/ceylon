@@ -669,12 +669,35 @@ public class String
 
     @TypeInfo("ceylon.language::String")
     public java.lang.String getTrimmed() {
-        return value.trim();
+        return getTrimmed(value);
     }
 
     @Ignore
     public static java.lang.String getTrimmed(java.lang.String value) {
-        return value.trim();
+        // Don't use value.trim() because that has a definition of ws that is 
+        // inconsistent with ceylon.language::Character.whitespace
+        return trimCharacters(value, Character.WHITESPACE);
+    }
+    
+    @Ignore
+    public static java.lang.String trimCharacters(java.lang.String value, ceylon.language.Category characters) {
+        int from = 0;
+        while (from < value.length()) {
+            int c = java.lang.Character.codePointAt(value, from);
+            if (!characters.contains(Character.instance(c))) {
+                break;
+            }
+            from += java.lang.Character.charCount(c);
+        }
+        int to = value.length();
+        while (to > from) {
+            int c = java.lang.Character.codePointBefore(value, to);
+            if (!characters.contains(Character.instance(c))) {
+                break;
+            }
+            to -= java.lang.Character.charCount(c);
+        }
+        return value.substring(from, to);
     }
 
     @TypeInfo("ceylon.language::String")
