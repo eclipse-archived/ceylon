@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect;
 
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -41,13 +42,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public abstract class ReflectionModelLoader extends AbstractModelLoader {
-
-    public ReflectionModelLoader(ModuleManager moduleManager, Modules modules){
+	private Logger log;
+	
+    public ReflectionModelLoader(ModuleManager moduleManager, Modules modules, Logger log){
         this.moduleManager = moduleManager;
         this.modules = modules;
         this.typeFactory = new Unit();
         this.typeParser = new TypeParser(this, typeFactory);
         this.timer = new Timer(false);
+        this.log = log;
     }
 
     protected abstract List<String> getPackageList(String packageName);
@@ -130,17 +133,17 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
 
     @Override
     protected void logError(String message) {
-        System.err.println("ERROR: "+message);
+        log.error(message);
     }
-
+    
     @Override
     protected void logWarning(String message) {
-        System.err.println("WARNING: "+message);
+        log.warning(message);
     }
-
+    
     @Override
     protected void logVerbose(String message) {
-        System.err.println("NOTE: "+message);
+        log.debug(message);
     }
 
 }
