@@ -10,7 +10,7 @@
     <property name="ceylon.dist.dir" value="${basedir}/dist"/>
     <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
 
-    <property name="modules" value="ceylon-common,ceylon-compiler,ceylon-spec,ceylon.language,ceylon-module-resolver,ceylon-runtime,ceylon-js" />
+    <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
 
     <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
 
