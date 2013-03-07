@@ -95,7 +95,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         return instance;
     }
 
-    public CeylonModelLoader(Context context) {
+    private CeylonModelLoader(Context context) {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         symtab = Symtab.instance(context);
