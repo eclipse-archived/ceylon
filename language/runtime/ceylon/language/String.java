@@ -1400,6 +1400,28 @@ public class String
             return instance(value).chain($reifiedOther, other);
         }
     }
+    
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore 
+    public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
+    }
+    
+    @Ignore
+    public static <Other>Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other other) {
+        return instance(value).leadBy($reifiedOther, other);    
+    }
+    
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore 
+    public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+    }
+    
+    @Ignore
+    public static <Other>Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other other) {
+        return instance(value).trailedBy($reifiedOther, other);    
+    }
 
     @Override @Ignore
     @SuppressWarnings("rawtypes")
@@ -1705,6 +1727,14 @@ public class String
         @Override @Ignore public <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain($reifiedOther, other);
         }
+        @Override @Ignore 
+        public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+            return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
+        }
+        @Override @Ignore 
+        public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+            return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+        }
         @Override @Ignore
         public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
             return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
@@ -1919,6 +1949,14 @@ public class String
         @Override @Ignore 
         public <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
             return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+        }
+        @Override @Ignore 
+        public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+            return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
+        }
+        @Override @Ignore 
+        public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+            return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
         }
         @Override @Ignore
         public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {

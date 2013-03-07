@@ -204,6 +204,11 @@ void testIterables() {
     check(array([]).chain({1,2}).sequence==[1,2], "EmptyArray.chain");
     check(array{1,2}.chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
     check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
+    
+    check({}.leadBy("a").sequence=={"a"}, "Sequence.leadBy(a) ``{}.leadBy("a")``");
+    check({"b"}.leadBy("a").sequence=={"a", "b"}, "Sequence.leadBy(a), 2 ``{"b"}.leadBy("a")``");
+    check({}.trailedBy("a").sequence=={"a"}, "Sequence.trailedBy(a) ``{}.trailedBy("a")``");
+    check({"a"}.trailedBy("b").sequence=={"a", "b"}, "Sequence.trailedBy(b) ``{"a"}.trailedBy("b")``");
 
     //group
     /*value grouped = (1..10).group((Integer i) => i%2==0 then "even" else "odd");

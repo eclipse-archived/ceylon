@@ -335,6 +335,17 @@ public class LazySet<Element> implements Set<Element>, ReifiedType {
     public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
         return elems.chain($reifiedOther, other);
     }
+    
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore 
+    public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return elems.leadBy($reifiedOther, other);
+    }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore 
+    public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return elems.trailedBy($reifiedOther, other);
+    }
 
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(

@@ -378,6 +378,16 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
         return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore 
+    public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
+    }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore 
+    public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+    }
     @Override @Ignore
     public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);

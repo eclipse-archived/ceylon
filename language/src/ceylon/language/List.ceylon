@@ -151,6 +151,7 @@ shared interface List<out Element>
     
     doc "Returns a new `List` that starts with the specified
          element, followed by the elements of this `List`."
+    see (leadBy)
     shared default [Element|Other+] withLeading<Other>(
             doc "The first element of the resulting sequence."
             Other element) {
@@ -166,6 +167,7 @@ shared interface List<out Element>
     doc "Returns a new `List` that contains the specified
          element appended to the end of the elements of this 
          `List`."
+    see (trailedBy)
     shared default [Element|Other+] withTrailing<Other>(
             doc "The last element of the resulting sequence."
             Other element) {
