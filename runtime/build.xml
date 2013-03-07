@@ -25,6 +25,16 @@
     <property name="ceylon.common.jar"
               value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+    <property name="ceylon.typechecker.dir"
+              value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar"
+              value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+    <property name="ceylon.compiler.java.dir"
+              value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
+    <property name="ceylon.compiler.java.jar"
+              value="${ceylon.compiler.java.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
+    <property name="ceylon.compiler.java.lib" location="${ceylon.repo.dir}/${ceylon.compiler.java.jar}"/>
     <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
     <property name="ceylon.language.car"
               value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
@@ -90,6 +100,7 @@
     <path id="test.run.classpath">
         <path refid="test.build.classpath"/>
         <pathelement path="${build.test}"/>
+        <pathelement path="${build.dist}"/>
         <pathelement path="${shrinkwrap-impl-base.lib}"/>
         <pathelement path="${shrinkwrap-spi.lib}"/>
     </path>
@@ -127,13 +138,20 @@
         <copy file="${jboss-modules.lib}"
               tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
-<!--        <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
+    </target>
+
+	<target name="dist-for-tests" description="Copy jars in the repo used by tests">
+        <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
+        <copy file="${ceylon.typechecker.lib}" tofile="${build.dist.repo}/${ceylon.typechecker.jar}"/>
+        <copy file="${ceylon.compiler.java.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <copy file="${ceylon.maven-support.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
--->
-    </target>
-
+        <copy todir="${build.dist}">
+            <fileset dir="./testsuite/src/test/resources/"/>
+        </copy>
+	</target>
+	
     <target name="publish" depends="dist,init.repo,publish-internal">
     </target>
 
@@ -211,7 +229,7 @@
                includeantruntime="false"/>
     </target>
 
-    <target name="test" depends="compile.tests" description="Runs the JUnit tests">
+    <target name="test" depends="compile.tests,dist-for-tests" description="Runs the JUnit tests">
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no">
             <classpath refid="test.run.classpath"/>
