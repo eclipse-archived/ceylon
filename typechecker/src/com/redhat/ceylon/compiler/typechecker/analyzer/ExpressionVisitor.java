@@ -801,13 +801,13 @@ public class ExpressionVisitor extends Visitor {
     private void refine(Value sv, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
         ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
-        if (sv.isVariable()) {
-            that.addError("attribute is variable: " + 
-                    RefinementVisitor.message(sv));
-        }
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            bme.addError("attribute is not formal or default: " + 
+            bme.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
+                    RefinementVisitor.message(sv));
+        }
+        else if (sv.isVariable()) {
+            bme.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
                     RefinementVisitor.message(sv));
         }
         Value v = new Value();
@@ -841,7 +841,7 @@ public class ExpressionVisitor extends Visitor {
         ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            bme.addError("method is not formal or default: " + 
+            bme.addError("inherited method is neither formal nor default so may not be refined: " + 
                     RefinementVisitor.message(sm));
         }
         Method m = new Method();
