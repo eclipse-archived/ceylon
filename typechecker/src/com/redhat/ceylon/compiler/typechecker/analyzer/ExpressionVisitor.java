@@ -807,7 +807,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            bme.addError("attribute is not formal: " + 
+            bme.addError("attribute is not formal or default: " + 
                     RefinementVisitor.message(sv));
         }
         Value v = new Value();
@@ -841,7 +841,7 @@ public class ExpressionVisitor extends Visitor {
         ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            bme.addError("method is not formal: " + 
+            bme.addError("method is not formal or default: " + 
                     RefinementVisitor.message(sm));
         }
         Method m = new Method();
