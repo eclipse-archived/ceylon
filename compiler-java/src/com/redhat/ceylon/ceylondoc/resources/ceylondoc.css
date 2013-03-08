@@ -50,7 +50,7 @@
 .sub-navbar-inner {
 	font-size: 20px;
 	font-weight: bold;
-	padding: 14px 6px 0 20px;
+	padding: 14px 6px 6px 20px;
 }
 
 .sub-navbar-label {
@@ -91,6 +91,10 @@
     font-weight: bold;
     font-size: 13px;
     color: rgb(90, 90, 90);
+}
+
+.table-bordered th, .table-bordered td {
+	padding: 6px;
 }
 
 .table-header {
