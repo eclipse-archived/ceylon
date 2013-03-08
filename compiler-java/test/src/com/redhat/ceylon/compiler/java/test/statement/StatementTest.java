@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.test.statement;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class StatementTest extends CompilerTest {
@@ -666,4 +667,13 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("conditional/AssertVariableScopes");
     }
 
+    //
+    // Dynamic blocks
+
+    @Test
+    public void testDynBlock(){
+        assertErrors("dynamic/Dynamic",
+                new CompilerError(22, "Dynamic not yet supported on the JVM"),
+                new CompilerError(25, "Dynamic not yet supported on the JVM"));
+    }
 }

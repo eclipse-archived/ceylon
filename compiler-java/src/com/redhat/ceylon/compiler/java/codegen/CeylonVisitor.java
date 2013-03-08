@@ -542,6 +542,19 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.Assertion that) {
         appendList(gen.statementGen().transform(that));
     }
+
+    public void visit(Tree.Dynamic that) {
+        append(gen.makeErroneous(that, "Dynamic not yet supported on the JVM"));
+    }
+
+    public void visit(Tree.DynamicClause that) {
+        append(gen.at(that).Exec(gen.makeErroneous(that, "Dynamic not yet supported on the JVM")));
+    }
+
+    public void visit(Tree.DynamicStatement that) {
+        append(gen.at(that).Exec(gen.makeErroneous(that, "Dynamic not yet supported on the JVM")));
+    }
+
     /**
      * Gets all the results which were appended during the visit
      * @return The results
