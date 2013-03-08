@@ -172,9 +172,9 @@
         <programlisting>FractionalDigits: Digit+ | (Digit{3} "_")+ Digit{1..3} </programlisting>
         
         <para>Hexadecimal or binary digits may be separated into groups of four using 
-        an underscore.</para>
+        an underscore. Hexadecimal digits may even be separated into groups of two.</para>
 
-        <programlisting>HexDigits: HexDigit+ | HexDigit{1..4} ("_" HexDigit{4})+</programlisting>
+        <programlisting>HexDigits: HexDigit+ | HexDigit{1..4} ("_" HexDigit{4})+ | HexDigit{1..2} ("_" HexDigit{2})+</programlisting>
         <programlisting>BinDigits: BinDigit+ | BinDigit{1..4} ("_" Digit{4})+</programlisting>
 
         <para>A digit is a decimal, hexadecimal, or binary digit.</para>
@@ -207,6 +207,7 @@
         <programlisting>5u</programlisting>
         <programlisting>$1010_0101</programlisting>
         <programlisting>#D00D</programlisting>
+        <programlisting>#FF_FF_FF</programlisting>
         
         <para>The following are <emphasis>not</emphasis> valid numeric literals:</para>
         

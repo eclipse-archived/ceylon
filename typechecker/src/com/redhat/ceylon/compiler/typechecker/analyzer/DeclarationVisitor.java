@@ -1105,7 +1105,7 @@ public class DeclarationVisitor extends Visitor {
 	static final String exponent = "(e|E)(\\+|-)?" + digits;
 
 	static final String hexDigits = "(\\d|[a-f]|[A-F])+";
-	static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+";
+	static final String hexGroups = "(\\d|[a-f]|[A-F]){1,4}(_(\\d|[a-f]|[A-F]){4})+|(\\d|[a-f]|[A-F]){1,2}(_(\\d|[a-f]|[A-F]){2})+";
 	
 	static final String binDigits = "(0|1)+";
 	static final String binGroups = "(0|1){1,4}(_(0|1){4})+";
