@@ -28,13 +28,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-public class ValueVisitor extends Visitor {
+public class MethodOrValueReferenceVisitor extends Visitor {
     
     private TypedDeclaration declaration;
     private boolean inCapturingScope = false;
     private boolean inLazySpecifierExpression = false;
     
-    public ValueVisitor(TypedDeclaration declaration) {
+    public MethodOrValueReferenceVisitor(TypedDeclaration declaration) {
         this.declaration = declaration;
     }
     
