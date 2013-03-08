@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.language;
 
 import java.util.Arrays;
 
-import ceylon.language.Array;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category;
@@ -17,10 +16,8 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator$impl;
 import ceylon.language.List;
 import ceylon.language.List$impl;
-import ceylon.language.Map;
 import ceylon.language.Null;
 import ceylon.language.Ranged;
 import ceylon.language.Ranged$impl;
@@ -58,7 +55,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     protected final Element[] array;
-    protected final long first;
+    protected final int first;
+    protected final int length;
     @Ignore
     private TypeDescriptor $reifiedElement;
 
@@ -68,6 +66,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Ignore
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first) {
+        this($reifiedElement, array, first, array.length-first);
+    }
+    
+    @Ignore
+    public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
@@ -78,11 +81,17 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         this.$ceylon$language$Sequential$this = new ceylon.language.Sequential$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<? extends Element>>(Integer.$TypeDescriptor, TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged)this);
         this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Sequence.class, $reifiedElement), this);
-    	if (array.length==0 || array.length<=first) {
+    	if (array.length==0 || 
+    	        length == 0 ||
+    	        array.length <= first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
+    	if (first + length > array.length) {
+    	    throw new IllegalArgumentException("Overflow");
+    	}
         this.array = array;
-        this.first = first;
+        this.first = (int)first;
+        this.length = (int)length;
         this.$reifiedElement = $reifiedElement;
     }
 
@@ -158,11 +167,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Sequential<? extends Element> getRest() {
-        if (first+1==array.length) {
+        if (length==1) {
             return (Sequential)empty_.getEmpty$();
         }
         else {
-            return new ArraySequence<Element>($reifiedElement, array, first + 1);
+            return new ArraySequence<Element>($reifiedElement, array, first + 1, length - 1);
         }
     }
 
@@ -173,7 +182,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Element getLast() {
-        return array[array.length - 1];
+        return array[(int)(first + length - 1)];
     }
 
     @Override
@@ -190,90 +199,85 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         long fromIndex = from.longValue();
         long toIndex = to==null ? getSize() : to.longValue();
         long lastIndex = getLastIndex().longValue();
-        
         boolean reverse = toIndex<fromIndex;
         if (reverse) {
-        	if (fromIndex<0 || toIndex>lastIndex) {
-        		return (Sequential)empty_.getEmpty$();
-        	}
-        	if (toIndex<0) {
-        		toIndex=0;
-        	}
-        	if (fromIndex>lastIndex) {
-        		fromIndex = lastIndex;
-        	}
+        	long tmp = fromIndex;
+        	fromIndex = toIndex;
+        	toIndex = tmp;
         }
-        else {
-        	if (toIndex<0 || fromIndex>lastIndex) {
-        		return (Sequential)empty_.getEmpty$();
-        	}
-        	if (fromIndex<0) {
-        		fromIndex=0;
-        	}
-        	if (toIndex>=lastIndex) {
-        		return new ArraySequence<Element>($reifiedElement, array, fromIndex);
-        	}
+    	if (toIndex<0 || fromIndex>lastIndex) {
+    		return (Sequential)empty_.getEmpty$();
+    	}
+    	fromIndex= Math.max(fromIndex, 0);
+    	toIndex = Math.min(toIndex, lastIndex);        
+    	if (reverse) {
+            Element[] sub = reversedCopy$priv(array, (int)(first+fromIndex), (int)(toIndex-fromIndex+1));
+            return new ArraySequence<Element>($reifiedElement, sub, 
+                    0, 
+                    sub.length);
+        } else {
+            return new ArraySequence<Element>($reifiedElement, array, 
+                    first+fromIndex, 
+                    toIndex-fromIndex+1);
         }
-
-        final Element[] sub;
-        if (reverse) {
-        	sub = Arrays.copyOfRange(array,
-        			(int)toIndex, (int)fromIndex+1);
-        	for (int i = 0, j=(int)fromIndex; i < sub.length; i++, j--) {
-        		sub[i] = array[j];
-        	}
-        } 
-        else {
-        	sub = Arrays.copyOfRange(array,
-        			(int)fromIndex, (int)toIndex+1);
-        }
-        return new ArraySequence<Element>($reifiedElement, sub, 0);
     }
 
     @Override
     public Sequential<? extends Element> segment(Integer from, long length) {
         long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
-        long resultLength = length;
-        long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||resultLength<=0) {
+        if (fromIndex < 0) {
+            length = length+fromIndex;
+            fromIndex = 0;
+        }
+        final long lastIndex = getLastIndex().longValue();
+        
+        if (fromIndex > lastIndex || length <= 0) {
             return (Sequential)empty_.getEmpty$();
         }
-        else if (fromIndex+resultLength>lastIndex) {
-            return new ArraySequence<Element>($reifiedElement, array, fromIndex);
+        long l;
+        if (length > lastIndex-fromIndex) {
+            l = lastIndex-fromIndex+1;
+        } else {
+            l = length;
         }
-        else {
-            return new ArraySequence<Element>($reifiedElement, Arrays.copyOfRange(array,
-                    (int)fromIndex, (int)(fromIndex + resultLength)), 0);
-        }
+        return new ArraySequence<Element>($reifiedElement, array, 
+                fromIndex+first, l);
     }
 
     @Override
     @TypeInfo("ceylon.language::Integer")
     public Integer getLastIndex() {
-        return Integer.instance(array.length - first - 1);
+        return Integer.instance(length - 1);
     }
 
     @Override
     @TypeInfo("ceylon.language::Integer")
     public long getSize() {
-        return array.length - first;
+        return length;
     }
 
+    /** 
+     * A copy of the given elements of the given array, but in reversed order. 
+     */
+    private static <Element> Element[] reversedCopy$priv(Element[] array, int first, int length) {
+        Element[] reversed = (Element[]) java.lang.reflect.Array.newInstance(array.getClass()
+                .getComponentType(), length);
+        for (int i = 0; i < length; i++) {
+            reversed[length-1-i] = array[first+i];
+        }
+        return reversed;
+    }
+    
     @Override
     public ArraySequence<? extends Element> getReversed() {
-    	Element[] reversed = (Element[]) java.lang.reflect.Array.newInstance(array.getClass()
-    			.getComponentType(), array.length);
-    	for (int i=0; i<array.length; i++) {
-    		reversed[array.length-1-i] = array[i];
-    	}
-		return new ArraySequence<Element>($reifiedElement, reversed, 0);
+    	Element[] reversed = reversedCopy$priv(array, first, length);
+		return new ArraySequence<Element>($reifiedElement, reversed, 0, length);
     }
 
     @Override
     public boolean defines(Integer key) {
         long ind = key.longValue();
-        return ind>=0 && ind+first<array.length;
+        return ind>=0 && ind<length;
     }
 
     @Override
@@ -308,9 +312,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Element get(Integer key) {
-        long index = key.longValue()+first;
-        return index<0 || index >= array.length ?
-                null : array[(int) index];
+        long index = key.longValue();
+        return index < 0 || index >= length ?
+                null : array[(int) (index+first)];
     }
 
     @Override
@@ -394,7 +398,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public boolean contains(java.lang.Object element) {
-        for (Element x: array) {
+        for (int ii = 0; ii < length; ii++) {
+            Element x = array[first+ii];
             if (x!=null && element.equals(x)) return true;
         }
         return false;
@@ -403,7 +408,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public long count(Callable<? extends Boolean> f) {
         int count=0;
-        for (Element x: array) {
+        for (int ii = 0; ii < length; ii++) {
+            Element x = array[first+ii];
             if (x!=null && f.$call(x).booleanValue()) count++;
         }
         return count;
