@@ -1,5 +1,5 @@
 Float addInteger(Float x, Integer y) => x+y;
-void printAll(String sep, String* strings) => print(sep.join(*strings));
+void printAll(String sep, String* strings) => print(sep.join(strings));
 X|Y oneOf<X,Y>(X x, Y y) => x;
 T? firstOf<T>(T* rest) => rest.first;
 

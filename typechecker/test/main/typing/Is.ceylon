@@ -164,7 +164,7 @@ class Is() {
         @error value c = s is Integer;
     }
     
-    value next = "hello".iterator.next();
+    value next = "hello".iterator().next();
     if (!is Finished next) {
         Character char = next;
     }
@@ -180,7 +180,7 @@ class Is() {
     }
     
     void notIs<T>(T* ts) {
-        value next = ts.iterator.next();
+        value next = ts.iterator().next();
         if (!is Finished next) {
             T tt = next;
         }

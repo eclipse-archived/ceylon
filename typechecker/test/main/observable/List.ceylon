@@ -41,7 +41,7 @@ class List<T>()
     shared actual T[] spanTo(Integer to) {
         return this;
     }
-    shared actual Iterator<T> iterator {
+    shared actual Iterator<T> iterator() {
         throw;
     }
 }

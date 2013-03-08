@@ -1,6 +1,6 @@
 class Union() {
     String[] strings = {};
-    Iterator<String>? it1 = strings.iterator;
+    Iterator<String>? it1 = strings.iterator();
     Iterable<String> it2 = strings; 
 
     interface Hello {
@@ -130,7 +130,7 @@ class Union() {
     if (is Sequence<String?> strs) {
         for (s in strs) {
             @error if (is String s) {}
-            s.join();
+            s.join {};
         }
     }
     

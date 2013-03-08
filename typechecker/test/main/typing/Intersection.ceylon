@@ -109,7 +109,7 @@ class Intersection() {
     @type:"Sequence<Intersection.One&Intersection.Two>" Sequence<One&Two> seq2 = seq;
     @type:"Intersection.One&Intersection.Two" value item = seq[0];
     @type:"Intersection.One&Intersection.Two" value fst = seq.first;
-    @type:"Iterator<Intersection.One&Intersection.Two>" value itr = seq.iterator;
+    @type:"Iterator<Intersection.One&Intersection.Two>" value itr = seq.iterator();
     
     @type:"Intersection.Consumer<Intersection.One>&Intersection.Consumer<Intersection.Two>" 
     Consumer<One>&Consumer<Two> cons = Consumer<One|Two>();

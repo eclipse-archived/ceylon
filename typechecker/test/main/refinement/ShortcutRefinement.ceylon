@@ -118,7 +118,7 @@ class Y() extends X<String>() {
     baz = (String(Integer) s) => s(0);
     @error qux = () => "hello";
     fum = (String s) => print(s);
-    fo = (String* ss) => print(", ".join(*ss));
+    fo = (String* ss) => print(", ".join(ss));
     @error fee = void () => 0;
 }
 
@@ -128,7 +128,7 @@ class Z() extends X<String>() {
     baz(String s(Integer i)) => s(0);
     @error qux() => "hello";
     fum(String s) => print(s);
-    fo(String* ss) => print(", ".join(*ss));
+    fo(String* ss) => print(", ".join(ss));
     @error fee() => 0;
 }
 
@@ -138,7 +138,7 @@ class W() extends X<String>() {
     baz(@error String s(String ss)) => s("");
     @error qux() => 1;
     fum(@error Integer s) => print(s);
-    fo(@error Integer* ss) => print(", ".join(*ss*.string));
+    fo(@error Integer* ss) => print(", ".join(ss*.string));
     @error fee(Integer i) => print(i);
 }
 
@@ -203,4 +203,17 @@ class MyCla() satisfies MyInt {
 }
 interface MySubint satisfies MyInt {
     @error f = print; //TODO: unnecessary error * revisit this?
+}
+
+abstract class SuperWithVariable() {
+    shared variable Integer count1 = 0;
+    shared default variable Integer count2 = 0;
+    shared formal variable Integer count3;
+}
+
+class SubWithAssignment() 
+        extends SuperWithVariable() {
+    @error count1 = 5;
+    @error count2 = 10;
+    @error count3 = 15;
 }

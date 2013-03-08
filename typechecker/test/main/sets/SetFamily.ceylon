@@ -22,6 +22,6 @@ class TreeSetFamily<Element>()
         actual shared Boolean equals1(TreeSet that) {
             return nothing;
         }
-        shared actual Iterator<Element> iterator = nothing;
+        shared actual Iterator<Element> iterator() => nothing;
     }
 }

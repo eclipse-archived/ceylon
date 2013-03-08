@@ -11,7 +11,7 @@
     class TreeSet<Element>()
             satisfies Set<Element,TreeSet<Element>> 
             given Element satisfies Object {
-        shared actual Iterator<Element> iterator = nothing;
+        shared actual Iterator<Element> iterator() => nothing;
         actual shared void add(Element elem) {}
         actual shared Boolean contains1(Element elem) { 
             for (e in this) {

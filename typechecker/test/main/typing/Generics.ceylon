@@ -108,7 +108,7 @@ class Generics() {
             shared actual X[] span(Integer from, Integer to) { return this; }
             shared actual X[] spanTo(Integer to) { return this; }
             shared actual X[] spanFrom(Integer from) { return this; }
-            shared actual Iterator<X> iterator { throw; }
+            @error shared actual Iterator<X> iterator { throw; }
         }
         @error shared class BadClassInheritance() satisfies Sequence<Y> {}
         shared class GoodClassInheritance2() extends Producer<X>() {}
