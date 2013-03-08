@@ -796,7 +796,7 @@ public class Symtab {
         ceylonIntegerType = enterClass("ceylon.language.Integer");
         ceylonStringType = enterClass("ceylon.language.String");
         ceylonArrayType = enterClass("ceylon.language.Array");
-        ceylonArraySequenceType = enterClass("com.redhat.ceylon.compiler.java.language.ArraySequence");
+        ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
         ceylonSequenceBuilderType = enterClass("ceylon.language.SequenceBuilder");
         ceylonArrayIterableType = enterClass("com.redhat.ceylon.compiler.java.language.ArrayIterable");
         ceylonAbstractIterableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterable");
