@@ -3270,48 +3270,54 @@ public class ExpressionTransformer extends AbstractTransformer {
     
         public JCExpression transformComprehension() {
             at(comp);
-            Tree.ComprehensionClause clause = comp.getForComprehensionClause();
-            while (clause != null) {
-                final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
-                Naming.SyntheticName itemVar = null;
-                if (clause instanceof ForComprehensionClause) {
-                    final ForComprehensionClause fcl = (ForComprehensionClause)clause;
-                    itemVar = transformForClause(fcl, iterVar, itemVar);
-                    if (error != null) {
-                        return error;
+            // make sure "this" will be qualified since we're introducing a new surrounding class
+            boolean oldWithinSyntheticClassBody = withinSyntheticClassBody(true);
+            try{
+                Tree.ComprehensionClause clause = comp.getForComprehensionClause();
+                while (clause != null) {
+                    final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
+                    Naming.SyntheticName itemVar = null;
+                    if (clause instanceof ForComprehensionClause) {
+                        final ForComprehensionClause fcl = (ForComprehensionClause)clause;
+                        itemVar = transformForClause(fcl, iterVar, itemVar);
+                        if (error != null) {
+                            return error;
+                        }
+                        clause = fcl.getComprehensionClause();
+                    } else if (clause instanceof IfComprehensionClause) {
+                        transformIfClause((IfComprehensionClause)clause);
+                        if (error != null) {
+                            return error;
+                        }
+                        clause = ((IfComprehensionClause)clause).getComprehensionClause();
+                        itemVar = prevItemVar;
+                    } else if (clause instanceof ExpressionComprehensionClause) {
+                        //Just keep a reference to the expression
+                        excc = (ExpressionComprehensionClause)clause;
+                        at(excc);
+                        clause = null;
+                    } else {
+                        return makeErroneous(clause, "No support for comprehension clause of type " + clause.getClass().getName());
                     }
-                    clause = fcl.getComprehensionClause();
-                } else if (clause instanceof IfComprehensionClause) {
-                    transformIfClause((IfComprehensionClause)clause);
-                    if (error != null) {
-                        return error;
-                    }
-                    clause = ((IfComprehensionClause)clause).getComprehensionClause();
-                    itemVar = prevItemVar;
-                } else if (clause instanceof ExpressionComprehensionClause) {
-                    //Just keep a reference to the expression
-                    excc = (ExpressionComprehensionClause)clause;
-                    at(excc);
-                    clause = null;
-                } else {
-                    return makeErroneous(clause, "No support for comprehension clause of type " + clause.getClass().getName());
+                    idx++;
+                    if (itemVar != null) prevItemVar = itemVar;
                 }
-                idx++;
-                if (itemVar != null) prevItemVar = itemVar;
+
+                ProducedType iteratedType = typeFact().getIteratedType(targetIterType);
+
+                //Define the next() method for the Iterator
+                fields.add(makeNextMethod(iteratedType));
+                //Define the inner iterator class
+
+                JCMethodDecl getIterator = makeGetIterator(iteratedType);
+                JCExpression iterable = makeAnonymousIterable(iteratedType, getIterator);
+                for (Substitution subs : fieldSubst) {
+                    subs.close();
+                }
+                return iterable;
+            }finally{
+                withinSyntheticClassBody(oldWithinSyntheticClassBody);
             }
-    
-            ProducedType iteratedType = typeFact().getIteratedType(targetIterType);
-            
-            //Define the next() method for the Iterator
-            fields.add(makeNextMethod(iteratedType));
-            //Define the inner iterator class
-            
-            JCMethodDecl getIterator = makeGetIterator(iteratedType);
-            JCExpression iterable = makeAnonymousIterable(iteratedType, getIterator);
-            for (Substitution subs : fieldSubst) {
-                subs.close();
-            }
-            return iterable;
         }
         /**
          * Builds the {@code next()} method of the {@code AbstractIterator}
