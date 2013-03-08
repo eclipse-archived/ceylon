@@ -15,7 +15,8 @@ doc "Represents the range of totally ordered, ordinal values
 by "Gavin"
 shared class Range<Element>(first, last) 
         extends Object() 
-        satisfies [Element+] & Category
+        satisfies [Element+] & 
+                  Cloneable<Range<Element>>
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
