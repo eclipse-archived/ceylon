@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import ceylon.language.ArraySequence;
 import ceylon.language.Boolean;
 import ceylon.language.Category$impl;
 import ceylon.language.Container$impl;

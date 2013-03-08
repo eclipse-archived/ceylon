@@ -1,48 +1,32 @@
-package com.redhat.ceylon.compiler.java.language;
+package ceylon.language;
 
 import java.util.Arrays;
 
-import ceylon.language.Boolean;
-import ceylon.language.Callable;
-import ceylon.language.Category;
-import ceylon.language.Category$impl;
-import ceylon.language.Cloneable$impl;
-import ceylon.language.Collection$impl;
-import ceylon.language.Comparison;
-import ceylon.language.Container$impl;
-import ceylon.language.Correspondence$impl;
-import ceylon.language.Entry;
-import ceylon.language.Integer;
-import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
-import ceylon.language.Iterator;
-import ceylon.language.List;
-import ceylon.language.List$impl;
-import ceylon.language.Null;
-import ceylon.language.Ranged;
-import ceylon.language.Ranged$impl;
-import ceylon.language.Sequence;
-import ceylon.language.Sequence$impl;
-import ceylon.language.Sequential;
-import ceylon.language.Sequential$impl;
-import ceylon.language.empty_;
-import ceylon.language.finished_;
-
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.FilterIterable;
+import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ignore
 @Ceylon(major = 4)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
+@TypeParameters(@TypeParameter(value = "Element"))
 public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
+    
+    // The array length is the first element in the array
+    private static final long USE_ARRAY_SIZE = -10L;
+    
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     private final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
     private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
@@ -54,23 +38,89 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private final ceylon.language.Ranged$impl<Integer,List<? extends Element>> $ceylon$language$Ranged$this;
     private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
-    protected final Element[] array;
-    protected final int first;
-    protected final int length;
+    /** 
+     * A backing array. Maybe shared between many ArraySequence instances
+     * (Flyweight pattern).
+     */
+    final java.lang.Object[] array;
+    /** The index into {@link #array} that holds the first element of this sequence */
+    final int first;
+    /** The number of elements in {@link #array} that are in this sequence */
+    final int length;
+    
     @Ignore
     private TypeDescriptor $reifiedElement;
 
+    /**
+     * The public (Ceylon) initializer. Note that if elements is an 
+     * ArraySequence we avoid creating a new array. Otherwise a new array of 
+     * exactly the right size is used
+     * @param $reifiedElement
+     * @param elements
+     */
+    public ArraySequence(@Ignore TypeDescriptor $reifiedElement,
+            @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Nothing>")
+            @Name("elements")
+            ceylon.language.Iterable<? extends Element, ? extends java.lang.Object> elements) {
+        /*
+         * Ugly, optimization:
+         * In the case that the Iterable is an ArraySequence we can avoid 
+         * copying the backing array, but in the case it's just an Iterable
+         * we need to allocate an array 
+         * (and reallocate, as we iterate filling the array). The 
+         * {@code copyOrNot_*()} methods figure out the arguments for the 
+         * this() call. Oh for a Let expr.
+         */
+        this($reifiedElement, copyOrNot_array$hidden(elements), 
+                copyOrNot_first$hidden(elements), copyOrNot_length$hidden(elements), 
+                false);
+    }
+    
+    @Ignore
+    private static <Element> java.lang.Object[] copyOrNot_array$hidden(
+            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+        if (elements instanceof ArraySequence) {
+            return ((ArraySequence)elements).array;
+        } else {
+            // Note we trim the array which means copyOrNot_length$hidden() 
+            // can use USE_ARRAY_SIZE
+            return new SequenceBuilder<>(null).appendAll$priv(elements).trim$priv().array;
+        }
+    }
+    
+    @Ignore
+    private static <Element> int copyOrNot_first$hidden(
+            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+        if (elements instanceof ArraySequence) {
+            return ((ArraySequence) elements).first;
+        }
+        return 0;
+    }
+    
+    @Ignore
+    private static <Element> long copyOrNot_length$hidden(
+            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+        if (elements instanceof ArraySequence) {
+            return ((ArraySequence) elements).length;
+        }
+        return USE_ARRAY_SIZE;
+    }
+
+    @Ignore
+    // TODO Review callers of this. All the ones in the language module can 
+    // probably be converted to backedBy, or we can make it non-copying 
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element... array) {
         this($reifiedElement, array, 0, array.length, true);
     }
 
     @Ignore
-    public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first) {
+    // TODO If this used any more?
+    ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first) {
         this($reifiedElement, array, first, array.length-first, true);
     }
     
     @Ignore
-    private ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length, boolean copy) {
+    ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first, long length, boolean copy) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
@@ -81,6 +131,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         this.$ceylon$language$Sequential$this = new ceylon.language.Sequential$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<? extends Element>>(Integer.$TypeDescriptor, TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged)this);
         this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Sequence.class, $reifiedElement), this);
+        if (length == USE_ARRAY_SIZE) {
+            length = array.length;
+        }
     	if (array.length==0 || 
     	        length == 0 ||
     	        array.length <= first) {
@@ -91,39 +144,32 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     	}
     	this.$reifiedElement = $reifiedElement;
     	if (copy) {
-    	    this.array = Arrays.copyOfRange(array, (int)first, (int)length);
+    	    this.array = (Element[])Arrays.copyOfRange(array, (int)first, (int)length);
     	    this.first = 0;
     	    
     	} else {
-            this.array = array;
+            this.array = (Element[])array;
             this.first = (int)first;
     	}
     	this.length = (int)length;
     }
     
     /** 
-     * Creates an ArraySequence backed by the given elements of the given 
-     * array without copying them. 
+     * <p>Creates an {@code ArraySequence} backed by the given elements of the 
+     * given array <strong>without copying it</strong>, so don't go changing those 
+     * elements after calling this if the returned instance has escaped to 
+     * user code.</p>
      * 
      * Has $hidden in name in case this is ever a vsible Ceylon class that can 
      * be subclassed. Not $priv because it's public so that ceylon.language 
      * can use it. 
      */
     @Ignore
-    public static <Element> ArraySequence<Element> backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length) {
+    static <Element> ArraySequence<Element> backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length) {
         return new ArraySequence<>($reifiedElement, array, first, length, false);
     }
     
-    @Ignore
-    public java.lang.Object[] backingArray$hidden() {
-        return array;
-    }
-    
-    @Ignore
-    public int backingFirst$hidden() {
-        return first;
-    }
-
+    // TODO Is this used any more?
     @Ignore
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.util.List<Element> list) {
         this($reifiedElement, (Element[]) list.toArray(), 0);
@@ -191,7 +237,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Element getFirst() {
-        return array[(int) first];
+        return (Element)array[(int) first];
     }
 
     @Override
@@ -200,7 +246,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
             return (Sequential)empty_.getEmpty$();
         }
         else {
-            return backedBy$hidden($reifiedElement, array, first + 1, length - 1);
+            return backedBy$hidden($reifiedElement, (Element[])array, first + 1, length - 1);
         }
     }
 
@@ -211,7 +257,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Element getLast() {
-        return array[(int)(first + length - 1)];
+        return (Element)array[(int)(first + length - 1)];
     }
 
     @Override
@@ -240,12 +286,12 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     	fromIndex= Math.max(fromIndex, 0);
     	toIndex = Math.min(toIndex, lastIndex);        
     	if (reverse) {
-            Element[] sub = reversedCopy$priv(array, (int)(first+fromIndex), (int)(toIndex-fromIndex+1));
+            Element[] sub = reversedCopy$priv((Element[])array, (int)(first+fromIndex), (int)(toIndex-fromIndex+1));
             return backedBy$hidden($reifiedElement, sub, 
                     0, 
                     sub.length);
         } else {
-            return backedBy$hidden($reifiedElement, array, 
+            return backedBy$hidden($reifiedElement, (Element[])array, 
                     first+fromIndex, 
                     toIndex-fromIndex+1);
         }
@@ -269,7 +315,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         } else {
             l = length;
         }
-        return backedBy$hidden($reifiedElement, array, 
+        return backedBy$hidden($reifiedElement, (Element[])array, 
                 fromIndex+first, l);
     }
 
@@ -289,16 +335,16 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
      * A copy of the given elements of the given array, but in reversed order. 
      */
     private static <Element> Element[] reversedCopy$priv(Element[] array, int first, int length) {
-        Element[] reversed = (Element[]) new Object[length];
+        java.lang.Object[] reversed = new java.lang.Object[length];
         for (int i = 0; i < length; i++) {
             reversed[length-1-i] = array[first+i];
         }
-        return reversed;
+        return (Element[])reversed;
     }
     
     @Override
     public ArraySequence<? extends Element> getReversed() {
-    	Element[] reversed = reversedCopy$priv(array, first, length);
+    	Element[] reversed = reversedCopy$priv((Element[])array, first, length);
 		return backedBy$hidden($reifiedElement, reversed, 0, length);
     }
 
@@ -342,7 +388,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public Element get(Integer key) {
         long index = key.longValue();
         return index < 0 || index >= length ?
-                null : array[(int) (index+first)];
+                null : (Element)array[(int) (index+first)];
     }
 
     @Override
@@ -427,7 +473,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public boolean contains(java.lang.Object element) {
         for (int ii = 0; ii < length; ii++) {
-            Element x = array[first+ii];
+            Element x = (Element)array[first+ii];
             if (x!=null && element.equals(x)) return true;
         }
         return false;
@@ -437,7 +483,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public long count(Callable<? extends Boolean> f) {
         int count=0;
         for (int ii = 0; ii < length; ii++) {
-            Element x = array[first+ii];
+            Element x = (Element)array[first+ii];
             if (x!=null && f.$call(x).booleanValue()) count++;
         }
         return count;

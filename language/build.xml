@@ -190,6 +190,8 @@
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
+            	<exclude name="ceylon/language/ArraySequence.ceylon"/>
+                <include name="ceylon/language/ArraySequence.java"/>
                 <include name="ceylon/language/array_.java"/>
                 <include name="ceylon/language/arrayOfSize_.java"/>
                 <include name="ceylon/language/copyArray_.java"/>

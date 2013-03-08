@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.language;
+package ceylon.language;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -6,6 +6,9 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
+
+import ceylon.language.ArraySequence;
 import ceylon.language.Boolean;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
@@ -18,11 +21,11 @@ public class ArraySequenceTest {
         return ceylon.language.Integer.instance(i);
     }
     
-    private static ceylon.language.String s(String s) {
+    private static ceylon.language.String s(java.lang.String s) {
         return ceylon.language.String.instance(s);
     }
     
-    private static ceylon.language.String[] cs(String... jstrings) {
+    private static ceylon.language.String[] cs(java.lang.String... jstrings) {
         ceylon.language.String[] result = new ceylon.language.String[jstrings.length];
         for (int ii = 0; ii < jstrings.length; ii++) {
             result[ii] = ceylon.language.String.instance(jstrings[ii]);
@@ -80,8 +83,8 @@ public class ArraySequenceTest {
      * <code>{ "a", "b", "c" }</code>, but each has a different backing 
      * array.
      */
-    Map<String, ArraySequence<ceylon.language.String>> abcs() {
-        Map<String, ArraySequence<ceylon.language.String>> result = new LinkedHashMap<>();
+    Map<java.lang.String, ArraySequence<ceylon.language.String>> abcs() {
+        Map<java.lang.String, ArraySequence<ceylon.language.String>> result = new LinkedHashMap<>();
         result.put("{a b c}: ", 
                 new ArraySequence<ceylon.language.String>(
                         ceylon.language.String.$TypeDescriptor, 
@@ -108,8 +111,8 @@ public class ArraySequenceTest {
      */    
     @Test
     public void testBasic() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             Assert.assertFalse(description, abc1.getEmpty());
             Assert.assertEquals(description, abc1.getSize(), 3);
@@ -120,8 +123,8 @@ public class ArraySequenceTest {
     }
     @Test
     public void testDefines() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             Assert.assertTrue(description, abc1.defines(i(0)));
             Assert.assertTrue(description, abc1.defines(i(1)));
@@ -132,8 +135,8 @@ public class ArraySequenceTest {
             
     @Test
     public void testContains() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             Assert.assertTrue(description, abc1.contains(s("a")));
             Assert.assertTrue(description, abc1.contains(s("b")));
@@ -145,8 +148,8 @@ public class ArraySequenceTest {
     
     @Test
     public void testGet() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             Assert.assertEquals(description, s("a"), abc1.get(i(0)));
             Assert.assertEquals(description, s("b"), abc1.get(i(1)));
@@ -157,8 +160,8 @@ public class ArraySequenceTest {
     
     @Test
     public void testRest() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             final ArraySequence<ceylon.language.String> bc = 
                     new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
@@ -169,8 +172,8 @@ public class ArraySequenceTest {
     
     @Test
     public void testCount() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             
             Assert.assertEquals(description, 1, abc1.count(equalsPredicate("a")));
@@ -181,7 +184,7 @@ public class ArraySequenceTest {
         }
     }
     
-    private AbstractCallable<Boolean> equalsPredicate(String str) {
+    private AbstractCallable<Boolean> equalsPredicate(java.lang.String str) {
         final ceylon.language.String toMatch = s(str);
         return new AbstractCallable<ceylon.language.Boolean>("") {
             public ceylon.language.Boolean $call(java.lang.Object arg0) {
@@ -193,8 +196,8 @@ public class ArraySequenceTest {
     
     @Test
     public void testSort() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             ArraySequence<ceylon.language.String> cba = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
                     cs("c", "b", "a"));
@@ -217,8 +220,8 @@ public class ArraySequenceTest {
     
     @Test
     public void testIterator() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
-            String description = abc.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
+            java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             Iterator<ceylon.language.String> iterator = abc1.iterator();
             Assert.assertEquals(description, s("a"), iterator.next());
@@ -230,8 +233,8 @@ public class ArraySequenceTest {
 
     @Test
     public void testReversed() {
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
-            String description = abcs.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
+            java.lang.String description = abcs.getKey();
             ArraySequence<ceylon.language.String> abc = abcs.getValue();
         
             Assert.assertEquals(description, abc.getReversed().toString(), "{ c, b, a }");
@@ -258,8 +261,8 @@ public class ArraySequenceTest {
         ArraySequence<ceylon.language.String> c = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
                 cs("c"));
         
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
-            String description = abcs.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
+            java.lang.String description = abcs.getKey();
             ArraySequence<ceylon.language.String> abc = abcs.getValue();
             
             Assert.assertEquals(description, a,   abc.span(i(0), i(0)));
@@ -302,8 +305,8 @@ public class ArraySequenceTest {
         ArraySequence<ceylon.language.String> c = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
                 cs("c"));
         
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
-            String description = abcs.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
+            java.lang.String description = abcs.getKey();
             ArraySequence<ceylon.language.String> abc = abcs.getValue();
             Assert.assertEquals(description, abc, abc.spanFrom(i(-1)));
             Assert.assertEquals(description, abc, abc.spanFrom(i(0)));
@@ -320,8 +323,8 @@ public class ArraySequenceTest {
         ArraySequence<ceylon.language.String> a = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
                 cs("a"));
         
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
-            String description = abcs.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
+            java.lang.String description = abcs.getKey();
             ArraySequence<ceylon.language.String> abc = abcs.getValue();
             
             Assert.assertEquals(description, abc, abc.spanTo(i(3)));
@@ -344,8 +347,8 @@ public class ArraySequenceTest {
                 cs("b","c"));
         ArraySequence<ceylon.language.String> c = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
                 cs("c"));
-        for (Map.Entry<String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
-            String description = abcs.getKey();
+        for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
+            java.lang.String description = abcs.getKey();
             ArraySequence<ceylon.language.String> abc = abcs.getValue();
         
             Assert.assertEquals(description, abc,   abc.segment(i(-1), 4));

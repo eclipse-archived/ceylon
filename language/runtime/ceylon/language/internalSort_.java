@@ -1,9 +1,8 @@
 package ceylon.language;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -33,11 +32,9 @@ final class internalSort_ {
             return (Sequential)empty_.getEmpty$();   
         }
         
-        java.util.List<Element> list = Util.collectIterable(elements);
-
-        java.util.Collections.sort(list, comparator(comparing));
-
-        return new ArraySequence<Element>($reifiedElement, list);
+        ArraySequence<? extends Element> result = new ArraySequence<>($reifiedElement, (ceylon.language.Iterable)elements);
+        Arrays.sort((Element[])result.array, result.first, result.first+result.length, comparator(comparing));
+        return result;
     }
 
     /** Make a {@link java.util.Comparator} from a {@code Callable<Comparison>} */
