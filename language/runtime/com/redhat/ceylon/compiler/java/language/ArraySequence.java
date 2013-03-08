@@ -61,16 +61,16 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private TypeDescriptor $reifiedElement;
 
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element... array) {
-        this($reifiedElement, array,0);
+        this($reifiedElement, array, 0, array.length, true);
     }
 
     @Ignore
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first) {
-        this($reifiedElement, array, first, array.length-first);
+        this($reifiedElement, array, first, array.length-first, true);
     }
     
     @Ignore
-    public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length) {
+    private ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length, boolean copy) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
@@ -87,12 +87,41 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
     	if (first + length > array.length) {
-    	    throw new IllegalArgumentException("Overflow");
+    	    throw new IllegalArgumentException("Overflow :" + (first + length) + " > " + array.length);
     	}
-        this.array = array;
-        this.first = (int)first;
-        this.length = (int)length;
-        this.$reifiedElement = $reifiedElement;
+    	this.$reifiedElement = $reifiedElement;
+    	if (copy) {
+    	    this.array = Arrays.copyOfRange(array, (int)first, (int)length);
+    	    this.first = 0;
+    	    
+    	} else {
+            this.array = array;
+            this.first = (int)first;
+    	}
+    	this.length = (int)length;
+    }
+    
+    /** 
+     * Creates an ArraySequence backed by the given elements of the given 
+     * array without copying them. 
+     * 
+     * Has $hidden in name in case this is ever a vsible Ceylon class that can 
+     * be subclassed. Not $priv because it's public so that ceylon.language 
+     * can use it. 
+     */
+    @Ignore
+    public static <Element> ArraySequence<Element> backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length) {
+        return new ArraySequence<>($reifiedElement, array, first, length, false);
+    }
+    
+    @Ignore
+    public java.lang.Object[] backingArray$hidden() {
+        return array;
+    }
+    
+    @Ignore
+    public int backingFirst$hidden() {
+        return first;
     }
 
     @Ignore
@@ -171,7 +200,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
             return (Sequential)empty_.getEmpty$();
         }
         else {
-            return new ArraySequence<Element>($reifiedElement, array, first + 1, length - 1);
+            return backedBy$hidden($reifiedElement, array, first + 1, length - 1);
         }
     }
 
@@ -212,11 +241,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     	toIndex = Math.min(toIndex, lastIndex);        
     	if (reverse) {
             Element[] sub = reversedCopy$priv(array, (int)(first+fromIndex), (int)(toIndex-fromIndex+1));
-            return new ArraySequence<Element>($reifiedElement, sub, 
+            return backedBy$hidden($reifiedElement, sub, 
                     0, 
                     sub.length);
         } else {
-            return new ArraySequence<Element>($reifiedElement, array, 
+            return backedBy$hidden($reifiedElement, array, 
                     first+fromIndex, 
                     toIndex-fromIndex+1);
         }
@@ -240,7 +269,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         } else {
             l = length;
         }
-        return new ArraySequence<Element>($reifiedElement, array, 
+        return backedBy$hidden($reifiedElement, array, 
                 fromIndex+first, l);
     }
 
@@ -260,8 +289,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
      * A copy of the given elements of the given array, but in reversed order. 
      */
     private static <Element> Element[] reversedCopy$priv(Element[] array, int first, int length) {
-        Element[] reversed = (Element[]) java.lang.reflect.Array.newInstance(array.getClass()
-                .getComponentType(), length);
+        Element[] reversed = (Element[]) new Object[length];
         for (int i = 0; i < length; i++) {
             reversed[length-1-i] = array[first+i];
         }
@@ -271,7 +299,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public ArraySequence<? extends Element> getReversed() {
     	Element[] reversed = reversedCopy$priv(array, first, length);
-		return new ArraySequence<Element>($reifiedElement, reversed, 0, length);
+		return backedBy$hidden($reifiedElement, reversed, 0, length);
     }
 
     @Override

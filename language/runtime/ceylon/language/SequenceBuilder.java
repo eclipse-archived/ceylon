@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import java.util.ArrayList;
-
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -19,47 +17,94 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceBuilder<Element> implements ReifiedType {
 
-    java.util.List<Element> list;
+    private final static int MIN_CAPACITY = 5;
+    private final static int MAX_CAPACITY = java.lang.Integer.MAX_VALUE;
+    
+    /** What will become the backing array of the ArraySequence we're building */
+    private java.lang.Object[] array;
+    
+    /** The index of the first element in {@link array} */
+    private int start = 0;
+    
+    /** The number of elements (from start) currently in {@link array} */
+    private int length = 0;
+    
+    /** 
+     * The number of elements in {@link array} which we're committed to
+     * (because we've passed {@link array} to ArraySequence
+     */
+    private int committed = 0;
+    
+    /* Invariant: 0 <= start <= array.length */
+    /* Invariant: 0 <= committed <= length */
+    /* Invariant: 0 <= start + length <= array.length */
     @Ignore
-    private TypeDescriptor $reifiedElement;
+    protected final TypeDescriptor $reifiedElement;
     
     public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
     }
-     
+    
+    private void ensureCapacity$priv(long capacity) {
+        
+        if ((array == null && capacity > 0) 
+                || (capacity > array.length-start)) {
+            // Always have about 50% more capacity than requested
+            long newcapacity = capacity+(capacity>>1);
+            if (newcapacity < MIN_CAPACITY) {
+                newcapacity = MIN_CAPACITY;
+            } else if (newcapacity > MAX_CAPACITY) {
+                newcapacity = capacity;
+                if (newcapacity > MAX_CAPACITY) {
+                    throw new RuntimeException("Can't allocate array bigger than " + MAX_CAPACITY);
+                }
+            }
+            java.lang.Object[] newarray = new java.lang.Object[(int)newcapacity];
+            if (array != null) {
+                System.arraycopy(array, start, newarray, 0, length);
+            }
+            array = newarray;
+            start = 0;
+            committed = 0;
+        }
+    }
+    
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
-        if (list==null || list.isEmpty()) {
+        if (array==null || length == 0) {
             return (Sequential)empty_.getEmpty$();
         }
         else {
-            return new ArraySequence<Element>($reifiedElement, list);
+            committed = Math.max(committed, length);
+            return ArraySequence.backedBy$hidden($reifiedElement, (Element[])array, start, length);
         }
     }
     
     public final SequenceBuilder<Element> append(@Name("element") Element element) {
-    	if (list==null) {
-    	    list = new ArrayList<Element>();
-    	}
-    	list.add(element);
+        ensureCapacity$priv(length+1);
+    	array[start+length] = element;
+    	length+=1;
     	return this;
     }
     
     public final SequenceBuilder<Element> appendAll(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language::Sequential<Element>") 
     Sequential<? extends Element> elements) {
-    	if (list==null) {
-    	    //we don't always receive an Iterable
-    	    if (elements instanceof Iterable) {
-                list = new ArrayList<Element>((int) elements.getSize());
-    	    } else {
-                list = new ArrayList<Element>();
-    	    }
-    	}
-    	java.lang.Object elem;
-    	for (Iterator<? extends Element> iter=elements.iterator(); !((elem = iter.next()) instanceof Finished);) {
-    	    list.add((Element) elem);
-    	}
+        long added = elements.getSize();
+        ensureCapacity$priv(length + added);
+        if (elements instanceof ArraySequence) {
+            ArraySequence as = (ArraySequence)elements;
+            java.lang.Object[] a = as.backingArray$hidden();
+            System.arraycopy(a, as.backingFirst$hidden(), array, start+length, (int)as.getSize());
+        } else {
+        	java.lang.Object elem;
+        	int index = start+length;
+        	for (Iterator<? extends Element> iter=elements.iterator(); !((elem = iter.next()) instanceof Finished);) {
+        	    array[index] = elem;
+        	    index++;
+        	}
+        }
+        length += added;
     	return this;
     }
     
@@ -69,11 +114,11 @@ public class SequenceBuilder<Element> implements ReifiedType {
     }
     
     public final long getSize() {
-        return list==null ? 0 : list.size();
+        return length;
     }
      
     public final boolean getEmpty() {
-        return list==null ? true : list.isEmpty();
+        return length == 0;
     }
      
     @Override

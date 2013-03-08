@@ -35,16 +35,26 @@ final class internalSort_ {
         
         java.util.List<Element> list = Util.collectIterable(elements);
 
-        java.util.Collections.sort(list, new Comparator<Element>() {
+        java.util.Collections.sort(list, comparator(comparing));
+
+        return new ArraySequence<Element>($reifiedElement, list);
+    }
+
+    /** Make a {@link java.util.Comparator} from a {@code Callable<Comparison>} */
+    private static <Element> Comparator<Element> comparator(
+            final Callable<? extends Comparison> comparing) {
+        return new Comparator<Element>() {
             public int compare(Element x, Element y) {
                 Comparison result = comparing.$call(x, y);
                 if (result.largerThan()) return 1;
                 if (result.smallerThan()) return -1;
                 return 0;
             }
-        });
-
-        return new ArraySequence<Element>($reifiedElement, list);
+        };
+    }
+    
+    static <Element> void sort(Element[] array, final Callable<? extends Comparison> comparing) {
+        java.util.Arrays.sort(array, comparator(comparing));
     }
     
 }

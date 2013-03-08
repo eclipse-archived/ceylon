@@ -53,7 +53,7 @@ public class ArraySequenceTest {
         }
         
         try {
-            new ArraySequence<ceylon.language.String>(ceylon.language.String.$TypeDescriptor, 
+            ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                     cs("a"), 0, 0);
             Assert.fail();
         } catch (IllegalArgumentException e) {
@@ -61,11 +61,11 @@ public class ArraySequenceTest {
         }
         
         
-        new ArraySequence<ceylon.language.String>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                 cs("a"), 0, 1);
         
         try {
-            new ArraySequence<ceylon.language.String>(ceylon.language.String.$TypeDescriptor, 
+            ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                     cs("a"), 0, 2);
             Assert.fail();
         } catch (IllegalArgumentException e) {
@@ -87,15 +87,15 @@ public class ArraySequenceTest {
                         ceylon.language.String.$TypeDescriptor, 
                         cs("a", "b", "c")));
         result.put("{a b c d}, 0, 3: ", 
-                new ArraySequence<ceylon.language.String>(
+                ArraySequence.backedBy$hidden(
                         ceylon.language.String.$TypeDescriptor, 
                         cs("a", "b", "c", "d"), 0, 3));
         result.put("{z a b c}, 1, 3: ", 
-                new ArraySequence<ceylon.language.String>(
+                ArraySequence.backedBy$hidden(
                         ceylon.language.String.$TypeDescriptor, 
                         cs("z", "a", "b", "c"), 1, 3));
         result.put("{z a b c d}, 1, 3: ", 
-                new ArraySequence<ceylon.language.String>(
+                ArraySequence.backedBy$hidden(
                         ceylon.language.String.$TypeDescriptor, 
                         cs("z", "a", "b", "c", "d"), 1, 3));
         return result;
@@ -236,11 +236,11 @@ public class ArraySequenceTest {
         
             Assert.assertEquals(description, abc.getReversed().toString(), "{ c, b, a }");
             
-            ArraySequence<ceylon.language.String> bc = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+            ArraySequence<ceylon.language.String> bc = ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                     cs("a", "b", "c"), 1, 2);
             Assert.assertEquals(description, bc.getReversed().toString(), "{ c, b }");
             
-            ArraySequence<ceylon.language.String> b = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+            ArraySequence<ceylon.language.String> b = ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                     cs("a", "b", "c"), 1, 1);
             Assert.assertEquals(description, b.getReversed().toString(), "{ b }");
         }
@@ -379,7 +379,6 @@ public class ArraySequenceTest {
             Assert.assertEquals(description, empty, abc.segment(i(3), 0));
         }
     }
-
 
     
 }
