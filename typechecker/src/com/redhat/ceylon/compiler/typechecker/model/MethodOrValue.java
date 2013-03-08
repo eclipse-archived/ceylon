@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 public abstract class MethodOrValue extends TypedDeclaration {
     
+    private boolean captured;
     private boolean shortcutRefinement;
     private ValueParameter initializerParameter;
     
@@ -28,6 +29,15 @@ public abstract class MethodOrValue extends TypedDeclaration {
 
     public boolean isTransient() {
         return true;
+    }
+
+    @Override
+    public boolean isCaptured() {
+        return captured;
+    }
+
+    public void setCaptured(boolean local) {
+        this.captured = local;
     }
 
     public abstract void setSetter(Setter setter);

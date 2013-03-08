@@ -10,7 +10,6 @@ public class Value extends MethodOrValue {
 
     private boolean variable;
     private boolean trans;
-    private boolean captured;
     private boolean late;
 
     private Setter setter;
@@ -40,15 +39,6 @@ public class Value extends MethodOrValue {
     
     public void setTransient(boolean trans) {
     	this.trans = trans;
-    }
-
-    @Override
-    public boolean isCaptured() {
-        return captured;
-    }
-
-    public void setCaptured(boolean local) {
-        this.captured = local;
     }
     
     @Override
