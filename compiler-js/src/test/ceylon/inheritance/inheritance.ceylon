@@ -10,5 +10,6 @@ shared void test() {
   bug135();
   testSelfTypes();
   testDefaulted();
+  //testIssues();
   results();
 }
