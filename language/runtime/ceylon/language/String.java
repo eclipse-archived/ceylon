@@ -766,7 +766,8 @@ public class String
             previousWasWhitespace = isWhitespace;
             i+=java.lang.Character.charCount(c);
         }
-        return result.toString();
+        // TODO Should be able to figure out the indices to substring on while iterating
+        return getTrimmed(result.toString());
     }
 
     @TypeInfo("ceylon.language::String")

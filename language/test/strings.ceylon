@@ -119,7 +119,15 @@ shared void strings() {
     check(("\{#2007}" + hello).trimmed.size==6, "string trim (Excluded: non-breaking space 2)");
     check(("\{#202F}" + hello).trimmed.size==6, "string trim (Excluded: non-breaking space 3)");
     
-    check("hello\n    world\ngoodbye   everyone!".normalized=="hello world goodbye everyone!", "string normalize");
+    check("".normalized=="", "\"\".normalized");
+    check(" ".normalized=="", "\" \".normalized");
+    check("  ".normalized=="", "\"  \".normalized");
+    check("a ".normalized=="a", "\"a \".normalized");
+    check(" a".normalized=="a", "\" a\".normalized");
+    check(" hello\n    world\ngoodbye   everyone!\t".normalized=="hello world goodbye everyone!", "string normalize");
+    value normalized = " Hello World ".normalized;
+    check(normalized == normalized.trimmed, "noramlized implies trimmed");
+    
     
     check('l' in hello, "char in string");
     check(!'x' in hello, "char not in string");
