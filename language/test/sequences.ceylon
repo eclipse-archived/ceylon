@@ -206,7 +206,106 @@ void test_max_min() {
     check((mn4 else 10)==1, "min filtered seq");
 }
 
+shared void arraySequence() {
+    value abc = ArraySequence({"a", "b", "c"});
+    check(3==abc.size, "abc.size");
+    check(!abc.empty, "abc.empty");
+    check(2==abc.lastIndex, "abc.lastIndex");
+    
+    check("a"==abc.first, "abc.first");
+    check({"b", "c"}==abc.rest, "abc.rest");
+    check({"c"}==abc.rest.rest, "abc.rest.rest");
+    check({}==abc.rest.rest.rest, "abc.rest.rest.rest");
+    
+    check(abc.defines(0), "abc.defines(0)");
+    check(abc.defines(1), "abc.defines(1)");
+    check(abc.defines(2), "abc.defines(2)");
+    check(!abc.defines(3), "abc.defines(3)");
+    
+    check(abc[0]=="a", "abc[0]");
+    check(abc[1] exists, "abc[1]");
+    check(abc[2] exists, "abc[2]");
+    check(!(abc[3] exists), "abc[3]");
+    
+    check(abc.reversed.string=="{ c, b, a }", "abc.reversed ``abc.reversed``");
+    check(abc.reversed.reversed==abc, "abc.reversed.reversed");
+    
+    check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
+    check(abc.span(-1, 0)=={"a"}, "abc.span(-1,0)");
+    check(abc.span(-1, 1)=={"a", "b"} , "abc.span(-1,1)");
+    check(abc.span(-1, 2)==abc, "abc.span(-1,2)");
+    check(abc.span(-1, 3)==abc, "abc.span(-1,3)");
+    
+    check(abc.span(0,-1)=={"a"}, "abc.span(0,-1)");
+    check(abc.span(0, 0)=={"a"}, "abc.span(0,0)");
+    check(abc.span(0, 1)=={"a", "b"} , "abc.span(0,1)");
+    check(abc.span(0, 2)==abc, "abc.span(0,2)");
+    check(abc.span(0, 3)==abc, "abc.span(0,3)");
+    
+    check(abc.span(1,-1)=={"b", "a"}, "abc.span(1,-1)");
+    check(abc.span(1, 0)=={"b", "a"}, "abc.span(1,0)");
+    check(abc.span(1, 1)=={"b"} , "abc.span(1,1)");
+    check(abc.span(1, 2)=={"b", "c"}, "abc.span(1,2)");
+    check(abc.span(1, 3)=={"b", "c"}, "abc.span(1,3)");
+    
+    check(abc.span(2,-1)=={"c", "b", "a"}, "abc.span(2,-1)");
+    check(abc.span(2, 0)=={"c", "b", "a"}, "abc.span(2,0)");
+    check(abc.span(2, 1)=={"c", "b"} , "abc.span(2,1)");
+    check(abc.span(2, 2)=={"c"}, "abc.span(2,2)");
+    check(abc.span(2, 3)=={"c"}, "abc.span(2,3)");
+    
+    check(abc.span(3,-1)=={"c", "b", "a"}, "abc.span(3,-1) ``abc.span(3,-1)``");
+    check(abc.span(3, 0)=={"c", "b", "a"}, "abc.span(3,0)");
+    check(abc.span(3, 1)=={"c", "b"} , "abc.span(3,1)");
+    check(abc.span(3, 2)=={"c"}, "abc.span(3,1)");
+    check(abc.span(3, 3)=={}, "abc.span(3,3)");
+    
+    check(abc.spanFrom(-1)==abc, "abc.spanFrom(-1)");
+    check(abc.spanFrom(0)==abc, "abc.spanFrom(0)");
+    check(abc.spanFrom(1)=={"b", "c"} , "abc.spanFrom(1)");
+    check(abc.spanFrom(2)=={"c"}, "abc.spanFrom(2)");
+    check(abc.spanFrom(3)=={}, "abc.spanFrom(3)");
+    
+    check(abc.spanTo(-1)=={}, "abc.spanTo(-1)");
+    check(abc.spanTo(0)=={"a"}, "abc.spanTo(0)");
+    check(abc.spanTo(1)=={"a", "b"} , "abc.spanTo(1)");
+    check(abc.spanTo(2)==abc, "abc.spanTo(2)");
+    check(abc.spanTo(3)==abc, "abc.spanTo(3)");
+    
+    
+    check(abc.segment(-1,-1)=={}, "abc.segment(-1,-1)");
+    check(abc.segment(-1, 0)=={}, "abc.segment(-1,0)");
+    check(abc.segment(-1, 1)=={} , "abc.segment(-1,1)");
+    check(abc.segment(-1, 2)=={"a"}, "abc.segment(-1,2)");
+    check(abc.segment(-1, 3)=={"a", "b"}, "abc.segment(-1,3)");
+    
+    check(abc.segment(0,-1)=={}, "abc.segment(0,-1)");
+    check(abc.segment(0, 0)=={}, "abc.segment(0,0)");
+    check(abc.segment(0, 1)=={"a"} , "abc.segment(0,1)");
+    check(abc.segment(0, 2)=={"a", "b"}, "abc.segment(0,2)");
+    check(abc.segment(0, 3)==abc, "abc.segment(0,3)");
+    
+    check(abc.segment(1,-1)=={}, "abc.segment(1,-1)");
+    check(abc.segment(1, 0)=={}, "abc.segment(1,0)");
+    check(abc.segment(1, 1)=={"b"} , "abc.segment(1,1)");
+    check(abc.segment(1, 2)=={"b", "c"}, "abc.segment(1,2)");
+    check(abc.segment(1, 3)=={"b", "c"}, "abc.segment(1,3)");
+    
+    check(abc.segment(2,-1)=={}, "abc.segment(2,-1)");
+    check(abc.segment(2, 0)=={}, "abc.segment(2,0)");
+    check(abc.segment(2, 1)=={"c"} , "abc.segment(2,1)");
+    check(abc.segment(2, 2)=={"c"}, "abc.segment(2,2)");
+    check(abc.segment(2, 3)=={"c"}, "abc.segment(2,3)");
+    
+    check(abc.segment(3,-1)=={}, "abc.segment(3,-1)");
+    check(abc.segment(3, 0)=={}, "abc.segment(3,0)");
+    check(abc.segment(3, 1)=={} , "abc.segment(3,1)");
+    check(abc.segment(3, 2)=={}, "abc.segment(3,1)");
+    check(abc.segment(3, 3)=={}, "abc.segment(3,3)");
+}
+
 shared void sequences() {
+    arraySequence();
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
     check(empty.size==0, "empty sequence");
