@@ -1332,7 +1332,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        ProducedType rightType = getTypeArgument(leftType);
+        ProducedType rightType = getTypeArgument(getSupertype(op.getRightTerm(), compoundType));
         return transformOverridableBinaryOperator(op, leftType, rightType);
     }
 
@@ -1427,11 +1427,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
+        final ProducedType resultType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
+        final ProducedType rightType = getTypeArgument(getSupertype(op.getRightTerm(), compoundType));//getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
 
         // we work on boxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
-                leftType, rightType, 
+                leftType, resultType, 
                 new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
