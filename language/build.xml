@@ -229,9 +229,6 @@
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
                 <include name="ceylon/language/unflatten_.java"/>
-                <!-- These are problem files we hope to be able to compile some day -->
-                <exclude name="ceylon/language/LazySet.ceylon"/> <!-- COMPILE ERROR (needs reified generics) -->
-                <include name="ceylon/language/LazySet.java"/>
             </files>
         </ceylon-compile>
     </target>
