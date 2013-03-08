@@ -77,6 +77,8 @@ shared interface Sequence<out Element>
     
     shared actual default [Element+] clone => this;
     
+    shared actual default String string => Sequential::string;
+    
     //disabled because of compiler bug
     /*shared default actual Element? findLast(
             Boolean selecting(Element elem)) => 

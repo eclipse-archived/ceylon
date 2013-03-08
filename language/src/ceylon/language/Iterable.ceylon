@@ -464,13 +464,37 @@ shared interface Iterable<out Element, out Absent=Null>
          if this iterable is empty. If the number of items
          is very large only a certain amount of them might
          be shown followed by \"...\"."
-    shared actual default String string =>
-            empty then "{}" else "{ ``limitedCommaList(this.taking(31), 30)`` }";
+    shared actual default String string {
+        if (empty) {
+            return "{}";
+        }
+        else {
+            String list = commaList(taking(30));
+            return "{ `` sizeExceeds(this, 30) 
+                        then list + ", ..." 
+                        else list `` }"; 
+        }
+    }
     
 }
 
-String limitedCommaList({Anything*} elements, Integer maxLength) =>
-			commaList(elements.taking(maxLength)) + ((elements.size > maxLength) then ", ..." else "");
+//TODO: make this a method of Iterable
+Boolean sizeExceeds(Iterable<Anything> iterable, 
+        Integer size) {
+    variable Integer count=0;
+    for (x in iterable) {
+        if (size<count++) {
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+String commaList({Anything*} elements) =>
+        ", ".join { for (element in elements)
+                    element?.string else "null" };
 
 Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {
