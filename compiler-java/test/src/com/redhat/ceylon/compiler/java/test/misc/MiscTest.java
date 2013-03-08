@@ -89,8 +89,6 @@ public class MiscTest extends CompilerTest {
                 "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
                 "language", "process", "integerRangeByIterable",
                 "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten",
-                // Problem files
-                "LazySet"
                 }) {
             exceptions.add(ex);
         }
