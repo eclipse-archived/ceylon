@@ -428,14 +428,14 @@ public class CeylonDocToolTest {
 
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
-        File artifact = repoManager.getArtifact(new ArtifactContext("org.jboss.xnio.api", "3.1.0.Beta8", ".jar"));
+        File artifact = repoManager.getArtifact(new ArtifactContext("org.jboss.xnio.api", "3.1.0.Beta9", ".jar"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), "-classpath", artifact.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
-                "ceylon/net/httpd/internal/JavaHelper.java",
+                "ceylon/net/http/server/internal/JavaHelper.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
