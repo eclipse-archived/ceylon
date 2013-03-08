@@ -37,7 +37,7 @@ public class Launcher {
         }
         try{
             // read the descriptor
-            System.err.println("Reading descriptor from "+descriptorFile.getPath());
+//            System.err.println("Reading descriptor from "+descriptorFile.getPath());
             try{
                 BufferedReader reader = new BufferedReader(new FileReader(descriptorFile));
                 try{
@@ -55,7 +55,7 @@ public class Launcher {
             System.err.println(x.getMessage());
             System.exit(1);
         }finally{
-            System.err.println("Deleting descriptor "+descriptorFile.getPath());
+//            System.err.println("Deleting descriptor "+descriptorFile.getPath());
             descriptorFile.delete();
         }
     }
@@ -105,7 +105,7 @@ public class Launcher {
             File f = new File(file);
             if(!f.exists() || !f.isFile() || !f.canRead())
                 error("Cannot read "+file+" for "+module);
-            System.err.println("Loading module "+module+"/"+version+": "+file);
+//            System.err.println("Loading module "+module+"/"+version+": "+file);
             Util.loadModule(module, version, makeModuleArtifact(f), Launcher.class.getClassLoader());
         }
     }
