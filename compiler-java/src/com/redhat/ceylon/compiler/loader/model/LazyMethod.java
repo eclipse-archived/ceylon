@@ -225,6 +225,12 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
+    public void setCaptured(boolean local) {
+        load();
+        super.setCaptured(local);
+    }
+
+    @Override
     public boolean isToplevel() {
         load();
         return super.isToplevel();
