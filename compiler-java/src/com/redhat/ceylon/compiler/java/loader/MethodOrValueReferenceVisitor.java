@@ -136,6 +136,17 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     @Override public void visit(Tree.MethodDefinition that) {
         boolean cs = enterCapturingScope();
         super.visit(that);
+        if (Decl.withinClass(that)) {
+            // This is a HACK to make sure that method definitions
+            // are always seen as captured and can't be confused
+            // for being part of the initializer. This is because
+            // uncaptured method *declarations* can and will be
+            // made local to the class initializer, but if the only
+            // thing you've got is a Method you can't know the
+            // difference between a definition and a declaration,
+            // that's why we set the captured flag here.
+            that.getDeclarationModel().setCaptured(true);
+        }
         exitCapturingScope(cs);
     }
     
