@@ -122,7 +122,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private boolean inStatement = false;
     private boolean withinInvocation = false;
-    private boolean withinCallableInvocation = false;
+    private boolean withinSyntheticClassBody = false;
     private Tree.ClassOrInterface withinSuperInvocation = null;
     
     /** 
@@ -1044,7 +1044,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (needDollarThis(expr.getScope())) {
             return naming.makeQuotedThis();
         }
-        if (isWithinCallableInvocation()) {
+        if (isWithinSyntheticClassBody()) {
             return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
         } 
         return naming.makeThis();
@@ -3684,13 +3684,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    boolean isWithinCallableInvocation() {
-        return withinCallableInvocation;
+    boolean isWithinSyntheticClassBody() {
+        return withinSyntheticClassBody;
     }
 
-    boolean withinCallableInvocation(boolean withinCallableInvocation) {
-        boolean result = this.withinCallableInvocation;
-        this.withinCallableInvocation = withinCallableInvocation;
+    boolean withinSyntheticClassBody(boolean withinSyntheticClassBody) {
+        boolean result = this.withinSyntheticClassBody;
+        this.withinSyntheticClassBody = withinSyntheticClassBody;
         return result;
     }
 

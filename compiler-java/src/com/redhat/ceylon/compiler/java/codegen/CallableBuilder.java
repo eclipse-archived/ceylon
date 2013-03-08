@@ -261,11 +261,11 @@ public class CallableBuilder {
                     forwardCallTo, 
                     paramLists,
                     i);
-            boolean prevCallableInv = gen.expressionGen().withinCallableInvocation(true);
+            boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             try {
                 stmts.append(gen.make().Return(gen.expressionGen().transformInvocation(invocationBuilder)));
             } finally {
-                gen.expressionGen().withinCallableInvocation(prevCallableInv);
+                gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
             }
         }else if(isVariadic){
             // chain to n param typed method
