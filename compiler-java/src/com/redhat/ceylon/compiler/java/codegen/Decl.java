@@ -334,6 +334,14 @@ public class Decl {
                 && (decl.isCaptured() || decl.isShared());
     }
 
+    public static boolean isLocalToInitializer(Tree.Declaration decl) {
+        return isLocalToInitializer(decl.getDeclarationModel());
+    }
+    
+    public static boolean isLocalToInitializer(Declaration decl) {
+        return withinClassOrInterface(decl)&& !Decl.isCaptured(decl);
+    }
+    
     public static boolean isOverloaded(Declaration decl) {
         if (decl instanceof Functional) {
             return ((Functional)decl).isOverloaded();
