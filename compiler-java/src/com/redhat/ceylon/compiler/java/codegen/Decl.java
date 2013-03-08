@@ -76,7 +76,6 @@ public class Decl {
      */
     public static boolean isGetter(Declaration decl) {
         return (decl instanceof Value) && ((Value)decl).isTransient();
-//        return (decl instanceof Getter);
     }
 
     /**
@@ -86,7 +85,15 @@ public class Decl {
      */
     public static boolean isValue(Declaration decl) {
         return (decl instanceof Value) && !((Value)decl).isTransient();
-//        return (decl instanceof Value) && !(decl instanceof Getter);
+    }
+
+    /**
+     * Determines whether the declaration's is a method
+     * @param decl The declaration
+     * @return true if the declaration is a method
+     */
+    public static boolean isMethod(Declaration decl) {
+        return (decl instanceof Method);
     }
 
     /**
