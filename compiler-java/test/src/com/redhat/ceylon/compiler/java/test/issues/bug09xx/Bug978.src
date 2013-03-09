@@ -7,9 +7,27 @@ class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> strings;
     
+    private final .java.lang.String join$priv() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = join$s();
+            }
+            returning join$priv($ceylontmp$s$1);
+        );
+    }
+    
+    private final .ceylon.language.Sequential<? extends .ceylon.language.String> join$s() {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    private final .java.lang.String join$priv(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+        return "";
+    }
+    
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return .ceylon.language.String.join(", ", strings);
+        return join$priv(strings);
     }
     
     @.java.lang.Override

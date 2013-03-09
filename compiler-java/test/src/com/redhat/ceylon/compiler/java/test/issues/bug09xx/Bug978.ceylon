@@ -19,6 +19,7 @@
  */
 @nomodel
 class Bug978([String*] strings) {
-    shared actual String string => ", ".join(*strings);
+    String join(String* s) => "";
+    shared actual String string => join(*strings);
 //    shared actual String string { return ", ".join(*strings); }
 }

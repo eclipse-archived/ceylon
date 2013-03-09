@@ -35,5 +35,5 @@
 @nomodel
 void bug934(){
    value results = bug934_collectMatches(["Merry Christmas", "Happy Holidays"], function (String s) => 2);
-   print("Uppercase letters: " + ", ".join(*results[1]));
+   print("Uppercase letters: " + ", ".join({*results[1]}));
 }

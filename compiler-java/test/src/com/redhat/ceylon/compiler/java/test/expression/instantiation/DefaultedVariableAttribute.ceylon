@@ -24,7 +24,7 @@ class DefaultedVariableAttribute(firstName=null, lastName=null) {
     variable String? lastName;
 
     shared String fullName {
-        return " ".join(firstName else "",lastName else "");
+        return " ".join({firstName else "",lastName else ""});
     }
 
     assign fullName {

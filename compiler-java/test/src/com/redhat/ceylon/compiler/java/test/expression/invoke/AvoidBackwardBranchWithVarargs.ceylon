@@ -2,8 +2,9 @@ Object[] avoidBackwardBranchWithVarargs(Object* v) {
     return v;
 }
 void avoidBackwardBranchWithVarargs_1() {
+    void join(String* s) {}
     value s = "Hello World".characters;
-    value x = " ".join(s*.lowercase.string);
+    value x = join(s*.lowercase.string);
 }
 void avoidBackwardBranchWithVarargs_2(Character[] s={}) {
     avoidBackwardBranchWithVarargs(s*.integer);
