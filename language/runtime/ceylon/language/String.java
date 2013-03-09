@@ -494,13 +494,13 @@ public class String
         if (length == 0) {
             return (Sequential)empty_.getEmpty$();
         }
-        Character[] chars = new Character[(int)getSize(value)];
+        java.lang.Object[] chars = new java.lang.Object[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
             int codePoint = value.codePointAt(offset);
             chars[i] = Character.instance(codePoint);
             offset += java.lang.Character.charCount(codePoint);
         }
-        return new ArraySequence<Character>(Character.$TypeDescriptor, chars);
+        return ceylon.language.ArraySequence.<Character>instance(Character.$TypeDescriptor, chars);
     }
 
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
@@ -1432,7 +1432,7 @@ public class String
     @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <Other>Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other e) {
         if (value.isEmpty()) {
-            return new ArraySequence($reifiedOther, e);
+            return new Singleton($reifiedOther, e);
         } else {
             return instance(value).withLeading($reifiedOther, e);
         }
@@ -1446,7 +1446,7 @@ public class String
     @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other e) {
         if (value.isEmpty()) {
-            return new ArraySequence($reifiedOther, e);
+            return new Singleton($reifiedOther, e);
         } else {
             return instance(value).withTrailing($reifiedOther, e);
         }

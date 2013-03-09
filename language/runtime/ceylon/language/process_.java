@@ -198,11 +198,11 @@ public final class process_ {
     @Ignore
     public void setupArguments(java.lang.String[] args) {
     	if (args.length>0) {
-	        String[] newArgs = new String[args.length];
+	        java.lang.Object[] newArgs = new java.lang.Object[args.length];
 	        for (int i = 0; i < args.length; i++) {
 	            newArgs[i] = String.instance(args[i]);
 	        }
-	        this.args = new ArraySequence<String>(String.$TypeDescriptor, newArgs);
+	        this.args = ArraySequence.<String>instance(String.$TypeDescriptor, newArgs);
     	}
     }
     

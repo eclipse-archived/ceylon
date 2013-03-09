@@ -37,10 +37,9 @@ public class ArraySequenceTest {
     private final Sequential empty = empty_.getEmpty$();
     
     @Test
-    @SuppressWarnings("unused")
     public void testConstructor() {
         try {
-            new ArraySequence<ceylon.language.String>(ceylon.language.String.$TypeDescriptor, 
+            ArraySequence.instance(ceylon.language.String.$TypeDescriptor, 
                     cs());
             Assert.fail();
         } catch (IllegalArgumentException e) {
@@ -48,8 +47,8 @@ public class ArraySequenceTest {
         }
         
         try {
-            new ArraySequence<ceylon.language.String>(ceylon.language.String.$TypeDescriptor, 
-                    cs("a"), 1);
+            ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
+                    cs("a"), 1, 1);
             Assert.fail();
         } catch (IllegalArgumentException e) {
             // checking this is thrown
@@ -86,7 +85,7 @@ public class ArraySequenceTest {
     Map<java.lang.String, ArraySequence<ceylon.language.String>> abcs() {
         Map<java.lang.String, ArraySequence<ceylon.language.String>> result = new LinkedHashMap<>();
         result.put("{a b c}: ", 
-                new ArraySequence<ceylon.language.String>(
+                ArraySequence.<String>instance(
                         ceylon.language.String.$TypeDescriptor, 
                         cs("a", "b", "c")));
         result.put("{a b c d}, 0, 3: ", 
@@ -164,7 +163,7 @@ public class ArraySequenceTest {
             java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
             final ArraySequence<ceylon.language.String> bc = 
-                    new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+                    ArraySequence.instance(ceylon.language.String.$TypeDescriptor, 
                     cs("b", "c"));
             Assert.assertEquals(description, abc1.getRest(), bc);
         }
@@ -199,7 +198,7 @@ public class ArraySequenceTest {
         for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abc : abcs().entrySet()) {
             java.lang.String description = abc.getKey();
             ArraySequence<ceylon.language.String> abc1 = abc.getValue();
-            ArraySequence<ceylon.language.String> cba = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+            ArraySequence<ceylon.language.String> cba = ArraySequence.instance(ceylon.language.String.$TypeDescriptor, 
                     cs("c", "b", "a"));
             AbstractCallable<ceylon.language.Comparison> alphabeticOrder = alphabeticalOrder();
             Assert.assertEquals(description, abc1, abc1.sort(alphabeticOrder));
@@ -252,13 +251,17 @@ public class ArraySequenceTest {
     
     @Test
     public void testSpan() {
-        ArraySequence<ceylon.language.String> ab = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> ab = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("a", "b"));
-        ArraySequence<ceylon.language.String> a = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> a = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("a"));
-        ArraySequence<ceylon.language.String> bc = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> bc = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("b","c"));
-        ArraySequence<ceylon.language.String> c = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> c = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("c"));
         
         for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
@@ -300,9 +303,11 @@ public class ArraySequenceTest {
     
     @Test
     public void testSpanFrom() {
-        ArraySequence<ceylon.language.String> bc = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> bc = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("b","c"));
-        ArraySequence<ceylon.language.String> c = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> c = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("c"));
         
         for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
@@ -318,9 +323,9 @@ public class ArraySequenceTest {
     
     @Test
     public void testSpanTo() {
-        ArraySequence<ceylon.language.String> ab = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> ab = ArraySequence.instance(ceylon.language.String.$TypeDescriptor, 
                 cs("a", "b"));
-        ArraySequence<ceylon.language.String> a = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> a = ArraySequence.instance(ceylon.language.String.$TypeDescriptor, 
                 cs("a"));
         
         for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
@@ -337,15 +342,20 @@ public class ArraySequenceTest {
     
     @Test
     public void testSegment() {
-        ArraySequence<ceylon.language.String> ab = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> ab = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("a", "b"));
-        ArraySequence<ceylon.language.String> a = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> a = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("a"));
-        ArraySequence<ceylon.language.String> b = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> b = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("b"));
-        ArraySequence<ceylon.language.String> bc = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> bc = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("b","c"));
-        ArraySequence<ceylon.language.String> c = new ArraySequence<>(ceylon.language.String.$TypeDescriptor, 
+        ArraySequence<ceylon.language.String> c = ArraySequence.instance(
+                ceylon.language.String.$TypeDescriptor, 
                 cs("c"));
         for (Map.Entry<java.lang.String, ArraySequence<ceylon.language.String>> abcs : abcs().entrySet()) {
             java.lang.String description = abcs.getKey();

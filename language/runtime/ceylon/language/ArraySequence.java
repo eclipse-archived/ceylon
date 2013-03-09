@@ -109,13 +109,17 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     // TODO Review callers of this. All the ones in the language module can 
     // probably be converted to backedBy, or we can make it non-copying 
-    public ArraySequence(@Ignore TypeDescriptor $reifiedElement, Element... array) {
+    private ArraySequence(@Ignore TypeDescriptor $reifiedElement, Object[] array) {
         this($reifiedElement, array, 0, array.length, true);
+    }
+    
+    public static <Element> ArraySequence<Element> instance(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array) {
+        return new ArraySequence($reifiedElement, array, 0, array.length, true);
     }
 
     @Ignore
     // TODO If this used any more?
-    ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first) {
+    private ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first) {
         this($reifiedElement, array, first, array.length-first, true);
     }
     

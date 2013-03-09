@@ -32,7 +32,7 @@ final class internalSort_ {
             return (Sequential)empty_.getEmpty$();   
         }
         
-        ArraySequence<? extends Element> result = new ArraySequence<>($reifiedElement, (ceylon.language.Iterable)elements);
+        ArraySequence<? extends Element> result = new ArraySequence<Element>($reifiedElement, (ceylon.language.Iterable)elements);
         Arrays.sort((Element[])result.array, result.first, result.first+result.length, comparator(comparing));
         return result;
     }
