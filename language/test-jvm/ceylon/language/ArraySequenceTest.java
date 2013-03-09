@@ -237,15 +237,15 @@ public class ArraySequenceTest {
             java.lang.String description = abcs.getKey();
             ArraySequence<ceylon.language.String> abc = abcs.getValue();
         
-            Assert.assertEquals(description, abc.getReversed().toString(), "{ c, b, a }");
+            Assert.assertEquals(description, abc.getReversed().toString(), "[c, b, a]");
             
             ArraySequence<ceylon.language.String> bc = ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                     cs("a", "b", "c"), 1, 2);
-            Assert.assertEquals(description, bc.getReversed().toString(), "{ c, b }");
+            Assert.assertEquals(description, bc.getReversed().toString(), "[c, b]");
             
             ArraySequence<ceylon.language.String> b = ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor, 
                     cs("a", "b", "c"), 1, 1);
-            Assert.assertEquals(description, b.getReversed().toString(), "{ b }");
+            Assert.assertEquals(description, b.getReversed().toString(), "[b]");
         }
     }
     

@@ -455,7 +455,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     @Ignore
     public java.lang.String toString() {
-        return $ceylon$language$Collection$this.toString();
+        return $ceylon$language$Sequence$this.toString();
     }
 
     @Override

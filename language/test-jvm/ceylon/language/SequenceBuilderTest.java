@@ -39,17 +39,17 @@ public class SequenceBuilderTest {
         sb.append(s("3"));
         Assert.assertEquals(3, sb.getSize());
         Assert.assertFalse(sb.getEmpty());
-        Assert.assertEquals("{ 1, 2, 3 }", sb.getSequence().toString());
+        Assert.assertEquals("[1, 2, 3]", sb.getSequence().toString());
         
         sb.appendAll(empty);
         Assert.assertEquals(3, sb.getSize());
         Assert.assertFalse(sb.getEmpty());
-        Assert.assertEquals("{ 1, 2, 3 }", sb.getSequence().toString());
+        Assert.assertEquals("[1, 2, 3]", sb.getSequence().toString());
         
         sb.appendAll(sb.getSequence());
         Assert.assertEquals(6, sb.getSize());
         Assert.assertFalse(sb.getEmpty());
-        Assert.assertEquals("{ 1, 2, 3, 1, 2, 3 }", sb.getSequence().toString());
+        Assert.assertEquals("[1, 2, 3, 1, 2, 3]", sb.getSequence().toString());
     }
     @Test
     public void test1000() {
@@ -60,8 +60,8 @@ public class SequenceBuilderTest {
         Assert.assertEquals(1000, sb.getSize());
         Assert.assertFalse(sb.getEmpty());
         java.lang.String str = sb.getSequence().toString();
-        Assert.assertTrue(str.substring(0, 10), str.startsWith("{ 0, 1, 2, "));
-        Assert.assertTrue(str.endsWith(", 998, 999 }"));
+        Assert.assertTrue(str.substring(0, 10), str.startsWith("[0, 1, 2, "));
+        Assert.assertTrue(str.endsWith(", 998, 999]"));
     }
 
 }

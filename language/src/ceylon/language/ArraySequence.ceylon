@@ -13,9 +13,7 @@ shared native class ArraySequence<out Element>({Element+} elements)
     
     shared native actual Integer lastIndex;
     
-    shared native actual Sequential<Element> rest;
-    
-    shared default actual String string => Collection::string; 
+    shared native actual Sequential<Element> rest; 
     
     shared native actual Integer count(Boolean(Element) selecting); 
     

@@ -42,7 +42,7 @@ void comprehensions() {
   //ceylon-compiler#598
   value b598 = [ for (x in 0..10) if (x%2==0) x^2 ];
   check(b598 is Sequence<Anything>, "ceylon-compiler #598 [1]");
-  check(b598.string=="{ 0, 4, 16, 36, 64, 100 }", "ceylon-compiler #598 [2]");
+  check(b598.string=="[0, 4, 16, 36, 64, 100]", "ceylon-compiler #598 [2]");
   //ceylon-compiler#599
   value b599_1 = [for (x in "hello") x];
   value b599_2 = [*b599_1];

@@ -227,7 +227,7 @@ shared void arraySequence() {
     check(abc[2] exists, "abc[2]");
     check(!(abc[3] exists), "abc[3]");
     
-    check(abc.reversed.string=="{ c, b, a }", "abc.reversed ``abc.reversed``");
+    check(abc.reversed.string=="[c, b, a]", "abc.reversed ``abc.reversed``");
     check(abc.reversed.reversed==abc, "abc.reversed.reversed");
     
     check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
@@ -347,25 +347,25 @@ shared void sequences() {
     else {
         fail("sequence last");
     }
-    check(result.string=="{ hello, world }", "sequence.string 1");
+    check(result.string=="[hello, world]", "sequence.string 1");
 
     //span
     check(result.span(-2,-1).string=="{}", "sequence.span(-2,-1).string");
-    check(result.span(-2,0).string=="{ hello }", "sequence.span(-2,0).string");
-    check(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
-    check(result.span(1,2).string=="{ world }", "sequence.span(1,2).string");
-    check(result.spanFrom(1).string=="{ world }", "sequence.spanFrom(1).string");
-    check(result.spanFrom(0).string=="{ hello, world }", "sequence.spanFrom(0).string");
-    check(result.spanTo(1).string=="{ hello, world }", "sequence.spanTo(1).string");
-    check(result.spanTo(0).string=="{ hello }", "sequence.spanTo(0).string");
-    check(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
+    check(result.span(-2,0).string=="[hello]", "sequence.span(-2,0).string");
+    check(result.span(1,1).string=="[world]", "sequence.span(1,1).string");
+    check(result.span(1,2).string=="[world]", "sequence.span(1,2).string");
+    check(result.spanFrom(1).string=="[world]", "sequence.spanFrom(1).string");
+    check(result.spanFrom(0).string=="[hello, world]", "sequence.spanFrom(0).string");
+    check(result.spanTo(1).string=="[hello, world]", "sequence.spanTo(1).string");
+    check(result.spanTo(0).string=="[hello]", "sequence.spanTo(0).string");
+    check(result.span(0,3).string=="[hello, world]", "sequence.span(0,3).string");
     //check(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
     check(result.span(1,1) nonempty, "nonempty sequence.span(1,1)");
     check(result.span(0,0) nonempty, "nonempty sequence.span(0,0)");
 
     //segment
-    check(result.segment(1,1).string=="{ world }", "sequence.segment(1,1).string");
-    check(result.segment(0,3).string=="{ hello, world }", "sequence.segment(0,3).string");
+    check(result.segment(1,1).string=="[world]", "sequence.segment(1,1).string");
+    check(result.segment(0,3).string=="[hello, world]", "sequence.segment(0,3).string");
     check(result.segment(1,1) nonempty, "nonempty sequence.segment(1,1)");
     check(!result.segment(0,0) nonempty, "!nonempty sequence.segment(0,0)");
     //check(!result.segment(1,-1) nonempty, "!nonempty sequence.segment(1,-1)");
@@ -397,9 +397,9 @@ shared void sequences() {
     check(!result.definesEvery {1,2}, "sequence definesEvery 1,2");
     check(result.definesAny {1,2}, "sequence definesAny 1,2");
     check(!result.definesAny {2,3}, "sequence definesAny 2,3");
-    check(result.items {0,1,2,3}.string=="{ hello, world, null, null }", "sequence.items 1");
-    check(result.items {1,0}.string=="{ world, hello }", "sequence.items 2");
-    check(result.items {5,6,7}.string=="{ null, null, null }", "sequence.items 3");
+    check(result.items {0,1,2,3}.string=="[hello, world, null, null]", "sequence.items 1");
+    check(result.items {1,0}.string=="[world, hello]", "sequence.items 2");
+    check(result.items {5,6,7}.string=="[null, null, null]", "sequence.items 3");
 
     if (nonempty result) {
         value rest = result.rest;
@@ -434,14 +434,14 @@ shared void sequences() {
         value more = appender.sequence;
         check(more.size==3, "sequence size");
         check(more.first=="hello", "sequence first");
-        check(more.string=="{ hello, world, goodbye }", "sequence.string 2");
+        check(more.string=="[hello, world, goodbye]", "sequence.string 2");
         appender.appendAll();
         appender.appendAll("everyone", "good luck!");
         //appender.append("everyone");
         //appender.append("good luck!");
         value evenMore = appender.sequence;
         check(evenMore.size==5, "sequence size");
-        check(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string 3");
+        check(evenMore.string=="[hello, world, goodbye, everyone, good luck!]", "sequence.string 3");
     }
 
     value seq = [ 1, 2, 3, 4 ];
@@ -468,7 +468,7 @@ shared void sequences() {
     union.appendAll("y", -1.2);
     value useq = union.sequence;
     check(useq.size==4, "union sequence builder");
-    check(useq.string=="{ x, 5.1, y, -1.2 }", "union sequence builder.string");
+    check(useq.string=="[x, 5.1, y, -1.2]", "union sequence builder.string");
     variable value s=0;
     variable value f=0;
     for (e in useq) {
@@ -496,7 +496,7 @@ shared void sequences() {
 
     value coalesced = coalesce(nulls).sequence;
     check(coalesced.size==2, "coalesce size");
-    check(coalesced.string=="{ hello, world }", "coalesce.string");
+    check(coalesced.string=="[hello, world]", "coalesce.string");
     check(coalesced.keys.contains(0), "coalesced keys");
     check(coalesced.keys.contains(1), "coalesced keys");
     check(!coalesced.keys.contains(2), "coalesced keys");
@@ -511,7 +511,7 @@ shared void sequences() {
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
     value entrySequence = entriesBuilder.sequence;
-    check(entrySequence.string=="{ 1->hello, 2->world }", "entries sequence.string");
+    check(entrySequence.string=="[1->hello, 2->world]", "entries sequence.string");
     variable value cntr=0;
     for (nat->str in entrySequence) {
         cntr++;
