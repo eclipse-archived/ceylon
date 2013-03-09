@@ -7,8 +7,8 @@ final class callablePositionalInvocationSequenced_f_ {
     
     static void callablePositionalInvocationSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
         foo.$call(.ceylon.language.Integer.instance(1L));
-        foo.$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("")));
-        foo.$call(.ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")));
+        foo.$call(.ceylon.language.Integer.instance(1L), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("")));
+        foo.$call(.ceylon.language.Integer.instance(1L), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")));
         foo.$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
     }
 }

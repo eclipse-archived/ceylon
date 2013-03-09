@@ -10,7 +10,7 @@ public final class bug671_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor);
-                .ceylon.language.Iterable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L));
+                .ceylon.language.Iterable $arg$0$0 = new .ceylon.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L));
             }
             returning .ceylon.language.array_.<.ceylon.language.Integer>array($arg$0$reified$0, .ceylon.language.Integer.class, $arg$0$0);
         );

@@ -9,7 +9,7 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor){
                     {
-                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).iterator();
+                        iter$0 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer x;

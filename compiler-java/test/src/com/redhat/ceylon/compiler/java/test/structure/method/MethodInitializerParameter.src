@@ -92,8 +92,8 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
         }
         final m_ m = new m_();
         m.m(1L);
-        m.m(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)));
-        m.m(1L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        m.m(1L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)));
+        m.m(1L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {

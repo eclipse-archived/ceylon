@@ -29,7 +29,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
     
     Bar(final .java.lang.String name1, final .java.lang.String name2) {
-        super(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)));
+        super(new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(name1), .ceylon.language.String.instance(name2)));
     }
     
     @.java.lang.Override

@@ -87,7 +87,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv() {
-        return oneSequencedParam$priv(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        return oneSequencedParam$priv(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2$priv() {
@@ -106,7 +106,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).iterator();
+                        iter$0 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;

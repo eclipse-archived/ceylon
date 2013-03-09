@@ -65,7 +65,7 @@ final class test_booleans_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.language.arrays_ $arg$6$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.getArrays$();
-                .ceylon.language.Iterable $arg$6$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
+                .ceylon.language.Iterable $arg$6$0 = new .ceylon.language.ArraySequence(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
             }
             returning $arg$6$callable$.toBooleanArray($arg$6$0);
         ));

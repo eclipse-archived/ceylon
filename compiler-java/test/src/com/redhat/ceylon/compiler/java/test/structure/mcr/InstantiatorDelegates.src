@@ -363,7 +363,7 @@ final class instantiatorDelegates_ {
             }
             returning $arg$37$callable$.Sequenced$new($arg$37$0, $arg$37$1);
         );
-        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)));
+        a.Sequenced$new(true, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)));
         (
             let
             {
@@ -373,7 +373,7 @@ final class instantiatorDelegates_ {
             }
             returning $arg$38$callable$.Sequenced$new($arg$38$0, $arg$38$1);
         );
-        a.Sequenced$new(true, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
+        a.Sequenced$new(true, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)));
         (
             let
             {

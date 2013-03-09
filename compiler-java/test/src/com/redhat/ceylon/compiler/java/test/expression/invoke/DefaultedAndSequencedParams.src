@@ -46,7 +46,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
     private final void positional$priv() {
         m$priv("");
         m$priv("", 2L);
-        m$priv("", 2L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(false)));
+        m$priv("", 2L, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(false)));
         final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Boolean.instance(false), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(false), .ceylon.language.empty_.getEmpty$()));
         m$priv("", 2L, x);
     }
@@ -54,7 +54,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
     private final void qmePositional$priv() {
         self$priv().m$priv("");
         self$priv().m$priv("", 2L);
-        self$priv().m$priv("", 2L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(false)));
+        self$priv().m$priv("", 2L, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(false)));
         final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Boolean.instance(false), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(false), .ceylon.language.empty_.getEmpty$()));
         self$priv().m$priv("", 2L, x);
     }
@@ -62,7 +62,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
     private final void qtePositional$priv() {
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("");
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(false)));
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.instance(false)));
         final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> x = new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Empty>>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Boolean.instance(false), new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(false), .ceylon.language.empty_.getEmpty$()));
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m$priv("", 2L, x);
     }
