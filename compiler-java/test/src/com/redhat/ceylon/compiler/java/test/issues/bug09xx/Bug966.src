@@ -50,6 +50,11 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     public .ceylon.language.Sequence<? extends Element> getClone() {
         return $ceylon$language$Sequence$this.getClone();
     }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Sequence$this.toString();
+    }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this;
     
     @.java.lang.Override
@@ -193,11 +198,6 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     @.java.lang.Override
     public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Iterable$this.toString();
     }
     protected final .ceylon.language.Container$impl<Element, .java.lang.Object> $ceylon$language$Container$this;
     
