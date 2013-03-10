@@ -2,15 +2,17 @@ doc "An instance of `Float` representing positive infinity
      \{#221E}."
 shared Float infinity = 1.0/0.0;
 
-doc "A 64-bit floating point number. A `Float` is capable of
-     approximately representing numeric values between
-     2<sup>-1022</sup> and 
+doc "An IEEE 754 64-bit [floating point number][]. A `Float` 
+     is capable of approximately representing numeric values 
+     between 2<sup>-1022</sup> and 
      (2-2<sup>-52</sup>)\{#00D7}2<sup>1023</sup>, along with 
      the special values `infinity` and `-infinity`, and 
      undefined values (Not a Number). Zero is represented by 
      distinct instances `+0`, `-0`, but these instances are 
      equal. An undefined value is not equal to any other
-     value, not even to itself."
+     value, not even to itself.
+     
+     [floating point number]: http://www.validlab.com/goldberg/paper.pdf"
 shared abstract class Float()
         extends Object()
         satisfies Scalar<Float> & 
