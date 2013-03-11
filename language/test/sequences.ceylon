@@ -438,8 +438,7 @@ shared void sequences() {
         check(more.size==3, "sequence size");
         check(more.first=="hello", "sequence first");
         check(more.string=="[hello, world, goodbye]", "sequence.string 2");
-        appender.appendAll();
-        appender.appendAll("everyone", "good luck!");
+        appender.appendAll({"everyone", "good luck!"});
         //appender.append("everyone");
         //appender.append("good luck!");
         value evenMore = appender.sequence;
@@ -468,7 +467,7 @@ shared void sequences() {
     value union = SequenceBuilder<String|Float>();
     union.append("x");
     union.append(5.1);
-    union.appendAll("y", -1.2);
+    union.appendAll({"y", -1.2});
     value useq = union.sequence;
     check(useq.size==4, "union sequence builder");
     check(useq.string=="[x, 5.1, y, -1.2]", "union sequence builder.string");

@@ -89,15 +89,9 @@ public class SequenceBuilder<Element> implements ReifiedType {
     	return this;
     }
     
-    public final SequenceBuilder<Element> appendAll(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language::Sequential<Element>") 
-    Sequential<? extends Element> elements) {
-        return appendAll$priv(elements);
-    }
-
-    @Ignore
-    SequenceBuilder<Element> appendAll$priv(
-            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+    public final SequenceBuilder<Element> appendAll(@Name("elements") 
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
+    Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
             ArraySequence as = (ArraySequence)elements;
             int size = (int)as.getSize();

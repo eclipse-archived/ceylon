@@ -84,7 +84,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         } else {
             // Note we trim the array which means copyOrNot_length$hidden() 
             // can use USE_ARRAY_SIZE
-            return new SequenceBuilder<>(null).appendAll$priv(elements).trim$priv().array;
+            return new SequenceBuilder<>(null).appendAll(elements).trim$priv().array;
         }
     }
     
