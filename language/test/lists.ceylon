@@ -29,6 +29,8 @@ void lists() {
     check((1..3).withLeading(0).last==3, "Range.withLeading(a).last");
     check("abc".withLeading(1)=={1,'a','b','c'}, "String.withLeading(1)" +"abc".withLeading(1).string);
     check("".withLeading(1)=={1}, "\"\".withLeading(1)");
+    check(b[100...]=={}, "LazyList[100...]");
+    check(b[1...]==b.rest, "LazyList[1...]");
 
     //withTrailing
     check({}.withTrailing("A")=={"A"}, "Empty.withTrailing(A)");

@@ -63,6 +63,9 @@ void test_singleton() {
     check(!singleton.segment(0, 0) nonempty, "!nonempty singleton segment(0,0)");
     check(!singleton.segment(0, -1) nonempty, "!nonempty singleton segment(0,-1)");
 
+    check(singleton[0...] nonempty, "nonempty singleton[0...]");
+    check(!singleton[1...] nonempty, "nonempty singleton[1...]");
+
     check(singleton.keys.contains(0), "singleton keys.contains(0)");
     check(!singleton.keys.contains(1), "!singleton keys.contains(1)");
     check(!singleton.keys.contains(2), "!singleton keys.contains(2)");
