@@ -558,9 +558,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         Class supercls = makeLazyClass(classMirror, null, null, false);
                         supercls.setAbstraction(true);
                         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
+                        boolean isFromJDK = isFromJDK(classMirror);
                         for (MethodMirror constructor : constructors) {
                             // FIXME: tmp hack to skip constructors that have type params as we don't handle them yet
                             if(!constructor.getTypeParameters().isEmpty())
+                                continue;
+                            // We skip members marked with @Ignore
+                            if(constructor.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                                continue;
+                            // FIXME: temporary, because some private classes from the jdk are
+                            // referenced in private methods but not available
+                            if(isFromJDK && !constructor.isPublic())
                                 continue;
                             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
                             subdecl.setOverloaded(true);
@@ -1324,6 +1332,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // In some cases, where all constructors are ignored, we can end up with no constructor, so
         // pretend we have one which takes no parameters (eg. ceylon.language.String).
         if(klass instanceof Class
+                && !((Class) klass).isAbstraction()
                 && !klass.isAnonymous()
                 && ((Class) klass).getParameterList() == null){
             ((Class) klass).setParameterList(new ParameterList());
