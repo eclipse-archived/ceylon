@@ -41,6 +41,10 @@ class ModulesClassLoader extends ClassLoader {
 
     private CachedTOCJars jars = new CachedTOCJars();
     
+    public ModulesClassLoader(ClassLoader parent) {
+        super(parent);
+    }
+
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         String path = name.replace('.', '/').concat(".class");

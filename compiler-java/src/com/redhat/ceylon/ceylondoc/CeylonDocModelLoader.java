@@ -40,7 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
  */
 public class CeylonDocModelLoader extends ReflectionModelLoader {
 
-    ModulesClassLoader classLoader = new ModulesClassLoader();
+    ModulesClassLoader classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader());
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
 
     public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules){
