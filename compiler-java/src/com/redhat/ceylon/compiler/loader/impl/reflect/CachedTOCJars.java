@@ -44,9 +44,12 @@ public class CachedTOCJars {
         Set<String> contents = new HashSet<String>();
         // stores package paths with slashes but not last one
         Set<String> packages = new HashSet<String>();
+        // not not attempt to load contents from this jar, just its TOC
+        boolean skipContents;
         
-        CachedTOCJar(File jar){
+        CachedTOCJar(File jar, boolean skipContents){
             this.jar = jar;
+            this.skipContents = skipContents;
             try {
                 ZipFile zf = new ZipFile(jar);
                 try{
@@ -144,12 +147,16 @@ public class CachedTOCJars {
     private List<CachedTOCJar> jars = new LinkedList<CachedTOCJar>();
     
     public void addJar(File file) {
+        addJar(file, false);
+    }
+    
+    public void addJar(File file, boolean skipContents) {
         // skip duplicates
         for(CachedTOCJar jar : jars){
             if(jar.jar.equals(file))
                 return;
         }
-        jars.add(new CachedTOCJar(file));
+        jars.add(new CachedTOCJar(file, skipContents));
     }
 
     public boolean packageExists(String name) {
@@ -174,7 +181,7 @@ public class CachedTOCJars {
 
     public byte[] getContents(String path) {
         for(CachedTOCJar jar : jars){
-            if(jar.containsFile(path)){
+            if(!jar.skipContents && jar.containsFile(path)){
                 return jar.getContents(path);
             }
         }

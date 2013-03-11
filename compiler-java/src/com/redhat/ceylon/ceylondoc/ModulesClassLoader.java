@@ -54,8 +54,8 @@ class ModulesClassLoader extends ClassLoader {
         return super.findClass(name);
     }
 
-    public void addJar(File file) {
-        jars.addJar(file);
+    public void addJar(File file, boolean skipContents) {
+        jars.addJar(file, skipContents);
     }
 
     public boolean packageExists(String name) {
