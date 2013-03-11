@@ -4,6 +4,7 @@
 #Identifiable is a problem because it can't extend itself
 #Identifiable
 Basic
+Exception
 
 #Anything,Object,Null
 #Comparison
@@ -29,7 +30,7 @@ Binary,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
 List,Tuple,ChainedIterator
 Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
 
-Exception,NegativeNumberException,OverflowException,InitializationException
+NegativeNumberException,OverflowException,InitializationException
 #Number
 Set,Range,Singleton,AssertionException
 Map,LazyMap,LazyList,LazySet
