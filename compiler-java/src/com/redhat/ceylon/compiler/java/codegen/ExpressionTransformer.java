@@ -1428,7 +1428,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType resultType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
-        final ProducedType rightType = getTypeArgument(getSupertype(op.getRightTerm(), compoundType));//getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
+        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(getSupertype(op.getRightTerm(), compoundType)));
 
         // we work on boxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
