@@ -26,6 +26,7 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -76,6 +77,14 @@ public class TypeFactory extends Unit {
         return (tdecl instanceof IntersectionType && tdecl.getSatisfiedTypes().size() > 1);
     }
 
+    public TypeDeclaration getArraySequenceDeclaration() {
+        return (Class) getLanguageModuleDeclaration("ArraySequence");
+    }
+    
+    public ProducedType getArraySequenceType(ProducedType et) {
+        return Util.producedType(getArraySequenceDeclaration(), et);
+    }
+    
     /**
      * Returns a ProducedType corresponding to {@code Array<T>}
      * @param et The ProducedType corresponding to {@code T}

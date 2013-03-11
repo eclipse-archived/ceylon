@@ -2398,21 +2398,10 @@ public abstract class AbstractTransformer implements Transformation {
      * @see #makeSequenceRaw(java.util.List)
      */
     JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
-        ProducedType arraySequenceType = toPType(syms().ceylonArraySequenceType);
-        ProducedType sequenceType = arraySequenceType.getDeclaration().getProducedType(null, Arrays.asList(seqElemType));
-        JCExpression typeExpr = makeJavaType(sequenceType, makeJavaTypeOpts);
-        List<ExpressionAndType> argsAndTypes = List.<ExpressionAndType>nil();
-        argsAndTypes = argsAndTypes.append(new ExpressionAndType(makeReifiedTypeArgument(seqElemType), makeTypeDescriptorType()));
-        for (JCExpression arg : elems) {
-            argsAndTypes = argsAndTypes.append(new ExpressionAndType(arg, makeJavaType(seqElemType, makeJavaTypeOpts)));
-        }
-        CallBuilder cb = CallBuilder.instance(this)
-                .instantiate(typeExpr)
-                .argumentsAndTypes(argsAndTypes);
-        if (expressionGen().hasBackwardBranches()) {
-                cb.argumentHandling(CallBuilder.CB_ALIAS_ARGS | CallBuilder.CB_LET, naming.alias("uninit"));
-        }
-        return cb.build();
+        return make().Apply(List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT)), 
+                naming.makeQualIdent(makeJavaType(typeFact().getArraySequenceType(seqElemType), JT_RAW), "instance"), 
+                List.<JCExpression>of(makeReifiedTypeArgument(seqElemType),
+                make().NewArray(make().Type(syms.objectType), List.<JCExpression>nil(), elems)));
     }
     
     /**
