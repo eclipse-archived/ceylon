@@ -1606,6 +1606,8 @@ public class GenerateJsVisitor extends Visitor
             case 34:text.replace(i, i+1, "\\\""); i++; break;
             case 39:text.replace(i, i+1, "\\'"); i++; break;
             case 92:text.replace(i, i+1, "\\\\"); i++; break;
+            case 0x2028:text.replace(i, i+1, "\\u2028"); i++; break;
+            case 0x2029:text.replace(i, i+1, "\\u2029"); i++; break;
             }
         }
         return text.toString();
