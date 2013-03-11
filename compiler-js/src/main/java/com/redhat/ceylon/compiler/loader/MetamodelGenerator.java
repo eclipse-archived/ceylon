@@ -490,10 +490,6 @@ public class MetamodelGenerator {
         return m;
     }
 
-    public void encodeValue(Value d) {
-        encodeAttributeOrGetter(d);
-    }
-
     @SuppressWarnings("unchecked")
     public Map<String, Object> encodeTypeAlias(TypeAlias d) {
         Map<String, Object> parent;
