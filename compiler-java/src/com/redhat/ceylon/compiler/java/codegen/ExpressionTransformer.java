@@ -1332,7 +1332,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        ProducedType rightType = getTypeArgument(getSupertype(op.getRightTerm(), compoundType));
+        ProducedType supertype = getSupertype(op.getRightTerm(), compoundType);
+        if (supertype == null) {
+            // supertype could be null if, e.g. right type is Nothing
+            supertype = leftType;
+        }
+        ProducedType rightType = getTypeArgument(supertype);
         return transformOverridableBinaryOperator(op, leftType, rightType);
     }
 
@@ -1428,7 +1433,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType resultType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
-        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(getSupertype(op.getRightTerm(), compoundType)));
+        ProducedType supertype = getSupertype(op.getRightTerm(), compoundType);
+        if (supertype == null) {
+            // supertype could be null if, e.g. right type is Nothing
+            supertype = leftType;
+        }
+        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(supertype));
 
         // we work on boxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
