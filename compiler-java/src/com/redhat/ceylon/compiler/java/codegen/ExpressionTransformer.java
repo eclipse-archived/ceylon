@@ -2204,9 +2204,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             ProducedType classType = (ProducedType)qte.getTarget();
-            // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
-            // is qualified relative to it
-            JCExpression type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
+            JCExpression type;
+            // special case for package-qualified things that are not really qualified
+            if(qualifier == null){
+                type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
+            }else{
+                // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
+                // is qualified relative to it
+                type = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
+            }
             if (stacksUninitializedOperand(invocation) 
                     && hasBackwardBranches()) {
                 callBuilder.argumentHandling(CallBuilder.CB_ALIAS_ARGS | CallBuilder.CB_LET, naming.alias("uninit"));
