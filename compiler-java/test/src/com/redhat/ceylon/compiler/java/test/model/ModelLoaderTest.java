@@ -70,6 +70,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
@@ -398,10 +399,13 @@ public class ModelLoaderTest extends CompilerTest {
                     && member.getName().equals(name)){
                 // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
                 // class with the same name so we ignore it
-                if(Decl.isValue(referenceMember) && member instanceof Class)
+                if(Decl.isValue(referenceMember) && (member instanceof Class
+                                                     || member instanceof ValueParameter))
                     continue;
                 // the opposite is also true
-                if(referenceMember instanceof Class && Decl.isValue(member))
+                if((referenceMember instanceof Class
+                    || referenceMember instanceof ValueParameter)
+                        && Decl.isValue(member))
                     continue;
                 // otherwise we found it
                 return member;
