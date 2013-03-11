@@ -122,8 +122,8 @@ shared interface Empty of e
     shared actual [Element] withTrailing<Element>
             (Element element) => [ element ];
     
-    shared actual Singleton<Other> leadBy<Other>(Other leading) => Singleton(leading);
-    shared actual Singleton<Other> trailedBy<Other>(Other trailing) => Singleton(trailing);
+    shared actual {Other+} following<Other>(Other head) => 
+            Singleton(head);
 }
 
 doc "A sequence with no elements, abbreviated `[]`. The 

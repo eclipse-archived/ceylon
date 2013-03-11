@@ -1403,26 +1403,15 @@ public class String
     
     @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
+    public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     
     @Ignore
-    public static <Other>Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other other) {
-        return instance(value).leadBy($reifiedOther, other);    
+    public static <Other>Iterable following(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other other) {
+        return instance(value).following($reifiedOther, other);    
     }
     
-    @SuppressWarnings("rawtypes")
-    @Override @Ignore 
-    public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
-    }
-    
-    @Ignore
-    public static <Other>Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Other other) {
-        return instance(value).trailedBy($reifiedOther, other);    
-    }
-
     @Override @Ignore
     @SuppressWarnings("rawtypes")
     public <Other> Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
@@ -1728,12 +1717,8 @@ public class String
             return $ceylon$language$Iterable$this.chain($reifiedOther, other);
         }
         @Override @Ignore 
-        public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-            return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
-        }
-        @Override @Ignore 
-        public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-            return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+        public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
+            return $ceylon$language$Iterable$this.following($reifiedOther, other);
         }
         @Override @Ignore
         public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
@@ -1951,12 +1936,8 @@ public class String
             return $ceylon$language$Iterable$this.chain($reifiedOther, other);
         }
         @Override @Ignore 
-        public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-            return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
-        }
-        @Override @Ignore 
-        public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-            return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+        public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
+            return $ceylon$language$Iterable$this.following($reifiedOther, other);
         }
         @Override @Ignore
         public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {

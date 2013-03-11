@@ -192,13 +192,8 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other> Iterable leadBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
-    }
-    @SuppressWarnings("rawtypes")
-    @Override @Ignore 
-    public <Other> Iterable trailedBy(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+    public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {

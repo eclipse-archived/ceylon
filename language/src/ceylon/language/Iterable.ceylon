@@ -403,27 +403,32 @@ shared interface Iterable<out Element, out Absent=Null>
         }
         return indexes;
     }
-
+    
     doc "An `Iterable` with the given inital element followed 
          by the elements of this iterable object."
-    shared default {Element|Other+} leadBy<Other>(Other leading) {
-        object lead satisfies {Element|Other+} {
-            shared actual Iterator<Element|Other> iterator() =>
-                    ChainedIterator(Singleton(leading), outer);
+    shared default {Element|Other+} following<Other>(Other head) {
+        //TODO: should be {leading,*outer} when that is efficient
+        object cons satisfies {Element|Other+} {
+            shared actual Iterator<Element|Other> iterator() {
+                value iter = outer.iterator();
+                object iterator satisfies Iterator<Element|Other> {
+                    variable Boolean first = true;
+                    shared actual Element|Other|Finished next() {
+                        if (first) {
+                            first=false;
+                            return head;
+                        }
+                        else {
+                            return iter.next();
+                        }
+                    }
+                }
+                return iterator;
+            }
         }
-        return lead;
+        return cons;
     }
     
-    doc "An `Iterable` with the elements of this iterable 
-         object, followed by the given element."
-    shared default {Element|Other+} trailedBy<Other>(Other trailing) {
-        object trailed satisfies {Element|Other+} {
-            shared actual Iterator<Element|Other> iterator() =>
-                    ChainedIterator(outer, Singleton(trailing));
-        }
-        return trailed;
-    }
-
     doc "The elements of this iterable object, in their
          original order, followed by the elements of the 
          given iterable object also in their original 

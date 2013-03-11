@@ -187,12 +187,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.chain($reifiedOther, other);
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other>Iterable leadBy(TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.leadBy($reifiedOther, other);
-    }
-    @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other>Iterable trailedBy(TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.trailedBy($reifiedOther, other);
+    public <Other>Iterable following(TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
