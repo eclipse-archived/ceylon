@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Bug1079(String strx(Integer lint)) {
-    string=>strx(0+nothing);
+String bug1079(String str) {
+    return str+nothing;
 }

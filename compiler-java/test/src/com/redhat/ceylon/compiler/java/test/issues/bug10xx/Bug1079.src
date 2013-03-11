@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1079_ {
+    
+    private bug1079_() {
+    }
+    
+    static .java.lang.String bug1079(final .java.lang.String str) {
+        return .ceylon.language.String.instance(str).plus((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
+    }
+}
