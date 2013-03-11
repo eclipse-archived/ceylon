@@ -42,7 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public abstract class ReflectionModelLoader extends AbstractModelLoader {
-	private Logger log;
+	protected Logger log;
 	
     public ReflectionModelLoader(ModuleManager moduleManager, Modules modules, Logger log){
         this.moduleManager = moduleManager;
