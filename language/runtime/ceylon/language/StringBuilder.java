@@ -4,7 +4,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -18,22 +17,7 @@ public class StringBuilder implements ReifiedType {
 
     final java.lang.StringBuilder builder = new java.lang.StringBuilder();
     
-    @Ignore
-    public StringBuilder() {
-        this((Sequential)empty_.getEmpty$());
-    }
-    
-    public StringBuilder(
-            @Sequenced @Name("strings") 
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-            ceylon.language.Sequential<? extends String> strings) {
-        appendAll(strings);
-    }
-    
-    @Ignore
-    public static Sequential<? extends String> $init$strings() {
-        return (Sequential)empty_.getEmpty$();
-    }
+    public StringBuilder() {}
     
     @Override
     public final java.lang.String toString() {
@@ -47,22 +31,15 @@ public class StringBuilder implements ReifiedType {
     }
     
     @TypeInfo("ceylon.language::StringBuilder")
-    public final StringBuilder appendAll(@Sequenced @Name("strings") 
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
-    Sequential<? extends String> strings) {
+    public final StringBuilder appendAll(@Name("strings") 
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
+    Iterable<? extends String,?> strings) {
         java.lang.Object elem;
-        for (Iterator<? extends String> iter=strings.iterator(); !((elem = iter.next()) instanceof Finished);) {
+        for (Iterator<? extends String> iter=strings.iterator(); 
+                !((elem = iter.next()) instanceof Finished);) {
             builder.append(elem);
         }
         return this;
-    }
-    @Ignore
-    public final StringBuilder appendAll() {
-        return this;
-    }
-    @Ignore
-    public Sequential<? extends String> appendAll$strings() {
-        return (Sequential)empty_.getEmpty$();
     }
     
     @TypeInfo("ceylon.language::StringBuilder")
@@ -92,27 +69,46 @@ public class StringBuilder implements ReifiedType {
 
     @TypeInfo("ceylon.language::StringBuilder")
     public final StringBuilder insert(
-            @Name("pos") @TypeInfo("ceylon.language::Integer") int pos,
-            @Name("content") @TypeInfo(value="ceylon.language::String|ceylon.language::Character", erased=true)
-            java.lang.Object content) {
-        if (pos < 0) pos = 0;
-        if (pos >= builder.length()) {
-            builder.append(content);
+            @Name("index") @TypeInfo("ceylon.language::Integer") int index,
+            @Name("string") @TypeInfo(value="ceylon.language::String")
+            java.lang.String string) {
+        if (index < 0) index = 0;
+        if (index >= builder.length()) {
+            builder.append(string);
         } else {
-            builder.insert(pos, content);
+            builder.insert(index, string);
+        }
+        return this;
+    }
+
+    @TypeInfo("ceylon.language::StringBuilder")
+    public final StringBuilder insertCharacter(
+            @Name("index") @TypeInfo("ceylon.language::Integer") int index,
+            @Name("character") @TypeInfo(value="ceylon.language::Character")
+            int character) {
+        if (index < 0) index = 0;
+        char[] chars = java.lang.Character.toChars(character);
+        if (index >= builder.length()) {
+            builder.append(chars);
+        } else {
+            builder.insert(index, chars);
         }
         return this;
     }
 
     @TypeInfo("ceylon.language::StringBuilder")
     public final StringBuilder delete(
-            @Name("pos") @TypeInfo("ceylon.language::Integer") int pos,
-            @Name("count") @TypeInfo("ceylon.language::Integer") int count) {
-        if (pos < 0) pos = 0; else if (pos > builder.length()) return this;
-        if (count == 1) {
-            builder.deleteCharAt(pos);
-        } else if (count > 0) {
-            builder.delete(pos, pos+count);
+            @Name("index") @TypeInfo("ceylon.language::Integer") int index,
+            @Name("length") @TypeInfo("ceylon.language::Integer") int length) {
+        if (index < 0) {
+            index = 0;
+        } else if (index > builder.length()) {
+            return this;
+        }
+        if (length == 1) {
+            builder.deleteCharAt(index);
+        } else if (length > 0) {
+            builder.delete(index, index+length);
         }
         return this;
     }

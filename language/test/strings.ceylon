@@ -215,17 +215,17 @@ shared void strings() {
     builder.append("world");
     String s = builder.string;
     check(s=="hello world", "string builder 1");
-    builder.appendAll();
-    builder.appendAll(" ");
-    builder.appendAll("goodbye", " ", "everyone");
+    builder.appendAll {};
+    builder.appendAll {" "};
+    builder.appendAll {"goodbye", " ", "everyone"};
     builder.appendSpace();
     check(builder.string=="hello world goodbye everyone ", "string builder 2");
     check(StringBuilder().append("a").appendCharacter('b')
-        .appendAll("c", "d").appendSpace()
+        .appendAll {"c", "d"}.appendSpace()
         .append("e").string=="abcd e",
         "string builder chained calls");
     check(builder.size == 29, "StringBuilder.size");
-    check(builder.insert(5,',').insert(12,"!!!").string=="hello, world!!! goodbye everyone ", "StringBuilder.insert");
+    check(builder.insertCharacter(5,',').insert(12,"!!!").string=="hello, world!!! goodbye everyone ", "StringBuilder.insert");
     check(builder.delete(12,3).delete(5,1).delete(99999,1).string=="hello world goodbye everyone ", "StringBuilder.delete 1");
     check(builder.delete(28,100).string=="hello world goodbye everyone", "StringBuilder.delete 2");
     check(builder.size==28, "StringBuilder.size 2");
@@ -372,8 +372,8 @@ shared void strings() {
     check(string ([]) == "", "string()");
     check(string {'h', 'i'}=="hi", "string(h,i)");
     
-    check("123" == StringBuilder("1", "2", "3").string, "StringBuilder(1, 2, 3)");
-    check("" == StringBuilder{}.appendAll{}.string, "StringBuilder{}");
+    //check("123" == StringBuilder("1", "2", "3").string, "StringBuilder(1, 2, 3)");
+    //check("" == StringBuilder{}.appendAll{}.string, "StringBuilder{}");
     
     check("" == "abccba".trimLeadingCharacters("abc"), "trimLeadingCharacters(abc) ``"abccba".trimLeadingCharacters("abc")``");
     check("ccba" == "abccba".trimLeadingCharacters("ab"), "trimLeadingCharacters(ab) ``"abccba".trimLeadingCharacters("ab")``");

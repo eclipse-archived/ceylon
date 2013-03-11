@@ -158,7 +158,7 @@ shared interface List<out Element>
         value sb = SequenceBuilder<Element|Other>();
         sb.append(element);
         if (!empty) {
-            sb.appendAll(*this.sequence);
+            sb.appendAll(*this);
         }
         assert (nonempty seq=sb.sequence);
         return seq;
@@ -172,7 +172,7 @@ shared interface List<out Element>
             Other element) {
         value sb = SequenceBuilder<Element|Other>();
         if (!empty) {
-            sb.appendAll(*this.sequence);
+            sb.appendAll(*this);
         }
         sb.append(element);
         assert (nonempty seq=sb.sequence);
