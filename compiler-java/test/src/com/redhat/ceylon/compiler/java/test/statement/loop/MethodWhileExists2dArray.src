@@ -11,7 +11,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.Array<.ceylon.language.Integer> $r$0;
             if (($r$0 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.ceylon.language.Integer> $r$1 = $r$0;
-                $r$1.setItem(0L, .ceylon.language.Integer.instance(100L));
+                $r$1.set(0L, .ceylon.language.Integer.instance(100L));
             } else break;
         }
     }
@@ -22,7 +22,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.Array<.ceylon.language.String> $r$2;
             if (($r$2 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.ceylon.language.String> $r$3 = $r$2;
-                $r$3.setItem(0L, .ceylon.language.String.instance(""));
+                $r$3.set(0L, .ceylon.language.String.instance(""));
             } else break;
         }
     }
@@ -33,7 +33,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.Array<.java.lang.Object> $r$4;
             if (($r$4 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.java.lang.Object> $r$5 = $r$4;
-                $r$5.setItem(0L, null);
+                $r$5.set(0L, null);
             } else break;
         }
     }
@@ -44,7 +44,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.Array<.java.lang.Object> $r$6;
             if (($r$6 = t.get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array<.java.lang.Object> $r$7 = $r$6;
-                $r$7.setItem(0L, obj);
+                $r$7.set(0L, obj);
             } else break;
         }
     }
@@ -55,7 +55,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.Array $r$8;
             if (($r$8 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array $r$9 = $r$8;
-                $r$9.setItem(0L, obj);
+                $r$9.set(0L, obj);
             } else break;
         }
     }

@@ -96,7 +96,7 @@ public class MiscTest extends CompilerTest {
             exceptions.add(ex);
         }
         String[] extras = new String[]{
-                "array", "arrayOfSize", "copyArray", "false", "infinity",
+                "array", "arrayOfSize", "false", "infinity",
                 "parseFloat", "parseInteger", "string", "true", "integerRangeByIterable"
         };
         

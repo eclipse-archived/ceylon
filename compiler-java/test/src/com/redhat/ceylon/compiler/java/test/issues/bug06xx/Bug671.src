@@ -14,7 +14,7 @@ public final class bug671_ {
             }
             returning .ceylon.language.array_.<.ceylon.language.Integer>array($arg$0$reified$0, .ceylon.language.Integer.class, $arg$0$0);
         );
-        a6.setItem(0L, null);
+        a6.set(0L, null);
     }
     
     public static void main(.java.lang.String[] args) {

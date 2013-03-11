@@ -22,26 +22,26 @@ class AssertExists2dArray() {
     void ints() {
         value t = arrayOfSize(2,arrayOfSize(2,0));
         assert (exists r=t[0]);
-        r.setItem(0,100);
+        r.set(0,100);
     }
     void strings() {
         value t = arrayOfSize(2,arrayOfSize(2,""));
         assert (exists r=t[0]);
-        r.setItem(0,"");
+        r.set(0,"");
     }
     void nulls() {
         value t = arrayOfSize(2,arrayOfSize(2,null));
         assert (exists r=t[0]); 
-        r.setItem(0,null);
+        r.set(0,null);
     }
     void objects(Object obj) {
         value t = arrayOfSize(2,arrayOfSize(2,obj));
         assert (exists r=t[0]);
-        r.setItem(0,obj);    
+        r.set(0,obj);    
     }
     void union(String|Float obj) {
         value t = arrayOfSize(2,arrayOfSize(2,obj));
         assert (exists r=t[0]);
-        r.setItem(0,obj);    
+        r.set(0,obj);    
     }
 }
