@@ -62,23 +62,3 @@ shared native Array<Element> arrayOfSize<Element>(
              will have the same value." 
         Element element);
 
-doc "Efficiently copy the elements of one array to another 
-     array."
-shared native void copyArray<Element>(
-        doc "The source array containing the elements to be 
-             copied."
-        Array<Element> source,
-        doc "The target array into which to copy the 
-             elements." 
-        Array<Element> target,
-        doc "The index of the first element to copy in the
-             source array." 
-        Integer from, 
-        doc "The index in the target array into which to 
-             copy the first element."
-        Integer to, 
-        doc "The number of elements to copy."
-        Integer length);
-        //TODO: defaults!
-        //Integer from=0, Integer to=0, Integer length=smallest(source.size,target.size));
-        
