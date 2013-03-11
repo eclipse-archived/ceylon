@@ -23,3 +23,10 @@ shared class MemberKlass() {
         }
     }
 }
+
+shared class ParameterisedMemberKlass<T>() {
+    shared object foo {
+        shared class MemberMember<TTT>() {
+        }
+    }
+}
