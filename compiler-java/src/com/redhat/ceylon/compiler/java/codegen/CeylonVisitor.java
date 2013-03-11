@@ -354,6 +354,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(expr));
     }
 
+    public void visit(Tree.Package that) {
+        // this is only used as qualifier, and we can consider it a empty qualifier, so we ignore it
+    }
+    
     public void visit(Tree.IdenticalOp op) {
         append(gen.expressionGen().transform(op));
     }
