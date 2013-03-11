@@ -2664,6 +2664,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return makeErroneous();
+        // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
+        // only useful for the typechecker resolving
+        if(expr.getPrimary() instanceof Tree.Package)
+            return null;
         ProducedType type = expr.getTarget().getQualifyingType();
         if(expr.getMemberOperator() instanceof Tree.SafeMemberOp && !isOptional(type)){
             ProducedType optionalType = typeFact().getOptionalType(type);
