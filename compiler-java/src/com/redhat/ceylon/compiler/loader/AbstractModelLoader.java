@@ -1297,7 +1297,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             addValue(klass, fieldMirror, isCeylon);
         }
-        
+
+        // Now marry-up attributes and parameters)
+        if (klass instanceof Class) {
+            for (Declaration m : klass.getMembers()) {
+                if (Decl.isValue(m)) {
+                    Value v = (Value)m;
+                    Parameter p = ((Class)klass).getParameter(v.getName());
+                    if (p instanceof ValueParameter) {
+                        ((ValueParameter)p).setHidden(true);    
+                    }
+                }
+            }
+        }
+
         // Now mark all Values for which Setters exist as variable
         for(Entry<MethodMirror, List<MethodMirror>> setterEntry : variables.entrySet()){
             MethodMirror setter = setterEntry.getKey();
@@ -1337,20 +1350,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && ((Class) klass).getParameterList() == null){
             ((Class) klass).setParameterList(new ParameterList());
         }
-        
-        // Now marry-up attributes and parameters)
-        if (klass instanceof Class) {
-            for (Declaration m : klass.getMembers()) {
-                if (Decl.isValue(m)) {
-                    Value v = (Value)m;
-                    Parameter p = ((Class)klass).getParameter(v.getName());
-                    if (p instanceof ValueParameter) {
-                        ((ValueParameter)p).setHidden(true);    
-                    }
-                }
-            }
-        }
-        
         
         klass.setStaticallyImportable(!isCeylon && classMirror.isStatic());
         
