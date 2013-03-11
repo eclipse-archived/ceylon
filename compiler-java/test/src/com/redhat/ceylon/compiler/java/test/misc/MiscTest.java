@@ -20,6 +20,9 @@
 package com.redhat.ceylon.compiler.java.test.misc;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -273,5 +276,57 @@ public class MiscTest extends CompilerTest {
         Assert.assertTrue(JDKUtils.isOracleJDKAnyPackage("sun.nio"));
         Assert.assertTrue(JDKUtils.isOracleJDKAnyPackage("sunw.util"));// last one
         Assert.assertFalse(JDKUtils.isOracleJDKAnyPackage("fr.epardaud"));
+    }
+    
+    @Test
+    public void testLaunchDistCeylonCompile() throws IOException, InterruptedException {
+        String[] args = {
+                "../ceylon-dist/dist/bin/ceylon",
+                "compile",
+                "--src",
+                "../ceylon-dist/dist/samples/helloworld/source",
+                "--out",
+                "build/test-cars",
+                "com.example.helloworld"
+        };
+        launchCeylon(args);
+    }
+    
+    @Test
+    public void testLaunchDistCeylonDoc() throws IOException, InterruptedException {
+        String[] args = {
+                "../ceylon-dist/dist/bin/ceylon",
+                "doc",
+                "--src",
+                "../ceylon-dist/dist/samples/helloworld/source",
+                "--out",
+                "build/test-cars",
+                "com.example.helloworld"
+        };
+        launchCeylon(args);
+    }
+    
+    @Test
+    public void testLaunchDistCeylonRun() throws IOException, InterruptedException {
+        String[] args = {
+                "../ceylon-dist/dist/bin/ceylon",
+                "run",
+                "--rep",
+                "build/test-cars",
+                "com.example.helloworld/1.0.0"
+        };
+        launchCeylon(args);
+    }
+    
+    public void launchCeylon(String[] args) throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder(args);
+        pb.redirectInput(Redirect.INHERIT);
+        pb.redirectOutput(Redirect.INHERIT);
+        pb.redirectError(Redirect.INHERIT);
+        Process p = pb.start();
+        p.waitFor();
+        if (p.exitValue() > 0) {
+            Assert.fail("Ceylon script execution failed");
+        }
     }
 }
