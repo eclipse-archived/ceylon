@@ -18,3 +18,4 @@
  * MA  02110-1301, USA.
  */
 KlassWithAttributes klassWithAttributes = KlassWithAttributes();
+KlassWithAttributesAsParameters klassWithAttributesAsParameters = KlassWithAttributesAsParameters(true, true, false);

@@ -86,3 +86,9 @@ shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     shared actual Integer defaultGetter {return 3;}
     shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
 }
+
+shared class KlassWithAttributesAsParameters(foo, bar, gee) {
+    shared Boolean foo;
+    Boolean bar;
+    variable shared Boolean gee;
+}
