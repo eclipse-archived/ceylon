@@ -51,7 +51,7 @@ Array$proto.getT$all = function() {
 exports.EmptyArray=EmptyArray;
 
 defineAttr(Array$proto, 'size', function(){ return this.length; });
-Array$proto.setItem = function(idx,elem) {
+Array$proto.set = function(idx,elem) {
     if (idx >= 0 && idx < this.length) {
         this[idx] = elem;
     }
