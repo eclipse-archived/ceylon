@@ -45,21 +45,21 @@ void testArrays() {
     }
     
     a2.copyTo(a3);
-    check(a3.string=="{ 10, 2, 3 }", "copyTo()");
+    check(a3==array{ 10, 2, 3 }, "copyTo()");
     
     for (ii in 0:3) {
         a3.set(ii, 5);
     }
     
     a2.copyTo(a3, 1, 0, 1);
-    check(a3.string=="{ 2, 5, 5 }", "copyTo(1, 0, 1)");
+    check(a3==array{ 2, 5, 5 }, "copyTo(1, 0, 1)");
     
     for (ii in 0:3) {
         a3.set(ii, 5);
     }
     
     a2.copyTo(a3, 1, 1, 1);
-    check(a3.string=="{ 5, 2, 5 }", "copyTo(1, 1, 1)");
+    check(a3==array{ 5, 2, 5 }, "copyTo(1, 1, 1)");
     
     
 }
