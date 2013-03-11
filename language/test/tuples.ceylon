@@ -48,4 +48,6 @@ void tuples() {
     check(t.any((Object x) => x is String), "tuple any");
     check(t.every((Object x) => true), "tuple every");
     check(t.count((Object x) => x is String) == 1, "tuple count");
+    
+    check(LazyList({123}).hash==[123].hash, "tuple hash");
 }
