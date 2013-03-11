@@ -404,8 +404,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
 
-    "An Iterable with the given inital element followed by the elements of 
-     this iterable."
+    doc "An `Iterable` with the given inital element followed 
+         by the elements of this iterable object."
     shared default {Element|Other+} leadBy<Other>(Other leading) {
         object lead satisfies {Element|Other+} {
             shared actual Iterator<Element|Other> iterator() =>
@@ -414,8 +414,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return lead;
     }
     
-    "An Iterable with the elements of this iterable followed by the given 
-     element."
+    doc "An `Iterable` with the elements of this iterable 
+         object, followed by the given element."
     shared default {Element|Other+} trailedBy<Other>(Other trailing) {
         object trailed satisfies {Element|Other+} {
             shared actual Iterator<Element|Other> iterator() =>
@@ -426,7 +426,7 @@ shared interface Iterable<out Element, out Absent=Null>
 
     doc "The elements of this iterable object, in their
          original order, followed by the elements of the 
-         given iterable object also in their original
+         given iterable object also in their original 
          order."
     shared default {Element|Other*} chain<Other>({Other*} other) {
         object chained satisfies {Element|Other*} {
@@ -436,16 +436,14 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
-    doc "Returns an Iterable that contains this `Iterable`'s elements but that
-         will return `defaultValue` instead of `null` for `null` elements of
-         that `Iterable`.
-         
-         Calling this method on an `Iterable` that cannot have `null` values
-         will not change the `Iterable` behavior. This means that calling this
-         method on an `Iterable` which has been obtained using this method will
-         not change the default value as there is no `null` value anymore."
+    doc "An `Iterable` that produces the elements of this 
+         iterable object, replacing every `null` element 
+         with the given default value. The resulting iterable
+         object does not produce the value `null`."
     shared default Iterable<Element&Object|Default>
-      defaultNullElements<Default>(Default defaultValue)
+    defaultNullElements<Default>(
+            doc "A default value that replaces `null` elements."
+            Default defaultValue)
         => { for (elem in this) elem else defaultValue };
     
     /*doc "Creates a Map that contains this `Iterable`'s
