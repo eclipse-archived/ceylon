@@ -704,6 +704,16 @@ StringBuilder$proto.insert = function(pos, content) {
     }
     return this;
 }
+StringBuilder$proto.insertCharacter = function(pos, c) {
+    if (pos <= 0) {
+        this.value = c.string + this.value;
+    } else if (pos >= this.size) {
+        this.value = this.value + c.string;
+    } else {
+        this.value = this.value.slice(0, pos) + c.string + this.value.slice(pos);
+    }
+    return this;
+}
 StringBuilder$proto.$delete = function(pos, count) {
     if (pos < 0) pos=0; else if (pos>this.size) return this;
     if (count > 0) {
