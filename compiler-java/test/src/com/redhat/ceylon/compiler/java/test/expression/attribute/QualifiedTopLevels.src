@@ -1,0 +1,101 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+final class get_ {
+    
+    private get_() {
+    }
+    
+    static .java.lang.String get() {
+        return "hello";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.get_.get();
+    }
+}
+class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    X() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("package.X"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.X();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.X.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.X.class);
+}
+public class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Outer() {
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.Inner();
+    }
+    
+    private final long $get$priv() {
+        return 0L;
+    }
+    
+    class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        X() {
+            .ceylon.language.print_.print(.ceylon.language.String.instance("outer.X"));
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.X.class));
+        }
+    }
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        Inner() {
+            $get$priv();
+            this.$get$priv();
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.this.$get$priv();
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.get_.get();
+            new .com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.Inner.X();
+            this.new X();
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.this.new X();
+            new .com.redhat.ceylon.compiler.java.test.expression.attribute.X();
+        }
+        
+        private final double $get$priv() {
+            return 0.0;
+        }
+        
+        class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            X() {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("this.X"));
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.Inner.X.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.Outer();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Outer.class);
+}
