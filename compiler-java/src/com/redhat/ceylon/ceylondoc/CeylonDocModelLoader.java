@@ -21,7 +21,9 @@
 package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.impl.JULLogger;
@@ -39,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
 public class CeylonDocModelLoader extends ReflectionModelLoader {
 
     ModulesClassLoader classLoader = new ModulesClassLoader();
+    Set<Module> modulesAddedToClassPath = new HashSet<Module>();
 
     public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules){
         super(moduleManager, modules, new JULLogger());
@@ -57,7 +60,8 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
 
     @Override
     public void addModuleToClassPath(final Module module, ArtifactResult artifact) {
-        if(artifact == null)
+        // don't add the same module more than once
+        if(artifact == null || !modulesAddedToClassPath.add(module))
             return;
         File file = artifact.artifact();
         classLoader.addJar(file);
