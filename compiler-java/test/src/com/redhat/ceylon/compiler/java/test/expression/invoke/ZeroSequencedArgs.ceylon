@@ -19,6 +19,6 @@
  */
 @nomodel
 void zeroSequencedArgs() {
-    value sb = SequenceBuilder<String>();
-    sb.appendAll();
+    void m<Element>(Element* elements) {}
+    m();
 }

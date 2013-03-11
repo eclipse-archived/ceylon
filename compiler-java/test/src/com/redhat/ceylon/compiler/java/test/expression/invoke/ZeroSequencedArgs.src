@@ -6,8 +6,32 @@ final class zeroSequencedArgs_ {
     }
     
     static void zeroSequencedArgs() {
-        final .ceylon.language.SequenceBuilder<.ceylon.language.String> sb = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor);
-        sb.appendAll();
+        
+        final class m_ {
+            
+            private m_() {
+            }
+            
+            final <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+                (
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$1 = m$elements($reifiedElement);
+                        m($reifiedElement, $ceylontmp$elements$1);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final <Element>.ceylon.language.Sequential<? extends Element> m$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+            }
+            
+            <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
+            }
+        }
+        final m_ m = new m_();
+        m.m(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     public static void main(.java.lang.String[] args) {
