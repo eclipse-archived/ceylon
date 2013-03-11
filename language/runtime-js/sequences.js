@@ -39,8 +39,7 @@ function ArraySequence(/* js array */value, $$targs$$) {
     this.$$targs$$=$$targs$$;
     return value;
 }
-initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), Sequence);
-
+initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), $init$Sequence());
 Array$proto.getT$name = function() {
     return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;
 }
@@ -51,6 +50,9 @@ Array$proto.getT$all = function() {
 exports.EmptyArray=EmptyArray;
 
 defineAttr(Array$proto, 'size', function(){ return this.length; });
+defineAttr(Array$proto,'string',function(){
+    return (opt$181=(this.empty?String$("[]",2):null),opt$181!==null?opt$181:StringBuilder().appendAll([String$("[",1),commaList(this).string,String$("]",1)]).string);
+});
 Array$proto.set = function(idx,elem) {
     if (idx >= 0 && idx < this.length) {
         this[idx] = elem;
@@ -122,7 +124,18 @@ Array$proto.iterator = function() {
     return new ComprehensionIterator(function() {
         return ($$$index$$$ === $$$arr$$$.length) ? getFinished() : $$$arr$$$[$$$index$$$++];
     }, this.$$targs$$);
-};
+}
+Array$proto.copyTo = function(other, srcpos, dstpos, length) {
+    if (length === undefined) length = this.size;
+    if (srcpos === undefined) srcpos = 0;
+    if (dstpos === undefined) dstpos = 0;
+    var endpos = srcpos+length;
+    //TODO validate range?
+    for (var i=srcpos; i<endpos; i++) {
+        other[dstpos]=this[i];
+        dstpos++;
+    }
+}
 
 exports.ArrayList=ArrayList;
 exports.array=function(elems, $$$ptypes) {
