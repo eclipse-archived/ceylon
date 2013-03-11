@@ -33,7 +33,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
                         {
-                            iter$0 = new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), $x$2).iterator();
+                            iter$0 = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), new .java.lang.Object[]{$x$2}).iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0;
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;
@@ -82,7 +82,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
                         {
-                            iter$0 = new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), $x$2).iterator();
+                            iter$0 = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), new .java.lang.Object[]{$x$2}).iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iter$0;
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj;

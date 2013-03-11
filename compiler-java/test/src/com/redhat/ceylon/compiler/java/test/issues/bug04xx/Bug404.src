@@ -12,7 +12,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             {
                 .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.toString(1.0));
             }
-            returning new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0);
+            returning .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")}).contains($ceylontmp0);
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
         sync = !(

@@ -11,7 +11,7 @@ final class bug601_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .ceylon.language.Iterable $arg$0$0 = new .ceylon.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("")));
+                .ceylon.language.Iterable $arg$0$0 = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), new .java.lang.Object[]{.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")}), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("")})});
             }
             returning .ceylon.language.first_.first($arg$0$reified$0, $arg$0$reified$1, $arg$0$0);
         );
@@ -20,7 +20,7 @@ final class bug601_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .ceylon.language.Iterable $arg$1$0 = new .ceylon.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.String.split("hello world"), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("")));
+                .ceylon.language.Iterable $arg$1$0 = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{.ceylon.language.String.split("hello world"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("")})});
             }
             returning .ceylon.language.first_.first($arg$1$reified$0, $arg$1$reified$1, $arg$1$0);
         );
@@ -29,7 +29,7 @@ final class bug601_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .ceylon.language.Iterable $arg$2$0 = new .ceylon.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
+                .ceylon.language.Iterable $arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor){
@@ -59,7 +59,7 @@ final class bug601_ {
                             }
                         };
                     }
-                }, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance("")));
+                }, .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("")})});
             }
             returning .ceylon.language.first_.first($arg$2$reified$0, $arg$2$reified$1, $arg$2$0);
         );

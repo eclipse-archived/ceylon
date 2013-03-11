@@ -17,7 +17,7 @@ public final class utilCalls_ {
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).iterator();
+                        iter$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -43,14 +43,14 @@ public final class utilCalls_ {
                 };
             }
         }.getSequence();
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it1 = new .ceylon.language.ArraySequence(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it1 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), new .java.lang.Object[]{.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a")});
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it2 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)it1, .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor){
                     {
-                        iter$0 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L)).iterator();
+                        iter$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                     private .ceylon.language.Integer i;
@@ -82,7 +82,7 @@ public final class utilCalls_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ignore1 = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $spread$2$iterable = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $spread$2$iterable = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> $spread$2$sequenceBuilder = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
                 .java.lang.Object $spread$2$iteration;
                 for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $spread$2$iterator = $spread$2$iterable.iterator(); !(($spread$2$iteration = $spread$2$iterator.next()) instanceof .ceylon.language.Finished); ) {
