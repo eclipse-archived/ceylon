@@ -181,13 +181,8 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     }
     
     @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> leadBy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other leading) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.leadBy($reifiedOther, leading);
-    }
-    
-    @.java.lang.Override
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> trailedBy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other trailing) {
-        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.trailedBy($reifiedOther, trailing);
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> following(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other head) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.following($reifiedOther, head);
     }
     
     @.java.lang.Override
