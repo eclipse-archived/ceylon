@@ -1,9 +1,8 @@
 package ceylon.language;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -33,18 +32,26 @@ final class internalSort_ {
             return (Sequential)empty_.getEmpty$();   
         }
         
-        java.util.List<Element> list = Util.collectIterable(elements);
+        ArraySequence<? extends Element> result = new ArraySequence<Element>($reifiedElement, (ceylon.language.Iterable)elements);
+        Arrays.sort((Element[])result.array, result.first, result.first+result.length, comparator(comparing));
+        return result;
+    }
 
-        java.util.Collections.sort(list, new Comparator<Element>() {
+    /** Make a {@link java.util.Comparator} from a {@code Callable<Comparison>} */
+    private static <Element> Comparator<Element> comparator(
+            final Callable<? extends Comparison> comparing) {
+        return new Comparator<Element>() {
             public int compare(Element x, Element y) {
                 Comparison result = comparing.$call(x, y);
                 if (result.largerThan()) return 1;
                 if (result.smallerThan()) return -1;
                 return 0;
             }
-        });
-
-        return new ArraySequence<Element>($reifiedElement, list);
+        };
+    }
+    
+    static <Element> void sort(Element[] array, final Callable<? extends Comparison> comparing) {
+        java.util.Arrays.sort(array, comparator(comparing));
     }
     
 }

@@ -1,7 +1,7 @@
 doc "A nonempty, immutable sequence of values. The type 
      `Sequence<Element>`, may be abbreviated `[Element+]`.
      
-     Given a possibly-empty sequence of type `[Element*], 
+     Given a possibly-empty sequence of type `[Element*]`, 
      the `if (nonempty ...)` construct, or, alternatively,
      the `assert (nonempty ...)` construct, may be used to 
      narrow to a nonempty sequence type:

@@ -111,12 +111,12 @@ Range<Integer> range {
     check(!(0..9).span(11,12) nonempty, "(0..9).span(11,12) is NOT empty");
     check((0..9).span(5,3) nonempty, "(0..9).span(5,3) is empty");
     
-    check((1..1).by(5).sequence.string=="{ 1 }", "range by 5");
+    check((1..1).by(5).sequence.string=="[1]", "range by 5");
     check((0..9).by(1).sequence.string=="0..9", "range by 1 `` (0..9).by(1).sequence `` instead of 0..9");
-    check((0..9).by(3).sequence.string=="{ 0, 3, 6, 9 }", "range by 3");
-    check((2..11).by(3).sequence.string=="{ 2, 5, 8, 11 }", "range by 3");
-    check((0..9).by(4).sequence.string=="{ 0, 4, 8 }", "range by 4");
-    check((2..11).by(4).sequence.string=="{ 2, 6, 10 }", "range by 4");
+    check((0..9).by(3).sequence.string=="[0, 3, 6, 9]", "range by 3");
+    check((2..11).by(3).sequence.string=="[2, 5, 8, 11]", "range by 3");
+    check((0..9).by(4).sequence.string=="[0, 4, 8]", "range by 4");
+    check((2..11).by(4).sequence.string=="[2, 6, 10]", "range by 4");
     
     //More range tests, from ceylon-js
     check((1..10).string=="1..10", "range.string");
@@ -144,11 +144,11 @@ Range<Integer> range {
     check(!r4.rest nonempty, "nonempty range.rest says `` r4.rest nonempty ``, should be false");
     check(r1.lastIndex==4, "range.lastIndex 1");
     check(r2.lastIndex==3, "range.lastIndex 2");
-    check(r1.by(2).sequence.string=="{ 1, 3, 5 }", "range.by 1");
-    check(r1.by(3).sequence.string=="{ 1, 4 }", "range.by 2");
-    check(r2.by(2).sequence.string=="{ 7, 5 }", "range.by 3");
-    check(r2.by(3).sequence.string=="{ 7, 4 }", "range.by 4");
-    check(r4.by(10).sequence.string=="{ 123 }", "range.by 5");
+    check(r1.by(2).sequence.string=="[1, 3, 5]", "range.by 1");
+    check(r1.by(3).sequence.string=="[1, 4]", "range.by 2");
+    check(r2.by(2).sequence.string=="[7, 5]", "range.by 3");
+    check(r2.by(3).sequence.string=="[7, 4]", "range.by 4");
+    check(r4.by(10).sequence.string=="[123]", "range.by 5");
     check(r1.segment(2,2).string=="3..4", "range.segment 1");
     check(!r1.segment(1,0) nonempty, "range.segment 2");
     check(r1.segment(1,-1).empty, "range.segment 3");

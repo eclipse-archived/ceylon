@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import ceylon.language.ArraySequence;
 import ceylon.language.Boolean;
 import ceylon.language.Category$impl;
 import ceylon.language.Container$impl;
@@ -96,8 +97,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
             return rest;
         // make sure we don't create ArrayIterables with empty rests
         if(rest.getEmpty())
-            return new ArraySequence<Element>($reifiedElement, array);
-        return new ArrayIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, rest, array);
+            return ArraySequence.<Element>instance($reifiedElement, array);
+        return new ArrayIterable<Element, Null>($reifiedElement, Null.$TypeDescriptor, rest, array);
     }
     
     @Override
@@ -138,16 +139,16 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         Sequential<? extends Element> restSequence = rest.getSequence();
         // copy our part of the array
         int inArray = (int) (array.length - first);
-        Element[] elems = (Element[]) new Object[(int) (inArray + restSequence.getSize())];
+        java.lang.Object[] elems = new java.lang.Object[(int) (inArray + restSequence.getSize())];
         System.arraycopy(array, (int)first, elems, 0, inArray);
         // then copy the rest
         Iterator<?> iterator = restSequence.iterator();
         Object val;
         int i = inArray;
         while((val = iterator.next()) != finished_.getFinished$()){
-            elems[i++] = (Element) val;
+            elems[i++] = val;
         }
-        return new ArraySequence<Element>($reifiedElement, elems);
+        return ArraySequence.<Element>instance($reifiedElement, elems);
     }
 
     @Override

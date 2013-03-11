@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ceylon.language.ArraySequence;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
@@ -18,7 +19,6 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -618,7 +618,7 @@ public class Util {
         if (elements.length == 0) {
             return (Sequential)empty_.getEmpty$();
         }
-        return new ArraySequence<T>($reifiedT, elements);
+        return ArraySequence.<T>instance($reifiedT, elements);
     }
 
     /**
@@ -638,17 +638,17 @@ public class Util {
         }
         // elements is not empty
         if(rest.getEmpty())
-            return new ArraySequence<T>($reifiedT, elements);
+            return ArraySequence.<T>instance($reifiedT, elements);
         // we have both, let's find the total size
         int total = (int) (rest.getSize() + elements.length);
-        T[] newArray = (T[]) new Object[total];
+        java.lang.Object[] newArray = new java.lang.Object[total];
         System.arraycopy(elements, 0, newArray, 0, elements.length);
         Iterator<? extends T> iterator = rest.iterator();
         int i = elements.length;
         for(Object elem; (elem = iterator.next()) != finished_.getFinished$(); i++){
-            newArray[i] = (T) elem;
+            newArray[i] = elem;
         }
-        return new ArraySequence<T>($reifiedT, newArray);
+        return ArraySequence.<T>instance($reifiedT, newArray);
     }
     
     /**

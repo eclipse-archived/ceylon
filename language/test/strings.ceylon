@@ -107,7 +107,27 @@ shared void strings() {
     check(!hello.longerThan(6), "string longer than 2");
     check(!hello.longerThan(5), "string longer than 3");
     check(("  " + hello + "\n").trimmed==hello, "string trim");
-    check("hello\n    world\ngoodbye   everyone!".normalized=="hello world goodbye everyone!", "string normalize");
+    check((" \t\n\{#000B}\f\r\{#001C}\{#001D}\{#001E}\{#001F}" + hello).trimmed==hello, "string trim (explicit)");
+    check(("\{#0020}\{#1680}\{#180E}" +
+           "\{#2000}\{#2001}\{#2002}\{#2003}\{#2004}\{#2005}" + 
+           "\{#2006}\{#2008}\{#2009}\{#200A}" + 
+           "\{#205F}\{#3000}" + hello).trimmed==hello, "string trim (General category: Space separator - {non-breaking space})");
+    check(("\{#2028}" + hello).trimmed==hello, "string trim (General category: Line separator)");
+    check(("\{#2029}" + hello).trimmed==hello, "string trim (General category: Paragraph separator)");
+    
+    check(("\{#00A0}" + hello).trimmed.size==6, "string trim (Excluded: non-breaking space 1)");
+    check(("\{#2007}" + hello).trimmed.size==6, "string trim (Excluded: non-breaking space 2)");
+    check(("\{#202F}" + hello).trimmed.size==6, "string trim (Excluded: non-breaking space 3)");
+    
+    check("".normalized=="", "\"\".normalized");
+    check(" ".normalized=="", "\" \".normalized");
+    check("  ".normalized=="", "\"  \".normalized");
+    check("a ".normalized=="a", "\"a \".normalized");
+    check(" a".normalized=="a", "\" a\".normalized");
+    check(" hello\n    world\ngoodbye   everyone!\t".normalized=="hello world goodbye everyone!", "string normalize");
+    value normalized = " Hello World ".normalized;
+    check(normalized == normalized.trimmed, "noramlized implies trimmed");
+    
     
     check('l' in hello, "char in string");
     check(!'x' in hello, "char not in string");
