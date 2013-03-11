@@ -144,6 +144,11 @@ public class CachedTOCJars {
     private List<CachedTOCJar> jars = new LinkedList<CachedTOCJar>();
     
     public void addJar(File file) {
+        // skip duplicates
+        for(CachedTOCJar jar : jars){
+            if(jar.jar.equals(file))
+                return;
+        }
         jars.add(new CachedTOCJar(file));
     }
 
