@@ -120,6 +120,8 @@ public abstract class LazyModuleManager extends ModuleManager {
                                     +"\nBinary compatibility will only be supported after Ceylon 1.0.");
                 }
             }
+            // module is now available
+            module.setAvailable(true);
         }
     }
 
