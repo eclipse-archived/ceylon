@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -478,7 +479,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         }
     }
 
-    public void setItem(@Name("index") @TypeInfo("ceylon.language::Integer") long index,
+    public void set(@Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
         int idx = (int) index;
         if (idx >= 0 && idx < getSize()) {
@@ -874,6 +875,46 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
 
+    @Ignore
+    public int copyTo$sourcePosition(Element[] destination){
+        return 0;
+    }
+
+    @Ignore
+    public int copyTo$destinationPosition(Element[] destination, int sourcePosition){
+        return 0;
+    }
+
+    @Ignore
+    public int copyTo$length(Element[] destination, int sourcePosition, int destinationPosition){
+        return java.lang.reflect.Array.getLength(array);
+    }
+
+    @Ignore
+    public void copyTo(Array<Element> destination){
+        System.arraycopy(array, 0, destination.array, 0, (int)getSize());
+    }
+
+    @Ignore
+    public void copyTo(Array<Element> destination, 
+                       int sourcePosition){
+        System.arraycopy(array, sourcePosition, destination.array, 0, (int)getSize());
+    }
+
+    @Ignore
+    public void copyTo(Array<Element> destination, 
+                       int sourcePosition, 
+                       int destinationPosition){
+        System.arraycopy(array, sourcePosition, destination.array, destinationPosition, (int)getSize());
+    }
+
+    public void copyTo(@Name("destination") Array<Element> destination, 
+                       @Name("sourcePosition") @Defaulted int sourcePosition, 
+                       @Name("destinationPosition") @Defaulted int destinationPosition, 
+                       @Name("length") @Defaulted int length){
+        System.arraycopy(array, sourcePosition, destination.array, destinationPosition, length);
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

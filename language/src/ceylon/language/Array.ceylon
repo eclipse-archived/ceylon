@@ -15,7 +15,7 @@ shared abstract native class Array<Element>()
          with the given element. Does nothing if the specified 
          index is negative or larger than the index of the 
          last element in the array."
-    shared formal void setItem(
+    shared formal void set(
             doc "The index of the element to replace."
             Integer index, 
             doc "The new element."
@@ -26,6 +26,20 @@ shared abstract native class Array<Element>()
 
     doc "The rest of the array, without the first element."
     shared actual formal Array<Element> rest;
+
+    doc "Efficiently copy the elements in the segment 
+         `sourcePosition:length` of this array to the segment 
+         `destinationPosition:length` of the given array."
+    shared formal void copyTo(
+        doc "The array into which to copy the elements." 
+        Array<Element> other,
+        doc "The index of the first element in this array to copy."  
+        Integer sourcePosition = 0, 
+        doc "The index in the given array into which to 
+             copy the first element."
+        Integer destinationPosition = 0, 
+        doc "The number of elements to copy."
+        Integer length = size);
     
 }
 
