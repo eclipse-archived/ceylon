@@ -1127,5 +1127,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug1079() {
         compareWithJavaSource("bug10xx/Bug1079");
     }
+
+    @Test
+    public void testBug1083() {
+        assertErrors("bug10xx/Bug1083",
+                new CompilerError(24, "ambiguous reference to overloaded method or class: BigInteger"));
+    }
 }
 
