@@ -49,12 +49,12 @@ public class UnionType extends TypeDeclaration {
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Scope scope, String startingWith, int proximity) {
     	//TODO: this can result in the wrong parameter types, and the
     	//      same bug also affects intersection types
-    	Map<String, DeclarationWithProximity> result = super.getMatchingMemberDeclarations(startingWith, proximity);
+    	Map<String, DeclarationWithProximity> result = super.getMatchingMemberDeclarations(scope, startingWith, proximity);
 		TypeDeclaration d = getCaseTypes().get(0).getDeclaration();
-		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = d.getMatchingMemberDeclarations(startingWith, proximity)
+		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = d.getMatchingMemberDeclarations(scope, startingWith, proximity)
 		        .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = iter.next();

@@ -15,11 +15,13 @@ public class Util {
      * Is the second scope contained by the first scope?
      */
     public static boolean contains(Scope outer, Scope inner) {
-        while (inner!=null) {
-            if (inner.equals(outer)) {
-                return true;
+        if (outer != null) {
+            while (inner!=null) {
+                if (inner.equals(outer)) {
+                    return true;
+                }
+                inner = inner.getScope();
             }
-            inner = inner.getScope();
         }
         return false;
     }

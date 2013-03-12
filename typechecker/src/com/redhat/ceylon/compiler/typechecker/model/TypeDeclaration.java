@@ -620,7 +620,7 @@ public abstract class TypeDeclaration extends Declaration
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
         Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
         //Inherited declarations hide outer and imported declarations
-        result.putAll(getMatchingMemberDeclarations(startingWith, proximity));
+        result.putAll(getMatchingMemberDeclarations(null, startingWith, proximity));
         //Local declarations always hide inherited declarations, even if non-shared
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && !isOverloadedVersion(d) &&
@@ -632,21 +632,22 @@ public abstract class TypeDeclaration extends Declaration
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Scope scope, String startingWith, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-            mergeMembers(result, st.getMatchingMemberDeclarations(startingWith, proximity+1));
+            mergeMembers(result, st.getMatchingMemberDeclarations(scope, startingWith, proximity+1));
         }
         TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
-            mergeMembers(result, et.getMatchingMemberDeclarations(startingWith, proximity+1));
+            mergeMembers(result, et.getMatchingMemberDeclarations(scope, startingWith, proximity+1));
         }
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && d.isShared() && 
-            		!isOverloadedVersion(d) &&
+            if (isResolvable(d) && 
+                    !isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d)) {
-                result.put(d.getName(), 
-                		new DeclarationWithProximity(d, proximity));
+                if( d.isShared() || Util.contains(d.getScope(), scope) ) {
+                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                }
             }
         }
         //TODO: self type?
