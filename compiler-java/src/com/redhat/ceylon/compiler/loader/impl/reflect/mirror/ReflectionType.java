@@ -228,6 +228,8 @@ public class ReflectionType implements TypeMirror {
         if(!declaredClassSet){
             if(type instanceof Class){
                 declaredClass = new ReflectionClass((Class<?>) type);
+            }else if(type instanceof ParameterizedType){
+                declaredClass = new ReflectionClass((Class<?>) ((ParameterizedType) type).getRawType());
             }
             declaredClassSet = true;
         }
