@@ -149,6 +149,12 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlModuleIncremental() throws IOException{
+        compile("modules/incremental/A.ceylon", "modules/incremental/BUsesA.ceylon", "modules/incremental/UsesB.ceylon");
+        compile("modules/incremental/A.ceylon", "modules/incremental/UsesB.ceylon");
+    }
+
+    @Test
     public void testMdlModuleDefaultIncrementalNoPackage() throws IOException{
         List<String> options = new LinkedList<String>();
         options.add("-src");
