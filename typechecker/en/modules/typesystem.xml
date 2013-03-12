@@ -815,6 +815,10 @@ else {
 }
 Float|Integer num = one;</programlisting></comment>
         
+        <para>An inferred type never involves an anonymous class. When an inferred type
+        would involve an anonymous class type, the anonymous class is replaced by the 
+        intersection of the class type it extends with all interface types it satisfies.</para>
+        
         </section>
         
     </section>
