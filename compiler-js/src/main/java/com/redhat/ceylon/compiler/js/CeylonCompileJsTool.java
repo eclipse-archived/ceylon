@@ -355,6 +355,7 @@ public class CeylonCompileJsTool implements Tool {
                 tcb.setModuleFilters(_modfilters);
             }
             tcb.statistics(opts.isProfile());
+            JsModuleManagerFactory.setVerbose(opts.isVerbose());
             tcb.moduleManagerFactory(new JsModuleManagerFactory());
         }
         //getting the type checker does process all types in the source directory
