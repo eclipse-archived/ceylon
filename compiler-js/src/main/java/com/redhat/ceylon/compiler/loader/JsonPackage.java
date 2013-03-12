@@ -73,11 +73,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (getModule().getLanguageModule() == getModule() && "ceylon.language".equals(pkgname)) {
             //Mark the language module as immediately available to bypass certain validations
             getModule().setAvailable(true);
-            //Ugly ass hack - add Nothing to the model
-            nothing = new NothingType(unit);
-            nothing.setContainer(this);
-            nothing.setUnit(unit);
         }
+        //Ugly ass hack - add Nothing to the model
+        nothing = new NothingType(unit);
+        nothing.setContainer(this);
+        nothing.setUnit(unit);
         setShared(model.get("$pkg-shared") != null);
         for (Map.Entry<String,Object> e : model.entrySet()) {
             String k = e.getKey();
@@ -708,10 +708,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         @SuppressWarnings("unchecked")
         Map<String,Object> map = (Map<String,Object>)model.get(name);
         if (map == null) {
-            if ("Nothing".equals(name) && "ceylon.language".equals(pkgname)) {
+            if ("Nothing".equals(name)) {
+                //Load Nothing from language module, regardless of what this package is
                 return nothing;
             }
-            throw new IllegalStateException("Cannot find " + name + " in " + model.keySet());
+            throw new IllegalStateException("Cannot find " + pkgname + "::" + name + " in " + model.keySet());
         }
         String metatype = (String)map.get(MetamodelGenerator.KEY_METATYPE);
         if (metatype == null) {
