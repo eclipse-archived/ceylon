@@ -1467,7 +1467,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setType(type);
             method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
             method.setDeclaredAnything(methodMirror.isDeclaredVoid());
-            type.setRaw(methodMirror.getReturnType().isRaw());
+            type.setRaw(isRaw(methodMirror.getReturnType()));
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
             throw x;
@@ -1621,7 +1621,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
-            type.setRaw(fieldMirror.getType().isRaw());
+            type.setRaw(isRaw(fieldMirror.getType()));
         }catch(TypeParserException x){
             logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
             throw x;
@@ -1631,6 +1631,73 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.getMembers().add(value);
     }
     
+    private boolean isRaw(TypeMirror type) {
+        // dirty hack to get rid of bug where calling type.isRaw() on a ceylon type we are going to compile would complete() it, which
+        // would try to parse its file. For ceylon types we don't need the class file info we can query it
+        // See https://github.com/ceylon/ceylon-compiler/issues/1085
+        switch(type.getKind()){
+        case ARRAY: // arrays are never raw
+        case BOOLEAN:
+        case BYTE: 
+        case CHAR:
+        case DOUBLE:
+        case ERROR:
+        case FLOAT:
+        case INT:
+        case LONG:
+        case NULL:
+        case SHORT:
+        case TYPEVAR:
+        case VOID:
+        case WILDCARD:
+            return false;
+        case DECLARED:
+            ClassMirror klass = type.getDeclaredClass();
+            if(klass.isJavaSource()){
+                // I suppose this should work
+                return type.isRaw();
+            }
+            List<String> path = new LinkedList<String>();
+            String pkgName = klass.getPackage().getQualifiedName();
+            String qualifiedName = klass.getQualifiedName();
+            String relativeName = pkgName.isEmpty() ? qualifiedName : qualifiedName.substring(pkgName.length()+1);
+            for(String name : relativeName.split("[\\$\\.]")){
+                if(!name.isEmpty()){
+                    path.add(0, klass.getName());
+                }
+            }
+            if(path.size() > 1){
+                // find the proper class mirror for the container
+                klass = loadClass(pkgName, path.get(0));
+                if(klass == null)
+                    return false;
+            }
+            if(!path.isEmpty() && klass.isLoadedFromSource()){
+                // we need to find its model
+                Scope scope = packagesByName.get(pkgName);
+                if(scope == null)
+                    return false;
+                for(String name : path){
+                    Declaration decl = scope.getDirectMember(name, null, false);
+                    if(decl == null)
+                        return false;
+                    // if we get a value, we want its type
+                    if(Decl.isValue(decl)
+                            && ((Value)decl).getTypeDeclaration().getName().equals(name))
+                        decl = ((Value)decl).getTypeDeclaration();
+                    if(decl instanceof TypeDeclaration == false)
+                        return false;
+                    scope = (TypeDeclaration)decl;
+                }
+                TypeDeclaration typeDecl = (TypeDeclaration) scope;
+                return !typeDecl.getTypeParameters().isEmpty() && type.getTypeArguments().isEmpty();
+            }
+            return type.isRaw();
+        default:
+            return false;
+        }
+    }
+
     private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName, boolean isCeylon) {
         JavaBeanValue value = new JavaBeanValue();
         value.setGetterName(methodMirror.getName());
@@ -1642,7 +1709,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
-            type.setRaw(methodMirror.getReturnType().isRaw());
+            type.setRaw(isRaw(methodMirror.getReturnType()));
         }catch(TypeParserException x){
             logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
             throw x;
