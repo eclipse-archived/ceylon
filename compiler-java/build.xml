@@ -399,7 +399,7 @@
         </jar>
         <delete dir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
         <copy todir="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
-            <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon" />
+            <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon,Java*.java" excludes="*test.ceylon" />
         </copy>
     </target>
 </project>
