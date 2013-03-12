@@ -674,15 +674,23 @@ public class ModelLoaderTest extends CompilerTest {
         }, Arrays.asList("-verbose:loader"));
     }
 
+    protected String moduleForJavaModelLoading() {
+        return Module.DEFAULT_MODULE_NAME;
+    }
+    
+    protected String packageForJavaModelLoading() {
+        return "com.redhat.ceylon.compiler.java.test.model";
+    }
+
     @Test
     public void javaModelLoading(){
         compile("JavaType.java");
         verifyClassLoading("Java.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
-                Module mod = loader.getLoadedModule(Module.DEFAULT_MODULE_NAME);
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
                 Assert.assertNotNull(mod);
-                Package p = mod.getDirectPackage("com.redhat.ceylon.compiler.java.test.model");
+                Package p = mod.getDirectPackage(packageForJavaModelLoading());
                 Assert.assertNotNull(p);
                 Declaration javaType = p.getDirectMember("JavaType", null, false);
                 Assert.assertNotNull(javaType);
