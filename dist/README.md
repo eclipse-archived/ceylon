@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the Milestone 4 "Analytical Engine" release of the Ceylon command line tools (version 
-0.4). This is a pre-release version of the platform for review by the community.
+This is the Milestone 5 "Nesa Pong" release of the Ceylon command line tools (version 
+0.5). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
@@ -40,7 +40,7 @@ The command line tools are located in the `bin` directory.
 
 The API documentation for the language module `ceylon.language` may be found here:
 
-- `repo/ceylon/language/0.4/module-doc`
+- `repo/ceylon/language/0.5/module-doc`
 
 ## Running the sample programs
 

@@ -34,7 +34,7 @@ How to do a release of Ceylon.
     $ cd ceylon-sdk
     ceylon-sdk $ ant clean compile test
 1. Tag every project
-    $ git tag 0.4
+    $ git tag 0.5
     $ git push --tags
 1. Do the release zip
     $ cd ceylon-dist
