@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 public class JsModuleManagerFactory implements ModuleManagerFactory {
 
     private final Map<String, Object> clmod;
+    private static boolean verbose;
 
     public JsModuleManagerFactory() {
         clmod = null;
@@ -27,4 +28,10 @@ public class JsModuleManagerFactory implements ModuleManagerFactory {
         return new JsModuleManager(context, clmod);
     }
 
+    public static void setVerbose(boolean flag) {
+        verbose = flag;
+    }
+    public static boolean isVerbose() {
+        return verbose;
+    }
 }
