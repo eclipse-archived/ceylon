@@ -271,7 +271,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     public final long getSize() {
         if (getLast() instanceof .ceylon.language.Enumerable) {
             if (getFirst() instanceof .ceylon.language.Enumerable) {
-                return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)last).getIntegerValue() - ((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)first).getIntegerValue()) + 1L;
+                return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)getLast()).getIntegerValue() - ((.ceylon.language.Enumerable<? extends .java.lang.Object>)(.ceylon.language.Enumerable)getFirst()).getIntegerValue()) + 1L;
             }
         }
         return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
