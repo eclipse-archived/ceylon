@@ -13,7 +13,7 @@ public class NodeTest {
     /** Gets a JavaScript file from a directory under the modules dir. */
     private static File getJavaScript(final File subdir) {
         return subdir.getName().equals("default") ? new File(subdir, "default.js") :
-            new File(subdir, "0.1" + File.pathSeparator + subdir.getName() + "-0.1.js");
+            new File(subdir, "0.1" + File.separator + subdir.getName() + "-0.1.js");
     }
 
     private static void run(final String nodePath, final File subdir) throws IOException, InterruptedException {
