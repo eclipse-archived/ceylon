@@ -171,6 +171,56 @@ public class MiscTest extends CompilerTest {
         }
     }
 
+    /**
+     * This test is for when we need to debug an incremental compilation error from the IDE, to make
+     * sure it is indeed a bug and find which bug it is, do not enable it by default, it's only there
+     * for debugging purpose. Once the bug is found, add it where it belongs (not here).
+     */
+    @Ignore
+    @Test
+    public void debugIncrementalCompilationBug(){
+        java.util.List<File> sourceFiles = new ArrayList<File>();
+        
+        String sdkSourcePath = "../ceylon-sdk/source";
+        String testSourcePath = "../ceylon-sdk/test-source";
+        
+        for(String s : new String[]{
+                "../ceylon-sdk/source/ceylon/json/StringPrinter.ceylon",
+                "../ceylon-sdk/test-source/test/ceylon/json/print.ceylon",
+                "../ceylon-sdk/source/ceylon/json/Array.ceylon",
+                "../ceylon-sdk/test-source/test/ceylon/json/use.ceylon",
+                "../ceylon-sdk/source/ceylon/net/uri/Path.ceylon",
+                "../ceylon-sdk/test-source/test/ceylon/net/run.ceylon",
+                "../ceylon-sdk/source/ceylon/json/Printer.ceylon",
+                "../ceylon-sdk/source/ceylon/json/Object.ceylon",
+                "../ceylon-sdk/source/ceylon/net/uri/Query.ceylon",
+                "../ceylon-sdk/test-source/test/ceylon/json/run.ceylon",
+                "../ceylon-sdk/test-source/test/ceylon/net/connection.ceylon",
+                "../ceylon-sdk/source/ceylon/json/parse.ceylon",
+                "../ceylon-sdk/test-source/test/ceylon/json/parse.ceylon",
+                "../ceylon-sdk/source/ceylon/net/uri/PathSegment.ceylon",
+        }){
+            sourceFiles.add(new File(s));
+        }
+        
+        CeyloncTool compiler;
+        try {
+            compiler = new CeyloncTool();
+        } catch (VerifyError e) {
+            System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
+            throw e;
+        }
+        CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
+        Iterable<? extends JavaFileObject> compilationUnits1 =
+            fileManager.getJavaFileObjectsFromFiles(sourceFiles);
+        String compilerSourcePath = sdkSourcePath + File.pathSeparator + testSourcePath;
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "../ceylon-sdk/modules"/*, "-verbose"*/), 
+                null, compilationUnits1);
+        Boolean result = task.call();
+        Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
+    }
+
     @Test
     public void compileSDK(){
         String[] modules = {
