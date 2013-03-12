@@ -12,6 +12,7 @@ A:visited {
 
 P, OL, UL, LI, DL, DT, DD, BLOCKQUOTE {
     color: #000000;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 TD, TH, SPAN {
@@ -48,9 +49,17 @@ H4 { font-size: 110%; font-weight: bold;}
 H5 { font-size: 100%; font-style: italic; }
 H6 { font-size: 100%; font-style: italic; }
 
+H1, H2 {
+    font-family: 'PT Sans', Helvetica, 'Helvetica Neue', Arial, sans-serif;
+}
+
+H3, H4, H5, H6 {
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
 TT {
-font-size: 90%;
-    font-family: "Courier New", Courier, monospace;
+    font-size: 90%;
+    font-family: Menlo, Monaco, Courier, monospace;
     color: #000000;
 }
 
@@ -61,6 +70,8 @@ font-size: 100%;
     border-width: 1px;
     border-color: #CCCCCC;
     background-color: #F4F4F4;
+    font-size:85%;
+    font-family: Menlo, Monaco, Courier, monospace;
 }
 
 HR  {
