@@ -43,6 +43,9 @@ public class JsModuleManager extends ModuleManager {
             clLoaded = true;
             //If we haven't loaded the language module yet, we need to load it first
             if (!("ceylon.language".equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
+                if (JsModuleManagerFactory.isVerbose()) {
+                    System.out.println("Loading JS language module before any other modules");
+                }
                 if (clmod == null) {
                     ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion(), ".js");
                     ac.setFetchSingleArtifact(true);
@@ -64,6 +67,9 @@ public class JsModuleManager extends ModuleManager {
             }
             if (js.exists() && js.isFile() && js.canRead()) {
                 try {
+                    if (JsModuleManagerFactory.isVerbose()) {
+                        System.out.println("Loading metamodel from " + js);
+                    }
                     Map<String,Object> model = loadMetamodel(js);
                     if (model != null) {
                         loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
