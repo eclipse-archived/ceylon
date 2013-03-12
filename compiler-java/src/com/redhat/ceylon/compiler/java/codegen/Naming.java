@@ -1422,6 +1422,10 @@ public class Naming implements LocalId {
         public void clear() {
             map.clear();
         }
+        public boolean isSubstituted(TypedDeclaration decl) {
+            SubstitutionKey key = new SubstitutionKey(decl);
+            return map.containsKey(key);
+        }
     }
     
     private VarMapper getVarMapper() {
@@ -1464,7 +1468,17 @@ public class Naming implements LocalId {
         }
         return decl.getName();
     }
-    
+
+    /**
+     * Returns true if the given declaration is currently substituted
+     */
+    boolean isSubstituted(Declaration decl) {
+        if (decl instanceof TypedDeclaration) {
+            return getVarMapper().isSubstituted((TypedDeclaration)decl);
+        }
+        return false;
+    }
+
     /**
      * A substitution
      */

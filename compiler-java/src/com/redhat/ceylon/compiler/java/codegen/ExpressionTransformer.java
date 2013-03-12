@@ -2765,6 +2765,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeErroneous();
         }
         
+        // Try to find the original declaration, in case we have conditionals that refine the type of objects without us
+        // creating a tmp variable (in which case we have a substitution for it)
+        while(decl instanceof TypedDeclaration){
+            TypedDeclaration typedDecl = (TypedDeclaration) decl;
+            if(!naming.isSubstituted(decl) && typedDecl.getOriginalDeclaration() != null){
+                decl = ((TypedDeclaration) decl).getOriginalDeclaration();
+            }else{
+                break;
+            }
+        }
+        
         // Explanation: primaryExpr and qualExpr both specify what is to come before the selector
         // but the important difference is that primaryExpr is used for those situations where
         // the result comes from the actual Ceylon code while qualExpr is used for those situations
