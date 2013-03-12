@@ -95,7 +95,11 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(compiledModule == null && !module.isDefault()){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
-                ((LazyModule)module).loadPackageList(artifact);
+                try{
+                    ((LazyModule)module).loadPackageList(artifact);
+                }catch(Exception x){
+                    attachErrorToDependencyDeclaration(moduleImport, dependencyTree, "Failed to open archive " + artifact.artifact() + ": " + x.getMessage());
+                }
                 
                 for (ArtifactResult dep : artifact.dependencies()) {
                     Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
