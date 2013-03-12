@@ -41,6 +41,10 @@
     to a program element if the type of the expression is assignable to the 
     declared type of the program element.</para>
     
+    <para>Within a <literal>dynamic</literal> block, an expression may have no 
+    type, in the sense that its type can not be determined using static analysis
+    of the code.</para>
+    
     <section id="literalvalues">
         <title>Literal values</title>
     
@@ -430,6 +434,15 @@ shared interface Color { ... }</programlisting>
         <para>Parentheses are used for grouping:</para>
         
         <programlisting>GroupedExpression: "(" Expression ")"</programlisting>
+        
+        <para>A compound expression occurring in a <literal>dynamic</literal> 
+        block, and involving a qualified or unqualified reference with no type,
+        may also have no type.</para>
+        
+        <comment><para>TODO:</para> we need to properly define which cases 
+        result in a compound expression with no type. We also need to properly
+        define which typing checks are eliminated when an operand has no 
+        type.</comment>
         
     <section id="receiverexpressions">
         <title>Base expressions and qualified expressions</title>
@@ -2294,7 +2307,55 @@ createItemMethod.intercept()
     </tgroup>
     </table>
     
-    <!-- a cartesian product operator <*> or [*] ??  -->
+    <para>There are two special cases related to sequences. A type <literal>X</literal>
+    is a <emphasis>sequence type</emphasis> if <literal>X</literal> is a subtype of 
+    <literal>Sequential&lt;Anything&gt;</literal>.</para>
+    
+    <para>For any sequence type <literal>X</literal> and integer <literal>n</literal>, 
+    we can form the <emphasis><literal>n</literal>th tail type, <literal>Xn</literal>, 
+    of <literal>X</literal></emphasis> as follows:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>for every <literal>i&lt;=0</literal>, <literal>Xi</literal> 
+            is <literal>X</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para>for every <literal>i&gt;0</literal>, if <literal>Xi</literal> 
+            is an invariant subtype of <literal>Tuple&lt;Ui,Fi,Yi&gt;</literal> 
+            then <literal>X(i+1)</literal> is <literal>Yi</literal>, or, 
+            otherwise, <literal>X(i+1)</literal> is <literal>Xi</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>For any sequence type <literal>X</literal> and integer <literal>n</literal>, 
+    we can form the <emphasis><literal>n</literal>th element type, <literal>En</literal>, 
+    of <literal>X</literal></emphasis> as follows:</para>
+        
+    <itemizedlist>
+        <listitem>
+            <para>if <literal>Xn</literal> is an invariant subtype of 
+            <literal>Tuple&lt;Un,Fn,Yn&gt;</literal> then <literal>En</literal> 
+            is <literal>Fn</literal>, or, otherwise, <literal>Xn</literal>
+            is an invariant subtype of <literal>Sequential&lt;Fn&gt;</literal> 
+            and <literal>En</literal> is <literal>Fn?</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Then the two special cases are:</para>
+    
+    <itemizedlist>
+        <listitem>
+    <para>The type of an expression of form <literal>x[i...]</literal> where
+    <literal>x</literal> is of tuple type <literal>X</literal> and 
+    <literal>n</literal> is an integer literal is <literal>Xn</literal>.</para>
+        </listitem>
+        <listitem>
+    <para>The type of an expression of form <literal>x[i]</literal> where
+    <literal>x</literal> is of tuple type <literal>X</literal> and 
+    <literal>n</literal> is an integer literal is <literal>En</literal>.</para>
+        </listitem>
+    </itemizedlist>
     
     </section>
     

@@ -581,6 +581,11 @@ class Complex(Float x, Float y=0.0)
             </listitem>
         </itemizedlist>
         
+        <para>As a special exception to the above, if there is no declaration with the 
+        given name in scope at the program element and the program element occurs inside 
+        a <literal>dynamic</literal> block, then the unqualified reference does not refer 
+        to any statically typed declaration, and has no type</para>
+        
     </section>
     
     <section id="qualifiedreferenceresolution">
@@ -658,6 +663,11 @@ class Complex(Float x, Float y=0.0)
         
         <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
         classes? Currently the compiler allows this!</para></comment>
+        
+        <para>As a special exception to the above, if the program element occurs inside 
+        a <literal>dynamic</literal> block, and the the receiver expression has no type, 
+        then the qualified reference does not refer to any statically typed declaration, 
+        and has no type</para>
         
     </section>
     
@@ -1214,7 +1224,7 @@ else {
             </listitem>
         </itemizedlist>
                 
-        <programlisting>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally</programlisting>
+        <programlisting>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Dynamic</programlisting>
        
         <comment><para>Control structures are not considered to be expressions, and therefore 
         do not evaluate to a value. However, comprehensions&mdash;and conditional expressions, 
@@ -1897,6 +1907,23 @@ Element first = elements.first;</programlisting>
             <programlisting>assert (total&lt;bound) 
 else "total must be less than ``bound``";</programlisting>
             </comment>
+            
+        </section>
+        
+        <section id="dynamicblocks">
+            <title>Dynamic blocks</title>
+            
+            <para>A <literal>dynamic</literal> block allows interoperation with 
+            dynamically typed native code.</para>
+            
+            <programlisting>Dynamic: "dynamic" Block</programlisting>
+            
+            <para>Inside a <literal>dynamic</literal> block, a value reference 
+            or qualified or unqualified reference occurring in an expression that 
+            does not resolve to any statically typed program element is assumed 
+            to be a reference to something defined in dynamically typed native
+            code. Then the qualified or unqualified reference is not assigned a
+            type, but does not result in a compile-time error.</para>
             
         </section>
          
