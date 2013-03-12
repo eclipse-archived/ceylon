@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclar
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -307,9 +308,13 @@ public class SpecificationVisitor extends Visitor {
         }
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
-	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null, false);
+	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression) m, null, false);
 	        if (member==declaration) {
-            	boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
+                boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
+	            if (lazy && declaration.isShared() && 
+	                    that.getScope().getContainer() instanceof ControlBlock) {
+	                that.addWarning("lazy conditional specification of shared declarations not yet supported");
+	            }
             	if (declaration instanceof Value && 
             	        !((Value)declaration).isVariable() && 
             	        lazy!=((Value)declaration).isTransient()) {
