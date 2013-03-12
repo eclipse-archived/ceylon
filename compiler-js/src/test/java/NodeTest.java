@@ -20,8 +20,11 @@ public class NodeTest {
         final File root = subdir.getParentFile();
         final File jsf = getJavaScript(subdir);
         final String path = jsf.getPath();
-        final String subpath = path.substring(root.getPath().length()+1);
+        String subpath = path.substring(root.getPath().length()+1);
         System.out.printf("RUNNING %s/%s%n", root.getName(), subdir.getName());
+        if (File.separatorChar=='\\') {
+            subpath = subpath.replace(File.separatorChar, '/');
+        }
         final String eval = String.format("setTimeout(function(){}, 50);require('%s').test();", subpath);
         ProcessBuilder pb = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile());
         pb.environment().put("NODE_PATH", root.getPath());
