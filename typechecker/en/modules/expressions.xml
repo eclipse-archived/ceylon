@@ -439,10 +439,10 @@ shared interface Color { ... }</programlisting>
         block, and involving a qualified or unqualified reference with no type,
         may also have no type.</para>
         
-        <comment><para>TODO:</para> we need to properly define which cases 
+        <comment><para>TODO: we need to properly define which cases 
         result in a compound expression with no type. We also need to properly
         define which typing checks are eliminated when an operand has no 
-        type.</comment>
+        type.</para></comment>
         
     <section id="receiverexpressions">
         <title>Base expressions and qualified expressions</title>
