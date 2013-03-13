@@ -119,28 +119,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     }
     
     protected void completeCommandline(Commandline cmd) {
-        appendUserOption(cmd, user);
-        appendPassOption(cmd, pass);
-        
-        cmd.createArgument().setValue("--out=" + getOut());
-        
-        for (File src : getSrc()) {
-            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
-        }
-        
-        if (getSystemRepository() != null) {
-            // This argument is separated on purpose! It has to be parsed
-            // by the "ceylon" scripts themselves which are not able to
-            // handle "="-joined arguments!
-            cmd.createArgument().setValue("--sysrep");
-            cmd.createArgument().setValue(Util.quoteParameter(getSystemRepository()));
-        }
-        for(Repo rep : getReposet()){
-            // skip empty entries
-            if(rep.url == null || rep.url.isEmpty())
-                continue;
-            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(rep.url));
-        }
+        super.completeCommandline(cmd);
         
         if(includeSourceCode)
             cmd.createArgument().setValue("--source-code");
@@ -153,7 +132,6 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
         }
 
     }
-
 
     @Override
     protected String getFailMessage() {

@@ -26,7 +26,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 
 
@@ -40,6 +42,9 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
 
     private Path src;
     private String out;
+    private String encoding;
+    private String user;
+    private String pass;
     private Boolean noMtimeCheck = false;
     private String systemRepository;
     private RepoSet reposet = new RepoSet();
@@ -47,6 +52,20 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
     
     protected LazyCeylonAntTask(String toolName) {
         super(toolName);
+    }
+    
+    /**
+     * Sets the user name for the output module repository (HTTP only)
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    /**
+     * Sets the password for the output module repository (HTTP only)
+     */
+    public void setPass(String pass) {
+        this.pass = pass;
     }
     
     /**
@@ -129,6 +148,42 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
             return new File(task.getProject().getBaseDir(), "modules").getPath();
         }
         return this.out;
+    }
+
+    /**
+     * Set the encoding for the the source files.
+     * @param out Charset encoding name
+     */
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    @Override
+    protected void completeCommandline(Commandline cmd) {
+        cmd.createArgument().setValue("--out=" + out);
+
+        if (encoding != null) {
+            cmd.createArgument().setValue("--encoding=" + encoding);
+        }
+        
+        appendUserOption(cmd, user);
+        appendPassOption(cmd, pass);
+        
+        for (File src : getSrc()) {
+            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
+        }
+        
+        if (getSystemRepository() != null) {
+            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository()));
+        }
+        
+        for(Repo rep : getReposet()){
+            // skip empty entries
+            if(rep.url == null || rep.url.isEmpty())
+                continue;
+            log("Adding repository: "+rep, Project.MSG_VERBOSE);
+            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(rep.url));
+        }
     }
     
 }

@@ -67,26 +67,10 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private final ModuleSet moduleSet = new ModuleSet();
     private FileSet files;
     private String verbose;
-    private String user;
-    private String pass;
     private List<String> javacOptions = new ArrayList<String>(0);
 
     public CeylonCompileAntTask() {
         super("compile");
-    }
-    
-    /**
-     * Sets the user name for the output module repository (HTTP only)
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * Sets the password for the output module repository (HTTP only)
-     */
-    public void setPass(String pass) {
-        this.pass = pass;
     }
 
     public void setVerbose(String verbose){
@@ -221,36 +205,13 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      */
     @Override
     protected void completeCommandline(Commandline cmd) {
+        super.completeCommandline(cmd);
         
         appendVerboseOption(cmd, verbose);
         for (String javacOption : javacOptions) {
             appendOptionArgument(cmd, "--javac", javacOption);
         }
         
-        appendUserOption(cmd, user);
-        appendPassOption(cmd, pass);
-        
-        cmd.createArgument().setValue("--out=" + getOut());
-        
-        
-        for (File src : getSrc()) {
-            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
-        }
-        
-        if (getSystemRepository() != null) {
-            // This argument is separated on purpose! It has to be parsed
-            // by the "ceylon" scripts themselves which are not able to
-            // handle "="-joined arguments!
-            cmd.createArgument().setValue("--sysrep");
-            cmd.createArgument().setValue(Util.quoteParameter(getSystemRepository()));
-        }
-        for(Repo rep : getReposet()){
-            // skip empty entries
-            if(rep.url == null || rep.url.isEmpty())
-                continue;
-            log("Adding repository: "+rep, Project.MSG_VERBOSE);
-            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(rep.url));
-        }
         if(classpath != null){
             throw new RuntimeException("-classpath not longer supported");
         	/*String path = classpath.toString();

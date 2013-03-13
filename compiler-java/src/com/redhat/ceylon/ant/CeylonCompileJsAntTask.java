@@ -45,8 +45,6 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     private boolean optimize;
     private boolean modulify = true;
     private boolean gensrc = true;
-    private String user;
-    private String pass;
 
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
         @Override
@@ -60,20 +58,6 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         super("compile-js");
     }
     
-    /**
-     * Sets the user name for the output module repository (HTTP only)
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * Sets the password for the output module repository (HTTP only)
-     */
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
     /** Tells the JS compiler whether to wrap the generated code in CommonJS module format. */
     public void setWrapModule(boolean flag){
         modulify = flag;
@@ -177,28 +161,12 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     
     @Override
     protected void completeCommandline(Commandline cmd) {
-
+        super.completeCommandline(cmd);
+        
         if(verbose){
             cmd.createArgument().setValue("--verbose");
         }
-        appendPassOption(cmd, user);
-        appendPassOption(cmd, pass);
 
-        cmd.createArgument().setValue("--out=" + getOut());
-
-        for (File src : getSrc()) {
-            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
-        }
-        if (getSystemRepository() != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository()));
-        }
-        for(Repo repo : getReposet()) {
-            // skip empty entries
-            if(repo.url == null || repo.url.isEmpty())
-                continue;
-            log("Adding repository: " + repo, Project.MSG_VERBOSE);
-            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(repo.url));
-        }
         for (File file : compileList) {
             log("Adding source file: "+file.getAbsolutePath(), Project.MSG_VERBOSE);
             cmd.createArgument().setValue(file.getAbsolutePath());
