@@ -400,6 +400,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
+        // avoid ignored classes
+        if(classMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+            return null;
+        // avoid module and package descriptors too
+        if(classMirror.getAnnotation(CEYLON_MODULE_ANNOTATION) != null
+                || classMirror.getAnnotation(CEYLON_PACKAGE_ANNOTATION) != null)
+            return null;
+        
         List<Declaration> decls = new ArrayList<Declaration>();
         boolean[] alreadyExists = new boolean[1];
         Declaration decl = getOrCreateDeclaration(classMirror, declarationType,
