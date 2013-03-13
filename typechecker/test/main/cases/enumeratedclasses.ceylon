@@ -27,3 +27,9 @@ void switchCirc(Circ c) {
     switch (c)
     case (is Circ) {}
 }
+
+@error abstract class DupeEnum() of DupeCase|DupeCase {}
+@error class DupeCase() extends DupeEnum() {}
+
+interface DupeSuper {}
+@error abstract class DupeSub() satisfies DupeSuper&DupeSuper {}

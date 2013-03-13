@@ -4756,13 +4756,15 @@ public class ExpressionVisitor extends Visitor {
         Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
-            if (type!=null) {
+            if (type!=null && type.getDeclaration()!=null) {
                 type = type.resolveAliases();
                 if (!set.add(type.getDeclaration())) {
                     //this error is not really truly necessary
                     //but the spec says it is an error, and
                     //the backend doesn't like it
-                    t.addError("duplicate satisfied type: " + td.getName(unit));
+                    t.addError("duplicate satisfied type: " + 
+                            type.getDeclaration().getName(unit) +
+                            " of " + td.getName());
                 }
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
@@ -4825,20 +4827,30 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
+            Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
             for (Tree.StaticType t: that.getTypes()) {
                 ProducedType type = t.getTypeModel();
-                if (!(type.getDeclaration() instanceof TypeParameter)) {
-                    //it's not a self type
-                    if (type!=null) {
-                        checkAssignable(type, td.getType(), t, 
-                                "case type must be a subtype of enumerated type");
-                        //note: this is a better, faster way to call 
-                        //      validateEnumeratedSupertypeArguments()
-                        //      but unfortunately it winds up displaying
-                        //      the error on the wrong node, confusing
-                        //      the user
-                        /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
+                if (type!=null && type.getDeclaration()!=null) {
+                    type = type.resolveAliases();
+                    if (!set.add(type.getDeclaration())) {
+                        //this error is not really truly necessary
+                        t.addError("duplicate case type: " + 
+                                type.getDeclaration().getName(unit) + 
+                                " of " + td.getName());
+                    }
+                    if (!(type.getDeclaration() instanceof TypeParameter)) {
+                        //it's not a self type
+                        if (type!=null) {
+                            checkAssignable(type, td.getType(), t, 
+                                    "case type must be a subtype of enumerated type");
+                            //note: this is a better, faster way to call 
+                            //      validateEnumeratedSupertypeArguments()
+                            //      but unfortunately it winds up displaying
+                            //      the error on the wrong node, confusing
+                            //      the user
+                            /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
                         validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
+                        }
                     }
                 }
             }
