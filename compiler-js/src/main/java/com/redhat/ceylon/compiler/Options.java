@@ -27,7 +27,7 @@ public class Options {
     private boolean version;
     private boolean stdin;
     private boolean gensrc = true;
-    private String encoding = "UTF-8";
+    private String encoding;
 
     public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
             String outputRepository, String username, String password,
@@ -48,7 +48,7 @@ public class Options {
         profile = showTimes;
         stdin = fromStdin;
         gensrc = generateSrcArchive;
-        if (srcEncoding != null) encoding = srcEncoding;
+        encoding = srcEncoding;
     }
 
     private Options() {}
