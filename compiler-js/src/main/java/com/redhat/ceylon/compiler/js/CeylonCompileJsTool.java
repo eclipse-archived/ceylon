@@ -46,7 +46,7 @@ public class CeylonCompileJsTool implements Tool {
     private List<String> module = Collections.emptyList();
 
     @OptionArgument(argumentName="encoding")
-    @Description("Sets the encoding used for reading source files (default: `UTF-8`)")
+    @Description("Sets the encoding used for reading source files (default: platform-specific)")
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
