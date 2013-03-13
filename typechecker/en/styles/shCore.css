@@ -51,7 +51,7 @@
 	height: auto !important;
 	width: auto !important;
 	//line-height: 1.4em !important;
-	font-family: Menlo, Monaco, Courier, monospace !important;
+	font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
 	font-weight: normal !important;
 	font-stylex: normal !important;
 	//font-size: 99% !important;

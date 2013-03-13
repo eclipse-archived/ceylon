@@ -17,13 +17,13 @@ A:visited {
 
 P, OL, UL, LI, DL, DT, DD, BLOCKQUOTE {
     color: #000000;
-    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     line-height: 1.40em;
 }
 
 TD, TH, SPAN {
     color: #000000;
-    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     line-height: 1.40em;
 }
 
@@ -54,24 +54,24 @@ TD  {
     padding: 4pt;
 }
 
-H1 { font-size: 200%; }
-H2 { font-size: 140%; }
+H1 { font-size: 200%; font-weight: bold; }
+H2 { font-size: 140%; font-weight: bold; }
 H3 { font-size: 110%; font-weight: bold; }
 H4 { font-size: 110%; font-weight: bold;}
 H5 { font-size: 100%; font-style: italic; }
 H6 { font-size: 100%; font-style: italic; }
 
 H1, H2 {
-    font-family: 'PT Sans', Helvetica, 'Helvetica Neue', Arial, sans-serif;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 }
 
 H3, H4, H5, H6 {
-    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 }
 
 TT {
-    font-size: 90%;
-    font-family: Menlo, Monaco, Courier, monospace;
+    font-size: 85%;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
     color: #000000;
 }
 
@@ -82,12 +82,12 @@ PRE, .syntaxhighlighter .lines {
     margin-bottom:0px;
     border-left: 5px solid #f0f0f0;
     padding-left: 10px;
-    font-family: Menlo, Monaco, Courier, monospace;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
 }
 
 .Brush {
-    font-size:85%;
-    line-height: 1.40em;
+    font-size: 85%;
+    line-height: 1.4em;
 }
 
 HR  {
@@ -118,6 +118,3 @@ HR  {
 .screen {
     font-size: 10px;
 }
-
-
-    
