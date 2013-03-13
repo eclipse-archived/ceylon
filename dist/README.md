@@ -171,10 +171,14 @@ We're deeply indebted to the community volunteers who contributed a substantial 
 of the current Ceylon codebase, working often in their own spare time. The following 
 people have contributed to this release:
 
-Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, Tom Bentley, Aleš Justin, 
-David Festal, Flavio Oliveri, Max Rydahl Andersen, Mladen Turk, James Cobb, Tomáš Hradec, 
-Michael Brackx, Ross Tate, Ivo Kasiuk, Enrique Zamudio, Julien Ponge, Julien Viet,
-Pete Muir, Nicolas Leroux, Brett Cannon, Geoffrey De Smet, Guillaume Lours, Gunnar Morling,
-Jeff Parsons, Jesse Sightler, Oleg Kulikov, Raimund Klein, Sergej Koščejev, Chris Marshall,
-Simon Thum, Maia Kozheva, Shelby, Aslak Knutsen, Fabien Meurisse, Paco Soberón, sjur,
-Xavier Coulon.
+Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, 
+Tom Bentley, Aleš Justin, David Festal, Flavio Oliveri, 
+Max Rydahl Andersen, Mladen Turk, James Cobb, Tomáš Hradec, 
+Michael Brackx, Ross Tate, Ivo Kasiuk, Enrique Zamudio, Roland Tepp,
+Diego Coronel, Brent Douglas, Corbin Uselton, Loic Rouchon,
+Lukas Eder, Markus Rydh, Matej Lazar,
+Julien Ponge, Julien Viet, Pete Muir, Nicolas Leroux, Brett Cannon, 
+Geoffrey De Smet, Guillaume Lours, Gunnar Morling, Jeff Parsons, 
+Jesse Sightler, Oleg Kulikov, Raimund Klein, Sergej Koščejev, 
+Chris Marshall, Simon Thum, Maia Kozheva, Shelby, Aslak Knutsen, 
+Fabien Meurisse, Paco Soberón, sjur, Xavier Coulon.
