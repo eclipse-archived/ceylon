@@ -33,10 +33,9 @@ function isOfType(obj, type) {
             return type.t===Null || type.t===Anything;
         }
         if (obj === undefined || obj.getT$all === undefined) { return false; }
-        var typeName = type.t.$$.T$name;
-        if (obj.getT$all && typeName in obj.getT$all()) {
+        if (type.t.$$.T$name in obj.getT$all()) {
             if (type.a && obj.$$targs$$) {
-                for (var i=0; i<type.a.length; i++) {
+                for (var i in type.a) {
                     if (!extendsType(obj.$$targs$$[i], type.a[i])) {
                         return false;
                     }
@@ -75,7 +74,13 @@ function isOfTypes(obj, types) {
     return _ints ? inters||unions : unions;
 }
 function extendsType(t1, t2) {
+    if (t1 === undefined) {
+        return true;//t2 === undefined;
+    } else if (t1 === null) {
+        return t2.t === Null;
+    }
     if (t1.t === 'u' || t1.t === 'i') {
+        if (t1.t==='i')removeSupertypes(t1.l);
         var unions = false;
         var inters = true;
         var _ints = false;
@@ -90,7 +95,8 @@ function extendsType(t1, t2) {
         }
         return _ints ? inters||unions : unions;
     }
-    if (t2.t == 'u' || t2.t == 'i') {
+    if (t2.t === 'u' || t2.t === 'i') {
+        if (t2.t==='i') removeSupertypes(t2.l);
         var unions = false;
         var inters = true;
         var _ints = false;
@@ -111,6 +117,19 @@ function extendsType(t1, t2) {
         }
     }
     return false;
+}
+function removeSupertypes(list) {
+    for (var i=0; i < list.length; i++) {
+        for (var j=i; i < list.length; i++) {
+            if (i!==j) {
+                if (extendsType(list[i],list[j])) {
+                    list[j]=list[i];
+                } else if (extendsType(list[j],list[i])) {
+                    list[i]=list[j];
+                }
+            }
+        }
+    }
 }
 
 function className(obj) {
