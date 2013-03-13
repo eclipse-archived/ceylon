@@ -1,7 +1,7 @@
 (function(define) { define(function(require, exports, module) {
-var $$metamodel$$={"$mod-deps":["check\/0.1","members\/0.1"],"$mod-name":"misc","$mod-version":"0.1","misc":{"doIt":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"prm","$pt":"f","$nm":"f"}]],"$mt":"mthd","$nm":"doIt"},"testLate":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testLate"},"F":{"super":{"$pk":"misc","$nm":"Foo"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$alias":"1","$nm":"F"},"Strinteger":{"$mt":"als","$an":{"shared":[]},"$alias":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"}]},"$nm":"Strinteger"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test"},"var":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"mthd","$an":{"shared":[]},"$nm":"var"},"AliasingClass":{"$i":{"AliasingIface":{"$mt":"ifc","$an":{"shared":[]},"$m":{"aliasingIface":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingIface"}},"$nm":"AliasingIface"}},"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"AliasingInner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"aliasingInner":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingInner"}},"$nm":"AliasingInner"}},"$nm":"AliasingClass"},"Matrix":{"$mt":"ifc","$tp":[{"$nm":"Cell"}],"$alias":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"Cell"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequence"},"$nm":"Matrix"},"MiMatrix":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"gridSize"}],"satisfies":[{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"}],"$mt":"cls","$m":{"get":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}]},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"i"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"get"},"spanTo":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanTo"},"equals":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"equals"},"contains":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"contains"},"spanFrom":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"from"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanFrom"}},"$at":{"lastIndex":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"lastIndex"},"clone":{"$t":{"$pk":"misc","$nm":"MiMatrix"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"clone"},"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"iterator"},"hash":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"hash"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"string"},"sb":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"SequenceBuilder"},"$mt":"attr","$nm":"sb"},"grid":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$nm":"grid"},"rest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"rest"},"reversed":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"reversed"},"first":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"first"},"size":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"size"}},"$nm":"MiMatrix"},"LateTestParent":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$hdn":"1","$mt":"prm","seq":"1","$pt":"v","$nm":"children"}],"$mt":"cls","$at":{"children":{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[]},"$nm":"children"}},"$nm":"LateTestParent"},"TestObjects":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"a"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"b"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"c"}],"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"}],"$mt":"cls","$at":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"iterator"}},"$nm":"TestObjects"},"AliasingSub2":{"super":{"$pk":"misc","$nm":"AliasingSubclass"},"$mt":"cls","$at":{"iface":{"$t":{"$pk":"misc","$nm":"AliasedIface"},"$mt":"gttr","$an":{"shared":[]},"$nm":"iface"}},"$nm":"AliasingSub2"},"testAliasing":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testAliasing"},"foob":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$at":{"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"foob"},"Foo":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$hdn":"1","$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$an":{"shared":[]},"$m":{"inc":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"inc"},"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"printName"}},"$at":{"count":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"count"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"string"},"counter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"variable":[]},"$nm":"counter"},"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"Foo"},"LateTestChild":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$at":{"parent":{"$t":{"$pk":"misc","$nm":"LateTestParent"},"$mt":"attr","$an":{"shared":[],"late":[]},"$nm":"parent"}},"$nm":"LateTestChild"},"AliasingSubclass":{"$i":{"AliasedIface":{"$mt":"ifc","$an":{"shared":[]},"$alias":{"$pk":"misc","$nm":"AliasingIface"},"$nm":"AliasedIface"}},"super":{"$pk":"misc","$nm":"AliasingClass"},"$mt":"cls","$m":{"aliasingSubclass":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingSubclass"}},"$c":{"InnerAlias":{"super":{"$pk":"misc","$nm":"AliasingInner"},"$mt":"cls","$an":{"shared":[]},"$alias":"1","$nm":"InnerAlias"},"SubAlias":{"super":{"$pk":"misc","$nm":"InnerAlias"},"$mt":"cls","$an":{"shared":[]},"$nm":"SubAlias"}},"$nm":"AliasingSubclass"},"test_objects":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"test_objects"},"Bar":{"super":{"$pk":"misc","$nm":"Foo"},"satisfies":[{"$pk":"misc","$nm":"X"}],"$mt":"cls","$an":{"shared":[]},"$m":{"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"printName"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"incOuter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"incOuter"}},"$nm":"Inner"}},"$nm":"Bar"},"Listleton":{"super":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"}],"$pk":"ceylon.language","$nm":"Singleton"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"prm","$pt":"v","$nm":"l"}],"$mt":"cls","$tp":[{"$nm":"T"}],"$alias":"1","$nm":"Listleton"},"printAll":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$pt":"v","$nm":"strings"}]],"$mt":"mthd","$nm":"printAll"},"printBoth":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"x"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"y"}]],"$mt":"mthd","$nm":"printBoth"},"X":{"$mt":"ifc","$an":{"shared":[]},"$m":{"helloWorld":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"helloWorld"}},"$nm":"X"}}};
-var $$$cl2328=require('ceylon/language/0.5/ceylon.language-0.5');
-var $$$c2329=require('check/0.1/check-0.1');
+var $$metamodel$$={"$mod-deps":["check\/0.1","members\/0.1"],"$mod-name":"misc","$mod-version":"0.1","misc":{"doIt":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"prm","$pt":"f","$nm":"f"}]],"$mt":"mthd","$nm":"doIt"},"testLate":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testLate"},"F":{"super":{"$pk":"misc","$nm":"Foo"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$alias":"1","$nm":"F"},"Strinteger":{"$mt":"als","$an":{"shared":[]},"$alias":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"}]},"$nm":"Strinteger"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test"},"var":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"mthd","$an":{"shared":[]},"$nm":"var"},"AliasingClass":{"$i":{"AliasingIface":{"$mt":"ifc","$an":{"shared":[]},"$m":{"aliasingIface":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingIface"}},"$nm":"AliasingIface"}},"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"AliasingInner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"aliasingInner":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingInner"}},"$nm":"AliasingInner"}},"$nm":"AliasingClass"},"Matrix":{"$mt":"ifc","$tp":[{"$nm":"Cell"}],"$alias":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"Cell"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequence"},"$nm":"Matrix"},"MiMatrix":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"gridSize"}],"satisfies":[{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"},"get":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}]},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"i"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"get"},"spanTo":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanTo"},"equals":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"equals"},"contains":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"contains"},"spanFrom":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"from"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanFrom"}},"$at":{"lastIndex":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"lastIndex"},"clone":{"$t":{"$pk":"misc","$nm":"MiMatrix"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"clone"},"hash":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"hash"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"string"},"sb":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"SequenceBuilder"},"$mt":"attr","$nm":"sb"},"grid":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$nm":"grid"},"rest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"rest"},"reversed":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"reversed"},"first":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"first"},"size":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"size"}},"$nm":"MiMatrix"},"LateTestParent":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$hdn":"1","$mt":"prm","seq":"1","$pt":"v","$nm":"children"}],"$mt":"cls","$at":{"children":{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[]},"$nm":"children"}},"$nm":"LateTestParent"},"TestObjects":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"a"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"b"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"c"}],"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"}},"$nm":"TestObjects"},"AliasingSub2":{"super":{"$pk":"misc","$nm":"AliasingSubclass"},"$mt":"cls","$at":{"iface":{"$t":{"$pk":"misc","$nm":"AliasedIface"},"$mt":"gttr","$an":{"shared":[]},"$nm":"iface"}},"$nm":"AliasingSub2"},"testAliasing":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testAliasing"},"foob":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$at":{"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"foob"},"Foo":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$hdn":"1","$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$an":{"shared":[]},"$m":{"inc":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"inc"},"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"printName"}},"$at":{"count":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"count"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"string"},"counter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"variable":[]},"$nm":"counter"},"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"Foo"},"LateTestChild":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$at":{"parent":{"$t":{"$pk":"misc","$nm":"LateTestParent"},"$mt":"attr","$an":{"shared":[],"late":[]},"$nm":"parent"}},"$nm":"LateTestChild"},"AliasingSubclass":{"$i":{"AliasedIface":{"$mt":"ifc","$an":{"shared":[]},"$alias":{"$pk":"misc","$nm":"AliasingIface"},"$nm":"AliasedIface"}},"super":{"$pk":"misc","$nm":"AliasingClass"},"$mt":"cls","$m":{"aliasingSubclass":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingSubclass"}},"$c":{"InnerAlias":{"super":{"$pk":"misc","$nm":"AliasingInner"},"$mt":"cls","$an":{"shared":[]},"$alias":"1","$nm":"InnerAlias"},"SubAlias":{"super":{"$pk":"misc","$nm":"InnerAlias"},"$mt":"cls","$an":{"shared":[]},"$nm":"SubAlias"}},"$nm":"AliasingSubclass"},"test_objects":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"test_objects"},"Bar":{"super":{"$pk":"misc","$nm":"Foo"},"satisfies":[{"$pk":"misc","$nm":"X"}],"$mt":"cls","$an":{"shared":[]},"$m":{"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"printName"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"incOuter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"incOuter"}},"$nm":"Inner"}},"$nm":"Bar"},"Listleton":{"super":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"}],"$pk":"ceylon.language","$nm":"Singleton"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"prm","$pt":"v","$nm":"l"}],"$mt":"cls","$tp":[{"$nm":"T"}],"$alias":"1","$nm":"Listleton"},"printAll":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$pt":"v","$nm":"strings"}]],"$mt":"mthd","$nm":"printAll"},"printBoth":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"x"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"y"}]],"$mt":"mthd","$nm":"printBoth"},"X":{"$mt":"ifc","$an":{"shared":[]},"$m":{"helloWorld":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"helloWorld"}},"$nm":"X"}}};
+var $$$cl2381=require('ceylon/language/0.5/ceylon.language-0.5');
+var $$$c2382=require('check/0.1/check-0.1');
 
 //ClassDefinition AliasingClass at aliases.ceylon (5:0-12:0)
 function AliasingClass($$aliasingClass){
@@ -12,7 +12,7 @@ function AliasingClass($$aliasingClass){
 exports.AliasingClass=AliasingClass;
 function $init$AliasingClass(){
     if (AliasingClass.$$===undefined){
-        $$$cl2328.initTypeProto(AliasingClass,'misc::AliasingClass',$$$cl2328.Basic);
+        $$$cl2381.initTypeProto(AliasingClass,'misc::AliasingClass',$$$cl2381.Basic);
         (function($$aliasingClass){
             
             //InterfaceDefinition AliasingIface at aliases.ceylon (6:4-8:4)
@@ -21,7 +21,7 @@ function $init$AliasingClass(){
             }
             function $init$AliasingIface$AliasingClass(){
                 if (AliasingIface$AliasingClass.$$===undefined){
-                    $$$cl2328.initTypeProto(AliasingIface$AliasingClass,'misc::AliasingClass.AliasingIface');
+                    $$$cl2381.initTypeProto(AliasingIface$AliasingClass,'misc::AliasingClass.AliasingIface');
                     (function($$aliasingIface$AliasingClass){
                         
                         //MethodDefinition aliasingIface at aliases.ceylon (7:8-7:54)
@@ -46,7 +46,7 @@ function $init$AliasingClass(){
             }
             function $init$AliasingInner$AliasingClass(){
                 if (AliasingInner$AliasingClass.$$===undefined){
-                    $$$cl2328.initTypeProto(AliasingInner$AliasingClass,'misc::AliasingClass.AliasingInner',$$$cl2328.Basic);
+                    $$$cl2381.initTypeProto(AliasingInner$AliasingClass,'misc::AliasingClass.AliasingInner',$$$cl2381.Basic);
                     (function($$aliasingInner$AliasingClass){
                         
                         //MethodDefinition aliasingInner at aliases.ceylon (10:8-10:54)
@@ -77,7 +77,7 @@ function AliasingSubclass($$aliasingSubclass){
 }
 function $init$AliasingSubclass(){
     if (AliasingSubclass.$$===undefined){
-        $$$cl2328.initTypeProto(AliasingSubclass,'misc::AliasingSubclass',AliasingClass);
+        $$$cl2381.initTypeProto(AliasingSubclass,'misc::AliasingSubclass',AliasingClass);
         (function($$aliasingSubclass){
             
             //ClassDeclaration InnerAlias at aliases.ceylon (15:4-15:48)
@@ -93,7 +93,7 @@ function $init$AliasingSubclass(){
             }
             function $init$SubAlias$AliasingSubclass(){
                 if (SubAlias$AliasingSubclass.$$===undefined){
-                    $$$cl2328.initTypeProto(SubAlias$AliasingSubclass,'misc::AliasingSubclass.SubAlias',$$aliasingSubclass.InnerAlias$AliasingSubclass);
+                    $$$cl2381.initTypeProto(SubAlias$AliasingSubclass,'misc::AliasingSubclass.SubAlias',$$aliasingSubclass.InnerAlias$AliasingSubclass);
                 }
                 return SubAlias$AliasingSubclass;
             }
@@ -124,31 +124,31 @@ function AliasingSub2($$aliasingSub2){
 }
 function $init$AliasingSub2(){
     if (AliasingSub2.$$===undefined){
-        $$$cl2328.initTypeProto(AliasingSub2,'misc::AliasingSub2',AliasingSubclass);
+        $$$cl2381.initTypeProto(AliasingSub2,'misc::AliasingSub2',AliasingSubclass);
         (function($$aliasingSub2){
             
             //AttributeGetterDefinition iface at aliases.ceylon (25:4-29:4)
-            $$$cl2328.defineAttr($$aliasingSub2,'iface',function(){
+            $$$cl2381.defineAttr($$aliasingSub2,'iface',function(){
                 var $$aliasingSub2=this;
                 
                 //ObjectDefinition aliased at aliases.ceylon (26:8-27:8)
-                function aliased$3126(){
-                    var $$aliased$3126=new aliased$3126.$$;
-                    $$aliasingSub2.AliasingIface$AliasingClass($$aliased$3126);
-                    return $$aliased$3126;
+                function aliased$3182(){
+                    var $$aliased$3182=new aliased$3182.$$;
+                    $$aliasingSub2.AliasingIface$AliasingClass($$aliased$3182);
+                    return $$aliased$3182;
                 }
-                function $init$aliased$3126(){
-                    if (aliased$3126.$$===undefined){
-                        $$$cl2328.initTypeProto(aliased$3126,'misc::AliasingSub2.iface.aliased',$$$cl2328.Basic,$$aliasingSub2.$init$AliasingIface$AliasingClass());
+                function $init$aliased$3182(){
+                    if (aliased$3182.$$===undefined){
+                        $$$cl2381.initTypeProto(aliased$3182,'misc::AliasingSub2.iface.aliased',$$$cl2381.Basic,$$aliasingSub2.$init$AliasingIface$AliasingClass());
                     }
-                    return aliased$3126;
+                    return aliased$3182;
                 }
-                $init$aliased$3126();
-                var aliased$3127=aliased$3126();
-                var getAliased$3127=function(){
-                    return aliased$3127;
+                $init$aliased$3182();
+                var aliased$3183=aliased$3182();
+                var getAliased$3183=function(){
+                    return aliased$3183;
                 }
-                return getAliased$3127();
+                return getAliased$3183();
             });
         })(AliasingSub2.$$.prototype);
     }
@@ -158,73 +158,73 @@ exports.$init$AliasingSub2=$init$AliasingSub2;
 $init$AliasingSub2();
 
 //ClassDeclaration Listleton at aliases.ceylon (33:0-33:54)
-function Listleton(l$3128, $$targs$$,$$listleton){return $$$cl2328.Singleton(l$3128,{Element:{t:$$$cl2328.List,a:{Element:$$targs$$.T}}},$$listleton);}
-Listleton.$$=$$$cl2328.Singleton.$$;
+function Listleton(l$3184, $$targs$$,$$listleton){return $$$cl2381.Singleton(l$3184,{Element:{t:$$$cl2381.List,a:{Element:$$targs$$.T}}},$$listleton);}
+Listleton.$$=$$$cl2381.Singleton.$$;
 
 //ClassDefinition MiMatrix at aliases.ceylon (35:0-66:0)
-function MiMatrix(gridSize$3129, $$miMatrix){
+function MiMatrix(gridSize$3185, $$miMatrix){
     $init$MiMatrix();
     if ($$miMatrix===undefined)$$miMatrix=new MiMatrix.$$;
-    $$miMatrix.$$targs$$={Cell:{t:$$$cl2328.Integer}};
-    $$$cl2328.Sequence($$miMatrix);
-    $$$cl2328.add_type_arg($$miMatrix,'Cell',{t:$$$cl2328.Integer});
+    $$miMatrix.$$targs$$={Cell:{t:$$$cl2381.Integer}};
+    $$$cl2381.Sequence($$miMatrix);
+    $$$cl2381.add_type_arg($$miMatrix,'Cell',{t:$$$cl2381.Integer});
     
     //AttributeDeclaration sb at aliases.ceylon (36:4-36:44)
-    $$miMatrix.sb$3130_=$$$cl2328.SequenceBuilder({Element:{t:$$$cl2328.Sequence,a:{Element:{t:$$$cl2328.Integer}}}});
+    $$miMatrix.sb$3186_=$$$cl2381.SequenceBuilder({Element:{t:$$$cl2381.Sequence,a:{Element:{t:$$$cl2381.Integer}}}});
     //'for' statement at aliases.ceylon (37:4-39:4)
-    var it$3131 = $$$cl2328.Range((1),gridSize$3129,{Element:{t:$$$cl2328.Integer}}).iterator;
-    var i$3132;while ((i$3132=it$3131.next())!==$$$cl2328.getFinished()){
-        $$miMatrix.sb$3130.append($$$cl2328.Comprehension(function(){
+    var it$3187 = $$$cl2381.Range((1),gridSize$3185,{Element:{t:$$$cl2381.Integer}}).iterator();
+    var i$3188;while ((i$3188=it$3187.next())!==$$$cl2381.getFinished()){
+        $$miMatrix.sb$3186.append($$$cl2381.Comprehension(function(){
             //Comprehension at aliases.ceylon (38:20-38:43)
-            var it$3133=$$$cl2328.Range((1),gridSize$3129,{Element:{t:$$$cl2328.Integer}}).iterator;
-            var j$3134=$$$cl2328.getFinished();
-            var next$j$3134=function(){return j$3134=it$3133.next();}
-            next$j$3134();
+            var it$3189=$$$cl2381.Range((1),gridSize$3185,{Element:{t:$$$cl2381.Integer}}).iterator();
+            var j$3190=$$$cl2381.getFinished();
+            var next$j$3190=function(){return j$3190=it$3189.next();}
+            next$j$3190();
             return function(){
-                if(j$3134!==$$$cl2328.getFinished()){
-                    var j$3134$3135=j$3134;
-                    var tmpvar$3136=j$3134$3135;
-                    next$j$3134();
-                    return tmpvar$3136;
+                if(j$3190!==$$$cl2381.getFinished()){
+                    var j$3190$3191=j$3190;
+                    var tmpvar$3192=j$3190$3191;
+                    next$j$3190();
+                    return tmpvar$3192;
                 }
-                return $$$cl2328.getFinished();
+                return $$$cl2381.getFinished();
             }
-        },{Absent:{t:$$$cl2328.Anything},Element:{t:$$$cl2328.Integer}}).sequence);
+        },{Absent:{t:$$$cl2381.Anything},Element:{t:$$$cl2381.Integer}}).sequence);
     }
     
     //AttributeDeclaration grid at aliases.ceylon (40:4-40:24)
-    var g$3137;
-    if($$$cl2328.nonempty((g$3137=$$miMatrix.sb$3130.sequence))){
-        var grid$3138=g$3137;
-        $$$cl2328.defineAttr($$miMatrix,'grid$3138',function(){return grid$3138;});
+    var g$3193;
+    if($$$cl2381.nonempty((g$3193=$$miMatrix.sb$3186.sequence))){
+        var grid$3194=g$3193;
+        $$$cl2381.defineAttr($$miMatrix,'grid$3194',function(){return grid$3194;});
     }else {
-        var grid$3138=$$$cl2328.Tuple($$$cl2328.Tuple((1),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}});
-        $$$cl2328.defineAttr($$miMatrix,'grid$3138',function(){return grid$3138;});
+        var grid$3194=$$$cl2381.Tuple($$$cl2381.Tuple((1),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}});
+        $$$cl2381.defineAttr($$miMatrix,'grid$3194',function(){return grid$3194;});
     }
     
     //AttributeDeclaration string at aliases.ceylon (47:4-47:45)
-    $$miMatrix.string$3139_=$$miMatrix.grid$3138.string;
+    $$miMatrix.string$3195_=$$miMatrix.grid$3194.string;
     
     //AttributeDeclaration hash at aliases.ceylon (48:4-48:42)
-    $$miMatrix.hash$3140_=$$miMatrix.grid$3138.hash;
-    var span=(opt$3141=$$miMatrix.grid$3138,$$$cl2328.JsCallable(opt$3141,opt$3141!==null?opt$3141.span:null));
+    $$miMatrix.hash$3196_=$$miMatrix.grid$3194.hash;
+    var span=$$$cl2381.$JsCallable((opt$3197=$$miMatrix.grid$3194,$$$cl2381.JsCallable(opt$3197,opt$3197!==null?opt$3197.span:null)),{Arguments:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Return:{t:$$$cl2381.Sequential,a:{Element:{t:$$$cl2381.Sequence,a:{Element:{t:$$$cl2381.Integer}}}}}});
     $$miMatrix.span=span;
-    var opt$3141;
-    var segment=(opt$3142=$$miMatrix.grid$3138,$$$cl2328.JsCallable(opt$3142,opt$3142!==null?opt$3142.segment:null));
+    var opt$3197;
+    var segment=$$$cl2381.$JsCallable((opt$3198=$$miMatrix.grid$3194,$$$cl2381.JsCallable(opt$3198,opt$3198!==null?opt$3198.segment:null)),{Arguments:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Return:{t:$$$cl2381.Sequential,a:{Element:{t:$$$cl2381.Sequence,a:{Element:{t:$$$cl2381.Integer}}}}}});
     $$miMatrix.segment=segment;
-    var opt$3142;
+    var opt$3198;
     
     //AttributeDeclaration reversed at aliases.ceylon (52:4-52:58)
-    $$miMatrix.reversed$3143_=$$miMatrix.grid$3138.reversed;
+    $$miMatrix.reversed$3199_=$$miMatrix.grid$3194.reversed;
     
     //AttributeDeclaration lastIndex at aliases.ceylon (53:4-53:52)
-    $$miMatrix.lastIndex$3144_=$$miMatrix.grid$3138.lastIndex;
+    $$miMatrix.lastIndex$3200_=$$miMatrix.grid$3194.lastIndex;
     
     //AttributeDeclaration rest at aliases.ceylon (55:4-55:47)
-    $$miMatrix.rest$3145_=$$miMatrix.grid$3138.rest;
+    $$miMatrix.rest$3201_=$$miMatrix.grid$3194.rest;
     
     //AttributeDeclaration first at aliases.ceylon (56:4-56:47)
-    $$miMatrix.first$3146_=$$miMatrix.grid$3138.first;
+    $$miMatrix.first$3202_=$$miMatrix.grid$3194.first;
     
     //AttributeDeclaration clone at aliases.ceylon (57:4-57:40)
     
@@ -233,81 +233,81 @@ function MiMatrix(gridSize$3129, $$miMatrix){
 }
 function $init$MiMatrix(){
     if (MiMatrix.$$===undefined){
-        $$$cl2328.initTypeProto(MiMatrix,'misc::MiMatrix',$$$cl2328.Basic,$$$cl2328.Sequence);
+        $$$cl2381.initTypeProto(MiMatrix,'misc::MiMatrix',$$$cl2381.Basic,$$$cl2381.Sequence);
         (function($$miMatrix){
             
             //AttributeDeclaration sb at aliases.ceylon (36:4-36:44)
-            $$$cl2328.defineAttr($$miMatrix,'sb$3130',function(){return this.sb$3130_;});
+            $$$cl2381.defineAttr($$miMatrix,'sb$3186',function(){return this.sb$3186_;});
             
             //AttributeDeclaration grid at aliases.ceylon (40:4-40:24)
             
-            //AttributeGetterDefinition iterator at aliases.ceylon (46:4-46:72)
-            $$$cl2328.defineAttr($$miMatrix,'iterator',function(){
+            //MethodDefinition iterator at aliases.ceylon (46:4-46:76)
+            $$miMatrix.iterator=function iterator(){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3138.iterator;
-            });
+                return $$miMatrix.grid$3194.iterator();
+            };
             //AttributeDeclaration string at aliases.ceylon (47:4-47:45)
-            $$$cl2328.defineAttr($$miMatrix,'string',function(){return this.string$3139_;});
+            $$$cl2381.defineAttr($$miMatrix,'string',function(){return this.string$3195_;});
             
             //AttributeDeclaration hash at aliases.ceylon (48:4-48:42)
-            $$$cl2328.defineAttr($$miMatrix,'hash',function(){return this.hash$3140_;});
+            $$$cl2381.defineAttr($$miMatrix,'hash',function(){return this.hash$3196_;});
             
             //MethodDeclaration equals at aliases.ceylon (49:4-49:68)
-            $$miMatrix.equals=function (other$3147){
+            $$miMatrix.equals=function (other$3203){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3138.equals(other$3147);
+                return $$miMatrix.grid$3194.equals(other$3203);
             };
             
             //AttributeDeclaration reversed at aliases.ceylon (52:4-52:58)
-            $$$cl2328.defineAttr($$miMatrix,'reversed',function(){return this.reversed$3143_;});
+            $$$cl2381.defineAttr($$miMatrix,'reversed',function(){return this.reversed$3199_;});
             
             //AttributeDeclaration lastIndex at aliases.ceylon (53:4-53:52)
-            $$$cl2328.defineAttr($$miMatrix,'lastIndex',function(){return this.lastIndex$3144_;});
+            $$$cl2381.defineAttr($$miMatrix,'lastIndex',function(){return this.lastIndex$3200_;});
             
             //MethodDeclaration get at aliases.ceylon (54:4-54:55)
-            $$miMatrix.get=function (i$3148){
+            $$miMatrix.get=function (i$3204){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3138.get(i$3148);
+                return $$miMatrix.grid$3194.get(i$3204);
             };
             
             //AttributeDeclaration rest at aliases.ceylon (55:4-55:47)
-            $$$cl2328.defineAttr($$miMatrix,'rest',function(){return this.rest$3145_;});
+            $$$cl2381.defineAttr($$miMatrix,'rest',function(){return this.rest$3201_;});
             
             //AttributeDeclaration first at aliases.ceylon (56:4-56:47)
-            $$$cl2328.defineAttr($$miMatrix,'first',function(){return this.first$3146_;});
+            $$$cl2381.defineAttr($$miMatrix,'first',function(){return this.first$3202_;});
             
             //AttributeDeclaration clone at aliases.ceylon (57:4-57:40)
-            $$$cl2328.defineAttr($$miMatrix,'clone',function(){
+            $$$cl2381.defineAttr($$miMatrix,'clone',function(){
                 var $$miMatrix=this;
                 return $$miMatrix;
             });
             
             //AttributeDeclaration size at aliases.ceylon (58:4-58:43)
-            $$$cl2328.defineAttr($$miMatrix,'size',function(){
+            $$$cl2381.defineAttr($$miMatrix,'size',function(){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3138.size;
+                return $$miMatrix.grid$3194.size;
             });
             
             //MethodDeclaration contains at aliases.ceylon (59:4-59:72)
-            $$miMatrix.contains=function (other$3149){
+            $$miMatrix.contains=function (other$3205){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3138.contains(other$3149);
+                return $$miMatrix.grid$3194.contains(other$3205);
             };
-            $$$cl2328.defineAttr($$miMatrix,'last',function(){
+            $$$cl2381.defineAttr($$miMatrix,'last',function(){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3138.last;
+                return $$miMatrix.grid$3194.last;
             });
             
             //MethodDeclaration spanTo at aliases.ceylon (61:4-62:41)
-            $$miMatrix.spanTo=function (to$3150){
+            $$miMatrix.spanTo=function (to$3206){
                 var $$miMatrix=this;
-                return (opt$3151=(to$3150.compare((0)).equals($$$cl2328.getSmaller())?$$$cl2328.getEmpty():null),opt$3151!==null?opt$3151:$$miMatrix.span((0),to$3150));
+                return (opt$3207=(to$3206.compare((0)).equals($$$cl2381.getSmaller())?$$$cl2381.getEmpty():null),opt$3207!==null?opt$3207:$$miMatrix.span((0),to$3206));
             };
             
             //MethodDeclaration spanFrom at aliases.ceylon (64:4-65:28)
-            $$miMatrix.spanFrom=function (from$3152){
+            $$miMatrix.spanFrom=function (from$3208){
                 var $$miMatrix=this;
-                return $$miMatrix.span(from$3152,$$miMatrix.size);
+                return $$miMatrix.span(from$3208,$$miMatrix.size);
             };
         })(MiMatrix.$$.prototype);
     }
@@ -315,44 +315,44 @@ function $init$MiMatrix(){
 }
 exports.$init$MiMatrix=$init$MiMatrix;
 $init$MiMatrix();
-var opt$3151;
+var opt$3207;
 
 //MethodDefinition testAliasing at aliases.ceylon (68:0-86:0)
 function testAliasing(){
-    $$$cl2328.print($$$cl2328.String("testing type aliases",20));
-    $$$c2329.check(AliasingSubclass().aliasingSubclass(),$$$cl2328.String("Aliased member class",20));
+    $$$cl2381.print($$$cl2381.String("testing type aliases",20));
+    $$$c2382.check(AliasingSubclass().aliasingSubclass(),$$$cl2381.String("Aliased member class",20));
     
     //ClassDeclaration InnerSubalias at aliases.ceylon (71:4-71:47)
-    function InnerSubalias$3153($$innerSubalias$3153){return AliasingSubclass($$innerSubalias$3153);}
-    InnerSubalias$3153.$$=AliasingSubclass.$$;
-    $$$c2329.check(InnerSubalias$3153().aliasingSubclass(),$$$cl2328.String("Aliased top-level class",23));
+    function InnerSubalias$3209($$innerSubalias$3209){return AliasingSubclass($$innerSubalias$3209);}
+    InnerSubalias$3209.$$=AliasingSubclass.$$;
+    $$$c2382.check(InnerSubalias$3209().aliasingSubclass(),$$$cl2381.String("Aliased top-level class",23));
     
     //MethodDefinition use at aliases.ceylon (74:4-74:65)
-    function use$3154(aif$3155){
-        return aif$3155.aliasingIface();
+    function use$3210(aif$3211){
+        return aif$3211.aliasingIface();
     };
-    $$$c2329.check(use$3154(AliasingSub2().iface),$$$cl2328.String("Aliased member interface",24));
+    $$$c2382.check(use$3210(AliasingSub2().iface),$$$cl2381.String("Aliased member interface",24));
     
     //AttributeDeclaration xxxxx at aliases.ceylon (76:4-76:24)
-    var xxxxx$3156=(5);
-    $$$c2329.check($$$cl2328.isOfType(xxxxx$3156,{t:$$$cl2328.Integer}),$$$cl2328.String("Type alias",10));
-    $$$c2329.check(Listleton($$$cl2328.Tuple($$$cl2328.Tuple((1),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.Tuple($$$cl2328.Tuple((2),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.Tuple($$$cl2328.Tuple((3),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}),{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}),{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}).first,{T:{t:$$$cl2328.Integer}}).string.equals($$$cl2328.String("[[1]]",5)),$$$cl2328.StringBuilder().appendAll([$$$cl2328.String("class alias ",12),Listleton($$$cl2328.Tuple($$$cl2328.Tuple((1),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.Tuple($$$cl2328.Tuple((2),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.Tuple($$$cl2328.Tuple((3),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}),{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}),{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}},First:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}},Element:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.Integer},Element:{t:$$$cl2328.Integer}}}}).first,{T:{t:$$$cl2328.Integer}}).string,$$$cl2328.String(" instead of [ [ 1 ] ]",21)]).string);
-    $$$c2329.check(MiMatrix((2)).string.equals($$$cl2328.String("{ { 1, 2 }, { 1, 2 } }",22)),$$$cl2328.StringBuilder().appendAll([$$$cl2328.String("interface alias ",16),MiMatrix((2)).string,$$$cl2328.String(" instead of { { 1, 2 }, { 1, 2 } }",34)]).string);
+    var xxxxx$3212=(5);
+    $$$c2382.check($$$cl2381.isOfType(xxxxx$3212,{t:$$$cl2381.Integer}),$$$cl2381.String("Type alias",10));
+    $$$c2382.check(Listleton($$$cl2381.Tuple($$$cl2381.Tuple((1),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.Tuple($$$cl2381.Tuple((2),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.Tuple($$$cl2381.Tuple((3),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}),{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}),{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}).first,{T:{t:$$$cl2381.Integer}}).string.equals($$$cl2381.String("[[1]]",5)),$$$cl2381.StringBuilder().appendAll([$$$cl2381.String("class alias ",12),Listleton($$$cl2381.Tuple($$$cl2381.Tuple((1),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.Tuple($$$cl2381.Tuple((2),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.Tuple($$$cl2381.Tuple((3),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}),{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}),{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}},First:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}},Element:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.Integer},Element:{t:$$$cl2381.Integer}}}}).first,{T:{t:$$$cl2381.Integer}}).string,$$$cl2381.String(" instead of [ [ 1 ] ]",21)]).string);
+    $$$c2382.check(MiMatrix((2)).string.equals($$$cl2381.String("[[1, 2], [1, 2]]",16)),$$$cl2381.StringBuilder().appendAll([$$$cl2381.String("interface alias ",16),MiMatrix((2)).string,$$$cl2381.String(" instead of [[1, 2], [1, 2]]",28)]).string);
     
     //AttributeDeclaration xxxxx1 at aliases.ceylon (80:4-80:21)
-    var xxxxx1$3157=(6);
+    var xxxxx1$3213=(6);
     
     //AttributeDeclaration xxxxx2 at aliases.ceylon (81:4-81:26)
-    var xxxxx2$3158=$$$cl2328.String("XXXX",4);
-    $$$c2329.check($$$cl2328.isOfType(xxxxx1$3157,{ t:'u', l:[{t:$$$cl2328.String},{t:$$$cl2328.Integer}]}),$$$cl2328.String("is String|Integer",17));
-    $$$c2329.check($$$cl2328.isOfType(xxxxx2$3158,{ t:'i', l:[{t:$$$cl2328.String},{t:$$$cl2328.List,a:{Element:{t:$$$cl2328.Anything}}}]}),$$$cl2328.String("is String&List",14));
+    var xxxxx2$3214=$$$cl2381.String("XXXX",4);
+    $$$c2382.check($$$cl2381.isOfType(xxxxx1$3213,{ t:'u', l:[{t:$$$cl2381.String},{t:$$$cl2381.Integer}]}),$$$cl2381.String("is String|Integer",17));
+    $$$c2382.check($$$cl2381.isOfType(xxxxx2$3214,{ t:'i', l:[{t:$$$cl2381.String},{t:$$$cl2381.List,a:{Element:{t:$$$cl2381.Anything}}}]}),$$$cl2381.String("is String&List",14));
     
     //MethodDeclaration cualquiera at aliases.ceylon (84:4-84:51)
-    var cualquiera$3159=function (bits$3160){
-        if(bits$3160===undefined){bits$3160=$$$cl2328.getEmpty();}
-        return $$$cl2328.any(bits$3160);
+    var cualquiera$3215=function (bits$3216){
+        if(bits$3216===undefined){bits$3216=$$$cl2381.getEmpty();}
+        return $$$cl2381.any(bits$3216);
     };
-    $$$c2329.check(cualquiera$3159([true,true,true].reifyCeylonType({Absent:{t:$$$cl2328.Anything},Element:{t:$$$cl2328.true$3161}})),$$$cl2328.String("seq arg method alias",20));
+    $$$c2382.check(cualquiera$3215([true,true,true].reifyCeylonType({Absent:{t:$$$cl2381.Anything},Element:{t:$$$cl2381.true$3217}})),$$$cl2381.String("seq arg method alias",20));
 };
 
 //ClassDefinition LateTestChild at late_support.ceylon (3:0-5:0)
@@ -361,16 +361,16 @@ function LateTestChild($$lateTestChild){
     if ($$lateTestChild===undefined)$$lateTestChild=new LateTestChild.$$;
     
     //AttributeDeclaration parent at late_support.ceylon (4:4-4:37)
-    $$lateTestChild.parent$3162_=undefined;
+    $$lateTestChild.parent$3218_=undefined;
     return $$lateTestChild;
 }
 function $init$LateTestChild(){
     if (LateTestChild.$$===undefined){
-        $$$cl2328.initTypeProto(LateTestChild,'misc::LateTestChild',$$$cl2328.Basic);
+        $$$cl2381.initTypeProto(LateTestChild,'misc::LateTestChild',$$$cl2381.Basic);
         (function($$lateTestChild){
             
             //AttributeDeclaration parent at late_support.ceylon (4:4-4:37)
-            $$$cl2328.defineAttr($$lateTestChild,'parent',function(){if (this.parent$3162_===undefined)throw $$$cl2328.InitializationException($$$cl2328.String('Attempt to read unitialized attribute «parent»'));return this.parent$3162_;},function(parent$3163){if(this.parent$3162_!==undefined)throw $$$cl2328.InitializationException($$$cl2328.String('Attempt to reassign immutable attribute «parent»'));return this.parent$3162_=parent$3163;});
+            $$$cl2381.defineAttr($$lateTestChild,'parent',function(){if (this.parent$3218_===undefined)throw $$$cl2381.InitializationException($$$cl2381.String('Attempt to read unitialized attribute «parent»'));return this.parent$3218_;},function(parent$3219){if(this.parent$3218_!==undefined)throw $$$cl2381.InitializationException($$$cl2381.String('Attempt to reassign immutable attribute «parent»'));return this.parent$3218_=parent$3219;});
         })(LateTestChild.$$.prototype);
     }
     return LateTestChild;
@@ -379,27 +379,27 @@ exports.$init$LateTestChild=$init$LateTestChild;
 $init$LateTestChild();
 
 //ClassDefinition LateTestParent at late_support.ceylon (7:0-12:0)
-function LateTestParent(children$3164, $$lateTestParent){
+function LateTestParent(children$3220, $$lateTestParent){
     $init$LateTestParent();
     if ($$lateTestParent===undefined)$$lateTestParent=new LateTestParent.$$;
-    if(children$3164===undefined){children$3164=$$$cl2328.getEmpty();}
+    if(children$3220===undefined){children$3220=$$$cl2381.getEmpty();}
     
     //AttributeDeclaration children at late_support.ceylon (8:4-8:34)
-    $$lateTestParent.children$3165_=children$3164;
+    $$lateTestParent.children$3221_=children$3220;
     //'for' statement at late_support.ceylon (9:4-11:4)
-    var it$3166 = $$lateTestParent.children.iterator;
-    var child$3167;while ((child$3167=it$3166.next())!==$$$cl2328.getFinished()){
-        (child$3167.parent=$$lateTestParent);
+    var it$3222 = $$lateTestParent.children.iterator();
+    var child$3223;while ((child$3223=it$3222.next())!==$$$cl2381.getFinished()){
+        (child$3223.parent=$$lateTestParent);
     }
     return $$lateTestParent;
 }
 function $init$LateTestParent(){
     if (LateTestParent.$$===undefined){
-        $$$cl2328.initTypeProto(LateTestParent,'misc::LateTestParent',$$$cl2328.Basic);
+        $$$cl2381.initTypeProto(LateTestParent,'misc::LateTestParent',$$$cl2381.Basic);
         (function($$lateTestParent){
             
             //AttributeDeclaration children at late_support.ceylon (8:4-8:34)
-            $$$cl2328.defineAttr($$lateTestParent,'children',function(){return this.children$3165_;});
+            $$$cl2381.defineAttr($$lateTestParent,'children',function(){return this.children$3221_;});
         })(LateTestParent.$$.prototype);
     }
     return LateTestParent;
@@ -411,33 +411,33 @@ $init$LateTestParent();
 function testLate(){
     
     //AttributeDeclaration kids at late_support.ceylon (15:4-15:51)
-    var kids$3168=[LateTestChild(),LateTestChild()].reifyCeylonType({Absent:{t:$$$cl2328.Nothing},Element:{t:LateTestChild}});
-    LateTestParent(kids$3168);
+    var kids$3224=[LateTestChild(),LateTestChild()].reifyCeylonType({Absent:{t:$$$cl2381.Nothing},Element:{t:LateTestChild}});
+    LateTestParent(kids$3224);
     try{
-        LateTestParent(kids$3168);
-        $$$c2329.fail($$$cl2328.String("reassigning to late attribute should fail",41));
-    }catch(ex$3169){
-        if (ex$3169.getT$name === undefined) ex$3169=$$$cl2328.NativeException(ex$3169);
-        if($$$cl2328.isOfType(ex$3169,{t:$$$cl2328.InitializationException})){
-            $$$c2329.check(true);
+        LateTestParent(kids$3224);
+        $$$c2382.fail($$$cl2381.String("reassigning to late attribute should fail",41));
+    }catch(ex$3225){
+        if (ex$3225.getT$name === undefined) ex$3225=$$$cl2381.NativeException(ex$3225);
+        if($$$cl2381.isOfType(ex$3225,{t:$$$cl2381.InitializationException})){
+            $$$c2382.check(true);
         }
-        else if($$$cl2328.isOfType(ex$3169,{t:$$$cl2328.Exception})){
-            $$$c2329.fail($$$cl2328.String("wrong exception thrown for late attribute",41));
+        else if($$$cl2381.isOfType(ex$3225,{t:$$$cl2381.Exception})){
+            $$$c2382.fail($$$cl2381.String("wrong exception thrown for late attribute",41));
         }
-        else{throw ex$3169}
+        else{throw ex$3225}
     }
     try{
-        $$$cl2328.print(LateTestChild().parent);
-        $$$c2329.fail($$$cl2328.String("Reading uninitialized late attribute should fail",48));
-    }catch(ex$3170){
-        if (ex$3170.getT$name === undefined) ex$3170=$$$cl2328.NativeException(ex$3170);
-        if($$$cl2328.isOfType(ex$3170,{t:$$$cl2328.InitializationException})){
-            $$$c2329.check(true);
+        $$$cl2381.print(LateTestChild().parent);
+        $$$c2382.fail($$$cl2381.String("Reading uninitialized late attribute should fail",48));
+    }catch(ex$3226){
+        if (ex$3226.getT$name === undefined) ex$3226=$$$cl2381.NativeException(ex$3226);
+        if($$$cl2381.isOfType(ex$3226,{t:$$$cl2381.InitializationException})){
+            $$$c2382.check(true);
         }
-        else if($$$cl2328.isOfType(ex$3170,{t:$$$cl2328.Exception})){
-            $$$c2329.fail($$$cl2328.String("wrong exception thrown for late attribute",41));
+        else if($$$cl2381.isOfType(ex$3226,{t:$$$cl2381.Exception})){
+            $$$c2382.fail($$$cl2381.String("wrong exception thrown for late attribute",41));
         }
-        else{throw ex$3170}
+        else{throw ex$3226}
     }
 };
 
@@ -447,13 +447,13 @@ function X($$x){
 exports.X=X;
 function $init$X(){
     if (X.$$===undefined){
-        $$$cl2328.initTypeProto(X,'misc::X');
+        $$$cl2381.initTypeProto(X,'misc::X');
         (function($$x){
             
             //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
             $$x.helloWorld=function helloWorld(){
                 var $$x=this;
-                $$$cl2328.print($$$cl2328.String("hello world",11));
+                $$$cl2381.print($$$cl2381.String("hello world",11));
             };
         })(X.$$.prototype);
     }
@@ -463,50 +463,50 @@ exports.$init$X=$init$X;
 $init$X();
 
 //ClassDefinition Foo at misc.ceylon (7:0-17:0)
-function Foo(name$3171, $$foo){
+function Foo(name$3227, $$foo){
     $init$Foo();
     if ($$foo===undefined)$$foo=new Foo.$$;
     
     //AttributeDeclaration name at misc.ceylon (8:4-8:22)
-    $$foo.name$3172_=name$3171;
+    $$foo.name$3228_=name$3227;
     
     //AttributeDeclaration counter at misc.ceylon (9:4-9:28)
-    $$foo.counter$3173_=(0);
+    $$foo.counter$3229_=(0);
     
     //AttributeDeclaration string at misc.ceylon (15:4-15:57)
-    $$foo.string$3174_=$$$cl2328.StringBuilder().appendAll([$$$cl2328.String("Foo(",4),$$foo.name.string,$$$cl2328.String(")",1)]).string;
+    $$foo.string$3230_=$$$cl2381.StringBuilder().appendAll([$$$cl2381.String("Foo(",4),$$foo.name.string,$$$cl2381.String(")",1)]).string;
     $$foo.inc();
     return $$foo;
 }
 exports.Foo=Foo;
 function $init$Foo(){
     if (Foo.$$===undefined){
-        $$$cl2328.initTypeProto(Foo,'misc::Foo',$$$cl2328.Basic);
+        $$$cl2381.initTypeProto(Foo,'misc::Foo',$$$cl2381.Basic);
         (function($$foo){
             
             //AttributeDeclaration name at misc.ceylon (8:4-8:22)
-            $$$cl2328.defineAttr($$foo,'name',function(){return this.name$3172_;});
+            $$$cl2381.defineAttr($$foo,'name',function(){return this.name$3228_;});
             
             //AttributeDeclaration counter at misc.ceylon (9:4-9:28)
-            $$$cl2328.defineAttr($$foo,'counter$3173',function(){return this.counter$3173_;},function(counter$3175){return this.counter$3173_=counter$3175;});
+            $$$cl2381.defineAttr($$foo,'counter$3229',function(){return this.counter$3229_;},function(counter$3231){return this.counter$3229_=counter$3231;});
             
             //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
-            $$$cl2328.defineAttr($$foo,'count',function(){
+            $$$cl2381.defineAttr($$foo,'count',function(){
                 var $$foo=this;
-                return $$foo.counter$3173;
+                return $$foo.counter$3229;
             });
             //MethodDefinition inc at misc.ceylon (11:4-11:43)
             $$foo.inc=function inc(){
                 var $$foo=this;
-                $$foo.counter$3173=$$foo.counter$3173.plus((1));
+                $$foo.counter$3229=$$foo.counter$3229.plus((1));
             };
             //MethodDefinition printName at misc.ceylon (12:4-14:4)
             $$foo.printName=function printName(){
                 var $$foo=this;
-                $$$cl2328.print($$$cl2328.String("foo name = ",11).plus($$foo.name));
+                $$$cl2381.print($$$cl2381.String("foo name = ",11).plus($$foo.name));
             };
             //AttributeDeclaration string at misc.ceylon (15:4-15:57)
-            $$$cl2328.defineAttr($$foo,'string',function(){return this.string$3174_;});
+            $$$cl2381.defineAttr($$foo,'string',function(){return this.string$3230_;});
         })(Foo.$$.prototype);
     }
     return Foo;
@@ -518,20 +518,20 @@ $init$Foo();
 function Bar($$bar){
     $init$Bar();
     if ($$bar===undefined)$$bar=new Bar.$$;
-    Foo($$$cl2328.String("Hello",5),$$bar);
+    Foo($$$cl2381.String("Hello",5),$$bar);
     X($$bar);
     return $$bar;
 }
 exports.Bar=Bar;
 function $init$Bar(){
     if (Bar.$$===undefined){
-        $$$cl2328.initTypeProto(Bar,'misc::Bar',Foo,$init$X());
+        $$$cl2381.initTypeProto(Bar,'misc::Bar',Foo,$init$X());
         (function($$bar){
             
             //MethodDefinition printName at misc.ceylon (20:4-24:4)
             $$bar.printName=function printName(){
                 var $$bar=this;
-                $$$cl2328.print($$$cl2328.String("bar name = ",11).plus($$bar.name));
+                $$$cl2381.print($$$cl2381.String("bar name = ",11).plus($$bar.name));
                 $$bar.getT$all()['misc::Foo'].$$.prototype.printName.call(this);
                 $$bar.getT$all()['misc::Foo'].$$.prototype.printName.call(this);
             };
@@ -540,12 +540,12 @@ function $init$Bar(){
                 $init$Inner$Bar();
                 if ($$inner$Bar===undefined)$$inner$Bar=new this.Inner$Bar.$$;
                 $$inner$Bar.$$bar=this;
-                $$$cl2328.print($$$cl2328.String("creating inner class of :",25).plus($$inner$Bar.$$bar.name));
+                $$$cl2381.print($$$cl2381.String("creating inner class of :",25).plus($$inner$Bar.$$bar.name));
                 return $$inner$Bar;
             }
             function $init$Inner$Bar(){
                 if (Inner$Bar.$$===undefined){
-                    $$$cl2328.initTypeProto(Inner$Bar,'misc::Bar.Inner',$$$cl2328.Basic);
+                    $$$cl2381.initTypeProto(Inner$Bar,'misc::Bar.Inner',$$$cl2381.Basic);
                     (function($$inner$Bar){
                         
                         //MethodDefinition incOuter at misc.ceylon (28:8-30:8)
@@ -568,49 +568,49 @@ exports.$init$Bar=$init$Bar;
 $init$Bar();
 
 //MethodDefinition printBoth at misc.ceylon (36:0-38:0)
-function printBoth(x$3176,y$3177){
-    $$$cl2328.print(x$3176.plus($$$cl2328.String(", ",2)).plus(y$3177));
+function printBoth(x$3232,y$3233){
+    $$$cl2381.print(x$3232.plus($$$cl2381.String(", ",2)).plus(y$3233));
 };
 
 //MethodDefinition doIt at misc.ceylon (40:0-42:0)
-function doIt(f$3178){
-    f$3178();
-    f$3178();
+function doIt(f$3234){
+    f$3234();
+    f$3234();
 };
 
 //ObjectDefinition foob at misc.ceylon (44:0-46:0)
-function foob$3179(){
-    var $$foob=new foob$3179.$$;
+function foob$3235(){
+    var $$foob=new foob$3235.$$;
     
     //AttributeDeclaration name at misc.ceylon (45:4-45:30)
-    $$foob.name$3180_=$$$cl2328.String("Gavin",5);
+    $$foob.name$3236_=$$$cl2381.String("Gavin",5);
     return $$foob;
 }
-function $init$foob$3179(){
-    if (foob$3179.$$===undefined){
-        $$$cl2328.initTypeProto(foob$3179,'misc::foob',$$$cl2328.Basic);
+function $init$foob$3235(){
+    if (foob$3235.$$===undefined){
+        $$$cl2381.initTypeProto(foob$3235,'misc::foob',$$$cl2381.Basic);
     }
-    return foob$3179;
+    return foob$3235;
 }
-exports.$init$foob$3179=$init$foob$3179;
-$init$foob$3179();
+exports.$init$foob$3235=$init$foob$3235;
+$init$foob$3235();
 (function($$foob){
     
     //AttributeDeclaration name at misc.ceylon (45:4-45:30)
-    $$$cl2328.defineAttr($$foob,'name',function(){return this.name$3180_;});
-})(foob$3179.$$.prototype);
-var foob$3181=foob$3179();
+    $$$cl2381.defineAttr($$foob,'name',function(){return this.name$3236_;});
+})(foob$3235.$$.prototype);
+var foob$3237=foob$3235();
 var getFoob=function(){
-    return foob$3181;
+    return foob$3237;
 }
 
 //MethodDefinition printAll at misc.ceylon (48:0-48:32)
-function printAll(strings$3182){
-    if(strings$3182===undefined){strings$3182=$$$cl2328.getEmpty();}
+function printAll(strings$3238){
+    if(strings$3238===undefined){strings$3238=$$$cl2381.getEmpty();}
 };
 
 //ClassDeclaration F at misc.ceylon (50:0-50:33)
-function F(name$3183, $$f){return Foo(name$3183,$$f);}
+function F(name$3239, $$f){return Foo(name$3239,$$f);}
 F.$$=Foo.$$;
 
 //MethodDefinition var at misc.ceylon (52:0-52:33)
@@ -620,75 +620,75 @@ function $var(){
 exports.$var=$var;
 
 //ClassDefinition TestObjects at objects.ceylon (3:0-17:0)
-function TestObjects(a$3184, b$3185, c$3186, $$testObjects){
+function TestObjects(a$3240, b$3241, c$3242, $$testObjects){
     $init$TestObjects();
     if ($$testObjects===undefined)$$testObjects=new TestObjects.$$;
-    $$testObjects.$$targs$$={Absent:{t:$$$cl2328.Null},Element:{t:$$$cl2328.Integer}};
-    $$testObjects.a$3184=a$3184;
-    $$testObjects.b$3185=b$3185;
-    $$testObjects.c$3186=c$3186;
-    $$$cl2328.Iterable($$testObjects);
-    $$$cl2328.add_type_arg($$testObjects,'Absent',{t:$$$cl2328.Null});
-    $$$cl2328.add_type_arg($$testObjects,'Element',{t:$$$cl2328.Integer});
+    $$testObjects.$$targs$$={Absent:{t:$$$cl2381.Null},Element:{t:$$$cl2381.Integer}};
+    $$testObjects.a$3240=a$3240;
+    $$testObjects.b$3241=b$3241;
+    $$testObjects.c$3242=c$3242;
+    $$$cl2381.Iterable($$testObjects);
+    $$$cl2381.add_type_arg($$testObjects,'Absent',{t:$$$cl2381.Null});
+    $$$cl2381.add_type_arg($$testObjects,'Element',{t:$$$cl2381.Integer});
     return $$testObjects;
 }
 function $init$TestObjects(){
     if (TestObjects.$$===undefined){
-        $$$cl2328.initTypeProto(TestObjects,'misc::TestObjects',$$$cl2328.Basic,$$$cl2328.Iterable);
+        $$$cl2381.initTypeProto(TestObjects,'misc::TestObjects',$$$cl2381.Basic,$$$cl2381.Iterable);
         (function($$testObjects){
             
-            //AttributeGetterDefinition iterator at objects.ceylon (4:2-16:2)
-            $$$cl2328.defineAttr($$testObjects,'iterator',function(){
+            //MethodDefinition iterator at objects.ceylon (4:2-16:2)
+            $$testObjects.iterator=function iterator(){
                 var $$testObjects=this;
                 
                 //ObjectDefinition iter at objects.ceylon (5:4-14:4)
-                function iter$3187($$targs$$){
-                    var $$iter$3187=new iter$3187.$$;
-                    $$iter$3187.$$targs$$=$$targs$$;
-                    $$$cl2328.Iterator($$iter$3187);
-                    $$$cl2328.add_type_arg($$iter$3187,'Element',{t:$$$cl2328.Integer});
+                function iter$3243($$targs$$){
+                    var $$iter$3243=new iter$3243.$$;
+                    $$iter$3243.$$targs$$=$$targs$$;
+                    $$$cl2381.Iterator($$iter$3243);
+                    $$$cl2381.add_type_arg($$iter$3243,'Element',{t:$$$cl2381.Integer});
                     
                     //AttributeDeclaration index at objects.ceylon (6:6-6:30)
-                    $$iter$3187.index$3188_=(0);
-                    return $$iter$3187;
+                    $$iter$3243.index$3244_=(0);
+                    return $$iter$3243;
                 }
-                function $init$iter$3187(){
-                    if (iter$3187.$$===undefined){
-                        $$$cl2328.initTypeProto(iter$3187,'misc::TestObjects.iterator.iter',$$$cl2328.Basic,$$$cl2328.Iterator);
+                function $init$iter$3243(){
+                    if (iter$3243.$$===undefined){
+                        $$$cl2381.initTypeProto(iter$3243,'misc::TestObjects.iterator.iter',$$$cl2381.Basic,$$$cl2381.Iterator);
                     }
-                    return iter$3187;
+                    return iter$3243;
                 }
-                $init$iter$3187();
-                (function($$iter$3187){
+                $init$iter$3243();
+                (function($$iter$3243){
                     
                     //AttributeDeclaration index at objects.ceylon (6:6-6:30)
-                    $$$cl2328.defineAttr($$iter$3187,'index$3188',function(){return this.index$3188_;},function(index$3189){return this.index$3188_=index$3189;});
+                    $$$cl2381.defineAttr($$iter$3243,'index$3244',function(){return this.index$3244_;},function(index$3245){return this.index$3244_=index$3245;});
                     
                     //MethodDefinition next at objects.ceylon (7:6-13:6)
-                    $$iter$3187.next=function next(){
-                        var $$iter$3187=this;
-                        (oldindex$3190=$$iter$3187.index$3188,$$iter$3187.index$3188=oldindex$3190.successor,oldindex$3190);
-                        var oldindex$3190;
-                        if($$iter$3187.index$3188.equals((1))){
-                            return $$testObjects.a$3184;
+                    $$iter$3243.next=function next(){
+                        var $$iter$3243=this;
+                        (oldindex$3246=$$iter$3243.index$3244,$$iter$3243.index$3244=oldindex$3246.successor,oldindex$3246);
+                        var oldindex$3246;
+                        if($$iter$3243.index$3244.equals((1))){
+                            return $$testObjects.a$3240;
                         }else {
-                            if($$iter$3187.index$3188.equals((2))){
-                                return $$testObjects.b$3185;
+                            if($$iter$3243.index$3244.equals((2))){
+                                return $$testObjects.b$3241;
                             }else {
-                                if($$iter$3187.index$3188.equals((3))){
-                                    return $$testObjects.c$3186;
+                                if($$iter$3243.index$3244.equals((3))){
+                                    return $$testObjects.c$3242;
                                 }
                             }
                         }
-                        return $$$cl2328.getFinished();
+                        return $$$cl2381.getFinished();
                     };
-                })(iter$3187.$$.prototype);
-                var iter$3191=iter$3187({Element:{t:$$$cl2328.Integer}});
-                var getIter$3191=function(){
-                    return iter$3191;
+                })(iter$3243.$$.prototype);
+                var iter$3247=iter$3243({Element:{t:$$$cl2381.Integer}});
+                var getIter$3247=function(){
+                    return iter$3247;
                 }
-                return getIter$3191();
-            });
+                return getIter$3247();
+            };
         })(TestObjects.$$.prototype);
     }
     return TestObjects;
@@ -698,114 +698,114 @@ $init$TestObjects();
 
 //MethodDefinition test_objects at objects.ceylon (19:0-42:0)
 function test_objects(){
-    $$$cl2328.print($$$cl2328.String("testing objects",15));
+    $$$cl2381.print($$$cl2381.String("testing objects",15));
     
-    //AttributeDeclaration t1 at objects.ceylon (21:2-21:40)
-    var t1$3192=TestObjects((1),(2),(3)).iterator;
+    //AttributeDeclaration t1 at objects.ceylon (21:2-21:42)
+    var t1$3248=TestObjects((1),(2),(3)).iterator();
     
-    //AttributeDeclaration t2 at objects.ceylon (22:2-22:40)
-    var t2$3193=TestObjects((1),(2),(3)).iterator;
-    var i$3194;
-    if($$$cl2328.isOfType((i$3194=t1$3192.next()),{t:$$$cl2328.Integer})){
-        $$$c2329.check(i$3194.equals((1)),$$$cl2328.String("objects 1",9));
+    //AttributeDeclaration t2 at objects.ceylon (22:2-22:42)
+    var t2$3249=TestObjects((1),(2),(3)).iterator();
+    var i$3250;
+    if($$$cl2381.isOfType((i$3250=t1$3248.next()),{t:$$$cl2381.Integer})){
+        $$$c2382.check(i$3250.equals((1)),$$$cl2381.String("objects 1",9));
     }
-    var i$3195;
-    if($$$cl2328.isOfType((i$3195=t1$3192.next()),{t:$$$cl2328.Integer})){
-        $$$c2329.check(i$3195.equals((2)),$$$cl2328.String("objects 2",9));
+    var i$3251;
+    if($$$cl2381.isOfType((i$3251=t1$3248.next()),{t:$$$cl2381.Integer})){
+        $$$c2382.check(i$3251.equals((2)),$$$cl2381.String("objects 2",9));
     }
-    var i$3196;
-    if($$$cl2328.isOfType((i$3196=t2$3193.next()),{t:$$$cl2328.Integer})){
-        $$$c2329.check(i$3196.equals((1)),$$$cl2328.String("objects 3",9));
+    var i$3252;
+    if($$$cl2381.isOfType((i$3252=t2$3249.next()),{t:$$$cl2381.Integer})){
+        $$$c2382.check(i$3252.equals((1)),$$$cl2381.String("objects 3",9));
     }
-    var i$3197;
-    if($$$cl2328.isOfType((i$3197=t1$3192.next()),{t:$$$cl2328.Integer})){
-        $$$c2329.check(i$3197.equals((3)),$$$cl2328.String("objects 4",9));
+    var i$3253;
+    if($$$cl2381.isOfType((i$3253=t1$3248.next()),{t:$$$cl2381.Integer})){
+        $$$c2382.check(i$3253.equals((3)),$$$cl2381.String("objects 4",9));
     }
-    $$$c2329.check($$$cl2328.isOfType(t1$3192.next(),{t:$$$cl2328.Finished}),$$$cl2328.String("objects 5",9));
-    var i$3198;
-    if($$$cl2328.isOfType((i$3198=t2$3193.next()),{t:$$$cl2328.Integer})){
-        $$$c2329.check(i$3198.equals((2)),$$$cl2328.String("objects 6",9));
+    $$$c2382.check($$$cl2381.isOfType(t1$3248.next(),{t:$$$cl2381.Finished}),$$$cl2381.String("objects 5",9));
+    var i$3254;
+    if($$$cl2381.isOfType((i$3254=t2$3249.next()),{t:$$$cl2381.Integer})){
+        $$$c2382.check(i$3254.equals((2)),$$$cl2381.String("objects 6",9));
     }
-    var i$3199;
-    if($$$cl2328.isOfType((i$3199=t2$3193.next()),{t:$$$cl2328.Integer})){
-        $$$c2329.check(i$3199.equals((3)),$$$cl2328.String("objects 7",9));
+    var i$3255;
+    if($$$cl2381.isOfType((i$3255=t2$3249.next()),{t:$$$cl2381.Integer})){
+        $$$c2382.check(i$3255.equals((3)),$$$cl2381.String("objects 7",9));
     }
 };
-var $$$m3200=require('members/0.1/members-0.1');
+var $$$m3256=require('members/0.1/members-0.1');
 
 //MethodDefinition test at testit.ceylon (4:0-44:0)
 function test(){
     
     //AttributeDeclaration name at testit.ceylon (5:4-5:24)
-    var name$3201=$$$cl2328.String("hello",5);
-    $$$cl2328.print(name$3201);
+    var name$3257=$$$cl2381.String("hello",5);
+    $$$cl2381.print(name$3257);
     
     //AttributeDeclaration foo at testit.ceylon (7:4-7:28)
-    var foo$3202=Foo($$$cl2328.String("goodbye",7));
-    printBoth(name$3201,foo$3202.name);
-    (y$3203=$$$cl2328.String("y",1),x$3204=$$$cl2328.String("x",1),printBoth(x$3204,y$3203));
-    var y$3203,x$3204;
-    foo$3202.inc();
-    foo$3202.inc();
-    $$$c2329.check(foo$3202.count.equals((3)),$$$cl2328.String("Foo.count",9));
-    $$$c2329.check(foo$3202.string.equals($$$cl2328.String("Foo(goodbye)",12)),$$$cl2328.String("Foo.string",10));
-    foo$3202.printName();
+    var foo$3258=Foo($$$cl2381.String("goodbye",7));
+    printBoth(name$3257,foo$3258.name);
+    (y$3259=$$$cl2381.String("y",1),x$3260=$$$cl2381.String("x",1),printBoth(x$3260,y$3259));
+    var y$3259,x$3260;
+    foo$3258.inc();
+    foo$3258.inc();
+    $$$c2382.check(foo$3258.count.equals((3)),$$$cl2381.String("Foo.count",9));
+    $$$c2382.check(foo$3258.string.equals($$$cl2381.String("Foo(goodbye)",12)),$$$cl2381.String("Foo.string",10));
+    foo$3258.printName();
     Bar().printName();
     Bar().Inner$Bar();
-    doIt((opt$3205=foo$3202,$$$cl2328.JsCallable(opt$3205,opt$3205!==null?opt$3205.inc:null)));
-    var opt$3205;
-    $$$c2329.check(foo$3202.count.equals((5)),$$$cl2328.String("Foo.count [2]",13));
-    doIt(Bar);
-    $$$cl2328.print(getFoob().name);
+    doIt($$$cl2381.$JsCallable((opt$3261=foo$3258,$$$cl2381.JsCallable(opt$3261,opt$3261!==null?opt$3261.inc:null)),{Arguments:{t:$$$cl2381.Empty},Return:{t:$$$cl2381.Anything}}));
+    var opt$3261;
+    $$$c2382.check(foo$3258.count.equals((5)),$$$cl2381.String("Foo.count [2]",13));
+    doIt($$$cl2381.$JsCallable(Bar,{Arguments:{t:$$$cl2381.Empty},Return:{t:Bar}}));
+    $$$cl2381.print(getFoob().name);
     
     //ObjectDefinition x at testit.ceylon (20:4-24:4)
-    function x$3206(){
-        var $$x$3206=new x$3206.$$;
-        return $$x$3206;
+    function x$3262(){
+        var $$x$3262=new x$3262.$$;
+        return $$x$3262;
     }
-    function $init$x$3206(){
-        if (x$3206.$$===undefined){
-            $$$cl2328.initTypeProto(x$3206,'misc::test.x',$$$cl2328.Basic);
+    function $init$x$3262(){
+        if (x$3262.$$===undefined){
+            $$$cl2381.initTypeProto(x$3262,'misc::test.x',$$$cl2381.Basic);
         }
-        return x$3206;
+        return x$3262;
     }
-    $init$x$3206();
-    (function($$x$3206){
+    $init$x$3262();
+    (function($$x$3262){
         
         //MethodDefinition y at testit.ceylon (21:8-23:8)
-        $$x$3206.y=function y(){
-            var $$x$3206=this;
-            $$$cl2328.print($$$cl2328.String("xy",2));
+        $$x$3262.y=function y(){
+            var $$x$3262=this;
+            $$$cl2381.print($$$cl2381.String("xy",2));
         };
-    })(x$3206.$$.prototype);
-    var x$3207=x$3206();
-    var getX$3207=function(){
-        return x$3207;
+    })(x$3262.$$.prototype);
+    var x$3263=x$3262();
+    var getX$3263=function(){
+        return x$3263;
     }
-    getX$3207().y();
+    getX$3263().y();
     
     //AttributeDeclaration b at testit.ceylon (26:4-26:17)
-    var b$3208=Bar();
-    b$3208.Inner$Bar().incOuter();
-    b$3208.Inner$Bar().incOuter();
-    b$3208.Inner$Bar().incOuter();
-    $$$c2329.check(b$3208.count.equals((4)),$$$cl2328.String("Bar.count",9));
-    printAll([$$$cl2328.String("hello",5),$$$cl2328.String("world",5)].reifyCeylonType({Absent:{t:$$$cl2328.Anything},Element:{t:$$$cl2328.String}}));
-    (strings$3209=$$$cl2328.Tuple($$$cl2328.String("hello",5),$$$cl2328.Tuple($$$cl2328.String("world",5),$$$cl2328.getEmpty(),{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.String},Element:{t:$$$cl2328.String}}),{Rest:{t:$$$cl2328.Tuple,a:{Rest:{t:$$$cl2328.Empty},First:{t:$$$cl2328.String},Element:{t:$$$cl2328.String}}},First:{t:$$$cl2328.String},Element:{t:$$$cl2328.String}}),printAll(strings$3209));
-    var strings$3209;
+    var b$3264=Bar();
+    b$3264.Inner$Bar().incOuter();
+    b$3264.Inner$Bar().incOuter();
+    b$3264.Inner$Bar().incOuter();
+    $$$c2382.check(b$3264.count.equals((4)),$$$cl2381.String("Bar.count",9));
+    printAll([$$$cl2381.String("hello",5),$$$cl2381.String("world",5)].reifyCeylonType({Absent:{t:$$$cl2381.Anything},Element:{t:$$$cl2381.String}}));
+    (strings$3265=$$$cl2381.Tuple($$$cl2381.String("hello",5),$$$cl2381.Tuple($$$cl2381.String("world",5),$$$cl2381.getEmpty(),{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.String},Element:{t:$$$cl2381.String}}),{Rest:{t:$$$cl2381.Tuple,a:{Rest:{t:$$$cl2381.Empty},First:{t:$$$cl2381.String},Element:{t:$$$cl2381.String}}},First:{t:$$$cl2381.String},Element:{t:$$$cl2381.String}}),printAll(strings$3265));
+    var strings$3265;
     
     //AttributeDeclaration c at testit.ceylon (34:4-34:26)
-    var c$3210=$$$m3200.Counter((0));
-    c$3210.inc();
-    c$3210.inc();
-    $$$c2329.check(c$3210.count.equals((2)),$$$cl2328.String("Counter.count",13));
+    var c$3266=$$$m3256.Counter((0));
+    c$3266.inc();
+    c$3266.inc();
+    $$$c2382.check(c$3266.count.equals((2)),$$$cl2381.String("Counter.count",13));
     
     //AttributeDeclaration v2 at testit.ceylon (38:4-38:20)
-    var v2$3211=$var();
+    var v2$3267=$var();
     test_objects();
     testAliasing();
     testLate();
-    $$$c2329.results();
+    $$$c2382.results();
 }
 exports.test=test;
 exports.$$metamodel$$=$$metamodel$$;
