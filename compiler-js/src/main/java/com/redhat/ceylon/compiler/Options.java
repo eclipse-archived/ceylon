@@ -30,7 +30,7 @@ public class Options {
     private String encoding;
 
     public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
-            String outputRepository, String username, String password,
+            String outputRepository, final String username, final String password,
             boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, boolean verbosity,
             boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
             String srcEncoding) {
@@ -38,7 +38,7 @@ public class Options {
         srcDirs = sourceDirectories;
         if (systemRepository != null) systemRepo = systemRepository;
         if (outputRepository != null) outDir = outputRepository;
-        username = user;
+        user = username;
         pass = password;
         optimize = protoStyle;
         modulify = wrapModules;
