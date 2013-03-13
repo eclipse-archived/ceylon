@@ -180,6 +180,7 @@
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
             verbose="false"
+            encoding="UTF-8"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
             out="${build.dist}">
