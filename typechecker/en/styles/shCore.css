@@ -61,10 +61,9 @@
 
 .syntaxhighlighter
 {
-	width: 95% !important; /* 99% fixes IE8 horizontal scrollbar */
+	width: 99% !important; /* 99% fixes IE8 horizontal scrollbar */
 	//margin: 1em 0 1em 0 !important;
 	//padding: 1px !important; /* adds a little border on top and bottom */
-	margin-left:2% !important;
 	position: relative !important;
 }
 
