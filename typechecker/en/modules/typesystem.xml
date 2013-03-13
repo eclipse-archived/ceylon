@@ -454,7 +454,7 @@
         <para>The intersection <literal>X&amp;Y</literal> inherits all members of both
         <literal>X</literal> and <literal>Y</literal>.</para>
         
-        <programlisting>void store(Persistent&amp;Printable&amp;Identifiable object) { ... }</programlisting>
+        <programlisting>void store(Persistent&amp;Printable&amp;Identifiable storable) { ... }</programlisting>
         
         <para>Intersection types satisfy the following rules, for any types <literal>X</literal>,
         <literal>Y</literal>, and <literal>Z</literal>:</para>
