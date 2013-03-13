@@ -160,12 +160,14 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
 
     @Override
     protected void completeCommandline(Commandline cmd) {
-        cmd.createArgument().setValue("--out=" + out);
+        if (out != null) {
+            cmd.createArgument().setValue("--out=" + out);
+        }
 
         if (encoding != null) {
             cmd.createArgument().setValue("--encoding=" + encoding);
         } else  {
-            log("No encoding specified, this might cause problems with portability to other platforms! Line " + getLocation().getLineNumber() + ".", Project.MSG_WARN);
+            log(getLocation().getFileName() + ":" +getLocation().getLineNumber() + ": No encoding specified, this might cause problems with portability to other platforms!", Project.MSG_WARN);
         }
         
         appendUserOption(cmd, user);
