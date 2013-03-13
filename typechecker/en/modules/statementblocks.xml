@@ -1396,7 +1396,7 @@ else {
             
             <comment><para>Note: an assignability condition may narrow to an intersection or union 
             type.</para>
-            <programlisting>if (is Printable&amp;Identifiable object) { ... }</programlisting>
+            <programlisting>if (is Printable&amp;Identifiable obj) { ... }</programlisting>
             <programlisting>if (is Integer|Float num) { ... }</programlisting></comment>
     
             <para>Every existence or nonemptiness condition is equivalent to&mdash;and may be 
