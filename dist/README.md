@@ -128,7 +128,7 @@ platforms to make sure it works:
 ### Linux
 
 - Ubuntu "precise" 12.04 (64 bit) JDK 1.7.0_03 (IcedTea), 
-- Fedora 17 (64 bit) JDK 1.7.0_03 (IcedTea)
+- Fedora 17 (64 bit) JDK 1.7.0_09 (IcedTea)
 - Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
 
 ### Windows
