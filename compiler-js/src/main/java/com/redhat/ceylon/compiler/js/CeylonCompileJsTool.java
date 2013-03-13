@@ -39,10 +39,21 @@ public class CeylonCompileJsTool implements Tool {
     private String pass = null;
     private String out = "modules";
     private String sysrep = null;
+    private String encoding;
 
     private List<String> repos = Collections.emptyList();
     private List<String> src = Collections.singletonList("source");
     private List<String> module = Collections.emptyList();
+
+    @OptionArgument(argumentName="encoding")
+    @Description("Sets the encoding used for reading source files (default: `UTF-8`)")
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    public String getEncoding(){
+        return encoding;
+    }
 
     public boolean isProfile() {
         return profile;
@@ -190,7 +201,7 @@ public class CeylonCompileJsTool implements Tool {
     @Override
     public void run() throws Exception {
         final Options opts = new Options(getRepos(), getSrc(), sysrep, getOut(), getUser(), getPass(), isOptimize(),
-                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, null);
+                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, encoding);
         run(opts, module);
     }
     
@@ -356,7 +367,7 @@ public class CeylonCompileJsTool implements Tool {
             }
             tcb.statistics(opts.isProfile());
             JsModuleManagerFactory.setVerbose(opts.isVerbose());
-            tcb.moduleManagerFactory(new JsModuleManagerFactory());
+            tcb.moduleManagerFactory(new JsModuleManagerFactory(opts.getEncoding()));
         }
         //getting the type checker does process all types in the source directory
         tcb.verbose(opts.isVerbose()).setRepositoryManager(repoman);

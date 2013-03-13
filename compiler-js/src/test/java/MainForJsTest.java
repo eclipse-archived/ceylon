@@ -35,7 +35,7 @@ public class MainForJsTest {
                 .buildManager();
         System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
-            .moduleManagerFactory(new JsModuleManagerFactory())
+            .moduleManagerFactory(new JsModuleManagerFactory((String)null))
             .usageWarnings(false);
         for (String dir : args) {
             tcb.addSrcDirectory(new File(dir));

@@ -14,9 +14,11 @@ public class JsModuleManagerFactory implements ModuleManagerFactory {
 
     private final Map<String, Object> clmod;
     private static boolean verbose;
+    private String encoding;
 
-    public JsModuleManagerFactory() {
+    public JsModuleManagerFactory(String encoding) {
         clmod = null;
+        this.encoding = encoding;
     }
 
     public JsModuleManagerFactory(Map<String, Object> jsonCL) {
@@ -25,7 +27,7 @@ public class JsModuleManagerFactory implements ModuleManagerFactory {
 
     @Override
     public ModuleManager createModuleManager(Context context) {
-        return new JsModuleManager(context, clmod);
+        return new JsModuleManager(context, clmod, encoding);
     }
 
     public static void setVerbose(boolean flag) {

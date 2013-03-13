@@ -90,7 +90,7 @@ public class TestModuleManager {
                     .outRepo(options.getOutDir())
                     .buildManager();
             TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);//.verbose(true);
-            tcb.moduleManagerFactory(new JsModuleManagerFactory());
+            tcb.moduleManagerFactory(new JsModuleManagerFactory((String)null));
             tcb.addSrcDirectory(new java.io.File("src/test/resources/loader/pass2"));
             tcb.setRepositoryManager(repoman);
             jstc = tcb.getTypeChecker();

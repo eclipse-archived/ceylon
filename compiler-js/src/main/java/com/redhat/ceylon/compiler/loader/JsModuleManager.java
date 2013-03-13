@@ -29,10 +29,12 @@ public class JsModuleManager extends ModuleManager {
     /** Tells whether the language module has been loaded yet. */
     private boolean clLoaded;
     private final Map<String, Object> clmod;
+	private String encoding;
 
-    public JsModuleManager(Context context, Map<String, Object> jsonCL) {
+    public JsModuleManager(Context context, Map<String, Object> jsonCL, String encoding) {
         super(context);
         clmod = jsonCL;
+        this.encoding = encoding;
     }
 
     @Override
@@ -175,4 +177,11 @@ public class JsModuleManager extends ModuleManager {
         }
     }
 
+    @Override
+    protected PhasedUnits createPhasedUnits() {
+    	PhasedUnits units = super.createPhasedUnits();
+    	if(encoding != null)
+    		units.setEncoding(encoding);
+    	return units;
+    }
 }
