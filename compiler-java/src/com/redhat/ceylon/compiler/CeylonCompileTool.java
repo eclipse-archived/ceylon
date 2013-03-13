@@ -94,6 +94,7 @@ public class CeylonCompileTool implements Tool{
     private List<String> javac = Collections.emptyList();
     private String user;
     private String pass;
+    private String encoding;
     private boolean verbose = false;
     private String verboseFlags = "";
 
@@ -148,6 +149,13 @@ public class CeylonCompileTool implements Tool{
     		"(no default).")
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    @OptionArgument(argumentName="encoding")
+    @Description("Sets the encoding used for reading source files" +
+            "(default: `UTF-8`).")
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 
     @Argument(argumentName="moduleOrFile", multiplicity="*")
@@ -218,7 +226,12 @@ public class CeylonCompileTool implements Tool{
             arguments.add("-pass");
             arguments.add(pass);
         }
-        
+
+        if (encoding != null) {
+            arguments.add("-encoding");
+            arguments.add(encoding);
+        }
+
         if (systemRepo != null) {
             arguments.add("-sysrep");
             arguments.add(systemRepo);

@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -142,5 +143,13 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         ArtifactResult result = getContext().getRepositoryManager().getArtifactResult(ctx);
         if(result != null)
             getModelLoader().addModuleToClassPath(module, result);
+    }
+    
+    @Override
+    protected PhasedUnits createPhasedUnits() {
+        PhasedUnits units = super.createPhasedUnits();
+        if(tool.getEncoding() != null)
+            units.setEncoding(tool.getEncoding());
+        return units;
     }
 }

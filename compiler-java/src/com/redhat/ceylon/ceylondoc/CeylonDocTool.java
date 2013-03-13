@@ -147,6 +147,7 @@ public class CeylonDocTool implements Tool {
     private Module currentModule;
     private List<String> links = new LinkedList<String>();
     private TypeChecker typeChecker;
+    private String encoding;
 
     public CeylonDocTool() {
     }
@@ -165,8 +166,18 @@ public class CeylonDocTool implements Tool {
         return sourceFolders;
     }
 
+    @OptionArgument(argumentName="encoding")
+    @Description("Sets the encoding used for reading source files (default: `UTF-8`)")
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    public String getEncoding(){
+        return encoding;
+    }
+    
     @OptionArgument(longName="src", argumentName="dir")
-    @Description("A directory containing Ceylon and/or Java source code (default: `./source`")
+    @Description("A directory containing Ceylon and/or Java source code (default: `./source`)")
     public void setSourceFolders(List<File> sourceFolders) {
         this.sourceFolders = sourceFolders;
     }
