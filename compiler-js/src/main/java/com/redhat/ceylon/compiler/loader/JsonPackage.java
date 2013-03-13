@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -646,6 +647,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     rp = getModule().getLanguageModule().getRootPackage();
                 } else {
                     rp = getModule().getPackage(pname);
+                }
+                if (rp == null) {
+                    throw new CompilerErrorException("Package not found: " + pname);
                 }
                 if (rval == null) {
                     //Then look in the top-level declarations
