@@ -1395,6 +1395,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 int boxType = boxStart(specInitExpr.getExpression().getTerm());
                 specInitExpr.getExpression().visit(this);
+                if (boxType == 4) out("/*TODO: callable targs 1*/");
                 boxUnboxEnd(boxType);
                 out(";}");
                 if (property) {
@@ -1449,6 +1450,11 @@ public class GenerateJsVisitor extends Visitor
                 TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this);
             } else {
                 expr.visit(this);
+            }
+            if (boxType == 4) {
+                //Pass Callable argument types
+                out(",");
+                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
             }
             boxUnboxEnd(boxType);
         } else if (param != null) {
@@ -1541,6 +1547,7 @@ public class GenerateJsVisitor extends Visitor
                     int boxType = boxStart(expr.getTerm());
                     expr.visit(this);
                     endLine(true);
+                    if (boxType == 4) out("/*TODO: callable targs 3*/");
                     boxUnboxEnd(boxType);
                     endBlock();
                     if (d.isVariable()) {
@@ -2054,6 +2061,7 @@ public class GenerateJsVisitor extends Visitor
     private void box(Term term) {
         final int t = boxStart(term);
         term.visit(this);
+        if (t == 4) out("/*TODO: callable targs 4*/");
         boxUnboxEnd(t);
     }
 
@@ -2082,9 +2090,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     int boxUnboxStart(boolean fromNative, ProducedType fromType, boolean toNative) {
-        if (fromNative != toNative) {
-            // Box the value
-            String fromTypeName = TypeUtils.isUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
+        // Box the value
+        final String fromTypeName = TypeUtils.isUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
+        if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
                 if (fromTypeName.equals("ceylon.language::String")) {
@@ -2101,6 +2109,9 @@ public class GenerateJsVisitor extends Visitor
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Character")) {
                     out(clAlias, "Character(");
+                } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
+                    out(clAlias, "$JsCallable(");
+                    return 4;
                 } else {
                     return 0;
                 }
@@ -2109,6 +2120,9 @@ public class GenerateJsVisitor extends Visitor
                         || "ceylon.language::Float".equals(fromTypeName)) {
                 // conversion from Ceylon String or Float to native value
                 return 2;
+            } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
+                out(clAlias, "$JsCallable(");
+                return 4;
             } else {
                 return 3;
             }
@@ -2120,6 +2134,7 @@ public class GenerateJsVisitor extends Visitor
         switch (boxType) {
         case 1: out(")"); break;
         case 2: out(".valueOf()"); break;
+        case 4: out(")"); break;
         default: //nothing
         }
     }
@@ -2328,6 +2343,12 @@ public class GenerateJsVisitor extends Visitor
                             } else {
                                 specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
                             }
+                            if (boxType == 4) {
+                                out(",");
+                                TypeUtils.printTypeArguments(specStmt.getSpecifierExpression().getExpression(),
+                                        specStmt.getSpecifierExpression().getExpression().getTypeModel().getTypeArguments(),
+                                        GenerateJsVisitor.this);
+                            }
                             boxUnboxEnd(boxType);
                         }
                     }, null);
@@ -2392,6 +2413,7 @@ public class GenerateJsVisitor extends Visitor
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
             that.getRightTerm().visit(this);
+            if (box == 4) out("/*TODO: callable targs 6*/");
             boxUnboxEnd(box);
             return;
         }
@@ -2426,6 +2448,7 @@ public class GenerateJsVisitor extends Visitor
             @Override public void generateValue() {
                 int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
                 that.getRightTerm().visit(GenerateJsVisitor.this);
+                if (boxType == 4) out("/*TODO: callable targs 7*/");
                 boxUnboxEnd(boxType);
             }
         }, null);
@@ -2512,7 +2535,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Tells whether a declaration is in the same package as a node. */
-    private boolean isImported(Node that, Declaration d) {
+    boolean isImported(Node that, Declaration d) {
         if (d == null) {
             return false;
         }
@@ -2729,6 +2752,7 @@ public class GenerateJsVisitor extends Visitor
                 int boxType = boxStart(lhsQME);
                 lhsQME.getPrimary().visit(this);
                 out(".", lhsQME.getDeclaration().getName());
+                if (boxType == 4) out("/*TODO: callable targs 8*/");
                 boxUnboxEnd(boxType);
                 out(".", functionName, "(");
                 that.getRightTerm().visit(this);
@@ -2997,6 +3021,7 @@ public class GenerateJsVisitor extends Visitor
             public void term() {
                 int boxTypeLeft = boxStart(that.getTerm());
                 that.getTerm().visit(visitor);
+                if (boxTypeLeft == 4) out("/*TODO: callable targs 9*/");
                 boxUnboxEnd(boxTypeLeft);
             }
         });
@@ -3282,6 +3307,7 @@ public class GenerateJsVisitor extends Visitor
    @Override public void visit(BooleanCondition that) {
        int boxType = boxStart(that.getExpression().getTerm());
        super.visit(that);
+       if (boxType == 4) out("/*TODO: callable targs 10*/");
        boxUnboxEnd(boxType);
    }
 

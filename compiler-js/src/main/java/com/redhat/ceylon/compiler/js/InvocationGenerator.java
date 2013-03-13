@@ -248,6 +248,10 @@ public class InvocationGenerator {
                     } else {
                         arg.visit(gen);
                     }
+                    if (boxType == 4) {
+                        gen.out(",");
+                        TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
+                    }
                     gen.boxUnboxEnd(boxType);
                 } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
                     if (arg instanceof Tree.SpreadArgument) {
@@ -264,6 +268,10 @@ public class InvocationGenerator {
                     if (arg instanceof Tree.SpreadArgument) {
                         int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
                         arg.visit(gen);
+                        if (boxType == 4) {
+                            gen.out(",");
+                            TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
+                        }
                         gen.boxUnboxEnd(boxType);
                     } else {
                         ((Tree.Comprehension)arg).visit(gen);
