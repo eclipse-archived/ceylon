@@ -1,0 +1,177 @@
+/**
+ * SyntaxHighlighter
+ * http://alexgorbatchev.com/
+ *
+ * SyntaxHighlighter is donationware. If you are using it, please donate.
+ * http://alexgorbatchev.com/wiki/SyntaxHighlighter:Donate
+ *
+ * @version
+ * 2.1.364 (October 15 2009)
+ * 
+ * @copyright
+ * Copyright (C) 2004-2009 Alex Gorbatchev.
+ *
+ * @license
+ * This file is part of SyntaxHighlighter.
+ * 
+ * SyntaxHighlighter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SyntaxHighlighter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SyntaxHighlighter.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
+ */
+/************************************
+ * Default Syntax Highlighter theme.
+ * 
+ * Interface elements.
+ ************************************/
+
+.syntaxhighlighter
+{
+	background-color: white !important;
+}
+
+/* Highlighted line number */
+.syntaxhighlighter .line.highlighted .number
+{
+	color: black !important;
+}
+
+/* Highlighted line */
+.syntaxhighlighter .line.highlighted.alt1,
+.syntaxhighlighter .line.highlighted.alt2
+{
+	background-color: #e0e0e0 !important;
+}
+
+/* Gutter line numbers */
+.syntaxhighlighter .line .number
+{
+	color: #afafaf !important;
+}
+
+/* Add border to the lines */
+.syntaxhighlighter .line .content
+{
+	border-left: 3px solid #6CE26C !important;
+	color: black !important;
+}
+
+.syntaxhighlighter.printing .line .content 
+{
+	border: 0 !important;
+}
+
+/* First line */
+.syntaxhighlighter .line.alt1
+{
+	background-color: white !important;
+}
+
+/* Second line */
+.syntaxhighlighter .line.alt2
+{
+	background-color: white !important;
+}
+
+.syntaxhighlighter .toolbar
+{
+	background-color: #eeeeee !important;
+	border: #FFB398 solid 1px !important;
+}
+
+.syntaxhighlighter .toolbar a
+{
+	color: #a0a0a0 !important;
+}
+
+.syntaxhighlighter .toolbar a:hover
+{
+	color: red !important;
+}
+
+/************************************
+ * Actual syntax highlighter colors.
+ ************************************/
+.syntaxhighlighter .plain,
+.syntaxhighlighter .plain a
+{ 
+	color: black !important;
+}
+
+.syntaxhighlighter .comments,
+.syntaxhighlighter .comments a
+{ 
+    font-style: italic !important;
+    color: red !important; 
+}
+
+.syntaxhighlighter .string,
+.syntaxhighlighter .string a
+{
+	color: blue !important; 
+	text-decoration: none;
+}
+
+.syntaxhighlighter .keyword
+{ 
+	color: darkmagenta !important; 
+	font-weight: bold !important; 
+}
+
+.syntaxhighlighter .preprocessor 
+{ 
+	color: gray !important; 
+}
+
+.syntaxhighlighter .variable 
+{ 
+	color: black !important; 
+}
+
+.syntaxhighlighter .value
+{ 
+	color: blue !important; 
+}
+
+.syntaxhighlighter .functions
+{ 
+	color: black !important; 
+}
+
+.syntaxhighlighter .constants
+{ 
+	color: black !important; 
+}
+
+.syntaxhighlighter .script
+{ 
+	background-color: yellow !important;
+}
+
+.syntaxhighlighter .color1,
+.syntaxhighlighter .color1 a
+{ 
+	color: darkblue !important; 
+}
+
+.syntaxhighlighter .color2,
+.syntaxhighlighter .color2 a
+{ 
+    color: darkcyan !important; 
+	//color: darkgray !important; 
+}
+
+.syntaxhighlighter .color3,
+.syntaxhighlighter .color3 a
+{ 
+	color: red !important; 
+    font-style: italic !important;
+}
