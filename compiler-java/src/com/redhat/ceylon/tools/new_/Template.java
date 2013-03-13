@@ -64,7 +64,7 @@ public class Template {
         StringBuffer result = new StringBuffer();
         while (matcher.find()) {
             String token = matcher.group(1);
-            String replacement = subs.getReplacement(token, matcher, source);
+            String replacement = Matcher.quoteReplacement(subs.getReplacement(token, matcher, source));
             matcher.appendReplacement(result, replacement);
         }
         matcher.appendTail(result);
