@@ -9,7 +9,11 @@ function Callable(wat) {
 initType(Callable, 'ceylon.language::Callable');
 exports.Callable=Callable;
 
-function $JsCallable(callable) {
+function $JsCallable(callable,targs) {
+    callable.getT$all=Callable.getT$all;
+    if (targs !== undefined) {
+        callable.$$targs$$=targs;
+    }
     return callable;
 }
 initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Callable);
@@ -36,3 +40,4 @@ function JsCallableList(value) {
 
 exports.JsCallableList=JsCallableList;
 exports.JsCallable=JsCallable;
+exports.$JsCallable=$JsCallable;
