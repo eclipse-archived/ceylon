@@ -812,6 +812,9 @@ Float|Integer num = one;</programlisting></comment>
         would involve an anonymous class type, the anonymous class is replaced by the 
         intersection of the class type it extends with all interface types it satisfies.</para>
         
+        <comment><para>TODO: properly define how expressions with no type occurring in a
+        <literal>dynamic</literal> block affect type inference.</para></comment>
+            
         </section>
         
     </section>

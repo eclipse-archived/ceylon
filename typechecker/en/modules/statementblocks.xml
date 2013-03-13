@@ -584,7 +584,7 @@ class Complex(Float x, Float y=0.0)
         <para>As a special exception to the above, if there is no declaration with the 
         given name in scope at the program element and the program element occurs inside 
         a <literal>dynamic</literal> block, then the unqualified reference does not refer 
-        to any statically typed declaration, and has no type</para>
+        to any statically typed declaration.</para>
         
     </section>
     
@@ -666,8 +666,7 @@ class Complex(Float x, Float y=0.0)
         
         <para>As a special exception to the above, if the program element occurs inside 
         a <literal>dynamic</literal> block, and the the receiver expression has no type, 
-        then the qualified reference does not refer to any statically typed declaration, 
-        and has no type</para>
+        then the qualified reference does not refer to any statically typed declaration.</para>
         
     </section>
     
