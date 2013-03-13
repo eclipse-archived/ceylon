@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -93,7 +94,24 @@ public class TypeUtils {
             if (t.isAlias()) {
                 t = t.getExtendedTypeDeclaration();
             }
-            boolean qual = gen.qualify(node, t);
+            boolean qual = false;
+            if (t.getScope() instanceof ClassOrInterface) {
+                List<ClassOrInterface> parents = new ArrayList<>();
+                ClassOrInterface parent = (ClassOrInterface)t.getScope();
+                parents.add(0, parent);
+                while (parent.getScope() instanceof ClassOrInterface) {
+                    parent = (ClassOrInterface)parent.getScope();
+                    parents.add(0, parent);
+                }
+                qual = true;
+                for (ClassOrInterface p : parents) {
+                    gen.out(gen.getNames().name(p), ".");
+                }
+            } else if (gen.isImported(node, t)) {
+                gen.out(gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()), ".");
+                qual = true;
+            }
+
             String tname = gen.getNames().name(t);
             if (!qual && isReservedTypename(tname)) {
                 gen.out(tname, "$");
