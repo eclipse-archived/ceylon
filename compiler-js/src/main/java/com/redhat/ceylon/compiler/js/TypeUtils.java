@@ -276,7 +276,7 @@ public class TypeUtils {
     Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
         HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
         r.put(iterable.getTypeParameters().get(0), pt);
-        r.put(iterable.getTypeParameters().get(1), _null.getExtendedType());
+        r.put(iterable.getTypeParameters().get(1), _null.getType());
         return r;
     }
 
