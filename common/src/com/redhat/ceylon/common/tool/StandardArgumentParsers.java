@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,18 @@ public class StandardArgumentParsers {
         @Override
         public Integer parse(String argument, Tool tool) {
             return Integer.valueOf(argument);
+        }
+    };
+    
+    static final ArgumentParser<URI> URI_PARSER = new ArgumentParser<URI>() {
+        @Override
+        public URI parse(String argument, Tool tool) {
+            try {
+                return new URI(argument);
+            } catch (URISyntaxException e) {
+                File f = new File(argument);
+                return f.toURI();
+            }
         }
     };
 
@@ -118,7 +131,7 @@ public class StandardArgumentParsers {
         } else if (File.class.isAssignableFrom(setterType)) {
             return new ConstructorArgumentParser<>(File.class);
         } else if (URI.class.isAssignableFrom(setterType)) {
-            return new ConstructorArgumentParser<>(URI.class);
+            return URI_PARSER;
         } else if (URL.class.isAssignableFrom(setterType)) {
             return new ConstructorArgumentParser<>(URL.class);
         } else if (Enum.class.isAssignableFrom(setterType)) {
