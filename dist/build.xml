@@ -276,8 +276,8 @@ Used with another target such as 'package'">
             <fileset dir="samples">
                 <include name="helloworld/**"/>
                 <include name="no-module/**"/>
+                <include name="with-module/**"/>
                 <include name="interop-java/**"/>
-                <include name="aetherdefault/**"/>
             </fileset>
         </copy>
     </target>
