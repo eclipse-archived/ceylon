@@ -1129,32 +1129,36 @@ public class TypeVisitor extends Visitor {
             for (Tree.StaticType st: cts) {
                 ProducedType type = st.getTypeModel();
                 if (type!=null) {
-                    if (type.getDeclaration() instanceof TypeParameter) {
-                        if (!(td instanceof TypeParameter)) {
-                            TypeParameter tp = (TypeParameter) type.getDeclaration();
-                            td.setSelfType(type);
-                            if (tp.isSelfType()) {
-                                st.addError("type parameter may not act as self type for two different types");
+                    TypeDeclaration ctd = type.getDeclaration();
+                    if (ctd!=null) {
+                        if (ctd.equals(td)) {
+                            st.addError("directly enumerates itself: " + td.getName());
+                            continue;
+                        }
+                        else if (ctd instanceof TypeParameter) {
+                            if (!(td instanceof TypeParameter)) {
+                                TypeParameter tp = (TypeParameter) ctd;
+                                td.setSelfType(type);
+                                if (tp.isSelfType()) {
+                                    st.addError("type parameter may not act as self type for two different types");
+                                }
+                                else {
+                                    tp.setSelfTypedDeclaration(td);
+                                }
+                                if (cts.size()>1) {
+                                    st.addError("a type may not have more than one self type");
+                                }
                             }
                             else {
-                                tp.setSelfTypedDeclaration(td);
-                            }
-                            if (cts.size()>1) {
-                                st.addError("a type may not have more than one self type");
+                                //TODO: error?!
                             }
                         }
-                        else {
-                            //TODO: error?!
+                        else if (!(ctd instanceof ClassOrInterface)) {
+                            st.addError("case type must be a class, interface, or self type");
+                            continue;
                         }
+                        list.add(type);
                     }
-                    else if (!(type.getDeclaration() instanceof ClassOrInterface)) {
-                    	st.addError("case type must be a class, interface, or self type");
-                    	continue;
-                    }
-                    list.add(type);
-                    /*if (type.getDeclaration() instanceof Interface) {
-                        st.addWarning("interface cases are not yet supported");
-                    }*/
                 }
             }
             if (!list.isEmpty()) {

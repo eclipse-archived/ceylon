@@ -21,3 +21,9 @@ void switchX(X<String> x) {
     case (is Z<String>) { print(x.name); }
     case (is W) { do(x); }
 }
+
+@error abstract class Circ() of Circ {}
+void switchCirc(Circ c) {
+    switch (c)
+    case (is Circ) {}
+}
