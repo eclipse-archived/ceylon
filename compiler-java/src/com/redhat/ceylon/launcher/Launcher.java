@@ -54,7 +54,7 @@ public class Launcher {
         initGlobalLogger(verbose);
         
         if (verbose) {
-            System.err.println("INFO: Ceylon home directory is '" + CeylonClassLoader.determineHome() + "'");
+            System.err.println("INFO: Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
             for (File f : cp) {
                 System.err.println("INFO: path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
             }
@@ -83,9 +83,9 @@ public class Launcher {
         Thread.currentThread().setContextClassLoader(ceylonClassLoader);
         
         // Set some important system properties
-        System.setProperty("ceylon.home", CeylonClassLoader.determineHome().getAbsolutePath());
-        System.setProperty("ceylon.system.repo", CeylonClassLoader.determineRepo().getAbsolutePath());
-        System.setProperty("ceylon.system.version", CeylonClassLoader.determineSystemVersion());
+        System.setProperty("ceylon.home", LauncherUtil.determineHome().getAbsolutePath());
+        System.setProperty("ceylon.system.repo", LauncherUtil.determineRepo().getAbsolutePath());
+        System.setProperty("ceylon.system.version", LauncherUtil.determineSystemVersion());
 
         return ceylonClassLoader;
     }

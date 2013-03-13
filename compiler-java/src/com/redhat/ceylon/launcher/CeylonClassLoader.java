@@ -27,9 +27,6 @@ import com.redhat.ceylon.common.Versions;
  *
  */
 public class CeylonClassLoader extends URLClassLoader {
-    
-    private static final String CEYLON_REPO = "repo";
-    private static final String CEYLON_LIBS = "lib";
 
     public CeylonClassLoader() throws URISyntaxException, MalformedURLException, FileNotFoundException {
         super(getClassPathUrls());
@@ -51,9 +48,9 @@ public class CeylonClassLoader extends URLClassLoader {
     
     public static List<File> getClassPath() throws URISyntaxException, FileNotFoundException {
         // Determine the necessary folders
-        File ceylonHome = determineHome();
-        File ceylonRepo = determineRepo();
-        File ceylonLib = determineLibs();
+        File ceylonHome = LauncherUtil.determineHome();
+        File ceylonRepo = LauncherUtil.determineRepo();
+        File ceylonLib = LauncherUtil.determineLibs();
         
         // Perform some sanity checks
         if (!ceylonHome.isDirectory()) {
@@ -72,7 +69,7 @@ public class CeylonClassLoader extends URLClassLoader {
         findLibraries(archives, ceylonLib);
         
         // List all the necessary Ceylon JARs and CARs
-        String version = determineSystemVersion();
+        String version = LauncherUtil.determineSystemVersion();
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.java", version));
         archives.add(getRepoCar(ceylonRepo, "ceylon.language", version));
         archives.add(getRepoJar(ceylonRepo, "ceylon.runtime", version));
@@ -85,96 +82,6 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", "main"));
         
         return archives;
-    }
-    
-    public static File determineHome() throws URISyntaxException {
-        // Determine the Ceylon home/install folder
-        File ceylonHome;
-        // First try the ceylon.home system property
-        String ceylonHomeStr = System.getProperty("ceylon.home");
-        if (ceylonHomeStr == null) {
-            // Second try the CEYLON_HOME environment variable
-            ceylonHomeStr = System.getenv("CEYLON_HOME");
-        }
-        if (ceylonHomeStr == null) {
-            // Then try to deduce it from the location of the current JAR file
-            // (assuming $CEYLON_HOME/lib/ceylon-bootstrap.jar)
-            File jar = new File(CeylonClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            ceylonHome = jar.getParentFile().getParentFile();
-            if (!checkHome(ceylonHome)) {
-                // As a last ditch effort see if we can find "ceylon" in the system's shell
-                // path and decuce the home folder from that (assuming $CEYLON_HOME/bin/ceylon)
-                File script = findCeylonScript();
-                if (script != null) {
-                    ceylonHome = script.getParentFile().getParentFile();
-                }
-            }
-        } else {
-            ceylonHome = new File(ceylonHomeStr);
-        }
-        return ceylonHome;
-    }
-
-    public static File determineRepo() throws URISyntaxException {
-        // Determine the Ceylon system repository folder
-        File ceylonRepo;
-        String ceylonSystemRepo = System.getProperty("ceylon.system.repo");
-        if (ceylonSystemRepo != null) {
-            ceylonRepo = new File(ceylonSystemRepo);
-        } else {
-            ceylonRepo = new File(determineHome(), CEYLON_REPO);
-        }
-        return ceylonRepo;
-    }
-    
-    public static File determineLibs() throws URISyntaxException {
-        // Determine the Ceylon system library folder
-        File ceylonLib;
-        String ceylonSystemRepo = System.getProperty("ceylon.system.libs");
-        if (ceylonSystemRepo != null) {
-            ceylonLib = new File(ceylonSystemRepo);
-        } else {
-            ceylonLib = new File(determineHome(), CEYLON_LIBS);
-        }
-        return ceylonLib;
-    }
-    
-    public static String determineSystemVersion() {
-        // Determine the Ceylon system/language/runtime version
-        String ceylonSystemVersion = System.getProperty("ceylon.system.version");
-        if (ceylonSystemVersion == null) {
-            // Second try the constant defined in Versions
-            ceylonSystemVersion = Versions.CEYLON_VERSION_NUMBER;
-        }
-        return ceylonSystemVersion;
-    }
-    
-    private static File findCeylonScript() {
-        String path = System.getenv("PATH");
-        if (path != null) {
-            String ceylonScriptName;
-            if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
-                ceylonScriptName = "ceylon.bat";
-            } else {
-                ceylonScriptName = "ceylon";
-            }
-            String[] elems = path.split(File.pathSeparator);
-            for (String elem : elems) {
-                File script = new File(elem, ceylonScriptName);
-                if (script.isFile()) {
-                    try {
-                        return script.getCanonicalFile();
-                    } catch (IOException e) {
-                        // Ignore errors and keep on trying
-                    }
-                }
-            }
-        }
-        return null;
-    }
-    
-    private static boolean checkHome(File ceylonHome) {
-        return (new File(ceylonHome, CEYLON_REPO)).isDirectory() && (new File(ceylonHome, CEYLON_LIBS)).isDirectory();
     }
     
     private static File getRepoJar(File repo, String moduleName, String version) {
