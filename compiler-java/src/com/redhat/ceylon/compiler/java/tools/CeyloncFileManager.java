@@ -306,14 +306,4 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         }
         return outDir;
     }
-
-    @Override
-    public String getEncodingName() {
-        String encName = options.get(OptionName.ENCODING);
-        if (encName == null)
-            return "UTF-8"; // we default to UTF-8
-        else
-            return encName;
-    }
-
 }
