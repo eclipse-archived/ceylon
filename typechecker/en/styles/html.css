@@ -50,8 +50,9 @@ div.table TABLE {
     empty-cells: hide;
 }
 
-TD  {
-    padding: 4pt;
+div.table TD TH  {
+    padding: 4px;
+    border: 2px solid #f0f0f0;
 }
 
 H1 { font-size: 200%; font-weight: bold; }
