@@ -19,10 +19,6 @@
     <literal>General_Category</literal> is <literal>Decimal_Number</literal>, 
     <literal>Letter_Number</literal>, or <literal>Other_Number</literal>.</para>
             
-    <comment><para>TODO: what is the character encoding? Does it work just like
-    <literal>javac</literal>? Should we allow it to be declared by the source 
-    file itself?</para></comment>
-        
     <section id="whitespace">
         <title>Whitespace</title>
         
