@@ -53,7 +53,6 @@ mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,samples,templates}
 
 rm -f bin/*.bat
 install -m 755 bin/ceylon                      $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylon-cp.sh                $RPM_BUILD_ROOT%{ceylon_home}/bin
 install -m 755 bin/ceylon-completion.bash      $RPM_BUILD_ROOT%{ceylon_home}/bin
 cp -pr repo/* $RPM_BUILD_ROOT%{ceylon_home}/repo
 cp -pr lib/* $RPM_BUILD_ROOT%{ceylon_home}/lib
@@ -67,7 +66,6 @@ popd
 %files
 %defattr(-,root,root)
 %attr(755,root,root) %{ceylon_home}/bin/ceylon
-%attr(644,root,root) %{ceylon_home}/bin/ceylon-cp.sh
 %attr(644,root,root) %{ceylon_home}/bin/ceylon-completion.bash
 /usr/bin/ceylon*
 %{ceylon_home}/bin/*
@@ -79,6 +77,8 @@ popd
 
 
 %changelog
+* Wed Mar 13 2013 Tako Schotanus <tschotan@redhat.com> 0.5.0-1
+- Removed references to ceylon-cp.sh that doesn't exist anymore
 * Wed Oct 31 2012 Tako Schotanus <tschotan@redhat.com> 0.5.0-0
 - Update for 0.5
 * Thu Oct 25 2012 Stephane Epardaud <separdau@redhat.com> 0.4.0-0
