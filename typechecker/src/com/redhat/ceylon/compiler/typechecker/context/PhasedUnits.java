@@ -33,6 +33,7 @@ public class PhasedUnits {
     private final Context context;
     private final ModuleManager moduleManager;
     private List<String> moduleFilters;
+    private String encoding;
 
     public PhasedUnits(Context context) {
         this.context = context;
@@ -156,7 +157,7 @@ public class PhasedUnits {
     }
 
     protected String getEncoding() {
-		return System.getProperty("file.encoding");
+		return encoding != null ? encoding : System.getProperty("file.encoding");
 	}
 
     private void parseFileOrDirectory(VirtualFile file, VirtualFile srcDir) throws Exception {
@@ -253,5 +254,9 @@ public class PhasedUnits {
         for (PhasedUnit pu : listOfUnits) {
             pu.visitRemainingModulePhase();
         }
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 }
