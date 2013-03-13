@@ -225,7 +225,13 @@
           <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
           <replacevalue><![CDATA[<pre class="brush: ceylon">]]></replacevalue>
         </replace>
-        
+    	
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<th colspan="3" align="center">Chapter&nbsp;]]></replacetoken>
+          <replacevalue><![CDATA[<th colspan="3" align="center">The Ceylon Language &mdash; ]]></replacevalue>
+        </replace>
+    	
     </target>
 
     <target name="lang.dochtmlsingle"
