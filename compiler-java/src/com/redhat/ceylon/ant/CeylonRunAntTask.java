@@ -113,14 +113,14 @@ public class CeylonRunAntTask extends CeylonAntTask {
             cmd.createArgument().setValue("--src="+src.toString());
         }
         if (systemRepository != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(systemRepository));
+            cmd.createArgument().setValue("--sysrep=" + systemRepository);
         }
         
         for(Repo rep : this.reposet.getRepos()){
             // skip empty entries
             if(rep.url == null || rep.url.isEmpty())
                 continue;
-            cmd.createArgument().setValue("--rep="+Util.quoteParameter(rep.url));
+            cmd.createArgument().setValue("--rep="+rep.url);
         }
         
         cmd.createArgument().setValue(module);

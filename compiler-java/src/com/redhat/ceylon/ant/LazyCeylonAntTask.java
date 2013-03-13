@@ -178,7 +178,7 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
         }
         
         if (getSystemRepository() != null) {
-            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository()));
+            cmd.createArgument().setValue("--sysrep=" + getSystemRepository());
         }
         
         for(Repo rep : getReposet()){
@@ -186,7 +186,7 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
             if(rep.url == null || rep.url.isEmpty())
                 continue;
             log("Adding repository: "+rep, Project.MSG_VERBOSE);
-            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(rep.url));
+            cmd.createArgument().setValue("--rep=" + rep.url);
         }
     }
     
