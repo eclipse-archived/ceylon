@@ -5,7 +5,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     Bug954(final boolean b) {
         final long n = 2L;
         this.x = null;
-        x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+        x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -15,7 +15,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         };
         this.y = null;
         if (b) {
-            y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
                 
                 @.java.lang.Override
                 public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -24,7 +24,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 }
             };
         } else {
-            y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
                 
                 @.java.lang.Override
                 public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -34,7 +34,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             };
         }
         this.pubx = null;
-        pubx = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+        pubx = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -44,7 +44,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         };
         this.puby = null;
         if (b) {
-            puby = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            puby = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
                 
                 @.java.lang.Override
                 public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -53,7 +53,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 }
             };
         } else {
-            puby = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            puby = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
                 
                 @.java.lang.Override
                 public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {
@@ -118,7 +118,7 @@ final class bug954_ {
             }
         }
         final x_ x = new x_();
-        x.x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+        x.x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -144,7 +144,7 @@ final class bug954_ {
         }
         final y_ y = new y_();
         if (b) {
-            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -154,7 +154,7 @@ final class bug954_ {
                 }
             };
         } else {
-            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer(Integer)"){
+            y.y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Integer(Integer)"){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
