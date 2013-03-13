@@ -671,7 +671,8 @@ TypeConstraints?
         
         <para>The cases may be interfaces, classes, or toplevel anonymous classes. A 
         case may be an <literal>abstract</literal> class. Each case must be a subtype 
-        of the interface type. An interface may not be a case of itself.</para>
+        of the interface type. An interface may not be a case of itself. An interface 
+        declaration may not list the same case twice.</para>
                 
         <para>If an interface has an <literal>of</literal> clause, then every interface 
         or class which is a subtype of the interface must be subtype of exactly one of 
@@ -1448,7 +1449,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
                 
         <para>The cases may be classes or toplevel anonymous classes. A case may 
         be an <literal>abstract</literal> class. Each case must be a subclass of 
-        the class. A class may not be a case of itself.</para>
+        the class. A class may not be a case of itself. A class declaration may 
+        not list the same case twice.</para>
                         
         <para>If a class has an <literal>of</literal> clause, then another class 
         may not directly <literal>extend</literal> the class unless it is of one 
