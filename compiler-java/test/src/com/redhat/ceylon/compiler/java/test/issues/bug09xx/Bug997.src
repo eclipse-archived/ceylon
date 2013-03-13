@@ -17,7 +17,7 @@ final class bug997_ {
             }
         }
         final format_ format = new format_();
-        final .ceylon.language.Callable<? extends .java.lang.Object> printf = .ceylon.language.compose_.compose(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Anything)"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> printf = .ceylon.language.compose_.compose(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Anything)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -30,7 +30,7 @@ final class bug997_ {
                     returning null;
                 );
             }
-        }, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String, String)"){
+        }, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "String(String, String)"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

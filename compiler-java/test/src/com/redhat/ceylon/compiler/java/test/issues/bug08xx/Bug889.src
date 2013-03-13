@@ -14,7 +14,7 @@ public final class bug889_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
     final Element val) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>("Boolean()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()"){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore

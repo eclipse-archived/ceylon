@@ -10,7 +10,7 @@ class CallableReturnMethod implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$priv() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
@@ -20,7 +20,7 @@ class CallableReturnMethod implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2$priv() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
@@ -30,7 +30,7 @@ class CallableReturnMethod implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m3$priv(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod c) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {

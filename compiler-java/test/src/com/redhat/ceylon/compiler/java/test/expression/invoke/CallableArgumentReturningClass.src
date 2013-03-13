@@ -30,7 +30,7 @@ final class callableArgumentReturningClass_m_ {
     }
     
     static void callableArgumentReturningClass_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningClass_f_.callableArgumentReturningClass_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass>("CallableArgumentReturningClass()"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningClass_f_.callableArgumentReturningClass_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass>(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "CallableArgumentReturningClass()"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass $call() {

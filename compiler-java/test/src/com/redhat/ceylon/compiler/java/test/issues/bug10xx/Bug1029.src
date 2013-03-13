@@ -6,7 +6,7 @@ final class bug1029_ {
     }
     
     static void bug1029() {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String, String)"){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "String(String, String)"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

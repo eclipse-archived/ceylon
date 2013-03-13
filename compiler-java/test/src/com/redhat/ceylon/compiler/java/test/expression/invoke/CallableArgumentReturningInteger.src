@@ -28,7 +28,7 @@ final class callableArgumentReturningInteger_m_ {
     }
     
     static void callableArgumentReturningInteger_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_f_.callableArgumentReturningInteger_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("Integer()"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_f_.callableArgumentReturningInteger_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {

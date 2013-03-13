@@ -19,7 +19,7 @@ final class deferredFunctionInitialization_ {
             }
         }
         final s_ s = new s_();
-        s.s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String()"){
+        s.s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {

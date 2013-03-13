@@ -21,7 +21,7 @@ class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.c
         (
             let
             {
-                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore

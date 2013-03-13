@@ -17,7 +17,7 @@ final class defaultFunctionReference_ {
     }
     
     static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference$f() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Object)"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Object)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -81,7 +81,7 @@ final class defaultFunctionReference2_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference2$f(final .java.lang.String s) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Object*)"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor), "Anything(Object*)"){
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .ceylon.language.Sequential<? extends .java.lang.Object> $$o() {

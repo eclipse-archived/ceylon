@@ -26,7 +26,7 @@ final class anonymousStatementFunction_ {
             }
         }
         final ggg_ ggg = new ggg_();
-        fff.fff(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(Object)"){
+        fff.fff(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Object.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(Object)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -38,7 +38,7 @@ final class anonymousStatementFunction_ {
         (
             let
             {
-                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -51,7 +51,7 @@ final class anonymousStatementFunction_ {
             }
             returning null;
         );
-        ggg.ggg(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>("Float(Float)"){
+        ggg.ggg(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Float(Float)"){
             
             @.java.lang.Override
             public .ceylon.language.Float $call(final .java.lang.Object $param$0) {
@@ -62,7 +62,7 @@ final class anonymousStatementFunction_ {
         (
             let
             {
-                .ceylon.language.Callable $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>("Float()"){
+                .ceylon.language.Callable $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Float()"){
                     
                     @.java.lang.Override
                     public .ceylon.language.Float $call(final .java.lang.Object $param$0) {

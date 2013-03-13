@@ -24,7 +24,7 @@ final class callableCapture_m_ {
     }
     
     static void callableCapture_m() {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> callableCapture_bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(Integer)"){
+        final .ceylon.language.Callable<? extends .ceylon.language.String> callableCapture_bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {

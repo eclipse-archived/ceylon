@@ -69,7 +69,7 @@ final class reifiedInstantiateInterop_ {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
         c.foo();
         c.foo();
-        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything()"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -85,7 +85,7 @@ final class reifiedInstantiateInterop_ {
         };
         f.$call();
         final .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c2 = new .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
-        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>>("JavaClass<Integer>()"){
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, "JavaClass<Integer>()"){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore

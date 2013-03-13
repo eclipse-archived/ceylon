@@ -5,7 +5,7 @@ class DeferredMethodInitializationMultipleSpecification implements .com.redhat.c
     DeferredMethodInitializationMultipleSpecification(final boolean b) {
         this.s = null;
         if (b) {
-            s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("String(String)"){
+            s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)"){
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call(final .java.lang.Object $param$0) {

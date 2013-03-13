@@ -6,7 +6,7 @@ final class getOrder_ {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.Comparison> getOrder() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>("Comparison()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Comparison()"){
             
             @.java.lang.Override
             public .ceylon.language.Comparison $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

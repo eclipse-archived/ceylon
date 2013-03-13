@@ -23,7 +23,7 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     
     ActualMethodShortcutSub() {
         super();
-        this.print2$specifier = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Anything(String)"){
+        this.print2$specifier = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(String)"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
