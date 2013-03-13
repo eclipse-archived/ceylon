@@ -329,8 +329,8 @@ public class MiscTest extends CompilerTest {
     }
     
     @Test
-    public void testLaunchDistCeylonCompile() throws IOException, InterruptedException {
-        String[] args = {
+    public void testLaunchDistCeylon() throws IOException, InterruptedException {
+        String[] args1 = {
                 "../ceylon-dist/dist/bin/ceylon",
                 "compile",
                 "--src",
@@ -339,12 +339,8 @@ public class MiscTest extends CompilerTest {
                 "build/test-cars",
                 "com.example.helloworld"
         };
-        launchCeylon(args);
-    }
-    
-    @Test
-    public void testLaunchDistCeylonDoc() throws IOException, InterruptedException {
-        String[] args = {
+        launchCeylon(args1);
+        String[] args2 = {
                 "../ceylon-dist/dist/bin/ceylon",
                 "doc",
                 "--src",
@@ -353,19 +349,15 @@ public class MiscTest extends CompilerTest {
                 "build/test-cars",
                 "com.example.helloworld"
         };
-        launchCeylon(args);
-    }
-    
-    @Test
-    public void testLaunchDistCeylonRun() throws IOException, InterruptedException {
-        String[] args = {
+        launchCeylon(args2);
+        String[] args3 = {
                 "../ceylon-dist/dist/bin/ceylon",
                 "run",
                 "--rep",
                 "build/test-cars",
                 "com.example.helloworld/1.0.0"
         };
-        launchCeylon(args);
+        launchCeylon(args3);
     }
     
     public void launchCeylon(String[] args) throws IOException, InterruptedException {
