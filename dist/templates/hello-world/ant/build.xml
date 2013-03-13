@@ -5,13 +5,13 @@
 <project name="@[module.name]" default="run">
 	
 	<property name="ceylon.home" value="@[ceylon.home]"/>
-	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/@[ceylon.version.number]/com.redhat.ceylon.ant-@[ceylon.version.number].jar"/>
+	<property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar"/>
 	
 	<target name="ceylon-ant-taskdefs">
 	  <path id="ant-tasks">
 	    <pathelement location="${ceylon.ant.lib}"/>
 	  </path>
-      <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+	  <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
 	</target>
 	
     <target name="default" depends="doc, run">
