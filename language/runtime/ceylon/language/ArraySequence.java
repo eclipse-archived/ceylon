@@ -25,17 +25,28 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     // The array length is the first element in the array
+    @Ignore
     private static final long USE_ARRAY_SIZE = -10L;
-    
+
+    @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
     private final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
+    @Ignore
     private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
+    @Ignore
     private final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
+    @Ignore
     private final ceylon.language.Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
+    @Ignore
     private final ceylon.language.List$impl<Element> $ceylon$language$List$this;
+    @Ignore
     private final ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this;
+    @Ignore
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
+    @Ignore
     private final ceylon.language.Ranged$impl<Integer,List<? extends Element>> $ceylon$language$Ranged$this;
+    @Ignore
     private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     /** 
