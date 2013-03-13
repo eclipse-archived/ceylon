@@ -47,7 +47,7 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
-exec $JAVA \
+exec "$JAVA" \
  $JAVA_OPTS \
  -jar "$LIB/ceylon-bootstrap.jar" \
  "$@"
