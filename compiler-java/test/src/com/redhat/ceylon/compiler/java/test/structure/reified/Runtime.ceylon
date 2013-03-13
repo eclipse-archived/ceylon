@@ -13,6 +13,10 @@ shared class Container<Outer>(){
     }
 }
 
+String runtimeMethod(Integer param){
+    return nothing;
+}
+
 void runtime(){
     Object member = Container<String>().Member<Integer>();
     assert(member is Container<String>.Member<Integer>);
@@ -57,4 +61,14 @@ void runtime(){
     
     Object localInteger = Local<Integer>();
     assert(localInteger is Local<Integer>);
+    
+    Object m = runtimeMethod;
+    assert(m is String(Integer));
+    assert(!m is Integer(Integer));
+    assert(!m is String(String));
+    assert(!m is String());
+    Object m2 = runtime;
+    assert(m2 is Anything());
+    assert(!m2 is String());
+    assert(!m2 is Anything(Integer));
 }

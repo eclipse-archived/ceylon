@@ -658,6 +658,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdCallable(){
+        compareWithJavaSource("reified/Callable");
+    }
+
+    @Test
     public void testRfdTest(){
         compareWithJavaSource("reified/Test");
     }

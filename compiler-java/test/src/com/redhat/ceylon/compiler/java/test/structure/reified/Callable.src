@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class reifiedCallable_ {
+    
+    private reifiedCallable_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    static .java.lang.String reifiedCallable(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> c = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.reified.reifiedCallable_.reifiedCallable($$i));
+            }
+        };
+        return "";
+    }
+}
