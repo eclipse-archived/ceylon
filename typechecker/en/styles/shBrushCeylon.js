@@ -38,7 +38,7 @@
             { regex: /(#|\$)[a-zA-Z0-9_]+\b/gi, css: 'value' },                                 // hex/bin numbers
             { regex: /\b[A-Z][a-zA-Z0-9_]*/g, css: 'color1' },                                  // types
             { regex: new RegExp(this.getKeywords(annotations), 'gm'), css: 'color2' },          // annotations
-            { regex: /\b(\d|_)+(\.(\d|_)+)?((E|e)(\+|\-)\d+)?[munpfkMGTP]?\b/g, css: 'value' }  // decimal numbers
+            { regex: /\b(\d|_)+(\.(\d|_)+)?((E|e)(\+|\-)?\d+)?[munpfkMGTP]?\b/g, css: 'value' }  // decimal numbers
         ];
         
         this.forHtmlScript({

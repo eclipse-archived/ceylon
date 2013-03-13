@@ -1,6 +1,7 @@
 BODY {
     margin-left: 20%;
     margin-right: 20%;
+    //background-color: #f7f0d7; //#f1e9d2;
 }
 
 A {
@@ -75,13 +76,18 @@ TT {
     color: #000000;
 }
 
+PRE, div.syntaxhighlighter {
+    width: 95%;
+    margin-left:2%;
+    padding: 10px !important;
+    //background-color: #f7f0d7 !important;
+}
+
 PRE, .syntaxhighlighter .lines {
-    padding: 5px;
-    margin-left:10px;
-    margin-top:0px;
-    margin-bottom:0px;
+    //background-color: white !important;
+    margin: 5px !important;
     border-left: 5px solid #f0f0f0;
-    padding-left: 10px;
+    //border-right: 5px solid #f0f0f0;
     font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
 }
 
