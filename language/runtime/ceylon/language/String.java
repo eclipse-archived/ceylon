@@ -1062,7 +1062,9 @@ public class String
 
     @Ignore
     public static Callable<? extends Boolean> split$separator(){
-        return new AbstractCallable<Boolean>("whitespace") {
+        return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+                "whitespace") {
             @Override
             public Boolean $call(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).getWhitespace());
@@ -1082,7 +1084,9 @@ public class String
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String, ? extends java.lang.Object> getLines() {
-        return split(new AbstractCallable<Boolean>("whitespace") {
+        return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+                "whitespace") {
             @Override
             public Boolean $call(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).toString().equals("\n"));
@@ -1092,7 +1096,9 @@ public class String
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> getLines(java.lang.String value) {
-        return split(value, new AbstractCallable<Boolean>("whitespace") {
+        return split(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+                "whitespace") {
             @Override
             public Boolean $call(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).toString().equals("\n"));

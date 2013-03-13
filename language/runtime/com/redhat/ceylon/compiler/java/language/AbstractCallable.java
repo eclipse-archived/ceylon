@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
 import ceylon.language.Callable;
 
 /**
@@ -8,12 +11,16 @@ import ceylon.language.Callable;
  *
  * @param <Return>
  */
-public class AbstractCallable<Return> implements Callable<Return> {
+public class AbstractCallable<Return> implements Callable<Return>, ReifiedType {
     
     private final String string;
+    private TypeDescriptor $reifiedArguments;
+    private TypeDescriptor $reifiedReturn;
 
-    public AbstractCallable(String string) {
+    public AbstractCallable(TypeDescriptor $reifiedReturn, TypeDescriptor $reifiedArguments, String string) {
         this.string = string;
+        this.$reifiedReturn = $reifiedReturn;
+        this.$reifiedArguments = $reifiedArguments;
     }
     
     public Return $call() {
@@ -39,5 +46,10 @@ public class AbstractCallable<Return> implements Callable<Return> {
     @java.lang.Override
     public String toString() {
         return string;
+    }
+
+    @Override
+    public TypeDescriptor $getType() {
+        return TypeDescriptor.klass(Callable.class, $reifiedReturn, $reifiedArguments);
     }
 }
