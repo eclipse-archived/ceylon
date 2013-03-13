@@ -2247,6 +2247,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isTypeParameter(ProducedType type) {
+        if(type == null)
+            return false;
         if (typeFact().isOptionalType(type)) {
             type = type.eliminateNull();
         } 
