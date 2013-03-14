@@ -89,6 +89,7 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -1278,39 +1279,45 @@ public class ExpressionTransformer extends AbstractTransformer {
         OperatorTranslation operator = Operators.getOperator(Tree.AndOp.class);
         OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
 
-        JCExpression lower = transformBound(op.getTerm(), op.getLowerBound(), false);
-        JCExpression upper = transformBound(op.getTerm(), op.getUpperBound(), true);
+        SyntheticName middle = naming.alias("middle");
+        JCVariableDecl middleVarDecl = makeVar(middle, 
+                makeJavaType(op.getTerm().getTypeModel()), 
+                transformExpression(op.getTerm(), optimisationStrategy.getBoxingStrategy(), null));
+        
+        JCExpression lower = transformBound(middle, op.getTerm(), op.getLowerBound(), false);
+        JCExpression upper = transformBound(middle, op.getTerm(), op.getUpperBound(), true);
         
         at(op);
-        return transformOverridableBinaryOperator(operator, optimisationStrategy, lower, upper, null);
+        return make().LetExpr(middleVarDecl, transformOverridableBinaryOperator(operator, optimisationStrategy, lower, upper, null));
     }
 
-    public JCExpression transformBound(Tree.Term term, Tree.Bound bound, boolean isUpper) {
-        final OperatorTranslation operator;
-        final Term leftExpr;
-        final Term rightExpr;
-        if (isUpper) {
-            leftExpr = term;
-            rightExpr = bound.getTerm();
-            if (bound instanceof Tree.OpenBound) {
-                operator = Operators.getOperator(Tree.SmallerOp.class);
-            } else {
-                operator = Operators.getOperator(Tree.SmallAsOp.class);
-            }
-        } else {
-            leftExpr = bound.getTerm();
-            rightExpr = term;
-            if (bound instanceof Tree.OpenBound) {
-                operator = Operators.getOperator(Tree.SmallerOp.class);
-            } else {
-                operator = Operators.getOperator(Tree.SmallAsOp.class);
-            }
-        }
-        OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(bound, term, bound.getTerm(), this);
-
-        JCExpression left = transformExpression(leftExpr, optimisationStrategy.getBoxingStrategy(), null);
-        JCExpression right = transformExpression(rightExpr, optimisationStrategy.getBoxingStrategy(), null);
+    public JCExpression transformBound(SyntheticName middle, Tree.Term middleTerm, Tree.Bound bound, boolean isUpper) {
         
+        final OperatorTranslation operator;
+        final OptimisationStrategy optimisationStrategy;
+        final JCExpression left;
+        final JCExpression right;
+        if (isUpper) {
+            if (bound instanceof Tree.OpenBound) {
+                operator = Operators.getOperator(Tree.SmallerOp.class);
+            } else {
+                operator = Operators.getOperator(Tree.SmallAsOp.class);
+            }
+            optimisationStrategy = operator.getOptimisationStrategy(bound, middleTerm, bound.getTerm(), this);
+            left = middle.makeIdent();
+            right = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
+            
+        } else {
+            if (bound instanceof Tree.OpenBound) {
+                operator = Operators.getOperator(Tree.SmallerOp.class);
+            } else {
+                operator = Operators.getOperator(Tree.SmallAsOp.class);
+            }
+            optimisationStrategy = operator.getOptimisationStrategy(bound, middleTerm, bound.getTerm(), this);
+            left = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
+            right = middle.makeIdent();
+        }
+                
         at(bound);
         return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null);
     }
