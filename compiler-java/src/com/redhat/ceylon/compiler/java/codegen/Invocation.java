@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_TYP
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeMap;
@@ -1102,7 +1103,7 @@ class NamedArgumentInvocation extends Invocation {
             gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
         
-        ProducedType callableType = gen.functionalType(model);                
+        ProducedType callableType = model.getProducedReference(null, Collections.<ProducedType>emptyList()).getFullType();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(), 
                 callableType, 
                 model.getParameterLists().get(0),
