@@ -553,11 +553,31 @@ $(document).ready(function() {
                 
                 var tr = td.parent();
                 if( tr.is('tr') && tr.hasClass('row-collapsible') ) {
-                    $('.link-collapsible', tr).click();
+                    if( $('.description-collapsed', tr).length > 0 ) {
+                        $('.link-collapsible', tr).click();
+                        scrollIntoView(tr);
+                    }
                 }                
             }
         }
     }
+    
+    function scrollIntoView(element) {
+        var containerTop = $(window).scrollTop();
+        var containerBottom = containerTop + $(window).height();
+        var elementTop = element.offset().top;
+        var elementBottom = elementTop + element.height();
+        if (elementTop < containerTop) {
+            $(window).scrollTop(elementTop);
+        } else if (elementBottom > containerBottom) {
+            if( element.height() > $(window).height() ) {
+                $(window).scrollTop(elementTop);
+            } else {
+                $(window).scrollTop(elementBottom - $(window).height());
+            }
+        }
+    }
+    
 });
 
 
