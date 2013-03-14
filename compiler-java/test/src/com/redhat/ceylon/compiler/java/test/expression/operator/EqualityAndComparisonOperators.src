@@ -191,18 +191,66 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
     private final void withinUnboxed$priv() {
         boolean sync = false;
         final long x = 0L;
-        sync = 0L < x && x < 1L;
-        sync = 0L <= x && x < 1L;
-        sync = 0L < x && x <= 1L;
-        sync = 0L <= x && x <= 1L;
+        sync = (
+            let
+            {
+                long $middle$9 = x;
+            }
+            returning 0L < $middle$9 && $middle$9 < 1L;
+        );
+        sync = (
+            let
+            {
+                long $middle$10 = x;
+            }
+            returning 0L <= $middle$10 && $middle$10 < 1L;
+        );
+        sync = (
+            let
+            {
+                long $middle$11 = x;
+            }
+            returning 0L < $middle$11 && $middle$11 <= 1L;
+        );
+        sync = (
+            let
+            {
+                long $middle$12 = x;
+            }
+            returning 0L <= $middle$12 && $middle$12 <= 1L;
+        );
     }
     
     private final void withinBoxed$priv(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger x, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger l, final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger u) {
         boolean sync = false;
-        sync = l.compare(x).smallerThan() && x.compare(u).smallerThan();
-        sync = l.compare(x).asSmallAs() && x.compare(u).smallerThan();
-        sync = l.compare(x).smallerThan() && x.compare(u).asSmallAs();
-        sync = l.compare(x).asSmallAs() && x.compare(u).asSmallAs();
+        sync = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $middle$13 = x;
+            }
+            returning l.compare($middle$13).smallerThan() && $middle$13.compare(u).smallerThan();
+        );
+        sync = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $middle$14 = x;
+            }
+            returning l.compare($middle$14).asSmallAs() && $middle$14.compare(u).smallerThan();
+        );
+        sync = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $middle$15 = x;
+            }
+            returning l.compare($middle$15).smallerThan() && $middle$15.compare(u).asSmallAs();
+        );
+        sync = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $middle$16 = x;
+            }
+            returning l.compare($middle$16).asSmallAs() && $middle$16.compare(u).asSmallAs();
+        );
     }
     
     public static void main(.java.lang.String[] args) {
