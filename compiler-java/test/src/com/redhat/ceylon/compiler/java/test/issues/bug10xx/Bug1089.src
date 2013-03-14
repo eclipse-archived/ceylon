@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1089_ {
+    
+    private bug1089_() {
+    }
+    
+    static void bug1089() {
+        if (0L <= 0L && 0L < 2L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=0<2"));
+        if (0L < 1L && 1L < 2L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<2"));
+        if (0L <= 1L && 1L < 2L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<2"));
+        if (0L < 1L && 1L <= 2L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<=2"));
+        if (0L <= 1L && 1L <= 2L) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<=2"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1089_.bug1089();
+    }
+}
