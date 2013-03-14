@@ -1686,49 +1686,6 @@ public abstract class AbstractTransformer implements Transformation {
         return count;
     }
 
-    /**
-     * <p>Gets the type of the given functional
-     * (ignoring parameter types) according to 
-     * the functionals parameter lists. The result is always a 
-     * {@code Callable} of some kind (because Functionals always have 
-     * at least one parameter list).</p> 
-     * 
-     * <p>For example:</p>
-     * <table>
-     * <tbody>
-     * <tr><th>functional</th><th>functionalType(functional)</th></tr>
-     * <tr><td><code>String m()</code></td><td><code>Callable&lt;String&gt;</code></td></tr>
-     * <tr><td><code>String m()()</code></td><td><code>Callable&lt;Callable&lt;String&gt;&gt;</code></td></tr>
-     * </tbody>
-     * </table>
-     */
-    ProducedType functionalType(Functional model) {
-        return typeFact().getCallableType(functionalReturnType(model));
-    }
-    
-    /**
-     * <p>Gets the return type of the given functional (ignoring parameter 
-     * types) according to the functionals parameter lists. If the functional 
-     * has multiple parameter lists the return type will be a 
-     * {@code Callable}.</p>
-     * 
-     * <p>For example:</p>
-     * <table>
-     * <tbody>
-     * <tr><th>functional</th><th>functionalReturnType(functional)</th></tr>
-     * <tr><td><code>String m()</code></td><td><code>String</code></td></tr>
-     * <tr><td><code>String m()()</code></td><td><code>Callable&lt;String&gt;</code></td></tr>
-     * </tbody>
-     * </table>
-     */
-    ProducedType functionalReturnType(Functional model) {
-        ProducedType callableType = model.getType();
-        for (int ii = 1; ii < model.getParameterLists().size(); ii++) {
-            callableType = typeFact().getCallableType(callableType);
-        }
-        return callableType;
-    }
-    
     /** 
      * Return the upper bound of any type parameter, instead of the type 
      * parameter itself 
