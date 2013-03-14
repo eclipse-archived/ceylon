@@ -17,6 +17,16 @@ String runtimeMethod(Integer param){
     return nothing;
 }
 
+void runtimePassMeAMethod1(Integer f(Boolean b)){
+    Object o = f;
+    assert(o is Integer(Boolean));
+}
+
+void runtimePassMeAMethod2(Integer f(Boolean b)(String s)){
+    Object o = f;
+    assert(o is Integer(String)(Boolean));
+}
+
 void runtime(){
     Object member = Container<String>().Member<Integer>();
     assert(member is Container<String>.Member<Integer>);
@@ -71,4 +81,15 @@ void runtime(){
     assert(m2 is Anything());
     assert(!m2 is String());
     assert(!m2 is Anything(Integer));
+
+    runtimePassMeAMethod1{
+        Integer f(Boolean b){
+            return 1;
+        }
+    };
+    runtimePassMeAMethod2{
+        Integer f(Boolean b)(String s){
+            return 1;
+        }
+    };
 }

@@ -1,25 +1,72 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class reifiedCallable_ {
     
     private reifiedCallable_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    static .java.lang.String reifiedCallable(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i) {
+    static .java.lang.String reifiedCallable(final long i) {
         final .ceylon.language.Callable<? extends .ceylon.language.String> c = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(Integer)"){
             
             @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                 final long $$i = ((.ceylon.language.Integer)$param$0).longValue();
                 return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.reified.reifiedCallable_.reifiedCallable($$i));
             }
         };
         return "";
+    }
+}
+final class reifiedCallable2_ {
+    
+    private reifiedCallable2_() {
+    }
+    
+    static void reifiedCallable2(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> foo) {
+        (
+            let
+            {
+                .ceylon.language.Callable $arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean(String)"){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
+                        final .java.lang.String i = ((.ceylon.language.String)$param$0).toString();
+                        return .ceylon.language.Boolean.instance(false);
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedCallable2_.reifiedCallable2($arg$0$0);
+            }
+            returning null;
+        );
+    }
+}
+final class reifiedCallable3_ {
+    
+    private reifiedCallable3_() {
+    }
+    
+    static void reifiedCallable3(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> foo) {
+        (
+            let
+            {
+                .ceylon.language.Callable $arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean(Integer)(String)"){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call(final .java.lang.Object $param$0) {
+                        final .java.lang.String i = ((.ceylon.language.String)$param$0).toString();
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()"){
+                            
+                            @.java.lang.Override
+                            public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
+                                final long i2 = ((.ceylon.language.Integer)$param$0).longValue();
+                                return .ceylon.language.Boolean.instance(false);
+                            }
+                        };
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedCallable3_.reifiedCallable3($arg$1$0);
+            }
+            returning null;
+        );
     }
 }
