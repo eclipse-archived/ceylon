@@ -1286,24 +1286,30 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transformBound(Tree.Term term, Tree.Bound bound, boolean isUpper) {
-        OperatorTranslation operator;
+        final OperatorTranslation operator;
+        final Term leftExpr;
+        final Term rightExpr;
         if (isUpper) {
+            leftExpr = term;
+            rightExpr = bound.getTerm();
             if (bound instanceof Tree.OpenBound) {
                 operator = Operators.getOperator(Tree.SmallerOp.class);
             } else {
                 operator = Operators.getOperator(Tree.SmallAsOp.class);
             }
         } else {
+            leftExpr = bound.getTerm();
+            rightExpr = term;
             if (bound instanceof Tree.OpenBound) {
-                operator = Operators.getOperator(Tree.LargeAsOp.class);
+                operator = Operators.getOperator(Tree.SmallerOp.class);
             } else {
-                operator = Operators.getOperator(Tree.LargerOp.class);
+                operator = Operators.getOperator(Tree.SmallAsOp.class);
             }
         }
         OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(bound, term, bound.getTerm(), this);
 
-        JCExpression left = transformExpression(term, optimisationStrategy.getBoxingStrategy(), null);
-        JCExpression right = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
+        JCExpression left = transformExpression(leftExpr, optimisationStrategy.getBoxingStrategy(), null);
+        JCExpression right = transformExpression(rightExpr, optimisationStrategy.getBoxingStrategy(), null);
         
         at(bound);
         return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null);
