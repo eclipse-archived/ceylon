@@ -63,6 +63,7 @@ public abstract class CeylonDoc extends Markup {
         tag("meta charset='UTF-8'");
         around("title", title);
 
+        tag("link href='" + linkRenderer().getResourceUrl("favicon.ico") + "' rel='shortcut icon'");
         tag("link href='" + linkRenderer().getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + linkRenderer().getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + linkRenderer().getResourceUrl("bootstrap.min.css") + "' rel='stylesheet' type='text/css'");

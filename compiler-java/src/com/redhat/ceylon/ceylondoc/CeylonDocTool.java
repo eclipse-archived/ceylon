@@ -541,6 +541,7 @@ public class CeylonDocTool implements Tool {
             copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
             copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
             
+            copyResource("resources/favicon.ico", new File(resourcesDir, "favicon.ico"));
             copyResource("resources/ceylondoc-logo.png", new File(resourcesDir, "ceylondoc-logo.png"));
             copyResource("resources/ceylondoc-icons.png", new File(resourcesDir, "ceylondoc-icons.png"));
             copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
@@ -637,6 +638,7 @@ public class CeylonDocTool implements Tool {
                 markup.tag("meta charset='UTF-8'");
                 markup.around("title", pu.getUnit().getFilename());
                 Package decl = pu.getUnit().getPackage();
+                markup.tag("link href='" + getResourceUrl(decl, "favicon.ico") + "' rel='shortcut icon'");
                 markup.tag("link href='" + getResourceUrl(decl, "shCore.css") + "' rel='stylesheet' type='text/css'");
                 markup.tag("link href='" + getResourceUrl(decl, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
                 markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "jquery-1.8.2.min.js")+"'");

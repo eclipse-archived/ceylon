@@ -486,6 +486,7 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, ".resources/shBrushCeylon.js");
         assertFileExists(destDir, ".resources/ceylondoc-logo.png");
         assertFileExists(destDir, ".resources/ceylondoc-icons.png");
+        assertFileExists(destDir, ".resources/favicon.ico");
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "search.html");
         assertFileExists(destDir, "type_Types.html");
