@@ -28,7 +28,7 @@ doc "A string of characters. Each character in the string is
      optional type `Character?`, it is often more convenient
      to write `string[index..index]`, which evaluates to a
      `String` containing a single character, or to the empty
-     string \"\" if `index` refers to a position outside the
+     string `\"\"` if `index` refers to a position outside the
      string.
      
      The `string()` function makes it possible to use 
