@@ -55,8 +55,8 @@ doc "Abstract supertype of containers whose elements may be
      immutable iterable object given the view produced by a
      lazy operation. For example:
      
-         [ string.filter((Character c) => c.letter)
-                 .map((Character c) => c.uppercased)... ]
+         [ *string.filter((Character c) => c.letter)
+                 .map((Character c) => c.uppercased) ]
      
      Lazy operations normally return an instance of 
      `Iterable` or `Map`.
