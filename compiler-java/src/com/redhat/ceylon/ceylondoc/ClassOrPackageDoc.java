@@ -387,7 +387,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     						open("ul");
     					}
     					open("li");
-    					write(parameter.getName());
+    					around("span class='parameter'", parameter.getName());
     					write(doc);
     					close("li");
     				}

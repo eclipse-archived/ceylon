@@ -149,7 +149,8 @@
 	padding-right: 24px;
 }
 
-.signature {
+.signature,
+.parameter {
 	font-family: monospace;
 }
 

@@ -550,17 +550,17 @@ public class CeylonDocToolTest {
 
     private void assertParametersDocumentation(File destDir) throws IOException {
     	assertMatchInFile(destDir, "index.html", 
-    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li>numbers<p>Sequenced parameters <code>numbers</code></p>"));
+    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><span class='parameter'>numbers</span><p>Sequenced parameters <code>numbers</code></p>"));
         assertMatchInFile(destDir, "type_StubClass.html", 
                 Pattern.compile("<div class='parameters section'><span class='title'>Parameters:"));        
         assertMatchInFile(destDir, "type_StubClass.html", 
-                Pattern.compile("<li>a<p>Constructor parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter'>a</span><p>Constructor parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "type_StubClass.html", 
-                Pattern.compile("<li>b<p>Constructor parameter <code>b</code></p>"));        
+                Pattern.compile("<li><span class='parameter'>b</span><p>Constructor parameter <code>b</code></p>"));        
         assertMatchInFile(destDir, "type_StubClass.html", 
-                Pattern.compile("<li>a<p>Method parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter'>a</span><p>Method parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "type_StubClass.html", 
-                Pattern.compile("<li>b<p>Method parameter <code>b</code></p>"));
+                Pattern.compile("<li><span class='parameter'>b</span><p>Method parameter <code>b</code></p>"));
 	}
 
 	private void assertThrows(File destDir) throws IOException {
