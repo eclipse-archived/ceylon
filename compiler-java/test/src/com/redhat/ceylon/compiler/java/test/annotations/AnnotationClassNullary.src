@@ -1,0 +1,153 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassNullary$annotation {
+}
+class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
+    
+    AnnotationClassNullary(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation anno) {
+        this();
+    }
+    
+    AnnotationClassNullary() {
+        this.$ceylon$language$metamodel$OptionalAnnotation$this = new .ceylon.language.metamodel.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
+        this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
+        this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.metamodel.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$OptionalAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.metamodel.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$OptionalAnnotation$impl() {
+        return $ceylon$language$metamodel$OptionalAnnotation$this;
+    }
+    protected final .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$ConstrainedAnnotation$impl() {
+        return $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.metamodel.Annotated programElement) {
+        return $ceylon$language$metamodel$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    protected final .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylon$language$metamodel$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylon$language$metamodel$Annotation$impl() {
+        return $ceylon$language$metamodel$Annotation$this;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassNullarySequenced$annotation {
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassNullarySequenced$annotations {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation[] value();
+}
+class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
+    
+    AnnotationClassNullarySequenced(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation anno) {
+        this();
+    }
+    
+    AnnotationClassNullarySequenced() {
+        this.$ceylon$language$metamodel$SequencedAnnotation$this = new .ceylon.language.metamodel.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
+        this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
+        this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.metamodel.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$SequencedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.metamodel.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$SequencedAnnotation$impl() {
+        return $ceylon$language$metamodel$SequencedAnnotation$this;
+    }
+    protected final .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$ConstrainedAnnotation$impl() {
+        return $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.metamodel.Annotated programElement) {
+        return $ceylon$language$metamodel$ConstrainedAnnotation$this.occurs(programElement);
+    }
+    protected final .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced> $ceylon$language$metamodel$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced> $ceylon$language$metamodel$Annotation$impl() {
+        return $ceylon$language$metamodel$Annotation$this;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class)
+final class annotationClassNullary_ {
+    
+    private annotationClassNullary_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary annotationClassNullary() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullary_.annotationClassNullary();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class)
+final class annotationClassNullarySequenced_ {
+    
+    private annotationClassNullarySequenced_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced annotationClassNullarySequenced() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullarySequenced_.annotationClassNullarySequenced();
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation})
+class AnnotationClassNullary_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassNullary_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary_callsite();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary_callsite.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary_callsite.class);
+}

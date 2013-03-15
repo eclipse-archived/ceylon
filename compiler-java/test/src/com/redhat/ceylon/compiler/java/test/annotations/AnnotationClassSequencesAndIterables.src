@@ -1,0 +1,771 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassNullary$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+}
+class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassNullary() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassStringSequence$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .java.lang.String[] s();
+}
+class AnnotationClassStringSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassStringSequence(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequence.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassIntegerSequence$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract long[] i();
+}
+class AnnotationClassIntegerSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassIntegerSequence(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequence.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassBooleanSequence$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract boolean[] b();
+}
+class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassBooleanSequence(final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> b) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassCharacterSequence$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract int[] c();
+}
+class AnnotationClassCharacterSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassCharacterSequence(final .ceylon.language.Sequential<? extends .ceylon.language.Character> c) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequence.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassFloatSequence$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract double[] f();
+}
+class AnnotationClassFloatSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassFloatSequence(final .ceylon.language.Sequential<? extends .ceylon.language.Float> f) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequence.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassAnnotationClassSequence$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation[] a();
+}
+class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassAnnotationClassSequence(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> a) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassStringIterable$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .java.lang.String[] s();
+}
+class AnnotationClassStringIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassStringIterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterable.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassIntegerIterable$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract long[] i();
+}
+class AnnotationClassIntegerIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassIntegerIterable(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> i) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterable.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassBooleanIterable$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract boolean[] b();
+}
+class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassBooleanIterable(final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> b) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassCharacterIterable$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract int[] c();
+}
+class AnnotationClassCharacterIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassCharacterIterable(final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> c) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterable.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassFloatIterable$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract double[] f();
+}
+class AnnotationClassFloatIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassFloatIterable(final .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> f) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterable.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassAnnotationClassIterable$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation[] a();
+}
+class AnnotationClassAnnotationClassIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassAnnotationClassIterable(final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, ? extends .java.lang.Object> a) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterable.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterable.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassStringSequenceDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .java.lang.String[] s() default {""};
+}
+class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassStringSequenceDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.$init$s();
+                this($ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassStringSequenceDefaulted(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$s() {
+        return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassIntegerSequenceDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract long[] i() default {1L};
+}
+class AnnotationClassIntegerSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassIntegerSequenceDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$3 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequenceDefaulted.$init$i();
+                this($ceylontmp$i$3);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassIntegerSequenceDefaulted(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$i() {
+        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequenceDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequenceDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequenceDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassBooleanSequenceDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract boolean[] s() default {true};
+}
+class AnnotationClassBooleanSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassBooleanSequenceDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$s$5 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequenceDefaulted.$init$s();
+                this($ceylontmp$s$5);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassBooleanSequenceDefaulted(final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> s) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $init$s() {
+        return new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Empty>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Boolean.instance(true), .ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequenceDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequenceDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequenceDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassCharacterSequenceDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract int[] c() default {120};
+}
+class AnnotationClassCharacterSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassCharacterSequenceDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$c$7 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequenceDefaulted.$init$c();
+                this($ceylontmp$c$7);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassCharacterSequenceDefaulted(final .ceylon.language.Sequential<? extends .ceylon.language.Character> c) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.Character> $init$c() {
+        return new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Empty>(.ceylon.language.Character.$TypeDescriptor, .ceylon.language.Character.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Character.instance(120), .ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequenceDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequenceDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequenceDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassFloatSequenceDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract double[] f() default {3.141};
+}
+class AnnotationClassFloatSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassFloatSequenceDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$f$9 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequenceDefaulted.$init$f();
+                this($ceylontmp$f$9);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassFloatSequenceDefaulted(final .ceylon.language.Sequential<? extends .ceylon.language.Float> f) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.Float> $init$f() {
+        return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Empty>(.ceylon.language.Float.$TypeDescriptor, .ceylon.language.Float.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Float.instance(3.141), .ceylon.language.empty_.getEmpty$());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequenceDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequenceDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequenceDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassStringSequenceDefaultedEmpty$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .java.lang.String[] s() default {};
+}
+class AnnotationClassStringSequenceDefaultedEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassStringSequenceDefaultedEmpty() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$11 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaultedEmpty.$init$s();
+                this($ceylontmp$s$11);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassStringSequenceDefaultedEmpty(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$s() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaultedEmpty();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaultedEmpty.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaultedEmpty.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassAnnotationClassSequenceDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation[] a() default {};
+}
+class AnnotationClassAnnotationClassSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassAnnotationClassSequenceDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylontmp$a$13 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequenceDefaulted.$init$a();
+                this($ceylontmp$a$13);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassAnnotationClassSequenceDefaulted(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> a) {
+    }
+    
+    static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $init$a() {
+        return (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequenceDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequenceDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequenceDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassStringIterableDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .java.lang.String[] s() default {""};
+}
+class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassStringIterableDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$s$15 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$init$s();
+                this($ceylontmp$s$15);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassStringIterableDefaulted(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$s() {
+        return .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassIntegerIterableDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract long[] i() default {1L};
+}
+class AnnotationClassIntegerIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassIntegerIterableDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmp$i$17 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterableDefaulted.$init$i();
+                this($ceylontmp$i$17);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassIntegerIterableDefaulted(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> i) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $init$i() {
+        return .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterableDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterableDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterableDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassBooleanIterableDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract boolean[] s() default {true};
+}
+class AnnotationClassBooleanIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassBooleanIterableDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> $ceylontmp$s$19 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterableDefaulted.$init$s();
+                this($ceylontmp$s$19);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassBooleanIterableDefaulted(final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> s) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> $init$s() {
+        return .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Boolean.instance(true)});
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterableDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterableDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterableDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassCharacterIterableDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract int[] c() default {120};
+}
+class AnnotationClassCharacterIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassCharacterIterableDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> $ceylontmp$c$21 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterableDefaulted.$init$c();
+                this($ceylontmp$c$21);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassCharacterIterableDefaulted(final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> c) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> $init$c() {
+        return .ceylon.language.ArraySequence.<.ceylon.language.Character>instance(.ceylon.language.Character.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Character.instance(120)});
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterableDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterableDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterableDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassFloatIterableDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract double[] f() default {3.141};
+}
+class AnnotationClassFloatIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassFloatIterableDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> $ceylontmp$f$23 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterableDefaulted.$init$f();
+                this($ceylontmp$f$23);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassFloatIterableDefaulted(final .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> f) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> $init$f() {
+        return .ceylon.language.ArraySequence.<.ceylon.language.Float>instance(.ceylon.language.Float.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Float.instance(3.141)});
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterableDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterableDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterableDefaulted.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassStringIterableDefaultedEmpty$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .java.lang.String[] s() default {};
+}
+class AnnotationClassStringIterableDefaultedEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassStringIterableDefaultedEmpty() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$s$25 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaultedEmpty.$init$s();
+                this($ceylontmp$s$25);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassStringIterableDefaultedEmpty(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $init$s() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaultedEmpty();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaultedEmpty.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaultedEmpty.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationClassAnnotationClassIterableDefaulted$annotation {
+    
+    public abstract .java.lang.Class<?> $constructor();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation[] a() default {};
+}
+class AnnotationClassAnnotationClassIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassAnnotationClassIterableDefaulted() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, ? extends .java.lang.Object> $ceylontmp$a$27 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterableDefaulted.$init$a();
+                this($ceylontmp$a$27);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassAnnotationClassIterableDefaulted(final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, ? extends .java.lang.Object> a) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, ? extends .java.lang.Object> $init$a() {
+        return (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterableDefaulted();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterableDefaulted.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterableDefaulted.class);
+}
