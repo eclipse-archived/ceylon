@@ -92,6 +92,9 @@ public class Launcher {
     
     private static boolean hasArgument(final String[] args, final String test) {
         for (String arg : args) {
+            if ("--".equals(arg)) {
+                break;
+            }
             if (arg.equals(test) || arg.startsWith(test + "=")) {
                 return true;
             }
@@ -101,11 +104,15 @@ public class Launcher {
     
     private static String getArgument(final String[] args, final String test, boolean optionalArgument) {
         for (int i=0; i < args.length; i++) {
-            if (!optionalArgument && i < (args.length - 1) && args[i].equals(test)) {
+            String arg = args[i];
+            if ("--".equals(arg)) {
+                break;
+            }
+            if (!optionalArgument && i < (args.length - 1) && arg.equals(test)) {
                 return args[i + 1];
             }
-            if (args[i].startsWith(test + "=")) {
-                return args[i].substring(test.length() + 1);
+            if (arg.startsWith(test + "=")) {
+                return arg.substring(test.length() + 1);
             }
         }
         return null;
