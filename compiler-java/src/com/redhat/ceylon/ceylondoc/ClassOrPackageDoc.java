@@ -22,6 +22,7 @@ package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
+import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -73,7 +74,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        linkRenderer().to(d.getType()).printTypeParameterDetail(true).write();
+        linkRenderer().to(d.getType()).printAbbreviated(!isAbbreviatedType(d)).printTypeParameterDetail(true).write();
         close("div");
         writeDescription(d);
         close("td");

@@ -23,6 +23,7 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getAncestors;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
+import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
 
 import java.io.IOException;
@@ -40,7 +41,6 @@ import com.redhat.ceylon.ceylondoc.Util.ProducedTypeComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -398,9 +398,11 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 
                 if( type instanceof ClassOrInterface ) {
-                    linkRenderer().to((ClassOrInterface)type).write();
+                    ClassOrInterface klass = (ClassOrInterface) type;
+                    linkRenderer().to(klass).printAbbreviated(!isAbbreviatedType(klass)).write();
                 } else {
-                    linkRenderer().to((ProducedType)type).write(); 
+                    ProducedType pt = (ProducedType) type;
+                    linkRenderer().to(pt).printAbbreviated(!isAbbreviatedType(pt.getDeclaration())).write(); 
                 }
             }
             close("div");

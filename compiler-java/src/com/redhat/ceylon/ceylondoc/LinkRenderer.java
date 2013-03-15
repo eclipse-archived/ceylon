@@ -27,10 +27,8 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -52,15 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 public class LinkRenderer {
     
     private static final Map<String, Boolean> checkModuleUrlCache = new HashMap<String, Boolean>();
-    
-    private static final Set<String> abbreviatedTypes = new HashSet<String>();
-    static {
-        abbreviatedTypes.add("ceylon.language::Empty");
-        abbreviatedTypes.add("ceylon.language::Entry");
-        abbreviatedTypes.add("ceylon.language::Sequence");
-        abbreviatedTypes.add("ceylon.language::Sequential");
-        abbreviatedTypes.add("ceylon.language::Iterable");
-    }
     
     private Object to;
     private Object from;
@@ -96,11 +85,6 @@ public class LinkRenderer {
 
         @Override
         public boolean printAbbreviated() {
-            if( isInCeylonLanguageModuleAndLinkToAbbreviatedType() ) {
-                // it looks strange, when in ceylon.language module documentation 
-                // are printed only abbreviated names, for example `shared []`
-                return false;
-            }
             return printAbbreviated;
         }
 
@@ -311,19 +295,6 @@ public class LinkRenderer {
         return !value.isToplevel() && !value.isClassOrInterfaceMember();
     }
     
-    private boolean isInCeylonLanguageModuleAndLinkToAbbreviatedType() {
-        if( ceylonDocTool.getCurrentModule().getNameAsString().equals("ceylon.language") ) {
-            String toName = null;
-            if (to instanceof ProducedType) {
-                toName = ((ProducedType) to).getDeclaration().getQualifiedNameString();
-            } else if (to instanceof TypeDeclaration) {
-                toName = ((TypeDeclaration) to).getQualifiedNameString();
-            }
-            return abbreviatedTypes.contains(toName);
-        }
-        return false;
-    }
-
     private Declaration resolveDeclaration(Scope scope, String declName, boolean isNested) {
         Declaration decl = null;
 
@@ -567,10 +538,10 @@ public class LinkRenderer {
             text = text.replaceAll("#GT;", ">");
 
             text = text.replaceAll("&lt;in ", "&lt;<span class='type-parameter-keyword'>in </span>");
-            text = text.replaceAll(", in ", ", <span class='type-parameter-keyword'>in </span>");
+            text = text.replaceAll(",in ", ",<span class='type-parameter-keyword'>in </span>");
 
             text = text.replaceAll("&lt;out ", "&lt;<span class='type-parameter-keyword'>out </span>");
-            text = text.replaceAll(", out ", ", <span class='type-parameter-keyword'>out </span>");
+            text = text.replaceAll(",out ", ",<span class='type-parameter-keyword'>out </span>");
         }
         return text;
     }    
