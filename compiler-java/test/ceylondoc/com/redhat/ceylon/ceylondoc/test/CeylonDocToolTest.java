@@ -554,9 +554,9 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "type_StubClass.html", 
                 Pattern.compile("<div class='parameters section'><span class='title'>Parameters:"));        
         assertMatchInFile(destDir, "type_StubClass.html", 
-                Pattern.compile("<li><span class='parameter'>a</span><p>Constructor parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter'>a</span><p>Initializer parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "type_StubClass.html", 
-                Pattern.compile("<li><span class='parameter'>b</span><p>Constructor parameter <code>b</code></p>"));        
+                Pattern.compile("<li><span class='parameter'>b</span><p>Initializer parameter <code>b</code></p>"));        
         assertMatchInFile(destDir, "type_StubClass.html", 
                 Pattern.compile("<li><span class='parameter'>a</span><p>Method parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "type_StubClass.html", 
@@ -804,7 +804,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "object_stubObject.html",
                 Pattern.compile("<a href='index.html#stubObject'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
         assertNoMatchInFile(destDir, "object_stubObject.html", 
-                Pattern.compile("<table id='section-constructor'"));
+                Pattern.compile("<table id='section-initializer'"));
         assertMatchInFile(destDir, "object_stubObject.stubInnerObject.html",
                 Pattern.compile("<a href='object_stubObject.html#stubInnerObject'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
     }

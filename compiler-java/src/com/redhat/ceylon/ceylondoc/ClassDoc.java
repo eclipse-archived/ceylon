@@ -210,7 +210,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         return klass instanceof Class && klass.isAnonymous();
     }
 
-    private boolean hasConstructor() {
+    private boolean hasInitializer() {
         return klass instanceof Class && !isObject();
     }
 
@@ -255,8 +255,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeInnerTypes(innerClasses, "section-nested_classes", "Nested Classes");
         writeInnerTypes(innerExceptions, "section-nested_exceptions", "Nested Exceptions");
         
-        if (hasConstructor()) {
-            writeConstructor((Class) klass);
+        if (hasInitializer()) {
+            writeInitializer((Class) klass);
         }
 
         if (hasAnyAttributes()) {
@@ -298,8 +298,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (hasAnyAttributes()) {
             writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
         }
-        if (hasConstructor()) {
-            writeSubNavBarLink("#section-constructor", "Constructor", 'C', "Jump to constructor");
+        if (hasInitializer()) {
+            writeSubNavBarLink("#section-initializer", "Initializer", 'C', "Jump to initializer");
         }
         if (hasAnyMethods()) {
             writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
@@ -493,8 +493,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     }
 
-    private void writeConstructor(Class klass) throws IOException {
-        openTable("section-constructor", "Constructor", 1, true);
+    private void writeInitializer(Class klass) throws IOException {
+        openTable("section-initializer", "Initializer", 1, true);
         open("tr", "td");
         
         writeIcon(klass);
@@ -538,8 +538,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (hasAnyAttributes()) {
             registerKeyboardShortcut('a', "#section-attributes");
         }
-        if (hasConstructor()) {
-            registerKeyboardShortcut('c', "#section-constructor");
+        if (hasInitializer()) {
+            registerKeyboardShortcut('c', "#section-initializer");
         }
         if (hasAnyMethods()) {
             registerKeyboardShortcut('m', "#section-methods");

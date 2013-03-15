@@ -24,8 +24,8 @@ see(StubInterface, stubTopLevelAttribute, stubTopLevelMethod)
 tagged("stubTag1", "stubTag2")
 throws (StubException)
 shared class StubClass(
-  doc "Constructor parameter `a`" Integer a,
-  doc "Constructor parameter `b`" Integer b,
+  doc "Initializer parameter `a`" Integer a,
+  doc "Initializer parameter `b`" Integer b,
   shared void printHello(String name) => print("Hello ``name``")) 
     satisfies StubInterface {
 
