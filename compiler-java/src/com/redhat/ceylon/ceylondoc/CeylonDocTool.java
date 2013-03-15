@@ -55,7 +55,6 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
-import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -66,19 +65,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
@@ -398,14 +392,24 @@ public class CeylonDocTool implements Tool {
     public boolean isIncludeSourceCode() {
         return includeSourceCode;
     }
-
-    protected String getFileName(Scope klass) {
-        List<String> name = new LinkedList<String>();
-        while(klass instanceof Declaration){
-            name.add(0, ((Declaration)klass).getName());
-            klass = klass.getContainer();
+    
+    public String getFileName(ClassOrInterface klass) {
+        // we need prefix, because objects can have same file name like classes/interfaces in not case-sensitive file systems
+        String prefix;
+        if (klass instanceof Class && klass.isAnonymous()) {
+            prefix = "object_";
+        } else {
+            prefix = "type_";
         }
-        return join(".", name);
+
+        List<String> names = new LinkedList<String>();
+        Scope scope = klass;
+        while (scope instanceof TypeDeclaration) {
+            names.add(0, ((TypeDeclaration) scope).getName());
+            scope = scope.getContainer();
+        }
+
+        return prefix + join(".", names) + ".html";
     }
 
     private File getFolder(Package pkg) {
@@ -435,31 +439,11 @@ public class CeylonDocTool implements Tool {
         return getFolder(getPackage(klass));
     }
 
-    public String kind(Object obj) {
-        if (obj instanceof Class) {
-            return Character.isUpperCase(((Class)obj).getName().charAt(0)) ? "class" : "object";
-        } else if (obj instanceof Interface) {
-            return "interface";
-        } else if (obj instanceof AttributeDeclaration
-                || (obj instanceof Declaration && Decl.isGetter((Declaration)obj))) {
-            return "attribute";
-        } else if (obj instanceof Method) {
-            return "function";
-        } else if (obj instanceof Declaration && Decl.isValue((Declaration)obj)) {
-            return "value";
-        } else if (obj instanceof Package) {
-            return "package";
-        } else if (obj instanceof Module) {
-            return "module";
-        }
-        throw new RuntimeException(CeylondMessages.msg("error.unexpected", obj));
-    }
-
     File getObjectFile(Object modPgkOrDecl) throws IOException {
         final File file;
         if (modPgkOrDecl instanceof ClassOrInterface) {
             ClassOrInterface klass = (ClassOrInterface)modPgkOrDecl;
-            String filename = kind(modPgkOrDecl) + "_" + getFileName(klass) + ".html";
+            String filename = getFileName(klass);
             file = new File(getFolder(klass), filename);
         } else if (modPgkOrDecl instanceof Module) {
             String filename = "index.html";
@@ -574,8 +558,6 @@ public class CeylonDocTool implements Tool {
                         continue;
                     }
                     if (decl instanceof ClassOrInterface) {
-                        // FIXME: why this call?
-                        getObjectFile(decl);
                         ClassOrInterface c = (ClassOrInterface) decl;                    
                         // subclasses map
                         if (c instanceof Class) {

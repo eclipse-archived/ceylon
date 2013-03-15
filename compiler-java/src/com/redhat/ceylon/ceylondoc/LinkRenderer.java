@@ -420,11 +420,12 @@ public class LinkRenderer {
                 url += "index.html";
             }
         } else if (to instanceof ClassOrInterface) {
-            Package pkg = getPackage(((ClassOrInterface) to));
+            ClassOrInterface klass = (ClassOrInterface) to;
+            Package pkg = getPackage(klass);
             url = getExternalModuleUrl(pkg.getModule());
             if (url != null) {
                 url += buildPackageUrlPath(pkg);
-                url += ceylonDocTool.kind(to) + "_" + ceylonDocTool.getFileName((Scope)to) + ".html";
+                url += ceylonDocTool.getFileName(klass);
             }
         }
         return url;

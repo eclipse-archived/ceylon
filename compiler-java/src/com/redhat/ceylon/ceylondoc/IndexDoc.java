@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -38,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 
 public class IndexDoc extends CeylonDoc {
 
@@ -77,7 +80,7 @@ public class IndexDoc extends CeylonDoc {
         // get rid of the eventual final dangling JSON list comma but adding a module entry 
         writeIndexElement(
                 module.getNameAsString(), 
-                tool.kind(module), 
+                getType(module), 
                 linkRenderer().to(module).getUrl(), 
                 Util.getDocFirstLine(module, linkRenderer()), 
                 null, null);
@@ -86,7 +89,7 @@ public class IndexDoc extends CeylonDoc {
     private void indexPackage(Package pkg) throws IOException {
         writeIndexElement(
                 pkg.getNameAsString(), 
-                tool.kind(pkg), 
+                getType(pkg), 
                 linkRenderer().to(pkg).getUrl(), 
                 Util.getDocFirstLine(pkg, linkRenderer()), 
                 null, 
@@ -127,7 +130,7 @@ public class IndexDoc extends CeylonDoc {
             throw new RuntimeException("Unknown type of object: " + decl);
         }
         
-        String type = tool.kind(decl);
+        String type = getType(decl);
         String doc = Util.getDocFirstLine(decl, linkRenderer());
         List<String> tags = Util.getTags(decl);
         tagIndex.addAll(tags);
@@ -192,6 +195,25 @@ public class IndexDoc extends CeylonDoc {
                 escaped.append(c);
         }
         return escaped.toString();
+    }
+    
+    private String getType(Object obj) {
+        if (obj instanceof Class) {
+            return Character.isUpperCase(((Class)obj).getName().charAt(0)) ? "class" : "object";
+        } else if (obj instanceof Interface) {
+            return "interface";
+        } else if (obj instanceof AttributeDeclaration || (obj instanceof Declaration && Decl.isGetter((Declaration)obj))) {
+            return "attribute";
+        } else if (obj instanceof Method) {
+            return "function";
+        } else if (obj instanceof Declaration && Decl.isValue((Declaration)obj)) {
+            return "value";
+        } else if (obj instanceof Package) {
+            return "package";
+        } else if (obj instanceof Module) {
+            return "module";
+        }
+        throw new RuntimeException(CeylondMessages.msg("error.unexpected", obj));
     }
     
     @Override
