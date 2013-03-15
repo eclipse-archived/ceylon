@@ -16,53 +16,42 @@
  */
 ;(function()
 {
-	// CommonJS
-	typeof(require) != 'undefined' ? SyntaxHighlighter = require('shCore').SyntaxHighlighter : null;
-
-	function Brush()
-	{
-//		var keywords =	'abstract break case catch class ' +
-//						'continue default do else exists extends ' +
-//						'fail finally for given if import ' +
-//						'interface is ' +
-//						'object of return ' +
-//						'satisfies super switch then this throw ' +
-//						'try void while';
-            var keywords = 'import class interface object given assign void value function of ' +
-                           'extends satisfies adapts abstracts in out return break continue throw ' +
-                           'if else switch case for while try catch finally ' +
-                           'this outer super is exists nonempty module package assert alias';
-//		var annotations = 'actual doc formal in out see shared';
-            var annotations = 'shared abstract formal default actual variable deprecated small ' +
-                              'literal doc by see throws tagged license export';
-
-		this.regexList = [
-			{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'comments' },		// one line comments
-			{ regex: /\/\*([\s\S]*?)?\*\//gm,				css: 'comments' },	 	// multiline comments
-			{ regex: /\/\*(?!\*\/)\*[\s\S]*?\*\//gm,			css: 'preprocessor' },	// documentation comments
-			{ regex: /"[^"]*"/gm,						css: 'string' },	 	// strings
-			{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'string' },		// strings
-			{ regex: SyntaxHighlighter.regexLib.singleQuotedString,		css: 'string' },		// strings
-			{ regex: /\b(([\d]+|\d{1,3}(_\d{3})*)(\.([\d]+|(\d{3}(_\d{3})*)*))?(E\+\d+)?[munpfkMGTP]?|0x[a-f0-9]+)\b/gi,			css: 'value' },			// numbers
-//			{ regex: /(\?|\.\.\.|-&gt;)/g,					css: 'keyword' },		// ? ... ->
-			// this is only dual-level, expand manually for three levels
-//			{ regex: /&lt;\s*((in|out)\s+)?\w+(&lt;\s*((in|out)\s+)?\w+([,|]\s*((in|out)\s+)?\w+)*&gt;)?([,|]\s*((in|out)\s+)?\w+(&lt;\s*((in|out)\s+)?\w+([,|]\s*((in|out)\s+)?\w+)*&gt;)?)*&gt;/g,						css: 'color2' },
-			{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' },		// ceylon keyword
-			{ regex: /\b[A-Z][a-zA-Z0-9_]*/g,				css: 'color1' },		// ceylon type
-			{ regex: new RegExp(this.getKeywords(annotations), 'gm'),	css: 'functions' }		// ceylon annotations
-			];
-
-		this.forHtmlScript({
-			left	: /(&lt;|<)%[@!=]?/g, 
-			right	: /%(&gt;|>)/g 
-		});
-	};
-
-	Brush.prototype	= new SyntaxHighlighter.Highlighter();
-	Brush.aliases	= ['ceylon'];
-
-	SyntaxHighlighter.brushes.Ceylon = Brush;
-
-	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    // CommonJS
+    typeof(require) != 'undefined' ? SyntaxHighlighter = require('shCore').SyntaxHighlighter : null;
+    
+    function Brush()
+    {
+        var keywords = 'module package import alias class interface object given value assign void function of ' +
+                       'extends satisfies adapts abstracts in out return break continue throw ' +
+                       'assert dynamic if else switch case for while try catch finally then ' +
+                       'this outer super is exists nonempty';
+        var annotations = 'shared abstract formal default actual variable deprecated small late ' +
+                          'literal doc by see throws optional license';
+        
+        this.regexList = [
+            { regex: /\/\/.*/gi, css: 'color3' },                                               // line end comments
+            { regex: /\/\*([\s\S]*?)?\*\//gm, css: 'color3' },                                  // multiline comments
+            { regex: /"""([^"]|"[^"]|""[^"])*"""/gm, css: 'string' },                           // verbatim strings
+            { regex: /(``|")([^"\\`]|\\.|`[^`"])*(`"|``|")/gm, css: 'string' },                 // strings
+            { regex: /'([^'\\\n]|\\.)*'/gm, css: 'string' },                                    // characters
+            { regex: new RegExp(this.getKeywords(keywords), 'gm'), css: 'keyword' },            // keywords
+            { regex: /(#|\$)[a-zA-Z0-9_]+\b/gi, css: 'value' },                                 // hex/bin numbers
+            { regex: /\b[A-Z][a-zA-Z0-9_]*/g, css: 'color1' },                                  // types
+            { regex: new RegExp(this.getKeywords(annotations), 'gm'), css: 'color2' },          // annotations
+            { regex: /\b(\d|_)+(\.(\d|_)+)?((E|e)(\+|\-)?\d+)?[munpfkMGTP]?\b/g, css: 'value' }  // decimal numbers
+        ];
+        
+        this.forHtmlScript({
+            left    : /(&lt;|<)%[@!=]?/g, 
+            right    : /%(&gt;|>)/g 
+        });
+    };
+    
+    Brush.prototype    = new SyntaxHighlighter.Highlighter();
+    Brush.aliases    = ['ceylon'];
+    
+    SyntaxHighlighter.brushes.Ceylon = Brush;
+    
+    // CommonJS
+    typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
