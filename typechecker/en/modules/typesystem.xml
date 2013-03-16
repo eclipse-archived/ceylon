@@ -1710,12 +1710,16 @@ Item item = comp of Item;</programlisting>
 }]]></programlisting>
 
         <comment><para>TODO: do we need lower bound type constraints? With union types
-        they don't appear to be anywhere near as useful.</para></comment>
+        they don't appear to be anywhere near as useful. Howver, perhaps they are useful
+        when combined with contravariant types. (A lower bound on a parameter which occurs 
+        as the argument of a contravariant type is more like an upper bound).</para></comment>
         
-        <comment><para>TODO: since we have reified types, it will be possible to support
+        <comment><para>Note: since we have reified types, it would be possible to support
         a type constraint that allows instantiation of the type parameter.</para>
         <programlisting>given T(Object arg)</programlisting>
-        </comment>
+        <para>The problem with this is that then inferring <literal>T</literal> is fragile.
+        And if we don't let it be inferred, we may as well pass <literal>T</literal> as an
+        ordinary parameter. So, unlike C#, don't support this.</para></comment>
         
     <!--section>
         <title>Parameter bounds</title>
@@ -1790,18 +1794,20 @@ Item item = comp of Item;</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>A type argument to a type parameter with an upper bound must be a 
-                type which is a subtype of all upper bounds.</para>
+                <para>A type argument to a type parameter <literal>T</literal> with an 
+                upper bound must be a type which is a subtype of all upper bounds of
+                <literal>T</literal>.</para>
             </listitem>
             <!--listitem>
                 <para>A type argument to a type parameter with a lower bound must be a 
                 type of which all lower bounds are subtypes.</para>
             </listitem-->
             <listitem>
-                <para>A type argument to a type parameter with an enumerated type bound 
-                must be a subtype of one of the enumerated types, or a type with an 
-                enumerated subtype list that is a subset of the enumerated types of the 
-                constraint.</para>
+                <para>A type argument to a type parameter <literal>T</literal> with an 
+                enumerated type bound must be a subtype of one of the enumerated types
+                of <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
+                with an enumerated type bound where every enumerated type of 
+                <literal>A</literal> is also an enumerated type of <literal>T</literal>.</para>
             </listitem>
             <!--
             <listitem>
