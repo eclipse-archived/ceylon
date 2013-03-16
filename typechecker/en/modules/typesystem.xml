@@ -1764,7 +1764,7 @@ Item item = comp of Item;</programlisting>
 
     <section id="generictypearguments">
         <title>Generic type arguments</title>
-            
+        
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
         from a parameterized type schema, or a new function schema from a from a
         parameterized function schema.</para>
@@ -1778,6 +1778,9 @@ Item item = comp of Item;</programlisting>
         <programlisting>&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         <programlisting>&lt;String, Person?&gt;</programlisting>
         <programlisting>&lt;String[], [{Object*}]&gt;</programlisting>
+        
+        <para>Type arguments are assigned to type parameters according to the positions
+        they occur in the list.</para>
          
     <section>
         <title>Type arguments and type constraints</title>
@@ -1817,7 +1820,9 @@ Item item = comp of Item;</programlisting>
         <para>A type argument list <emphasis>conforms</emphasis> to a type parameter list 
         if for every type parameter in the list, there is a type argument that satisfies 
         the constraints of the type parameter, or there is no explicit type argument and
-        type parameter has a default type argument.</para>
+        type parameter has a default type argument. There must be at least as many type
+        parameters as type arguments. There must be at least as many type arguments as
+        type parameters without default values.</para>
         
         <comment><para>Note: this is too heavy-handed. There is no reason to enforce the 
         type constraint in any place other than generic class instantiations, generic 
