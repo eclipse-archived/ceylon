@@ -112,30 +112,46 @@ public abstract class CeylonDoc extends Markup {
         around("span class='module-version'", module.getVersion());
         close("a");
 
+        open("ul class='nav pull-right'");
+        write("<li class='divider-vertical' />");
+        writeNavBarExpandAllCollapseAll();
         writeNavBarInfoMenu();
+        close("ul"); // nav
+        
         writeNavBarSearchMenu();
         writeNavBarFilterMenu();
 
         close("div"); // navbar-inner
         close("div"); // navbar
     }
-
-    private void writeNavBarInfoMenu() throws IOException {
-        open("ul class='nav pull-right'");
-        write("<li class='divider-vertical' />");
+    
+    protected void writeNavBarExpandAllCollapseAll() throws IOException {
+        write("<li><a class='expand-all' href='#' title='Expand All [Shortcut: + plus]'><i class='icon-expand-all'></i></a></li>");
+        write("<li><a class='collapse-all' href='#' title='Collapse All [Shortcut: - minus]'><i class='icon-collapse-all'></i></a></li>");
+    }
+    
+    protected void writeNavBarInfoMenu() throws IOException {
         open("li id='infoDropdown' class='dropdown'");
         write("<a href='#' title='Show keyboard shortcuts [Shortcut: ?]' role='button' class='dropdown-toggle' data-toggle='dropdown'><i class='icon-info'></i></a>");
         open("ul id='info-dropdown-panel' class='dropdown-menu'");
         around("h4", "Keyboard Shortcuts");
         write("<li class='divider'></li>");
         
-        open("div id='info-common-shortcuts'");
+        open("div class='row-fluid'");
+        
+        open("div id='info-common-shortcuts' class='span6'");
         writeKeyboardShortcutInfo("f", "Open filter by tags");
         writeKeyboardShortcutInfo("s", "Open search page");
         writeKeyboardShortcutInfo("?", "Open this information panel");
         close("div"); // info-common-shortcuts
-        write("<li class='divider'></li>");
         
+        open("div id='info-expand-collapse-shortcuts' class='span6'");
+        writeKeyboardShortcutInfo("+", "Expand all");
+        writeKeyboardShortcutInfo("-", "Collapse all");
+        close("div"); // info-expand-collapse-shortcuts
+        
+        close("div"); // row-fluid
+        write("<li class='divider'></li>");
         open("div class='row-fluid'");
         
         open("div id='info-doc-shortcuts' class='span6'");
@@ -161,7 +177,6 @@ public abstract class CeylonDoc extends Markup {
         close("div"); // row-fluid
         close("ul"); // dropdown-menu
         close("li"); // dropdown
-        close("ul"); // nav        
     }
 
     private void writeKeyboardShortcutInfo(String key, String info) throws IOException {

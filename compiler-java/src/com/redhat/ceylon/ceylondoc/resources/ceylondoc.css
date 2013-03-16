@@ -495,7 +495,26 @@ td [class^='icon-'] {
 	height: 4px;
 }
 
-a:HOVER .icon-search {
+.icon-expand-all {
+	background-position: -448px 0px;
+}
+
+.icon-collapse-all {
+	background-position: -480px 0px;
+}
+
+a:HOVER .icon-expand-all,
+a:FOCUS .icon-expand-all {
+	background-position: -464px 0px;
+}
+
+a:HOVER .icon-collapse-all,
+a:FOCUS .icon-collapse-all {
+	background-position: -496px 0px;
+}
+
+a:HOVER .icon-search,
+a:FOCUS .icon-search {
 	vertical-align: text-bottom;
 	background-position: -176px 0px;
 }
@@ -526,4 +545,9 @@ td .icon-collapse2 {
 	vertical-align: top;
 	margin-right: 1px;
 	margin-top: 3px;
+}
+
+.expand-all,
+.collapse-all {
+	padding: 10px 5px 10px !important;
 }

@@ -47,6 +47,11 @@ public class Search extends CeylonDoc {
     }
     
     @Override
+    protected void writeNavBarExpandAllCollapseAll() throws IOException {
+        // noop
+    }
+    
+    @Override
     protected void writeNavBarSearchMenu() throws IOException {
         // noop
     }

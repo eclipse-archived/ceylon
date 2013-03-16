@@ -582,6 +582,63 @@ $(document).ready(function() {
 
 
 /*
+ * expand all / collapse all
+ */
+$(document).ready(function() {
+    if( $('.expand-all').length == 0 ) {
+        return;
+    }
+
+    initKeyboardShortcuts();
+    initClickHandlers();
+    enableInfoKeybordShortcut('\\+');
+    enableInfoKeybordShortcut('\\-');
+
+    function initKeyboardShortcuts() {
+        $('html').keypress(function(evt) {
+            evt = evt || window.event;
+            var keyCode = evt.keyCode || evt.which;
+            if (keyCode == 43 /* + */) {
+                expandAll();
+            }
+            if (keyCode == 45 /* - */) {
+                collapseAll();
+            }
+        });
+    };
+
+    function initClickHandlers() {
+        $('.expand-all').click(expandAll);
+        $('.collapse-all').click(collapseAll);
+    };
+    
+    function expandAll() {
+        execute(true);  
+    };
+    
+    function collapseAll() {
+        execute(false);  
+    };
+
+    function execute(expand) {
+        $('.row-collapsible').each(function() {
+            var tr = $(this);
+            if( ($('.description-collapsed', tr).length > 0) == expand ) {
+                $('.link-collapsible', tr).click();
+            }
+        });
+        $('table').each(function() {
+            var thead = $('thead', this);
+            var tbody = $('tbody', this);
+            if (tbody.is(':visible') != expand ) {
+                thead.click();
+            }
+        });
+    };
+});
+
+
+/*
  * easter egg
  */
 var konami = 0;
