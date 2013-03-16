@@ -1404,7 +1404,7 @@ public class ProducedType extends ProducedReference {
     //This alternative algorithm, without the stack
     //fails in one tiny little corner case which we
     //might be able to disallow - Algebraic.ceylon:345
-    public boolean coversInternal(ProducedType t) {
+    private boolean coversInternal(ProducedType t) {
         ProducedType uoc = t.getUnionOfCases();
         //X covers Y if the union of cases of Y is 
         //a subtype of X
