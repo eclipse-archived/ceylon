@@ -4603,14 +4603,16 @@ public class ExpressionVisitor extends Visitor {
                                         parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                                 + " to type parameter " + param.getName()
                                                 + " of declaration " + dec.getName(unit)
-                                                + " not assignable to upper bound " + sts.getProducedTypeName(unit));
+                                                + " not assignable to upper bound " + sts.getProducedTypeName(unit)
+                                                + " of " + param.getName());
                                     }
                                     else {
                                         ((Tree.TypeArgumentList) tal).getTypes()
                                         .get(i).addError("type parameter " + param.getName() 
                                                 + " of declaration " + dec.getName(unit)
                                                 + " has argument " + argType.getProducedTypeName(unit) 
-                                                + " not assignable to upper bound " + sts.getProducedTypeName(unit), 2102);
+                                                + " not assignable to upper bound " + sts.getProducedTypeName(unit)
+                                                + " of " + param.getName(), 2102);
                                     }
                                 }
                                 return false;
@@ -4625,14 +4627,14 @@ public class ExpressionVisitor extends Visitor {
                                 parent.addError("inferred type argument " + argType.getProducedTypeName(unit)
                                         + " to type parameter " + param.getName()
                                         + " of declaration " + dec.getName(unit)
-                                        + " not one of the enumerated cases");
+                                        + " not one of the enumerated cases of " + param.getName());
                             }
                             else {
                                 ((Tree.TypeArgumentList) tal).getTypes()
                                 .get(i).addError("type parameter " + param.getName() 
                                         + " of declaration " + dec.getName(unit)
                                         + " has argument " + argType.getProducedTypeName(unit) 
-                                        + " not one of the enumerated cases");
+                                        + " not one of the enumerated cases of " + param.getName());
                             }
                         }
                         return false;
