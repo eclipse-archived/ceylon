@@ -1586,8 +1586,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <comment><para>Note: a <literal>void</literal> function with a concrete 
         implementation returns the value <literal>null</literal>. However, since a
         <literal>void</literal> function may be a reference to a non-<literal>void</literal> 
-        function, this behavior should not be depended upon, and should be considered
-        unspecified.</para></comment>
+        function, or a method refined by a non-<literal>void</literal> function, 
+        this behavior can not be depended upon and is not implied by the semantics 
+        of <literal>void</literal>.</para></comment>
         
         <section id="callabletype">
             <title>Callable type of a function</title>
@@ -1611,6 +1612,14 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             function.</para>
         </listitem>
         </itemizedlist>
+        
+        <comment><para>Note: the identification of <literal>void</literal> with
+        <literal>Anything</literal> instead of <literal>Null</literal> or some other
+        unit type will probably be contraversial. This approach allows a 
+        non-<literal>void</literal> method to refine a <literal>void</literal>
+        method or a non-<literal>void</literal> function to be assigned to a 
+        <literal>void</literal> functional parameter. Thus, we avoid rejecting 
+        perfectly well-typed code.</para></comment>
         
         </section>
         
