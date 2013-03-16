@@ -15,7 +15,6 @@ doc "Represents an iterable collection of elements of finite
 see (List, Map, Set)
 shared interface Collection<out Element>
         satisfies {Element*} &
-                  Category &
                   Cloneable<Collection<Element>> {
     
     doc "Determine if the collection is empty, that is, if 
