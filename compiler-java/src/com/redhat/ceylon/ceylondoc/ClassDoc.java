@@ -251,9 +251,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         writeDescription();
         
-        writeInnerTypes(innerInterfaces, "section-nested_interfaces", "Nested Interfaces");
-        writeInnerTypes(innerClasses, "section-nested_classes", "Nested Classes");
-        writeInnerTypes(innerExceptions, "section-nested_exceptions", "Nested Exceptions");
+        writeInnerTypes(innerInterfaces, "section-nested-interfaces", "Nested Interfaces");
+        writeInnerTypes(innerClasses, "section-nested-classes", "Nested Classes");
+        writeInnerTypes(innerExceptions, "section-nested-exceptions", "Nested Exceptions");
         
         if (hasInitializer()) {
             writeInitializer((Class) klass);
@@ -299,19 +299,19 @@ public class ClassDoc extends ClassOrPackageDoc {
             writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
         }
         if (hasInitializer()) {
-            writeSubNavBarLink("#section-initializer", "Initializer", 'C', "Jump to initializer");
+            writeSubNavBarLink("#section-initializer", "Initializer", 'n', "Jump to initializer");
         }
         if (hasAnyMethods()) {
             writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
         }
         if (!innerInterfaces.isEmpty()) {
-            writeSubNavBarLink("#section-interfaces", "Nested Interfaces", 'I', "Jump to nested interfaces");
+            writeSubNavBarLink("#section-nested-interfaces", "Nested Interfaces", 'I', "Jump to nested interfaces");
         }
         if (!innerClasses.isEmpty()) {
-            writeSubNavBarLink("#section-classes", "Nested Classes", 'C', "Jump to nested classes");
+            writeSubNavBarLink("#section-nested-classes", "Nested Classes", 'C', "Jump to nested classes");
         }
         if (!innerExceptions.isEmpty()) {
-            writeSubNavBarLink("#section-exceptions", "Nested Exceptions", 'E', "Jump to nested exceptions");
+            writeSubNavBarLink("#section-nested-exceptions", "Nested Exceptions", 'E', "Jump to nested exceptions");
         }
         if( isObject() ) {
             writeSubNavBarLink(linkRenderer().to(klass.getContainer()).useAnchor(klass).getUrl(), "Singleton object declaration", '\0', "Jump to singleton object declaration");
@@ -539,10 +539,19 @@ public class ClassDoc extends ClassOrPackageDoc {
             registerKeyboardShortcut('a', "#section-attributes");
         }
         if (hasInitializer()) {
-            registerKeyboardShortcut('c', "#section-initializer");
+            registerKeyboardShortcut('n', "#section-initializer");
         }
         if (hasAnyMethods()) {
             registerKeyboardShortcut('m', "#section-methods");
+        }
+        if (!innerInterfaces.isEmpty()) {
+            registerKeyboardShortcut('i', "#section-nested-interfaces");
+        }
+        if (!innerClasses.isEmpty()) {
+            registerKeyboardShortcut('c', "#section-nested-classes");
+        }
+        if (!innerExceptions.isEmpty()) {
+            registerKeyboardShortcut('e', "#section-nested-exceptions");
         }
     }
 
