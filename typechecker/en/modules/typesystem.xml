@@ -13,7 +13,7 @@
     
     <para>Each class declaration defines a type. However, not all types are classes. It 
     is often advantageous to write generic code that abstracts the concrete class of a 
-    value. This technique is called <emphasis>polymorphism</emphasis>. Ceylon supports 
+    value. This technique is called <emphasis>polymorphism</emphasis>. Ceylon features 
     two different kinds of polymorphism:</para>
     
     <itemizedlist>
@@ -28,7 +28,7 @@
         </listitem>
     </itemizedlist>
     
-    <para>Ceylon, like Java and many other object-oriented languages, supports a single
+    <para>Ceylon, like Java and many other object-oriented languages, features a single
     inheritance model for classes. A class may directly inherit at most one other class, 
     and all classes eventually inherit, directly or indirectly, the class 
     <literal>Anything</literal> defined in the module <literal>ceylon.language</literal>, 
