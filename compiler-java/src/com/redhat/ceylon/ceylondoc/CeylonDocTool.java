@@ -394,12 +394,12 @@ public class CeylonDocTool implements Tool {
     }
     
     public String getFileName(ClassOrInterface klass) {
-        // we need prefix, because objects can have same file name like classes/interfaces in not case-sensitive file systems
-        String prefix;
+        // we need postfix, because objects can have same file name like classes/interfaces in not case-sensitive file systems
+        String postfix;
         if (klass instanceof Class && klass.isAnonymous()) {
-            prefix = "object_";
+            postfix = ".object";
         } else {
-            prefix = "type_";
+            postfix = ".type";
         }
 
         List<String> names = new LinkedList<String>();
@@ -409,7 +409,7 @@ public class CeylonDocTool implements Tool {
             scope = scope.getContainer();
         }
 
-        return prefix + join(".", names) + ".html";
+        return join(".", names) + postfix + ".html";
     }
 
     private File getFolder(Package pkg) {
