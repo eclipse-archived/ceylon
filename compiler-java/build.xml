@@ -215,8 +215,7 @@
             <exclude name="com/redhat/ceylon/tools/Tool.java" />
             <exclude name="com/redhat/ceylon/tools/Plugin.java" />
             <exclude name="com/redhat/ceylon/ant/**" />
-            <exclude name="com/redhat/ceylon/launcher/Launcher.java" />
-            <exclude name="com/redhat/ceylon/launcher/CeylonClassLoader.java" />
+            <exclude name="com/redhat/ceylon/launcher/**" />
             <include name="com/redhat/**" />
             <include name="com/sun/tools/javac/**" />
             <include name="com/sun/source/**" />
@@ -230,16 +229,14 @@
         <delete dir="${build.classes}">
             <include name="**/Java7Checker.class" />
             <include name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/ceylon/launcher/Launcher.java" />
-            <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java" />
+            <include name="com/redhat/ceylon/launcher/**" />
         </delete>
         <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.5" source="1.5" includeantruntime="true">
             <include name="**/Java7Checker.java" />
             <include name="com/redhat/ceylon/tools/Tool.java" />
             <include name="com/redhat/ceylon/tools/Plugin.java" />
             <include name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/ceylon/launcher/Launcher.java" />
-            <include name="com/redhat/ceylon/launcher/CeylonClassLoader.java" />
+            <include name="com/redhat/ceylon/launcher/**" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${ceylonc.src}">
