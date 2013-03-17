@@ -129,7 +129,7 @@ public class AutocompleteVisitor extends Visitor {
             if (node instanceof QualifiedMemberExpression) {
                 QualifiedMemberExpression exp = (QualifiedMemberExpression)node;
                 ProducedType type = exp.getPrimary().getTypeModel();
-                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(text, 0);
+                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(null, text, 0);
                 comps.putAll(c2);
             } else {
                 for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
