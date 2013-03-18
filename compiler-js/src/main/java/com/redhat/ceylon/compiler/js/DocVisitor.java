@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /** A Visitor that gathers ceylondoc info for each node's declaration.
@@ -61,7 +63,11 @@ public class DocVisitor extends Visitor {
     @Override
     public void visit(AnyAttribute that) {
         //local vars
-        retrieveDocs(that.getType().getTypeModel().getDeclaration().getAnnotations(), that.getType().getLocation());
+    	ProducedType t = that.getDeclarationModel().getType();
+    	if (t!=null) {
+    		retrieveDocs(t.getDeclaration().getAnnotations(), 
+    				that.getType().getLocation());
+    	}
         super.visit(that);
     }
 
@@ -73,14 +79,22 @@ public class DocVisitor extends Visitor {
             if (md.getSpecifierExpression() != null) {
                 md.getSpecifierExpression().visit(this);
             }
-        } else {
-            retrieveDocs(that.getDeclarationModel().getType().getDeclaration().getAnnotations(), that.getType().getLocation());
+        } 
+        else {
+            ProducedType t = that.getDeclarationModel().getType();
+            if (t!=null) {
+            	retrieveDocs(t.getDeclaration().getAnnotations(), 
+            			that.getType().getLocation());
+            }
         }
         super.visit(that);
     }
     @Override
-    public void visit(BaseType that) {
-        retrieveDocs(that.getDeclarationModel().getType().getDeclaration().getAnnotations(), that.getLocation());
+    public void visit(SimpleType that) {
+        TypeDeclaration d = that.getDeclarationModel();
+        if (d!=null) {
+        	retrieveDocs(d.getAnnotations(), that.getLocation());
+        }
         super.visit(that);
     }
 
