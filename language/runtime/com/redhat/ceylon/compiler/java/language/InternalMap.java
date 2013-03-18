@@ -375,8 +375,8 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element|Other>")
     @TypeParameters(@TypeParameter("Other"))
-    public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+    public <Other,Absent> Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore 

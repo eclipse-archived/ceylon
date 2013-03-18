@@ -192,8 +192,8 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes") @Override @Ignore
-    public <Other> Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ?> other) {
-        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+    public <Other,Absent> Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore 

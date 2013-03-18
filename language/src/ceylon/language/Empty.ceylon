@@ -71,7 +71,9 @@ shared interface Empty of e
     shared actual [] indexed => this;
     
     doc "Returns `other`."
-    shared actual {Other*} chain<Other>({Other*} other) => other;
+    shared actual Iterable<Other,OtherAbsent> 
+    chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
+            given OtherAbsent satisfies Null => other;
     
     doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
@@ -117,10 +119,10 @@ shared interface Empty of e
     shared actual [] by(Integer step) => this;
     
     shared actual [Element] withLeading<Element>
-            (Element element) => [ element ];
+            (Element element) => [element];
     
     shared actual [Element] withTrailing<Element>
-            (Element element) => [ element ];
+            (Element element) => [element];
     
     shared actual {Other+} following<Other>(Other head) => 
             Singleton(head);

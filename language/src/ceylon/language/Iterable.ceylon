@@ -431,11 +431,12 @@ shared interface Iterable<out Element, out Absent=Null>
     
     doc "The elements of this iterable object, in their
          original order, followed by the elements of the 
-         given iterable object also in their original 
-         order."
-    shared default Iterable<Element|Other,Absent> chain<Other>({Other*} other) {
+         given iterable object also in their original order."
+    shared default Iterable<Element|Other,Absent&OtherAbsent> 
+    chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
+             given OtherAbsent satisfies Null {
         object chained 
-                satisfies Iterable<Element|Other,Absent> {
+                satisfies Iterable<Element|Other,Absent&OtherAbsent> {
             shared actual Iterator<Element|Other> iterator() =>
                     ChainedIterator(outer, other);
         }

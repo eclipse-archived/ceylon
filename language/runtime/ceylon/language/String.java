@@ -1394,16 +1394,16 @@ public class String
 
     @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+    public <Other,Absent>Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @Ignore
-    public static <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, java.lang.String value, Iterable<? extends Other, ? extends java.lang.Object> other) {
+    public static <Other,Absent>Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, java.lang.String value, Iterable<? extends Other, ? extends Absent> other) {
         if (value.isEmpty()) {
             return other;
         } else {
-            return instance(value).chain($reifiedOther, other);
+            return instance(value).chain($reifiedOther, $reifiedOtherAbsent, other);
         }
     }
     
@@ -1719,8 +1719,8 @@ public class String
         public Iterable<? extends Entry<? extends Integer, ? extends String>, ? extends java.lang.Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
-        @Override @Ignore public <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
-            return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+        @Override @Ignore public <Other,Absent>Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+            return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
         }
         @Override @Ignore 
         public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
@@ -1938,8 +1938,8 @@ public class String
             return $ceylon$language$Iterable$this.getIndexed();
         }
         @Override @Ignore 
-        public <Other>Iterable chain(@Ignore TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
-            return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+        public <Other,Absent>Iterable chain(@Ignore TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+            return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
         }
         @Override @Ignore 
         public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {

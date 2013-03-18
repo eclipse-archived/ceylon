@@ -183,8 +183,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other>Iterable chain(TypeDescriptor $reifiedOther, Iterable<? extends Other, ? extends java.lang.Object> other) {
-        return $ceylon$language$Iterable$this.chain($reifiedOther, other);
+    public <Other,Absent>Iterable chain(TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other>Iterable following(TypeDescriptor $reifiedOther, Other other) {
