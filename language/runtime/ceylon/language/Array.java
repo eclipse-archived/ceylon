@@ -790,7 +790,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override
     @Ignore
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, f);
+        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor, $reifiedResult, this, f);
     }
     @Override
     @Ignore
@@ -799,7 +799,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
     @Override @Ignore
     public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, f).getSequence();
+        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {

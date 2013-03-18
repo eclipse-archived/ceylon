@@ -1129,12 +1129,12 @@ public class String
 
     @Override @Ignore
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Character, Result>(Character.$TypeDescriptor, $reifiedResult, this, f);
+        return new MapIterable<Character, java.lang.Object, Result>(Character.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f);
     }
 
     @Ignore
     public static <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, java.lang.String value, Callable<? extends Result> f) {
-        return new MapIterable<Character, Result>(Character.$TypeDescriptor, $reifiedResult, instance(value), f);
+        return new MapIterable<Character, java.lang.Object, Result>(Character.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, instance(value), f);
     }
 
     @Override @Ignore
@@ -1274,7 +1274,7 @@ public class String
     
     @Override @Ignore
     public <Result> Sequence<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return (Sequence<? extends Result>)new MapIterable<Character,Result>(Character.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+        return (Sequence<? extends Result>)new MapIterable<Character,java.lang.Object,Result>(Character.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
     }
 
     @Ignore
@@ -1665,7 +1665,7 @@ public class String
         @Override
         @Ignore
         public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<String, Result>(String.$TypeDescriptor, $reifiedResult, this, f);
+            return new MapIterable<String, java.lang.Object, Result>(String.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f);
         }
         @Override
         @Ignore
@@ -1675,7 +1675,7 @@ public class String
         @Override
         @Ignore
         public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<String, Result>(String.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+            return new MapIterable<String, java.lang.Object, Result>(String.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
         }
         @Override
         @Ignore
@@ -1885,7 +1885,7 @@ public class String
         @Override
         @Ignore
         public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<Integer, Result>(Integer.$TypeDescriptor, $reifiedResult, this, f);
+            return new MapIterable<Integer, java.lang.Object, Result>(Integer.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f);
         }
         @Override
         @Ignore
@@ -1894,7 +1894,7 @@ public class String
         }
         @Override @Ignore
         public <Result> Sequential<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-            return new MapIterable<Integer, Result>(Integer.$TypeDescriptor, $reifiedResult, this, f).getSequence();
+            return new MapIterable<Integer, java.lang.Object, Result>(Integer.$TypeDescriptor, Null.$TypeDescriptor, $reifiedResult, this, f).getSequence();
         }
         @Override @Ignore
         public Sequential<? extends Integer> select(Callable<? extends Boolean> f) {

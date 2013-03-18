@@ -107,10 +107,10 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
 
     @Override
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(
+    public <Result> Iterable<? extends Result, ? extends Absent> map(
             TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, collecting);
+        return new MapIterable<Element, Absent, Result>($reifiedElement, $reifiedAbsent, $reifiedResult, this, collecting);
     }
 
     @Override
@@ -167,7 +167,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
+    public Iterable<? extends Element, ? extends Absent> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
@@ -191,7 +191,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
+    public <Default>Iterable<?,? extends Absent> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore

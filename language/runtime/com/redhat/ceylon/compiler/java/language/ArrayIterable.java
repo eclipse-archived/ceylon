@@ -191,9 +191,9 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Override
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, 
+    public <Result> Iterable<? extends Result, ? extends Absent> map(@Ignore TypeDescriptor $reifiedResult, 
             Callable<? extends Result> f) {
-        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, f);
+        return new MapIterable<Element, Absent, Result>($reifiedElement, $reifiedAbsent, $reifiedResult, this, f);
     }
     
     @Override
@@ -252,7 +252,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
+    public Iterable<? extends Element, ? extends Absent> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
 
@@ -281,7 +281,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+    public <Default>Iterable<?,? extends Absent> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore

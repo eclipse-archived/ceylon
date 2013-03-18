@@ -31,9 +31,9 @@ final class integerRangeByIterable_ {
     @TypeParameters(@TypeParameter(value="Element", 
             satisfies={"ceylon.language::Ordinal<Element>", 
                 "ceylon.language::Comparable<Element>"}))
-    @TypeInfo(value="ceylon.language::Iterable<Element, Null>")
+    @TypeInfo(value="ceylon.language::Iterable<Element, Nothing>")
     static <Element extends ceylon.language.Ordinal<? extends Element> & ceylon.language.Comparable<? super Element>> 
-            ceylon.language.Iterable<Element, Null> integerRangeByIterable(@Ignore final TypeDescriptor $reifiedElement,
+            ceylon.language.Iterable<Element,?> integerRangeByIterable(@Ignore final TypeDescriptor $reifiedElement,
                     @Name("range")
                     @TypeInfo(value="ceylon.language::Range<Element>")
                     ceylon.language.Range<Element> range,
@@ -41,7 +41,7 @@ final class integerRangeByIterable_ {
                     final long step) {
         final ceylon.language.Range<ceylon.language.Integer> r = (ceylon.language.Range)range; 
         //Optimize for Integer ranges
-        return new AbstractIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor) {
+        return new AbstractIterable<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor) {
             @Override
             @Annotations(@Annotation("formal"))
             @TypeInfo("ceylon.language::Iterator<Element>")

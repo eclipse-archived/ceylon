@@ -28,27 +28,30 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
-public class MapIterable<Element, Result> implements Iterable<Result,java.lang.Object>, ReifiedType {
-    private final ceylon.language.Iterable$impl<Result,java.lang.Object> $ceylon$language$Iterable$this;
-    private final ceylon.language.Container$impl<Result,java.lang.Object> $ceylon$language$Container$this;
+public class MapIterable<Element, Absent, Result> implements Iterable<Result,Absent>, ReifiedType {
+    private final ceylon.language.Iterable$impl<Result,Absent> $ceylon$language$Iterable$this;
+    private final ceylon.language.Container$impl<Result,Absent> $ceylon$language$Container$this;
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
-    final Iterable<? extends Element, ? extends java.lang.Object> iterable;
+    final Iterable<? extends Element, ? extends Absent> iterable;
     final Callable<? extends Result> sel;
     @Ignore
     private TypeDescriptor $reifiedResult;
     @Ignore
     private TypeDescriptor $reifiedElement;
+    @Ignore
+    private TypeDescriptor $reifiedAbsent;
     
-    public MapIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedResult,
-            Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Result> collecting) {
-        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor, this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Result,java.lang.Object>($reifiedResult, Null.$TypeDescriptor, this);
+    public MapIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, @Ignore TypeDescriptor $reifiedResult,
+            Iterable<? extends Element, ? extends Absent> iterable, Callable<? extends Result> collecting) {
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,Absent>($reifiedResult, $reifiedAbsent, this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Result,Absent>($reifiedResult, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         this.sel = collecting;
         this.$reifiedElement = $reifiedElement;
         this.$reifiedResult = $reifiedResult;
+        this.$reifiedAbsent = $reifiedAbsent;
     }
 
     @Ignore
@@ -59,13 +62,13 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
 
     @Ignore
     @Override
-    public Container$impl<Result,java.lang.Object> $ceylon$language$Container$impl(){
+    public Container$impl<Result,Absent> $ceylon$language$Container$impl(){
         return $ceylon$language$Container$this;
     }
 
     @Ignore
     @Override
-    public Iterable$impl<Result,java.lang.Object> $ceylon$language$Iterable$impl(){
+    public Iterable$impl<Result,Absent> $ceylon$language$Iterable$impl(){
         return $ceylon$language$Iterable$this;
     }
 
@@ -143,8 +146,8 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
     }
     @Override
     @Ignore
-    public <R2> Iterable<R2, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedR2, Callable<? extends R2> f) {
-        return new MapIterable<Result, R2>($reifiedResult, $reifiedR2, this, f);
+    public <R2> Iterable<R2, ? extends Absent> map(@Ignore TypeDescriptor $reifiedR2, Callable<? extends R2> f) {
+        return new MapIterable<Result, Absent, R2>($reifiedResult, $reifiedAbsent, $reifiedR2, this, f);
     }
     @Override
     @Ignore
@@ -173,7 +176,7 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Result, ? extends java.lang.Object> by(long step) {
+    public Iterable<? extends Result, ? extends Absent> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
@@ -198,7 +201,7 @@ public class MapIterable<Element, Result> implements Iterable<Result,java.lang.O
         return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+    public <Default>Iterable<?,? extends Absent> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore

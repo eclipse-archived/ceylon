@@ -109,7 +109,7 @@ shared class Range<Element>(first, last)
         return RangeIterator();
     }
     
-    shared actual {Element*} by(Integer step) {
+    shared actual {Element+} by(Integer step) {
         doc "step size must be greater than zero"
         assert (step > 0);
         if (step == 1) {

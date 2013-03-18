@@ -121,7 +121,7 @@ shared interface Iterable<out Element, out Absent=Null>
          the given mapping to the elements of to this 
          container."
     see (collect)
-    shared default {Result*} map<Result>(
+    shared default Iterable<Result,Absent> map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
                     { for (elem in this) collecting(elem) };
@@ -315,7 +315,7 @@ shared interface Iterable<out Element, out Absent=Null>
          `0`, `3`, `6`, and `9` in that order."
     throws (Exception, "if the given step size is nonpositive, 
                         i.e. `step<1`") //TODO: this is an assertion
-    shared default {Element*} by(Integer step) {
+    shared default Iterable<Element,Absent> by(Integer step) {
         doc "step size must be greater than zero"
         assert (step > 0);
         if (step == 1) {
@@ -433,8 +433,9 @@ shared interface Iterable<out Element, out Absent=Null>
          original order, followed by the elements of the 
          given iterable object also in their original 
          order."
-    shared default {Element|Other*} chain<Other>({Other*} other) {
-        object chained satisfies {Element|Other*} {
+    shared default Iterable<Element|Other,Absent> chain<Other>({Other*} other) {
+        object chained 
+                satisfies Iterable<Element|Other,Absent> {
             shared actual Iterator<Element|Other> iterator() =>
                     ChainedIterator(outer, other);
         }
@@ -445,7 +446,7 @@ shared interface Iterable<out Element, out Absent=Null>
          iterable object, replacing every `null` element 
          with the given default value. The resulting iterable
          object does not produce the value `null`."
-    shared default Iterable<Element&Object|Default>
+    shared default Iterable<Element&Object|Default,Absent>
     defaultNullElements<Default>(
             doc "A default value that replaces `null` elements."
             Default defaultValue)

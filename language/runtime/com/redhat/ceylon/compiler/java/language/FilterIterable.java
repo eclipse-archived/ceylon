@@ -141,8 +141,8 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     }
     @Override
     @Ignore
-    public <Result> Iterable<Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, Result>($reifiedElement, $reifiedResult, this, f);
+    public <Result> Iterable<Result, ? extends Absent> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return new MapIterable<Element, Absent, Result>($reifiedElement, $reifiedAbsent, $reifiedResult, this, f);
     }
     @Override
     @Ignore
@@ -171,7 +171,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
+    public Iterable<? extends Element, ? extends Absent> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
@@ -196,7 +196,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
         return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
+    public <Default>Iterable<?,? extends Absent> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     /*@Override @Ignore
