@@ -1,8 +1,8 @@
 <chapter id="expressions">
     <title>Expressions</title>
     
-    <para>An <emphasis>expression</emphasis> is produces a value when executed. 
-    An algorithm expressed using functions and expressions, rather than sequences 
+    <para>An <emphasis>expression</emphasis> produces a value when executed. An 
+    algorithm expressed using functions and expressions, rather than sequences 
     of statements is often easier to understand and refactor. Therefore, Ceylon
     has a highly flexible expressions syntax. Expressions are formed from:</para>
     
