@@ -285,12 +285,19 @@ public class RefinementVisitor extends Visitor {
 		                        //      multiple errors
 		                    	//TODO: figure out which other declaration causes the
 		                    	//      problem and display it to the user!
-		                    	String other = r==null ? 
-		                    			"another unrelated supertype" : 
-		                    			"another subtype of " + ((TypeDeclaration) r.getContainer()).getName(); 
-		                        that.addError("member " + d.getName() + 
-		                                " is inherited ambiguously from " + st.getDeclaration().getName() +  
-		                                " and " + other + " and so must be refined by " + td.getName());
+		                    	if (r==null) {
+		                    		that.addError("member " + d.getName() +
+		                    				" is inherited ambiguously by " + td.getName() +
+		                    				" from " + st.getDeclaration().getName() +  
+		                    				" and another unrelated supertype");
+		                    	}
+		                    	else {
+		                    		that.addError("member " + d.getName() + 
+		                    				" is inherited ambiguously by " + td.getName() +
+		                    				" from " + st.getDeclaration().getName() +  
+		                    				" and another subtype of " + ((TypeDeclaration) r.getContainer()).getName() + 
+		                    				" and so must be refined by " + td.getName(), 350);
+		                    	}
 		                        errors.add(d.getName());
 		                    }
 		                    /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
