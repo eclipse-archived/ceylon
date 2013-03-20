@@ -4319,9 +4319,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType et = e.getTypeModel();
             if (!et.isUnknown()) {
                 checkAssignable(et, unit.getObjectDeclaration().getType(), e, 
-                        "interpolated expression must not be an optional type: " + 
-                        et.getProducedTypeName(unit) + 
-                        " is not assignable to Object");
+                        "interpolated expression must not be an optional type");
             }
         }
         setLiteralType(that, unit.getStringDeclaration());
