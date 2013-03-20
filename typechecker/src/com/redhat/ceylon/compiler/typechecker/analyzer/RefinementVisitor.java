@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -284,9 +283,11 @@ public class RefinementVisitor extends Visitor {
 		                        //TODO: This seems to dupe some checks that are already 
 		                        //      done in TypeHierarchyVisitor, resulting in
 		                        //      multiple errors
+		                    	//TODO: figure out which other declaration causes the
+		                    	//      problem and display it to the user!
 		                    	String other = r==null ? 
-		                    			" other supertypes " : 
-		                    			((TypeDeclaration) r.getContainer()).getName(); 
+		                    			"another unrelated supertype" : 
+		                    			"another subtype of " + ((TypeDeclaration) r.getContainer()).getName(); 
 		                        that.addError("member " + d.getName() + 
 		                                " is inherited ambiguously from " + st.getDeclaration().getName() +  
 		                                " and " + other + " and so must be refined by " + td.getName());
