@@ -391,7 +391,7 @@ public class Util {
                 customName = content.substring(0, indexOf);
                 declName = content.substring(indexOf+1, content.length()); 
             }
-            String link = new LinkRenderer(linkRenderer).to(declName).useCustomText(customName).getLink();
+            String link = new LinkRenderer(linkRenderer).to(declName).useCustomText(customName).printWikiStyleLinks(true).getLink();
             out.append(link);
         }
         

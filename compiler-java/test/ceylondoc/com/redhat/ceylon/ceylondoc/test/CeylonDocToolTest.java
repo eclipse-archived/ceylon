@@ -568,7 +568,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='throws section'><span class='title'>Throws: </span><ul><li>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("OverflowException<p>if the number is too large to be represented as an integer</p>"));        
+                Pattern.compile("<span class='link-unresolvable'>OverflowException</span><p>if the number is too large to be represented as an integer</p>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<a class='link' href='StubException.type.html'>StubException</a><p><code>when</code> with <strong>WIKI</strong> syntax</p>"));
     }
@@ -729,7 +729,9 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubInterface with custom name = <a class='link' href='StubInterface.type.html'>custom stub interface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("unresolvable = unresolvable"));
+                Pattern.compile("unresolvable1 = <span class='link-unresolvable'>\\[unresolvable\\]</span>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("unresolvable2 = <span class='link-unresolvable'>\\[unresolvable with custom name|unresolvable\\]</span>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("stubObject = <a class='link' href='stubObject.object.html'>stubObject</a>"));
@@ -752,7 +754,9 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("fullStubInterface with custom name = <a class='link' href='StubInterface.type.html'>full custom stub interface</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("fullUnresolvable = unresolvable::StubInterface"));
+                Pattern.compile("fullUnresolvable1 = <span class='link-unresolvable'>\\[unresolvable::Bar\\]</span>"));
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("fullUnresolvable2 = <span class='link-unresolvable'>\\[unresolvable.bar::Bar.foo\\]</span>"));
     }
     
     private void assertConstants(File destDir) throws IOException {

@@ -135,7 +135,8 @@ shared class StubClass(
          1. stubObject.foo = [[stubObject.foo]]
          1. stubObject.stubInnerObject = [[stubObject.stubInnerObject]]
          1. stubObject.stubInnerObject.fooInner = [[stubObject.stubInnerObject.fooInner]]
-         1. unresolvable = [[unresolvable]]
+         1. unresolvable1 = [[unresolvable]]
+         1. unresolvable2 = [[unresolvable with custom name|unresolvable]]
          1. imported A1 = [[A1]]
          1. imported AliasA2 = [[AliasA2]]
          
@@ -145,7 +146,8 @@ shared class StubClass(
          1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
          1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface]]
          1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
-         1. fullUnresolvable = [[unresolvable::StubInterface]]
+         1. fullUnresolvable1 = [[unresolvable::Bar]]
+         1. fullUnresolvable2 = [[unresolvable.bar::Bar.foo]]
          
          "
     shared void methodWithLinksInDoc() {}

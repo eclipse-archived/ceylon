@@ -134,6 +134,10 @@
 	color: black;
 }
 
+.link-unresolvable {
+	font-family: monospace;
+}
+
 .module-description,
 .class-description {
 	padding: 10px 0;

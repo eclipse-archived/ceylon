@@ -61,6 +61,7 @@ public class LinkRenderer {
     private boolean printAbbreviated = true;
     private boolean printTypeParameters = true;
     private boolean printTypeParameterDetail = false;
+    private boolean printWikiStyleLinks = false;
     
     private final ProducedTypeNamePrinter producedTypeNamePrinter = new ProducedTypeNamePrinter() {
         
@@ -168,6 +169,11 @@ public class LinkRenderer {
         this.printTypeParameterDetail = printTypeParameterDetail;
         return this;
     }
+    
+    public LinkRenderer printWikiStyleLinks(boolean printWikiStyleLinks) {
+        this.printWikiStyleLinks = printWikiStyleLinks;
+        return this;
+    }
 
     public String getLink() {
         String link = null;
@@ -272,7 +278,21 @@ public class LinkRenderer {
                 return processTypedDeclaration((TypedDeclaration) currentDecl);
             }
         } else {
-            return declLink;
+            StringBuilder unresolvable = new StringBuilder();
+            unresolvable.append("<span class='link-unresolvable'>");
+            if( printWikiStyleLinks ) {
+                unresolvable.append("[");
+            }
+            if (customText != null && !customText.equals(declLink)) {
+                unresolvable.append(customText);
+                unresolvable.append("|");
+            }
+            unresolvable.append(declLink);
+            if( printWikiStyleLinks ) {
+                unresolvable.append("]");
+            }
+            unresolvable.append("</span>");
+            return unresolvable.toString();
         }
     }
 
