@@ -30,13 +30,19 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeMap;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -63,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
@@ -72,10 +79,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -202,7 +213,155 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.reifiedAlias(model.getType());
         }
         
-        return classBuilder.build();
+        List<JCTree> result = classBuilder.build();
+        if (Decl.isAnnotationClass(def)) {
+            result = result.prependList(transformAnnotationClass((Tree.AnyClass)def));
+        }
+        
+        return result;
+    }
+
+    /**
+     * Transforms an annotation class into a Java annotation type.
+     * <pre>
+     * annotation class Foo(String s, Integer i=1) {}
+     * </pre>
+     * is transformed into
+     * <pre>
+     * @interface Foo$annotation {
+     *     java.lang.Class<?> $constructor();
+     *     String s();
+     *     long i() default 1;
+     * }
+     * </pre>
+     * {@code $constructor()} is the {@code java.lang.Class} which is the 
+     * transformed annotation constructor to apply to an instance of this 
+     * annotation.
+     */
+    private List<JCTree> transformAnnotationClass(Tree.AnyClass def) {
+        Class klass = (Class)def.getDeclarationModel();
+        String annotationName = klass.getName()+"$annotation";
+        ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
+        annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
+        annoBuilder.annotations(makeAtRetentionRuntime());
+        
+        for (Tree.Parameter p : def.getParameterList().getParameters()) {
+            Parameter parameterModel = p.getDeclarationModel();
+            annoBuilder.method(makeAnnotationMethod(naming.selector(parameterModel), 
+                    transformAnnotationMethodType(p),
+                    parameterModel.isDefaulted() ? transformAnnotationParameterDefault(p) : null));
+        }
+        List<JCTree> result = annoBuilder.build();
+        if (isSequencedAnnotation(klass)) {
+            String wrapperName = klass.getName()+"$annotations";
+            ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null);
+            sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
+            sequencedBuilder.annotations(makeAtRetentionRuntime());
+            ClassDefinitionBuilder sequencedAnnotation = sequencedBuilder.method(makeAnnotationMethod("value", 
+                    make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)), 
+                    null));
+            
+            result = result.appendList(sequencedAnnotation.build());
+        }
+        
+        
+        return result;
+    }
+
+    private List<JCAnnotation> makeAtRetentionRuntime() {
+        return List.of(
+                make().Annotation(
+                        make().Type(syms().retentionType), 
+                        List.of(naming.makeQuotedFQIdent("java.lang.annotation.RetentionPolicy.RUNTIME"))));
+    }
+
+    private JCExpression transformAnnotationParameterDefault(Tree.Parameter p) {
+        Tree.Expression defaultExpression = p.getDefaultArgument().getSpecifierExpression().getExpression();
+        Tree.Term term = defaultExpression.getTerm();
+        JCExpression defaultLiteral = null;
+        if (term instanceof Tree.Literal
+                && !(term instanceof Tree.QuotedLiteral)) {
+            defaultLiteral = expressionGen().transform((Tree.Literal)term);
+        } else if (term instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)term;
+            Declaration decl = bme.getDeclaration();
+            if (isBooleanTrue(decl)) {
+                defaultLiteral = makeBoolean(true);
+            } else if (isBooleanFalse(decl)) {
+                defaultLiteral = makeBoolean(false);
+            }
+        } else if (term instanceof Tree.SequenceEnumeration) {
+            Tree.SequenceEnumeration seq = (Tree.SequenceEnumeration)term;
+            SequencedArgument sequencedArgument = seq.getSequencedArgument();
+            defaultLiteral = makeArrayInitializer(sequencedArgument);
+        } else if (term instanceof Tree.Tuple) {
+            Tree.Tuple seq = (Tree.Tuple)term;
+            SequencedArgument sequencedArgument = seq.getSequencedArgument();
+            defaultLiteral = makeArrayInitializer(sequencedArgument);
+        } /*else if (term instanceof Tree.InvocationExpression) {
+            // Allow invocations of annotation constructors, so long as they're
+            // themselves being invoked with permitted arguments
+            defaultLiteral = expressionGen().transformAnnotation((Tree.InvocationExpression)term, false);
+        }*/
+        if (defaultLiteral == null) {
+            defaultLiteral = makeErroneous(p, "Unsupported defaulted parameter expression");
+        }
+        return defaultLiteral;
+    }
+
+    private JCExpression transformAnnotationMethodType(Tree.Parameter p) {
+        ProducedType parameterType = p.getDeclarationModel().getType();
+        JCExpression type = null;
+        if (isScalarAnnotationParameter(parameterType)) {
+            type = makeJavaType(parameterType, JT_ANNOTATION);
+        } else if (typeFact().isIterableType(parameterType)
+                && isScalarAnnotationParameter(typeFact().getIteratedType(parameterType))) {
+            JCExpression scalarType = makeJavaType(typeFact().getIteratedType(parameterType), JT_ANNOTATION);
+            type = make().TypeArray(scalarType);
+        } else {
+            type = makeErroneous(p, "Unsupported annotation parameter type");
+        }
+        return type;
+    }
+
+
+    /**
+     * Makes a new Array expression suitable for use in initializing a Java array
+     * using as elements the positional arguments 
+     * of the given {@link Tree.SequencedArgument} (which must 
+     * be {@link Tree.ListedArgument}s).
+     * 
+     * <pre>
+     *     Whatever[] w = <strong>{ listedArg1, listedArg2, ... }</strong>
+     *     //             ^---------- this bit ---------^
+     * </pre>
+     * 
+     * @param sequencedArgument
+     * @return The array initializer expression
+     */
+    JCExpression makeArrayInitializer(
+            Tree.SequencedArgument sequencedArgument) {
+        JCExpression defaultLiteral;
+        ListBuffer<JCExpression> elements = ListBuffer.<JCTree.JCExpression>lb();
+        if (sequencedArgument != null) {
+            for (Tree.PositionalArgument arg : sequencedArgument.getPositionalArguments()) {
+                if (arg instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = (Tree.ListedArgument)arg;
+                    elements.append(expressionGen().transformExpression(la.getExpression().getTerm(), BoxingStrategy.UNBOXED, la.getExpression().getTypeModel()));
+                } else {
+                    elements = null;
+                    break;
+                }
+            }
+        }
+        defaultLiteral = elements == null ? null : 
+            make().NewArray(null, List.<JCExpression>nil(), elements.toList());
+        return defaultLiteral;
+    }
+
+    private boolean isScalarAnnotationParameter(ProducedType parameterType) {
+        return isCeylonBasicType(parameterType)
+                || Decl.isAnnotationClass(parameterType.getDeclaration());
     }
 
     private List<JCStatement> visitClassOrInterfaceDefinition(Node def, ClassDefinitionBuilder classBuilder) {
@@ -316,6 +475,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
+        classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
         satisfaction((Class)model, classBuilder);
         at(def);
         // Generate the inner members list for model loading
@@ -1285,6 +1445,18 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
+        
+        if (Decl.isAnnotationConstructor(def)) {
+            // Add a $annotation() method
+            //builder.annotations(makeAtAnnotationInstantiation());
+            //builder.method(transformAnnotationConstructorMethod(def));
+            AnnotationConstructorVisitor av = new AnnotationConstructorVisitor(def);
+            def.visit(av);
+            builder.defs((List)av.getStaticArguments());
+            builder.annotations(List.of(av.makeAtAnnotationInstantiation()));
+            av.updateModel(def.getDeclarationModel());
+        }
+        
         builder.methods(classGen().transform(def, builder));
         
         // Toplevel method
@@ -1303,8 +1475,222 @@ public class ClassTransformer extends AbstractTransformer {
                     naming.makeSyntheticClassname(model),
                     makeSyntheticInstance(model));
             result = result.append(call);
-        } 
+        }
+        
+        //if (Decl.isAnnotationConstructor(def)) {
+            //result = result.prependList(transformAnnotationConstructorType(def));
+        //}
         return result;
+    }
+
+    // AC ac() => AC(); is simple
+    // AC ac() { return AC();} is simple
+    class AnnotationConstructorVisitor extends Visitor {
+        // On the JVM the number of method parameters is limited to 255
+        static final short LITERAL_ARGUMENT = 256;
+        private boolean checkingInvocationPrimary;
+        private boolean checkingArguments;
+        private ProducedType annotationClass;
+        private ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
+        private TreeMap<Parameter, Short> perm = new TreeMap<Parameter, Short>(new Comparator<Parameter>() {
+
+            @Override
+            public int compare(Parameter o1, Parameter o2) {
+                Class c = (Class)o1.getContainer();
+                Integer i1  = c.getParameterList().getParameters().indexOf(o1);
+                Integer i2 = c.getParameterList().getParameters().indexOf(o2);
+                return i1.compareTo(i2);
+            }
+        });
+        private Parameter classParameter;
+        private final AnyMethod annotationConstructor;
+        
+        AnnotationConstructorVisitor(Tree.AnyMethod annotationConstructor) {
+            this.annotationConstructor = annotationConstructor;
+        }
+        
+        public void visit(Tree.MethodDefinition d) {
+            d.getBlock().visit(this);
+        }
+        
+        public void visit(Tree.MethodDeclaration d) {
+            if (d.getSpecifierExpression() == null) {
+                makeErroneous(d, "Annotation constructors may not be forward declared");
+                // TODO Why not?
+            }
+            d.getSpecifierExpression().visit(this);
+        }
+        
+        
+        public void visit(Tree.Statement d) {
+            if (annotationConstructor instanceof Tree.MethodDefinition 
+                    && d instanceof Tree.Return) {
+            } else if (d != annotationConstructor) {
+                makeErroneous(d, "Annotation constructors may only contain a return statement");
+            }
+            super.visit(d);
+        }
+        public void visit(Tree.InvocationExpression invocation) {
+            checkingInvocationPrimary = true;
+            invocation.getPrimary().visit(this);
+            checkingInvocationPrimary = false;
+            checkingArguments = true;
+            if (invocation.getPositionalArgumentList() != null) {
+                invocation.getPositionalArgumentList().visit(this);
+            }
+            if (invocation.getNamedArgumentList() != null) { 
+                invocation.getNamedArgumentList().visit(this);
+            }
+            checkingArguments = false;
+        }
+        public void visit(Tree.Literal literal) {
+            if (checkingArguments){
+                appendStaticArgument(literal, expressionGen().transform(literal));
+            } else {
+                makeErroneous(literal, "Unsupported literal");
+            }
+        }
+        public void visit(Tree.BaseMemberExpression bme) {
+            if (checkingArguments){
+                Declaration declaration = bme.getDeclaration();
+                if (declaration instanceof ValueParameter) {
+                    ValueParameter constructorParameter = (ValueParameter)declaration;
+                    Method c = (Method)constructorParameter.getContainer();
+                    short constructorParameterIndex = (short)c.getParameterLists().get(0).getParameters().indexOf(constructorParameter);
+                    perm.put(classParameter, constructorParameterIndex);
+                } else if (isBooleanFalse(declaration)
+                        || isBooleanTrue(declaration)) {
+                    appendStaticArgument(bme, expressionGen().transform(bme));
+                }
+            } else {
+                makeErroneous(bme, "Unsupported base member expression");
+            }
+        }
+        private void appendStaticArgument(Tree.Primary bme, JCExpression init) {
+            perm.put(classParameter, LITERAL_ARGUMENT);
+            staticArgs.append(makeVar(STATIC | FINAL, 
+                    classParameter.getName(), 
+                    makeJavaType(bme.getTypeModel()), 
+                    init));
+        }
+
+        public void visit(Tree.BaseTypeExpression bte) {
+            if (checkingInvocationPrimary) {
+                if (Decl.isAnnotationClass(bte.getDeclaration())) {
+                    Class ac = (Class)bte.getDeclaration();
+                    annotationClass = ac.getType();
+                } else {
+                    makeErroneous(bte, "Not an annotation class");
+                }
+            } else {
+                makeErroneous(bte, "Unsupported base type expression");
+            }
+        }
+        
+        public void visit(Tree.PositionalArgument argument) {
+            makeErroneous(argument, "Unsupported positional argument");
+        }
+        public void visit(Tree.SpreadArgument argument) {
+            classParameter = argument.getParameter();
+            argument.getExpression().visit(this);
+            classParameter = null;
+        }
+        public void visit(Tree.ListedArgument argument) {
+            classParameter = argument.getParameter();
+            argument.getExpression().visit(this);
+            classParameter = null;
+        }
+        public void visit(Tree.NamedArgument argument) {
+            makeErroneous(argument, "Unsupported named argument");
+        }
+        public void visit(Tree.SpecifiedArgument argument) {
+            classParameter = argument.getParameter();
+            argument.getSpecifierExpression().visit(this);
+            classParameter = null;
+        }
+        
+        public void updateModel(Method ac) {
+            ac.setAnnotationClass((Class)annotationClass.getDeclaration());
+            int[] arguments = new int[perm.size()];
+            int ii = 0;
+            for (Short i : perm.values()) {
+                arguments[ii++] = i;
+            }
+            ac.setAnnotationArguments(arguments);
+        }
+        
+        public List<JCStatement> getStaticArguments() {
+            return staticArgs.toList();
+        }
+        
+        public JCAnnotation makeAtAnnotationInstantiation() {
+            ListBuffer<JCExpression> p = ListBuffer.lb();
+            for (int i : perm.values()) {
+                p.append(make().Literal(i));
+            }
+            
+            return make().Annotation(
+                    make().Type(syms().ceylonAtAnnotationInstantiationType),
+                    List.<JCExpression>of(
+                            make().Assign(
+                                    naming.makeUnquotedIdent("arguments"),
+                                    make().NewArray(null, null, p.toList())),
+                            make().Assign(
+                                    naming.makeUnquotedIdent("annotationClass"),
+                                    naming.makeQualIdent(makeJavaType(annotationClass, JT_ANNOTATION), "class"))
+                    ));
+        }
+    }
+    
+    /** 
+     * Transforms an annotation constructor into it's Java annotation type:
+     * <pre>
+     * annotation Foo bar(String a, String s="") ...
+     * <pre>
+     * is transformed into:
+     * <pre>
+     * @interface bar$annotation_ {
+     *     String s() default "";
+     *     @Foo$annotation $class();
+     * }
+     * <pre>
+     * Note that only defaulted parameters of the annotation constructor get
+     * annotation methods -- other arguments will be encoded at the use site
+     * in the {@code $class=} argument.
+     */
+    private List<JCTree> transformAnnotationConstructorType(AnyMethod def) {
+        Method methodModel = def.getDeclarationModel();
+        
+        ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, 
+                naming.annotationTypeName(methodModel, 0), null);
+        annoBuilder.modifiers(transformMethodDeclFlags(methodModel) & ~(Flags.STATIC | Flags.ABSTRACT) 
+                | Flags.ANNOTATION | Flags.INTERFACE);
+        
+        {// The $class() method
+            annoBuilder.method(makeAnnotationMethod("$class", 
+                    makeJavaType(methodModel.getType(), JT_ANNOTATION), 
+                    null));
+        }
+        
+        for (Tree.Parameter parameter : def.getParameterLists().get(0).getParameters()) {
+            Parameter parameterModel = parameter.getDeclarationModel();
+            if (!parameterModel.isDefaulted()) {
+                continue;
+            }
+            annoBuilder.method(makeAnnotationMethod(naming.selector(parameterModel), 
+                    transformAnnotationMethodType(parameter), 
+                    transformAnnotationParameterDefault(parameter)));            
+        }
+        return annoBuilder.build();
+    }
+    
+    private MethodDefinitionBuilder makeAnnotationMethod(String name, JCExpression type, JCExpression defaultValue) {
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, name);
+        mdb.modifiers(PUBLIC | ABSTRACT);
+        mdb.resultType(null, type);
+        mdb.defaultValue(defaultValue);
+        mdb.noBody();
+        return mdb;
     }
 
     public List<MethodDefinitionBuilder> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
@@ -1428,6 +1814,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (transformMethod) {
+            methodBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {
                 copyTypeParameters(model, methodBuilder);
