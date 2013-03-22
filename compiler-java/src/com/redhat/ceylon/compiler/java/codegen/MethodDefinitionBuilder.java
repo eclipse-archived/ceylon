@@ -83,6 +83,8 @@ public class MethodDefinitionBuilder {
     
     private boolean built = false;
 
+    private JCExpression defaultValue;
+
     public static MethodDefinitionBuilder method(AbstractTransformer gen, Method method) {
         return new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
     }
@@ -172,7 +174,7 @@ public class MethodDefinitionBuilder {
                 params.toList(),
                 List.<JCExpression> nil(),
                 makeBody(body),
-                null);
+                defaultValue);
     }
 
     private Name makeName(String name) {
@@ -454,6 +456,10 @@ public class MethodDefinitionBuilder {
         for(TypeParameter typeParam : typeParameters)
             reifiedTypeParameter(typeParam.getName());
         return this;
+    }
+
+    public void defaultValue(JCExpression defaultValue) {
+        this.defaultValue = defaultValue;
     }
     
 }
