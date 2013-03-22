@@ -938,6 +938,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return integerLiteral(lit, text);
     }
+    
+    JCExpression transform(Tree.Literal literal) {
+        if (literal instanceof Tree.StringLiteral) {
+            return transform((Tree.StringLiteral)literal);
+        } else if (literal instanceof Tree.NaturalLiteral) {
+            return transform((Tree.NaturalLiteral)literal);
+        } else if (literal instanceof Tree.CharLiteral) {
+            return transform((Tree.CharLiteral)literal);
+        } else if (literal instanceof Tree.FloatLiteral) {
+            return transform((Tree.FloatLiteral)literal);
+        } else if (literal instanceof Tree.QuotedLiteral) {
+            return transform((Tree.QuotedLiteral)literal);
+        }
+        throw Assert.fail();
+    }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
         at(expr);
