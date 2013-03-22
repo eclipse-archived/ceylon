@@ -2603,14 +2603,15 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Invokes a static method of the Util helper class
      * @param methodName name of the method
-     * @param params parameters
+     * @param arguments The arguments to the invocation
+     * @param typeArguments The arguments to the method
      * @return the invocation AST
      */
-    public JCExpression makeUtilInvocation(String methodName, List<JCExpression> params, List<JCExpression> typeParams) {
-        return make().Apply(typeParams, 
+    public JCExpression makeUtilInvocation(String methodName, List<JCExpression> arguments, List<JCExpression> typeArguments) {
+        return make().Apply(typeArguments, 
                             make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
                                           names().fromString(methodName)), 
-                            params);
+                            arguments);
     }
 
     public JCExpression makeTypeDescriptorType(){
