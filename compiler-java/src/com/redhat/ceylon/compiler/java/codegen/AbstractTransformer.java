@@ -1063,6 +1063,9 @@ public abstract class AbstractTransformer implements Transformation {
 
     /** For use when we want a value type class. */
     static final int JT_VALUE_TYPE = 1 << 11;
+    
+    /** Generates the Java type of the companion class of the given class */
+    static final int JT_ANNOTATION = 1 << 12;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -1559,6 +1562,9 @@ public abstract class AbstractTransformer implements Transformation {
         java.util.List<DeclNameFlag> args = new LinkedList<DeclNameFlag>();
         if ((flags & JT_COMPANION) != 0) {
             args.add(DeclNameFlag.COMPANION);
+        }
+        if ((flags & JT_ANNOTATION) != 0) {
+            args.add(DeclNameFlag.ANNOTATION);
         }
         if ((flags & JT_NON_QUALIFIED) == 0) {
             args.add(DeclNameFlag.QUALIFIED);

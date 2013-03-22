@@ -64,6 +64,7 @@ import com.sun.tools.javac.util.Names;
 public class Naming implements LocalId {
 
     private static final String IMPL_POSTFIX = "$impl";
+    private static final String ANNO_POSTFIX = "$annotation";
 
     static enum DeclNameFlag {
         /** 
@@ -74,7 +75,9 @@ public class Naming implements LocalId {
          */
         QUALIFIED,
         /** The name of the companion type of this thing */
-        COMPANION
+        COMPANION,
+        /** The name of the annotation type of this thing */
+        ANNOTATION
     }
     
     /** Quote the given name by prefixing it with a dollar ($) */
@@ -244,11 +247,15 @@ public class Naming implements LocalId {
         // be more resilient to errors
         if(decl == null)
             return make().Erroneous();
+         
         // TODO This should probably be generating a JCExpression, not
         // a String (which will inevitable end up being split up to produce a
         // JCExpression by the caller
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
+        
+        Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl));
+        
         DeclName helper = new DeclName(decl, qualifyingExpr);
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
         Scope s = decl;
@@ -284,10 +291,14 @@ public class Naming implements LocalId {
         if (scope instanceof Class || scope instanceof TypeAlias) {
             TypeDeclaration klass = (TypeDeclaration)scope;
             helper.append(klass.getName());
-            if (Decl.isCeylon(klass)
-                    && flags.contains(DeclNameFlag.COMPANION)
+            if (Decl.isCeylon(klass)) {
+                if (flags.contains(DeclNameFlag.COMPANION)
                     && last) {
-                helper.append(IMPL_POSTFIX);
+                    helper.append(IMPL_POSTFIX);
+                } else if (flags.contains(DeclNameFlag.ANNOTATION)
+                        && last) {
+                    helper.append(ANNO_POSTFIX);
+                }
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
