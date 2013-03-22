@@ -20,10 +20,13 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
@@ -43,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -497,5 +501,37 @@ public class Decl {
                 && isLocal(attr)
                 && attr.isVariable()
                 && attr.isCaptured();
+    }
+
+    public static boolean isAnnotationConstructor(AnyMethod def) {
+        return isAnnotationConstructor(def.getDeclarationModel());
+    }
+    
+    public static boolean isAnnotationConstructor(Declaration def) {
+        return def.isToplevel()
+                && def instanceof Method
+                && containsAnnotationAnnotation(def);
+    }
+
+    private static boolean containsAnnotationAnnotation(
+            Declaration decl) {
+        List<Annotation> annotations = decl.getAnnotations();
+        if (annotations != null) {
+            for (Annotation ann : annotations) {
+                if ("annotation".equals(ann.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAnnotationClass(Tree.ClassOrInterface def) {
+        return isAnnotationClass(def.getDeclarationModel());
+    }
+
+    public static boolean isAnnotationClass(Declaration declarationModel) {
+        return (declarationModel instanceof Class)
+                && containsAnnotationAnnotation(declarationModel);
     }
 }
