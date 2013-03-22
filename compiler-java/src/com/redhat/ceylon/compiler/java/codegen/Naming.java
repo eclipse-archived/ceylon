@@ -119,7 +119,7 @@ public class Naming implements LocalId {
                 "clone"));
     }
     
-    private String getMethodName(Method decl) {
+    private String getMethodName(TypedDeclaration decl) {
         if (decl.isClassOrInterfaceMember()) {
             String name = decl.getName();
             // ERASURE
@@ -141,10 +141,11 @@ public class Naming implements LocalId {
         }
     }
 
-    private String getMethodNameInternal(Method decl) {
+    private String getMethodNameInternal(TypedDeclaration decl) {
         String name;
-        if (decl.isClassOrInterfaceMember()) {
-            name = quoteMethodNameIfProperty(decl);
+        if (decl.isClassOrInterfaceMember()
+                && decl instanceof Method) {
+            name = quoteMethodNameIfProperty((Method)decl);
         } else {
             name = decl.getName();
         }
@@ -950,9 +951,15 @@ public class Naming implements LocalId {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
                     return ((JavaMethod)decl).getRealName();
-                return getMethodName((Method)decl);    
+                return getMethodName(decl);    
             }
             return quoteMethodName((Method)decl);
+        } else if (decl instanceof Parameter) {
+            Assert.that(
+                    decl.getContainer() instanceof Declaration
+                    && Decl.isAnnotationClass((Declaration)decl.getContainer()),
+                    "Not an annotation class parameter");
+            return getMethodName(decl);
         }
         Assert.fail();
         return null;
