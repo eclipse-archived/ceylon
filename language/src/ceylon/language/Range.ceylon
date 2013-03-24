@@ -123,18 +123,8 @@ shared class Range<Element>(first, last)
     
     doc "Determines if the range includes the given object."
     shared actual Boolean contains(Object element) {
-        //TODO: re-enable this implementation once we have
-        //      reified generics
-        /*if (is Element element) {
+        if (is Element element) {
             return includes(element);
-        }
-        else {
-            return false;
-        }*/
-        for (e in this) {
-            if (e==element) {
-                return true;
-            }
         }
         else {
             return false;
@@ -158,8 +148,7 @@ shared class Range<Element>(first, last)
             decreasing then x<=first && x>=last
                     else x>=first && x<=last;
     
-    //TODO: enable when we have reified generics
-    /*doc "Determines if two ranges are the same by comparing
+    doc "Determines if two ranges are the same by comparing
          their endpoints."
     shared actual Boolean equals(Object that) {
         if (is Range<Object> that) {
@@ -170,7 +159,7 @@ shared class Range<Element>(first, last)
             //it might be another sort of List
             return List::equals(that);
         }
-    }*/
+    }
     
     doc "Returns the range itself, since ranges are 
          immutable."
