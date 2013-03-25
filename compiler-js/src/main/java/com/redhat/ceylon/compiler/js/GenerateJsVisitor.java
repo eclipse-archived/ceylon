@@ -3853,10 +3853,14 @@ public class GenerateJsVisitor extends Visitor
         location(that);
         String custom = "Assertion failed";
         //Scan for a "doc" annotation with custom message
-        for (Annotation ann : that.getAnnotationList().getAnnotations()) {
-            BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
-            if ("doc".equals(bme.getDeclaration().getName())) {
-                custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0)).getExpression().getTerm().getText();
+        if (that.getAnnotationList() != null && that.getAnnotationList().getAnonymousAnnotation() != null) {
+            custom = that.getAnnotationList().getAnonymousAnnotation().getStringLiteral().getText();
+        } else {
+            for (Annotation ann : that.getAnnotationList().getAnnotations()) {
+                BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
+                if ("doc".equals(bme.getDeclaration().getName())) {
+                    custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0)).getExpression().getTerm().getText();
+                }
             }
         }
         endLine();

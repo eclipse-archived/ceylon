@@ -356,7 +356,7 @@ public class CeylonCompileJsTool implements Tool {
                     }
                 }
             }
-            
+
             for (File root : roots) {
                 tcb.addSrcDirectory(root);
             }
