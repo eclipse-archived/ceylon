@@ -39,6 +39,6 @@ shared void test() {
     test_objects();
     testAliasing();
     testLate();
-    //testReifiedGenerics();
+    //testReifiedRuntime();
     results();
 }
