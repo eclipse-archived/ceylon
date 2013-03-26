@@ -782,7 +782,7 @@ public class GenerateJsVisitor extends Visitor
      * @param callback A callback to add something more to the type initializer in prototype style.
      */
     private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
-            ClassOrInterface d, PrototypeInitCallback callback) {
+            final ClassOrInterface d, PrototypeInitCallback callback) {
 
         //Let's always use initTypeProto to avoid #113
         String initFuncName = "initTypeProto";
@@ -829,6 +829,20 @@ public class GenerateJsVisitor extends Visitor
         }
 
         out(");");
+        //Add ref to outer type
+        if (d.isMember()) {
+            StringBuilder containers = new StringBuilder();
+            Scope _d2 = d;
+            while (_d2 instanceof ClassOrInterface) {
+                if (containers.length() > 0) {
+                    containers.insert(0, '.');
+                }
+                containers.insert(0, names.name((Declaration)_d2));
+                _d2 = _d2.getScope();
+            }
+            endLine();
+            out(containers.toString(), "=", names.name(d), ";");
+        }
 
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
         if (prototypeStyle) {
