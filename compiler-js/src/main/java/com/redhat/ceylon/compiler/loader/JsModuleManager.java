@@ -14,6 +14,8 @@ import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -96,6 +98,14 @@ public class JsModuleManager extends ModuleManager {
         Module module = new JsonModule(this);
         module.setName(moduleName);
         module.setVersion(version);
+        if (!module.getNameAsString().equals("ceylon.language")) {
+            //Add language module as a dependency
+            //This will cause the dependency to be loaded later
+            JsonModule dep = (JsonModule)getOrCreateModule(splitModuleName("ceylon.language"), Versions.CEYLON_VERSION_NUMBER);
+            ModuleImport imp = new ModuleImport(dep, false, false);
+            module.getImports().add(imp);
+            module.setLanguageModule(dep);
+        }
         return module;
     }
 

@@ -53,7 +53,7 @@ public class JsonModule extends Module {
 
     @Override
     public com.redhat.ceylon.compiler.typechecker.model.Package getPackage(String name) {
-        com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
+        final com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
         if (p == null) {
             System.out.println(this +" don't yet have " + name);
         }
