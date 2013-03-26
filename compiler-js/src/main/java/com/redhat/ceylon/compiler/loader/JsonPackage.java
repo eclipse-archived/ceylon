@@ -643,8 +643,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 if (mname == null) {
                     //local type
                     rp = getModule().getDirectPackage(pname);
-                } else if ("ceylon.language".equals(mname)) {
-                    rp = getModule().getLanguageModule().getRootPackage();
                 } else {
                     rp = getModule().getPackage(pname);
                 }
