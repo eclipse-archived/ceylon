@@ -25,8 +25,8 @@ void testReifiedRuntime(){
     check(! member is Container<Integer>.Member<Integer>, "reified runtime inner 2");
     check(! member is Container<String>.Member<String>, "reified runtime inner 3");
 
-    Object member2 = Container<String>().Member<Integer>().Child<Character>();
-    check(member2 is Container<String>.Member<Integer>.Child<Character>, "reified runtime inner 4");
+    //Object member2 = Container<String>().Member<Integer>().Child<Character>();
+    //check(member2 is Container<String>.Member<Integer>.Child<Character>, "reified runtime inner 4");
 
     Object invTop1 = Invariant<Top1>();
     check(invTop1 is Invariant<Top1>, "reified runtime invariant 1");
