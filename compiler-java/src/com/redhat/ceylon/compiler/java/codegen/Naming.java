@@ -254,7 +254,7 @@ public class Naming implements LocalId {
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         
-        Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl));
+        Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl), decl.toString());
         
         DeclName helper = new DeclName(decl, qualifyingExpr);
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
@@ -878,7 +878,7 @@ public class Naming implements LocalId {
             }
         }
         if ((namingOptions & NA_WRAPPER) != 0) {
-            expr = makeQualIdent(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+            expr = makeQualIdent(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_ANNOTATION)));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
             expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
@@ -913,6 +913,9 @@ public class Naming implements LocalId {
             name = getAttrClassName((Setter)decl, namingOptions);
         } else {
             name = decl.getName();
+            if ((namingOptions & NA_ANNOTATION) != 0) {
+                name = name + "$annotation";
+            }
             if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
                 name = quoteClassName(name);
             }
@@ -941,6 +944,7 @@ public class Naming implements LocalId {
     static final int NA_SETTER = 1<<5;
     static final int NA_IDENT = 1<<7;
     static final int NA_ALIASED = 1<<8;
+    static final int NA_ANNOTATION = 1<<9;
 
     /**
      * Returns the name of the Java method/field for the given declaration 
@@ -968,7 +972,8 @@ public class Naming implements LocalId {
         } else if (decl instanceof Parameter) {
             Assert.that(
                     decl.getContainer() instanceof Declaration
-                    && Decl.isAnnotationClass((Declaration)decl.getContainer()),
+                    && (Decl.isAnnotationClass((Declaration)decl.getContainer())
+                            || Decl.isAnnotationConstructor((Declaration)decl.getContainer())),
                     "Not an annotation class parameter");
             return getMethodName(decl);
         }
@@ -1607,4 +1612,10 @@ public class Naming implements LocalId {
     public String getTypeDescriptorAliasName() {
         return "$TypeDescriptor";
     }
+
+    String annotationTypeName(Method methodModel, int naFlags) {
+        Assert.that(Decl.isAnnotationConstructor(methodModel));
+        return getQuotedClassName(methodModel, naFlags | NA_ANNOTATION);
+    }
+  
 }
