@@ -73,4 +73,8 @@ void testReifiedRuntime(){
     check(m2 is Anything(), "reified runtime callable 5");
     check(!m2 is String(), "reified runtime callable 6");
     check(!m2 is Anything(Integer), "reified runtime callable 7");
+
+    Object rec1 = Singleton<Entry<Integer,Singleton<String>>>(1->Singleton("x"));
+    check(rec1 is Singleton<Entry<Integer,Singleton<String>>>, "#188 [1]");
+    check(!rec1 is Singleton<Entry<Integer,Singleton<Integer>>>, "#188 [2]");
 }
