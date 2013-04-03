@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.loader;
 
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class JsonModule extends Module {
@@ -55,7 +56,7 @@ public class JsonModule extends Module {
     public com.redhat.ceylon.compiler.typechecker.model.Package getPackage(String name) {
         final com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
         if (p == null) {
-            System.out.println(this +" don't yet have " + name);
+            throw new CompilerErrorException("Package " + name + " not available");
         }
         return p;
     }
