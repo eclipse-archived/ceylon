@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
@@ -85,6 +86,15 @@ public class Decl {
      */
     public static boolean isValue(Declaration decl) {
         return (decl instanceof Value) && !((Value)decl).isTransient();
+    }
+
+    /**
+     * Determines whether the declaration's is a value or a shared value parameter
+     * @param decl The declaration
+     * @return true if the declaration is a value or a shared value parameter
+     */
+    public static boolean isValueOrSharedParam(Declaration decl) {
+        return isValue(decl) || ((decl instanceof ValueParameter) && decl.isShared());
     }
 
     /**
@@ -331,6 +341,12 @@ public class Decl {
     public static boolean isClassAttribute(Declaration decl) {
         return (withinClassOrInterface(decl))
                 && (Decl.isValue(decl) || decl instanceof Setter)
+                && (decl.isCaptured() || decl.isShared());
+    }
+
+    public static boolean isClassParameter(Declaration decl) {
+        return (withinClassOrInterface(decl))
+                && (decl instanceof ValueParameter)
                 && (decl.isCaptured() || decl.isShared());
     }
 
