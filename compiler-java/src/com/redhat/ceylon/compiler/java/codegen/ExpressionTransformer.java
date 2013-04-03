@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -2819,7 +2820,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 selector = naming.selector((Value)decl);
             }
-        } else if (Decl.isValue(decl)) {
+        } else if (Decl.isValueOrSharedParam(decl)) {
             if (decl.isToplevel()) {
                 // ERASURE
                 if ("null".equals(decl.getName())) {
@@ -2831,10 +2832,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = makeBoolean(false);
                 } else {
                     // it's a toplevel attribute
-                    primaryExpr = naming.makeName((Value)decl, Naming.NA_FQ | Naming.NA_WRAPPER);
-                    selector = naming.selector((Value)decl);
+                    primaryExpr = naming.makeName((TypedDeclaration)decl, Naming.NA_FQ | Naming.NA_WRAPPER);
+                    selector = naming.selector((TypedDeclaration)decl);
                 }
-            } else if (Decl.isClassAttribute(decl)) {
+            } else if (Decl.isClassAttribute(decl) || Decl.isClassParameter(decl)) {
                 mustUseField = Decl.isJavaField(decl)
                         || (isWithinSuperInvocation() 
                                 && primaryExpr == null
@@ -2847,19 +2848,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
-                    selector = naming.selector((Value)decl);
+                    selector = naming.selector((TypedDeclaration)decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
-                TypeDeclaration typeDecl = ((Value)decl).getType().getDeclaration();
-                mustUseField = Decl.isBoxedVariable((Value)decl);
+                TypeDeclaration typeDecl = ((TypedDeclaration)decl).getType().getDeclaration();
+                mustUseField = Decl.isBoxedVariable((TypedDeclaration)decl);
                 if (Decl.isLocal(typeDecl)
                         && typeDecl.isAnonymous()) {
                     // accessing a local 'object' declaration, so don't need a getter 
-                } else if (decl.isCaptured() && !((Value) decl).isVariable()) {
+                } else if (decl.isCaptured() && !((TypedDeclaration) decl).isVariable()) {
                     // accessing a local that is not getter wrapped
                 } else {
-                    primaryExpr = naming.makeQualifiedName(primaryExpr, (Value)decl, Naming.NA_Q_LOCAL_INSTANCE);
-                    selector = naming.selector((Value)decl);
+                    primaryExpr = naming.makeQualifiedName(primaryExpr, (TypedDeclaration)decl, Naming.NA_Q_LOCAL_INSTANCE);
+                    selector = naming.selector((TypedDeclaration)decl);
                 }
             }
         } else if (decl instanceof Method) {
