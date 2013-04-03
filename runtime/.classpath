@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="impl/src/main/java"/>
 	<classpathentry kind="src" path="spi/src/main/java"/>
 	<classpathentry kind="src" path="testsuite/src/test/java"/>
+	<classpathentry kind="src" path="testsuite/src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
