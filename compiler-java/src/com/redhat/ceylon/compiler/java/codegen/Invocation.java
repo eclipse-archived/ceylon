@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -193,7 +192,7 @@ abstract class Invocation {
         } else {
             if (this instanceof IndirectInvocationBuilder
                     && (Decl.isGetter(getPrimaryDeclaration())
-                            || (Decl.isValue(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
+                            || (Decl.isValueOrSharedParam(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
                             && !Decl.isLocal(getPrimaryDeclaration()))) {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 

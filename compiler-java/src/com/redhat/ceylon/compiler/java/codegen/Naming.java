@@ -39,7 +39,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -940,13 +939,13 @@ public class Naming implements LocalId {
         return selector(decl, 0);
     }
     String selector(TypedDeclaration decl, int namingOptions) {
-        if (decl instanceof Value) {
+        if (Decl.isGetter(decl) || Decl.isValueOrSharedParam(decl)) {
             if ((namingOptions & NA_SETTER) != 0) {
                 return getSetterName(decl);
             } else {
                 return getGetterName(decl);
             }
-        } else if (decl instanceof Method) {
+        } else if (Decl.isMethod(decl)) {
             if (decl.isClassMember()) {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
