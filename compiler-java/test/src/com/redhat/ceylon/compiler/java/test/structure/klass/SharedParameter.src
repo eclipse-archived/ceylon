@@ -12,7 +12,7 @@ class SharedParameter implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     private final .java.lang.String m$priv() {
-        return s;
+        return getS();
     }
     
     @.java.lang.Override
