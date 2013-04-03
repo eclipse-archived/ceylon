@@ -16,6 +16,7 @@
 
 package org.jboss.ceylon.test.modules.interop.test;
 
+import java.util.Collections;
 import java.util.List;
 
 import ceylon.modules.spi.Argument;
@@ -41,6 +42,11 @@ public class AetherInteropTestCase extends ModulesTest {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "io.xov.yalp-11.0.2.Final.car");
         module.addClasses(module_.class, run_.class);
         testArchive(module);
+    }
+
+    @Test
+    public void testCamel() throws Throwable {
+        car("camel/1.0.0", Collections.<String, String>emptyMap());
     }
 
     @Override
