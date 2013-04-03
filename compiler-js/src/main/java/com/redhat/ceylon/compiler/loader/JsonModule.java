@@ -26,7 +26,7 @@ public class JsonModule extends Module {
                 if (pkg == null) {
                     pkg = modman.createPackage(k, this);
                 }
-                if (pkg instanceof JsonPackage) {
+                if (pkg instanceof JsonPackage && ((JsonPackage)pkg).getModel() == null) {
                     ((JsonPackage) pkg).setModel((Map<String,Object>)e.getValue());
                 }
             }

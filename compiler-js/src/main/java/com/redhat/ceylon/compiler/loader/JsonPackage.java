@@ -67,6 +67,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     void setModel(Map<String, Object> metamodel) {
         model = metamodel;
     }
+    Map<String,Object> getModel() { return model; }
 
     void loadDeclarations() {
         if (loaded) return;
@@ -640,25 +641,28 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                         rval = ((TypeDeclaration)d).getType();
                     }
                 }
-                if (mname == null) {
-                    //local type
-                    rp = getModule().getDirectPackage(pname);
-                } else {
-                    rp = getModule().getPackage(pname);
-                }
-                if (rp == null) {
-                    throw new CompilerErrorException("Package not found: " + pname);
-                }
                 if (rval == null) {
+                    if (mname == null) {
+                        //local type
+                        rp = getModule().getDirectPackage(pname);
+                    } else {
+                        rp = getModule().getPackage(pname);
+                    }
+                    if (rp == null) {
+                        throw new CompilerErrorException("Package not found: " + pname);
+                    }
+                    if (rp != this && rp instanceof JsonPackage && !((JsonPackage)rp).loaded) {
+                        ((JsonPackage) rp).loadDeclarations();
+                    }
                     //Then look in the top-level declarations
                     for (Declaration d : rp.getMembers()) {
                         if (d instanceof TypeDeclaration && tname.equals(d.getName())) {
                             rval = ((TypeDeclaration)d).getType();
                         }
                     }
-                }
-                if (rval == null && rp == this) {
-                    rval = ((TypeDeclaration)load(tname, typeParams)).getType();
+                    if (rval == null && rp instanceof JsonPackage) {
+                        rval = ((TypeDeclaration)((JsonPackage)rp).load(tname, typeParams)).getType();
+                    }
                 }
             }
             if (rval != null && m.containsKey(MetamodelGenerator.KEY_TYPE_PARAMS)) {
@@ -689,14 +693,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (rval == null) {
             try {
                 if (container == null) {
-                    throw new IllegalArgumentException(String.format("Couldn't find type %s::%s for %s in %s<%s>",
+                    throw new IllegalArgumentException(String.format("Couldn't find type %s::%s for %s in %s<%s> (FROM pkg %s)",
                             m.get(MetamodelGenerator.KEY_PACKAGE), m.get(MetamodelGenerator.KEY_NAME),
-                            m.get(MetamodelGenerator.KEY_MODULE), m, typeParams));
+                            m.get(MetamodelGenerator.KEY_MODULE), m, typeParams, getNameAsString()));
                 } else {
-                    throw new IllegalArgumentException(String.format("Couldn't find type %s::%s or %s::%s.%s for %s in %s<%s>",
+                    throw new IllegalArgumentException(String.format("Couldn't find type %s::%s or %s::%s.%s for %s in %s<%s> (FROM pkg %s)",
                             m.get(MetamodelGenerator.KEY_PACKAGE), m.get(MetamodelGenerator.KEY_NAME),
                             m.get(MetamodelGenerator.KEY_PACKAGE), container.getName(), m.get(MetamodelGenerator.KEY_NAME),
-                            m.get(MetamodelGenerator.KEY_MODULE), m, typeParams));
+                            m.get(MetamodelGenerator.KEY_MODULE), m, typeParams, getNameAsString()));
                 }
             } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
