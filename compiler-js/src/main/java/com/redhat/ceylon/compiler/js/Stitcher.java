@@ -90,8 +90,8 @@ public class Stitcher {
         tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
         //This is to use the JSON metamodel
-        tcb.moduleManagerFactory(new JsModuleManagerFactory(
-                clmod == null ? null : (Map<String,Object>)JSONValue.parse(clmod)));
+        JsModuleManagerFactory.setVerbose(true);
+        tcb.moduleManagerFactory(new JsModuleManagerFactory((Map<String,Object>)JSONValue.parse(clmod)));
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
         if (tc.getErrors() > 0) {
