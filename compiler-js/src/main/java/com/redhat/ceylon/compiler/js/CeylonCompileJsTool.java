@@ -43,7 +43,7 @@ public class CeylonCompileJsTool implements Tool {
 
     private List<String> repos = Collections.emptyList();
     private List<String> src = Collections.singletonList("source");
-    private List<String> module = Collections.emptyList();
+    private List<String> files = Collections.emptyList();
 
     @OptionArgument(argumentName="encoding")
     @Description("Sets the encoding used for reading source files (default: platform-specific)")
@@ -195,16 +195,30 @@ public class CeylonCompileJsTool implements Tool {
 
     @Argument(argumentName="moduleOrFile", multiplicity="+")
     public void setModule(List<String> moduleOrFile) {
-        this.module = moduleOrFile;
+        this.files = moduleOrFile;
     }
 
     @Override
     public void run() throws Exception {
         final Options opts = new Options(getRepos(), getSrc(), sysrep, getOut(), getUser(), getPass(), isOptimize(),
                 isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, encoding);
-        run(opts, module);
+        run(opts, files);
     }
-    
+
+    private static void addFilesToCompilationSet(File dir, Set<String> onlyFiles, boolean verbose) {
+        for (File e : dir.listFiles()) {
+            String n = e.getName().toLowerCase();
+            if (e.isFile() && n.endsWith(".ceylon") && !n.equals("module.ceylon")) {
+                if (verbose) {
+                    System.out.println("Adding to compilation set: " + e.getPath());
+                }
+                onlyFiles.add(e.getPath());
+            } else if (e.isDirectory()) {
+                addFilesToCompilationSet(e, onlyFiles, verbose);
+            }
+        }
+    }
+
     public static void run(Options opts, List<String> files) throws IOException {
         final TypeChecker typeChecker;
         if (opts.isVerbose()) {
@@ -314,15 +328,7 @@ public class CeylonCompileJsTool implements Tool {
                         if (opts.isVerbose()) {
                             System.out.println("Adding to module filters: " + filedir);
                         }
-                        for (File e : f.listFiles()) {
-                            String n = e.getName().toLowerCase();
-                            if (e.isFile() && n.endsWith(".ceylon") && !n.equals("module.ceylon")) {
-                                if (opts.isVerbose()) {
-                                    System.out.println("Adding to compilation set: " + e.getPath());
-                                }
-                                onlyFiles.add(e.getPath());
-                            }
-                        }
+                        addFilesToCompilationSet(f, onlyFiles, opts.isVerbose());
                         modfilters.add(filedir);
                         f = null;
                     }
