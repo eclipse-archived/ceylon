@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class MetamodelVisitor extends Visitor {
 
-    private final MetamodelGenerator gen;
+    final MetamodelGenerator gen;
 
     public MetamodelVisitor(Module module) {
         this.gen = new MetamodelGenerator(module);
@@ -109,4 +109,5 @@ public class MetamodelVisitor extends Visitor {
         }
         return true;
     }
+
 }
