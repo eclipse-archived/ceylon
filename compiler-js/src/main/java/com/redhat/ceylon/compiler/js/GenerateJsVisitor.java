@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import net.minidev.json.JSONObject;
+
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -39,15 +42,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
-    private boolean indent=true;
-    private boolean comment=true;
-    private boolean verbose=false;
     private final Stack<Continuation> continues = new Stack<Continuation>();
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
     private final RetainedVars retainedVars = new RetainedVars();
-    private final Map<String, String> importedModules;
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
     private final List<CommonToken> tokens;
@@ -118,7 +117,7 @@ public class GenerateJsVisitor extends Visitor
     private final TypeUtils types;
     private Writer out;
     private final Writer originalOut;
-    final boolean prototypeStyle;
+    final Options opts;
     private CompilationUnit root;
     private static String clAlias="";
     private static final String function="function ";
@@ -136,28 +135,22 @@ public class GenerateJsVisitor extends Visitor
         that.addUnexpectedError(that.getMessage(e, this));
     }
 
-    public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names,
-            List<CommonToken> tokens, Map<String,String> imports, TypeUtils typeUtils) {
-        this.out = out;
-        originalOut = out;
-        this.prototypeStyle=prototypeStyle;
+    private final JsOutput jsout;
+
+    public GenerateJsVisitor(JsOutput out, Options options, JsIdentifierNames names,
+            List<CommonToken> tokens, TypeUtils typeUtils) throws IOException {
+        this.jsout = out;
+        this.opts = options;
+        this.out = out.getWriter();
+        originalOut = out.getWriter();
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
-        importedModules = imports;
         types = typeUtils;
         invoker = new InvocationGenerator(this, names, retainedVars);
     }
 
     TypeUtils getTypeUtils() { return types; }
-
-    /** Tells the receiver whether to add comments to certain declarations. Default is true. */
-    public void setAddComments(boolean flag) { comment = flag; }
-    public boolean isAddComments() { return comment; }
-    /** Tells the receiver whether to indent the generated code. Default is true. */
-    public void setIndent(boolean flag) { indent = flag; }
-    /** Tells the receiver to be verbose (prints generated code to STDOUT in addition to writer) */
-    public void setVerbose(boolean flag) { verbose = flag; }
 
     /** Returns the helper component to handle naming. */
     JsIdentifierNames getNames() { return names; }
@@ -172,7 +165,7 @@ public class GenerateJsVisitor extends Visitor
      * @param codez Optional additional strings to print after the main code. */
     void out(String code, String... codez) {
         try {
-            if (indent && needIndent) {
+            if (opts.isIndent() && needIndent) {
                 for (int i=0;i<indentLevel;i++) {
                     out.write("    ");
                 }
@@ -182,7 +175,7 @@ public class GenerateJsVisitor extends Visitor
             for (String s : codez) {
                 out.write(s);
             }
-            if (verbose && out == originalOut) {
+            if (opts.isVerbose() && out == originalOut) {
                 //Print code to console (when printing to REAL output)
                 System.out.print(code);
                 for (String s : codez) {
@@ -294,7 +287,7 @@ public class GenerateJsVisitor extends Visitor
     private void require(Module mod) {
         final String path = scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
-        if (importedModules.put(path, modAlias) == null) {
+        if (jsout.requires.put(path, modAlias) == null) {
             out("var ", modAlias, "=require('", path, "');");
             endLine();
         }
@@ -390,7 +383,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void comment(Tree.Declaration that) {
-        if (!comment) return;
+        if (!opts.isComment()) return;
         endLine();
         out("//", that.getNodeType(), " ", that.getDeclarationModel().getName());
         location(that);
@@ -407,7 +400,7 @@ public class GenerateJsVisitor extends Visitor
 
     private boolean share(Declaration d, boolean excludeProtoMembers) {
         boolean shared = false;
-        if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
+        if (!(excludeProtoMembers && opts.isOptimize() && d.isClassOrInterfaceMember())
                 && isCaptured(d)) {
             beginNewLine();
             outerSelf(d);
@@ -430,7 +423,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         Class d = that.getDeclarationModel();
-        if (prototypeStyle && d.isClassOrInterfaceMember()) return;
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         comment(that);
         Tree.ClassSpecifier ext = that.getClassSpecifier();
         out(function, names.name(d), "(");
@@ -494,7 +487,7 @@ public class GenerateJsVisitor extends Visitor
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Interface d = that.getDeclarationModel();
-        if (prototypeStyle && d.isClassOrInterfaceMember()) return;
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         //It's pointless declaring interface aliases outside of classes/interfaces
         Scope scope = that.getScope();
         if (scope instanceof InterfaceAlias) {
@@ -534,7 +527,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(InterfaceDefinition that) {
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
-        if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
+        if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             interfaceDefinition(that);
         }
     }
@@ -550,10 +543,13 @@ public class GenerateJsVisitor extends Visitor
         //declareSelf(d);
         referenceOuter(d);
         final List<Declaration> superDecs = new ArrayList<Declaration>();
-        if (!prototypeStyle) {
+        if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
+        //Add reference to metamodel
+        //self(d); out(".$$metamodel$$=", JSONObject.toJSONString(jsout.mmg.gen.encodeInterface(d)), ";");
+        endLine();
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -573,7 +569,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(ClassDefinition that) {
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
-        if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
+        if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             classDefinition(that);
         }
     }
@@ -598,6 +594,9 @@ public class GenerateJsVisitor extends Visitor
         out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
+        //Add reference to metamodel
+        //self(d); out(".$$metamodel$$=", JSONObject.toJSONString(jsout.mmg.gen.encodeClass(d)), ";");
+        endLine();
         if (withTargs) {
             out(clAlias, "set_type_args(");
             self(d); out(",$$targs$$);"); endLine();
@@ -624,7 +623,7 @@ public class GenerateJsVisitor extends Visitor
         initParameters(that.getParameterList(), d);
         
         final List<Declaration> superDecs = new ArrayList<Declaration>();
-        if (!prototypeStyle) {
+        if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(that.getExtendedType(), d, that, superDecs);
@@ -639,7 +638,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void referenceOuter(TypeDeclaration d) {
-        if (prototypeStyle && d.isClassOrInterfaceMember()) {
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
             self(d);
             out(".");
             outerSelf(d);
@@ -649,7 +648,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void copySuperMembers(TypeDeclaration typeDecl, final List<Declaration> decs, ClassOrInterface d) {
-        if (!prototypeStyle) {
+        if (!opts.isOptimize()) {
             for (Declaration dec: decs) {
                 if (!typeDecl.isMember(dec)) { continue; }
                 String suffix = names.scopeSuffix(dec.getContainer());
@@ -673,7 +672,7 @@ public class GenerateJsVisitor extends Visitor
                     .getPositionalArgumentList();
             TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
             out(memberAccessBase(extendedType.getType(), typeDecl, false, qualifiedPath(that, typeDecl)),
-                    (prototypeStyle && (getSuperMemberScope(extendedType.getType()) != null))
+                    (opts.isOptimize() && (getSuperMemberScope(extendedType.getType()) != null))
                         ? ".call(this," : "(");
 
             invoker.generatePositionalArguments(argList, argList.getPositionalArguments(), false, false);
@@ -845,7 +844,7 @@ public class GenerateJsVisitor extends Visitor
         }
 
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
-        if (prototypeStyle) {
+        if (opts.isOptimize()) {
             endLine();
             callback.addToPrototypeCallback();
         }
@@ -866,13 +865,13 @@ public class GenerateJsVisitor extends Visitor
         if (removeAlias && d.isAlias()) {
             d = d.getExtendedTypeDeclaration();
         }
-        boolean inProto = prototypeStyle
+        boolean inProto = opts.isOptimize()
                 && (type.getScope().getContainer() instanceof TypeDeclaration);
         return memberAccessBase(type, d, false, qualifiedPath(type, d, inProto));
     }
 
     private void addToPrototype(ClassOrInterface d, List<Statement> statements) {
-        if (prototypeStyle && !statements.isEmpty()) {
+        if (opts.isOptimize() && !statements.isEmpty()) {
             final List<? extends Statement> prevStatements = currentStatements;
             currentStatements = statements;
             
@@ -924,7 +923,7 @@ public class GenerateJsVisitor extends Visitor
         out("===undefined)");
         self(d);
         out("=new ");
-        if (prototypeStyle && d.isClassOrInterfaceMember()) {
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
             out("this.", names.name(d), ".$$;");
         } else {
             out(names.name(d), ".$$;");
@@ -942,7 +941,7 @@ public class GenerateJsVisitor extends Visitor
         out("var ");
         self(d);
         out("=new ");
-        if (prototypeStyle && d.isClassOrInterfaceMember()) {
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
             out("this.", names.name(d), ".$$;");
         } else {
             out(names.name(d), ".$$;");
@@ -969,7 +968,7 @@ public class GenerateJsVisitor extends Visitor
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Value d = that.getDeclarationModel();
-        if (!(prototypeStyle && d.isClassOrInterfaceMember())) {
+        if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             objectDefinition(that);
         } else {
             Class c = (Class) d.getTypeDeclaration();
@@ -985,7 +984,7 @@ public class GenerateJsVisitor extends Visitor
     private void objectDefinition(ObjectDefinition that) {
         comment(that);
         Value d = that.getDeclarationModel();
-        boolean addToPrototype = prototypeStyle && d.isClassOrInterfaceMember();
+        boolean addToPrototype = opts.isOptimize() && d.isClassOrInterfaceMember();
         Class c = (Class) d.getTypeDeclaration();
 
         out(function, names.name(c));
@@ -1004,7 +1003,7 @@ public class GenerateJsVisitor extends Visitor
         referenceOuter(c);
         
         final List<Declaration> superDecs = new ArrayList<Declaration>();
-        if (!prototypeStyle) {
+        if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         if (!targs.isEmpty()) {
@@ -1111,7 +1110,7 @@ public class GenerateJsVisitor extends Visitor
             if (outer == null) {
                 // Not in a prototype definition. Null to do here if it's a
                 // member in prototype style.
-                if (prototypeStyle && m.isMember()) { return; }
+                if (opts.isOptimize() && m.isMember()) { return; }
                 comment(that);
                 out("var ");
             }
@@ -1153,7 +1152,7 @@ public class GenerateJsVisitor extends Visitor
         Method d = that.getDeclarationModel();
         //Don't even bother with nodes that have errors
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
-        if (!((prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
+        if (!((opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             methodDefinition(that);
         }
@@ -1234,16 +1233,19 @@ public class GenerateJsVisitor extends Visitor
     private void addMethodToPrototype(TypeDeclaration outer,
             MethodDefinition that) {
         Method d = that.getDeclarationModel();
-        if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
+        if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         out(names.self(outer), ".", names.name(d), "=");
         methodDefinition(that);
+        //Add reference to metamodel
+        //out(names.self(outer), ".", names.name(d), ".$$metamodel$$=",
+        //    JSONObject.toJSONString(jsout.mmg.gen.encodeMethod(d)), ";");
     }
 
     @Override
     public void visit(AttributeGetterDefinition that) {
         Value d = that.getDeclarationModel();
-        if (prototypeStyle&&d.isClassOrInterfaceMember()) return;
+        if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
         if (defineAsProperty(d)) {
             out(clAlias, "defineAttr(");
@@ -1273,7 +1275,7 @@ public class GenerateJsVisitor extends Visitor
     private void addGetterToPrototype(TypeDeclaration outer,
             AttributeGetterDefinition that) {
         Value d = that.getDeclarationModel();
-        if (!prototypeStyle||!d.isClassOrInterfaceMember()) return;
+        if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
                 "',function()");
@@ -1325,7 +1327,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AttributeSetterDefinition that) {
         Setter d = that.getDeclarationModel();
-        if ((prototypeStyle&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
+        if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
         out("var ", names.setter(d.getGetter()), "=function(", names.name(d.getParameter()), ")");
         if (that.getSpecifierExpression() == null) {
@@ -1380,7 +1382,7 @@ public class GenerateJsVisitor extends Visitor
             final boolean isLate = d.isLate();
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
-            if (prototypeStyle && d.isClassOrInterfaceMember()) {
+            if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 if ((specInitExpr != null
                         && !(specInitExpr instanceof LazySpecifierExpression)) || isLate) {
                     outerSelf(d);
@@ -1539,7 +1541,7 @@ public class GenerateJsVisitor extends Visitor
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
             AttributeDeclaration that) {
         Value d = that.getDeclarationModel();
-        if (!prototypeStyle||d.isToplevel()) return;
+        if (!opts.isOptimize()||d.isToplevel()) return;
         if (!d.isFormal()) {
             comment(that);
             String classParam = null;
@@ -1699,7 +1701,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Outer that) {
-        if (prototypeStyle) {
+        if (opts.isOptimize()) {
             Scope scope = that.getScope();
             while ((scope != null) && !(scope instanceof TypeDeclaration)) {
                 scope = scope.getContainer();
@@ -1835,7 +1837,7 @@ public class GenerateJsVisitor extends Visitor
         //Define a function
         out("(function()");
         beginBlock();
-        if (comment) {
+        if (opts.isComment()) {
             out("//SpreadOp at ", that.getLocation());
             endLine();
         }
@@ -1931,7 +1933,7 @@ public class GenerateJsVisitor extends Visitor
         }
         
         Scope scope = getSuperMemberScope(node);
-        if (prototypeStyle && (scope != null)) {
+        if (opts.isOptimize() && (scope != null)) {
             sb.append("getT$all()['");
             sb.append(scope.getQualifiedNameString());
             sb.append("']");
@@ -1944,7 +1946,7 @@ public class GenerateJsVisitor extends Visitor
         final String member = (accessThroughGetter(decl) && !accessDirectly(decl))
                 ? (setter ? names.setter(decl) : names.getter(decl)) : names.name(decl);
         sb.append(member);
-        if (!prototypeStyle && (scope != null)) {
+        if (!opts.isOptimize() && (scope != null)) {
             sb.append(names.scopeSuffix(scope));
         }
         //When compiling the language module we need to modify certain base type names
@@ -1974,7 +1976,7 @@ public class GenerateJsVisitor extends Visitor
             return ((lhs != null) && (lhs.length() > 0))
                     ? (lhs + "." + plainName) : plainName;            
         }
-        boolean protoCall = prototypeStyle && (getSuperMemberScope(expr) != null);
+        boolean protoCall = opts.isOptimize() && (getSuperMemberScope(expr) != null);
         if (accessDirectly(decl) && !(protoCall && defineAsProperty(decl))) {
             // direct access, without getter
             return memberAccessBase(expr, decl, false, lhs);
@@ -2008,7 +2010,7 @@ public class GenerateJsVisitor extends Visitor
             out(plainName, "=");
         }
         else {
-            boolean protoCall = prototypeStyle && (getSuperMemberScope(expr) != null);
+            boolean protoCall = opts.isOptimize() && (getSuperMemberScope(expr) != null);
             if (accessDirectly(decl) && !(protoCall && defineAsProperty(decl))) {
                 // direct access, without setter
                 out(memberAccessBase(expr, decl, true, lhs), "=");
@@ -2173,7 +2175,7 @@ public class GenerateJsVisitor extends Visitor
         SatisfiedTypes sts = that.getSatisfiedTypes();
         
         final List<Declaration> superDecs = new ArrayList<Declaration>();
-        if (!prototypeStyle) {
+        if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(xt, c, that, superDecs);
@@ -2299,7 +2301,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final SpecifierStatement that) {
         // A lazy specifier expression in a class/interface should go into the
         // prototype in prototype style, so don't generate them here.
-        if (!(prototypeStyle && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
+        if (!(opts.isOptimize() && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
                 && (that.getScope().getContainer() instanceof TypeDeclaration))) {
             specifierStatement(null, that);
         }
@@ -2375,7 +2377,7 @@ public class GenerateJsVisitor extends Visitor
                             specStmt.getSpecifierExpression(), null);
                 } else {
                     // Specifier for some other attribute, or for a method.
-                    if (prototypeStyle 
+                    if (opts.isOptimize() 
                             || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
                         qualify(specStmt, bmeDecl);
                     }
@@ -2492,7 +2494,7 @@ public class GenerateJsVisitor extends Visitor
         if (!isMember && isImported(that, d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
-        else if (prototypeStyle && !inProto) {
+        else if (opts.isOptimize() && !inProto) {
             if (isMember && !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter
                               && !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
@@ -2583,11 +2585,11 @@ public class GenerateJsVisitor extends Visitor
 //        if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
 //            QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
 //            // References to methods of types from other packages always need
-//            // special treatment, even if prototypeStyle==false, because they
+//            // special treatment, even if opts.isOptimize()==false, because they
 //            // may have been generated in prototype style. In particular,
 //            // ceylon.language is always in prototype style.
 //            if ((term.getDeclaration() instanceof Functional)
-//                    && (prototypeStyle || !declaredInThisPackage(term.getDeclaration()))) {
+//                    && (opts.isOptimize() || !declaredInThisPackage(term.getDeclaration()))) {
 //                if (term.getMemberOperator() instanceof SpreadOp) {
 //                    generateSpread(term);
 //                } else {
@@ -3407,7 +3409,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
     @Override public void visit(ForStatement that) {
-        if (comment) {
+        if (opts.isComment()) {
             out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
             if (that.getExits()) out("//EXITS!");
             endLine();
@@ -3604,7 +3606,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SwitchStatement that) {
-        if (comment) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+        if (opts.isComment()) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
         endLine();
         //Put the expression in a tmp var
         final String expvar = names.createTempVariable("case");
@@ -3623,7 +3625,7 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
-        if (comment) {
+        if (opts.isComment()) {
             out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
             endLine();
         }
