@@ -14,6 +14,8 @@ import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.js.CeylonCompileJsTool;
+import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -175,12 +177,12 @@ public class JsModuleManager extends ModuleManager {
             reader = new BufferedReader(new FileReader(jsFile));
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("var $$metamodel$$={") || line.startsWith("$$metamodel$$={")) && line.endsWith("};")) {
-                    line = line.substring(line.indexOf("{"), line.length()-1);
+                if ((line.startsWith("//!!!METAMODEL:")) && line.endsWith("}")) {
+                    line = line.substring(line.indexOf("{"));
                     return (Map<String,Object>)JSONValue.parse(line);
                 }
             }
-            return null;
+            throw new CompilerErrorException("Can't find metamodel definition in " + jsFile.getAbsolutePath());
         } finally {
             if (reader != null) {
                 reader.close();
