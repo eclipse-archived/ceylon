@@ -291,24 +291,8 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeMethod(Method d) {
-        Map<String, Object> parent;
-        if (d.isToplevel() || d.isMember()) {
-            parent = findParent(d);
-            if (parent == null) {
-                //System.out.println("orphaned method - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
-                return;
-            }
-            if (!d.isToplevel()) {
-                if (!parent.containsKey(KEY_METHODS)) {
-                    parent.put(KEY_METHODS, new HashMap<String,Object>());
-                }
-                parent = (Map<String, Object>)parent.get(KEY_METHODS);
-            }
-        } else {
-            return;
-        }
-        Map<String, Object> m = new HashMap<String, Object>();
+    public Map<String,Object> encodeMethod(Method d) {
+        final Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
         m.put(KEY_NAME, d.getName());
         List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters());
@@ -330,9 +314,20 @@ public class MetamodelGenerator {
 
         //Annotations
         encodeAnnotations(d, m);
-        parent.put(d.getName(), m);
-        //We really don't need to go inside a method's body
-        //super.visit(that);
+        Map<String, Object> parent;
+        if (d.isToplevel() || d.isMember()) {
+            parent = findParent(d);
+            if (parent != null) {
+                if (!d.isToplevel()) {
+                    if (!parent.containsKey(KEY_METHODS)) {
+                        parent.put(KEY_METHODS, new HashMap<String,Object>());
+                    }
+                    parent = (Map<String, Object>)parent.get(KEY_METHODS);
+                }
+                parent.put(d.getName(), m);
+            }
+        }
+        return m;
     }
 
     /** Create and store the metamodel info for an attribute. */
@@ -344,19 +339,8 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
-        Map<String, Object> parent = findParent(d);
-        if (d.isToplevel() || d.isMember()) {
-            if (!d.isToplevel()) {
-                if (!parent.containsKey(KEY_CLASSES)) {
-                    parent.put(KEY_CLASSES, new HashMap<String,Object>());
-                }
-                parent = (Map<String,Object>)parent.get(KEY_CLASSES);
-            }
-        } else {
-            return;
-        }
-        Map<String, Object> m = new HashMap<String, Object>();
+    public Map<String,Object> encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
+        final Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_CLASS);
         m.put(KEY_NAME, d.getName());
 
@@ -396,23 +380,24 @@ public class MetamodelGenerator {
         if (d.isAlias()) {
             m.put("$alias", "1");
         }
-        parent.put(d.getName(), m);
+        Map<String, Object> parent = findParent(d);
+        if (parent != null) {
+            if (d.isToplevel() || d.isMember()) {
+                if (!d.isToplevel()) {
+                    if (!parent.containsKey(KEY_CLASSES)) {
+                        parent.put(KEY_CLASSES, new HashMap<String,Object>());
+                    }
+                    parent = (Map<String,Object>)parent.get(KEY_CLASSES);
+                }
+            }
+            parent.put(d.getName(), m);
+        }
+        return m;
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeInterface(Interface d) {
-        Map<String, Object> parent = findParent(d);
-        if (d.isToplevel() || d.isMember()) {
-            if (!d.isToplevel()) {
-                if (!parent.containsKey(KEY_INTERFACES)) {
-                    parent.put(KEY_INTERFACES, new HashMap<String,Object>());
-                }
-                parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
-            }
-        } else {
-            return;
-        }
-        Map<String, Object> m = new HashMap<String, Object>();
+    public Map<String,Object> encodeInterface(Interface d) {
+        final Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_INTERFACE);
         m.put(KEY_NAME, d.getName());
 
@@ -434,7 +419,19 @@ public class MetamodelGenerator {
         if (d.isAlias()) {
             m.put("$alias", typeMap(d.getExtendedType()));
         }
-        parent.put(d.getName(), m);
+        Map<String, Object> parent = findParent(d);
+        if (parent != null) {
+            if (d.isToplevel() || d.isMember()) {
+                if (!d.isToplevel()) {
+                    if (!parent.containsKey(KEY_INTERFACES)) {
+                        parent.put(KEY_INTERFACES, new HashMap<String,Object>());
+                    }
+                    parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
+                }
+            }
+            parent.put(d.getName(), m);
+        }
+        return m;
     }
 
     @SuppressWarnings("unchecked")
