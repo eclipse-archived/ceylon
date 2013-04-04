@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import net.minidev.json.JSONObject;
-
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.Options;
@@ -548,7 +546,7 @@ public class GenerateJsVisitor extends Visitor
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
         //Add reference to metamodel
-        //self(d); out(".$$metamodel$$=", JSONObject.toJSONString(jsout.mmg.gen.encodeInterface(d)), ";");
+        self(d); out(".$$metamodel$$=", jsout.mmg.gen.encodeForRuntime(d), ";");
         endLine();
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
@@ -595,7 +593,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         declareSelf(d);
         //Add reference to metamodel
-        //self(d); out(".$$metamodel$$=", JSONObject.toJSONString(jsout.mmg.gen.encodeClass(d)), ";");
+        self(d); out(".$$metamodel$$=", jsout.mmg.gen.encodeForRuntime(d), ";");
         endLine();
         if (withTargs) {
             out(clAlias, "set_type_args(");
@@ -1155,6 +1153,9 @@ public class GenerateJsVisitor extends Visitor
         if (!((opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             methodDefinition(that);
+            //Add reference to metamodel
+            out(names.name(d), ".$$metamodel$$=",
+                    jsout.mmg.gen.encodeForRuntime(d), ";");
         }
     }
 
@@ -1238,8 +1239,8 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", names.name(d), "=");
         methodDefinition(that);
         //Add reference to metamodel
-        //out(names.self(outer), ".", names.name(d), ".$$metamodel$$=",
-        //    JSONObject.toJSONString(jsout.mmg.gen.encodeMethod(d)), ";");
+        out(names.self(outer), ".", names.name(d), ".$$metamodel$$=",
+                jsout.mmg.gen.encodeForRuntime(d), ";");
     }
 
     @Override

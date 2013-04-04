@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONStyle;
+
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
@@ -108,7 +111,9 @@ public class MetamodelGenerator {
         }
         Map<String, Object> last = pkgmap;
         for (String name : names) {
-            if (last == pkgmap) {
+            if (last == null) {
+                break;
+            } else if (last == pkgmap) {
                 last = (Map<String, Object>)last.get(name);
             } else if (last.containsKey(KEY_METHODS) && ((Map<String,Object>)last.get(KEY_METHODS)).containsKey(name)) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_METHODS)).get(name);
@@ -324,7 +329,9 @@ public class MetamodelGenerator {
                     }
                     parent = (Map<String, Object>)parent.get(KEY_METHODS);
                 }
-                parent.put(d.getName(), m);
+                if (parent != null) {
+                    parent.put(d.getName(), m);
+                }
             }
         }
         return m;
@@ -548,6 +555,22 @@ public class MetamodelGenerator {
         if (!anns.isEmpty()) {
             m.put(KEY_ANNOTATIONS, anns);
         }
+    }
+
+    public String encodeForRuntime(Declaration d) {
+        final HashMap<String, Object> m = new HashMap<>();
+        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            m.put(KEY_METATYPE, METATYPE_CLASS);
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+            m.put(KEY_METATYPE, METATYPE_INTERFACE);
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+            m.put(KEY_METATYPE, METATYPE_METHOD);
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Value) {
+            m.put(KEY_METATYPE, ((com.redhat.ceylon.compiler.typechecker.model.Value) d).isTransient() ?
+                    METATYPE_GETTER : METATYPE_ATTRIBUTE);
+        }
+        m.put(KEY_NAME, d.getNameAsString());
+        return JSONObject.toJSONString(m);
     }
 
 }
