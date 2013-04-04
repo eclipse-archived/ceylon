@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.js;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.FileWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,33 +52,6 @@ public class JsCompiler {
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
     private TypeUtils types;
-
-    /** A container for things we need to keep per-module. */
-    protected class JsOutput {
-        private File outfile;
-        private Writer writer;
-        private final Set<String> s = new HashSet<String>();
-        final Map<String,String> requires = new HashMap<String,String>();
-        private final MetamodelVisitor mmg;
-        protected JsOutput(Module m) throws IOException {
-            mmg = new MetamodelVisitor(m);
-        }
-        protected Writer getWriter() throws IOException {
-            if (writer == null) {
-                outfile = File.createTempFile("jsout", ".tmp");
-                writer = new FileWriter(outfile);
-            }
-            return writer;
-        }
-        protected File close() throws IOException {
-            writer.close();
-            return outfile;
-        }
-        void addSource(String src) {
-            s.add(src);
-        }
-        Set<String> getSources() { return s; }
-    }
 
     private final Visitor unitVisitor = new Visitor() {
         @Override
@@ -156,11 +128,7 @@ public class JsCompiler {
                 }
             }
             JsOutput jsout = getOutput(pu);
-            GenerateJsVisitor jsv = new GenerateJsVisitor(jsout.getWriter(), opts.isOptimize(), names,
-                    pu.getTokens(), jsout.requires, types);
-            jsv.setAddComments(opts.isComment());
-            jsv.setIndent(opts.isIndent());
-            jsv.setVerbose(opts.isVerbose());
+            GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens(), types);
             pu.getCompilationUnit().visit(jsv);
         }
         return unitErrors;
@@ -206,9 +174,9 @@ public class JsCompiler {
             //Then write it out
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                    e.getValue().getWriter().write("var $$metamodel$$=");
+                    e.getValue().getWriter().write("//!!!METAMODEL:");
                     e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
-                    e.getValue().getWriter().write(";\n");
+                    e.getValue().getWriter().write("\n");
                 }
             }
 
@@ -270,7 +238,6 @@ public class JsCompiler {
             JsOutput jsout = entry.getValue();
 
             if (opts.isModulify()) {
-                jsout.getWriter().write("exports.$$metamodel$$=$$metamodel$$;\n");
                 endWrapper(jsout.getWriter());
             }
             String moduleName = entry.getKey().getNameAsString();
