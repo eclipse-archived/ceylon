@@ -387,19 +387,19 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean definesEvery(final .ceylon.language.Iterable keys) {
+    public boolean definesEvery(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean definesAny(final .ceylon.language.Iterable keys) {
+    public boolean definesAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Sequential items(final .ceylon.language.Iterable keys) {
+    public .ceylon.language.Sequential items(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     
