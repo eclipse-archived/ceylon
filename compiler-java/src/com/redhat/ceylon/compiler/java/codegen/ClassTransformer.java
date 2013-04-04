@@ -483,9 +483,6 @@ public class ClassTransformer extends AbstractTransformer {
             return;
         }
         
-        // When we implement an interface with union or intersection type arguments
-        // we have to make method results and parameters raw too
-        boolean rawifyParametersAndResults = needsRawification(satisfiedType);
         // For each super interface
         for (Declaration member : iface.getMembers()) {
             
@@ -495,7 +492,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // instantiator method implementation
                 Class klass = (Class)member;
                 generateInstantiatorDelegate(classBuilder, satisfiedType,
-                        iface, rawifyParametersAndResults, klass);
+                        iface, klass);
             } 
             
             if (Strategy.onlyOnCompanion(member)) {
@@ -524,7 +521,6 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter.getType(), 
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    rawifyParametersAndResults,
                                     param.getTypeErased());
                             classBuilder.method(defaultValueDelegate);
                             
@@ -535,7 +531,6 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedMember.getType(), 
                                     naming.selector(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    rawifyParametersAndResults,
                                     ((Method) member).getTypeErased());
                             classBuilder.method(overload);
                         }
@@ -554,7 +549,6 @@ public class ClassTransformer extends AbstractTransformer {
                             method.getType(), 
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
-                            rawifyParametersAndResults,
                             ((Method) member).getTypeErased());
                     classBuilder.method(concreteMemberDelegate);
                      
@@ -572,7 +566,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
-                                rawifyParametersAndResults,
                                 attr.getTypeErased());
                         classBuilder.method(getterDelegate);
                     }
@@ -584,7 +577,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 typeFact().getAnythingDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
-                                rawifyParametersAndResults,
                                 ((Setter) member).getTypeErased());
                         classBuilder.method(setterDelegate);
                     }
@@ -614,7 +606,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void generateInstantiatorDelegate(
             ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
-            Interface iface, boolean rawifyParametersAndResults, Class klass) {
+            Interface iface, Class klass) {
         ProducedType typeMember = satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
         java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
         java.util.List<Parameter> parameters = klass.getParameterLists().get(0).getParameters();
@@ -634,7 +626,6 @@ public class ClassTransformer extends AbstractTransformer {
                         typedParameter.getType(),
                         Naming.getDefaultedParamMethodName(klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
-                        rawifyParametersAndResults,
                         param.getTypeErased());
                 classBuilder.method(defaultValueDelegate);
                 
@@ -645,7 +636,6 @@ public class ClassTransformer extends AbstractTransformer {
                         typeMember.getType(), 
                         instantiatorMethodName, 
                         parameters.subList(0, parameters.indexOf(param)),
-                        rawifyParametersAndResults,
                         false);
                 classBuilder.method(overload);
             }
@@ -657,7 +647,6 @@ public class ClassTransformer extends AbstractTransformer {
                 typeMember.getType(), 
                 instantiatorMethodName, 
                 parameters,
-                rawifyParametersAndResults,
                 false);
         classBuilder.method(overload);
     }
@@ -699,7 +688,6 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, 
-            boolean rawifyParametersAndResults,
             boolean typeErased) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
@@ -707,10 +695,8 @@ public class ClassTransformer extends AbstractTransformer {
         concreteWrapper.isOverride(true);
         if(typeParameters != null)
             concreteWrapper.reifiedTypeParametersFromModel(typeParameters);
-        if (!rawifyParametersAndResults) {
-            for (TypeParameter tp : typeParameters) {
-                concreteWrapper.typeParameter(tp);
-            }
+        for (TypeParameter tp : typeParameters) {
+            concreteWrapper.typeParameter(tp);
         }
         boolean explicitReturn = false;
         Declaration member = typedMember.getDeclaration();
@@ -721,8 +707,7 @@ public class ClassTransformer extends AbstractTransformer {
             explicitReturn = true;
             if (typedMember instanceof ProducedTypedReference) {
                 ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
-                concreteWrapper.resultTypeNonWidening(typedRef, typedMember.getType(),
-                        rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
+                concreteWrapper.resultTypeNonWidening(typedRef, typedMember.getType(), 0);
                 // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
                 ProducedTypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef);
                 returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
@@ -746,7 +731,7 @@ public class ClassTransformer extends AbstractTransformer {
                 type = typeFact().getObjectDeclaration().getType();
             else
                 type = typedParameter.getType();
-            concreteWrapper.parameter(param, type, FINAL, rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0, true);
+            concreteWrapper.parameter(param, type, FINAL, 0, true);
             arguments.add(naming.makeName(param, Naming.NA_MEMBER));
         }
         JCExpression expr = make().Apply(
