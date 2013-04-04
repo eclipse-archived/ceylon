@@ -83,7 +83,7 @@ public class InvocationGenerator {
                 return;
             } else {
                 that.getPrimary().visit(gen);
-                if (gen.prototypeStyle && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
+                if (gen.opts.isOptimize() && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
                     gen.out(".call(this");
                     if (!argList.getPositionalArguments().isEmpty()) {
                         gen.out(",");
