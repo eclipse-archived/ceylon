@@ -546,8 +546,9 @@ public class GenerateJsVisitor extends Visitor
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
         //Add reference to metamodel
-        self(d); out(".$$metamodel$$=", jsout.mmg.gen.encodeForRuntime(d), ";");
-        endLine();
+        self(d); out(".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
+        endLine(true);
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -593,8 +594,9 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         declareSelf(d);
         //Add reference to metamodel
-        self(d); out(".$$metamodel$$=", jsout.mmg.gen.encodeForRuntime(d), ";");
-        endLine();
+        self(d); out(".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
+        endLine(true);
         if (withTargs) {
             out(clAlias, "set_type_args(");
             self(d); out(",$$targs$$);"); endLine();
@@ -1154,8 +1156,9 @@ public class GenerateJsVisitor extends Visitor
             comment(that);
             methodDefinition(that);
             //Add reference to metamodel
-            out(names.name(d), ".$$metamodel$$=",
-                    jsout.mmg.gen.encodeForRuntime(d), ";");
+            out(names.name(d), ".$$metamodel$$=");
+            TypeUtils.encodeForRuntime(that, d, this);
+            out(";");
         }
     }
 
@@ -1239,8 +1242,9 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", names.name(d), "=");
         methodDefinition(that);
         //Add reference to metamodel
-        out(names.self(outer), ".", names.name(d), ".$$metamodel$$=",
-                jsout.mmg.gen.encodeForRuntime(d), ";");
+        out(names.self(outer), ".", names.name(d), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
+        out(";");
     }
 
     @Override

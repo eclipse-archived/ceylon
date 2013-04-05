@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -298,6 +299,142 @@ public class TypeUtils {
         gen.out(",", GenerateJsVisitor.getClAlias(), "isOfType(", tmp, ",");
         TypeUtils.typeNameOrList(term, t, gen, true);
         gen.out(")?", tmp, ":", GenerateJsVisitor.getClAlias(), "throwexc('dynamic objects cannot be used here'))");
+    }
+
+    /** Output a metamodel map for runtime use. */
+    static void encodeForRuntime(Node n, Declaration d, GenerateJsVisitor gen) {
+        gen.out("{", MetamodelGenerator.KEY_NAME, ":'", d.getNameAsString(),
+                "',", MetamodelGenerator.KEY_METATYPE, ":'");
+        List<TypeParameter> tparms = null;
+        List<ProducedType> satisfies = null;
+        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            gen.out(MetamodelGenerator.METATYPE_CLASS, "'");
+            tparms = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getTypeParameters();
+            if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
+                gen.out(",'super':");
+                metamodelTypeNameOrList(n, ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType(), gen);
+            }
+            satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getSatisfiedTypes();
+
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+
+            gen.out(MetamodelGenerator.METATYPE_INTERFACE, "'");
+            tparms = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getTypeParameters();
+            satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getSatisfiedTypes();
+
+        } else if (d instanceof Method) {
+            
+            gen.out(MetamodelGenerator.METATYPE_METHOD, "',", MetamodelGenerator.KEY_TYPE, ":");
+            //This needs a new setting to resolve types but not type parameters
+            metamodelTypeNameOrList(n, ((Method)d).getType(), gen);
+            gen.out(",", MetamodelGenerator.KEY_PARAMS, ":[");
+            //TODO: parameter lists, parameters
+            gen.out("]");
+            tparms = ((Method) d).getTypeParameters();
+
+        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Value) {
+
+            gen.out(((com.redhat.ceylon.compiler.typechecker.model.Value) d).isTransient() ?
+                    MetamodelGenerator.METATYPE_GETTER : MetamodelGenerator.METATYPE_ATTRIBUTE, "'");
+        }
+        if (tparms != null && !tparms.isEmpty()) {
+            gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
+            boolean first = true;
+            for(TypeParameter tp : tparms) {
+                if (!first)gen.out(",");
+                first=false;
+                gen.out(tp.getName(), ":{");
+                if (tp.isCovariant()) {
+                    gen.out("'var':'out',");
+                } else if (tp.isContravariant()) {
+                    gen.out("'var':'in',");
+                }
+                List<ProducedType> typelist = tp.getSatisfiedTypes();
+                if (typelist != null && !typelist.isEmpty()) {
+                    gen.out("'satisfies':[");
+                    boolean first2 = true;
+                    for (ProducedType st : typelist) {
+                        if (!first2)gen.out(",");
+                        first2=false;
+                        metamodelTypeNameOrList(n, st, gen);
+                    }
+                    gen.out("]");
+                }
+                typelist = tp.getCaseTypes();
+                if (typelist != null && !typelist.isEmpty()) {
+                    gen.out("'of':[");
+                    boolean first3 = true;
+                    for (ProducedType st : typelist) {
+                        if (!first3)gen.out(",");
+                        first3=false;
+                        metamodelTypeNameOrList(n, st, gen);
+                    }
+                    gen.out("]");
+                }
+                if (tp.getDefaultTypeArgument() != null) {
+                    gen.out(",'def':");
+                    metamodelTypeNameOrList(n, tp.getDefaultTypeArgument(), gen);
+                }
+                gen.out("}");
+            }
+            gen.out("}");
+        }
+        if (satisfies != null) {
+            gen.out(",'satisfies':[");
+            boolean first = true;
+            for (ProducedType st : satisfies) {
+                if (!first)gen.out(",");
+                first=false;
+                metamodelTypeNameOrList(n, st, gen);
+            }
+            gen.out("]");
+        }
+        gen.out("}");
+    }
+
+    /** Prints out an object with a type constructor under the property "t" and its type arguments under
+     * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
+     * of types that compose it in an array under the property "l", or a type parameter as a reference to
+     * already existing params. */
+    static void metamodelTypeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen) {
+        TypeDeclaration type = pt.getDeclaration();
+        if (type.isAlias()) {
+            type = type.getExtendedTypeDeclaration();
+        }
+        boolean unionIntersection = type instanceof UnionType
+                || type instanceof IntersectionType;
+        if (unionIntersection) {
+            outputMetamodelTypeList(node, pt, gen);
+        } else if (type instanceof TypeParameter) {
+            gen.out("'", type.getNameAsString(), "'");
+        } else {
+            gen.out("{t:");
+            outputQualifiedTypename(node, pt, gen);
+            //TODO type parameters
+            gen.out("}");
+        }
+    }
+
+    /** Appends an object with the type's type and list of union/intersection types. */
+    static void outputMetamodelTypeList(Node node, ProducedType pt, GenerateJsVisitor gen) {
+        TypeDeclaration type = pt.getDeclaration();
+        gen.out("{ t:'");
+        final List<ProducedType> subs;
+        if (type instanceof IntersectionType) {
+            gen.out("i");
+            subs = type.getSatisfiedTypes();
+        } else {
+            gen.out("u");
+            subs = type.getCaseTypes();
+        }
+        gen.out("', l:[");
+        boolean first = true;
+        for (ProducedType t : subs) {
+            if (!first) gen.out(",");
+            metamodelTypeNameOrList(node, t, gen);
+            first = false;
+        }
+        gen.out("]}");
     }
 
 }
