@@ -3678,6 +3678,7 @@ public class Attr extends JCTree.Visitor {
         return argtypes.toList();
     }
 
+    // Backported by Ceylon from JDK8
     private Type bsmStaticArgToType(Object arg) {
         Assert.checkNonNull(arg);
         if (arg instanceof ClassSymbol) {
