@@ -25,32 +25,158 @@
 
 package com.sun.tools.javac.comp;
 
-import java.util.*;
+import static com.sun.tools.javac.code.Flags.ABSTRACT;
+import static com.sun.tools.javac.code.Flags.ANNOTATION;
+import static com.sun.tools.javac.code.Flags.BLOCK;
+import static com.sun.tools.javac.code.Flags.COMPOUND;
+import static com.sun.tools.javac.code.Flags.EFFECTIVELY_FINAL;
+import static com.sun.tools.javac.code.Flags.ENUM;
+import static com.sun.tools.javac.code.Flags.FINAL;
+import static com.sun.tools.javac.code.Flags.GENERATEDCONSTR;
+import static com.sun.tools.javac.code.Flags.HASINIT;
+import static com.sun.tools.javac.code.Flags.INTERFACE;
+import static com.sun.tools.javac.code.Flags.NATIVE;
+import static com.sun.tools.javac.code.Flags.NOOUTERTHIS;
+import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.sun.tools.javac.code.Flags.UNATTRIBUTED;
+import static com.sun.tools.javac.code.Flags.UNION;
+import static com.sun.tools.javac.code.Flags.VARARGS;
+import static com.sun.tools.javac.code.Kinds.AMBIGUOUS;
+import static com.sun.tools.javac.code.Kinds.ERR;
+import static com.sun.tools.javac.code.Kinds.ERRONEOUS;
+import static com.sun.tools.javac.code.Kinds.MTH;
+import static com.sun.tools.javac.code.Kinds.NIL;
+import static com.sun.tools.javac.code.Kinds.PCK;
+import static com.sun.tools.javac.code.Kinds.TYP;
+import static com.sun.tools.javac.code.Kinds.VAL;
+import static com.sun.tools.javac.code.Kinds.VAR;
+import static com.sun.tools.javac.code.Kinds.kindName;
+import static com.sun.tools.javac.code.Kinds.kindNames;
+import static com.sun.tools.javac.code.TypeTags.ARRAY;
+import static com.sun.tools.javac.code.TypeTags.BYTE;
+import static com.sun.tools.javac.code.TypeTags.CLASS;
+import static com.sun.tools.javac.code.TypeTags.ERROR;
+import static com.sun.tools.javac.code.TypeTags.FORALL;
+import static com.sun.tools.javac.code.TypeTags.INT;
+import static com.sun.tools.javac.code.TypeTags.METHOD;
+import static com.sun.tools.javac.code.TypeTags.NONE;
+import static com.sun.tools.javac.code.TypeTags.PACKAGE;
+import static com.sun.tools.javac.code.TypeTags.TYPEVAR;
+import static com.sun.tools.javac.code.TypeTags.VOID;
+import static com.sun.tools.javac.code.TypeTags.WILDCARD;
+
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
 import javax.lang.model.element.ElementKind;
 import javax.tools.JavaFileObject;
-
-import com.sun.tools.javac.code.*;
-import com.sun.tools.javac.code.Scope.DelegatedScope;
-import com.sun.tools.javac.jvm.*;
-import com.sun.tools.javac.tree.*;
-import com.sun.tools.javac.util.*;
-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
-import com.sun.tools.javac.util.List;
-
-import com.sun.tools.javac.jvm.Target;
-import com.sun.tools.javac.code.Lint.LintCategory;
-import com.sun.tools.javac.code.Symbol.*;
-import com.sun.tools.javac.tree.JCTree.*;
-import com.sun.tools.javac.code.Type.*;
 
 import com.sun.source.tree.IdentifierTree;
 import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.TreeVisitor;
 import com.sun.source.util.SimpleTreeVisitor;
-
-import static com.sun.tools.javac.code.Flags.*;
-import static com.sun.tools.javac.code.Kinds.*;
-import static com.sun.tools.javac.code.TypeTags.*;
+import com.sun.tools.javac.code.BoundKind;
+import com.sun.tools.javac.code.DeferredLintHandler;
+import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.Kinds;
+import com.sun.tools.javac.code.Lint;
+import com.sun.tools.javac.code.Lint.LintCategory;
+import com.sun.tools.javac.code.Scope;
+import com.sun.tools.javac.code.Scope.DelegatedScope;
+import com.sun.tools.javac.code.Source;
+import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
+import com.sun.tools.javac.code.Symbol.DynamicMethodSymbol;
+import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.code.Symbol.OperatorSymbol;
+import com.sun.tools.javac.code.Symbol.PackageSymbol;
+import com.sun.tools.javac.code.Symbol.TypeSymbol;
+import com.sun.tools.javac.code.Symbol.VarSymbol;
+import com.sun.tools.javac.code.Symtab;
+import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.Type.ArrayType;
+import com.sun.tools.javac.code.Type.ClassType;
+import com.sun.tools.javac.code.Type.ForAll;
+import com.sun.tools.javac.code.Type.MethodType;
+import com.sun.tools.javac.code.Type.TypeVar;
+import com.sun.tools.javac.code.Type.UnionClassType;
+import com.sun.tools.javac.code.Type.WildcardType;
+import com.sun.tools.javac.code.TypeTags;
+import com.sun.tools.javac.code.Types;
+import com.sun.tools.javac.jvm.ByteCodes;
+import com.sun.tools.javac.jvm.ClassFile;
+import com.sun.tools.javac.jvm.Pool;
+import com.sun.tools.javac.jvm.Target;
+import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCArrayAccess;
+import com.sun.tools.javac.tree.JCTree.JCArrayTypeTree;
+import com.sun.tools.javac.tree.JCTree.JCAssert;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
+import com.sun.tools.javac.tree.JCTree.JCAssignOp;
+import com.sun.tools.javac.tree.JCTree.JCBinary;
+import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCBreak;
+import com.sun.tools.javac.tree.JCTree.JCCase;
+import com.sun.tools.javac.tree.JCTree.JCCatch;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
+import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.sun.tools.javac.tree.JCTree.JCConditional;
+import com.sun.tools.javac.tree.JCTree.JCContinue;
+import com.sun.tools.javac.tree.JCTree.JCDoWhileLoop;
+import com.sun.tools.javac.tree.JCTree.JCEnhancedForLoop;
+import com.sun.tools.javac.tree.JCTree.JCErroneous;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCForLoop;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
+import com.sun.tools.javac.tree.JCTree.JCIf;
+import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCIndyIdent;
+import com.sun.tools.javac.tree.JCTree.JCInstanceOf;
+import com.sun.tools.javac.tree.JCTree.JCLabeledStatement;
+import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCNewArray;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCParens;
+import com.sun.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
+import com.sun.tools.javac.tree.JCTree.JCSkip;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCSwitch;
+import com.sun.tools.javac.tree.JCTree.JCSynchronized;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
+import com.sun.tools.javac.tree.JCTree.JCTry;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
+import com.sun.tools.javac.tree.JCTree.JCTypeCast;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
+import com.sun.tools.javac.tree.JCTree.JCTypeUnion;
+import com.sun.tools.javac.tree.JCTree.JCUnary;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.JCWhileLoop;
+import com.sun.tools.javac.tree.JCTree.JCWildcard;
+import com.sun.tools.javac.tree.JCTree.LetExpr;
+import com.sun.tools.javac.tree.TreeInfo;
+import com.sun.tools.javac.tree.TreeMaker;
+import com.sun.tools.javac.tree.TreeScanner;
+import com.sun.tools.javac.util.Assert;
+import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.JCDiagnostic;
+import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
+import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.Pair;
+import com.sun.tools.javac.util.Warner;
 
 /** This is the main context-dependent analysis phase in GJC. It
  *  encompasses name resolution, type checking and constant folding as
@@ -2139,7 +2265,10 @@ public class Attr extends JCTree.Visitor {
         boolean varArgs = false;
 
         // Find symbol
-        if (pt.tag == METHOD || pt.tag == FORALL) {
+        // Added by Ceylon
+        if(tree instanceof JCIndyIdent) {
+            sym = resolveIndyCall((JCIndyIdent) tree, pt.getParameterTypes());
+        } else if (pt.tag == METHOD || pt.tag == FORALL) {
             // If we are looking for a method, the prototype `pt' will be a
             // method type with the type of the call's arguments as parameters.
             env.info.varArgs = false;
@@ -2217,6 +2346,13 @@ public class Attr extends JCTree.Visitor {
                 env1 = env1.outer;
         }
         result = checkId(tree, env1.enclClass.sym.type, sym, env, pkind, pt, varArgs);
+    }
+
+    // Added by Ceylon
+    private Symbol resolveIndyCall(JCIndyIdent tree, List<Type> parameterTypes) {
+        return resolveIndyCall(tree, tree.indyReturnType, tree.indyParameterTypes, tree.name, 
+                               tree.bsmType, tree.bsmName, tree.bsmStatic,
+                               parameterTypes);
     }
 
     public void visitSelect(JCFieldAccess tree) {
@@ -2352,6 +2488,72 @@ public class Attr extends JCTree.Visitor {
         result = checkId(tree, site, sym, env, pkind, pt, varArgs);
         env.info.tvars = List.nil();
     }
+
+    // Added by Ceylon
+    private Symbol resolveIndyCall(JCTree tree,
+                                   JCExpression indyReturnTypeExpression, List<JCExpression> indyParameterTypeExpressions,
+                                   Name indyName,
+                                   JCExpression bsmType, Name bsmName, List<Object> bsmStatic, 
+                                   List<Type> parameterTypes){
+        // build the list of static bsm arguments
+        List<Type> bsm_staticArgs = List.of(syms.methodHandleLookupType,
+                syms.stringType,
+                syms.methodTypeType).appendList(bsmStaticArgToTypes(bsmStatic));
+
+        // find the type of the bootstrap method class
+        Type bsmSite = attribTree(bsmType, env, TYP, Infer.anyPoly);
+
+        // find the bsm method
+        Symbol bsm = rs.resolveInternalMethod(tree.pos(), env, bsmSite,
+                                              bsmName, bsm_staticArgs, List.<Type>nil());
+
+        if(!bsm.isStatic())
+            log.error(tree.pos(), "ceylon", "Bootstrap method must be static: " + bsmName.toString());
+        
+        // find the type of the indy call
+        Type indyReturnType = attribTree(indyReturnTypeExpression, env, TYP, Infer.anyPoly);
+        ListBuffer<Type> indyParameterTypes = new ListBuffer<Type>();
+        int c=0;
+        List<Type> givenParameterTypes = parameterTypes;
+        for(JCExpression expectedParamTypeExpr : indyParameterTypeExpressions){
+            // also check that the parameter types we are passing to the method are compatible with the declared type
+            Type givenParameterType = givenParameterTypes.head;
+            if(givenParameterType == null) {
+                log.error(tree.pos(), "ceylon", "Indy declared method expects more parameters than given. Expecting " + indyParameterTypeExpressions.size()
+                        + ", but given " + c);
+                return syms.errSymbol;
+            }
+            Type paramType = attribTree(expectedParamTypeExpr, env, TYP, Infer.anyPoly);
+            if(!types.isAssignable(givenParameterType, paramType)) {
+                log.error(tree.pos(), "ceylon", "Indy given method parameter "+c+" not compatible with expected parameter type: " + paramType
+                        + ", but given " + givenParameterType);
+                return syms.errSymbol;
+            }
+            indyParameterTypes.append(paramType);
+            c++;
+            givenParameterTypes = givenParameterTypes.tail;
+        }
+        if(!givenParameterTypes.isEmpty()) {
+            log.error(tree.pos(), "ceylon", "Indy declared method expects less parameters than given. Expecting " + indyParameterTypeExpressions.size()
+                    + ", but given " + parameterTypes.size());
+            return syms.errSymbol;
+        }
+        
+        MethodType indyType = new MethodType(indyParameterTypes.toList(), indyReturnType, List.<Type>nil(), syms.methodClass);
+        
+        // make an indy symbol for it
+        DynamicMethodSymbol dynSym =
+                new DynamicMethodSymbol(indyName,
+                                        syms.noSymbol,
+                                        bsm.isStatic() ?
+                                            ClassFile.REF_invokeStatic :
+                                            ClassFile.REF_invokeVirtual,
+                                        (MethodSymbol)bsm,
+                                        indyType,
+                                        bsmStatic.toArray());
+        return dynSym;
+    }
+    
     //where
         /** Determine symbol referenced by a Select expression,
          *
@@ -2731,7 +2933,12 @@ public class Attr extends JCTree.Visitor {
         // Resolve.instantiate from the symbol's type as well as
         // any type arguments and value arguments.
         noteWarner.clear();
-        Type owntype = rs.instantiate(env,
+        Type owntype;
+        // Added by Ceylon
+        if (sym.kind == MTH && ((MethodSymbol)sym).isDynamic()) {
+            owntype = sym.type;
+        } else {
+            owntype = rs.instantiate(env,
                                       site,
                                       sym,
                                       argtypes,
@@ -2739,6 +2946,7 @@ public class Attr extends JCTree.Visitor {
                                       true,
                                       useVarargs,
                                       noteWarner);
+        }
         boolean warned = noteWarner.hasNonSilentLint(LintCategory.UNCHECKED);
 
         // If this fails, something went wrong; we should not have
