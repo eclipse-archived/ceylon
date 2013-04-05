@@ -24,4 +24,8 @@ public class JavaFields {
     public final long readOnlyField = 1;
     public String string;
     public long hash;
+    
+    public final long fieldWithNoGetter = 0;
+    
+    public void setFieldWithNoGetter(long f){}
 }

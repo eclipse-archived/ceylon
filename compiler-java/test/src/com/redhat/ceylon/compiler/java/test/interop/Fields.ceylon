@@ -37,6 +37,9 @@ void fields() {
     java.readWriteField = java.readWriteField = java.readWriteField;
     @error
     java.readWriteField = java.readWriteField += java.readWriteField;
+    
+    sync = java.fieldWithNoGetter;
+    java.setFieldWithNoGetter(2);
 }
 
 @nomodel

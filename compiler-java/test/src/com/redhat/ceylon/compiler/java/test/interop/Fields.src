@@ -47,6 +47,8 @@ final class fields_ {
             }
             returning $ceylontmpopV7;
         );
+        sync = java.fieldWithNoGetter;
+        java.setFieldWithNoGetter(2L);
     }
     
     public static void main(.java.lang.String[] args) {
