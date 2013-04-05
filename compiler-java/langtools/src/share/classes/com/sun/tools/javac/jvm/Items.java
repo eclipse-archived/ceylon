@@ -110,6 +110,14 @@ public class Items {
         return stackItem[Code.typecode(type)];
     }
 
+    // Backported by Ceylon from JDK8
+    /** Make an item representing a dynamically invoked method.
+     *  @param member   The represented symbol.
+     */
+    Item makeDynamicItem(Symbol member) {
+        return new DynamicItem(member);
+    }
+
     /** Make an item representing an indexed expression.
      *  @param type    The expression's type.
      */
@@ -454,6 +462,36 @@ public class Items {
 
         public String toString() {
             return "static(" + member + ")";
+        }
+    }
+
+    // Backported by Ceylon from JDK8
+    /** An item representing a dynamic call site.
+     */
+    class DynamicItem extends StaticItem {
+        DynamicItem(Symbol member) {
+            super(member);
+        }
+
+        Item load() {
+            assert false;
+            return null;
+        }
+
+        void store() {
+            assert false;
+        }
+
+        Item invoke() {
+            // assert target.hasNativeInvokeDynamic();
+            MethodType mtype = (MethodType)member.erasure(types);
+            int rescode = Code.typecode(mtype.restype);
+            code.emitInvokedynamic(pool.put(member), mtype);
+            return stackItem[rescode];
+        }
+
+        public String toString() {
+            return "dynamic(" + member + ")";
         }
     }
 

@@ -3460,4 +3460,37 @@ public class Attr extends JCTree.Visitor {
         }
     }
     // </editor-fold>
+
+    //where
+    private List<Type> bsmStaticArgToTypes(List<Object> args) {
+        ListBuffer<Type> argtypes = ListBuffer.lb();
+        for (Object arg : args) {
+            argtypes.append(bsmStaticArgToType(arg));
+        }
+        return argtypes.toList();
+    }
+
+    private Type bsmStaticArgToType(Object arg) {
+        Assert.checkNonNull(arg);
+        if (arg instanceof ClassSymbol) {
+            return syms.classType;
+        } else if (arg instanceof Integer) {
+            return syms.intType;
+        } else if (arg instanceof Long) {
+            return syms.longType;
+        } else if (arg instanceof Float) {
+            return syms.floatType;
+        } else if (arg instanceof Double) {
+            return syms.doubleType;
+        } else if (arg instanceof String) {
+            return syms.stringType;
+        } else if (arg instanceof Pool.MethodHandle) {
+            return syms.methodHandleType;
+        } else if (arg instanceof MethodType) {
+            return syms.methodTypeType;
+        } else {
+            Assert.error("bad static arg " + arg.getClass());
+            return null;
+        }
+    }
 }

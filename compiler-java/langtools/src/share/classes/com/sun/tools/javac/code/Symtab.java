@@ -132,6 +132,10 @@ public class Symtab {
     public final Type characterObjectType;
     public final Type cloneableType;
     public final Type serializableType;
+    // Backported by Ceylon from JDK8
+    public final Type methodHandleLookupType;
+    // Backported by Ceylon from JDK8
+    public final Type methodTypeType;
     public final Type methodHandleType;
     public final Type polymorphicSignatureType;
     public final Type throwableType;
@@ -508,6 +512,10 @@ public class Symtab {
         throwableType = enterClass("java.lang.Throwable");
         serializableType = enterClass("java.io.Serializable");
         methodHandleType = enterClass("java.lang.invoke.MethodHandle");
+        // Backported by Ceylon from JDK8
+        methodHandleLookupType = enterClass("java.lang.invoke.MethodHandles$Lookup");
+        // Backported by Ceylon from JDK8
+        methodTypeType = enterClass("java.lang.invoke.MethodType");
         polymorphicSignatureType = enterClass("java.lang.invoke.MethodHandle$PolymorphicSignature");
         errorType = enterClass("java.lang.Error");
         illegalArgumentExceptionType = enterClass("java.lang.IllegalArgumentException");

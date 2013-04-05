@@ -26,6 +26,8 @@
 package com.sun.tools.javac.jvm;
 
 import java.io.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -38,6 +40,8 @@ import com.sun.tools.javac.code.Attribute.RetentionPolicy;
 import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.code.Type.*;
 import com.sun.tools.javac.file.BaseFileObject;
+import com.sun.tools.javac.jvm.Pool.DynamicMethod;
+import com.sun.tools.javac.jvm.Pool.MethodHandle;
 import com.sun.tools.javac.util.*;
 
 import static com.sun.tools.javac.code.BoundKind.*;
@@ -136,6 +140,12 @@ public class ClassWriter extends ClassFile {
      *  enclosing classes come first.
      */
     ListBuffer<ClassSymbol> innerClassesQueue;
+
+    // Backported by Ceylon from JDK8
+    /** The bootstrap methods to be written in the corresponding class attribute
+     *  (one for each invokedynamic)
+     */
+    Map<DynamicMethod, MethodHandle> bootstrapMethods;
 
     /** The log to use for verbose output.
      */
@@ -477,11 +487,29 @@ public class ClassWriter extends ClassFile {
 
             if (value instanceof MethodSymbol) {
                 MethodSymbol m = (MethodSymbol)value;
-                poolbuf.appendByte((m.owner.flags() & INTERFACE) != 0
-                          ? CONSTANT_InterfaceMethodref
-                          : CONSTANT_Methodref);
-                poolbuf.appendChar(pool.put(m.owner));
-                poolbuf.appendChar(pool.put(nameType(m)));
+                // Backported by Ceylon from JDK8
+                if (!m.isDynamic()) {
+                    poolbuf.appendByte((m.owner.flags() & INTERFACE) != 0
+                              ? CONSTANT_InterfaceMethodref
+                              : CONSTANT_Methodref);
+                    poolbuf.appendChar(pool.put(m.owner));
+                    poolbuf.appendChar(pool.put(nameType(m)));
+                } else {
+                    //invokedynamic
+                    DynamicMethodSymbol dynSym = (DynamicMethodSymbol)m;
+                    MethodHandle handle = new MethodHandle(dynSym.bsmKind, dynSym.bsm);
+                    DynamicMethod dynMeth = new DynamicMethod(dynSym);
+                    bootstrapMethods.put(dynMeth, handle);
+                    //init cp entries
+                    pool.put(names.BootstrapMethods);
+                    pool.put(handle);
+                    for (Object staticArg : dynSym.staticArgs) {
+                        pool.put(staticArg);
+                    }
+                    poolbuf.appendByte(CONSTANT_InvokeDynamic);
+                    poolbuf.appendChar(bootstrapMethods.size() - 1);
+                    poolbuf.appendChar(pool.put(nameType(dynSym)));
+                }
             } else if (value instanceof VarSymbol) {
                 VarSymbol v = (VarSymbol)value;
                 poolbuf.appendByte(CONSTANT_Fieldref);
@@ -528,9 +556,21 @@ public class ClassWriter extends ClassFile {
                 poolbuf.appendChar(pool.put(names.fromString((String)value)));
             } else if (value instanceof Type) {
                 Type type = (Type)value;
-                if (type.tag == CLASS) enterInner((ClassSymbol)type.tsym);
-                poolbuf.appendByte(CONSTANT_Class);
-                poolbuf.appendChar(pool.put(xClassName(type)));
+                // Backported by Ceylon from JDK8
+                if (type instanceof MethodType) {
+                    poolbuf.appendByte(CONSTANT_MethodType);
+                    poolbuf.appendChar(pool.put(typeSig((MethodType)type)));
+                } else {
+                    if (type.tag == CLASS) enterInner((ClassSymbol)type.tsym);
+                    poolbuf.appendByte(CONSTANT_Class);
+                    poolbuf.appendChar(pool.put(xClassName(type)));
+                }
+            // Backported by Ceylon from JDK8
+            } else if (value instanceof MethodHandle) {
+                MethodHandle ref = (MethodHandle)value;
+                poolbuf.appendByte(CONSTANT_MethodHandle);
+                poolbuf.appendByte(ref.refKind);
+                poolbuf.appendChar(pool.put(ref.refSym));
             } else {
                 Assert.error("writePool " + value);
             }
@@ -901,6 +941,28 @@ public class ClassWriter extends ClassFile {
             databuf.appendChar(
                 !inner.name.isEmpty() ? pool.get(inner.name) : 0);
             databuf.appendChar(flags);
+        }
+        endAttr(alenIdx);
+    }
+
+    // Backported by Ceylon from JDK8
+    /** Write "bootstrapMethods" attribute.
+     */
+    void writeBootstrapMethods() {
+        int alenIdx = writeAttr(names.BootstrapMethods);
+        databuf.appendChar(bootstrapMethods.size());
+        for (Map.Entry<DynamicMethod, MethodHandle> entry : bootstrapMethods.entrySet()) {
+            DynamicMethod dmeth = entry.getKey();
+            DynamicMethodSymbol dsym = (DynamicMethodSymbol)dmeth.baseSymbol();
+            //write BSM handle
+            databuf.appendChar(pool.get(entry.getValue()));
+            //write static args length
+            databuf.appendChar(dsym.staticArgs.length);
+            //write static args array
+            Object[] uniqueArgs = dmeth.uniqueStaticArgs;
+            for (Object o : uniqueArgs) {
+                databuf.appendChar(pool.get(o));
+            }
         }
         endAttr(alenIdx);
     }
@@ -1472,6 +1534,8 @@ public class ClassWriter extends ClassFile {
         pool = c.pool;
         innerClasses = null;
         innerClassesQueue = null;
+        // Backported by Ceylon from JDK8
+        bootstrapMethods = new LinkedHashMap<DynamicMethod, MethodHandle>();
 
         Type supertype = types.supertype(c.type);
         List<Type> interfaces = types.interfaces(c.type);
@@ -1569,6 +1633,13 @@ public class ClassWriter extends ClassFile {
             writeInnerClasses();
             acount++;
         }
+
+        // Backported by Ceylon from JDK8
+        if (!bootstrapMethods.isEmpty()) {
+            writeBootstrapMethods();
+            acount++;
+        }
+
         endAttrs(acountIdx, acount);
 
         poolbuf.appendBytes(databuf.elems, 0, databuf.length);

@@ -96,6 +96,8 @@ public class Names {
     public final Name Signature;
     public final Name Varargs;
     public final Name Annotation;
+    // Backported by Ceylon from JDK8
+    public final Name BootstrapMethods;
     public final Name RuntimeVisibleAnnotations;
     public final Name RuntimeInvisibleAnnotations;
     public final Name RuntimeVisibleTypeAnnotations;
@@ -210,6 +212,8 @@ public class Names {
         Signature = fromString("Signature");
         Varargs = fromString("Varargs");
         Annotation = fromString("Annotation");
+        // Backported by Ceylon from JDK8
+        BootstrapMethods = fromString("BootstrapMethods");
         RuntimeVisibleAnnotations = fromString("RuntimeVisibleAnnotations");
         RuntimeInvisibleAnnotations = fromString("RuntimeInvisibleAnnotations");
         RuntimeVisibleTypeAnnotations = fromString("RuntimeVisibleTypeAnnotations");

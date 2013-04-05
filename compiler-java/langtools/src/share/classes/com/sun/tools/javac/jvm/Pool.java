@@ -27,7 +27,13 @@ package com.sun.tools.javac.jvm;
 
 import java.util.*;
 
+import com.sun.tools.javac.code.Kinds;
+import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Symbol.*;
+import com.sun.tools.javac.util.Assert;
+import com.sun.tools.javac.util.Filter;
+import com.sun.tools.javac.util.Name;
 
 /** An internal structure that corresponds to the constant pool of a classfile.
  *
@@ -96,10 +102,8 @@ public class Pool {
      *  package.  Return the object's index in the pool.
      */
     public int put(Object value) {
-        if (value instanceof MethodSymbol)
-            value = new Method((MethodSymbol)value);
-        else if (value instanceof VarSymbol)
-            value = new Variable((VarSymbol)value);
+        // Backported by Ceylon from JDK8
+        value = makePoolValue(value);
 //      assert !(value instanceof Type.TypeVar);
         Integer index = indices.get(value);
         if (index == null) {
@@ -114,6 +118,19 @@ public class Pool {
             }
         }
         return index.intValue();
+    }
+
+    // Backported by Ceylon from JDK8
+    Object makePoolValue(Object o) {
+        if (o instanceof DynamicMethodSymbol) {
+            return new DynamicMethod((DynamicMethodSymbol)o);
+        } else if (o instanceof MethodSymbol) {
+            return new Method((MethodSymbol)o);
+        } else if (o instanceof VarSymbol) {
+            return new Variable((VarSymbol)o);
+        } else {
+            return o;
+        }
     }
 
     /** Return the given object's index in the pool,
@@ -146,6 +163,40 @@ public class Pool {
         }
     }
 
+    // Backported by Ceylon from JDK8
+    static class DynamicMethod extends Method {
+        public Object[] uniqueStaticArgs;
+
+        DynamicMethod(DynamicMethodSymbol m) {
+            super(m);
+            uniqueStaticArgs = m.staticArgs;
+        }
+
+        @Override
+        public boolean equals(Object any) {
+            if (!super.equals(any)) return false;
+            if (!(any instanceof DynamicMethod)) return false;
+            DynamicMethodSymbol dm1 = (DynamicMethodSymbol)other;
+            DynamicMethodSymbol dm2 = (DynamicMethodSymbol)((DynamicMethod)any).other;
+            return dm1.bsm == dm2.bsm &&
+                        dm1.bsmKind == dm2.bsmKind &&
+                        Arrays.equals(uniqueStaticArgs,
+                            ((DynamicMethod)any).uniqueStaticArgs);
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = super.hashCode();
+            DynamicMethodSymbol dm = (DynamicMethodSymbol)other;
+            hash += dm.bsmKind * 7 +
+                    dm.bsm.hashCode() * 11;
+            for (int i = 0; i < dm.staticArgs.length; i++) {
+                hash += (uniqueStaticArgs[i].hashCode() * 23);
+            }
+            return hash;
+        }
+    }
+
     static class Variable extends DelegatedSymbol {
         VarSymbol v;
         Variable(VarSymbol v) {
@@ -166,5 +217,92 @@ public class Pool {
                 v.owner.hashCode() * 9 +
                 v.type.hashCode();
         }
+    }
+
+    // Backported by Ceylon from JDK8
+    public static class MethodHandle {
+
+        /** Reference kind - see ClassFile */
+        int refKind;
+
+        /** Reference symbol */
+        Symbol refSym;
+
+        Type uniqueType;
+
+        public MethodHandle(int refKind, Symbol refSym) {
+            this.refKind = refKind;
+            this.refSym = refSym;
+            this.uniqueType = this.refSym.type;
+            checkConsistent();
+        }
+        public boolean equals(Object other) {
+            if (!(other instanceof MethodHandle)) return false;
+            MethodHandle mr = (MethodHandle) other;
+            if (mr.refKind != refKind)  return false;
+            Symbol o = mr.refSym;
+            return
+                o.name == refSym.name &&
+                o.owner == refSym.owner &&
+                ((MethodHandle)other).uniqueType.equals(uniqueType);
+        }
+        public int hashCode() {
+            return
+                refKind * 65 +
+                refSym.name.hashCode() * 33 +
+                refSym.owner.hashCode() * 9 +
+                uniqueType.hashCode();
+        }
+
+        /**
+         * Check consistency of reference kind and symbol (see JVMS 4.4.8)
+         */
+        @SuppressWarnings("fallthrough")
+        private void checkConsistent() {
+            boolean staticOk = false;
+            int expectedKind = -1;
+            Filter<Name> nameFilter = nonInitFilter;
+            boolean interfaceOwner = false;
+            switch (refKind) {
+                case ClassFile.REF_getStatic:
+                case ClassFile.REF_putStatic:
+                    staticOk = true;
+                case ClassFile.REF_getField:
+                case ClassFile.REF_putField:
+                    expectedKind = Kinds.VAR;
+                    break;
+                case ClassFile.REF_newInvokeSpecial:
+                    nameFilter = initFilter;
+                    expectedKind = Kinds.MTH;
+                    break;
+                case ClassFile.REF_invokeInterface:
+                    interfaceOwner = true;
+                    expectedKind = Kinds.MTH;
+                    break;
+                case ClassFile.REF_invokeStatic:
+                    interfaceOwner = true;
+                    staticOk = true;
+                case ClassFile.REF_invokeVirtual:
+                case ClassFile.REF_invokeSpecial:
+                    expectedKind = Kinds.MTH;
+                    break;
+            }
+            Assert.check(!refSym.isStatic() || staticOk);
+            Assert.check(refSym.kind == expectedKind);
+            Assert.check(nameFilter.accepts(refSym.name));
+            Assert.check(!refSym.owner.isInterface() || interfaceOwner);
+        }
+        //where
+                Filter<Name> nonInitFilter = new Filter<Name>() {
+                    public boolean accepts(Name n) {
+                        return n != n.table.names.init && n != n.table.names.clinit;
+                    }
+                };
+
+                Filter<Name> initFilter = new Filter<Name>() {
+                    public boolean accepts(Name n) {
+                        return n == n.table.names.init;
+                    }
+                };
     }
 }

@@ -2105,6 +2105,9 @@ public class Gen extends JCTree.Visitor {
             result = res;
         } else if (sym.kind == VAR && sym.owner.kind == MTH) {
             result = items.makeLocalItem((VarSymbol)sym);
+        // Backported by Ceylon from JDK8
+        } else if (isInvokeDynamic(sym)) {
+            result = items.makeDynamicItem(sym);
         } else if ((sym.flags() & STATIC) != 0) {
             if (!isAccessSuper(env.enclMethod))
                 sym = binaryQualifier(sym, env.enclClass.type);
@@ -2154,8 +2157,13 @@ public class Gen extends JCTree.Visitor {
             result = items.
                 makeImmediateItem(sym.type, ((VarSymbol) sym).getConstValue());
         } else {
-            if (!accessSuper)
+            // Backported by Ceylon from JDK8
+            if (isInvokeDynamic(sym)) {
+                result = items.makeDynamicItem(sym);
+                return;
+            } else if (!accessSuper) {
                 sym = binaryQualifier(sym, tree.selected.type);
+            }
             if ((sym.flags() & STATIC) != 0) {
                 if (!selectSuper && (ssym == null || ssym.kind != TYP))
                     base = base.load();
@@ -2174,6 +2182,11 @@ public class Gen extends JCTree.Visitor {
                 }
             }
         }
+    }
+
+    // Backported by Ceylon from JDK8
+    public boolean isInvokeDynamic(Symbol sym) {
+        return sym.kind == MTH && ((MethodSymbol)sym).isDynamic();
     }
 
     public void visitLiteral(JCLiteral tree) {
