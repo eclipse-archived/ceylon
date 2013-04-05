@@ -1325,7 +1325,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String name = getJavaAttributeName(setter.getName());
             Declaration decl = klass.getMember(name, null, false);
             boolean foundGetter = false;
-            if (decl != null && Decl.isValue(decl)) {
+            // skip Java fields, which we only get if there is no getter method, in that case just add the setter method
+            if (decl != null && Decl.isValue(decl) && decl instanceof FieldValue == false) {
                 Value value = (Value)decl;
                 VariableMirror setterParam = setter.getParameters().get(0);
                 try{
