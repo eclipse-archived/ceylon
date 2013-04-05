@@ -1717,6 +1717,34 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         }
     }
 
+    // Added by Ceylon
+    public static class JCIndyIdent extends JCIdent {
+        /* The bootstrap method name */
+        public Name bsmName;
+        /* The bootstrap method class */
+        public JCExpression bsmType;
+        /* The bootstrap method additional static parameters. Must be String,Class,MethodHandle or boxed primitive types */
+        public List<Object> bsmStatic;
+        /* The return type of the INDY method */
+        public JCExpression indyReturnType;
+        /* The INDY method parameter types */
+        public List<JCExpression> indyParameterTypes;
+        
+        protected JCIndyIdent(Name name, Symbol sym,
+                JCExpression indyReturnType,
+                List<JCExpression> indyParameterTypes,
+                JCExpression bsmType,
+                Name bsmName,
+                List<Object> bsmStatic) {
+            super(name, sym);
+            this.bsmType = bsmType;
+            this.bsmName = bsmName;
+            this.bsmStatic = bsmStatic;
+            this.indyReturnType = indyReturnType;
+            this.indyParameterTypes = indyParameterTypes;
+        }
+    }
+
     /**
      * A constant value given literally.
      * @param value value representation

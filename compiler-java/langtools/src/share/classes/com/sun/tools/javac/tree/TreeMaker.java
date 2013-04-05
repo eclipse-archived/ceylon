@@ -411,6 +411,16 @@ public class TreeMaker implements JCTree.Factory {
         return tree;
     }
 
+    // Added by Ceylon
+    public JCIndyIdent IndyIdent(Name name, 
+            JCExpression indyReturnType, List<JCExpression> indyParameterTypes, 
+            JCExpression bsmType, Name bsmName,
+            List<Object> bsmStatic) {
+        JCIndyIdent tree = new JCIndyIdent(name, null, indyReturnType, indyParameterTypes, bsmType, bsmName, bsmStatic);
+        tree.pos = pos;
+        return tree;
+    }
+
     public JCLiteral Literal(int tag, Object value) {
         JCLiteral tree = new JCLiteral(tag, value);
         tree.pos = pos;

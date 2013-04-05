@@ -1059,6 +1059,25 @@ public class Pretty extends JCTree.Visitor {
 
     public void visitIdent(JCIdent tree) {
         try {
+            // Added by Ceylon
+            if (tree instanceof JCIndyIdent) {
+                print(".");
+                
+                JCIndyIdent indy = (JCIndyIdent)tree;
+                print("Indy[#");
+                printExpr(indy.bsmType);
+                print(".");
+                print(indy.bsmName.toString());
+                if (indy.bsmStatic.nonEmpty()) {
+                    print(", ");
+                    print(indy.bsmStatic.head);
+                    for (List<Object> l = indy.bsmStatic.tail; l.nonEmpty(); l = l.tail) {
+                        print(", ");
+                        print(l.head);
+                    }
+                }
+                print("].");
+            }
             print(tree.name);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
