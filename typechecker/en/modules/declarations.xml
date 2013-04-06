@@ -2210,7 +2210,7 @@ assign name {
             <para>The declaration of a reference may be separated from the specification 
             or initialization of its persistent value. The declaration of a getter may be 
             separated from the specification of its implementation. If a value declaration 
-            does have a specifier, lazy specifier, or a block, and is not annotated 
+            does not have a specifier, lazy specifier, or a block, and is not annotated 
             <literal>formal</literal>, it is a <emphasis>forward-declared</emphasis> 
             value.</para>
             
@@ -2248,6 +2248,8 @@ print(greeting);</programlisting>
         
             <para>A toplevel value may not be forward-declared. An attribute of an 
             interface may not be forward-declared.</para>
+            
+            <para>A forward-declared getter may not have a setter.</para>
             
             <para>If a <literal>shared</literal> value is forward-declared, its 
             implementation must be definitely specified by all conditional paths in the 
