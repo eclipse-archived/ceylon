@@ -1734,8 +1734,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <section id="methodforwarddeclaration">
             <title>Forward declaration of functions</title>
             
-            <para>The declaration of a function may be separated from the specification
-            of its implementation. If a function declaration does have a lazy specifier, 
+            <para>The declaration of a function may be separated from the specification of 
+            its implementation. If a function declaration does not have a lazy specifier, 
             or a block, and is not annotated <literal>formal</literal>, and is not a 
             parameter, it is a <emphasis>forward-declared</emphasis> function.</para>
             
