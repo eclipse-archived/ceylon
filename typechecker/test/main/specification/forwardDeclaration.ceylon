@@ -18,3 +18,9 @@ void a() {
     }
     void neverDefined();
 }
+
+class B() {
+    String name;
+    name=>"gavin";
+    @error assign name {}
+}
