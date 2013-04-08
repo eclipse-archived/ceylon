@@ -915,14 +915,14 @@ public abstract class AbstractTransformer implements Transformation {
         // special case for Callable where we stop after the first type param
         boolean isCallable = isCeylonCallable(type);
         
-        boolean everyTypeParameterIsErasedUnionIntersection = true;
+        boolean everyTypeArgumentIsErasedUnionIntersection = true;
         
         for(ProducedType typeArg : type.getTypeArgumentList()){
             // skip invalid input
             if(typeArg == null)
                 return false;
             
-            everyTypeParameterIsErasedUnionIntersection &= isErasedUnionOrIntersection(typeArg);
+            everyTypeArgumentIsErasedUnionIntersection &= isErasedUnionOrIntersection(typeArg);
             
             // Callable really has a single type arg in Java
             if(isCallable)
@@ -930,7 +930,7 @@ public abstract class AbstractTransformer implements Transformation {
             // don't recurse
         }
         // we're only raw if every type param is an erased union/intersection
-        return everyTypeParameterIsErasedUnionIntersection;
+        return everyTypeArgumentIsErasedUnionIntersection;
     }
 
     private boolean isErasedUnionOrIntersection(ProducedType producedType) {
