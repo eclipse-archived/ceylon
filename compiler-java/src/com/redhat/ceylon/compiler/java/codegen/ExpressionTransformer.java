@@ -539,15 +539,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             // the common type could be erased
             if(commonType.isExactly(expectedType))
                 return false;
-            
-            
         }
         //special case for Callable because only the first type param exists in Java, the rest is completely suppressed
         boolean isCallable = isCeylonCallable(commonType);
         
         // now see if the type parameters match
         java.util.List<ProducedType> commonTypeArgs = commonType.getTypeArgumentList();
+        java.util.List<TypeParameter> commonTps = commonType.getDeclaration().getTypeParameters();
         java.util.List<ProducedType> expectedTypeArgs = expectedType.getTypeArgumentList();
+        java.util.List<TypeParameter> expectedTps = expectedType.getDeclaration().getTypeParameters();
         // check that we got them all otherwise we just don't know
         if(commonTypeArgs.size() != expectedTypeArgs.size())
             return false;
@@ -555,6 +555,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             // apply the same logic to each type param: see if they would require a raw cast
             ProducedType commonTypeArg = commonTypeArgs.get(i);
             ProducedType expectedTypeArg = expectedTypeArgs.get(i);
+            
+            if (hasDependentTypeParameters(commonTps, commonTps.get(i))
+                    || hasDependentTypeParameters(expectedTps, expectedTps.get(i))) {
+                // In this case makeJavaType() will have made the Java decl 
+                // invariant in this type argument, so we will need a type cast 
+                // if the type parameters are not identical:
+                if (!simplifyType(commonTypeArg).isExactly(simplifyType(expectedTypeArg))) {
+                    return true;
+                }
+            }
+            
             if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters, downCast))
                 return true;
             // stop after the first one for Callable
