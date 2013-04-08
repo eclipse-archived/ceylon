@@ -190,9 +190,9 @@ public class TestModuleManager {
     @Test
     public void tmptest() {
         System.out.println("-----------------------");
-        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Container", null, false);
+        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Iterable", null, false);
         Assert.assertNotNull("ContainerWithFirstElement from srclang", d0);
-        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Container", null, false);
+        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Iterable", null, false);
         Assert.assertNotNull("ContainerWithFirstElement from jslang", d1);
         ProducedType seq0 = null, seq1 = null;
         for (ProducedType pt : d0.getSatisfiedTypes()) {
@@ -211,10 +211,11 @@ public class TestModuleManager {
         compareTypes(seq0, seq1, new ArrayList<String>());
         System.out.println("src " + seq0 + " - js " + seq1);
         compareTypeDeclarations(d0, d1);
-        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("first", null, false);
-        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("first", null, false);
-        System.out.println("Container.first " + m0 + " vs " + m1);
-        System.out.println("refined member " + d0.getRefinedMember("first", null, false).getContainer() + " vs " + d1.getRefinedMember("first", null, false).getContainer());
+        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("last", null, false);
+        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("last", null, false);
+        System.out.println("Iterable.last " + m0 + " vs " + m1);
+        System.out.println("refined member " + d0.getRefinedMember("last", null, false).getContainer() + " vs " + d1.getRefinedMember("last", null, false).getContainer());
+        System.out.println("last is transient? " + m0.isTransient() + " vs " + m1.isTransient());
         System.out.println("refined " + m0.getRefinedDeclaration().getContainer() + " vs " + m1.getRefinedDeclaration().getContainer());
     }
 
