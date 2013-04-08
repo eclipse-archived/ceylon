@@ -268,6 +268,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
                     || (generateInstantiator
+                            && refinedParam != null
                             && (refinedParam.isDefaulted()
                                     || refinedParam.isSequenced()))) {
                 ClassDefinitionBuilder cbForDevaultValues;
