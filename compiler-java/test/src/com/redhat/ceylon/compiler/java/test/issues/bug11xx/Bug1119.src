@@ -1,0 +1,75 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+abstract class Bug1119Operation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1119Operation() {
+    }
+    
+    public abstract long evaluate(final long left, final long right);
+    
+    public boolean isOperator(final .java.lang.String token) {
+        return toString().equals(token);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1119Operation.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1119Operation.class);
+}
+final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1119Operation {
+    
+    private bug1119Addition_() {
+        super();
+        this.string = "+";
+    }
+    
+    @.java.lang.Override
+    public final long evaluate(final long left, final long right) {
+        return left + right;
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    
+    @.java.lang.Override
+    public final boolean isOperator(final .java.lang.String token) {
+        final boolean b1 = "+".equals(token) || "and".equals(token);
+        final boolean b2 = toString().equals(token) || "and".equals(token);
+        return b2;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ getBug1119Addition$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.class);
+    }
+}
+public final class bug1119Test_ {
+    
+    private bug1119Test_() {
+    }
+    
+    public static void bug1119Test() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Should consider \'+\' as addition operator but returns ").append(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.getBug1119Addition$().isOperator("+")).toString()));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Test_.bug1119Test();
+    }
+}
