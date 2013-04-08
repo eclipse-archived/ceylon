@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1095B() {
+    }
+    
+    private final <Summand extends .ceylon.language.Summable<Summand>>void selfType$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final Summand x) {
+        final Summand y = (
+            let
+            {
+                .ceylon.language.Summable<Summand> $arg$0$callable$ = x;
+                Summand $arg$0$0 = x;
+            }
+            returning $arg$0$callable$.plus($arg$0$0);
+        );
+        final .ceylon.language.Summable<Summand> y2 = (
+            let
+            {
+                .ceylon.language.Summable<Summand> $arg$1$callable$ = x;
+                Summand $arg$1$0 = x;
+            }
+            returning $arg$1$callable$.plus($arg$1$0);
+        );
+        final .ceylon.language.Summable<Summand> x2 = x;
+        final .ceylon.language.Summable<Summand> y3 = (
+            let
+            {
+                .ceylon.language.Summable<Summand> $arg$2$callable$ = x;
+                Summand $arg$2$0 = (Summand)x2;
+            }
+            returning $arg$2$callable$.plus($arg$2$0);
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.class);
+}
