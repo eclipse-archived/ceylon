@@ -3714,7 +3714,11 @@ public class GenerateJsVisitor extends Visitor
         out("for (var i=1; i<", rhs, "; i++){", end, "=", end, ".successor;}");
         endLine();
         out("return ", clAlias, "Range(");
-        out(lhs, ",", end, ")");
+        out(lhs, ",", end, ",");
+        TypeUtils.printTypeArguments(that,
+                that.getTypeModel().getTypeArguments(),
+                GenerateJsVisitor.this);
+        out(")");
         endLine();
         out("}else return ", clAlias, "getEmpty();}())");
     }
