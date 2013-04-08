@@ -632,8 +632,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else if (ct.getTypeArgumentList().size()>=2) {
                         ProducedType tupleType = ct.getTypeArgumentList().get(1);
-                        List<ProducedType> argTypes = getTupleElementTypes(tupleType);
-                        boolean variadic = isTupleLengthUnbounded(tupleType);
+                        List<ProducedType> argTypes = unit.getTupleElementTypes(tupleType);
+                        boolean variadic = unit.isTupleLengthUnbounded(tupleType);
                         List<Tree.Parameter> params = pl.getParameters();
                         if (argTypes.size()!=params.size()) {
                             pl.addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
@@ -785,9 +785,9 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs.size()>=2) {
                 ProducedType rt = typeArgs.get(0);
                 ProducedType pts = typeArgs.get(1);
-                List<ProducedType> argTypes = getTupleElementTypes(pts);
-                boolean variadic = isTupleLengthUnbounded(pts);
-                boolean atLeastOne = isTupleVariantAtLeastOne(pts);
+                List<ProducedType> argTypes = unit.getTupleElementTypes(pts);
+                boolean variadic = unit.isTupleLengthUnbounded(pts);
+                boolean atLeastOne = unit.isTupleVariantAtLeastOne(pts);
                 if (variadic) {
                     ProducedType spt = argTypes.get(argTypes.size()-1);
                     argTypes.set(argTypes.size()-1, unit.getIteratedType(spt));
@@ -1995,99 +1995,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private ProducedType nonemptyArgs(ProducedType args) {
-        return unit.isPossiblyEmptyType(args) ? 
-                unit.getNonemptyType(args) : args;
-    }
-    
-    private List<ProducedType> getTupleElementTypes(ProducedType args) {
-        if (args!=null) {
-            ProducedType tst = nonemptyArgs(args).getSupertype(unit.getTupleDeclaration());
-            if (tst!=null) {
-                List<ProducedType> tal = tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    List<ProducedType> result = getTupleElementTypes(tal.get(2));
-                    result.add(0, tal.get(1));
-                    return result;
-                }
-            }
-            else if (unit.isEmptyType(args)) {
-                return new LinkedList<ProducedType>();
-            }
-            else if (unit.isSequentialType(args)) {
-                LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
-                sequenced.add(args);
-                return sequenced;
-            }
-        }
-        LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
-        unknown.add(new UnknownType(unit).getType());
-        return unknown;
-    }
-    
-    private boolean isTupleLengthUnbounded(ProducedType args) {
-        if (args!=null) {
-            ProducedType tst = nonemptyArgs(args).getSupertype(unit.getTupleDeclaration());
-            if (tst!=null) {
-                List<ProducedType> tal = tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return isTupleLengthUnbounded(tal.get(2));
-                }
-            }
-            else if (unit.isEmptyType(args)) {
-                return false;
-            }
-            else if (unit.isSequentialType(args)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean isTupleVariantAtLeastOne(ProducedType args) {
-        if (args!=null) {
-            ProducedType tst = nonemptyArgs(args).getSupertype(unit.getTupleDeclaration());
-            if (tst!=null) {
-                List<ProducedType> tal = tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return isTupleVariantAtLeastOne(tal.get(2));
-                }
-            }
-            else if (unit.isEmptyType(args)) {
-                return false;
-            }
-            else if (unit.isSequenceType(args)) {
-                return true;
-            }
-            else if (unit.isSequentialType(args)) {
-                return false;
-            }
-        }
-        return false;
-    }
-    
-    private int getTupleMinimumLength(ProducedType args) {
-        if (args!=null) {
-            if (unit.isPossiblyEmptyType(args)) {
-                return 0;
-            }
-            ProducedType tst = args.getSupertype(unit.getTupleDeclaration());
-            if (tst!=null) {
-                List<ProducedType> tal = tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return getTupleMinimumLength(tal.get(2))+1;
-                }
-            }
-            else if (unit.isEmptyType(args)) {
-                return 0;
-            }
-            else if (unit.isSequentialType(args)) {
-                return 0;
-            }
-        }
-        return 0;
-    }
-
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
         if (prf==null || !prf.isFunctional() || 
                 //type parameters are not really callable even though they are Functional
@@ -2105,9 +2012,9 @@ public class ExpressionVisitor extends Visitor {
                     if (typeArgs.size()>=2) {
                         ProducedType tt = typeArgs.get(1);
                         checkIndirectInvocationArguments(that, 
-                                getTupleElementTypes(tt),
-                                isTupleLengthUnbounded(tt),
-                                getTupleMinimumLength(tt));
+                                unit.getTupleElementTypes(tt),
+                                unit.isTupleLengthUnbounded(tt),
+                                unit.getTupleMinimumLength(tt));
                     }
                 }
             }
@@ -2806,10 +2713,10 @@ public class ExpressionVisitor extends Visitor {
             if (t instanceof Tree.NaturalLiteral) {
                 int index = Integer.parseInt(t.getText());
                 if (negated) index = -index;
-                List<ProducedType> elementTypes = getTupleElementTypes(tt);
-                boolean variadic = isTupleLengthUnbounded(tt);
-                int minimumLength = getTupleMinimumLength(tt);
-                boolean atLeastOne = isTupleVariantAtLeastOne(tt);
+                List<ProducedType> elementTypes = unit.getTupleElementTypes(tt);
+                boolean variadic = unit.isTupleLengthUnbounded(tt);
+                int minimumLength = unit.getTupleMinimumLength(tt);
+                boolean atLeastOne = unit.isTupleVariantAtLeastOne(tt);
                 if (elementTypes!=null) {
                     if (elementTypes.isEmpty()) {
                         that.setTypeModel(unit.getNullDeclaration().getType());
@@ -2862,10 +2769,10 @@ public class ExpressionVisitor extends Visitor {
             if (l instanceof Tree.NaturalLiteral) {
                 int lindex = Integer.parseInt(l.getText());
                 if (lnegated) lindex = -lindex;
-                List<ProducedType> elementTypes = getTupleElementTypes(tt);
-                boolean variadic = isTupleLengthUnbounded(tt);
-                boolean atLeastOne = isTupleVariantAtLeastOne(tt);
-                int minimumLength = getTupleMinimumLength(tt);
+                List<ProducedType> elementTypes = unit.getTupleElementTypes(tt);
+                boolean variadic = unit.isTupleLengthUnbounded(tt);
+                boolean atLeastOne = unit.isTupleVariantAtLeastOne(tt);
+                int minimumLength = unit.getTupleMinimumLength(tt);
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 if (elementTypes!=null) {
                     if (lindex<0) {
@@ -4200,10 +4107,10 @@ public class ExpressionVisitor extends Visitor {
             // out extraneous information, like that it is a
             // String, just keeping information about what
             // kind of tuple it is
-            List<ProducedType> elementTypes = getTupleElementTypes(et);
-            boolean variadic = isTupleLengthUnbounded(et);
-            boolean atLeastOne = isTupleVariantAtLeastOne(et);
-            int minimumLength = getTupleMinimumLength(et);
+            List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
+            boolean variadic = unit.isTupleLengthUnbounded(et);
+            boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
+            int minimumLength = unit.getTupleMinimumLength(et);
             if (variadic) {
                 ProducedType spt = elementTypes.get(elementTypes.size()-1);
                 elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));

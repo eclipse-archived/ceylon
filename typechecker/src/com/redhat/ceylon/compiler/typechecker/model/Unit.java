@@ -7,7 +7,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -684,5 +686,115 @@ public class Unit {
             return pt;
         }
     }
+
+    public ProducedType nonemptyArgs(ProducedType args) {
+        return isPossiblyEmptyType(args) ? 
+                getNonemptyType(args) : args;
+    }
+
+    public List<ProducedType> getTupleElementTypes(ProducedType args) {
+        if (args!=null) {
+            ProducedType tst = nonemptyArgs(args).getSupertype(getTupleDeclaration());
+            if (tst!=null) {
+                List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    List<ProducedType> result = getTupleElementTypes(tal.get(2));
+                    result.add(0, tal.get(1));
+                    return result;
+                }
+            }
+            else if (isEmptyType(args)) {
+                return new LinkedList<ProducedType>();
+            }
+            else if (isSequentialType(args)) {
+                LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
+                sequenced.add(args);
+                return sequenced;
+            }
+        }
+        LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
+        unknown.add(new UnknownType(this).getType());
+        return unknown;
+    }
     
+    public boolean isTupleLengthUnbounded(ProducedType args) {
+        if (args!=null) {
+            ProducedType tst = nonemptyArgs(args).getSupertype(getTupleDeclaration());
+            if (tst!=null) {
+                List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    return isTupleLengthUnbounded(tal.get(2));
+                }
+            }
+            else if (isEmptyType(args)) {
+                return false;
+            }
+            else if (isSequentialType(args)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isTupleVariantAtLeastOne(ProducedType args) {
+        if (args!=null) {
+            ProducedType tst = nonemptyArgs(args).getSupertype(getTupleDeclaration());
+            if (tst!=null) {
+                List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    return isTupleVariantAtLeastOne(tal.get(2));
+                }
+            }
+            else if (isEmptyType(args)) {
+                return false;
+            }
+            else if (isSequenceType(args)) {
+                return true;
+            }
+            else if (isSequentialType(args)) {
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    public int getTupleMinimumLength(ProducedType args) {
+        if (args!=null) {
+            if (isPossiblyEmptyType(args)) {
+                return 0;
+            }
+            ProducedType tst = nonemptyArgs(args).getSupertype(getTupleDeclaration());
+            if (tst!=null) {
+                List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    return getTupleMinimumLength(tal.get(2))+1;
+                }
+            }
+            else if (isEmptyType(args)) {
+                return 0;
+            }
+            else if (isSequentialType(args)) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public List<ProducedType> getCallableArgumentTypes(ProducedType t){
+        ProducedType tuple = getCallableTuple(t);
+        if(tuple != null)
+            return getTupleElementTypes(tuple);
+        return Collections.emptyList();
+    }
+    
+    public ProducedType getCallableTuple(ProducedType t) {
+        ProducedType ct = t.getSupertype(getCallableDeclaration());
+        if (ct!=null) {
+            List<ProducedType> typeArgs = ct.getTypeArgumentList();
+            if (typeArgs.size()>=2) {
+                return typeArgs.get(1);
+            }
+        }
+        return null;
+    }
 }
