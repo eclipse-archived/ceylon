@@ -318,7 +318,7 @@ defineAttr(String$proto, 'first', function() { return this.get(0); });
 defineAttr(String$proto, 'last', function(){ return this.size>0?this.get(this.size.predecessor):null; });
 defineAttr(String$proto, 'keys', function() {
     //TODO implement!!!
-    return this.size > 0 ? Range(0, this.size.predecessor, [{t:Integer}]) : getEmpty();
+    return this.size > 0 ? Range(0, this.size.predecessor, {Element:{t:Integer}}) : getEmpty();
 });
 String$proto.join = function(strings) {
     var it = strings.iterator();
@@ -337,7 +337,7 @@ String$proto.join = function(strings) {
 function isWhitespace(c) { return c.value in $WS; }
 String$proto.$split = function(sep, discard, group) {
     // shortcut for empty input
-    if (this.length === 0) {return Singleton(this, [{t:String$}, {t:String$}]); }
+    if (this.length === 0) {return Singleton(this, {Element:{t:String$}}); }
 
     if (sep === undefined) {sep = isWhitespace}
     if (discard === undefined) {discard = true}
@@ -451,7 +451,7 @@ String$proto.$split = function(sep, discard, group) {
     }
 
     this.codePoints = count;
-    return ArraySequence(tokens, [{t:String$},{t:Null}]);
+    return ArraySequence(tokens, {Element:{t:String$}});
 }
 defineAttr(String$proto, 'reversed', function() {
     var result = "";
