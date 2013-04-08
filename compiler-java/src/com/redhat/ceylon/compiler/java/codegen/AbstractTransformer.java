@@ -1367,23 +1367,7 @@ public abstract class AbstractTransformer implements Transformation {
         for (TypeParameter tp : tps) {
             ProducedType ta = tas.get(tp);
             
-            boolean isDependedOn = false;
-            // Partial hack for https://github.com/ceylon/ceylon-compiler/issues/920
-            // We need to find if a covariant param has other type parameters with bounds to this one
-            // For example if we have "Foo<out A, out B>() given B satisfies A" then we can't generate
-            // the following signature: "Foo<? extends Object, ? extends String" because the subtype of
-            // String that can satisfy B is not necessarily the subtype of Object that we used for A.
-            if(tp.isCovariant()){
-                for(TypeParameter otherTypeParameter : tps){
-                    // skip this very type parameter
-                    if(otherTypeParameter == tp)
-                        continue;
-                    if(dependsOnTypeParameter(otherTypeParameter, tp)){
-                        isDependedOn = true;
-                        break;
-                    }
-                }
-            }
+            boolean isDependedOn = hasDependentTypeParameters(tps, tp);
             
             // Null will claim to be optional, but if we get its non-null type we will land with Nothing, which is not what
             // we want, so we make sure it's not Null
@@ -2743,6 +2727,32 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return bounds.toList();
+    }
+    
+    /**
+     * Determines whether any of the given type parameters  
+     * (not including {@code tp}) has contraints dependent on {@code tp}.  
+     * 
+     * Partial hack for https://github.com/ceylon/ceylon-compiler/issues/920
+     * We need to find if a covariant param has other type parameters with bounds to this one
+     * For example if we have "Foo<out A, out B>() given B satisfies A" then we can't generate
+     * the following signature: "Foo<? extends Object, ? extends String" because the subtype of
+     * String that can satisfy B is not necessarily the subtype of Object that we used for A.
+     */
+    boolean hasDependentTypeParameters(java.util.List<TypeParameter> tps, TypeParameter tp) {
+        boolean isDependedOn = false;
+        if(tp.isCovariant()){
+            for(TypeParameter otherTypeParameter : tps){
+                // skip this very type parameter
+                if(otherTypeParameter == tp)
+                    continue;
+                if(dependsOnTypeParameter(otherTypeParameter, tp)){
+                    isDependedOn = true;
+                    break;
+                }
+            }
+        }
+        return isDependedOn;
     }
     
     private boolean dependsOnTypeParameter(TypeParameter tpToCheck, TypeParameter tpToDependOn) {
