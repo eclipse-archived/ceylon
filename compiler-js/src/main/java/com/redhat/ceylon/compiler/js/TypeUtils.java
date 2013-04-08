@@ -68,7 +68,9 @@ public class TypeUtils {
                 resolveTypeParameter(node, (TypeParameter)d, gen);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(node, pt, gen);
+                outputQualifiedTypename(
+                        gen.isImported(node == null ? null : node.getUnit().getPackage(), pt.getDeclaration()),
+                        pt, gen);
                 closeBracket = true;
             }
             if (hasParams) {
@@ -82,7 +84,7 @@ public class TypeUtils {
         gen.out("}");
     }
 
-    static void outputQualifiedTypename(Node node, ProducedType pt, GenerateJsVisitor gen) {
+    static void outputQualifiedTypename(final boolean imported, ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration t = pt.getDeclaration();
         if (t.getQualifiedNameString().equals("ceylon.language::Nothing")) {
             //Hack in the model means hack here as well
@@ -108,7 +110,7 @@ public class TypeUtils {
                 for (ClassOrInterface p : parents) {
                     gen.out(gen.getNames().name(p), ".");
                 }
-            } else if (gen.isImported(node, t)) {
+            } else if (imported) {
                 gen.out(gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()), ".");
                 qual = true;
             }
@@ -140,7 +142,7 @@ public class TypeUtils {
                 resolveTypeParameter(node, (TypeParameter)type, gen);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(node, pt, gen);
+                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen);
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:");
                     printTypeArguments(node, pt.getTypeArguments(), gen);
@@ -302,7 +304,7 @@ public class TypeUtils {
     }
 
     /** Output a metamodel map for runtime use. */
-    static void encodeForRuntime(Node n, Declaration d, GenerateJsVisitor gen) {
+    static void encodeForRuntime(Declaration d, GenerateJsVisitor gen) {
         gen.out("{", MetamodelGenerator.KEY_NAME, ":'", d.getNameAsString(),
                 "',", MetamodelGenerator.KEY_METATYPE, ":'");
         List<TypeParameter> tparms = null;
@@ -312,7 +314,8 @@ public class TypeUtils {
             tparms = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getTypeParameters();
             if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
                 gen.out(",'super':");
-                metamodelTypeNameOrList(n, ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType(), gen);
+                metamodelTypeNameOrList(d.getUnit().getPackage(),
+                        ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType(), gen);
             }
             satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getSatisfiedTypes();
 
@@ -326,7 +329,7 @@ public class TypeUtils {
             
             gen.out(MetamodelGenerator.METATYPE_METHOD, "',", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
-            metamodelTypeNameOrList(n, ((Method)d).getType(), gen);
+            metamodelTypeNameOrList(d.getUnit().getPackage(), ((Method)d).getType(), gen);
             gen.out(",", MetamodelGenerator.KEY_PARAMS, ":[");
             //TODO: parameter lists, parameters
             gen.out("]");
@@ -356,7 +359,7 @@ public class TypeUtils {
                     for (ProducedType st : typelist) {
                         if (!first2)gen.out(",");
                         first2=false;
-                        metamodelTypeNameOrList(n, st, gen);
+                        metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
                     }
                     gen.out("]");
                 }
@@ -367,13 +370,13 @@ public class TypeUtils {
                     for (ProducedType st : typelist) {
                         if (!first3)gen.out(",");
                         first3=false;
-                        metamodelTypeNameOrList(n, st, gen);
+                        metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
                     }
                     gen.out("]");
                 }
                 if (tp.getDefaultTypeArgument() != null) {
                     gen.out(",'def':");
-                    metamodelTypeNameOrList(n, tp.getDefaultTypeArgument(), gen);
+                    metamodelTypeNameOrList(d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
                 }
                 gen.out("}");
             }
@@ -385,7 +388,7 @@ public class TypeUtils {
             for (ProducedType st : satisfies) {
                 if (!first)gen.out(",");
                 first=false;
-                metamodelTypeNameOrList(n, st, gen);
+                metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
             }
             gen.out("]");
         }
@@ -396,7 +399,8 @@ public class TypeUtils {
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
-    static void metamodelTypeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen) {
+    static void metamodelTypeNameOrList(final com.redhat.ceylon.compiler.typechecker.model.Package pkg,
+            ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
         if (type.isAlias()) {
             type = type.getExtendedTypeDeclaration();
@@ -404,19 +408,20 @@ public class TypeUtils {
         boolean unionIntersection = type instanceof UnionType
                 || type instanceof IntersectionType;
         if (unionIntersection) {
-            outputMetamodelTypeList(node, pt, gen);
+            outputMetamodelTypeList(pkg, pt, gen);
         } else if (type instanceof TypeParameter) {
             gen.out("'", type.getNameAsString(), "'");
         } else {
             gen.out("{t:");
-            outputQualifiedTypename(node, pt, gen);
+            outputQualifiedTypename(gen.isImported(pkg, type), pt, gen);
             //TODO type parameters
             gen.out("}");
         }
     }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    static void outputMetamodelTypeList(Node node, ProducedType pt, GenerateJsVisitor gen) {
+    static void outputMetamodelTypeList(final com.redhat.ceylon.compiler.typechecker.model.Package pkg,
+            ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
         gen.out("{ t:'");
         final List<ProducedType> subs;
@@ -431,7 +436,7 @@ public class TypeUtils {
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
-            metamodelTypeNameOrList(node, t, gen);
+            metamodelTypeNameOrList(pkg, t, gen);
             first = false;
         }
         gen.out("]}");

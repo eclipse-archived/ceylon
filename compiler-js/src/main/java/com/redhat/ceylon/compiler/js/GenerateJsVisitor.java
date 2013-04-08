@@ -545,10 +545,6 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
-        //Add reference to metamodel
-        self(d); out(".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(that, d, this);
-        endLine(true);
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -593,10 +589,6 @@ public class GenerateJsVisitor extends Visitor
         out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
-        //Add reference to metamodel
-        self(d); out(".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(that, d, this);
-        endLine(true);
         if (withTargs) {
             out(clAlias, "set_type_args(");
             self(d); out(",$$targs$$);"); endLine();
@@ -849,6 +841,10 @@ public class GenerateJsVisitor extends Visitor
             callback.addToPrototypeCallback();
         }
         endBlockNewLine();
+        //Add reference to metamodel
+        out(names.name(d), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(d, this);
+        endLine(true);
         out("return ", names.name(d), ";");
         endBlockNewLine();
         //If it's nested, share the init function
@@ -1157,7 +1153,7 @@ public class GenerateJsVisitor extends Visitor
             methodDefinition(that);
             //Add reference to metamodel
             out(names.name(d), ".$$metamodel$$=");
-            TypeUtils.encodeForRuntime(that, d, this);
+            TypeUtils.encodeForRuntime(d, this);
             out(";");
         }
     }
@@ -1243,7 +1239,7 @@ public class GenerateJsVisitor extends Visitor
         methodDefinition(that);
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(that, d, this);
+        TypeUtils.encodeForRuntime(d, this);
         out(";");
     }
 
@@ -2496,7 +2492,7 @@ public class GenerateJsVisitor extends Visitor
 
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
         boolean isMember = d.isClassOrInterfaceMember();
-        if (!isMember && isImported(that, d)) {
+        if (!isMember && isImported(that == null ? null : that.getUnit().getPackage(), d)) {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (opts.isOptimize() && !inProto) {
@@ -2555,13 +2551,12 @@ public class GenerateJsVisitor extends Visitor
         return "";
     }
 
-    /** Tells whether a declaration is in the same package as a node. */
-    boolean isImported(Node that, Declaration d) {
+    /** Tells whether a declaration is in the specified package. */
+    boolean isImported(final Package p2, Declaration d) {
         if (d == null) {
             return false;
         }
         Package p1 = d.getUnit().getPackage();
-        Package p2 = that == null ? null : that.getUnit().getPackage();
         return !p1.equals(p2);
     }
 
