@@ -1565,109 +1565,54 @@ public abstract class AbstractTransformer implements Transformation {
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
         Assert.that(isCeylonCallable(typeModel), "Expected Callable<...>, but was " + typeModel);
-        return typeModel.getTypeArgumentList().get(0);
+        ProducedType ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
+        return ct.getTypeArgumentList().get(0);
     }
     
     ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
         Assert.that(isCeylonCallable(callableType));
-        ProducedType sequentialType = removeDefaultedCallableParameter(callableType.getTypeArgumentList().get(1));
-        for (int ii = 0; ii < parameter; ii++) {
-            sequentialType = removeDefaultedCallableParameter(sequentialType.getTypeArgumentList().get(2));
+        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        if(tuple != null){
+            java.util.List<ProducedType> elementTypes = typeFact().getTupleElementTypes(tuple);
+            if(elementTypes.size() > parameter){
+                return elementTypes.get(parameter);
+            }
         }
-        TypeDeclaration decl = sequentialType.getDeclaration();
-        if (decl.equals(typeFact().getTupleDeclaration())) {
-            return sequentialType.getTypeArgumentList().get(1);
-        } else if (decl.equals(typeFact().getEmptyDeclaration())) {
-            // FIXME: this one is just weird
-            return decl.getType();
-        } else if (decl.equals(typeFact().getSequentialDeclaration())) {
-            return sequentialType;//Sequence|Empty (i.e. a ...)
-        }
-        throw Assert.fail(""+decl);
+        return typeFact().getUnknownType();
     }
     
-    private ProducedType removeDefaultedCallableParameter(ProducedType type) {
-        TypeDeclaration decl = type.getDeclaration();
-        if(decl instanceof UnionType == false)
-            return type;
-        java.util.List<ProducedType> cts = decl.getCaseTypes();
-        if (cts.size()==2) {
-            TypeDeclaration lc = cts.get(0).getDeclaration();
-            if (lc instanceof Interface && 
-                    lc.equals(typeFact().getEmptyDeclaration())) {
-                return cts.get(1);
-            }
-            TypeDeclaration rc = cts.get(1).getDeclaration();
-            if (lc instanceof Interface &&
-                    rc.equals(typeFact().getEmptyDeclaration())) {
-                return cts.get(0);
-            }
-        }
-        return type;
-    }
-
-    private boolean isDefaultedCallableParameter(ProducedType type) {
-        TypeDeclaration decl = type.getDeclaration();
-        if(decl instanceof UnionType == false)
-            return false;
-        java.util.List<ProducedType> cts = decl.getCaseTypes();
-        if (cts.size()==2) {
-            TypeDeclaration lc = cts.get(0).getDeclaration();
-            if (lc instanceof Interface && 
-                    lc.equals(typeFact().getEmptyDeclaration())) {
-                return true;
-            }
-            TypeDeclaration rc = cts.get(1).getDeclaration();
-            if (lc instanceof Interface &&
-                    rc.equals(typeFact().getEmptyDeclaration())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     int getNumParametersOfCallable(ProducedType callableType) {
-        Assert.that(isCeylonCallable(callableType));
-        ProducedType sequentialType = removeDefaultedCallableParameter(callableType.getTypeArgumentList().get(1));
-        int num = 0;
-        while (sequentialType.getSupertype(typeFact().getTupleDeclaration()) != null
-                && sequentialType.getTypeArgumentList().size() == 3) {
-            num++;
-            sequentialType = removeDefaultedCallableParameter(sequentialType.getTypeArgumentList().get(2));
+        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        int count = 0;
+        while (tuple != null) {
+            ProducedType tst = typeFact().nonemptyArgs(tuple).getSupertype(typeFact().getTupleDeclaration());
+            if (tst!=null) {
+                java.util.List<ProducedType> tal = tst.getTypeArgumentList();
+                if (tal.size()>=3) {
+                    tuple = tal.get(2);
+                    count++;
+                    continue;
+                }
+            }
+            else if (typeFact().isEmptyType(tuple)) {
+                // do nothing
+            }
+            else if (typeFact().isSequentialType(tuple)) {
+                count++; // we count variadic params as one
+            }
+            break;
         }
-        // is is sequential?
-        if(sequentialType.getSupertype(typeFact().getTupleDeclaration()) == null
-                && sequentialType.getSupertype(typeFact().getEmptyDeclaration()) == null)
-            num++;
-        return num;
+        return count;
     }
     
     boolean isVariadicCallable(ProducedType callableType) {
-        Assert.that(isCeylonCallable(callableType));
-        ProducedType sequentialType = removeDefaultedCallableParameter(callableType.getTypeArgumentList().get(1));
-        while (sequentialType.getSupertype(typeFact().getTupleDeclaration()) != null
-                && sequentialType.getTypeArgumentList().size() == 3) {
-            sequentialType = removeDefaultedCallableParameter(sequentialType.getTypeArgumentList().get(2));
-        }
-        // it's variadic if it's not a Tuple and not empty
-        return sequentialType.getSupertype(typeFact().getTupleDeclaration()) == null
-                && sequentialType.getSupertype(typeFact().getEmptyDeclaration()) == null;
+        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        return typeFact().isTupleLengthUnbounded(tuple);
     }
 
     public int getMinimumParameterCountForCallable(ProducedType callableType) {
-        Assert.that(isCeylonCallable(callableType));
-        ProducedType sequentialType = callableType.getTypeArgumentList().get(1);
-        int count = 0;
-        if(isDefaultedCallableParameter(sequentialType))
-            return count;
-        while (sequentialType.getSupertype(typeFact().getTupleDeclaration()) != null
-                && sequentialType.getTypeArgumentList().size() == 3) {
-            count++;
-            sequentialType = sequentialType.getTypeArgumentList().get(2);
-            if(isDefaultedCallableParameter(sequentialType))
-                return count;
-        }
-        return count;
+        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        return typeFact().getTupleMinimumLength(tuple);
     }
 
     /** 
