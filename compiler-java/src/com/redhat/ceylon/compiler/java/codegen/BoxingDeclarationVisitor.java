@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
@@ -49,8 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class BoxingDeclarationVisitor extends Visitor {
-
-    private TypedDeclaration shortcutRefined;
 
     protected abstract boolean isCeylonBasicType(ProducedType type);
     protected abstract boolean isNull(ProducedType type);
@@ -181,29 +180,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration == null)
             return;
         TypedDeclaration refinedDeclaration = null;
-        if (this.shortcutRefined != null
-                && shortcutRefined instanceof Functional) {
-            // This insanity is to work around the fact that the Parameter of a 
-            // SpecifierStatement doesn't know the Method being specifed, so 
-            // getTopmostRefinedDeclaration() doesn't work
-            int i = 0;
-            outer: for (ParameterList pl :((Functional)shortcutRefined).getParameterLists()) {
-                int j = 0;
-                for (Parameter p : pl.getParameters()) {
-                    if (p == declaration) {
-                        Functional refined = (Functional)CodegenUtil.getTopmostRefinedDeclaration(shortcutRefined);
-                        refinedDeclaration = refined.getParameterLists().get(i).getParameters().get(j);
-                        break outer;
-                    }
-                    j++;
-                }
-                i++;
-            }
-            
-        }
-        if (refinedDeclaration == null) {
-            refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration);
-        }
+        refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration);
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
@@ -275,14 +252,14 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
     @Override
     public void visit(SpecifierStatement that) {
-        TypedDeclaration prevShortcutRefined = this.shortcutRefined;
-        if (that.getRefinement()) {
-            this.shortcutRefined = that.getDeclaration();
-        }
         super.visit(that);
-        if (that.getRefinement()) {
-            this.shortcutRefined = prevShortcutRefined;
-        }
+        TypedDeclaration declaration = that.getDeclaration();
+        if(declaration == null)
+            return;
+        if(declaration instanceof Method)
+            visitMethod((Method) declaration);
+        else if(declaration instanceof Value)
+            visitAttributeOrParameter(declaration);
     }
 
     @Override
