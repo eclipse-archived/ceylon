@@ -101,11 +101,6 @@ public class CallBuilder {
         return this;
     }
 
-    public CallBuilder prependArgument(JCExpression expr) {
-        this.prependArgumentAndType(new ExpressionAndType(expr, null));
-        return this;
-    }
-
     public CallBuilder argument(JCExpression expr) {
         this.argumentAndType(new ExpressionAndType(expr, null));
         return this;
@@ -113,11 +108,6 @@ public class CallBuilder {
     
     public CallBuilder argumentAndType(ExpressionAndType argumentAndType) {
         this.argumentsAndTypes.append(argumentAndType);
-        return this;
-    }
-    
-    public CallBuilder prependArgumentAndType(ExpressionAndType argumentAndType) {
-        this.argumentsAndTypes.prepend(argumentAndType);
         return this;
     }
     
