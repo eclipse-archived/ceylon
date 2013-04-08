@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -904,6 +905,9 @@ public class ExpressionVisitor extends Visitor {
         //bme.setTypeModel(v.getType());
         that.setRefinement(true);
         that.setDeclaration(m);
+        if(that.getScope() instanceof Specification){
+            ((Specification) that.getScope()).setDeclaration(m);
+        }
     }
 
     @Override public void visit(Tree.Parameter that) {
