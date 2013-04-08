@@ -20,6 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -27,7 +30,6 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -44,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -59,6 +62,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean willEraseToObject(ProducedType type);
     protected abstract boolean isRaw(ProducedType type);
 
+    /**
+     * This is used to keep track of some optimisations we do, such as inlining the following shortcuts:
+     * class X() extends T(){ m = function() => e; } and we need to be able to map back the lambda with
+     * the method it specifies, for boxing and all
+     */
+    private Map<Method,Method> optimisedMethodSpecifiersToMethods = new HashMap<Method, Method>();
+    
     @Override
     public void visit(FunctionArgument that) {
         super.visit(that);
@@ -104,7 +114,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(method == null)
             return;
-        Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(method);
+        Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(method, optimisedMethodSpecifiersToMethods);
         // deal with invalid input
         if(refined == null
                 || (!(refined instanceof Method)))
@@ -180,7 +190,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration == null)
             return;
         TypedDeclaration refinedDeclaration = null;
-        refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration);
+        refinedDeclaration = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(declaration, optimisedMethodSpecifiersToMethods);
         // deal with invalid input
         if(refinedDeclaration == null)
             return;
@@ -252,13 +262,31 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
     @Override
     public void visit(SpecifierStatement that) {
-        super.visit(that);
         TypedDeclaration declaration = that.getDeclaration();
+        Method optimisedDeclaration = null;
+        // make sure we detect the shortcut refinement inlining cases
+        if(declaration instanceof Method){
+            if(that.getSpecifierExpression() != null
+                    && that.getSpecifierExpression() instanceof LazySpecifierExpression == false){
+                Tree.Expression expression = that.getSpecifierExpression().getExpression();
+                if(expression != null
+                        && expression.getTerm() instanceof Tree.FunctionArgument){
+                    optimisedDeclaration = ((Tree.FunctionArgument)expression.getTerm()).getDeclarationModel();
+                    this.optimisedMethodSpecifiersToMethods.put(optimisedDeclaration, (Method) declaration);
+                }
+            }
+        }
+        try{
+            super.visit(that);
+        }finally{
+            if(optimisedDeclaration != null)
+                this.optimisedMethodSpecifiersToMethods.remove(optimisedDeclaration);
+        }
         if(declaration == null)
             return;
-        if(declaration instanceof Method)
+        if(declaration instanceof Method){
             visitMethod((Method) declaration);
-        else if(declaration instanceof Value)
+        }else if(declaration instanceof Value)
             visitAttributeOrParameter(declaration);
     }
 

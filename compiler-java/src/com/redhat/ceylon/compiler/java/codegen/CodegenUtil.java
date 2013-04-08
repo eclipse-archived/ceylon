@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -176,6 +178,10 @@ class CodegenUtil {
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl){
+        return getTopmostRefinedDeclaration(decl, null);
+    }
+
+    static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Method, Method> methodOverrides){
         if (decl instanceof Parameter && decl.getContainer() instanceof Class) {
             // Parameters in a refined class are not considered refinements themselves
             // We have in find the refined attribute
@@ -189,7 +195,7 @@ class CodegenUtil {
             }
             Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
             if(refinedDecl != null && refinedDecl != decl) {
-                return getTopmostRefinedDeclaration(refinedDecl);
+                return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
             }
             return decl;
         } else if(decl instanceof Parameter 
@@ -204,7 +210,7 @@ class CodegenUtil {
             if(func == null)
                 return decl;
             Parameter param = (Parameter)decl;
-            Method refinedFunc = (Method) getTopmostRefinedDeclaration(func);
+            Method refinedFunc = (Method) getTopmostRefinedDeclaration(func, methodOverrides);
             // shortcut if the functional doesn't override anything
             if(refinedFunc == func)
                 return decl;
@@ -224,6 +230,17 @@ class CodegenUtil {
                 }
                 return refinedFunc.getParameterLists().get(ii).getParameters().get(index);
             }
+        }else if(methodOverrides != null
+                && decl instanceof Method
+                && decl.getRefinedDeclaration() == decl
+                && decl.getContainer() instanceof Specification
+                && ((Specification)decl.getContainer()).getDeclaration() instanceof Method
+                && ((Method) ((Specification)decl.getContainer()).getDeclaration()).isShortcutRefinement()
+                // we do all the previous ones first because they are likely to filter out false positives cheaper than the
+                // hash lookup we do next to make sure it is really one of those cases
+                && methodOverrides.containsKey(decl)){
+            // special case for class X() extends T(){ m = function() => e; } which we inline
+            decl = methodOverrides.get(decl);
         }
         Declaration refinedDecl = decl.getRefinedDeclaration();
         if(refinedDecl != null && refinedDecl != decl)
