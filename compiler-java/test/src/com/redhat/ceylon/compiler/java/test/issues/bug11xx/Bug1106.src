@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+public interface Bug1106_Resource {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1106_Resource$impl();
+    
+    public abstract .java.lang.String getPath();
+    
+    public abstract .java.lang.String getContents();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub Bug1106_Stub$new(final .java.lang.String path, final .java.lang.String contents);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource.class);
+}
+public final class Bug1106_Resource$impl {
+    
+    public Bug1106_Resource$impl(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub Bug1106_Stub$new(final .java.lang.String path, final .java.lang.String contents) {
+        return new Bug1106_Stub(path, contents);
+    }
+    
+    public class Bug1106_Stub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource {
+        
+        protected Bug1106_Stub(final .java.lang.String path, final .java.lang.String contents) {
+            this.path = path;
+            this.contents = contents;
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1106_Resource$this = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1106_Resource$this;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1106_Resource$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1106_Resource$this;
+        }
+        
+        @.java.lang.Override
+        public final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub Bug1106_Stub$new(final .java.lang.String path, final .java.lang.String contents) {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1106_Resource$this.Bug1106_Stub$new(path, contents);
+        }
+        private final .java.lang.String path;
+        
+        @.java.lang.Override
+        public final .java.lang.String getPath() {
+            return path;
+        }
+        private final .java.lang.String contents;
+        
+        @.java.lang.Override
+        public final .java.lang.String getContents() {
+            return contents;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub.class));
+        }
+    }
+}
