@@ -36,8 +36,24 @@ function isOfType(obj, type) {
         if (type.t.$$.T$name in obj.getT$all()) {
             if (type.a && obj.$$targs$$) {
                 for (var i in type.a) {
-                    if (!extendsType(obj.$$targs$$[i], type.a[i])) {
-                        return false;
+                    var iance = null;
+                    if (type.t.$$metamodel$$ && type.t.$$metamodel$$.$tp && type.t.$$metamodel$$.$tp[i]) iance=type.t.$$metamodel$$.$tp[i]['var'];
+                    if (iance === 'out') {
+                        if (!extendsType(obj.$$targs$$[i], type.a[i])) {
+                            return false;
+                        }
+                    } else if (iance === 'in') {
+                        if (!extendsType(type.a[i], obj.$$targs$$[i])) {
+                            return false;
+                        }
+                    } else if (iance === undefined) {
+                        if (!(obj.$$targs$$[i] && obj.$$targs$$[i].$$ && obj.$$targs$$[i].$$.T$name && type.a[i] && type.a[i].$$ && type.a[i].$$.T$name && obj.$$targs$$[i].$$.T$name === type.a[i].$$.T$name)) {
+                            return false;
+                        }
+                    } else if (iance === null) {
+                        console.log("Possible missing metamodel for " + type.t.$$.T$name);
+                    } else {
+                        console.log("Don't know what to do about variance '" + iance + "'");
                     }
                 }
             }
