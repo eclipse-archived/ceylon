@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+abstract class Bug1120Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1120Top() {
+    }
+    
+    public abstract long method();
+    
+    public abstract long getAttr1();
+    
+    public abstract long getAttr2();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Top.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Top.class);
+}
+class Bug1120Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Top {
+    
+    Bug1120Bottom() {
+        super();
+        this.attr2 = 2L;
+    }
+    
+    @.java.lang.Override
+    public final long method() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public final long getAttr1() {
+        return 1L;
+    }
+    private final long attr2;
+    
+    @.java.lang.Override
+    public final long getAttr2() {
+        return attr2;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Bottom();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Bottom.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Bottom.class);
+}
+final class bug1120_ {
+    
+    private bug1120_() {
+    }
+    
+    static void bug1120() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Top t3 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Bottom();
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(t3.method()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(t3.getAttr1()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(t3.getAttr2()));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Bottom t4 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1120Bottom();
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(t4.method()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(t4.getAttr1()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(t4.getAttr2()));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1120_.bug1120();
+    }
+}
