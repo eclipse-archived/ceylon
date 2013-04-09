@@ -1339,6 +1339,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             ((JavaBeanValue)decl).setSetterName(setter.getName());
                     }else
                         logVerbose("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
+                }catch(ModelResolutionException x){
+                    logModelResolutionException(x, klass, "Failed to resolve setter type of "+klass.getQualifiedNameString()+"."+setter.getName());
                 }catch(TypeParserException x){
                     logError("Invalid type signature for setter of "+klass.getQualifiedNameString()+"."+setter.getName()+": "+x.getMessage());
                     throw x;
@@ -1477,6 +1479,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
             method.setDeclaredAnything(methodMirror.isDeclaredVoid());
             type.setRaw(isRaw(methodMirror.getReturnType()));
+        }catch(ModelResolutionException x){
+            logModelResolutionException(x, klass, "Failed to resolve method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName());
+            method.setType(new UnknownType(typeFactory).getType());
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
             throw x;
@@ -1631,6 +1636,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             value.setType(type);
             value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
             type.setRaw(isRaw(fieldMirror.getType()));
+        }catch(ModelResolutionException x){
+            logModelResolutionException(x, klass, "Failed to resolve field type of "+klass.getQualifiedNameString()+"."+value.getName());
+            value.setType(new UnknownType(typeFactory).getType());
         }catch(TypeParserException x){
             logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
             throw x;
@@ -1719,6 +1727,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             value.setType(type);
             value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
             type.setRaw(isRaw(methodMirror.getReturnType()));
+        }catch(ModelResolutionException x){
+            logModelResolutionException(x, klass, "Failed to resolve getter return type of "+klass.getQualifiedNameString()+"."+methodName);
+            value.setType(new UnknownType(typeFactory).getType());
         }catch(TypeParserException x){
             logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
             throw x;
@@ -1809,6 +1820,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(annotationSuperClassName != null && !annotationSuperClassName.isEmpty()){
                     try{
                         extendedType = decodeType(annotationSuperClassName, klass);
+                    }catch(ModelResolutionException x){
+                        logModelResolutionException(x, klass, "Failed to resolve extended type of "+klass.getQualifiedNameString());
+                        extendedType = new UnknownType(typeFactory).getType();
                     }catch(TypeParserException x){
                         logError("Invalid type signature for super class of "+className+": "+x.getMessage());
                         throw x;
@@ -1819,7 +1833,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if("java.lang.Object".equals(superClassName)){
                         extendedType = getType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
                     }else{
-                        extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
+                        try{
+                            extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
+                        }catch(ModelResolutionException x){
+                            logModelResolutionException(x, klass, "Failed to resolve extended type of "+klass.getQualifiedNameString());
+                            extendedType = new UnknownType(typeFactory).getType();
+                        }
                     }
                 }
             }
@@ -1884,6 +1903,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }
                 parameter.setType(type);
+            }catch(ModelResolutionException x){
+                logModelResolutionException(x, container, "Failed to resolve type of parameter "+paramName+" of method "+container.getQualifiedNameString()+"."+methodMirror.getName());
+                parameter.setType(new UnknownType(typeFactory).getType());
             }catch(TypeParserException x){
                 logError("Invalid type signature for parameter "+paramName+" of "+container.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
                 throw x;
@@ -1902,6 +1924,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             parameterIndex++;
         }
+    }
+
+    private void logModelResolutionException(ModelResolutionException x, Scope container, String message) {
+        while(container != null && container instanceof Package == false){
+            container = container.getContainer();
+        }
+        if(container instanceof Package && ((Package)container).getModule() != null){
+            Module mod = ((Package)container).getModule();
+            String moduleDescription = "Error while loading the ";
+            if(mod.isDefault())
+                moduleDescription += mod.getNameAsString();
+            else
+                moduleDescription += mod.getNameAsString() + "/" + mod.getVersion();
+            moduleDescription += " module:\n ";
+            
+            moduleManager.attachErrorToOriginalModuleImport(mod, moduleDescription + message + ":\n "+x.getMessage());
+        }else
+            logError(message);
     }
 
     private void markTypeErased(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
@@ -1947,6 +1987,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             try{
                 value.setType(obtainType(meth.getReturnType(), meth, null, VarianceLocation.INVARIANT));
+            }catch(ModelResolutionException x){
+                logModelResolutionException(x, value.getContainer(), "Failed to resolve toplevel attribute type of "+value.getQualifiedNameString());
+                value.setType(new UnknownType(typeFactory).getType());
             }catch(TypeParserException x){
                 logError("Invalid type signature for toplevel attribute of "+value.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
@@ -1985,6 +2028,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             try{
                 method.setType(obtainType(meth.getReturnType(), meth, method, VarianceLocation.COVARIANT));
                 method.setDeclaredAnything(meth.isDeclaredVoid());
+            }catch(ModelResolutionException x){
+                logModelResolutionException(x, method.getContainer(), "Failed to resolve toplevel method type of "+method.getQualifiedNameString());
+                method.setType(new UnknownType(typeFactory).getType());
             }catch(TypeParserException x){
                 logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
@@ -2010,6 +2056,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(satisfiedTypes != null){
             try{
                 klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass));
+            }catch(ModelResolutionException x){
+                logModelResolutionException(x, klass, "Failed to resolve satisfied types of "+klass.getQualifiedNameString());
             }catch(TypeParserException x){
                 logError("Invalid type signature for satisfied types of "+klass.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
@@ -2064,6 +2112,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     caseTypes.add(type);
                     klass.setCaseTypes(caseTypes);
                 }
+            }catch(ModelResolutionException x){
+                logModelResolutionException(x, klass, "Failed to resolve self type of "+klass.getQualifiedNameString());
             }catch(TypeParserException x){
                 logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
@@ -2073,6 +2123,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(caseTypes != null && !caseTypes.isEmpty()){
                 try{
                     klass.setCaseTypes(getTypesList(caseTypes, klass));
+                }catch(ModelResolutionException x){
+                    logModelResolutionException(x, klass, "Failed to resolve case types of "+klass.getQualifiedNameString());
                 }catch(TypeParserException x){
                     logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
                     throw x;
@@ -2156,6 +2208,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     ProducedType decodedType = decodeType(defaultValueAttribute, scope);
                     param.setDefaultTypeArgument(decodedType);
                     param.setDefaulted(true);
+                }catch(ModelResolutionException x){
+                    logModelResolutionException(x, scope, "Failed to resolve defaultValue type for TypeParameter "+defaultValueAttribute);
                 }catch(TypeParserException x){
                     logError("Failed to decode defaultValue for @TypeParameter: "+defaultValueAttribute);
                     throw x;
@@ -2170,6 +2224,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 try{
                     ProducedType decodedType = decodeType(serialisedType, scope);
                     destinationTypeList.add(decodedType);
+                }catch(ModelResolutionException x){
+                    logModelResolutionException(x, scope, "Failed to resolve type");
                 }catch(TypeParserException x){
                     logError(errorPrefix+x.getMessage());
                     throw x;
