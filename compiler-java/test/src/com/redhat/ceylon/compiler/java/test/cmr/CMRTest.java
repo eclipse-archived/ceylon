@@ -663,6 +663,16 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlAetherMissingDependencies2() throws IOException{
+
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether"/*, "-verbose:cmr"*/), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/bug1104/module.ceylon", "modules/bug1104/test.ceylon");
+        assertEquals("Compilation succeeded", Boolean.TRUE, ceylonTask.call());
+    }
+
+    @Test
     public void testMdlSourceArchive() throws IOException{
         File sourceArchiveFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6");
         sourceArchiveFile.delete();
