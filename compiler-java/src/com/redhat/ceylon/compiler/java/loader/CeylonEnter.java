@@ -433,6 +433,12 @@ public class CeylonEnter extends Enter {
             pu.analyseFlow();
         }
         
+        UnknownTypeCollector utc = new UnknownTypeCollector();
+        for (PhasedUnit pu : listOfUnits) { 
+            pu.getCompilationUnit().visit(utc);
+        }
+        
+        
         Iterable<PhasedUnit> phasedUnitsForExtraPhase = phasedUnitsManager.getPhasedUnitsForExtraPhase(listOfUnits);
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             Unit unit = pu.getUnit();
