@@ -111,9 +111,26 @@ import com.sun.tools.javac.util.Name;
 public class ExpressionTransformer extends AbstractTransformer {
 
     // flags for transformExpression
+    /** 
+     * This implies inclusion of the JT_SATISFIES flags when 
+     * constructing the type for a variance typecast.
+     */
     public static final int EXPR_FOR_COMPANION = 1;
+    /** 
+     * The expected type has type parameters 
+     * (so an extra typecast to the raw type will be required)
+     */
     public static final int EXPR_EXPECTED_TYPE_NOT_RAW = 1 << 1;
+    /** 
+     * The expected type has type parameters with {@code satisfies} 
+     * constraints (which may be erased, and thus a type cast may be required 
+     * irrespective of the presence of type arguments)
+     */
     public static final int EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS = 1 << 2;
+    /** 
+     * Seems to be used when the expected and expression 
+     * types have no supertype in common.
+     */
     public static final int EXPR_DOWN_CAST = 1 << 3;
 
     static{
