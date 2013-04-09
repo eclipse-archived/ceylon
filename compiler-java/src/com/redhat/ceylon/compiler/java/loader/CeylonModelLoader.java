@@ -247,7 +247,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         PackageSymbol pkg = classSymbol.packge();
                         // do not log an error for missing oracle jdk stuff
                         if(pkg == null || !JDKUtils.isOracleJDKAnyPackage(pkg.getQualifiedName().toString())){
-                            log.error("ceylon", "Unable to find class file for "+name);
+                            // do not log an error because it will be logged elsewhere
+                            logVerbose("Unable to find required class file for "+name);
                         }
                         return null;
                     }
