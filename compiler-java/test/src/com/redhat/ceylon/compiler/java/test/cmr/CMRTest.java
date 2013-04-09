@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -599,6 +600,66 @@ public class CMRTest extends CompilerTest {
         assertEquals(Boolean.TRUE, ceylonTask.call());
         File restletJar = new File("build/test-cars/cmr-repository", "org/restlet/org.restlet/1.1.10/org.restlet-1.1.10.jar");
         assertTrue(restletJar.exists());
+    }
+
+    @Test
+    public void testMdlAetherMissingDependencies() throws IOException{
+        CompilerError[] expectedErrors = new CompilerError[]{
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.connect:\n   Failed to resolve org.apache.camel.component.http.HttpConsumer"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.disconnect:\n   Failed to resolve org.apache.camel.component.http.HttpConsumer"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpEndpoint.handlers:\n   Failed to resolve org.eclipse.jetty.server.Handler"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpEndpoint.client:\n   Failed to resolve org.eclipse.jetty.client.HttpClient"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpEndpoint.multipartFilter:\n   Failed to resolve javax.servlet.Filter"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpEndpoint.filters:\n   Failed to resolve javax.servlet.Filter"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpEndpoint.setFilters:\n   Failed to resolve javax.servlet.Filter"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpEndpoint.setFilters:\n   Failed to resolve javax.servlet.Filter"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpEndpoint.setMultipartFilter:\n   Failed to resolve javax.servlet.Filter"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpEndpoint.setMultipartFilter:\n   Failed to resolve javax.servlet.Filter"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpEndpoint.setClient:\n   Failed to resolve org.eclipse.jetty.client.HttpClient"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpEndpoint.setClient:\n   Failed to resolve org.eclipse.jetty.client.HttpClient"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpEndpoint.setHandlers:\n   Failed to resolve org.eclipse.jetty.server.Handler"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpEndpoint.setHandlers:\n   Failed to resolve org.eclipse.jetty.server.Handler"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve extended type of org.apache.camel.component.jetty::JettyHttpEndpoint:\n   Failed to resolve org.apache.camel.component.http.HttpEndpoint"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve method return type of org.apache.camel.component.jetty::JettyHttpComponent.getSslSocketConnector:\n   Failed to resolve org.eclipse.jetty.server.ssl.SslSelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve method return type of org.apache.camel.component.jetty::JettyHttpComponent.createSslSocketConnector:\n   Failed to resolve org.eclipse.jetty.server.ssl.SslSelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpComponent.sslSocketConnectors:\n   Failed to resolve org.eclipse.jetty.server.ssl.SslSelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve method return type of org.apache.camel.component.jetty::JettyHttpComponent.getSocketConnector:\n   Failed to resolve org.eclipse.jetty.server.nio.SelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve method return type of org.apache.camel.component.jetty::JettyHttpComponent.createSocketConnector:\n   Failed to resolve org.eclipse.jetty.server.nio.SelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpComponent.httpClient:\n   Failed to resolve org.eclipse.jetty.client.HttpClient"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpComponent.httpClientThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpComponent.threadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve getter return type of org.apache.camel.component.jetty::JettyHttpComponent.mbContainer:\n   Failed to resolve org.eclipse.jetty.jmx.MBeanContainer"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.createServletForConnector:\n   Failed to resolve org.eclipse.jetty.server.Server"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg1 of method org.apache.camel.component.jetty::JettyHttpComponent.createServletForConnector:\n   Failed to resolve org.eclipse.jetty.server.Connector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg2 of method org.apache.camel.component.jetty::JettyHttpComponent.createServletForConnector:\n   Failed to resolve org.eclipse.jetty.server.Handler"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve method return type of org.apache.camel.component.jetty::JettyHttpComponent.createServletForConnector:\n   Failed to resolve org.apache.camel.component.http.CamelServlet"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve method return type of org.apache.camel.component.jetty::JettyHttpComponent.createServer:\n   Failed to resolve org.eclipse.jetty.server.Server"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve field type of org.apache.camel.component.jetty::JettyHttpComponent.socketConnectors:\n   Failed to resolve org.eclipse.jetty.server.nio.SelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setSocketConnectors:\n   Failed to resolve org.eclipse.jetty.server.nio.SelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpComponent.setMbContainer:\n   Failed to resolve org.eclipse.jetty.jmx.MBeanContainer"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setMbContainer:\n   Failed to resolve org.eclipse.jetty.jmx.MBeanContainer"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpComponent.setHttpClientThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setHttpClientThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpComponent.setSslSocketConnectors:\n   Failed to resolve org.eclipse.jetty.server.ssl.SslSelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setSslSocketConnectors:\n   Failed to resolve org.eclipse.jetty.server.ssl.SslSelectChannelConnector"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpComponent.setHttpClient:\n   Failed to resolve org.eclipse.jetty.client.HttpClient"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setHttpClient:\n   Failed to resolve org.eclipse.jetty.client.HttpClient"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpComponent.setThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n   Failed to resolve org.apache.camel.component.http.HttpComponent"),
+        new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent: JettyHttpComponent is not assignable to Component?"),
+        };
+
+        ErrorCollector collector = new ErrorCollector();
+
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether"/*, "-verbose:cmr"*/), 
+                collector, 
+                "modules/bug1100/module.ceylon", "modules/bug1100/test.ceylon");
+        assertEquals("Compilation failed", Boolean.FALSE, ceylonTask.call());
+
+        TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors, expectedErrors);
     }
 
     @Test
