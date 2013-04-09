@@ -294,20 +294,24 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 // never go above this type since it has no supertype in Ceylon (does in Java though)
                 if(i.getQualifiedName().toString().equals("ceylon.language.Anything"))
                     break;
-                for (Entry e = i.members().lookup(method.name);
-                        impl == null && e.scope != null;
-                        e = e.next()) {
-                    if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
-                            // FIXME: I suspect the following requires a
-                            // subst() for a parametric return type.
-                            types.isSameType(method.type.getReturnType(),
-                                    types.memberType(method.owner.type, e.sym).getReturnType())) {
-                        impl = (MethodSymbol) e.sym;
+                try {
+                    for (Entry e = i.members().lookup(method.name);
+                            impl == null && e.scope != null;
+                            e = e.next()) {
+                        if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
+                                // FIXME: I suspect the following requires a
+                                // subst() for a parametric return type.
+                                types.isSameType(method.type.getReturnType(),
+                                        types.memberType(method.owner.type, e.sym).getReturnType())) {
+                            impl = (MethodSymbol) e.sym;
+                        }
                     }
+                    // try in the interfaces
+                    if(impl == null)
+                        impl = (MethodSymbol) method.implemented(i, types);
+                } catch (Symbol.CompletionFailure x) {
+                    // just ignore unresolved interfaces, error will be logged when we try to add it
                 }
-                // try in the interfaces
-                if(impl == null)
-                    impl = (MethodSymbol) method.implemented(i, types);
             }
             // try in the interfaces
             if(impl == null)
