@@ -1944,8 +1944,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         try{
                             extendedType = getNonPrimitiveType(superClass, klass, VarianceLocation.INVARIANT);
                         }catch(ModelResolutionException x){
-                            logModelResolutionException(x, klass, "Error while resolving extended type of "+klass.getQualifiedNameString());
-                            extendedType = new UnknownType(typeFactory).getType();
+                            extendedType = logModelResolutionException(x, klass, "Error while resolving extended type of "+klass.getQualifiedNameString());
                         }
                     }else{
                         // FIXME: should this be UnknownType?
@@ -2056,30 +2055,46 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private void logModelResolutionError(Scope container, String message) {
-        logModelResolutionException((String)null, container, message);
+    private ProducedType logModelResolutionError(Scope container, String message) {
+        return logModelResolutionException((String)null, container, message);
     }
 
-    private void logModelResolutionException(ModelResolutionException x, Scope container, String message) {
-        logModelResolutionException(x.getMessage(), container, message);
+    private ProducedType logModelResolutionException(ModelResolutionException x, Scope container, String message) {
+        return logModelResolutionException(x.getMessage(), container, message);
     }
     
-    private void logModelResolutionException(String exceptionMessage, Scope container, String message) {
-        Module module = Decl.getModuleContainer(container);
+    private ProducedType logModelResolutionException(final String exceptionMessage, Scope container, final String message) {
+        final Module module = Decl.getModuleContainer(container);
+        Runnable errorReporter;
         if(module != null && !module.isDefault()){
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             sb.append("Error while loading the ").append(module.getNameAsString()).append("/").append(module.getVersion());
             sb.append(" module:\n ");
             sb.append(message);
             
             if(exceptionMessage != null)
                 sb.append(":\n ").append(exceptionMessage);
-            moduleManager.attachErrorToOriginalModuleImport(module, sb.toString());
+            errorReporter = new Runnable(){
+                public void run(){
+                    moduleManager.attachErrorToOriginalModuleImport(module, sb.toString());
+                }
+            };
         }else if(exceptionMessage == null){
-            logError(message);
+            errorReporter = new Runnable(){
+                public void run(){
+                    logError(message);
+                } 
+            };
         }else{
-            logError(message+": "+exceptionMessage);
+            errorReporter = new Runnable(){
+                public void run(){
+                    logError(message+": "+exceptionMessage);
+                } 
+            };
         }
+        UnknownType ret = new UnknownType(typeFactory);
+        ret.setErrorReporter(errorReporter);
+        return ret.getType();
     }
 
     private void markTypeErased(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
@@ -2121,8 +2136,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
             if(meth == null || meth.getReturnType() == null){
-                logModelResolutionError(value.getContainer(), "Error while resolving toplevel attribute "+value.getQualifiedNameString()+": getter method missing");
-                value.setType(new UnknownType(typeFactory).getType());
+                value.setType(logModelResolutionError(value.getContainer(), "Error while resolving toplevel attribute "+value.getQualifiedNameString()+": getter method missing"));
                 return;
             }
 
@@ -2154,13 +2168,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
             if(meth == null || meth.getReturnType() == null){
-                logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": static method missing");
-                method.setType(new UnknownType(typeFactory).getType());
+                method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": static method missing"));
                 return;
             }
             if(!meth.isStatic()){
-                logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": method is not static");
-                method.setType(new UnknownType(typeFactory).getType());
+                method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": method is not static"));
                 return;
             }
 
@@ -2454,12 +2466,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return typeParser.decodeType(value, scope, moduleScope);
         }catch(TypeParserException x){
             String text = formatTypeErrorMessage("Error while parsing type of", targetType, target, scope);
-            logModelResolutionException(x.getMessage(), scope, text);
+            return logModelResolutionException(x.getMessage(), scope, text);
         }catch(ModelResolutionException x){
             String text = formatTypeErrorMessage("Error while resolving type of", targetType, target, scope);
-            logModelResolutionException(x, scope, text);
+            return logModelResolutionException(x, scope, text);
         }
-        return new UnknownType(typeFactory).getType();
     }
     
     private String formatTypeErrorMessage(String prefix, String targetType, Declaration target, Scope scope) {
@@ -2487,9 +2498,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return obtainType(type, scope, TypeLocation.TOPLEVEL, variance);
             }catch(ModelResolutionException x){
                 String text = formatTypeErrorMessage("Error while resolving type of", targetType, target, scope);
-                logModelResolutionException(x, scope, text);
+                return logModelResolutionException(x, scope, text);
             }
-            return new UnknownType(typeFactory).getType();
         }
     }
     
