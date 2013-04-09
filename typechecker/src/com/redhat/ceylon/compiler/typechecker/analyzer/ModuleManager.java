@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -247,6 +248,22 @@ public class ModuleManager {
             return true;
         }
         return false;
+    }
+
+    public void attachErrorToOriginalModuleImport(Module module, String error){
+        if(getCompiledModules().contains(module)){
+            // we're compiling it, just add it to the module node then
+            addErrorToModule(module, error);
+        }else{
+            // we must be importing it
+            for(Entry<ModuleImport, Set<Node>> entry : moduleImportToNode.entrySet()){
+                if(entry.getKey().getModule() == module){
+                    for ( Node definition :  entry.getValue() ) {
+                        definition.addError(error);
+                    }
+                }
+            }
+        }
     }
 
     //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
