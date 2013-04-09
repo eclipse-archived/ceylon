@@ -5,6 +5,8 @@ import java.util.List;
 
 public class UnknownType extends TypeDeclaration {
 
+    private Runnable errorReporter;
+
     public UnknownType(Unit unit) {
         this.unit = unit;
     }
@@ -47,6 +49,21 @@ public class UnknownType extends TypeDeclaration {
     @Override
     public int hashCode() {
     	return System.identityHashCode(this);
+    }
+
+    public void setErrorReporter(Runnable errorReporter) {
+        this.errorReporter = errorReporter;
+    }
+    
+    public Runnable getErrorReporter(){
+        return errorReporter;
+    }
+
+    public void reportErrors() {
+        if(errorReporter != null){
+            errorReporter.run();
+            errorReporter = null;
+        }
     }
     
 }
