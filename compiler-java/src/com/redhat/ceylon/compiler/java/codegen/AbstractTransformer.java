@@ -1658,6 +1658,10 @@ public abstract class AbstractTransformer implements Transformation {
                     && !willEraseToObject(declTypeDecl.getSatisfiedTypes().get(0))) {
                 // use upper bound
                 ProducedType upperBound = declTypeDecl.getSatisfiedTypes().get(0);
+                ProducedType self = upperBound.getDeclaration().getSelfType();
+                if (self != null) {
+                    upperBound = self;
+                }
                 // make sure we apply the type arguments
                 return upperBound.substitute(producedReference.getTypeArguments());
             }
