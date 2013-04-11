@@ -3008,7 +3008,9 @@ public class Attr extends JCTree.Visitor {
                 // Don't erase the return type of the instantiated method type 
                 // for Ceylon #1095
                 owntype = new MethodType(owntype.getParameterTypes(),
-                                         Context.isCeylon() ? owntype.getReturnType() : types.erasure(owntype.getReturnType()),
+                                         Context.isCeylon() 
+                                             && typeargtypes != null 
+                                             && !typeargtypes.isEmpty() ? owntype.getReturnType() : types.erasure(owntype.getReturnType()),
                                          types.erasure(owntype.getThrownTypes()),
                                          syms.methodClass);
                 
