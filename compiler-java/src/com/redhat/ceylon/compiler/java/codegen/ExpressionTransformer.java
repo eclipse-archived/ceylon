@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -2171,7 +2172,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             final CallBuilder callBuilder = CallBuilder.instance(this);
             if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
                 transformTypeArguments(callBuilder, 
-                        ((Tree.StaticMemberOrTypeExpression)invocation.getPrimary()).getTypeArguments().getTypeModels());
+                        (Tree.StaticMemberOrTypeExpression)invocation.getPrimary());
             }
             if (invocation instanceof CallableSpecifierInvocation) {
                 return transformCallableSpecifierInvocation(callBuilder, (CallableSpecifierInvocation)invocation);
@@ -2319,15 +2320,37 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private final void transformTypeArguments(
             CallBuilder callBuilder,
-            java.util.List<ProducedType> typeArguments) {
-        if(typeArguments != null){
-            for (ProducedType arg : typeArguments) {
-                // cancel type parameters and go raw if we can't specify them
-                if(willEraseToObject(arg)) {
-                    callBuilder.typeArguments(List.<JCExpression>nil());
-                    return;
+            StaticMemberOrTypeExpression mte) {
+        java.util.List<ProducedType> typeargs = mte.getTypeArguments().getTypeModels();
+        java.util.List<TypeParameter> tps = null;
+        Declaration declaration = mte.getDeclaration();
+        if (declaration instanceof TypeDeclaration) {
+            tps = ((TypeDeclaration)declaration).getTypeParameters();
+        } else if (declaration instanceof Functional) {
+            tps = ((Functional)declaration).getTypeParameters();
+        }
+        if (tps != null) {
+            outer :for (TypeParameter tp : tps) {
+                ProducedType ta = mte.getTarget().getTypeArguments().get(tp);
+                if (willEraseToObject(ta)) {
+                    if (tp.getSatisfiedTypes().isEmpty()) {
+                        callBuilder.typeArgument(makeJavaType(ta, JT_TYPE_ARGUMENT));
+                    } else {
+                        // Find the first bound which is assignable to the 
+                        // type argument and use that 
+                        for (ProducedType bound : tp.getSatisfiedTypes()) {
+                            if (bound.isSubtypeOf(ta)) {
+                                callBuilder.typeArgument(makeJavaType(bound, JT_TYPE_ARGUMENT));
+                                continue outer;
+                            }
+                        }
+                        // If we found none, give up and go raw
+                        callBuilder.typeArguments(List.<JCExpression>nil());
+                        return;
+                    }
+                } else {
+                    callBuilder.typeArgument(makeJavaType(ta, JT_TYPE_ARGUMENT));
                 }
-                callBuilder.typeArgument(makeJavaType(arg, JT_TYPE_ARGUMENT));
             }
         }
     }
@@ -2370,7 +2393,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             try {
                 if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
                     transformTypeArguments(callBuilder, 
-                            ((Tree.StaticMemberOrTypeExpression)invocation.getPrimary()).getTypeArguments().getTypeModels());
+                            (Tree.StaticMemberOrTypeExpression)invocation.getPrimary());
                 }
                 at(builder.getNode());
                 JCExpression expr = null;
