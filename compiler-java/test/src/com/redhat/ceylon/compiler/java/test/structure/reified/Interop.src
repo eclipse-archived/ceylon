@@ -67,8 +67,8 @@ final class reifiedInstantiateInterop_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void reifiedInstantiateInterop() {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor);
-        c.foo();
-        c.foo();
+        c.<.java.lang.Object>foo();
+        c.<.java.lang.Object>foo();
         final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
             
             @.java.lang.Override

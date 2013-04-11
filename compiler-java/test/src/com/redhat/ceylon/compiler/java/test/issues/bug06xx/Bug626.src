@@ -214,7 +214,7 @@ final class bug626f_ {
                 .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> $arg$0$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626().getSequence();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
             }
-            returning .ceylon.language.join_.join($arg$0$reified$0, $arg$0$0);
+            returning .ceylon.language.join_.<.java.lang.Object>join($arg$0$reified$0, $arg$0$0);
         );
     }
 }

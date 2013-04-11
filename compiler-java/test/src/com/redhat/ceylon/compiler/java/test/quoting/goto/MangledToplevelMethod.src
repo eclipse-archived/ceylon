@@ -6,7 +6,7 @@ public final class mangledToplevelMethod_ {
     }
     
     public static void mangledToplevelMethod() {
-        final .ceylon.language.Array<.java.lang.Object> arr = .ceylon.language.array_.array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .java.lang.Object.class, .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Array<.java.lang.Object> arr = .ceylon.language.array_.<.java.lang.Object>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .java.lang.Object.class, .ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {

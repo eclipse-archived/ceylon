@@ -31,7 +31,7 @@ final class zeroSequencedArgs_ {
             }
         }
         final m_ m = new m_();
-        m.m(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        m.<.java.lang.Object>m(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     public static void main(.java.lang.String[] args) {

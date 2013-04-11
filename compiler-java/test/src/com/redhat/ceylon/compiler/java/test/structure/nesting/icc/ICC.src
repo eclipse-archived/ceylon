@@ -51,7 +51,7 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
             }
             
             private final T m2$priv() {
-                return $this.m1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
+                return $this.<.java.lang.Object>m1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
             }
             
             @.java.lang.Override

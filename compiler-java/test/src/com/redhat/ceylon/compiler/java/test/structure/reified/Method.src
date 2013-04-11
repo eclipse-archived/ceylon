@@ -28,7 +28,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         <T>method($reifiedT);
         <.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
-        method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        <.java.lang.Object>method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
@@ -124,11 +124,11 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$6$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                 long $arg$6$0 = $arg$6$this$.methodWithOverloads$a($arg$6$reified$0);
                 long $arg$6$1 = $arg$6$this$.methodWithOverloads$b($arg$6$reified$0, $arg$6$0);
-                methodWithOverloads($arg$6$reified$0, $arg$6$0, $arg$6$1);
+                <.java.lang.Object>methodWithOverloads($arg$6$reified$0, $arg$6$0, $arg$6$1);
             }
             returning null;
         );
-        methodWithOverloads(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        <.java.lang.Object>methodWithOverloads(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -330,7 +330,7 @@ public final class method_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<T>method($reifiedT);
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
-        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.java.lang.Object>method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
