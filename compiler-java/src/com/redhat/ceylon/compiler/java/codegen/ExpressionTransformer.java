@@ -2323,7 +2323,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(typeArguments != null){
             for (ProducedType arg : typeArguments) {
                 // cancel type parameters and go raw if we can't specify them
-                if(willEraseToObject(arg) || willEraseToSequential(arg)) {
+                if(willEraseToObject(arg)) {
                     callBuilder.typeArguments(List.<JCExpression>nil());
                     return;
                 }
