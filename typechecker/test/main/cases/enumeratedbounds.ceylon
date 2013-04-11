@@ -28,3 +28,5 @@ void testEnumeratedBounds() {
     @error Foo("foo", "bar");
     @error Foo<Object>();
 }
+
+void brokenEnumBound<O>() @error given O of true|false {}

@@ -28,7 +28,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 

@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1107,77 +1108,83 @@ public class TypeVisitor extends Visitor {
             that.addError("alias may not have cases or a self type");
             return;
         }
+    	List<ProducedType> list = new ArrayList<ProducedType>();
+        List<BaseMemberExpression> bmes = that.getBaseMemberExpressions();
+        if (td instanceof TypeParameter) {
+        	if (!bmes.isEmpty()) {
+        		that.addError("cases of type parameter must be a types");
+        	}
+        }
+        else {
+        	for (Tree.BaseMemberExpression bme: bmes) {
+        		//bmes have not yet been resolved
+        		TypedDeclaration od = getBaseDeclaration(bme, null, false);
+        		if (od!=null) {
+        			ProducedType type = od.getType();
+        			if (type!=null) {
+        				TypeDeclaration dec = type.getDeclaration();
+        				if (dec!=null && !dec.isToplevel() && !dec.isAnonymous()) {
+        					bme.addError("case must refer to a toplevel object declaration");
+        				}
+        				else {
+        					list.add(type);
+        				}
+        			}
+        		}
+        	}
+        }
         List<Tree.StaticType> cts = that.getTypes();
-        if (cts!=null) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
-                //bmes have not yet been resolved
-                TypedDeclaration od = getBaseDeclaration(bme, null, false);
-                if (od!=null) {
-                    ProducedType type = od.getType();
-                    if (type!=null) {
-                    	TypeDeclaration dec = type.getDeclaration();
-                    	if (dec!=null && !dec.isToplevel() && !dec.isAnonymous()) {
-                    		bme.addError("case must refer to a toplevel object declaration");
-                    	}
-                    	else {
-                    		list.add(type);
-                    	}
-                    }
-                }
-            }
-            for (Tree.StaticType st: cts) {
-                ProducedType type = st.getTypeModel();
-                if (type!=null) {
-                    TypeDeclaration ctd = type.getDeclaration();
-                    if (ctd!=null) {
-                        if (ctd.equals(td)) {
-                            st.addError("directly enumerates itself: " + td.getName());
-                            continue;
-                        }
-                        else if (ctd instanceof TypeParameter) {
-                            if (!(td instanceof TypeParameter)) {
-                                TypeParameter tp = (TypeParameter) ctd;
-                                td.setSelfType(type);
-                                if (tp.isSelfType()) {
-                                    st.addError("type parameter may not act as self type for two different types");
-                                }
-                                else {
-                                    tp.setSelfTypedDeclaration(td);
-                                }
-                                if (cts.size()>1) {
-                                    st.addError("a type may not have more than one self type");
-                                }
-                            }
-                            else {
-                                //TODO: error?!
-                            }
-                        }
-                        else if (!(ctd instanceof ClassOrInterface)) {
-                            st.addError("case type must be a class, interface, or self type");
-                            continue;
-                        }
-                        list.add(type);
-                    }
-                }
-            }
-            if (!list.isEmpty()) {
-            	if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
-            		Scope s = list.get(0).getDeclaration().getContainer();
-            		if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
-            			that.addError("non-abstract class parameterized by self type: " + td.getName(), 905);
-            		}
-            	}
-            	else {
-            		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
-            			that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
-            		}
-            	}
-                td.setCaseTypes(list);
-            }
+        for (Tree.StaticType st: cts) {
+        	ProducedType type = st.getTypeModel();
+        	if (type!=null) {
+        		TypeDeclaration ctd = type.getDeclaration();
+        		if (ctd!=null) {
+        			if (ctd.equals(td)) {
+        				st.addError("directly enumerates itself: " + td.getName());
+        				continue;
+        			}
+        			else if (ctd instanceof TypeParameter) {
+        				if (!(td instanceof TypeParameter)) {
+        					TypeParameter tp = (TypeParameter) ctd;
+        					td.setSelfType(type);
+        					if (tp.isSelfType()) {
+        						st.addError("type parameter may not act as self type for two different types");
+        					}
+        					else {
+        						tp.setSelfTypedDeclaration(td);
+        					}
+        					if (cts.size()>1) {
+        						st.addError("a type may not have more than one self type");
+        					}
+        				}
+        				else {
+        					//TODO: error?!
+        				}
+        			}
+        			else if (!(ctd instanceof ClassOrInterface)) {
+        				st.addError("case type must be a class, interface, or self type");
+        				continue;
+        			}
+        			list.add(type);
+        		}
+        	}
+        }
+        if (!list.isEmpty()) {
+        	if (list.size() == 1 && list.get(0).getDeclaration().isSelfType()) {
+        		Scope s = list.get(0).getDeclaration().getContainer();
+        		if (s instanceof ClassOrInterface && !((ClassOrInterface) s).isAbstract()) {
+        			that.addError("non-abstract class parameterized by self type: " + td.getName(), 905);
+        		}
+        	}
+        	else {
+        		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
+        			that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
+        		}
+        	}
+        	td.setCaseTypes(list);
         }
     }
-    
+
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
         super.visit(that);
