@@ -3005,10 +3005,13 @@ public class Attr extends JCTree.Visitor {
                                   rs.methodArguments(argtypes),
                                   kindName(sym.location()),
                                   sym.location());
+                // Don't erase the return type of the instantiated method type 
+                // for Ceylon #1095
                 owntype = new MethodType(owntype.getParameterTypes(),
-                                         types.erasure(owntype.getReturnType()),
+                                         Context.isCeylon() ? owntype.getReturnType() : types.erasure(owntype.getReturnType()),
                                          types.erasure(owntype.getThrownTypes()),
                                          syms.methodClass);
+                
             }
             if (useVarargs) {
                 JCTree tree = env.tree;
