@@ -2690,15 +2690,13 @@ public abstract class AbstractTransformer implements Transformation {
      */
     boolean hasDependentTypeParameters(java.util.List<TypeParameter> tps, TypeParameter tp) {
         boolean isDependedOn = false;
-        if(tp.isCovariant()){
-            for(TypeParameter otherTypeParameter : tps){
-                // skip this very type parameter
-                if(otherTypeParameter == tp)
-                    continue;
-                if(dependsOnTypeParameter(otherTypeParameter, tp)){
-                    isDependedOn = true;
-                    break;
-                }
+        for(TypeParameter otherTypeParameter : tps){
+            // skip this very type parameter
+            if(otherTypeParameter == tp)
+                continue;
+            if(dependsOnTypeParameter(otherTypeParameter, tp)){
+                isDependedOn = true;
+                break;
             }
         }
         return isDependedOn;
