@@ -1434,6 +1434,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         List<JCExpression> args = List.of(right);
+        List<JCExpression> typeArgs = null;
         
         // Set operators need reified generics
         if(originalOperator == OperatorTranslation.BINARY_UNION 
@@ -1441,9 +1442,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 || originalOperator == OperatorTranslation.BINARY_COMPLEMENT){
             ProducedType otherSetElementType = typeFact().getIteratedType(rightTerm.getTypeModel());
             args = args.prepend(makeReifiedTypeArgument(otherSetElementType));
+            typeArgs = List.<JCExpression>of(makeJavaType(otherSetElementType, JT_TYPE_ARGUMENT));
         }
         
-        result = make().Apply(null, makeSelect(left, actualOperator.ceylonMethod), args);
+        result = make().Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
 
         if (loseComparison) {
             result = make().Apply(null, makeSelect(result, originalOperator.ceylonMethod), List.<JCExpression> nil());
