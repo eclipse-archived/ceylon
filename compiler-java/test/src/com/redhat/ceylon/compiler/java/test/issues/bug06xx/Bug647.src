@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+final class bug647_ {
+    
+    private bug647_() {
+    }
+    
+    static <T>void bug647(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T x) {
+    }
+}
+final class bug647test_ {
+    
+    private bug647test_() {
+    }
+    
+    static void bug647test() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647_.<java.lang.Object>bug647(.ceylon.language.Object.$TypeDescriptor, .ceylon.language.String.instance("foo"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647test_.bug647test();
+    }
+}
