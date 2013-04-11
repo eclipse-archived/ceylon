@@ -18,7 +18,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential $arg$1$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$());
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$1$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$());
             }
             returning foo.$call($arg$1$0, $arg$1$1);
         );
@@ -26,7 +26,7 @@ final class callableNamedInvocationSequenced_f_ {
             let
             {
                 .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Sequential $arg$2$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance(""), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $arg$2$1 = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance(""), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.empty_.getEmpty$()));
             }
             returning foo.$call($arg$2$0, $arg$2$1);
         );

@@ -52,7 +52,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Sequential $arg$4$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential $arg$4$0 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                 sort($arg$4$reified$0, $arg$4$0);
             }
@@ -62,7 +62,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Sequential $arg$5$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $arg$5$0 = .ceylon.language.empty_.getEmpty$();
                 sort2($arg$5$0);
             }
             returning null;
@@ -71,7 +71,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Sequential $arg$6$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $arg$6$0 = .ceylon.language.empty_.getEmpty$();
             }
             returning p.$call($arg$6$0);
         );
