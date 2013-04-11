@@ -42,14 +42,14 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final <Summand extends .ceylon.language.Summable<Summand>>void constrainedTypeParameter$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final .ceylon.language.Iterable<? extends Summand, ? extends .java.lang.Object> values) {
-        final Summand x = (Summand).ceylon.language.sum_.<Summand>sum($reifiedSummand, (.ceylon.language.Iterable)values);
+        final Summand x = .ceylon.language.sum_.<Summand>sum($reifiedSummand, (.ceylon.language.Iterable)values);
         final Summand y = (
             let
             {
-                .ceylon.language.Iterable $arg$4$0 = (.ceylon.language.Iterable)values;
+                .ceylon.language.Iterable $arg$4$0 = values;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = $reifiedSummand;
             }
-            returning (Summand).ceylon.language.sum_.<Summand>sum($arg$4$reified$0, $arg$4$0);
+            returning .ceylon.language.sum_.<Summand>sum($arg$4$reified$0, $arg$4$0);
         );
         final Summand z = (
             let
@@ -58,7 +58,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$5$reified$0 = $reifiedSummand;
                 .ceylon.language.Sequential $arg$5$0 = $arg$5$this$.variadicSum$values($arg$5$reified$0);
             }
-            returning (Summand)<Summand>variadicSum($arg$5$reified$0, $arg$5$0);
+            returning <Summand>variadicSum($arg$5$reified$0, $arg$5$0);
         );
         final Summand a = (
             let
@@ -67,7 +67,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$6$reified$0 = $reifiedSummand;
                 .ceylon.language.Iterable $arg$6$0 = $arg$6$this$.defaultedSum$dummy($arg$6$reified$0);
             }
-            returning (Summand)<Summand>defaultedSum($arg$6$reified$0, $arg$6$0);
+            returning <Summand>defaultedSum($arg$6$reified$0, $arg$6$0);
         );
     }
     
