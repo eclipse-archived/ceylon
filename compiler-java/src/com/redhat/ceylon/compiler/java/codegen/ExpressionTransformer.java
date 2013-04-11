@@ -2333,6 +2333,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             outer :for (TypeParameter tp : tps) {
                 ProducedType ta = mte.getTarget().getTypeArguments().get(tp);
                 if (willEraseToObject(ta)) {
+                    if (hasDependentTypeParameters(tps, tp)) {
+                        callBuilder.typeArguments(List.<JCExpression>nil());
+                        return;
+                    }
                     if (tp.getSatisfiedTypes().isEmpty()) {
                         callBuilder.typeArgument(makeJavaType(ta, JT_TYPE_ARGUMENT));
                     } else {
