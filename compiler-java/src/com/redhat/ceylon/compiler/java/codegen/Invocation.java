@@ -135,7 +135,17 @@ abstract class Invocation {
     boolean isOnValueType() {
         return onValueType;
     }
-
+    
+    protected boolean isParameterRaw(Parameter param){
+        ProducedType type = param.getType();
+        return type == null ? false : type.isRaw();
+    }
+    
+    protected boolean isParameterWithConstrainedTypeParameters(Parameter param) {
+        ProducedType type = param.getType();
+        return gen.hasConstrainedTypeParameters(type);
+    }
+    
     protected abstract List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result);
     
     public final void setUnboxed(boolean unboxed) {
@@ -591,47 +601,12 @@ class PositionalInvocation extends DirectInvocation {
     
     @Override
     protected boolean isParameterRaw(int argIndex){
-        Parameter param = getParameter(argIndex);
-        ProducedType type = param.getType();
-        return type == null ? false : type.isRaw();
+        return isParameterRaw(getParameter(argIndex));
     }
     
     @Override
     protected boolean isParameterWithConstrainedTypeParameters(int argIndex) {
-        Parameter param = getParameter(argIndex);
-        ProducedType type = param.getType();
-        return hasConstrainedTypeParameters(type);
-    }
-    
-    private boolean hasConstrainedTypeParameters(ProducedType type) {
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration instanceof TypeParameter){
-            TypeParameter tp = (TypeParameter) declaration;
-            return !tp.getSatisfiedTypes().isEmpty();
-        }
-        if(declaration instanceof UnionType){
-            for(ProducedType m : declaration.getCaseTypes())
-                if(hasConstrainedTypeParameters(m))
-                    return true;
-            return false;
-        }
-        if(declaration instanceof IntersectionType){
-            for(ProducedType m : declaration.getSatisfiedTypes())
-                if(hasConstrainedTypeParameters(m))
-                    return true;
-            return false;
-        }
-        // check its type arguments
-        // special case for Callable which has only a single type param in Java
-        boolean isCallable = gen.isCeylonCallable(type);
-        for(ProducedType typeArg : type.getTypeArgumentList()){
-            if(hasConstrainedTypeParameters(typeArg))
-                return true;
-            // stop after the first type arg for Callable
-            if(isCallable)
-                break;
-        }
-        return false;
+        return isParameterWithConstrainedTypeParameters(getParameter(argIndex));
     }
     
     protected boolean hasDefaultArgument(int ii) {
@@ -1061,16 +1036,25 @@ class NamedArgumentInvocation extends Invocation {
         Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
         ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
-        // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
-        // not match, so we go raw
-        int flags = JT_RAW;
+        int jtFlags = 0;
+        int exprFlags = 0;
         if(boxType == BoxingStrategy.BOXED)
-            flags |= JT_TYPE_ARGUMENT;
-        JCExpression typeExpr = gen.makeJavaType(type, flags);
-        JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
+            jtFlags |= JT_TYPE_ARGUMENT;
+        
+        if(!isParameterRaw(declaredParam)) {
+            exprFlags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
+        }
+        if(isParameterWithConstrainedTypeParameters(declaredParam)) {
+            exprFlags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
+            // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
+            // not match, so we go raw
+            jtFlags |= JT_RAW;
+        }
+        JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
+        JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type, exprFlags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
         statements = ListBuffer.<JCStatement>of(varDecl);
-        bind(declaredParam, argName, gen.makeJavaType(type, flags), statements.toList());
+        bind(declaredParam, argName, gen.makeJavaType(type, jtFlags), statements.toList());
     }
 
     private void bindMethodArgument(Tree.MethodArgument methodArg,

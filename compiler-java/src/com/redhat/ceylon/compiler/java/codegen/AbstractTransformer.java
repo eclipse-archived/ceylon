@@ -2738,6 +2738,37 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return false;
     }
+    
+    boolean hasConstrainedTypeParameters(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof TypeParameter){
+            TypeParameter tp = (TypeParameter) declaration;
+            return !tp.getSatisfiedTypes().isEmpty();
+        }
+        if(declaration instanceof UnionType){
+            for(ProducedType m : declaration.getCaseTypes())
+                if(hasConstrainedTypeParameters(m))
+                    return true;
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(ProducedType m : declaration.getSatisfiedTypes())
+                if(hasConstrainedTypeParameters(m))
+                    return true;
+            return false;
+        }
+        // check its type arguments
+        // special case for Callable which has only a single type param in Java
+        boolean isCallable = isCeylonCallable(type);
+        for(ProducedType typeArg : type.getTypeArgumentList()){
+            if(hasConstrainedTypeParameters(typeArg))
+                return true;
+            // stop after the first type arg for Callable
+            if(isCallable)
+                break;
+        }
+        return false;
+    }
 
     private JCTypeParameter makeTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         return make().TypeParameter(names().fromString(name), makeTypeParameterBounds(satisfiedTypes));
