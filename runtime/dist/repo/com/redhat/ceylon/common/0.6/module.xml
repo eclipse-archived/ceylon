@@ -22,18 +22,8 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.runtime" slot="0.5">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.common" slot="0.6">
     <resources>
-        <resource-root path="ceylon.runtime-0.5.jar"/>
+        <resource-root path="com.redhat.ceylon.common-0.6.jar"/>
     </resources>
-
-    <main-class name="ceylon.modules.Main"/>
-
-    <dependencies>
-        <module name="ceylon.language" slot="0.5"/>
-        <module name="com.redhat.ceylon.common" slot="0.5"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="0.5"/>
-        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
-        <module name="org.jboss.modules"/>
-    </dependencies>
 </module>

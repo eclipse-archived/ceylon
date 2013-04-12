@@ -11,7 +11,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/shrinkwrap-api-1.0.0-cr-1.jar"/>
-	<classpathentry kind="lib" path="lib/jboss-modules.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-modules.jar" sourcepath="/jboss-modules/src/main/java"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="output" path="testsuite/target/test-classes"/>
 </classpath>

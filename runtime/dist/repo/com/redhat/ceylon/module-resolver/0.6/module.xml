@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright 2013 Red Hat inc. and third party contributors as noted
-  ~ by the author tags.
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
-<!--
   ~ JBoss, Home of Professional Open Source.
   ~ Copyright 2010, Red Hat, Inc., and individual contributors
   ~ as indicated by the @author tags. See the copyright.txt file in the
@@ -38,16 +22,14 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.compiler.java" slot="0.5">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.module-resolver" slot="0.6">
     <resources>
-        <resource-root path="com.redhat.ceylon.compiler.java-0.5.jar"/>
+        <resource-root path="com.redhat.ceylon.module-resolver-0.6.jar"/>
     </resources>
 
     <dependencies>
-        <module name="ceylon.language" slot="0.5"/>
-        <module name="com.redhat.ceylon.common" slot="0.5"/>
-        <module name="com.redhat.ceylon.typechecker" slot="0.5"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="0.5"/>
-        <module name="java.compiler"/>
+        <module name="com.redhat.ceylon.common" slot="0.6"/>
+        <module name="org.jboss.jandex"/>
+        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
     </dependencies>
 </module>

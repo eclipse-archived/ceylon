@@ -22,13 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.typechecker" slot="0.5">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.typechecker" slot="0.6">
     <resources>
-        <resource-root path="com.redhat.ceylon.typechecker-0.5.jar"/>
+        <resource-root path="com.redhat.ceylon.typechecker-0.6.jar"/>
     </resources>
 
     <dependencies>
-        <module name="com.redhat.ceylon.common" slot="0.5"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="0.5"/>
+        <module name="com.redhat.ceylon.common" slot="0.6"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="0.6"/>
     </dependencies>
 </module>
