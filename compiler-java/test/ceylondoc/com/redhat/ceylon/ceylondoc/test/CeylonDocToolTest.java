@@ -399,7 +399,7 @@ public class CeylonDocToolTest {
         tool.makeDoc();
         
         for(String moduleName : fullModuleNames){
-            Module module = makeModule(moduleName, "0.5");
+            Module module = makeModule(moduleName, "0.6");
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");
@@ -439,9 +439,9 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
-        File jarFolder = new File(dir, "ceylon/net/0.5");
+        File jarFolder = new File(dir, "ceylon/net/0.6");
         jarFolder.mkdirs();
-        File jarFile = new File(jarFolder, "ceylon.net-0.5.car");
+        File jarFile = new File(jarFolder, "ceylon.net-0.6.car");
         // now jar it up
         JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
         for(String name : fileNames){
