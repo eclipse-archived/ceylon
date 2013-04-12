@@ -1006,7 +1006,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonCallable(ProducedType type) {
-        return type.getDeclaration().getUnit().isCallableType(type);
+        // only say yes for exactly Callable, as this is mostly used for erasure of its second type parameter
+        // but we want subtypes of Callable such as the metamodel to have those extra type parameters ATM
+        return type.getDeclaration() == typeFact.getCallableDeclaration();
+//        return type.getDeclaration().getUnit().isCallableType(type);
     }
 
     boolean isExactlySequential(ProducedType type) {
