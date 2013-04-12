@@ -283,7 +283,7 @@
         </copy>
         <copy todir="${build.test.repo}">
             <fileset dir="${ceylon.dist.dir}/repo">
-                <include name="ceylon/language/0.5/module.xml"/>
+                <include name="ceylon/language/0.6/module.xml"/>
             </fileset>
         </copy>
         <delete dir="${build.test}"/>

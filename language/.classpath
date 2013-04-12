@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
-	<classpathentry exported="true" kind="lib" path="ide-dist/ceylon.language-0.5.car" sourcepath=""/>
+	<classpathentry exported="true" kind="lib" path="ide-dist/ceylon.language-0.6.car" sourcepath=""/>
 	<classpathentry kind="src" path="runtime-js"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-compiler"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
