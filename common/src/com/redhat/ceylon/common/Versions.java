@@ -2,16 +2,16 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 0.5 "Nesa Pong"
+    // The current version is Ceylon 0.6 "Transmogrified"
     // This comment is here so this file will show up in searches for the current version number
     
     // WARNING Don't forget to update ceylon.language/runtime-js/process.js when you change anything here!
 
     public static final int CEYLON_VERSION_MAJOR = 0;
-    public static final int CEYLON_VERSION_MINOR = 5;
+    public static final int CEYLON_VERSION_MINOR = 6;
     public static final int CEYLON_VERSION_RELEASE = 0;
     public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR /* + "." + CEYLON_VERSION_RELEASE */;
-    public static final String CEYLON_VERSION_NAME = "Nesa Pong";
+    public static final String CEYLON_VERSION_NAME = "Transmogrified";
     public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " (" + CEYLON_VERSION_NAME + ")";
 
     /**
