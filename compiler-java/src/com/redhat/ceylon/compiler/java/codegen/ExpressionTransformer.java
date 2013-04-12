@@ -1220,8 +1220,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, paramType);
         JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, paramType);
         ProducedType rangeType = op.getTypeModel();
+        ProducedType elementType = getTypeArgument(rangeType);
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.JT_CLASS_NEW);
-        return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(makeReifiedTypeArgument(rangeType), lower, upper), null);
+        return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(makeReifiedTypeArgument(elementType), lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {
