@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+public final class bug1127_ {
+    
+    private bug1127_() {
+    }
+    
+    public static void bug1127() {
+        final .ceylon.language.Range<.ceylon.language.Integer> r = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(4L));
+        final boolean b = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(2L);
+            }
+            returning r.contains($ceylontmp0);
+        );
+        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1127_.bug1127();
+    }
+}
