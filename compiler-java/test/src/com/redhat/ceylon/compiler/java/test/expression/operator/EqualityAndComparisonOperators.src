@@ -120,7 +120,7 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
             {
                 .ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1);
             }
-            returning new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0);
+            returning new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0);
         );
     }
     
@@ -130,7 +130,7 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger $ceylontmp1 = n1;
             }
-            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor), n1, n2).contains($ceylontmp1);
+            returning new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.$TypeDescriptor, n1, n2).contains($ceylontmp1);
         ));
     }
     

@@ -145,7 +145,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
                         {
-                            iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                            iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                         private .ceylon.language.Integer i;
@@ -176,7 +176,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                 public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class)){
                         {
-                            iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                            iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0;
                         private .ceylon.language.Integer i;

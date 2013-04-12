@@ -8,11 +8,11 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     private final void int$priv(final long i1, final long i2) {
-        final .ceylon.language.Range<.ceylon.language.Integer> range = new .ceylon.language.Range<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.Integer.instance(i1), .ceylon.language.Integer.instance(i2));
+        final .ceylon.language.Range<.ceylon.language.Integer> range = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(i1), .ceylon.language.Integer.instance(i2));
     }
     
     private final <T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>>void t$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t1, final T t2) {
-        final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, $reifiedT), t1, t2);
+        final .ceylon.language.Range<T> range = new .ceylon.language.Range<T>($reifiedT, t1, t2);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -129,7 +129,7 @@ final class bug_ {
     }
     
     static void bug() {
-        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> range = new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor), .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.getRangeOpE$(), .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.getRangeOpF$());
+        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> range = new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.getRangeOpE$(), .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.getRangeOpF$());
     }
     
     public static void main(.java.lang.String[] args) {
