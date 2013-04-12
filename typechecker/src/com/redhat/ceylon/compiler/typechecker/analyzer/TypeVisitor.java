@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
@@ -1030,7 +1031,7 @@ public class TypeVisitor extends Visitor {
                     		type.getDeclaration().getName(unit));
                     continue;
                 }
-                if (unit.isCallableType(type)) {
+                if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {
                     st.addError("directly satisfies Callable");
                 }
                 if (td instanceof TypeParameter) {
