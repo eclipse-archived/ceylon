@@ -633,7 +633,8 @@ public class GenerateJsVisitor extends Visitor
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
             self(d);
             out(".");
-            outerSelf(d);
+            out("$$outer");
+            //outerSelf(d);
             out("=this;");
             endLine();
         }
@@ -1702,6 +1703,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Outer that) {
+        boolean outer = false;
         if (opts.isOptimize()) {
             Scope scope = that.getScope();
             while ((scope != null) && !(scope instanceof TypeDeclaration)) {
@@ -1710,9 +1712,14 @@ public class GenerateJsVisitor extends Visitor
             if (scope != null && ((TypeDeclaration)scope).isClassOrInterfaceMember()) {
                 self((TypeDeclaration) scope);
                 out(".");
+                outer = true;
             }
         }
-        self(that.getTypeModel().getDeclaration());
+        if (outer) {
+            out("$$outer");
+        } else {
+            self(that.getTypeModel().getDeclaration());
+        }
     }
 
     @Override
@@ -2522,9 +2529,10 @@ public class GenerateJsVisitor extends Visitor
                 while (scope != null) {
                     if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
-                            path += '.';
+                            path += ".$$outer";
+                        } else {
+                            path += names.self((TypeDeclaration) scope);
                         }
-                        path += names.self((TypeDeclaration) scope);
                     } else {
                         path = "";
                     }
