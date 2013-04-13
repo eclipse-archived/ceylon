@@ -6,8 +6,8 @@ var exports;//IGNORE
 function Callable(wat) {
     return wat;
 }
-Callable.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}}};
 initType(Callable, 'ceylon.language::Callable');
+Callable.$$.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}}};
 exports.Callable=Callable;
 
 function $JsCallable(callable,targs) {
