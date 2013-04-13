@@ -630,7 +630,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void referenceOuter(TypeDeclaration d) {
-        if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
+        if (d.isClassOrInterfaceMember()) {
             self(d);
             out(".");
             out("$$outer");
@@ -843,7 +843,7 @@ public class GenerateJsVisitor extends Visitor
         }
         endBlockNewLine();
         //Add reference to metamodel
-        out(names.name(d), ".$$metamodel$$=");
+        out(names.name(d), ".$$.$$metamodel$$=");
         TypeUtils.encodeForRuntime(d, this);
         endLine(true);
         out("return ", names.name(d), ";");
