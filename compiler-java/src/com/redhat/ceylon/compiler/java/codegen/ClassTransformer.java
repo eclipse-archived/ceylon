@@ -238,6 +238,7 @@ public class ClassTransformer extends AbstractTransformer {
         Class klass = def.getDeclarationModel();
         MethodDefinitionBuilder annoCtor = classBuilder.addConstructor();
         annoCtor.ignoreAnnotations();
+        annoCtor.modifiers(transformClassDeclFlags(klass));
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "anno");
         pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
         annoCtor.parameter(pdb);
@@ -264,6 +265,9 @@ public class ClassTransformer extends AbstractTransformer {
                             List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
                             List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
                 }                
+            } else if (Decl.isAnnotationClass(parameterType.getDeclaration())) {
+                argExpr = make().NewClass(null, null, makeJavaType(parameterType), 
+                        List.<JCExpression>of(annoAttr), null);
             } else {
                 argExpr = annoAttr;
             }
