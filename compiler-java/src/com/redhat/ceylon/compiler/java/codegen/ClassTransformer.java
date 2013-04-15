@@ -247,7 +247,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
             at(parameter);
             Parameter parameterModel = parameter.getDeclarationModel();
-            JCMethodInvocation annoAttr = make().Apply(null, naming.makeQuotedQualIdent(naming.makeUnquotedIdent("anno"),
+            JCExpression annoAttr = make().Apply(null, naming.makeQuotedQualIdent(naming.makeUnquotedIdent("anno"),
                     parameter.getDeclarationModel().getName()),
                     List.<JCExpression>nil());
             ProducedType parameterType = parameterModel.getType();
@@ -260,14 +260,39 @@ public class ClassTransformer extends AbstractTransformer {
                     argExpr = makeUtilInvocation("sequentialInstanceBoxed", 
                             List.<JCExpression>of(annoAttr), 
                             null);
+                } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
+                    // Can't use Util.sequentialAnnotation becase we need to 'box'
+                    // the Java annotations in their Ceylon annotation class
+                    String wrapperMethod = "$annotationSequence";
+                    argExpr = make().Apply(null, naming.makeUnquotedIdent(wrapperMethod), List.of(annoAttr));
+                    ListBuffer<JCStatement> stmts = ListBuffer.lb();
+                    SyntheticName array = naming.synthetic("array$");
+                    SyntheticName sb = naming.synthetic("sb$");
+                    SyntheticName element = naming.synthetic("element$");
+                    stmts.append(makeVar(FINAL, sb, 
+                            makeJavaType(typeFact().getSequenceBuilderType(iteratedType)),
+                            make().NewClass(null, null, makeJavaType(typeFact().getSequenceBuilderType(iteratedType), JT_CLASS_NEW), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), null)));
+                    stmts.append(make().ForeachLoop(
+                            makeVar(element, makeJavaType(iteratedType, JT_ANNOTATION), null), 
+                            array.makeIdent(), 
+                            make().Exec(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "append"), 
+                                    List.<JCExpression>of(instantiateAnnotationClass(iteratedType, element.makeIdent()))))));
+                    stmts.append(make().Return(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "getSequence"), List.<JCExpression>nil())));
+                    classBuilder.method(
+                            MethodDefinitionBuilder.systemMethod(this, wrapperMethod)
+                                .ignoreAnnotations()
+                                .modifiers(PRIVATE | STATIC)
+                                .resultType(null, makeJavaType(typeFact().getSequentialType(iteratedType)))
+                                .parameter(ParameterDefinitionBuilder.instance(this, array.getName())
+                                        .type(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)), null))
+                                .body(stmts.toList()));
                 } else {
                     argExpr = makeUtilInvocation("sequentialInstance", 
                             List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
                             List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
                 }                
             } else if (Decl.isAnnotationClass(parameterType.getDeclaration())) {
-                argExpr = make().NewClass(null, null, makeJavaType(parameterType), 
-                        List.<JCExpression>of(annoAttr), null);
+                argExpr = instantiateAnnotationClass(parameterType, annoAttr);
             } else {
                 argExpr = annoAttr;
             }
@@ -275,6 +300,13 @@ public class ClassTransformer extends AbstractTransformer {
         }
         annoCtor.body(at(def).Exec(
                 make().Apply(null,  naming.makeThis(), args.toList())));
+    }
+
+    private JCNewClass instantiateAnnotationClass(
+            ProducedType annotationClass,
+            JCExpression javaAnnotationInstance) {
+        return make().NewClass(null, null, makeJavaType(annotationClass), 
+                List.<JCExpression>of(javaAnnotationInstance), null);
     }
 
     /**
