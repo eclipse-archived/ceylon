@@ -46,7 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  */
 public class LazyClass extends Class implements LazyContainer {
 
-    public ClassMirror classMirror;
+    public final ClassMirror classMirror;
     private ModelCompleter completer;
     private Class superClass;
     private MethodMirror constructor;

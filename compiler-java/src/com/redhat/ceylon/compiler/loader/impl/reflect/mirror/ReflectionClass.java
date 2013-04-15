@@ -39,7 +39,7 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 
 public class ReflectionClass implements ClassMirror {
 
-    private Class<?> klass;
+    public final Class<?> klass;
     private ArrayList<FieldMirror> fields;
     private ArrayList<MethodMirror> methods;
     private ArrayList<TypeMirror> interfaces;

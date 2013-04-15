@@ -44,7 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  */
 public class LazyInterface extends Interface implements LazyContainer {
 
-    public ClassMirror classMirror;
+    public final ClassMirror classMirror;
     private ModelCompleter completer;
     private String realName;
     private boolean isStatic;
