@@ -631,6 +631,7 @@ public class ModelLoaderTest extends CompilerTest {
                     for(Future<Object> f : futures){
                         f.get();
                     }
+                    executor.shutdown();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (ExecutionException e) {
