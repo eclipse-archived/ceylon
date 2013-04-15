@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import ceylon.language.ArraySequence;
+import ceylon.language.Empty;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
@@ -14,6 +15,7 @@ import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.metamodel.Declaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -25,8 +27,14 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -81,15 +89,57 @@ public class Util {
         return name.replace("::", ".");
     }
 
-    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
-        TypeDescriptor instanceType;
-        if(o == null)
-            instanceType = Null.$TypeDescriptor;
-        else if(o instanceof ReifiedType)
-            instanceType = ((ReifiedType) o).$getType();
+    public static TypeDescriptor getTypeDescriptor(Object instance) {
+        if(instance == null)
+            return Null.$TypeDescriptor;
+        else if(instance instanceof ReifiedType)
+            return((ReifiedType) instance).$getType();
         else
+            return null; // FIXME: interop?
+    }
+
+    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
+        TypeDescriptor instanceType = getTypeDescriptor(o);
+        if(instanceType == null)
             return false; // FIXME: interop?
         return instanceType.toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
+    }
+
+    public static ProducedType getProducedType(Object instance) {
+        TypeDescriptor instanceType = getTypeDescriptor(instance);
+        if(instanceType == null)
+            throw new RuntimeException("Metamodel not yet supported for Java types");
+        return instanceType.toProducedType(moduleManager);
+    }
+
+    public static Declaration getMetamodel(TypeDescriptor typeDescriptor) {
+        if(typeDescriptor == null)
+            throw new RuntimeException("Metamodel not yet supported for Java types");
+        ProducedType pt = typeDescriptor.toProducedType(moduleManager);
+        return getMetamodel(pt);
+    }
+    
+    public static Declaration getMetamodel(ProducedType pt) {
+        TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            return new com.redhat.ceylon.compiler.java.metamodel.Class((com.redhat.ceylon.compiler.typechecker.model.Class)declaration);
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+            return new com.redhat.ceylon.compiler.java.metamodel.Interface((com.redhat.ceylon.compiler.typechecker.model.Interface)declaration);
+        }
+        throw new RuntimeException("Declaration type not supported yet: "+declaration);
+    }
+
+    public static TypeDescriptor getTypeDescriptorForDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+        if(declaration instanceof LazyClass){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
+            return TypeDescriptor.klass(classMirror.klass);
+        }
+        if(declaration instanceof LazyInterface){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
+            return TypeDescriptor.klass(classMirror.klass);
+        }
+        throw new RuntimeException("Unsupported declaration type: " + declaration);
     }
 
     /**
