@@ -337,7 +337,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
          */
         if(!isBootstrap){
             loadPackage(CEYLON_LANGUAGE, true);
-            loadPackage("ceylon.language.descriptor", true);
+            loadPackage("ceylon.language.metamodel", true);
         }
     }
 
