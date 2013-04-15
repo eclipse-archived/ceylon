@@ -380,8 +380,11 @@ public abstract class AbstractTransformer implements Transformation {
         return setterBlock;
     }
 
+    JCVariableDecl makeVar(long mods, String varName, JCExpression typeExpr, JCExpression valueExpr) {
+        return make().VarDef(make().Modifiers(mods), names().fromString(varName), typeExpr, valueExpr);
+    }
     JCVariableDecl makeVar(String varName, JCExpression typeExpr, JCExpression valueExpr) {
-        return make().VarDef(make().Modifiers(0), names().fromString(varName), typeExpr, valueExpr);
+        return makeVar(0, varName, typeExpr, valueExpr);
     }
     JCVariableDecl makeVar(Naming.SyntheticName varName, JCExpression typeExpr, JCExpression valueExpr) {
         return makeVar(0L, varName, typeExpr, valueExpr);
