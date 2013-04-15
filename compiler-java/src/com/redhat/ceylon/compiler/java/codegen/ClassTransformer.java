@@ -213,12 +213,64 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.reifiedAlias(model.getType());
         }
         
-        List<JCTree> result = classBuilder.build();
+        List<JCTree> result;
         if (Decl.isAnnotationClass(def)) {
-            result = result.prependList(transformAnnotationClass((Tree.AnyClass)def));
+            ListBuffer<JCTree> trees = ListBuffer.lb();
+            trees.addAll(transformAnnotationClass((Tree.AnyClass)def));
+            transformAnnotationClassConstructor((Tree.AnyClass)def, classBuilder);
+            trees.addAll(classBuilder.build());
+            result = trees.toList();
+        } else {
+            result = classBuilder.build();
         }
         
         return result;
+    }
+
+    /**
+     * Generates a constructor for an annotation class which takes the 
+     * annotation type as parameter.
+     * @param classBuilder
+     */
+    private void transformAnnotationClassConstructor(
+            Tree.AnyClass def,
+            ClassDefinitionBuilder classBuilder) {
+        Class klass = def.getDeclarationModel();
+        MethodDefinitionBuilder annoCtor = classBuilder.addConstructor();
+        annoCtor.ignoreAnnotations();
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "anno");
+        pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
+        annoCtor.parameter(pdb);
+        
+        ListBuffer<JCExpression> args = ListBuffer.lb();
+        for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
+            at(parameter);
+            Parameter parameterModel = parameter.getDeclarationModel();
+            JCMethodInvocation annoAttr = make().Apply(null, naming.makeQuotedQualIdent(naming.makeUnquotedIdent("anno"),
+                    parameter.getDeclarationModel().getName()),
+                    List.<JCExpression>nil());
+            ProducedType parameterType = parameterModel.getType();
+            JCExpression argExpr;
+            if (typeFact().isIterableType(parameterType)
+                    && !isCeylonString(parameterType)) {
+                // Convert from array to Sequential
+                ProducedType iteratedType = typeFact().getIteratedType(parameterType);
+                if (isCeylonBasicType(iteratedType)) {
+                    argExpr = makeUtilInvocation("sequentialInstanceBoxed", 
+                            List.<JCExpression>of(annoAttr), 
+                            null);
+                } else {
+                    argExpr = makeUtilInvocation("sequentialInstance", 
+                            List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), annoAttr), 
+                            List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
+                }                
+            } else {
+                argExpr = annoAttr;
+            }
+            args.add(argExpr);
+        }
+        annoCtor.body(at(def).Exec(
+                make().Apply(null,  naming.makeThis(), args.toList())));
     }
 
     /**
