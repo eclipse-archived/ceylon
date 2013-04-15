@@ -229,14 +229,17 @@ public class ClassTransformer extends AbstractTransformer {
      * is transformed into
      * <pre>
      * @interface Foo$annotation {
-     *     java.lang.Class<?> $constructor();
      *     String s();
      *     long i() default 1;
      * }
      * </pre>
-     * {@code $constructor()} is the {@code java.lang.Class} which is the 
-     * transformed annotation constructor to apply to an instance of this 
-     * annotation.
+     * If the annotation class is a subtype of SequencedAnnotation a wrapper
+     * annotation is also generated:
+     * <pre>
+     * @interface Foo$annotations{
+     *     Foo$annotation[] value();
+     * }
+     * </pre>
      */
     private List<JCTree> transformAnnotationClass(Tree.AnyClass def) {
         Class klass = (Class)def.getDeclarationModel();
