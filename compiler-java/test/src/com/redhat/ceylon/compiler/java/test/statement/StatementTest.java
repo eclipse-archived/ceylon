@@ -487,6 +487,11 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testTryTryWithResource(){
+        compareWithJavaSource("trycatch/TryWithResource");
+    }
+    
+    @Test
     public void testTryReplaceExceptionAtJavaCallSite(){
         compareWithJavaSource("trycatch/WrapExceptionAtJavaCallSite");
     }

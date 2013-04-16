@@ -1,0 +1,90 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Closeable {
+    
+    TryWithResource() {
+        this.$ceylon$language$Closeable$this = new .ceylon.language.Closeable$impl(this);
+    }
+    protected final .ceylon.language.Closeable$impl $ceylon$language$Closeable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Closeable$impl $ceylon$language$Closeable$impl() {
+        return $ceylon$language$Closeable$this;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object open() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object close(final .java.lang.Throwable e) {
+        return null;
+    }
+    
+    public final void m() {
+        final .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource me = this;
+        {
+            .ceylon.language.Closeable $ceylontmptry0 = me;
+            $ceylontmptry0.open();
+            .java.lang.Exception $ceylontmpex1 = null;
+            try {
+            } catch (final .java.lang.Exception $ceylontmpex3) {
+                $ceylontmpex1 = $ceylontmpex3;
+                throw $ceylontmpex3;
+            } finally {
+                try {
+                    $ceylontmptry0.close($ceylontmpex1);
+                } catch (final .java.lang.Exception $ceylontmpclosex2) {
+                    if ($ceylontmpex1 == null) throw $ceylontmpclosex2;
+                }
+            }
+        }
+        {
+            .ceylon.language.Closeable $ceylontmptry4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+            $ceylontmptry4.open();
+            .java.lang.Exception $ceylontmpex5 = null;
+            try {
+            } catch (final .java.lang.Exception $ceylontmpex7) {
+                $ceylontmpex5 = $ceylontmpex7;
+                throw $ceylontmpex7;
+            } finally {
+                try {
+                    $ceylontmptry4.close($ceylontmpex5);
+                } catch (final .java.lang.Exception $ceylontmpclosex6) {
+                    if ($ceylontmpex5 == null) throw $ceylontmpclosex6;
+                }
+            }
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource r = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+            ((.ceylon.language.Closeable)r).open();
+            .java.lang.Exception $ceylontmpex8 = null;
+            try {
+                r.m();
+            } catch (final .java.lang.Exception $ceylontmpex10) {
+                $ceylontmpex8 = $ceylontmpex10;
+                throw $ceylontmpex10;
+            } finally {
+                try {
+                    ((.ceylon.language.Closeable)r).close($ceylontmpex8);
+                } catch (final .java.lang.Exception $ceylontmpclosex9) {
+                    if ($ceylontmpex8 == null) throw $ceylontmpclosex9;
+                }
+            }
+        } catch (final .java.lang.Exception ex) {
+        } finally {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource.class);
+}
