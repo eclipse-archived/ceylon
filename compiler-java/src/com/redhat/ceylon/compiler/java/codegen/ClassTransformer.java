@@ -1637,6 +1637,15 @@ public class ClassTransformer extends AbstractTransformer {
             this.annotationConstructor = annotationConstructor;
         }
         
+        @Override
+        public void handleException(Exception e, Node node) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException)e;
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
+        
         public void visit(Tree.MethodDefinition d) {
             d.getBlock().visit(this);
         }
