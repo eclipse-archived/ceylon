@@ -29,15 +29,12 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
@@ -53,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Resource;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiesCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
@@ -69,6 +67,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCBreak;
@@ -78,8 +77,11 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
+import com.sun.tools.javac.tree.JCTree.JCIf;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
+import com.sun.tools.javac.tree.JCTree.JCTry;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.DiagnosticSource;
@@ -1688,11 +1690,89 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     public JCStatement transform(TryCatchStatement t) {
-        // TODO Support resources -- try(Usage u = ...) { ...
         TryClause tryClause = t.getTryClause();
         at(tryClause);
+        
         JCBlock tryBlock = transform(tryClause.getBlock());
 
+        Resource res = tryClause.getResource();
+        if (res != null) {
+            List<JCStatement> stats = List.nil();
+
+            Expression resExpr;
+            String resVarName;
+            ProducedType resVarType;
+            if (res.getExpression() != null) {
+                resExpr = res.getExpression();
+                resVarName = naming.newTemp("try");
+                resVarType = typeFact().getCloseableDeclaration().getType();
+            } else if (res.getVariable() != null) {
+                Variable var = res.getVariable();
+                resExpr = var.getSpecifierExpression().getExpression();
+                resVarName = var.getIdentifier().getText();
+                resVarType = var.getType().getTypeModel();
+            } else {
+                throw new RuntimeException("Missing resource expression");
+            }
+                        
+            // CloseableType $var = resource-expression
+            JCExpression expr = expressionGen().transformExpression(resExpr);
+            JCExpression javaType = makeJavaType(resVarType);
+            JCVariableDecl var = makeVar(resVarName, javaType, expr);
+            stats = stats.append(var);
+            
+            // $var.open() /// ((Closeable)$var).open()
+            JCMethodInvocation openCall = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "open"), List.<JCExpression>nil());
+            stats = stats.append(make().Exec(openCall));
+            
+            // Exception $tpmex = null;
+            String innerExTmpVarName = naming.newTemp("ex");
+            JCExpression innerExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+            JCVariableDecl innerExTmpVar = makeVar(innerExTmpVarName, innerExType, makeNull());
+            stats = stats.append(innerExTmpVar);
+            
+            // $var.close() /// ((Closeable)$var).close()
+            List<JCStatement> closeTryStats = List.nil();
+            JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
+            JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "close"), List.<JCExpression>of(exarg));
+            closeTryStats = closeTryStats.append(make().Exec(closeCall));
+            JCBlock closeTryBlock = make().Block(0, closeTryStats);
+            
+            // if ($tmpex == null) { throw ex }
+            Name closeCatchVarName = naming.tempName("closex");
+            JCBinary closeCatchCond = make().Binary(JCTree.EQ, makeUnquotedIdent(innerExTmpVarName), makeNull());
+            JCThrow closeCatchThrow = make().Throw(make().Ident(closeCatchVarName));
+            JCIf closeCatchIf = make().If(closeCatchCond, closeCatchThrow, null);
+            
+            // try { $var.close() } catch (Exception ex) { ... }
+            JCExpression closeCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+            JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
+            JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>of(closeCatchIf)));
+            JCTry closeTry = at(res).Try(closeTryBlock, List.<JCCatch>of(closeCatch), null);
+
+            // $tmpex = ex;
+            List<JCStatement> innerCatchStats = List.nil();
+            Name innerCatchVarName = naming.tempName("ex");
+            JCAssign exTmpAssign = make().Assign(makeUnquotedIdent(innerExTmpVarName), make().Ident(innerCatchVarName));
+            innerCatchStats = innerCatchStats.append(make().Exec(exTmpAssign));
+            
+            // throw ex;
+            JCThrow innerCatchThrow = make().Throw(make().Ident(innerCatchVarName));
+            innerCatchStats = innerCatchStats.append(innerCatchThrow);
+            JCBlock innerCatchBlock = make().Block(0, innerCatchStats);
+            
+            // try { .... } catch (Exception ex) { $tmpex=ex; throw ex; }
+            // finally { try { $var.close() } catch (Exception closex) { } }
+            JCExpression innerCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+            JCVariableDecl innerCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), innerCatchVarName, innerCatchExType, null);
+            JCCatch innerCatch = make().Catch(innerCatchVar, innerCatchBlock);
+            JCBlock innerFinallyBlock = make().Block(0, List.<JCStatement>of(closeTry));
+            JCTry innerTry = at(res).Try(tryBlock, List.<JCCatch>of(innerCatch), innerFinallyBlock);
+            stats = stats.append(innerTry);
+            
+            tryBlock = at(res).Block(0, stats);
+        }
+        
         final ListBuffer<JCCatch> catches = ListBuffer.<JCCatch>lb();
         for (CatchClause catchClause : t.getCatchClauses()) {
             at(catchClause);
@@ -1721,9 +1801,24 @@ public class StatementTransformer extends AbstractTransformer {
             finallyBlock = null;
         }
 
-        return at(t).Try(tryBlock, catches.toList(), finallyBlock);
+        if (!catches.isEmpty() || finallyBlock != null) {
+            return at(t).Try(tryBlock, catches.toList(), finallyBlock);
+        } else {
+            return tryBlock;
+        }
     }
 
+    private JCExpression resourceUseExpr(Resource res, String varName) {
+        // $var
+        JCExpression varUseExpr = makeUnquotedIdent(varName);
+        if (res.getVariable() != null) {
+            // ((Closeable)$var)
+            ProducedType closeableType = typeFact().getCloseableDeclaration().getType();
+            varUseExpr = make().TypeCast(makeJavaType(closeableType), varUseExpr);
+        }
+        return varUseExpr;
+    }
+    
     private int transformLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
