@@ -1574,11 +1574,47 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
+    enum AnnotationInstantiationArgument {
+        PARAMETER,
+        PARAMETER_SPREAD,
+        STATIC;
+        static AnnotationInstantiationArgument classify(short s) {
+            if (s >= 0 && s < 256) {
+                return PARAMETER;
+            } else if (s >= 256 && s < 512) {
+                return PARAMETER_SPREAD;
+            } else if (s == Short.MIN_VALUE) {
+                return STATIC;
+            }
+            return null;
+        }
+        static short decode(short s) {
+            switch (classify(s)) {
+            case PARAMETER: 
+                return s;
+            case PARAMETER_SPREAD:
+                return (short)(s - 256);
+            case STATIC:
+                return -1;
+            default:
+                throw new IllegalArgumentException();
+            }
+        }
+        static short encode(short constructorParameterIndex, boolean spread) {
+            return (short)((spread ? 256 : 0) + constructorParameterIndex); 
+        }
+        static short encodeStatic() {
+            return Short.MIN_VALUE; 
+        }
+    }
+    
     // AC ac() => AC(); is simple
     // AC ac() { return AC();} is simple
     class AnnotationConstructorVisitor extends Visitor {
         // On the JVM the number of method parameters is limited to 255
-        static final short LITERAL_ARGUMENT = 256;
+        // So 0-255 are for unmodified parameter expressions being used as arguments
+        // 256-511 are for spread parameter expressions being used as arguments
+        
         private boolean checkingInvocationPrimary;
         private boolean checkingArguments;
         private ProducedType annotationClass;
@@ -1595,6 +1631,7 @@ public class ClassTransformer extends AbstractTransformer {
         });
         private Parameter classParameter;
         private final AnyMethod annotationConstructor;
+        private boolean spread;
         
         AnnotationConstructorVisitor(Tree.AnyMethod annotationConstructor) {
             this.annotationConstructor = annotationConstructor;
@@ -1641,6 +1678,13 @@ public class ClassTransformer extends AbstractTransformer {
                 makeErroneous(literal, "Unsupported literal");
             }
         }
+        public void visit(Tree.Expression term) {
+            term.visitChildren(this);
+        }
+        public void visit(Tree.Term term) {
+            makeErroneous(term, "Unsupported term " + term.getClass().getSimpleName());
+        }
+        
         public void visit(Tree.BaseMemberExpression bme) {
             if (checkingArguments){
                 Declaration declaration = bme.getDeclaration();
@@ -1648,7 +1692,7 @@ public class ClassTransformer extends AbstractTransformer {
                     ValueParameter constructorParameter = (ValueParameter)declaration;
                     Method c = (Method)constructorParameter.getContainer();
                     short constructorParameterIndex = (short)c.getParameterLists().get(0).getParameters().indexOf(constructorParameter);
-                    perm.put(classParameter, constructorParameterIndex);
+                    perm.put(classParameter, AnnotationInstantiationArgument.encode(constructorParameterIndex, spread));
                 } else if (isBooleanFalse(declaration)
                         || isBooleanTrue(declaration)) {
                     appendStaticArgument(bme, expressionGen().transform(bme));
@@ -1658,7 +1702,10 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         private void appendStaticArgument(Tree.Primary bme, JCExpression init) {
-            perm.put(classParameter, LITERAL_ARGUMENT);
+            if (spread) {
+                makeErroneous(bme, "Spread static arguments not supported");
+            }
+            perm.put(classParameter, AnnotationInstantiationArgument.encodeStatic());
             staticArgs.append(makeVar(STATIC | FINAL, 
                     classParameter.getName(), 
                     makeJavaType(bme.getTypeModel()), 
@@ -1683,7 +1730,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         public void visit(Tree.SpreadArgument argument) {
             classParameter = argument.getParameter();
+            spread = true;
             argument.getExpression().visit(this);
+            spread = false;
             classParameter = null;
         }
         public void visit(Tree.ListedArgument argument) {
