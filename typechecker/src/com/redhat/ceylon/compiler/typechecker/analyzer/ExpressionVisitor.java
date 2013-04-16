@@ -503,7 +503,6 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.Resource that) {
-        that.addWarning("try with resource not yet supported");
         super.visit(that);
         ProducedType t = null;
         Node typedNode = null;
