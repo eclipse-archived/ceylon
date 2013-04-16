@@ -30,7 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AnnotationInstantiationArgument;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -87,7 +86,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -3994,198 +3992,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result.toList();
     }
     
-    class AnnotationInvocationArgumentVisitor extends Visitor {
-
-        ListBuffer<JCExpression> exprs = ListBuffer.lb();
-       
-        JCExpression transformArgument(Node node, Parameter parameter) {
-            exprs.clear();
-            at(node);
-            node.visit(this);
-            if (parameter.isSequenced() || 
-                    (typeFact().isIterableType(parameter.getType())
-                            && !isCeylonString(parameter.getType()))) {
-                return make().NewArray(null,  null, exprs.toList());
-            } else {
-                Assert.that(exprs.size() == 1);
-                return exprs.first();
-            }
-        }
-        
-        JCExpression transformArgument(Tree.PositionalArgument node) {
-            return transformArgument(node, node.getParameter());
-        }
-        
-        public JCExpression transformArguments(java.util.List<PositionalArgument> arguments) {
-            exprs.clear();
-            int count = 0;
-            for (Tree.PositionalArgument arg : arguments) {
-                at(arg);
-                if (count == 0 || arg.getParameter().isSequenced()) {
-                    // otherwise the ctor argument isn't an argument to the class (dropped) 
-                    arg.visit(this);
-                }
-            }
-            if (arguments.isEmpty() || arguments.get(0).getParameter().isSequenced()) {
-                return make().NewArray(null,  null, exprs.toList());
-            } else {
-                return exprs.first();
-            }
-        }
-        
-        JCExpression transformArgument(Tree.NamedArgument node) {
-            return transformArgument(node, node.getParameter());
-        }
-        
-        public void handleException(Exception e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException)e;
-            } else {
-                throw new RuntimeException(e);
-            }
-        }
-        
-        public void visit(Tree.Expression term) {
-            term.visitChildren(this);
-        }
-        
-        public void visit(Tree.Term term) {
-            append(makeErroneous(term, "Unable to use that kind of term " + term.getClass().getSimpleName()));
-        }
-        
-        public void visit(Tree.Literal term) {
-            append(transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
-        }
-        
-        public void visit(Tree.BaseMemberExpression term) {
-            if (isBooleanTrue(term.getDeclaration())
-                    || isBooleanFalse(term.getDeclaration())) {
-                append(transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
-            } else {
-                append(makeErroneous(term, "Unable to use that kind of term (only booleans)"));
-            }
-        }
-        
-        // TODO Instantiation of annotation classes
-        // TODO invocation of annotation constructors?
-        public void visit(Tree.SequenceEnumeration term) {
-            ListBuffer<JCExpression> savedExprs = exprs;
-            try {
-                exprs = ListBuffer.lb();
-                term.visitChildren(this);
-                savedExprs.append(make().NewArray(null,  null, exprs.toList()));
-            } finally {
-                exprs = savedExprs;
-            }
-        }
-        
-        public void visit(Tree.Tuple term) {
-            ListBuffer<JCExpression> savedExprs = exprs;
-            try {
-                exprs = ListBuffer.lb();
-                term.visitChildren(this);
-                savedExprs.append(make().NewArray(null,  null, exprs.toList()));
-            } finally {
-                exprs = savedExprs;
-            }
-        }
-        
-        public void visit(Tree.PositionalArgument arg) {
-            append(makeErroneous(arg, "Unable to find use that kind of positional argument"));
-        }
-        
-        public void visit(Tree.ListedArgument arg) {
-            arg.visitChildren(this);
-            //Tree.Expression expression = arg.getExpression();
-            //Tree.Term term = expression.getTerm();
-            // TODO Special case tuple, sequence enumeration
-            //argExpr = transformExpression(term, BoxingStrategy.UNBOXED, expression.getTypeModel());
-        }
-        
-        public void visit(Tree.NamedArgument arg) {
-            append(makeErroneous(arg, "Unable to find use that kind of named argument"));
-        }
-        
-        public void visit(Tree.SpecifiedArgument arg) {
-            arg.visitChildren(this);
-        }
-        
-        private void append(JCExpression expr) {
-            exprs.append(expr);
-        }
-        
-    }
-    
-    void transformAnnotation(Tree.InvocationExpression invocation, 
+    void transformAnnotation(Tree.Annotation invocation, 
             Map<Class, List<JCAnnotation>> annotationSet) {
         at(invocation);
-        Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        final Method annotationConstructor = (Method)declaration;
-        int[] argumentIndices = annotationConstructor.getAnnotationArguments();
-        Class annotationClass = annotationConstructor.getAnnotationClass();
         
-        ListBuffer<JCExpression> constructorArguments = ListBuffer.lb();
-        java.util.List<Parameter> classParameters = annotationClass.getParameterList().getParameters();
-        AnnotationInvocationArgumentVisitor visitor = new AnnotationInvocationArgumentVisitor();
-        for (int classParameterIndex = 0; classParameterIndex < classParameters.size(); classParameterIndex++) {
-            Parameter classParameter = classParameters.get(classParameterIndex);
-            if (classParameterIndex >= argumentIndices.length) {
-                // => We're using the annotation classes defaulted parameter
-                continue;
-            }
-            int encodedArgument = argumentIndices[classParameterIndex];
-            JCExpression arg = null;
-            int argumentIndex = AnnotationInstantiationArgument.decode((short)encodedArgument);
-            switch (AnnotationInstantiationArgument.classify((short)encodedArgument)) {
-            case PARAMETER_SPREAD:
-                if (invocation.getPositionalArgumentList() != null) {
-                    java.util.List<PositionalArgument> pa = invocation.getPositionalArgumentList().getPositionalArguments();
-                    arg = visitor.transformArguments(pa.subList(argumentIndex, pa.size()));
-                } else if (invocation.getNamedArgumentList() != null) {
-                    arg = makeErroneous(invocation, "Spread argument with named invocation not supported");
-                }
-                break;
-            case PARAMETER:
-                if (invocation.getPositionalArgumentList() != null) {
-                    java.util.List<PositionalArgument> pa = invocation.getPositionalArgumentList().getPositionalArguments();
-                    if (argumentIndex < pa.size()) {
-                        arg = visitor.transformArguments(pa.subList(argumentIndex, pa.size()));
-                    }
-                } else if (invocation.getNamedArgumentList() != null) {
-                    for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
-                        Parameter parameter = na.getParameter();
-                        int parameterIndex = annotationConstructor.getParameterLists().get(0).getParameters().indexOf(parameter);
-                        if (parameterIndex == encodedArgument) {
-                            arg = visitor.transformArgument(na);
-                            break;
-                        }
-                    }
-                    if (arg == null) {
-                        arg = makeErroneous(invocation, "Unable to find argument");
-                    }
-                }
-                break;
-            case STATIC:
-                at(invocation);
-                arg = naming.makeQuotedQualIdent(
-                                naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
-                                classParameter.getName());
-                break;
-            default:
-                arg = makeErroneous(invocation, "Unable to find argument");
-            }
-            constructorArguments.append(make().Assign(
-                    naming.makeQuotedIdent(classParameter.getName()), arg));
-            
-        }
+        AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(this, invocation);
+        JCAnnotation annotation = visitor.transformConstructor(invocation);
+        Class annotationClass = visitor.getAnnotationClass();
         
-        JCAnnotation annotation = at(invocation).Annotation(makeJavaType(annotationClass.getType(), JT_ANNOTATION), constructorArguments.toList());
         List<JCAnnotation> list = annotationSet.get(annotationClass);
         if (list == null) {
             list = List.nil();
         } else if (!isSequencedAnnotation(annotationClass)) {
             makeErroneous(invocation, "Multiple occurances of OptionalAnnotation!");
         }
+        
         annotationSet.put(annotationClass, list.prepend(annotation));
     }
 
