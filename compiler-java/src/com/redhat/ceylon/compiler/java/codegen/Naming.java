@@ -1045,12 +1045,12 @@ public class Naming implements LocalId {
         return id.nextId();
     }
     
-    private String newTemp() {
+    String newTemp() {
         String result = "$ceylontmp" + nextUniqueId();
         return result;
     }
 
-    private String newTemp(String prefix) {
+    String newTemp(String prefix) {
         String result = "$ceylontmp" + prefix + nextUniqueId();
         return result;
     }
