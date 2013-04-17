@@ -8,6 +8,7 @@ import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Member;
+import ceylon.language.metamodel.Parameterised$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -44,6 +45,13 @@ public class ClassOrInterface<Type>
     @Override
     @Ignore
     public ClassOrInterface$impl<Type> $ceylon$language$metamodel$ClassOrInterface$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public Parameterised$impl $ceylon$language$metamodel$Parameterised$impl() {
         // TODO Auto-generated method stub
         return null;
     }

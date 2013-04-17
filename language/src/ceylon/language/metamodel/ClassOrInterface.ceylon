@@ -1,6 +1,6 @@
 shared interface ClassOrInterface<out Type> 
         of Class<Type,Nothing[]> | Interface<Type> 
-        satisfies Declaration {
+        satisfies Declaration & Parameterised {
     
     shared formal Boolean typeOf(Anything instance);
     
@@ -17,8 +17,4 @@ shared interface ClassOrInterface<out Type>
     
     shared formal Member<Subtype,Kind>[] annotatedMembers<Subtype,Kind,Annotation>() 
             given Kind satisfies Declaration;
-    
-    shared formal TypeParameter[] typeParameters;
-    
-    shared formal TypeParameter? getTypeParameter(String name);
 }

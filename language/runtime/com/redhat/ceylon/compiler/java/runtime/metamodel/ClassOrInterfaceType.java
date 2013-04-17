@@ -9,7 +9,6 @@ import ceylon.language.metamodel.ClassOrInterfaceType$impl;
 import ceylon.language.metamodel.ProducedType;
 import ceylon.language.metamodel.ProducedType$impl;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
