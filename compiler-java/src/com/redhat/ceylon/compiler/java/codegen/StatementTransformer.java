@@ -1722,7 +1722,7 @@ public class StatementTransformer extends AbstractTransformer {
             stats = stats.append(var);
             
             // $var.open() /// ((Closeable)$var).open()
-            JCMethodInvocation openCall = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "open"), List.<JCExpression>nil());
+            JCMethodInvocation openCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "open"), List.<JCExpression>nil());
             stats = stats.append(make().Exec(openCall));
             
             // Exception $tpmex = null;
@@ -1744,7 +1744,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             // $var.close() /// ((Closeable)$var).close()
             JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
-            JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "close"), List.<JCExpression>of(exarg));
+            JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "close"), List.<JCExpression>of(exarg));
             JCBlock closeTryBlock = make().Block(0, List.<JCStatement>of(make().Exec(closeCall)));
             
             // try { $var.close() } catch (Exception ex) { }
@@ -1756,7 +1756,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             // $var.close() /// ((Closeable)$var).close()
             JCExpression exarg2 = makeUnquotedIdent(innerExTmpVarName);
-            JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "close"), List.<JCExpression>of(exarg2));
+            JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "close"), List.<JCExpression>of(exarg2));
             
             // if ($tmpex != null) { ... } else { ... }
             JCBinary closeCatchCond = make().Binary(JCTree.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());
@@ -1807,17 +1807,6 @@ public class StatementTransformer extends AbstractTransformer {
         } else {
             return tryBlock;
         }
-    }
-
-    private JCExpression resourceUseExpr(Resource res, String varName) {
-        // $var
-        JCExpression varUseExpr = makeUnquotedIdent(varName);
-        if (res.getVariable() != null) {
-            // ((Closeable)$var)
-            ProducedType closeableType = typeFact().getCloseableDeclaration().getType();
-            varUseExpr = make().TypeCast(makeJavaType(closeableType), varUseExpr);
-        }
-        return varUseExpr;
     }
     
     private int transformLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
