@@ -1,10 +1,10 @@
 package ceylon.language.metamodel;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
 @Ceylon(major = 4)
 @Method
@@ -16,6 +16,6 @@ public final class type_ {
     public static ProducedType type(@Name("instance")
         @TypeInfo("ceylon.language::Anything")
         final Object instance) {
-        return Util.getMetamodel(Util.getTypeDescriptor(instance));
+        return Metamodel.getMetamodel(Metamodel.getTypeDescriptor(instance));
     }
 }

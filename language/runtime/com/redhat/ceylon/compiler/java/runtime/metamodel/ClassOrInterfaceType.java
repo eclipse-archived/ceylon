@@ -65,7 +65,7 @@ public class ClassOrInterfaceType<Type>
     
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
-        this.declaration = Util.getOrCreateMetamodel(decl);
+        this.declaration = Metamodel.getOrCreateMetamodel(decl);
         java.util.Map<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.ProducedType> typeArguments 
             = new LinkedHashMap<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.ProducedType>();
         Iterator<? extends ceylon.language.metamodel.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
@@ -76,7 +76,7 @@ public class ClassOrInterfaceType<Type>
             com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter) it;
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
-            ProducedType ptArgWrapped = Util.getMetamodel(ptArg);
+            ProducedType ptArgWrapped = Metamodel.getMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
         this.typeArguments = new InternalMap<ceylon.language.metamodel.TypeParameter, 

@@ -47,18 +47,18 @@ public class ClassOrInterface<Type>
     }
 
     protected void init(){
-        this.$reifiedType = Util.getTypeDescriptorForDeclaration(declaration);
+        this.$reifiedType = Metamodel.getTypeDescriptorForDeclaration(declaration);
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) this.declaration;
         
         ProducedType superType = declaration.getExtendedType();
         if(superType != null)
-            this.superclass = (ceylon.language.metamodel.ClassType) Util.getMetamodel(superType);
+            this.superclass = (ceylon.language.metamodel.ClassType) Metamodel.getMetamodel(superType);
         
         List<ProducedType> satisfiedTypes = declaration.getSatisfiedTypes();
         ceylon.language.metamodel.InterfaceType[] interfaces = new ceylon.language.metamodel.InterfaceType[satisfiedTypes.size()];
         int i=0;
         for(ProducedType pt : satisfiedTypes){
-            interfaces[i++] = (ceylon.language.metamodel.InterfaceType) Util.getMetamodel(pt);
+            interfaces[i++] = (ceylon.language.metamodel.InterfaceType) Metamodel.getMetamodel(pt);
         }
         this.interfaces = (Sequential)Util.sequentialInstance($InterfacesTypeDescriptor, interfaces);
         
