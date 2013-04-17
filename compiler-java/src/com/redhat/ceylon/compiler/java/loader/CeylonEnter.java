@@ -318,15 +318,6 @@ public class CeylonEnter extends Enter {
         // some debugging
         //printModules();
         timer.startTask("Ceylon code generation");
-        
-        for (JCCompilationUnit tree : trees) {
-            if (tree instanceof CeylonCompilationUnit) {
-                CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
-                AnnotationInlineVisitor aiv = new AnnotationInlineVisitor();
-                ceylonTree.ceylonTree.visitChildren(aiv);
-            }
-        }
-        
         /*
          * Here we convert the ceylon tree to its javac AST, after the typechecker has run
          */
@@ -459,9 +450,13 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             pu.getCompilationUnit().visit(boxingVisitor);
         }
+        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
+            AnnotationInlineVisitor aiv = new AnnotationInlineVisitor();
+            pu.getCompilationUnit().visit(aiv);
+        }
         
         phasedUnitsManager.extraPhasesApplied();
-
+        
         collectTreeErrors(true);
     }
 

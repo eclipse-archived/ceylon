@@ -6,7 +6,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
 import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
 import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -15,11 +14,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class AnnotationInlineVisitor extends Visitor {
-    protected Parameter classParameter;
-    protected AnyMethod annotationConstructor;
-    protected boolean spread;
-    protected boolean checkingInvocationPrimary;
-    protected boolean checkingArguments;
+    private Parameter classParameter;
+    private AnyMethod annotationConstructor;
+    private boolean spread;
+    private boolean checkingInvocationPrimary;
+    private boolean checkingArguments;
     private InlineInfo inlineInfo;
     
     @Override
@@ -43,27 +42,25 @@ public class AnnotationInlineVisitor extends Visitor {
         }
         super.visit(d);
         if (Decl.isAnnotationConstructor(d)) {
-            annotationConstructor.getDeclarationModel().setInlineInfo(inlineInfo);
+            d.getDeclarationModel().setInlineInfo(inlineInfo);
             inlineInfo = null;
             annotationConstructor = null;
         }
     }
     
     public void visit(Tree.MethodDeclaration d) {
-        if (Decl.isAnnotationConstructor(d)) {
-            if (d.getSpecifierExpression() == null) {
-                error(d, "Annotation constructors may not be forward declared");
-                // TODO Why not?
-            }
+        if (Decl.isAnnotationConstructor(d)
+                && d.getSpecifierExpression() != null) {
             annotationConstructor = d;
             inlineInfo = new InlineInfo();
             inlineInfo.setArguments(new ArrayList());
         }
         super.visit(d);
-        if (Decl.isAnnotationConstructor(d)) {
-            annotationConstructor.getDeclarationModel().setInlineInfo(inlineInfo);
+        if (Decl.isAnnotationConstructor(d)
+                && d.getSpecifierExpression() != null) {
+            d.getDeclarationModel().setInlineInfo(inlineInfo);
             inlineInfo = null;
-            this.annotationConstructor = null;
+            annotationConstructor = null;
         }
     }
     
@@ -76,6 +73,10 @@ public class AnnotationInlineVisitor extends Visitor {
             }
         }
         super.visit(d);
+    }
+    public void visit(Tree.AnnotationList al) {    
+    }
+    public void visit(Tree.ParameterList pl) {    
     }
     public void visit(Tree.InvocationExpression invocation) {
         if (annotationConstructor != null) {
