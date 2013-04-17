@@ -29,15 +29,14 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             $ceylontmptry0.open();
             .java.lang.Exception $ceylontmpex1 = null;
             try {
-            } catch (final .java.lang.Exception $ceylontmpex3) {
-                $ceylontmpex1 = $ceylontmpex3;
-                throw $ceylontmpex3;
+            } catch (final .java.lang.Exception $ceylontmpex2) {
+                $ceylontmpex1 = $ceylontmpex2;
+                throw $ceylontmpex2;
             } finally {
-                try {
+                if ($ceylontmpex1 != null) try {
                     $ceylontmptry0.close($ceylontmpex1);
-                } catch (final .java.lang.Exception $ceylontmpclosex2) {
-                    if ($ceylontmpex1 == null) throw $ceylontmpclosex2;
-                }
+                } catch (final .java.lang.Exception $ceylontmpclosex3) {
+                } else $ceylontmptry0.close($ceylontmpex1);
             }
         }
         {
@@ -45,15 +44,14 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             $ceylontmptry4.open();
             .java.lang.Exception $ceylontmpex5 = null;
             try {
-            } catch (final .java.lang.Exception $ceylontmpex7) {
-                $ceylontmpex5 = $ceylontmpex7;
-                throw $ceylontmpex7;
+            } catch (final .java.lang.Exception $ceylontmpex6) {
+                $ceylontmpex5 = $ceylontmpex6;
+                throw $ceylontmpex6;
             } finally {
-                try {
+                if ($ceylontmpex5 != null) try {
                     $ceylontmptry4.close($ceylontmpex5);
-                } catch (final .java.lang.Exception $ceylontmpclosex6) {
-                    if ($ceylontmpex5 == null) throw $ceylontmpclosex6;
-                }
+                } catch (final .java.lang.Exception $ceylontmpclosex7) {
+                } else $ceylontmptry4.close($ceylontmpex5);
             }
         }
         try {
@@ -62,15 +60,14 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             .java.lang.Exception $ceylontmpex8 = null;
             try {
                 r.m();
-            } catch (final .java.lang.Exception $ceylontmpex10) {
-                $ceylontmpex8 = $ceylontmpex10;
-                throw $ceylontmpex10;
+            } catch (final .java.lang.Exception $ceylontmpex9) {
+                $ceylontmpex8 = $ceylontmpex9;
+                throw $ceylontmpex9;
             } finally {
-                try {
+                if ($ceylontmpex8 != null) try {
                     ((.ceylon.language.Closeable)r).close($ceylontmpex8);
-                } catch (final .java.lang.Exception $ceylontmpclosex9) {
-                    if ($ceylontmpex8 == null) throw $ceylontmpclosex9;
-                }
+                } catch (final .java.lang.Exception $ceylontmpclosex10) {
+                } else ((.ceylon.language.Closeable)r).close($ceylontmpex8);
             }
         } catch (final .java.lang.Exception ex) {
         } finally {
