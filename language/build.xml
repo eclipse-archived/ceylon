@@ -235,7 +235,7 @@
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
                 <include name="ceylon/language/unflatten_.java"/>
-                <exclude name="ceylon/language/metamodel/type.ceylon"/>
+                <exclude name="ceylon/language/metamodel/metamodel.ceylon"/>
                 <include name="ceylon/language/metamodel/type_.java"/>
             </files>
         </ceylon-compile>
