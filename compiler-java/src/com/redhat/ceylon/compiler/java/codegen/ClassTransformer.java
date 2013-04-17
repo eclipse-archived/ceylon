@@ -243,6 +243,9 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
         annoCtor.parameter(pdb);
         
+        // It's up to the caller to invoke value() on the Java annotation for a sequenced
+        // annotation
+        
         ListBuffer<JCExpression> args = ListBuffer.lb();
         for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
             at(parameter);
@@ -338,7 +341,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getDeclarationModel();
-            annoBuilder.method(makeAnnotationMethod(naming.selector(parameterModel), 
+            annoBuilder.method(makeAnnotationMethod(naming.selector(parameterModel, Naming.NA_ANNOTATION_MEMBER), 
                     transformAnnotationMethodType(p),
                     parameterModel.isDefaulted() ? transformAnnotationParameterDefault(p) : null));
         }

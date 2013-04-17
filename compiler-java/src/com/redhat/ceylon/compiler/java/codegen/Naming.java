@@ -888,7 +888,7 @@ public class Naming implements LocalId {
             }
         }
         if ((namingOptions & NA_WRAPPER) != 0) {
-            expr = makeQualIdent(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_ANNOTATION)));
+            expr = makeQualIdent(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
             expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
@@ -923,9 +923,6 @@ public class Naming implements LocalId {
             name = getAttrClassName((Setter)decl, namingOptions);
         } else {
             name = decl.getName();
-            if ((namingOptions & NA_ANNOTATION) != 0) {
-                name = name + "$annotation";
-            }
             if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
                 name = quoteClassName(name);
             }
@@ -954,7 +951,9 @@ public class Naming implements LocalId {
     static final int NA_SETTER = 1<<5;
     static final int NA_IDENT = 1<<7;
     static final int NA_ALIASED = 1<<8;
-    static final int NA_ANNOTATION = 1<<9;
+    /** A shared parameter on an annotation class produces an annotation type 
+     * method foo, not getFoo() */
+    static final int NA_ANNOTATION_MEMBER = 1<<9;
 
     /**
      * Returns the name of the Java method/field for the given declaration 
@@ -965,7 +964,8 @@ public class Naming implements LocalId {
         return selector(decl, 0);
     }
     String selector(TypedDeclaration decl, int namingOptions) {
-        if (Decl.isGetter(decl) || Decl.isValueOrSharedParam(decl)) {
+        if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 &&
+                (Decl.isGetter(decl) || Decl.isValueOrSharedParam(decl))) {
             if ((namingOptions & NA_SETTER) != 0) {
                 return getSetterName(decl);
             } else {
@@ -1621,11 +1621,6 @@ public class Naming implements LocalId {
 
     public String getTypeDescriptorAliasName() {
         return "$TypeDescriptor";
-    }
-
-    String annotationTypeName(Method methodModel, int naFlags) {
-        Assert.that(Decl.isAnnotationConstructor(methodModel));
-        return getQuotedClassName(methodModel, naFlags | NA_ANNOTATION);
     }
   
 }
