@@ -56,7 +56,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
         }
         try {
             .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource r = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
-            ((.ceylon.language.Closeable)r).open();
+            r.open();
             .java.lang.Exception $ceylontmpex8 = null;
             try {
                 r.m();
@@ -65,9 +65,9 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
                 throw $ceylontmpex9;
             } finally {
                 if ($ceylontmpex8 != null) try {
-                    ((.ceylon.language.Closeable)r).close($ceylontmpex8);
+                    r.close($ceylontmpex8);
                 } catch (final .java.lang.Exception $ceylontmpclosex10) {
-                } else ((.ceylon.language.Closeable)r).close($ceylontmpex8);
+                } else r.close($ceylontmpex8);
             }
         } catch (final .java.lang.Exception ex) {
         } finally {
