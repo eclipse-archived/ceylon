@@ -12,8 +12,8 @@ public final class type_ {
     
     private type_() {}
     
-    @TypeInfo("ceylon.language::Declaration")
-    public static Declaration type(@Name("instance")
+    @TypeInfo("ceylon.language.metamodel::ProducedType")
+    public static ProducedType type(@Name("instance")
         @TypeInfo("ceylon.language::Anything")
         final Object instance) {
         return Util.getMetamodel(Util.getTypeDescriptor(instance));

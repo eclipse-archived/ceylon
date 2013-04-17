@@ -1,1 +1,1 @@
-shared native Declaration type(Anything instance);
+shared native ProducedType type(Anything instance);
