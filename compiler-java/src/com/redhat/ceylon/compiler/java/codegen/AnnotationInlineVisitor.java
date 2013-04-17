@@ -79,13 +79,19 @@ public class AnnotationInlineVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.AnnotationList al) {    
+    public void visit(Tree.AnnotationList al) {
+        // Ignore statements in annotation lists
+    }
+    
+    @Override
+    public void visit(Tree.Parameter p) {
+        // Ignore statements in parameters
     }
     
     @Override
     public void visit(Tree.DefaultArgument d) {
         if (annotationConstructor != null) {
-            if (!(d.getSpecifierExpression().getExpression().getTerm() instanceof Tree.Literal)) {                
+            if (!(d.getSpecifierExpression().getExpression().getTerm() instanceof Tree.Literal)) {
                 error(d, "Only literal default parameters allowed");
             }
         }
