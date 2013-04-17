@@ -5,6 +5,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .java.lang.String name();
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassParam(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation anno) {
@@ -26,6 +27,7 @@ final class annotationClassParam_ {
     private annotationClassParam_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam annotationClassParam(final .java.lang.String name) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam(name);
     }
@@ -40,6 +42,7 @@ final class annotationClassParam_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation[] value();
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassAnnotationClass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation anno) {
@@ -91,6 +94,7 @@ class AnnotationClassAnnotationClass implements .com.redhat.ceylon.compiler.java
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation[] value();
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassAnnotationClassSequence(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation anno) {
@@ -144,6 +148,7 @@ final class annotationClassAnnotationClassSequence_ {
     private annotationClassAnnotationClassSequence_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence annotationClassAnnotationClassSequence(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> params) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence(params);
     }
@@ -153,6 +158,7 @@ final class annotationClassAnnotationClassSequence_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation a() default @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "defaulted");
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassAnnotationClassDefaulted() {
@@ -194,6 +200,7 @@ final class annotationClassAnnotationClass_ {
     private annotationClassAnnotationClass_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass annotationClassAnnotationClass(final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam a) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass(a);
     }

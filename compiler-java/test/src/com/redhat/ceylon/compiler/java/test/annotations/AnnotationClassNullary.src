@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @interface AnnotationClassNullary$annotation {
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassNullary(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation anno) {
@@ -57,6 +58,7 @@ class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation[] value();
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassNullarySequenced(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation anno) {
@@ -109,6 +111,7 @@ final class annotationClassNullary_ {
     private annotationClassNullary_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary annotationClassNullary() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
     }
@@ -124,6 +127,7 @@ final class annotationClassNullarySequenced_ {
     private annotationClassNullarySequenced_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced annotationClassNullarySequenced() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced();
     }

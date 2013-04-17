@@ -12,6 +12,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation[] value();
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassInteger(final long i) {
@@ -74,6 +75,7 @@ final class annotationClassIntegerDefault_ {
     private annotationClassIntegerDefault_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerDefault(final long i) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger(i);
     }
@@ -84,6 +86,7 @@ final class annotationClassIntegerSwapped_ {
     private annotationClassIntegerSwapped_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerSwapped(final long j, final long i) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger(i, j);
     }
@@ -94,6 +97,7 @@ final class annotationClassIntegerNames_ {
     private annotationClassIntegerNames_() {
     }
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerNames(final long jj, final long ii) {
         return (
             let
@@ -113,6 +117,7 @@ final class annotationClassIntegerStatic_ {
     static final long i = 40L;
     static final long j = 41L;
     
+    @.ceylon.language.Annotation$annotation
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerStatic() {
         return (
             let

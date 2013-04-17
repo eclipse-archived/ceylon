@@ -10,6 +10,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation[] value();
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassCharacter(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation anno) {
@@ -62,6 +63,7 @@ class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runti
     
     public abstract int c() default 97;
 }
+@.ceylon.language.Annotation$annotation
 class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.metamodel.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> {
     
     AnnotationClassCharacterDefaulted() {
