@@ -30,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationInlineVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -317,6 +318,15 @@ public class CeylonEnter extends Enter {
         // some debugging
         //printModules();
         timer.startTask("Ceylon code generation");
+        
+        for (JCCompilationUnit tree : trees) {
+            if (tree instanceof CeylonCompilationUnit) {
+                CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
+                AnnotationInlineVisitor aiv = new AnnotationInlineVisitor();
+                ceylonTree.ceylonTree.visitChildren(aiv);
+            }
+        }
+        
         /*
          * Here we convert the ceylon tree to its javac AST, after the typechecker has run
          */

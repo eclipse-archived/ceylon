@@ -72,6 +72,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -92,6 +94,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
 
 /**
  * Abstract class of a model loader that can load a model from a compiled Java representation,
@@ -2056,24 +2059,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      }
 
     private void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
+        InlineInfo inlineInfo = new InlineInfo();
         if (method.classMirror != null) {
-            List<Short> arguments = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
-            if (arguments != null) {
-                int[] args = new int[arguments.size()];
-                for (int ii = 0; ii < arguments.size(); ii++) {
-                    args[ii] = arguments.get(ii);
-                }
-                method.setAnnotationArguments(args);
-                
-            }
-            
             TypeMirror annotationTypeMirror = (TypeMirror)getAnnotationClassValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
             if (annotationTypeMirror != null) {
                 ClassMirror annotationClassMirror = annotationTypeMirror.getDeclaredClass();
                 Class convertToDeclaration = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
-                //List<MethodMirror> constructors = getClassConstructors(annotationClassMirror);
-                //LazyClass annotationClass = makeLazyClass(annotationClassMirror, null, null, false);
-                method.setAnnotationClass(convertToDeclaration);
+                inlineInfo.setPrimary(convertToDeclaration);
+                method.setInlineInfo(inlineInfo);
+            }
+            
+            List<Short> argumentCodes = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
+            if (argumentCodes != null) {
+                Class ac = (Class)inlineInfo.getPrimary();
+                List<InlineArgument> args = new ArrayList<>(argumentCodes.size());
+                for (int ii = 0; ii < argumentCodes.size(); ii++) {
+                    Short code = argumentCodes.get(ii);                    
+                    InlineArgument inlineArg = Decl.decodeAnnotationConstructor(method.getParameterLists().get(0).getParameters(), inlineInfo, code);
+                    Parameter classParameter = ac.getParameterList().getParameters().get(ii);
+                    inlineArg.setTargetParameter(classParameter);
+                    args.add(inlineArg);
+                }
+                inlineInfo.setArguments(args);
+                method.setInlineInfo(inlineInfo);
             }
         }
     }

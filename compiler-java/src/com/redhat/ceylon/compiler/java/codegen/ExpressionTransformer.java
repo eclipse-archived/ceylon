@@ -3970,13 +3970,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 transformAnonymousAnnotation(annotationList.getAnonymousAnnotation(), annotationSet);
             }
             java.util.List<String> blacklist = Arrays.asList(
-                    "annotation", 
-                    //"doc", 
                     "see", 
-                    //"by", 
                     "throws", 
                     "deprecated" 
-                    //"tagged", "license"
                     );
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {

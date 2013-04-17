@@ -1,14 +1,18 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AnnotationInstantiationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -19,9 +23,6 @@ import com.sun.tools.javac.util.ListBuffer;
 
 class AnnotationInvocationVisitor extends Visitor {
 
-    /**
-     * 
-     */
     private final ExpressionTransformer exprGen;
     private final Class annotationClass;
     private final Method annotationConstructor;
@@ -31,19 +32,19 @@ class AnnotationInvocationVisitor extends Visitor {
     private ListBuffer<JCExpression> annotationArguments = ListBuffer.lb();
 
     public AnnotationInvocationVisitor(
-            ExpressionTransformer expressionTransformer, InvocationExpression invocation) {
+            ExpressionTransformer expressionTransformer, Tree.InvocationExpression invocation) {
         exprGen = expressionTransformer;
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof Method) {
             annotationConstructor = (Method)declaration;
-            annotationClass = annotationConstructor.getAnnotationClass();
+            annotationClass = (Class)annotationConstructor.getInlineInfo().getPrimary();
         } else if (declaration instanceof Class) {
             annotationConstructor = null;
             annotationClass  = (Class)declaration;
         } else {
             throw Assert.fail();
         }
-        Assert.that(annotationClass != null, "Annotation class for invocation of " + declaration + " could not be determined");
+        Assert.that(annotationClass != null, "Annotation class for invocation of " + declaration + " could not be determined", invocation);
     }
     
     public Class getAnnotationClass() {
@@ -94,59 +95,59 @@ class AnnotationInvocationVisitor extends Visitor {
     }
     
     public JCAnnotation transformConstructor(Tree.InvocationExpression invocation) {
-        int[] argumentIndices = annotationConstructor.getAnnotationArguments();
+        
+        List<InlineArgument> arguments = annotationConstructor.getInlineInfo().getArguments();
         java.util.List<Parameter> classParameters = annotationClass.getParameterList().getParameters();
         for (int classParameterIndex = 0; classParameterIndex < classParameters.size(); classParameterIndex++) {
             Parameter classParameter = classParameters.get(classParameterIndex);
             parameterName = classParameter.getName();
-            if (classParameterIndex >= argumentIndices.length) {
+            if (classParameterIndex >= arguments.size()) {
                 // => We're using the annotation class's defaulted parameter
                 continue;
             }
-            int encodedArgument = argumentIndices[classParameterIndex];
+            InlineArgument argument = arguments.get(classParameterIndex);
             
-            int argumentIndex = AnnotationInstantiationArgument.decode((short)encodedArgument);
-            switch (AnnotationInstantiationArgument.classify((short)encodedArgument)) {
-            case PARAMETER_SPREAD:
+            if (argument instanceof InlineInfo.ParameterArgument) {
+                InlineInfo.ParameterArgument parameterArgument = (InlineInfo.ParameterArgument)argument;
+                int argumentIndex = ((Functional)parameterArgument.getSourceParameter().getContainer()).getParameterLists().get(0).getParameters().indexOf(parameterArgument.getSourceParameter());
                 if (invocation.getPositionalArgumentList() != null) {
                     java.util.List<PositionalArgument> pa = invocation.getPositionalArgumentList().getPositionalArguments();
-                    transformSpreadArgument(pa.subList(argumentIndex, pa.size()), classParameter);
-                } else if (invocation.getNamedArgumentList() != null) {
-                    append(exprGen.makeErroneous(invocation, "Spread argument with named invocation not supported"));
-                }
-                break;
-            case PARAMETER:
-                if (invocation.getPositionalArgumentList() != null) {
-                    java.util.List<PositionalArgument> pa = invocation.getPositionalArgumentList().getPositionalArguments();
-                    PositionalArgument argument = pa.get(argumentIndex);
-                    if (argument.getParameter().isSequenced()) {
-                        transformVarargs(argumentIndex, pa);
+                    
+                    if (parameterArgument.isSpread()) {
+                        transformSpreadArgument(pa.subList(argumentIndex, pa.size()), classParameter);
                     } else {
-                        transformArgument(argument);
-                    }
-                } else if (invocation.getNamedArgumentList() != null) {
-                    boolean found = false;
-                    for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
-                        Parameter parameter = na.getParameter();
-                        int parameterIndex = annotationConstructor.getParameterLists().get(0).getParameters().indexOf(parameter);
-                        if (parameterIndex == encodedArgument) {
-                            transformArgument(na);
-                            found = true;
-                            break;
+                        PositionalArgument pargument = pa.get(argumentIndex);
+                        if (pargument.getParameter().isSequenced()) {
+                            transformVarargs(argumentIndex, pa);
+                        } else {
+                            transformArgument(pargument);
                         }
                     }
-                    if (!found) {
-                        append(exprGen.makeErroneous(invocation, "Unable to find argument"));
+                } else if (invocation.getNamedArgumentList() != null) {
+                    if (parameterArgument.isSpread()) {
+                        append(exprGen.makeErroneous(invocation, "Spread argument with named invocation not supported"));
+                    } else {
+                        boolean found = false;
+                        for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
+                            Parameter parameter = na.getParameter();
+                            int parameterIndex = annotationConstructor.getParameterLists().get(0).getParameters().indexOf(parameter);
+                            if (parameterIndex == argumentIndex) {
+                                transformArgument(na);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            append(exprGen.makeErroneous(invocation, "Unable to find argument"));
+                        }    
                     }
                 }
-                break;
-            case STATIC:
+            } else if (argument instanceof LiteralArgument) {
                 exprGen.at(invocation);
                 append(exprGen.naming.makeQuotedQualIdent(
                                 exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
                                 parameterName));
-                break;
-            default:
+            } else {
                 append(exprGen.makeErroneous(invocation, "Unable to find argument"));
             }
             
@@ -242,9 +243,7 @@ class AnnotationInvocationVisitor extends Visitor {
         exprs = prevCollect;
         return exprGen.make().NewArray(null,  null, collected.toList());
     }
-    
-    // TODO Instantiation of annotation classes
-    // TODO invocation of annotation constructors?
+
     public void visit(Tree.SequenceEnumeration term) {
         ListBuffer<JCExpression> prevCollect = startArray();
         try {

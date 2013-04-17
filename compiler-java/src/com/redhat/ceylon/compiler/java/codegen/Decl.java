@@ -33,10 +33,15 @@ import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
+import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -538,5 +543,46 @@ public class Decl {
     public static boolean isLanguageModuleDeclaration(Declaration declarationModel) {
         Package pkg = getPackageContainer(declarationModel.getContainer());
         return pkg != null && pkg.getNameAsString().startsWith("ceylon.language");
+    }
+    
+    public static int encodeAnnotationConstructor(InlineInfo.InlineArgument inlineArgument) {
+        // On the JVM the number of method parameters is limited to 255
+        // So 0-255 are for unmodified parameter expressions being used as arguments
+        // 256-511 are for spread parameter expressions being used as arguments
+        if (inlineArgument instanceof InlineInfo.LiteralArgument) {
+            return Short.MIN_VALUE;
+        } else if (inlineArgument instanceof InlineInfo.ParameterArgument) {
+            ParameterArgument parameterArgument = (InlineInfo.ParameterArgument)inlineArgument;
+            Parameter parameter = parameterArgument.getSourceParameter();
+            int index = ((Functional)parameter.getContainer()).getParameterLists().get(0).getParameters().indexOf(parameter);
+            if (parameterArgument.isSpread()) {
+                index += 256;
+            }
+            return index;
+        }
+        throw Assert.fail();
+    }
+    
+    public static InlineInfo.InlineArgument decodeAnnotationConstructor(List<Parameter> sourceParameters, InlineInfo info, int code) {
+        Class ac = (Class)info.getPrimary();
+        InlineArgument result;
+        if (code == Short.MIN_VALUE) {
+            result = info.new LiteralArgument();
+        } else if (code >= 0 && code < 512) {
+            boolean spread = false;
+            if (code >= 256) {
+                spread = true;
+                code-=256;
+            }
+            ParameterArgument parameterArgument = info.new ParameterArgument();
+            parameterArgument.setSpread(spread);
+            Parameter sourceParameter = sourceParameters.get(code);
+            parameterArgument.setSourceParameter(sourceParameter);
+            //result.setTargetParameter(sourceParameter);
+            result = parameterArgument;
+        } else {
+            throw Assert.fail();
+        }
+        return result;
     }
 }
