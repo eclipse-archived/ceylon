@@ -804,7 +804,7 @@ public class Naming implements LocalId {
             Assert.not(decl instanceof Method, "A method has no getter");
             expr = makeQualIdent(expr, getGetterName(decl));
         } else if (decl instanceof Value) {
-            if (gen().isCeylonCallable(decl.getType())) {
+            if (gen().isCeylonCallableSubtype(decl.getType())) {
                 expr = makeQualIdent(expr, decl.getName());
             } else {
                 expr = makeQualIdent(expr, getGetterName(decl));

@@ -215,7 +215,7 @@ abstract class Invocation {
                 } else {
                     actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
                 }
-                if (!gen.isCeylonCallable(getPrimary().getTypeModel())) {                    
+                if (!gen.isCeylonCallableSubtype(getPrimary().getTypeModel())) {                    
                     actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
                 }
                 selector = Naming.getCallableMethodName();

@@ -1624,7 +1624,7 @@ public class ClassTransformer extends AbstractTransformer {
                         method, 
                         naming.makeUnquotedIdent(name),
                         primary);
-            } else if (isCeylonCallable(primary.getTypeModel())) {
+            } else if (isCeylonCallableSubtype(primary.getTypeModel())) {
                 invocation = new CallableSpecifierInvocation(
                         this, 
                         method, 

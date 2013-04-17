@@ -3785,7 +3785,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     boolean isFunctionalResult(ProducedType type) {
         return !isWithinInvocation()
-            && isCeylonCallable(type);   
+            && isCeylonCallableSubtype(type);   
     }
 
     boolean withinInvocation(boolean withinInvocation) {

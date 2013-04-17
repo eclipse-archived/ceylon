@@ -1012,6 +1012,10 @@ public abstract class AbstractTransformer implements Transformation {
 //        return type.getDeclaration().getUnit().isCallableType(type);
     }
 
+    boolean isCeylonCallableSubtype(ProducedType type) {
+        return typeFact().isCallableType(type);
+    }
+
     boolean isExactlySequential(ProducedType type) {
         return typeFact().getDefiniteType(type).getDeclaration() == typeFact.getSequentialDeclaration();
     }
@@ -1567,13 +1571,13 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
-        Assert.that(isCeylonCallable(typeModel), "Expected Callable<...>, but was " + typeModel);
+        Assert.that(isCeylonCallableSubtype(typeModel), "Expected Callable<...>, but was " + typeModel);
         ProducedType ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
         return ct.getTypeArgumentList().get(0);
     }
     
     ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
-        Assert.that(isCeylonCallable(callableType));
+        Assert.that(isCeylonCallableSubtype(callableType));
         ProducedType tuple = typeFact().getCallableTuple(callableType);
         if(tuple != null){
             java.util.List<ProducedType> elementTypes = typeFact().getTupleElementTypes(tuple);
