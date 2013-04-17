@@ -1731,25 +1731,6 @@ public class StatementTransformer extends AbstractTransformer {
             JCVariableDecl innerExTmpVar = makeVar(innerExTmpVarName, innerExType, makeNull());
             stats = stats.append(innerExTmpVar);
             
-            // $var.close() /// ((Closeable)$var).close()
-            List<JCStatement> closeTryStats = List.nil();
-            JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
-            JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "close"), List.<JCExpression>of(exarg));
-            closeTryStats = closeTryStats.append(make().Exec(closeCall));
-            JCBlock closeTryBlock = make().Block(0, closeTryStats);
-            
-            // if ($tmpex == null) { throw ex }
-            Name closeCatchVarName = naming.tempName("closex");
-            JCBinary closeCatchCond = make().Binary(JCTree.EQ, makeUnquotedIdent(innerExTmpVarName), makeNull());
-            JCThrow closeCatchThrow = make().Throw(make().Ident(closeCatchVarName));
-            JCIf closeCatchIf = make().If(closeCatchCond, closeCatchThrow, null);
-            
-            // try { $var.close() } catch (Exception ex) { ... }
-            JCExpression closeCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
-            JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
-            JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>of(closeCatchIf)));
-            JCTry closeTry = at(res).Try(closeTryBlock, List.<JCCatch>of(closeCatch), null);
-
             // $tmpex = ex;
             List<JCStatement> innerCatchStats = List.nil();
             Name innerCatchVarName = naming.tempName("ex");
@@ -1761,6 +1742,25 @@ public class StatementTransformer extends AbstractTransformer {
             innerCatchStats = innerCatchStats.append(innerCatchThrow);
             JCBlock innerCatchBlock = make().Block(0, innerCatchStats);
             
+            // if ($tmpex == null) { throw ex }
+            Name closeCatchVarName = naming.tempName("closex");
+            JCBinary closeCatchCond = make().Binary(JCTree.EQ, makeUnquotedIdent(innerExTmpVarName), makeNull());
+            JCThrow closeCatchThrow = make().Throw(make().Ident(closeCatchVarName));
+            JCIf closeCatchIf = make().If(closeCatchCond, closeCatchThrow, null);
+            
+            // $var.close() /// ((Closeable)$var).close()
+            List<JCStatement> closeTryStats = List.nil();
+            JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
+            JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(resourceUseExpr(res, resVarName), "close"), List.<JCExpression>of(exarg));
+            closeTryStats = closeTryStats.append(make().Exec(closeCall));
+            JCBlock closeTryBlock = make().Block(0, closeTryStats);
+            
+            // try { $var.close() } catch (Exception ex) { ... }
+            JCExpression closeCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+            JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
+            JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>of(closeCatchIf)));
+            JCTry closeTry = at(res).Try(closeTryBlock, List.<JCCatch>of(closeCatch), null);
+
             // try { .... } catch (Exception ex) { $tmpex=ex; throw ex; }
             // finally { try { $var.close() } catch (Exception closex) { } }
             JCExpression innerCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
