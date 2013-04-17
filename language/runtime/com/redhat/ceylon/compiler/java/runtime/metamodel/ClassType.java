@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.metamodel;
+package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Class;
@@ -42,7 +42,7 @@ public class ClassType<Type, Arguments extends Sequential<? extends Object>>
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        com.redhat.ceylon.compiler.java.metamodel.Class<Type, Arguments> declaration = (com.redhat.ceylon.compiler.java.metamodel.Class<Type, Arguments>) this.declaration;
+        com.redhat.ceylon.compiler.java.runtime.metamodel.Class<Type, Arguments> declaration = (com.redhat.ceylon.compiler.java.runtime.metamodel.Class<Type, Arguments>) this.declaration;
         return TypeDescriptor.klass(ClassType.class, declaration.$getReifiedType(), declaration.$getReifiedArguments());
     }
 }

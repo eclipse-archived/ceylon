@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.metamodel;
+package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.LinkedHashMap;
 
@@ -30,7 +30,7 @@ public class ClassOrInterfaceType<Type>
 
     private volatile boolean initialised;
     private final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
-    protected com.redhat.ceylon.compiler.java.metamodel.ClassOrInterface<? extends Type> declaration;
+    protected com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface<? extends Type> declaration;
     protected ceylon.language.Map<? extends ceylon.language.metamodel.TypeParameter, ? extends ceylon.language.metamodel.ProducedType> typeArguments;
     
     ClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
@@ -73,7 +73,7 @@ public class ClassOrInterfaceType<Type>
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
             = producedType.getTypeArguments();
         while((it = typeParameters.next()) != finished_.getFinished$()){
-            com.redhat.ceylon.compiler.java.metamodel.TypeParameter tp = (com.redhat.ceylon.compiler.java.metamodel.TypeParameter) it;
+            com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter) it;
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
             ProducedType ptArgWrapped = Util.getMetamodel(ptArg);

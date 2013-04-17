@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.metamodel;
+package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class ClassOrInterface<Type>
         ceylon.language.metamodel.TypeParameter[] typeParametersArray = new ceylon.language.metamodel.TypeParameter[typeParameters.size()];
         i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : typeParameters){
-            typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.metamodel.TypeParameter(tp);
+            typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter(tp);
         }
         this.typeParameters = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.TypeParameter.$TypeDescriptor, typeParametersArray);
     }

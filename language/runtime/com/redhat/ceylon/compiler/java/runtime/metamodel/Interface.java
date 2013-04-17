@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.metamodel;
+package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.RetentionPolicy;
 
