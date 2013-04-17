@@ -19,25 +19,47 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+
 class Assert {
+    private static String formatMessage(String message, Node node) {
+        String result = "";
+        if (message != null) {
+            result += message + " ";
+        }
+        if (node != null) {
+            result += "source code location: " + node.getUnit().getFilename() + ":" + node.getLocation() + " ";
+        }
+        return result.trim();
+    }
+    
+    static RuntimeException fail(String message, Node node) {
+        throw new RuntimeException(formatMessage(message, node));
+    }
     static RuntimeException fail(String message) {
-        throw new RuntimeException(message);
+        return fail(message, null);
     }
     static RuntimeException fail() {
-        return fail(null);
+        return fail(null, null);
+    }
+    static void that(boolean cond, String message, Node node) {
+        if (!cond) {
+            fail(message, node);
+        }
     }
     static void that(boolean cond, String message) {
-        if (!cond) {
-            fail(message);
-        }
+        that(cond, message, null);
     }
     static void that(boolean cond) {
         that(cond, null);
     }
-    static void not(boolean cond, String message) {
+    static void not(boolean cond, String message, Node node) {
         if (cond) {
-            fail(message);
+            fail(message, node);
         }
+    }
+    static void not(boolean cond, String message) {
+        not(cond, message, null);
     }
     static void not(boolean cond) {
         not(cond, null);
