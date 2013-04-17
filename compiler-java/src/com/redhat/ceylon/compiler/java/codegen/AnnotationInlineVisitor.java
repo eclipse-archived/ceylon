@@ -32,7 +32,7 @@ public class AnnotationInlineVisitor extends Visitor {
     }
     
     protected void error(Node node, String string) {
-        // TODO
+        node.addError(string);
     }
     
     public void visit(Tree.MethodDefinition d) {
