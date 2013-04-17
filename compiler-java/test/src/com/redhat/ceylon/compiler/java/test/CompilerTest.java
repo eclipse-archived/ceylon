@@ -56,6 +56,7 @@ import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
@@ -457,10 +458,10 @@ public abstract class CompilerTest {
                 System.err.println("Running " + main +" with classpath" + urls);
                 NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
                 // set up the runtime module system
-                com.redhat.ceylon.compiler.java.Util.resetModuleManager();
-                com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
+                Metamodel.resetModuleManager();
+                Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
                 for (ModuleWithArtifact module : modules) {
-                    com.redhat.ceylon.compiler.java.Util.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+                    Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
                 }
                 String mainClass = main;
                 String mainMethod = main.replaceAll("^.*\\.", "");

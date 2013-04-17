@@ -44,6 +44,7 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -273,9 +274,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             @Override
             public void run() {
                 // set up the runtime module system
-                com.redhat.ceylon.compiler.java.Util.resetModuleManager();
-                com.redhat.ceylon.compiler.java.Util.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), cl);
-                com.redhat.ceylon.compiler.java.Util.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
+                Metamodel.resetModuleManager();
+                Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), cl);
+                Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
             }
         };
         return cl;
