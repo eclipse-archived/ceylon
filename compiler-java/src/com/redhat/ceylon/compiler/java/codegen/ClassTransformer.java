@@ -389,11 +389,13 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Tuple seq = (Tree.Tuple)term;
             SequencedArgument sequencedArgument = seq.getSequencedArgument();
             defaultLiteral = makeArrayInitializer(sequencedArgument);
-        } /*else if (term instanceof Tree.InvocationExpression) {
+        } else if (term instanceof Tree.InvocationExpression) {
             // Allow invocations of annotation constructors, so long as they're
             // themselves being invoked with permitted arguments
-            defaultLiteral = expressionGen().transformAnnotation((Tree.InvocationExpression)term, false);
-        }*/
+            Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
+            AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(expressionGen(), invocation);
+            defaultLiteral = visitor.transform(invocation);
+        }
         if (defaultLiteral == null) {
             defaultLiteral = makeErroneous(p, "Unsupported defaulted parameter expression");
         }
