@@ -3964,10 +3964,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public List<JCAnnotation> transform(Tree.AnnotationList annotationList) {
         
-        LinkedHashMap<Class, List<JCAnnotation>> annos = new LinkedHashMap<>();
+        LinkedHashMap<Class, List<JCAnnotation>> annotationSet = new LinkedHashMap<>();
         if (annotationList != null) {
             if (annotationList.getAnonymousAnnotation() != null) {
-                //result.append(transform(annotationList.getAnonymousAnnotation()));
+                transformAnonymousAnnotation(annotationList.getAnonymousAnnotation(), annotationSet);
             }
             java.util.List<String> blacklist = Arrays.asList(
                     "annotation", 
@@ -3984,19 +3984,23 @@ public class ExpressionTransformer extends AbstractTransformer {
                             && blacklist.contains(((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration().getName())) {
                         continue;
                     }
-                    transformAnnotation(annotation, annos);
+                    transformAnnotation(annotation, annotationSet);
                 }
             }
         }
         ListBuffer<JCAnnotation> result = ListBuffer.lb();
-        for (Class ac : annos.keySet()) {
-            if (isSequencedAnnotation(ac)) {
+        for (Class annotationClass : annotationSet.keySet()) {
+            List<JCAnnotation> annotations = annotationSet.get(annotationClass);
+            if (isSequencedAnnotation(annotationClass)) {
                 JCAnnotation wrapperAnnotation = make().Annotation(
-                        makeJavaType(ac.getType(), JT_ANNOTATIONS), 
-                        List.<JCExpression>of(make().NewArray(null,  null, (List)annos.get(ac))));
+                        makeJavaType(annotationClass.getType(), JT_ANNOTATIONS), 
+                        List.<JCExpression>of(make().NewArray(null,  null, (List)annotations)));
                 result.append(wrapperAnnotation);
             } else {
-                result.appendList(annos.get(ac));
+                if (annotations.size() > 1) {
+                    makeErroneous(annotationList, "Multiple occurances of non-sequenced annotation class " + annotationClass.getQualifiedNameString());
+                }
+                result.appendList(annotations);
             }
         }
         return result.toList();
@@ -4010,22 +4014,26 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCAnnotation annotation = visitor.transformConstructor(invocation);
         Class annotationClass = visitor.getAnnotationClass();
         
+        putAnnotation(annotationSet, annotation, annotationClass);
+    }
+
+    private void putAnnotation(
+            Map<Class, List<JCAnnotation>> annotationSet,
+            JCAnnotation annotation, Class annotationClass) {
         List<JCAnnotation> list = annotationSet.get(annotationClass);
         if (list == null) {
             list = List.nil();
-        } else if (!isSequencedAnnotation(annotationClass)) {
-            makeErroneous(invocation, "Multiple occurances of OptionalAnnotation!");
         }
-        
         annotationSet.put(annotationClass, list.prepend(annotation));
     }
 
 
-    public JCAnnotation transform(Tree.AnonymousAnnotation annotation) {
-        return at(annotation).Annotation(
-                naming.makeName((TypedDeclaration)typeFact().getLanguageModuleDeclaration("doc"), 
-                        Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_ANNOTATION), 
+    public void transformAnonymousAnnotation(Tree.AnonymousAnnotation annotation, Map<Class, List<JCAnnotation>> annos) {
+        ProducedType docType = ((TypeDeclaration)typeFact().getLanguageModuleDeclaration("Doc")).getType();
+        JCAnnotation docAnnotation = at(annotation).Annotation(
+                makeJavaType(docType,  JT_ANNOTATION), 
                 List.<JCExpression>of(make().Assign(naming.makeUnquotedIdent("description"),
                         transform(annotation.getStringLiteral()))));
+        putAnnotation(annos, docAnnotation, (Class)docType.getDeclaration());
     }
 }
