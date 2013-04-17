@@ -1792,49 +1792,7 @@ public class ClassTransformer extends AbstractTransformer {
                     ));
         }
     }
-    
-    /** 
-     * Transforms an annotation constructor into it's Java annotation type:
-     * <pre>
-     * annotation Foo bar(String a, String s="") ...
-     * <pre>
-     * is transformed into:
-     * <pre>
-     * @interface bar$annotation_ {
-     *     String s() default "";
-     *     @Foo$annotation $class();
-     * }
-     * <pre>
-     * Note that only defaulted parameters of the annotation constructor get
-     * annotation methods -- other arguments will be encoded at the use site
-     * in the {@code $class=} argument.
-     */
-    private List<JCTree> transformAnnotationConstructorType(AnyMethod def) {
-        Method methodModel = def.getDeclarationModel();
-        
-        ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, 
-                naming.annotationTypeName(methodModel, 0), null);
-        annoBuilder.modifiers(transformMethodDeclFlags(methodModel) & ~(Flags.STATIC | Flags.ABSTRACT) 
-                | Flags.ANNOTATION | Flags.INTERFACE);
-        
-        {// The $class() method
-            annoBuilder.method(makeAnnotationMethod("$class", 
-                    makeJavaType(methodModel.getType(), JT_ANNOTATION), 
-                    null));
-        }
-        
-        for (Tree.Parameter parameter : def.getParameterLists().get(0).getParameters()) {
-            Parameter parameterModel = parameter.getDeclarationModel();
-            if (!parameterModel.isDefaulted()) {
-                continue;
-            }
-            annoBuilder.method(makeAnnotationMethod(naming.selector(parameterModel), 
-                    transformAnnotationMethodType(parameter), 
-                    transformAnnotationParameterDefault(parameter)));            
-        }
-        return annoBuilder.build();
-    }
-    
+
     private MethodDefinitionBuilder makeAnnotationMethod(String name, JCExpression type, JCExpression defaultValue) {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, name);
         mdb.modifiers(PUBLIC | ABSTRACT);
