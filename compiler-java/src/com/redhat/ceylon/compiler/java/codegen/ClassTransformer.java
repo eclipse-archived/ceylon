@@ -1788,7 +1788,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     make().NewArray(null, null, p.toList())),
                             make().Assign(
                                     naming.makeUnquotedIdent("annotationClass"),
-                                    naming.makeQualIdent(makeJavaType(annotationClass, JT_ANNOTATION), "class"))
+                                    naming.makeQualIdent(makeJavaType(annotationClass), "class"))
                     ));
         }
     }
