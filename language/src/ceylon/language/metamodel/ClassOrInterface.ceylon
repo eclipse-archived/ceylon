@@ -19,4 +19,6 @@ shared interface ClassOrInterface<out Type>
             given Kind satisfies Declaration;
     
     shared formal TypeParameter[] typeParameters;
+    
+    shared formal TypeParameter? getTypeParameter(String name);
 }

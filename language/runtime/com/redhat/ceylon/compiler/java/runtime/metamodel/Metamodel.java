@@ -17,8 +17,11 @@ import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 public class Metamodel {
 
@@ -120,6 +123,21 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.InterfaceType(pt);
         }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeParameter){
+            // we need to find where it came from to look up the proper wrapper
+            com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp = (TypeParameter) declaration;
+            Scope container = tp.getContainer();
+            // FIXME: support more container sources, such as methods and outer declarations
+            if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
+                com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface containerMetamodel = getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
+                ceylon.language.metamodel.TypeParameter typeParameter = containerMetamodel.getTypeParameter(tp.getName());
+                if(typeParameter != null)
+                    return new TypeParameterType(typeParameter);
+                throw new RuntimeException("Failed to find type parameter: "+tp.getName()+" in container "+container);
+            }
+            throw new RuntimeException("Declaration container type not supported yet: "+container);
+        }
+        
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 

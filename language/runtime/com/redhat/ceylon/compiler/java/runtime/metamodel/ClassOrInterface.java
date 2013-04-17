@@ -3,7 +3,9 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.List;
 
 import ceylon.language.Anything;
+import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.finished_;
 import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Member;
 
@@ -136,6 +138,20 @@ public class ClassOrInterface<Type>
     public Sequential<? extends ceylon.language.metamodel.TypeParameter> getTypeParameters() {
         checkInit();
         return typeParameters;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::TypeParameter|ceylon.language::Null")
+    public ceylon.language.metamodel.TypeParameter getTypeParameter(@Name("name") String name) {
+        checkInit();
+        Iterator<? extends ceylon.language.metamodel.TypeParameter> iterator = typeParameters.iterator();
+        Object it;
+        while((it = iterator.next()) != finished_.getFinished$()){
+            ceylon.language.metamodel.TypeParameter tp = (ceylon.language.metamodel.TypeParameter) it;
+            if(tp.getName().equals(name))
+                return tp;
+        }
+        return null;
     }
 
     @Override

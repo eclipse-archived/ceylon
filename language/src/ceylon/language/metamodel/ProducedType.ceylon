@@ -1,7 +1,12 @@
 
 shared interface ProducedType{}
 
-shared interface ClassOrInterfaceType<out Type> satisfies ProducedType{
+shared interface TypeParameterType satisfies ProducedType {
+    
+    shared formal TypeParameter declaration;
+}
+
+shared interface ClassOrInterfaceType<out Type> satisfies ProducedType {
     
     shared formal ClassOrInterface<Type> declaration;
     
