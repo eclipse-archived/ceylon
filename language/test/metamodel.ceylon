@@ -1,8 +1,8 @@
 void testMetamodel() {
     value m = type("falbala");
     
-    check(m is Class<String, []>, "metamodel is Class");    
-    if(is Class<String, []> m){
-        check(m.name == "String", "metamodel class name is String");
+    check(m is ClassType<String, []>, "metamodel is Class");    
+    if(is ClassType<String, []> m){
+        check(m.declaration.name == "String", "metamodel class name is String");
     }
 }
