@@ -62,6 +62,11 @@ public class UserAnnotationsTest extends CompilerTest {
         compile("AnnotationConstructorUse.ceylon");
     }
     
+    @Test
+    public void testAnonymousAnnotation(){
+        compareWithJavaSource("AnonymousAnnotation");
+    }
+    
     // TODO Commit what I have
     // TODO rebase what I have
     // TODO Specify what we actually support
@@ -75,54 +80,7 @@ public class UserAnnotationsTest extends CompilerTest {
     // as simple invocation arguments.
  // TODO Think about the transformation of non-simple annotation constructors
  // and invocations
- // TODO Interop
-    
-    /* TODO Defaults @Test
-    public void testAnnotationClassStringDefaulted(){
-        compareWithJavaSource("AnnotationClassStringDefaulted");
-    }
-    @Test
-    public void testAnnotationClassIntegerDefaulted(){
-        compareWithJavaSource("AnnotationClassIntegerDefaulted");
-    }
-    @Test
-    public void testAnnotationClassBooleanDefaulted(){
-        compareWithJavaSource("AnnotationClassBooleanDefaulted");
-    }
-    @Test
-    public void testAnnotationClassCharacterDefaulted(){
-        compareWithJavaSource("AnnotationClassCharacterDefaulted");
-    }
-    @Test
-    public void testAnnotationClassFloatDefaulted(){
-        compareWithJavaSource("AnnotationClassFloatDefaulted");
-    }
-    
-    @Test
-    public void testAnnotationClassAnnotationClassDefaulted(){
-        compareWithJavaSource("AnnotationClassAnnotationClassDefaulted");
-    }*/
-    /*
-    @Test
-    public void testAnnotationClassSequencesAndIterables(){
-        compareWithJavaSource("AnnotationClassSequencesAndIterables");
-    }
-    */
-    /*
-    @Test
-    public void testConstructorArguments(){
-        compareWithJavaSource("ConstructorArguments");
-    }
-    
-    @Test
-    public void testDocAnnotation(){
-        compareWithJavaSource("DocAnnotation");
-    }
-    
-    @Test
-    public void testByAnnotation(){
-        compareWithJavaSource("ByAnnotation");
-    }
-    */
+ // TODO Interop: How to annotate a Ceylon declaration with a Java annotation
+    // How to make a Java annotation look like a Ceylon annotation type
     
  }

@@ -17,9 +17,15 @@ class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runti
     }
     
     AnnotationClassCharacter(final int c) {
+        this.c = c;
         this.$ceylon$language$metamodel$SequencedAnnotation$this = new .ceylon.language.metamodel.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
         this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter>, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
         this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor, this);
+    }
+    private final int c;
+    
+    public final int getC() {
+        return c;
     }
     protected final .ceylon.language.metamodel.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.metamodel.Type<? extends .java.lang.Object>> $ceylon$language$metamodel$SequencedAnnotation$this;
     
@@ -74,9 +80,15 @@ class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.j
     }
     
     AnnotationClassCharacterDefaulted(final int c) {
+        this.c = c;
         this.$ceylon$language$metamodel$OptionalAnnotation$this = new .ceylon.language.metamodel.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
         this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.metamodel.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.metamodel.Type<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Type.class, .ceylon.language.Anything.$TypeDescriptor), this);
         this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.metamodel.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor, this);
+    }
+    private final int c;
+    
+    public final int getC() {
+        return c;
     }
     
     static int $init$c() {
