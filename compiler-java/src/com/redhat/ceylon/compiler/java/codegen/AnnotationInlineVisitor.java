@@ -34,6 +34,7 @@ public class AnnotationInlineVisitor extends Visitor {
         node.addError(string);
     }
     
+    @Override
     public void visit(Tree.MethodDefinition d) {
         if (Decl.isAnnotationConstructor(d)) {
             annotationConstructor = d;
@@ -48,6 +49,7 @@ public class AnnotationInlineVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.MethodDeclaration d) {
         if (Decl.isAnnotationConstructor(d)
                 && d.getSpecifierExpression() != null) {
@@ -64,6 +66,7 @@ public class AnnotationInlineVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.Statement d) {
         if (annotationConstructor != null) {
             if (annotationConstructor instanceof Tree.MethodDefinition 
@@ -74,10 +77,21 @@ public class AnnotationInlineVisitor extends Visitor {
         }
         super.visit(d);
     }
+    
+    @Override
     public void visit(Tree.AnnotationList al) {    
     }
-    public void visit(Tree.ParameterList pl) {    
+    
+    @Override
+    public void visit(Tree.DefaultArgument d) {
+        if (annotationConstructor != null) {
+            if (!(d.getSpecifierExpression().getExpression().getTerm() instanceof Tree.Literal)) {                
+                error(d, "Only literal default parameters allowed");
+            }
+        }
     }
+    
+    @Override
     public void visit(Tree.InvocationExpression invocation) {
         if (annotationConstructor != null) {
             checkingInvocationPrimary = true;
@@ -94,8 +108,9 @@ public class AnnotationInlineVisitor extends Visitor {
         } else {
             super.visit(invocation);
         }
-        
     }
+    
+    @Override
     public void visit(Tree.Literal literal) {
         if (annotationConstructor != null) {
             if (checkingArguments){
@@ -105,17 +120,22 @@ public class AnnotationInlineVisitor extends Visitor {
             }
         }
     }
+    
+    @Override
     public void visit(Tree.Expression term) {
         if (annotationConstructor != null) {
             term.visitChildren(this);
         }
     }
+    
+    @Override
     public void visit(Tree.Term term) {
         if (annotationConstructor != null) {
             error(term, "Unsupported term " + term.getClass().getSimpleName());
         }
     }
     
+    @Override
     public void visit(Tree.BaseMemberExpression bme) {
         if (annotationConstructor != null) {
             if (checkingArguments){
@@ -146,6 +166,7 @@ public class AnnotationInlineVisitor extends Visitor {
         inlineInfo.getArguments().add(a);
     }
 
+    @Override
     public void visit(Tree.BaseTypeExpression bte) {
         if (annotationConstructor != null) {
             if (checkingInvocationPrimary) {
@@ -160,12 +181,14 @@ public class AnnotationInlineVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.PositionalArgument argument) {
         if (annotationConstructor != null) {
             error(argument, "Unsupported positional argument");
         }
     }
     
+    @Override
     public void visit(Tree.SpreadArgument argument) {
         if (annotationConstructor != null) {
             classParameter = argument.getParameter();
@@ -176,6 +199,7 @@ public class AnnotationInlineVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.ListedArgument argument) {
         if (annotationConstructor != null) {
             classParameter = argument.getParameter();
@@ -184,12 +208,14 @@ public class AnnotationInlineVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.NamedArgument argument) {
         if (annotationConstructor != null) {
             error(argument, "Unsupported named argument");
         }
     }
     
+    @Override
     public void visit(Tree.SpecifiedArgument argument) {
         if (annotationConstructor != null) {
             classParameter = argument.getParameter();

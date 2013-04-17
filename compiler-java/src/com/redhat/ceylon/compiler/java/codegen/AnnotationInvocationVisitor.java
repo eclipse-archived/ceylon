@@ -116,11 +116,18 @@ class AnnotationInvocationVisitor extends Visitor {
                     if (parameterArgument.isSpread()) {
                         transformSpreadArgument(pa.subList(argumentIndex, pa.size()), classParameter);
                     } else {
-                        PositionalArgument pargument = pa.get(argumentIndex);
-                        if (pargument.getParameter().isSequenced()) {
-                            transformVarargs(argumentIndex, pa);
+                        if (0 <= argumentIndex && argumentIndex < pa.size()) {
+                            PositionalArgument pargument = pa.get(argumentIndex);
+                            if (pargument.getParameter().isSequenced()) {
+                                transformVarargs(argumentIndex, pa);
+                            } else {
+                                transformArgument(pargument);
+                            }
                         } else {
-                            transformArgument(pargument);
+                            // Use the default parameter from the constructor
+                            append(exprGen.naming.makeQuotedQualIdent(
+                                    exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
+                                    parameterName));
                         }
                     }
                 } else if (invocation.getNamedArgumentList() != null) {

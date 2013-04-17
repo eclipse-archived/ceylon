@@ -69,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -1576,11 +1577,11 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     public List<JCTree> makeLiteralArguments(Tree.AnyMethod method) {
-        class AnnotationConstructorVisitor extends Visitor {
+        class AnnotationConstructorVisitor extends Visitor implements NaturalVisitor {
             
             private ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
             private boolean checkingArguments;
-            private Parameter classParameter;
+            private String fieldName;
             
             @Override
             public void handleException(Exception e, Node node) {
@@ -1588,6 +1589,15 @@ public class ClassTransformer extends AbstractTransformer {
                     throw (RuntimeException)e;
                 } else {
                     throw new RuntimeException(e);
+                }
+            }
+            
+            public void visit(Tree.Parameter p) {
+                if (p.getDefaultArgument() != null) {
+                    checkingArguments = true;
+                    fieldName = p.getDeclarationModel().getName();
+                    super.visit(p);
+                    checkingArguments = false;
                 }
             }
             
@@ -1620,18 +1630,18 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             public void visit(Tree.PositionalArgument arg) {
-                classParameter = arg.getParameter();
+                fieldName = arg.getParameter().getName();
                 super.visit(arg);
             }
             
             public void visit(Tree.NamedArgument arg) {
-                classParameter = arg.getParameter();
+                fieldName = arg.getParameter().getName();
                 super.visit(arg);
             }
             
             private void appendStaticArgument(Tree.Primary bme, JCExpression init) {
                 staticArgs.append(makeVar(STATIC | FINAL, 
-                        classParameter.getName(), 
+                        fieldName,
                         makeJavaType(bme.getTypeModel()), 
                         init));
             }
