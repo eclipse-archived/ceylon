@@ -1,13 +1,14 @@
 package com.redhat.ceylon.compiler.java;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ceylon.language.ArraySequence;
-import ceylon.language.Empty;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
@@ -15,7 +16,6 @@ import ceylon.language.Ranged;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.Declaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -28,7 +28,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
-import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -112,20 +111,39 @@ public class Util {
         return instanceType.toProducedType(moduleManager);
     }
 
-    public static Declaration getMetamodel(TypeDescriptor typeDescriptor) {
+    public static ceylon.language.metamodel.ProducedType getMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw new RuntimeException("Metamodel not yet supported for Java types");
         ProducedType pt = typeDescriptor.toProducedType(moduleManager);
         return getMetamodel(pt);
     }
     
-    public static Declaration getMetamodel(ProducedType pt) {
+    // FIXME: this will need better thinking in terms of memory usage
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface, com.redhat.ceylon.compiler.java.metamodel.ClassOrInterface> typeCheckModelToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface, com.redhat.ceylon.compiler.java.metamodel.ClassOrInterface>();
+    
+    public static com.redhat.ceylon.compiler.java.metamodel.ClassOrInterface getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration){
+        synchronized(typeCheckModelToRuntimeModel){
+            com.redhat.ceylon.compiler.java.metamodel.ClassOrInterface ret = typeCheckModelToRuntimeModel.get(declaration);
+            if(ret == null){
+                if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+                    ret = new com.redhat.ceylon.compiler.java.metamodel.Class((com.redhat.ceylon.compiler.typechecker.model.Class)declaration); 
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+                    ret = new com.redhat.ceylon.compiler.java.metamodel.Interface((com.redhat.ceylon.compiler.typechecker.model.Interface)declaration);
+                }
+                typeCheckModelToRuntimeModel.put(declaration, ret);
+            }
+            return ret;
+        }
+    }
+    
+    public static ceylon.language.metamodel.ProducedType getMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
-            return new com.redhat.ceylon.compiler.java.metamodel.Class((com.redhat.ceylon.compiler.typechecker.model.Class)declaration);
+            return new com.redhat.ceylon.compiler.java.metamodel.ClassType(pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new com.redhat.ceylon.compiler.java.metamodel.Interface((com.redhat.ceylon.compiler.typechecker.model.Interface)declaration);
+            return new com.redhat.ceylon.compiler.java.metamodel.InterfaceType(pt);
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }

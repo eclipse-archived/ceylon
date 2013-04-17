@@ -76,4 +76,10 @@ public class Class<Type, Arguments extends Sequential<? extends Object>>
         checkInit();
         return TypeDescriptor.klass(Class.class, $reifiedType, $reifiedArguments);
     }
+
+    @Ignore
+    TypeDescriptor $getReifiedArguments(){
+        checkInit();
+        return $reifiedArguments;
+    }
 }
