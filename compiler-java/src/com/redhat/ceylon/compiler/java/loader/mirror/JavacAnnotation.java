@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.sun.tools.javac.code.Attribute;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
+import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.util.Pair;
 
 public class JavacAnnotation implements AnnotationMirror {
@@ -69,6 +70,8 @@ public class JavacAnnotation implements AnnotationMirror {
             return new JavacAnnotation((Compound) attr);
         if(attr instanceof Attribute.Enum)
             return ((Attribute.Enum)attr).getValue().name.toString();
+        if(attr instanceof Attribute.Class)
+            return new JavacType(((Attribute.Class)attr).getValue());
         // FIXME: turn into error
         throw new RuntimeException("Unknown attribute type: "+attr);
     }

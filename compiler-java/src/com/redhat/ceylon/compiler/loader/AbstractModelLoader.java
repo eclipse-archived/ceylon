@@ -127,6 +127,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_VALUETYPE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ValueType";
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
+    private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
 
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
@@ -1061,6 +1062,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private String getAnnotationStringValue(AnnotatedMirror mirror, String type, String field) {
         return (String) getAnnotationValue(mirror, type, field);
+    }
+    
+    private TypeMirror getAnnotationClassValue(AnnotatedMirror mirror, String type, String field) {
+        return (TypeMirror) getAnnotationValue(mirror, type, field);
+    }
+    
+    private List<Short> getAnnotationShortArrayValue(AnnotatedMirror mirror, String type, String field) {
+        return getAnnotationArrayValue(mirror, type, field);
     }
 
     private Boolean getAnnotationBooleanValue(AnnotatedMirror mirror, String type, String field) {
@@ -2039,10 +2048,35 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             markTypeErased(method, meth, meth.getReturnType());
 
             setAnnotations(method, meth);
+            
+            setAnnotationConstructor(method, meth);
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
      }
+
+    private void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
+        if (method.classMirror != null) {
+            List<Short> arguments = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
+            if (arguments != null) {
+                int[] args = new int[arguments.size()];
+                for (int ii = 0; ii < arguments.size(); ii++) {
+                    args[ii] = arguments.get(ii);
+                }
+                method.setAnnotationArguments(args);
+                
+            }
+            
+            TypeMirror annotationTypeMirror = (TypeMirror)getAnnotationClassValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
+            if (annotationTypeMirror != null) {
+                ClassMirror annotationClassMirror = annotationTypeMirror.getDeclaredClass();
+                Class convertToDeclaration = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
+                //List<MethodMirror> constructors = getClassConstructors(annotationClassMirror);
+                //LazyClass annotationClass = makeLazyClass(annotationClassMirror, null, null, false);
+                method.setAnnotationClass(convertToDeclaration);
+            }
+        }
+    }
     
     //
     // Satisfied Types

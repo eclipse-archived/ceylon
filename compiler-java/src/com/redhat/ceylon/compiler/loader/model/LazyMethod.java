@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
@@ -114,6 +115,17 @@ public class LazyMethod extends Method implements LazyElement {
     public List<ParameterList> getParameterLists() {
         load();
         return super.getParameterLists();
+    }
+    
+    public Class getAnnotationClass() {
+        load();
+        return super.getAnnotationClass();
+    }
+
+
+    public int[] getAnnotationArguments() {
+        load();
+        return super.getAnnotationArguments();
     }
 
     @Override
