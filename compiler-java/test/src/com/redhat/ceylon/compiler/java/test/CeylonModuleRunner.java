@@ -275,7 +275,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             public void run() {
                 // set up the runtime module system
                 Metamodel.resetModuleManager();
-                Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-0.5.car")), cl);
+                Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
                 Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
             }
         };
