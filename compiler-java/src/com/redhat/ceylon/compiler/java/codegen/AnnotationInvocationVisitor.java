@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.util.ListBuffer;
@@ -48,6 +49,11 @@ class AnnotationInvocationVisitor extends Visitor {
         return annotationClass;
     }
     
+    public JCAnnotation transform(Tree.InvocationExpression invocation) {
+        visit(invocation);
+        return (JCAnnotation) ((JCAssign) annotationArguments.first()).rhs;
+    }
+    
     public void visit(Tree.InvocationExpression invocation) {
         // Is it a class instantiation or a constructor invocation?
         Tree.Primary primary = invocation.getPrimary();
@@ -55,7 +61,7 @@ class AnnotationInvocationVisitor extends Visitor {
             Tree.BaseMemberExpression ctor = (Tree.BaseMemberExpression)primary;    
             if (!Decl.isAnnotationConstructor(ctor.getDeclaration())) {
                 append(exprGen.makeErroneous(primary, "Not an annotation constructor"));
-            } 
+            }
             AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(exprGen, invocation);
             append(visitor.transformConstructor(invocation));
         } else if (primary instanceof Tree.BaseTypeExpression) {
@@ -70,8 +76,7 @@ class AnnotationInvocationVisitor extends Visitor {
         }        
     }
     
-    public JCAnnotation transformInstantiation(Tree.InvocationExpression invocation) {
-        ListBuffer<JCExpression> annotationArguments = ListBuffer.lb();
+    public JCAnnotation transformInstantiation(Tree.InvocationExpression invocation) {        
         if (invocation.getPositionalArgumentList() != null) {
             for (Tree.PositionalArgument arg : invocation.getPositionalArgumentList().getPositionalArguments()) {
                 parameterName = arg.getParameter().getName();
