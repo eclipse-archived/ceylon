@@ -1,13 +1,14 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Anything;
+import ceylon.language.Empty;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.ClassOrInterface$impl;
-import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Parameterised$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -19,6 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 4)
@@ -30,6 +32,9 @@ public class ClassOrInterface<Type>
 
     @Ignore
     private static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.InterfaceType.class, Anything.$TypeDescriptor);
+
+    @Ignore
+    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.Function.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);;
     
     @Ignore
     protected TypeDescriptor $reifiedType;
@@ -37,6 +42,8 @@ public class ClassOrInterface<Type>
     private ceylon.language.metamodel.ClassType<? extends Object, ? super Sequential<? extends Object>> superclass;
     private Sequential<ceylon.language.metamodel.InterfaceType<? extends Object>> interfaces;
     private Sequential<ceylon.language.metamodel.TypeParameter> typeParameters;
+
+    private Sequential<ceylon.language.metamodel.Member<Type, ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>>>> functions;
 
     public ClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -57,6 +64,7 @@ public class ClassOrInterface<Type>
     }
 
     protected void init(){
+        // FIXME: should be on ProducedType to get something fully reified
         this.$reifiedType = Metamodel.getTypeDescriptorForDeclaration(declaration);
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) this.declaration;
         
@@ -79,6 +87,16 @@ public class ClassOrInterface<Type>
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter(tp);
         }
         this.typeParameters = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.TypeParameter.$TypeDescriptor, typeParametersArray);
+        
+        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
+        i=0;
+        List<ceylon.language.metamodel.Member<? extends Object, Function>> functions = new LinkedList<>();
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
+            if(memberModelDeclaration instanceof Method){
+                functions.add(new Member(this, new Function((Method) memberModelDeclaration)));
+            }
+        }
+        this.functions = (Sequential)Util.sequentialInstance($FunctionTypeDescriptor, functions.toArray(new ceylon.language.metamodel.Member[functions.size()]));
     }
     
     protected final void checkInit(){
@@ -97,7 +115,13 @@ public class ClassOrInterface<Type>
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Member<Subtype,Kind>>")
     public <Subtype, Kind extends ceylon.language.metamodel.Declaration> Sequential<? extends Member<Subtype, Kind>> members(@Ignore TypeDescriptor $reifiedSubtype, @Ignore TypeDescriptor $reifiedKind) {
         checkInit();
-        return null;
+        if($reifiedKind instanceof TypeDescriptor.Class){
+            TypeDescriptor.Class klass = (TypeDescriptor.Class) $reifiedKind;
+            if(klass.getKlass() == ceylon.language.metamodel.Function.class){
+                return (Sequential) functions;
+            }
+        }
+        throw new RuntimeException("Not supported yet");
     }
 
     @Override
