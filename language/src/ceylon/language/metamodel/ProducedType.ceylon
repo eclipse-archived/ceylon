@@ -1,12 +1,18 @@
 
-shared interface ProducedType{}
+shared interface ProducedType of ClassOrInterfaceType<Anything>
+                                 | TypeParameterType
+                                 | UnionType
+                                 | IntersectionType
+                                 | nothingType {}
 
 shared interface TypeParameterType satisfies ProducedType {
     
     shared formal TypeParameter declaration;
 }
 
-shared interface ClassOrInterfaceType<out Type> satisfies ProducedType {
+shared interface ClassOrInterfaceType<out Type> 
+    of ClassType<Type, Nothing[]> | InterfaceType<Type>
+    satisfies ProducedType {
     
     shared formal ClassOrInterface<Type> declaration;
     
@@ -39,3 +45,5 @@ shared interface IntersectionType satisfies ProducedType {
     
     shared formal List<ProducedType> satisfiedTypes;
 }
+
+shared object nothingType satisfies ProducedType {}

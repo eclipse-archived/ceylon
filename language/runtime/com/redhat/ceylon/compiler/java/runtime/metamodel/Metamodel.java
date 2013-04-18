@@ -134,6 +134,9 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
             return new IntersectionType(declaration.getSatisfiedTypes());
         }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
+            return ceylon.language.metamodel.nothingType_.getNothingType$();
+        }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
