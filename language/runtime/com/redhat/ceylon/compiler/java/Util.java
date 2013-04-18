@@ -566,8 +566,85 @@ public class Util {
         if (elements.length == 0) {
             return (Sequential)empty_.getEmpty$();
         }
+        // Annoyingly this implies an extra copy
         return ArraySequence.<T>instance($reifiedT, elements);
     }
+
+    public static Sequential<? extends ceylon.language.String> sequentialInstanceBoxed(java.lang.String[] elements) {
+        if (elements.length == 0){
+            return (Sequential)empty_.getEmpty$();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(java.lang.String element : elements){
+            newArray[i++] = ceylon.language.String.instance(element);
+        }
+        // TODO Annoyingly this results in an extra copy
+        return ArraySequence.instance(ceylon.language.String.$TypeDescriptor, newArray);
+    }
+
+    public static Sequential<? extends ceylon.language.Integer> sequentialInstanceBoxed(long[] elements) {
+        if (elements.length == 0){
+            return (Sequential)empty_.getEmpty$();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(long element : elements){
+            newArray[i++] = ceylon.language.Integer.instance(element);
+        }
+        // TODO Annoyingly this results in an extra copy
+        return ArraySequence.instance(ceylon.language.Integer.$TypeDescriptor, newArray);
+    }
+
+    public static Sequential<? extends ceylon.language.Character> sequentialInstanceBoxed(int[] elements) {
+        if (elements.length == 0){
+            return (Sequential)empty_.getEmpty$();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(int element : elements){
+            newArray[i++] = ceylon.language.Character.instance(element);
+        }
+        // TODO Annoyingly this results in an extra copy
+        return ArraySequence.instance(ceylon.language.Character.$TypeDescriptor, newArray);
+    }
+
+    public static Sequential<? extends ceylon.language.Boolean> sequentialInstanceBoxed(boolean[] elements) {
+        if (elements.length == 0){
+            return (Sequential)empty_.getEmpty$();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(boolean element : elements){
+            newArray[i++] = ceylon.language.Boolean.instance(element);
+        }
+        // TODO Annoyingly this results in an extra copy
+        return ArraySequence.instance(ceylon.language.Boolean.$TypeDescriptor, newArray);
+    }
+
+    public static Sequential<? extends ceylon.language.Float> sequentialInstanceBoxed(double[] elements) {
+        if (elements.length == 0){
+            return (Sequential)empty_.getEmpty$();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(double element : elements){
+            newArray[i++] = ceylon.language.Float.instance(element);
+        }
+        // TODO Annoyingly this results in an extra copy
+        return ArraySequence.instance(ceylon.language.Float.$TypeDescriptor, newArray);
+    }
+
 
     /**
      * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
