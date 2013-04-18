@@ -517,11 +517,12 @@ public class ClassTransformer extends AbstractTransformer {
         
         for (Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
+            expressionGen().transform(param.getAnnotationList());
             Parameter paramModel = param.getDeclarationModel();
             Parameter refinedParam = CodegenUtil.findParamForDecl(
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel()));
             at(param);
-            classBuilder.parameter(paramModel);
+            classBuilder.parameter(param);
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
                     || (generateInstantiator
@@ -1781,7 +1782,7 @@ public class ClassTransformer extends AbstractTransformer {
         Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             Parameter parameter = param.getDeclarationModel();
-            methodBuilder.parameter(parameter, needsRaw ? JT_RAW_TP_BOUND : 0, true);
+            methodBuilder.parameter(param, needsRaw ? JT_RAW_TP_BOUND : 0, true);
             if (parameter.isDefaulted()
                     || parameter.isSequenced()) {
                 if (model.getRefinedDeclaration() == model) {
@@ -2229,7 +2230,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 ListBuffer.<JCExpression>lb().appendList(args).toList())));
                 args.add(varName.makeIdent());
             } else {
-                overloadBuilder.parameter(param2, 0, false);
+                overloadBuilder.parameter(param2, null, 0, false);
                 args.add(naming.makeName(param2, Naming.NA_MEMBER | Naming.NA_ALIASED));
             }
         }
@@ -2354,7 +2355,7 @@ public class ClassTransformer extends AbstractTransformer {
                 break;
             }
             at(p);
-            methodBuilder.parameter(p.getDeclarationModel(), 0, container instanceof Class);
+            methodBuilder.parameter(p.getDeclarationModel(), null, 0, container instanceof Class);
         }
 
         // The method's return type is the same as the parameter's type

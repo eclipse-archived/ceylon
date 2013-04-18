@@ -455,7 +455,12 @@ public class ClassDefinitionBuilder {
         }
     }
     
-    public ClassDefinitionBuilder parameter(Parameter param) {
+    public ClassDefinitionBuilder parameter(Tree.Parameter param) {
+        return parameter(param.getDeclarationModel(), 
+                gen.expressionGen().transform(param.getAnnotationList()));
+    }
+    
+    private ClassDefinitionBuilder parameter(Parameter param, List<JCAnnotation> annotations) {
         String name = param.getName();
         JCExpression type = gen.classGen().transformClassParameterType(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
@@ -464,6 +469,7 @@ public class ClassDefinitionBuilder {
         pdb.type(type, gen.makeJavaTypeAnnotations(param));
         pdb.modifiers(FINAL);
         pdb.modelAnnotations(param.getAnnotations());
+        pdb.annotations(annotations);
         parameter(pdb);
         initParam(name, param);
         return this;
