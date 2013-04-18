@@ -49,8 +49,6 @@ public class AttributeDefinitionBuilder {
 
     private long modifiers;
 
-    private final ListBuffer<JCTree.JCAnnotation> annotations = ListBuffer.lb();
-
     private boolean readable = true;
     private final MethodDefinitionBuilder getterBuilder;
 
@@ -143,7 +141,6 @@ public class AttributeDefinitionBuilder {
                     .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                     .constructorModifiers(Flags.PRIVATE)
                     .annotations(owner.makeAtAttribute())
-                    .annotations(annotations.toList())
                     .defs(defs.toList());
             if(valueConstructor && hasField)
                 generateValueConstructor(classBuilder.addConstructor());
@@ -309,11 +306,6 @@ public class AttributeDefinitionBuilder {
 
     public AttributeDefinitionBuilder noAnnotations() {
         this.noAnnotations = true;
-        return this;
-    }
-    
-    public AttributeDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        this.annotations.appendList(annotations);
         return this;
     }
 
