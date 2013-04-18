@@ -137,6 +137,12 @@ public class Metamodel {
             }
             throw new RuntimeException("Declaration container type not supported yet: "+container);
         }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
+            return new UnionType(declaration.getCaseTypes());
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
+            return new IntersectionType(declaration.getSatisfiedTypes());
+        }
         
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
