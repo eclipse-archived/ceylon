@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
@@ -68,6 +69,7 @@ public class AttributeDefinitionBuilder {
     
     private boolean late;
     private boolean variable;
+    private ListBuffer<JCAnnotation> annotations;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -95,7 +97,7 @@ public class AttributeDefinitionBuilder {
             .method2(owner, Naming.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
             .isOverride(attrType.isActual())
-            .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
+            .modelAnnotations(attrType.getAnnotations())
             .resultType(this.attrType, attrType);
         setterBuilder = MethodDefinitionBuilder
             .method2(owner, Naming.getSetterName(attrType))
@@ -125,6 +127,16 @@ public class AttributeDefinitionBuilder {
                 attrAndFieldName, attrAndFieldName, false)
             .skipField()
             .skipGetter();
+    }
+    
+    public AttributeDefinitionBuilder annotations(List<JCAnnotation> annotations) {
+        if (annotations != null) {
+            if (this.annotations == null) {
+                this.annotations = ListBuffer.lb();
+            }
+            this.annotations.appendList(annotations);
+        }
+        return this;
     }
     
     /**
@@ -164,12 +176,18 @@ public class AttributeDefinitionBuilder {
         if (readable) {
             getterBuilder.modifiers(getGetSetModifiers());
             getterBuilder.noAnnotations(noAnnotations);
+            if (this.annotations != null) {
+                getterBuilder.annotations(this.annotations.toList());
+            }
             defs.append(getterBuilder.build());
         }
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
             setterBuilder.noAnnotations(noAnnotations);
+            if (this.annotations != null && !readable) {
+                setterBuilder.annotations(this.annotations.toList());
+            }
             defs.append(setterBuilder.build());
         }
     }

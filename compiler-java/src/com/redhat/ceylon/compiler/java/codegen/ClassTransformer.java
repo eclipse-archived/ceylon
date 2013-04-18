@@ -1344,7 +1344,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        
+        builder.annotations(expressionGen().transform(decl.getAnnotationList()));
         return builder;
     }
 
@@ -1353,6 +1353,7 @@ public class ClassTransformer extends AbstractTransformer {
             return null;
         }
         String name = decl.getIdentifier().getText();
+        expressionGen().transform(decl.getAnnotationList());
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
@@ -1367,6 +1368,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
+        builder.annotations(expressionGen().transform(decl.getAnnotationList()));
         return builder;    
     }
 
@@ -1528,6 +1530,7 @@ public class ClassTransformer extends AbstractTransformer {
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
             .getter(this, attrName, decl.getDeclarationModel());
+        getter.annotations(expressionGen().transform(decl.getAnnotationList()));
         return makeGetterOrSetter(decl, forCompanion, lazy, getter, true);
     }
 
@@ -1535,6 +1538,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
+        setter.annotations(expressionGen().transform(decl.getAnnotationList()));
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
 
@@ -2425,6 +2429,9 @@ public class ClassTransformer extends AbstractTransformer {
                     .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)))
                     .is(PUBLIC, Decl.isShared(decl))
                     .is(STATIC, true);
+            if (def instanceof Tree.ObjectDefinition) {
+                builder.annotations(expressionGen().transform(((Tree.ObjectDefinition) def).getAnnotationList()));
+            }            
             objectClassBuilder.defs(builder.build());
         }
 

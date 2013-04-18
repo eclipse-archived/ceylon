@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
@@ -221,14 +222,17 @@ public class CeylonTransformer extends AbstractTransformer {
         final String attrClassName = Naming.getAttrClassName(declarationModel, 0);
         final Tree.SpecifierOrInitializerExpression expression;
         final Tree.Block block;
+        final Tree.AnnotationList annotationList;
         if (decl instanceof Tree.AttributeDeclaration) {
             Tree.AttributeDeclaration adecl = (Tree.AttributeDeclaration)decl;
             expression = adecl.getSpecifierOrInitializerExpression();
             block = null;
+            annotationList = adecl.getAnnotationList();
         } else if (decl instanceof Tree.AttributeGetterDefinition) {
             expression = null;
             Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
             block = gdef.getBlock();
+            annotationList = gdef.getAnnotationList();
         } else if (decl instanceof Tree.AttributeSetterDefinition) {
             Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             block = sdef.getBlock();
@@ -236,11 +240,12 @@ public class CeylonTransformer extends AbstractTransformer {
             if (Decl.isLocal(decl)) {
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
+            annotationList = sdef.getAnnotationList();
         } else {
             throw new RuntimeException();
         }
         return transformAttribute(declarationModel, attrName, attrClassName,
-                block, expression, setterDecl);
+                annotationList, block, expression, setterDecl);
     }
 
     /** Creates a module class in the package, with the Module annotation required by the runtime. */
@@ -269,6 +274,7 @@ public class CeylonTransformer extends AbstractTransformer {
     public List<JCTree> transformAttribute(
             TypedDeclaration declarationModel,
             String attrName, String attrClassName,
+            final Tree.AnnotationList annotations,
             final Tree.Block block,
             final Tree.SpecifierOrInitializerExpression expression, 
             final Tree.AttributeSetterDefinition setterDecl) {
@@ -326,6 +332,8 @@ public class CeylonTransformer extends AbstractTransformer {
                 }
             }
         }
+        
+        builder.annotations(expressionGen().transform(annotations));
         
         if (Decl.isLocal(declarationModel)) {
             if(initialValue != null)
