@@ -25,6 +25,7 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
 public class ParameterDefinitionBuilder {
@@ -51,7 +52,8 @@ public class ParameterDefinitionBuilder {
     
     private boolean built = false;
 
-    private java.util.List<Annotation> annos;
+    private ListBuffer<JCAnnotation> annotations;
+    private ListBuffer<JCAnnotation> modelAnnotations;
 
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
@@ -67,8 +69,23 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
+    public ParameterDefinitionBuilder annotations(List<JCAnnotation> annos) {
+        if (annos != null) {
+            if (this.annotations == null) {
+                this.annotations = ListBuffer.lb();
+            }
+            this.annotations.appendList(annos);
+        }
+        return this;
+    }
+    
     public ParameterDefinitionBuilder modelAnnotations(java.util.List<Annotation> annos) {
-        this.annos = annos;
+        if (annos != null) {
+            if (this.modelAnnotations == null) {
+                this.modelAnnotations = ListBuffer.lb();
+            }
+            this.modelAnnotations.appendList(gen.makeAtAnnotations(annos));
+        }
         return this;
     }
     
@@ -108,26 +125,29 @@ public class ParameterDefinitionBuilder {
             throw new IllegalStateException();
         }
         built = true;
-        List<JCAnnotation> annots = List.nil();
+        ListBuffer<JCAnnotation> annots = ListBuffer.lb();
         if (!noAnnotations && !ignored) {
-            annots = annots.appendList(gen.makeAtName(name));
+            annots.appendList(gen.makeAtName(name));
             if (sequenced) {
-                annots = annots.appendList(gen.makeAtSequenced());
+                annots.appendList(gen.makeAtSequenced());
             }
             if (defaulted) {
-                annots = annots.appendList(gen.makeAtDefaulted());
+                annots.appendList(gen.makeAtDefaulted());
             }
             if (typeAnnos != null) {
-                annots = annots.appendList(typeAnnos);
+                annots.appendList(typeAnnos);
             }
-            if (annos != null) {
-                annots = annots.appendList(gen.makeAtAnnotations(annos));
+            if (annotations != null) {
+                annots.appendList(annotations.toList());
+            }
+            if (modelAnnotations != null) {
+                annots.appendList(modelAnnotations.toList());
             }
         }else if(ignored){
             annots = annots.appendList(gen.makeAtIgnore());
         }
         Name name = gen.names().fromString(aliasedName != null ? aliasedName : this.name);
-        return gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), 
+        return gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots.toList()), 
                 name, type, null);   
     }
     
