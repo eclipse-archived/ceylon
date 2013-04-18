@@ -195,7 +195,8 @@ class AnnotationInvocationVisitor extends Visitor {
     }
 
     public void transformSpreadArgument(java.util.List<PositionalArgument> arguments, Parameter classParameter) {
-        boolean varargs = classParameter.isSequenced() && arguments.size() > 1;
+        boolean varargs = classParameter.isSequenced()
+                && arguments.size() > 1 || arguments.size() == 0;;
         ListBuffer<JCExpression> prevCollect = varargs ? startArray() : null;
         try {
             for (Tree.PositionalArgument arg : arguments) {
