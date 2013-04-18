@@ -35,6 +35,8 @@ annotation AnnotationClassBooleanIterable annotationClassIterableIterable({Boole
 @nomodel
 annotationClassBoolean()
 annotationClassBoolean{}
+annotationClassVariadicVariadic()//*
+annotationClassVariadicVariadic(true)//*
 annotationClassVariadicVariadic(true, false)//*
 annotationClassVariadicSequence([true, false])//*
 annotationClassVariadicIterable({true, false})//*
