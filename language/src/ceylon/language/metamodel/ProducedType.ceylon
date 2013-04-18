@@ -11,6 +11,10 @@ shared interface ClassOrInterfaceType<out Type> satisfies ProducedType {
     shared formal ClassOrInterface<Type> declaration;
     
     shared formal Map<TypeParameter, ProducedType> typeArguments;
+    
+    shared formal ClassType<Anything,Nothing[]>? superclass;
+    
+    shared formal InterfaceType<Anything>[] interfaces;
 }
 
 shared interface ClassType<out Type, in Arguments>

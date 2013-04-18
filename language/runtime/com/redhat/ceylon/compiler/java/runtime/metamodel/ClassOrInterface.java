@@ -31,7 +31,7 @@ public class ClassOrInterface<Type>
     implements ceylon.language.metamodel.ClassOrInterface<Type> {
 
     @Ignore
-    private static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.InterfaceType.class, Anything.$TypeDescriptor);
+    static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.InterfaceType.class, Anything.$TypeDescriptor);
 
     @Ignore
     private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.Function.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);;
