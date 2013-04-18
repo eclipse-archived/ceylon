@@ -9,6 +9,7 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.Doc$annotation(description = "class param doc")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(value = "doc", arguments = {"class param doc"})})
     final .java.lang.String s2) {
         this.s = s;
@@ -26,6 +27,7 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("p")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.Doc$annotation(description = "method param doc")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(value = "doc", arguments = {"method param doc"})})
     final .java.lang.String p) {
     }
