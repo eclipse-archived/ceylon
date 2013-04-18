@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class AnnotationInlineVisitor extends Visitor {
@@ -91,7 +92,13 @@ public class AnnotationInlineVisitor extends Visitor {
     @Override
     public void visit(Tree.DefaultArgument d) {
         if (annotationConstructor != null) {
-            if (!(d.getSpecifierExpression().getExpression().getTerm() instanceof Tree.Literal)) {
+            Declaration t = d.getUnit().getLanguageModuleDeclaration("true");
+            Declaration f = d.getUnit().getLanguageModuleDeclaration("false");
+            Term term = d.getSpecifierExpression().getExpression().getTerm();
+            if (!(term instanceof Tree.Literal
+                    || term instanceof Tree.BaseMemberExpression
+                    && (((Tree.BaseMemberExpression)term).getDeclaration().equals(t)
+                        || ((Tree.BaseMemberExpression)term).getDeclaration().equals(f)))) {
                 error(d, "Only literal default parameters allowed");
             }
         }

@@ -123,11 +123,9 @@ class AnnotationInvocationVisitor extends Visitor {
                             } else {
                                 transformArgument(pargument);
                             }
-                        } else {
+                        } else if (parameterArgument.getSourceParameter().isDefaulted()) {
                             // Use the default parameter from the constructor
-                            append(exprGen.naming.makeQuotedQualIdent(
-                                    exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
-                                    parameterName));
+                            appendConstructorDefaultParameter(parameterArgument);
                         }
                     }
                 } else if (invocation.getNamedArgumentList() != null) {
@@ -145,7 +143,11 @@ class AnnotationInvocationVisitor extends Visitor {
                             }
                         }
                         if (!found) {
-                            append(exprGen.makeErroneous(invocation, "Unable to find argument"));
+                            if (parameterArgument.getSourceParameter().isDefaulted()) {
+                                appendConstructorDefaultParameter(parameterArgument);
+                            } else {
+                                append(exprGen.makeErroneous(invocation, "Unable to find argument"));
+                            }
                         }    
                     }
                 }
@@ -161,6 +163,14 @@ class AnnotationInvocationVisitor extends Visitor {
         }
         JCAnnotation annotation = exprGen.at(invocation).Annotation(exprGen.makeJavaType(annotationClass.getType(), ExpressionTransformer.JT_ANNOTATION), annotationArguments.toList());
         return annotation;
+    }
+
+    private void appendConstructorDefaultParameter(
+            InlineInfo.ParameterArgument parameterArgument) {
+        String constructorParameterName = parameterArgument.getSourceParameter().getName();
+        append(exprGen.naming.makeQuotedQualIdent(
+                exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
+                constructorParameterName));
     }
 
     private void transformVarargs(int argumentIndex,
