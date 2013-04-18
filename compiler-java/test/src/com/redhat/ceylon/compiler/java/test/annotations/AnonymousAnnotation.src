@@ -17,6 +17,8 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     private final .java.lang.String s;
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation(value = "doc", arguments = {"attribute doc"}), @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Doc$annotation(description = "attribute doc")
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
