@@ -18,7 +18,7 @@ public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Member.class);
 
-    private Kind declaration;
+    Kind declaration;
 
     private ClassOrInterface<? extends Type> container;
 

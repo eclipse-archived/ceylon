@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -143,7 +144,6 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
             return new IntersectionType(declaration.getSatisfiedTypes());
         }
-        
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
@@ -157,6 +157,20 @@ public class Metamodel {
             return TypeDescriptor.klass(classMirror.klass);
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
+    }
+
+    public static Function getMetamodel(Method method) {
+        // find its container
+        Scope container = method.getContainer();
+        if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
+            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface classOrInterface = getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
+            // now find the method
+            Function ret = classOrInterface.findMethod(method.getName());
+            if(ret == null)
+                throw new RuntimeException("Failed to find method "+method.getName()+" in "+container);
+            return ret;
+        }
+        throw new RuntimeException("Unsupported method container for "+method.getName()+": "+container);
     }
 
 }

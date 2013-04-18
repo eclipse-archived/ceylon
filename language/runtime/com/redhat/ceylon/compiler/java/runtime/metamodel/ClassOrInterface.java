@@ -197,4 +197,17 @@ public class ClassOrInterface<Type>
         checkInit();
         return $reifiedType;
     }
+
+    Function<? extends Object, ? super Sequential<? extends Object>> findMethod(String name) {
+        checkInit();
+        Iterator iterator = functions.iterator();
+        Object it;
+        while((it = iterator.next()) != finished_.getFinished$()){
+            Member member = (Member) it;
+            Function f = (Function) member.declaration;
+            if(f.getName().equals(name))
+                return f;
+        }
+        return null;
+    }
 }
