@@ -131,3 +131,51 @@ class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.j
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.class);
 }
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.class)
+final class annotationClassCharacter_ {
+    
+    private annotationClassCharacter_() {
+    }
+    static final int c = 122;
+    
+    static final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter() {
+        return (
+            let
+            {
+                int $ceylontmp$c$3 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter$c();
+            }
+            returning annotationClassCharacter($ceylontmp$c$3);
+        );
+    }
+    
+    static final int annotationClassCharacter$c() {
+        return 122;
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter(final int c) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter(c);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter();
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation(c = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.c)})
+class AnnotationClassCharacter_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationClassCharacter_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite.class);
+}

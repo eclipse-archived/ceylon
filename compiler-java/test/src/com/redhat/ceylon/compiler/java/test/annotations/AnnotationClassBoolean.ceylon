@@ -3,6 +3,8 @@ import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
 @nomodel
 annotation class AnnotationClassBoolean(Boolean b) satisfies SequencedAnnotation<AnnotationClassBoolean, Type<Anything>>{}
 @nomodel
+annotation AnnotationClassBoolean annotationClassBoolean(Boolean x = true) => AnnotationClassBoolean(x);
+@nomodel
 annotation class AnnotationClassBooleanDefaulted(Boolean b=true) satisfies OptionalAnnotation<AnnotationClassBooleanDefaulted, Type<Anything>>{}
 @nomodel
 annotation class AnnotationClassBooleanVariadic(Boolean* b) satisfies SequencedAnnotation<AnnotationClassBooleanVariadic, Type<Anything>>{}
@@ -31,6 +33,8 @@ annotation AnnotationClassBooleanIterable annotationClassIterableSequence(Boolea
 @nomodel
 annotation AnnotationClassBooleanIterable annotationClassIterableIterable({Boolean*} b) => AnnotationClassBooleanIterable(b);
 @nomodel
+annotationClassBoolean()
+annotationClassBoolean{}
 annotationClassVariadicVariadic(true, false)//*
 annotationClassVariadicSequence([true, false])//*
 annotationClassVariadicIterable({true, false})//*
