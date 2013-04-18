@@ -9,6 +9,7 @@ import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.Function$impl;
 import ceylon.language.metamodel.Parameterised$impl;
+import ceylon.language.metamodel.ProducedType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -36,6 +37,8 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
     private final TypeDescriptor $reifiedArguments;
     
     private Sequential<? extends ceylon.language.metamodel.TypeParameter> typeParameters;
+    
+    private ProducedType type;
 
     public Function(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
@@ -51,6 +54,8 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter(tp);
         }
         this.typeParameters = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.TypeParameter.$TypeDescriptor, typeParametersArray);
+        
+        this.type = Metamodel.getMetamodel(declaration.getType());
     }
 
     @Override
@@ -115,6 +120,12 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
                 return tp;
         }
         return null;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::ProducedType")
+    public ProducedType getType() {
+        return type;
     }
 
     @Override
