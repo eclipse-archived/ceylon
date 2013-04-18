@@ -21,7 +21,7 @@ annotation AnnotationClassInteger annotationClassIntegerStatic()
             j=41;
        };
 @nomodel
-annotationClassIntegerDefault{i=10;}
+annotationClassIntegerDefault{i=-10;}
 annotationClassIntegerSwapped{j=21; i=20;}
 annotationClassIntegerNames{ii=30; jj=31;}
 annotationClassIntegerStatic{}

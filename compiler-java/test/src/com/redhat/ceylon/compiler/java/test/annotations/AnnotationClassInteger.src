@@ -134,7 +134,7 @@ final class annotationClassIntegerStatic_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.annotationClassIntegerStatic();
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.i, j = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.j), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = 30L, j = 31L), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = 20L, j = 21L), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = 10L)})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.i, j = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.j), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = 30L, j = 31L), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = 20L, j = 21L), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation(i = -10L)})
 class AnnotationClassInteger_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassInteger_callsite() {
