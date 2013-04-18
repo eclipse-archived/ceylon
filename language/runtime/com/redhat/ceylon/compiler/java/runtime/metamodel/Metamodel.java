@@ -125,18 +125,8 @@ public class Metamodel {
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.InterfaceType(pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.TypeParameter){
-            // we need to find where it came from to look up the proper wrapper
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp = (TypeParameter) declaration;
-            Scope container = tp.getContainer();
-            // FIXME: support more container sources, such as methods and outer declarations
-            if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-                com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface containerMetamodel = getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
-                ceylon.language.metamodel.TypeParameter typeParameter = containerMetamodel.getTypeParameter(tp.getName());
-                if(typeParameter != null)
-                    return new TypeParameterType(typeParameter);
-                throw new RuntimeException("Failed to find type parameter: "+tp.getName()+" in container "+container);
-            }
-            throw new RuntimeException("Declaration container type not supported yet: "+container);
+            return new TypeParameterType(tp);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
             return new UnionType(declaration.getCaseTypes());
