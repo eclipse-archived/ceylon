@@ -37,7 +37,9 @@ public abstract class ClassOrInterface<Type>
     static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.InterfaceType.class, Anything.$TypeDescriptor);
 
     @Ignore
-    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.Function.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);;
+    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.Function.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
+    @Ignore
+    private static final TypeDescriptor $ValueTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.Value.class, Anything.$TypeDescriptor);
     
     @Ignore
     protected TypeDescriptor $reifiedType;
@@ -47,6 +49,7 @@ public abstract class ClassOrInterface<Type>
     private Sequential<ceylon.language.metamodel.TypeParameter> typeParameters;
 
     private Sequential<ceylon.language.metamodel.Member<Type, ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>>>> functions;
+    private Sequential<ceylon.language.metamodel.Member<Type, ceylon.language.metamodel.Value<? extends Object>>> values;
 
     public ClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -94,13 +97,22 @@ public abstract class ClassOrInterface<Type>
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
         List<ceylon.language.metamodel.Member<? extends Object, Function>> functions = new LinkedList<>();
+        List<ceylon.language.metamodel.Member<? extends Object, Value>> values = new LinkedList<>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof Method){
                 functions.add(new Member(this, new Function((Method) memberModelDeclaration)));
+            }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
+                values.add(new Member(this, new Value((MethodOrValue) memberModelDeclaration)));
             }
         }
-        this.functions = (Sequential)Util.sequentialInstance($FunctionTypeDescriptor, functions.toArray(new ceylon.language.metamodel.Member[functions.size()]));
-    }
+
+        TypeDescriptor thisTD = TypeDescriptor.klass(ClassOrInterface.class, $reifiedType);
+        TypeDescriptor functionMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.Member.class, thisTD, $FunctionTypeDescriptor);
+        this.functions = (Sequential)Util.sequentialInstance(functionMemberTD, functions.toArray(new ceylon.language.metamodel.Member[functions.size()]));
+
+        TypeDescriptor valueMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.Member.class, thisTD, $ValueTypeDescriptor);
+        this.values = (Sequential)Util.sequentialInstance(valueMemberTD, values.toArray(new ceylon.language.metamodel.Member[values.size()]));
+}
     
     protected final void checkInit(){
         if(!initialised){
@@ -122,6 +134,9 @@ public abstract class ClassOrInterface<Type>
             TypeDescriptor.Class klass = (TypeDescriptor.Class) $reifiedKind;
             if(klass.getKlass() == ceylon.language.metamodel.Function.class){
                 return (Sequential) functions;
+            }
+            if(klass.getKlass() == ceylon.language.metamodel.Value.class){
+                return (Sequential) values;
             }
         }
         throw new RuntimeException("Not supported yet");
