@@ -41,9 +41,11 @@ annotationClassVariadicVariadic(true, false)//*
 annotationClassVariadicSequence([true, false])//*
 annotationClassVariadicIterable({true, false})//*
 annotationClassSequenceVariadic(true, false)
+annotationClassSequenceVariadic()
 annotationClassSequenceSequence([true, false])
 ////annotationClassSequenceIterable({true, false})
 annotationClassIterableVariadic(true, false)
+annotationClassIterableVariadic()
 annotationClassIterableSequence([true, false])
 annotationClassIterableIterable({true, false})
 class AnnotationClassBoolean_callsite(){} 
