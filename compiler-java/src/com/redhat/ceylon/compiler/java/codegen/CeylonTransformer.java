@@ -56,7 +56,9 @@ public class CeylonTransformer extends AbstractTransformer {
     private Options options;
     private LineMap map;
     private JavaFileObject fileObject;
-    public boolean disableModelAnnotations = false;
+    public int disableAnnotations = 0;
+    static final int DISABLE_MODEL_ANNOS = 1<<0;
+    static final int DISABLE_USER_ANNOS = 1<<1;
     CeylonVisitor visitor;
     
     public static CeylonTransformer getInstance(Context context) {
@@ -158,7 +160,7 @@ public class CeylonTransformer extends AbstractTransformer {
      */
     @SuppressWarnings("unchecked")
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
-        disableModelAnnotations = false;
+        disableAnnotations = 0;
         ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
         CeylonVisitor visitor = new CeylonVisitor(this, builder);
         t.visitChildren(visitor);

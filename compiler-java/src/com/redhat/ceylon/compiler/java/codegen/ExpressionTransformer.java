@@ -3963,7 +3963,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public List<JCAnnotation> transform(Tree.AnnotationList annotationList) {
-        if (gen().disableModelAnnotations) {
+        if ((gen().disableAnnotations & CeylonTransformer.DISABLE_USER_ANNOS) != 0) {
             return List.nil();
         }
         LinkedHashMap<Class, List<JCAnnotation>> annotationSet = new LinkedHashMap<>();

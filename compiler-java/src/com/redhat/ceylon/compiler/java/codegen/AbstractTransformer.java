@@ -1723,19 +1723,22 @@ public abstract class AbstractTransformer implements Transformation {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil()));
     }
 
-    boolean checkCompilerAnnotations(Tree.Declaration decl){
-        boolean old = gen().disableModelAnnotations;
-        if(CodegenUtil.hasCompilerAnnotation(decl, "noanno"))
-            gen().disableModelAnnotations  = true;
+    int checkCompilerAnnotations(Tree.Declaration decl){
+        int old = gen().disableAnnotations;
+        if(CodegenUtil.hasCompilerAnnotation(decl, "noanno")) {
+            gen().disableAnnotations = CeylonTransformer.DISABLE_MODEL_ANNOS | CeylonTransformer.DISABLE_USER_ANNOS;
+        }
+        if(CodegenUtil.hasCompilerAnnotation(decl, "nomodel"))
+            gen().disableAnnotations = CeylonTransformer.DISABLE_MODEL_ANNOS;
         return old;
     }
 
-    void resetCompilerAnnotations(boolean value){
-        gen().disableModelAnnotations = value;
+    void resetCompilerAnnotations(int value){
+        gen().disableAnnotations = value;
     }
 
     private List<JCAnnotation> makeModelAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
-        if (gen().disableModelAnnotations)
+        if ((gen().disableAnnotations & CeylonTransformer.DISABLE_MODEL_ANNOS) != 0)
             return List.nil();
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
