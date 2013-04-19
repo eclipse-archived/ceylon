@@ -1,30 +1,30 @@
 import ceylon.language.metamodel{SequencedAnnotation, Type}
 
-@noanno
+@nomodel
 annotation class AnnotationClassString(String s) satisfies SequencedAnnotation<AnnotationClassString, Type<Anything>>{}
-@noanno
+@nomodel
 annotation class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassString, Type<Anything>>{}
-@noanno
+@nomodel
 annotation class AnnotationClassStringSequence(String[] s) {}
-@noanno
+@nomodel
 annotation class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) {}
-@noanno
+@nomodel
 annotation class AnnotationClassStringIterable({String*} s) {}
-@noanno
+@nomodel
 annotation class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) {}
-@noanno
+@nomodel
 annotation class AnnotationClassStringVariadic({String*} s) {}
-@noanno
+@nomodel
 annotation AnnotationClassString annotationClassString(String s) { return AnnotationClassString(s); }
-@noanno
+@nomodel
 annotation AnnotationClassString annotationClassStringStatic() => AnnotationClassString("bar");
-@noanno
+@nomodel
 annotation AnnotationClassString annotationClassStringDropped(String s, String t) => AnnotationClassString(s);
-@noanno
+@nomodel
 annotation AnnotationClassString annotationClassStringDropped2(String t, String s) => AnnotationClassString(s);
-@noanno
+@nomodel
 annotation AnnotationClassStringDefaulted annotationClassStringDefaulted() => AnnotationClassStringDefaulted();
-@noanno
+@nomodel
 annotationClassString("baz")
 annotationClassStringStatic()
 annotationClassStringDropped("yes", "no")

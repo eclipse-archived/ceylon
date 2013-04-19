@@ -1,26 +1,26 @@
 import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
 
-@noanno
+@nomodel
 annotation class AnnotationClassInteger(Integer i, Integer j=1) satisfies SequencedAnnotation<AnnotationClassInteger, Type<Anything>>{}
-@noanno
+@nomodel
 annotation AnnotationClassInteger annotationClassIntegerDefault(Integer i) 
     => AnnotationClassInteger(i);
-@noanno
+@nomodel
 annotation AnnotationClassInteger annotationClassIntegerSwapped(Integer j, Integer i) 
     => AnnotationClassInteger(i, j);
-@noanno
+@nomodel
 annotation AnnotationClassInteger annotationClassIntegerNames(Integer jj, Integer ii) 
     => AnnotationClassInteger{
             i=ii;
             j=jj;
        };
-@noanno
+@nomodel
 annotation AnnotationClassInteger annotationClassIntegerStatic() 
     => AnnotationClassInteger{
             i=40;
             j=41;
        };
-@noanno
+@nomodel
 annotationClassIntegerDefault{i=-10;}
 annotationClassIntegerSwapped{j=21; i=20;}
 annotationClassIntegerNames{ii=30; jj=31;}

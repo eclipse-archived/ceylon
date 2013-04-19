@@ -1,7 +1,7 @@
 import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
-@noanno
+@nomodel
 annotation class AnnotationClassFloat(Float f) satisfies SequencedAnnotation<AnnotationClassFloat, Type<Anything>>{}
-@noanno
+@nomodel
 annotation class AnnotationClassFloatDefaulted(Float f=3.141) satisfies SequencedAnnotation<AnnotationClassFloatDefaulted, Type<Anything>>{}
-//@noanno
+//@nomodel
 //annotation AnnotationClassFloat annotationClassFloat(Float f) => AnnotationClassFloat(f);
