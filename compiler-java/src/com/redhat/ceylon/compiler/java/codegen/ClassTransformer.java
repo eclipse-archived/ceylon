@@ -2551,6 +2551,7 @@ public class ClassTransformer extends AbstractTransformer {
         // class alias
         classBuilder.constructorModifiers(PRIVATE);
         classBuilder.annotations(makeAtTypeAlias(model.getExtendedType()));
+        classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
         classBuilder.isAlias(true);
 
         // make sure we set the container in case we move it out
