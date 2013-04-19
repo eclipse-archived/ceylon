@@ -12,6 +12,8 @@ public final class Zero {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Variable$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long getZero$() {
         try {
@@ -35,6 +37,7 @@ public final class One {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long getOne$() {
         return 1L;

@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
+<<<<<<< HEAD
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+=======
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.ceylon.language.Shared$annotation
+>>>>>>> Change the .src of tests without either @noanno or @nomodel
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -21,7 +26,12 @@ public class Top implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.class);
 }
+<<<<<<< HEAD
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+=======
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.ceylon.language.Shared$annotation
+>>>>>>> Change the .src of tests without either @noanno or @nomodel
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Top")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Bottom extends .com.redhat.ceylon.compiler.java.test.structure.reified.Top {
@@ -103,6 +113,7 @@ public final class SubInterface2$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::SubInterface1"})
 public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 {
@@ -143,6 +154,7 @@ public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class1.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::Class1")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::SubInterface2"})

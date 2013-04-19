@@ -95,6 +95,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object attr;
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
     public final .java.lang.Object getAttr() {
         return attr;
@@ -102,12 +103,14 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object param2;
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
     public final .java.lang.Object getParam2() {
         return param2;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "T|ceylon.language::Null|ceylon.language::String", erased = true)
     public final .java.lang.Object getGetter() {
         return param;
@@ -120,6 +123,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Map<ceylon.language::Integer,ceylon.language::String|T>"})
@@ -404,6 +408,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public final boolean getEmpty() {
@@ -411,12 +417,16 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getSize() {
         return 0L;
     }
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "ceylon.language::String|ceylon.language::Null|T", erased = true)
@@ -426,6 +436,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return null;
     }
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
@@ -435,6 +447,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return false;
     }
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
@@ -445,12 +459,16 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<T>")
     public final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<T> getClone() {
         return this;
     }
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "ceylon.language::Iterator<ceylon.language::Entry<ceylon.language::Integer,ceylon.language::String|T>>", erased = true)
@@ -459,6 +477,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getKeys() {
@@ -466,6 +486,8 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "ceylon.language::Collection<ceylon.language::String|T>", erased = true)
     public final .ceylon.language.Collection getValues() {
@@ -491,6 +513,7 @@ public final class bug708_test2_ {
     private bug708_test2_() {
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug708_test2(@.com.redhat.ceylon.compiler.java.metadata.Name("key")

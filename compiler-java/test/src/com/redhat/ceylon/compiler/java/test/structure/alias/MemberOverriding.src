@@ -170,6 +170,8 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub3", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -215,6 +217,8 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub4", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -260,6 +264,8 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub5", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})

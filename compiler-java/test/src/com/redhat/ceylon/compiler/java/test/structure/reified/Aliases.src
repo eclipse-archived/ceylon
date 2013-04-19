@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
+<<<<<<< HEAD
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+=======
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.ceylon.language.Shared$annotation
+>>>>>>> Change the .src of tests without either @noanno or @nomodel
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class TargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

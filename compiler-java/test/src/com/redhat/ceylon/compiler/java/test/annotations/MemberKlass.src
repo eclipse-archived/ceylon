@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -14,6 +15,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberMember", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberKlass", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -28,6 +30,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.ceylon.language.Shared$annotation
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -64,6 +67,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "foo", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -94,6 +98,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.ceylon.language.Shared$annotation
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "foo", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "TTT", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})

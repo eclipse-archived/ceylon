@@ -7,6 +7,7 @@ public final class multipleParameterLists_call_ {
     private multipleParameterLists_call_() {
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void multipleParameterLists_call() {

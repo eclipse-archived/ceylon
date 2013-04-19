@@ -8,19 +8,27 @@ public interface TopInterface {
     public .com.redhat.ceylon.compiler.java.test.annotations.TopInterface$impl $com$redhat$ceylon$compiler$java$test$annotations$TopInterface$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Formal$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public abstract long getTopFormalAttr();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Default$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public long getConcreteDefaultAttr();
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Formal$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public abstract long topFormalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1);
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Default$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public long concreteDefaultMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
@@ -54,19 +62,27 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     public .com.redhat.ceylon.compiler.java.test.annotations.Interface$impl $com$redhat$ceylon$compiler$java$test$annotations$Interface$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public long getTopFormalAttr();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public long getConcreteAttr();
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
+    @.ceylon.language.Formal$annotation
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public abstract long getConcreteDefaultAttr();
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
@@ -74,18 +90,24 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1);
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Formal$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public abstract long formalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1);
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public long concreteMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1);
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
+    @.ceylon.language.Formal$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")

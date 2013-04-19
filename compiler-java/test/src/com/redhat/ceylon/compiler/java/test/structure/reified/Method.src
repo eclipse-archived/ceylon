@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -21,6 +22,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         };
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -33,11 +35,13 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Empty>")
     public final .ceylon.language.Callable<? extends .java.lang.Object> getMethodSpec() {
         return methodSpec;
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -90,6 +94,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         return 3L;
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -168,6 +173,7 @@ public interface MethodInterface {
     public abstract <T>long methodWithOverloads$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long a);
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -180,6 +186,8 @@ public interface MethodInterface {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long b);
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Formal$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public abstract .java.lang.Object m();
@@ -238,6 +246,7 @@ public final class MethodInterface$impl {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::MethodInterface"})
 public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface {
@@ -323,6 +332,7 @@ public final class method_ {
     private method_() {
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})

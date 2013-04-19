@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -24,7 +25,12 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
             return new Klass();
         }
         
+<<<<<<< HEAD
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+=======
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+        @.ceylon.language.Shared$annotation
+>>>>>>> Change the .src of tests without either @noanno or @nomodel
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

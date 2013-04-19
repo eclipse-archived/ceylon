@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
