@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodInitializerParameterOld<T>(
         void m(Integer i), 
         void m2(Integer i, Integer* seq), 

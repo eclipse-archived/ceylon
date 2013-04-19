@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Single<Element>(Element e) {
 }
 
-@nomodel
+@noanno
 shared class KlassTypeParams<U,V>(U u, V v) {
     shared U foo(U u, V v){
         return u;
     }
 }
 
-@nomodel
+@noanno
 class KlassTypeParamsInstantiation(){
     shared KlassTypeParams<String, Integer> m() {
         return KlassTypeParams<String, Integer>("foo", 2);
@@ -46,7 +46,7 @@ class KlassTypeParamsInstantiation(){
     }
 }
 
-@nomodel
+@noanno
 class KlassTypeParamsInstantiationT<T>(){
     class Inner<G>(){}
     void m(){

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void nonemptyCond() {
     Integer[] ints = [ 1,2,3,4,5 ];
     print({ for (x in ints) if (nonempty ints) ints.first });

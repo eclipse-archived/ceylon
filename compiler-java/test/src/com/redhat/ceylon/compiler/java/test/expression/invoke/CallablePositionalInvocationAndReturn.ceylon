@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 String testCallable(String f(Integer i)) {
   return f(1);
 }

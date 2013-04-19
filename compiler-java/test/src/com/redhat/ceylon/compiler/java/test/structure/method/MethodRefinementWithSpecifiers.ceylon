@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface MethodRefinementWithSpecifiers_Interface {
     shared formal void f2();
     shared formal void f3();
@@ -39,16 +39,16 @@ interface MethodRefinementWithSpecifiers_Interface {
     shared formal Object f19();
 }
 
-@nomodel
+@noanno
 void methodRefinementWithSpecifiers_returnsMethod()(){}
 
-@nomodel
+@noanno
 Callable<Anything,[]> methodRefinementWithSpecifiers_attributeMethod = methodRefinementWithSpecifiers_returnsMethod();
 
-@nomodel
+@noanno
 class MethodRefinementWithSpecifiers_ClassNoParam(){}
 
-@nomodel
+@noanno
 class MethodRefinementWithSpecifiers_Class(void arg()) satisfies MethodRefinementWithSpecifiers_Interface {
     
     class Inner(){}
@@ -113,10 +113,10 @@ class MethodRefinementWithSpecifiers_Class(void arg()) satisfies MethodRefinemen
     shared actual Object f19() => arg;
 }
 
-@nomodel
+@noanno
 void arg2(){}
 
-@nomodel
+@noanno
 interface Bug891_Interface2 satisfies MethodRefinementWithSpecifiers_Interface {
     
     class Inner(){}

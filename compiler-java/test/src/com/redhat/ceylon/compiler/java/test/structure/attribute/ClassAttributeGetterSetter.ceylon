@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class ClassAttributeGetterSetter(){
     String f {
         return "";
@@ -47,7 +47,7 @@ abstract class ClassAttributeGetterSetter(){
     assign f9 => f2 = f9;
     shared default String f10 = "";
 }
-@nomodel
+@noanno
 class SubClassAttributeGetterSetter() extends ClassAttributeGetterSetter() {
     shared actual String f3 {
         return "";

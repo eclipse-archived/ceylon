@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug998(Integer i, Boolean f()) {
     shared Boolean[] rows = [ for (x in {1}) f() ];
 }

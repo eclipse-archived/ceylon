@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class CallableArgumentReturningQualifiedClass() {
     shared class D() {
     }
-    @nomodel
+    @noanno
     void f(CallableArgumentReturningQualifiedClass.D foo()) {
     }
-    @nomodel
+    @noanno
     void m() {
         f(this.D);
     }

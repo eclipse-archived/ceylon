@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodWhileConditionList() {
     void m1(Integer x) {
         variable value a = 0;

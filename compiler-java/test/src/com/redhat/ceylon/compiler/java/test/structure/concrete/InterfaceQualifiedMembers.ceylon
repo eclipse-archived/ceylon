@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface InterfaceQualifiedIncrement {
     shared formal variable Integer i1;
     shared formal Integer m1();
@@ -113,7 +113,7 @@ interface InterfaceQualifiedIncrement {
         }
     }
 }
-@nomodel
+@noanno
 void outsideInterfaceQualifiedIncrement(InterfaceQualifiedIncrement ii) {
     variable Integer x;
     x = ii.m1();

@@ -17,29 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface TPETop {
     shared formal void top();
     shared formal Integer topAttribute;
 }
-@nomodel
+@noanno
 interface TPELeft satisfies TPETop {
     shared formal void left();
     shared formal Integer leftAttribute;
 }
-@nomodel
+@noanno
 interface TPERight satisfies TPETop {
     shared formal void right();
     shared formal Integer rightAttribute;
 }
-@nomodel
+@noanno
 class TPECLeft() satisfies TPELeft {
     shared actual void left() {}
     shared actual void top() {}
     shared actual Integer topAttribute = 1;
     shared actual Integer leftAttribute = 1;
 }
-@nomodel
+@noanno
 class TPECMiddle() satisfies TPELeft & TPERight{
     shared actual void left() {}
     shared actual void top() {}
@@ -49,7 +49,7 @@ class TPECMiddle() satisfies TPELeft & TPERight{
     shared actual Integer rightAttribute = 1;
 }
 
-@nomodel
+@noanno
 class TypeParameterErasure() {
 
     T parameterized<T>(T t) {

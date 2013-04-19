@@ -19,7 +19,7 @@
  */
 import java.io{...}
 
-@nomodel
+@noanno
 @error
 void constructors() {
     @error

@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Element[] bug975_2_dontSort<Element>({Element*} elements) 
     given Element satisfies Comparable<Element>
     => elements.sequence;
-@nomodel
+@noanno
 void bug975_2_test() {
     bug975_2_dontSort({});
 }

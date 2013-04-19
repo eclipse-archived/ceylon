@@ -1,6 +1,6 @@
 import ceylon.language.metamodel{Type}
 
-@nomodel
+@noanno
 class ConstructorArguments(
     String s = "s",
     Boolean b = true,
@@ -8,12 +8,12 @@ class ConstructorArguments(
     Character c = 'c',
     Float f = 0.0) {}
 
-@nomodel
+@noanno
 annotation class Foo(String foo) {
     
 }
 
-@nomodel
+@noanno
 annotation ConstructorArguments constructorArguments(
     // Simple types
     String s,

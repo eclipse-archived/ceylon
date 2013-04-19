@@ -30,12 +30,12 @@ import java.lang {
 }
 import java.util { List, ArrayList }
 
-@nomodel
+@noanno
 T box<T>(T t){
     return t;
 }
 
-@nomodel
+@noanno
 @error
 void booleanTypes() {
     @error
@@ -53,7 +53,7 @@ void booleanTypes() {
     @error
     java.booleanParams(java.return_boolean(), JBoolean(java.return_boolean()), java.return_boolean());
 }
-@nomodel
+@noanno
 @error
 void byteTypes() {
     @error
@@ -72,7 +72,7 @@ void byteTypes() {
     @error
     java.byteParams(java.return_Byte().byteValue(), java.return_Byte());
 }
-@nomodel
+@noanno
 @error
 void shortTypes() {
     @error
@@ -91,7 +91,7 @@ void shortTypes() {
     @error
     java.shortParams(java.return_Short().shortValue(), java.return_Short());
 }
-@nomodel
+@noanno
 @error
 void integerTypes() {
     @error
@@ -110,7 +110,7 @@ void integerTypes() {
     @error
     java.intParams(java.return_Integer().intValue(), java.return_Integer());
 }
-@nomodel
+@noanno
 @error
 void longTypes() {
     @error
@@ -129,7 +129,7 @@ void longTypes() {
     @error
     java.longParams(java.return_Long().longValue(), java.return_Long(), java.return_Long().longValue());
 }
-@nomodel
+@noanno
 @error
 void floatTypes() {
     @error
@@ -148,7 +148,7 @@ void floatTypes() {
     @error
     java.floatParams(java.return_Float().floatValue(), java.return_Float());
 }
-@nomodel
+@noanno
 @error
 void doubleTypes() {
     @error
@@ -167,7 +167,7 @@ void doubleTypes() {
     @error
     java.doubleParams(java.return_Double().doubleValue(), java.return_Double(), java.return_Double().doubleValue());
 }
-@nomodel
+@noanno
 @error
 void characterTypes() {
     @error
@@ -186,7 +186,7 @@ void characterTypes() {
     @error
     java.charParams(java.return_Character().charValue(), java.return_Character(), java.return_Character().charValue());
 }
-@nomodel
+@noanno
 @error
 void stringTypes() {
     @error
@@ -200,7 +200,7 @@ void stringTypes() {
     @error
     java.stringParams(java.return_String(), java.return_String());
 }
-@nomodel
+@noanno
 @error
 void objectTypes() {
     @error
@@ -213,7 +213,7 @@ void objectTypes() {
     java.objectParams(java.return_Object());
 }
 
-@nomodel
+@noanno
 @error
 void operationsOnBytes() {
     @error
@@ -238,7 +238,7 @@ void operationsOnBytes() {
     sync = java.byte_attr < java.byte_attr;
 }
 
-@nomodel
+@noanno
 @error
 void operationsOnBytes2() {
     @error
@@ -263,7 +263,7 @@ void operationsOnBytes2() {
     sync = java.byte < java.byte;
 }
 
-@nomodel
+@noanno
 class OperationsOnBytes() extends TypesJava(){
     void m(){
         byte_attr = byte_attr + byte_attr;
@@ -287,7 +287,7 @@ class OperationsOnBytes() extends TypesJava(){
     }
 }
 
-@nomodel
+@noanno
 @error
 void operationsOnMixedTypes() {
     @error
@@ -312,7 +312,7 @@ void operationsOnMixedTypes() {
     sync = java.byte_attr < java.int_attr;
 }
 
-@nomodel
+@noanno
 @error
 void typeParameters(){
     @error
@@ -326,7 +326,7 @@ void typeParameters(){
     objectList.add("foo");
 }
 
-@nomodel
+@noanno
 @error
 void optionalTypes(){
     @error

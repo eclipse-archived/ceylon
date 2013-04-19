@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 class Bug1067(f, g=void(){}) {
     void f();
     void g();

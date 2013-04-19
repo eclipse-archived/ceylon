@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{foo=m2,...}
 
-@nomodel
+@noanno
 class ImportAliasAndWildcard() {
     void m() {
         C1();

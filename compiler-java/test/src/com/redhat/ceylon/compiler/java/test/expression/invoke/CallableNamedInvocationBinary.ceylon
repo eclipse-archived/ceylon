@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableNamedInvocationBinary_f(void foo(String s, Integer i)) {
     foo{i=1; s="";};
 }

@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void toplevelMethod() {
 }
 
-@nomodel
+@noanno
 Integer anotherToplevelMethod(Integer n) {
     return 0;
 }

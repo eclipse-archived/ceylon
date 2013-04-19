@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared abstract class LogicalOperatorsParent<B>(){
     shared formal variable B boxedB1;
     shared formal variable B boxedB2;
 }
 
-@nomodel
+@noanno
 shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
     shared variable Boolean b1 = false;
     shared variable Boolean b2 = false;
@@ -51,7 +51,7 @@ shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
     }
 }
 
-@nomodel
+@noanno
 shared class LogicalOperatorsSub() extends LogicalOperators(){
     
     shared actual void logical() {

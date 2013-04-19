@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class AssertConditionListBoolBool() {
     Boolean m(Integer x) {
         assert (x > 0, x < 10);

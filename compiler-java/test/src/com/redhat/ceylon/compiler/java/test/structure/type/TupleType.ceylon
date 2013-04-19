@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 [String, Integer, Float] triple(String s, Integer i, Float f) {
     return [s, i, f];
 }
 
-@nomodel
+@noanno
 Float add([Float,Float] floats=[1.0, 2.0]) {
     return floats.first+floats.rest.first;
 }
 
-@nomodel
+@noanno
 void tupleTypeTest() {
     value tup = triple("hello", 0, 0.0);
     String a = tup.first;

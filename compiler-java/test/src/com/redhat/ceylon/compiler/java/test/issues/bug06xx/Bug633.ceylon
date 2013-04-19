@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug633Ranged<in Index, out Span>{
     shared formal void span(Index from);
 }
 
-@nomodel
+@noanno
 interface Bug633Empty satisfies Bug633Ranged<Integer, Nothing> {
     //shared actual formal void span(Integer from);
 }
 
-@nomodel
+@noanno
 class Bug633EmptyImpl() satisfies Bug633Empty {
     shared actual void span(Integer from){}
 }
 
-@nomodel
+@noanno
 void bug633(){
     Bug633EmptyImpl a = Bug633EmptyImpl();
     Bug633Empty b = Bug633EmptyImpl();

@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void sequencedTypeParamInvocation2<T>(T* ts) {}
-@nomodel
+@noanno
 void sequencedTypeParamInvocation2_test() {
     sequencedTypeParamInvocation2{ts = [1, 2];};
 }

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 doc "test"
 void anonymousStatementFunction() {
     void fff(Anything(Object) callable) {}

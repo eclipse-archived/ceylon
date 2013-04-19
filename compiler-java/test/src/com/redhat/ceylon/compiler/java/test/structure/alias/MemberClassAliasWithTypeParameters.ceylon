@@ -31,7 +31,7 @@ shared class MemberClassAliasWithTypeParameters_Foo<C>(C c){
     }
 }
 
-@nomodel
+@noanno
 void memberClassAliasWithTypeParametersMethod(){
     value foo1 = MemberClassAliasWithTypeParameters_Foo<Integer>(1).MemberClassAlias1<Integer>(1);
     value foo2 = MemberClassAliasWithTypeParameters_Foo<Integer>(1).MemberClassAlias2(1);

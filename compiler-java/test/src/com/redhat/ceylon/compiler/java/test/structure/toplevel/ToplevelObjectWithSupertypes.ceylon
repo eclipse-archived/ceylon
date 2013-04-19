@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class C (Integer n){
 }
 
-@nomodel
+@noanno
 shared interface I {
  shared formal Boolean id(Boolean x);
 }
 
-@nomodel
+@noanno
 shared object topLevelObjectWithSuperTypes extends C(2) satisfies I {
     shared actual Boolean id(Boolean x) {
         return x;

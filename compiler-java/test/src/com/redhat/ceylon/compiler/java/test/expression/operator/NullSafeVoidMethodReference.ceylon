@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface NullSafeAnythingMethodReference {
     shared formal void invoke();
 }
-@nomodel
+@noanno
 void test(NullSafeAnythingMethodReference? handler) {
     handler?.invoke();
 }

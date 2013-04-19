@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 T indirectTypeParam_topLevel<T>(T t) {return t;}
 
-@nomodel
+@noanno
 void indirectTypeParam<X>() {
     value f1 = indirectTypeParam_topLevel<Integer>;
     variable Integer i = f1(1);

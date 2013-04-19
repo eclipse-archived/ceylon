@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableReturnTernary_foo(Integer i, String s, Boolean b) {
 }
-@nomodel
+@noanno
 Callable<Anything, [Integer, String, Boolean]> callableReturnTernary_bar() {
     return callableReturnTernary_foo;
 }

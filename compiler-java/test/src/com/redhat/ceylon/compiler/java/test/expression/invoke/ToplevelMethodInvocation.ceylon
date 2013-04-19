@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void topLevelMethodInvocationMethod1(){
 }
 
-@nomodel
+@noanno
 Integer topLevelMethodInvocationMethod2(Integer i, String j){
     return 1;
 }
 
-@nomodel
+@noanno
 class ToplevelMethodInvocation(){
     Integer m() {
         topLevelMethodInvocationMethod1();

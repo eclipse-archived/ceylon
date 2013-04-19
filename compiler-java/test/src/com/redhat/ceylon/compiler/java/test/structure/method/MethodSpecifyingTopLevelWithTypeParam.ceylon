@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 X methodSpecifyingTopLevelWithTypeParam_f<X,Y>(Y y) {
     throw;
 }
-@nomodel
+@noanno
 class MethodSpecifyingTopLevelWithTypeParam<S,T>() {
     String foo(Integer i) => methodSpecifyingTopLevelWithTypeParam_f<String,Integer>(i);
     S bar(T y) => methodSpecifyingTopLevelWithTypeParam_f<S,T>(y);

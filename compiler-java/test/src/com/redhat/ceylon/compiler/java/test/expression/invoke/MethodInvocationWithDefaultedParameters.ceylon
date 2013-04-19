@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Fookls(init) {
     shared Integer prop = 42;
     Integer privProp = 24;
@@ -33,7 +33,7 @@ class Fookls(init) {
     shared default void f9(Integer n = prop.successor) {}
     shared default void fa(Integer n = 5, Integer* seq) {}
 }
-@nomodel
+@noanno
 class Foosubkls(Integer init) extends Fookls(init) {
     shared actual void f1(Integer n) {}
     shared actual void f2(Integer n, String s) {}
@@ -46,7 +46,7 @@ class Foosubkls(Integer init) extends Fookls(init) {
     shared actual void f9(Integer n) {}
     shared actual void fa(Integer n, Integer* seq) {}
 }
-@nomodel
+@noanno
 interface Barface {
     shared formal Integer prop;
     shared formal void f1(Integer n = 5);
@@ -58,7 +58,7 @@ interface Barface {
     shared formal void f9(Integer n = prop.successor);
     shared formal void fa(Integer n = 5, Integer* seq);
 }
-@nomodel
+@noanno
 class Barkls() satisfies Barface {
     shared actual Integer prop = 42;
     shared actual void f1(Integer n) {}
@@ -70,7 +70,7 @@ class Barkls() satisfies Barface {
     shared actual void f9(Integer n) {}
     shared actual void fa(Integer n, Integer* seq) {}
 }
-@nomodel
+@noanno
 void methodInvocationWithDefaultedParameters() {
     Fookls f = Fookls(88);
     f.f1();

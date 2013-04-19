@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel 
+@noanno 
 variable Integer f = 2;
 
-@nomodel
+@noanno
 shared void bug148_2() {
     print(f.string);
     f = 3;

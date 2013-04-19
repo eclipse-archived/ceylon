@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.test.interop{
     JavaWithStaticMembersSubClass{smethod=method, sfield=field, stopMethod=topMethod, stopField=topField}
 }
 
-@nomodel
+@noanno
 @error
 void staticMethods() {
     @error
@@ -45,7 +45,7 @@ void staticMethods() {
 }
 
 @error
-@nomodel
+@noanno
 void staticMethodsAndSubClassesOnInstance() {
     @error
     JavaWithStaticMembersSubClass inst = JavaWithStaticMembersSubClass();
@@ -63,7 +63,7 @@ void staticMethodsAndSubClassesOnInstance() {
     inst.topField = inst.topField;
 }
 
-@nomodel
+@noanno
 void staticMethodsAndSubClassesOnType() {
     @error
     smethod();
@@ -80,7 +80,7 @@ void staticMethodsAndSubClassesOnType() {
 }
 
 @error
-@nomodel
+@noanno
 class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
     void test(){
         @error
@@ -98,7 +98,7 @@ class StaticMethodsAndSubClasses() extends JavaWithStaticMembersSubClass() {
     }
 }
 
-@nomodel
+@noanno
 @error
 void staticFields() {
     JBoolean false = bFalse;

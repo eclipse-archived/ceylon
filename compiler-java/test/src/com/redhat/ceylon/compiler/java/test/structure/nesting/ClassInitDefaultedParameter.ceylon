@@ -18,19 +18,19 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 class C1(Integer i = 1) { }
 
-@nomodel
+@noanno
 class C3(Integer i = 1, Integer n = 2*i) { }
 
-@nomodel
+@noanno
 class C4(Integer i, Integer n = 2*i) { }
 
-@nomodel
+@noanno
 class C5<U>(Integer i, U? u = null) { }
 
-@nomodel
+@noanno
 void positional() {
     C1();
     C1(1);
@@ -43,7 +43,7 @@ void positional() {
     C5<String>(1, "");
 }
 
-@nomodel
+@noanno
 void named() {
     C1{};
     C1{i=1;};

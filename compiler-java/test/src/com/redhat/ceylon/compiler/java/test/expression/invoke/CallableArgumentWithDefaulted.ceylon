@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentWithDefaulted(void f(String s, Integer i = 0)) {
     f("");
     f("", 1);
@@ -29,7 +29,7 @@ void callableArgumentWithDefaulted(void f(String s, Integer i = 0)) {
         s="";
     };
 }
-@nomodel
+@noanno
 void callableArgumentWithDefaulted_main() {
     void f(String s, Integer i) {
     }

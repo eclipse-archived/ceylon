@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class KlassInGetter() {
     String foo {
         if (true) {
             Integer i = 1;
-            @nomodel
+            @noanno
             class Bar() {
                 shared String bar() {
                     return i.string;

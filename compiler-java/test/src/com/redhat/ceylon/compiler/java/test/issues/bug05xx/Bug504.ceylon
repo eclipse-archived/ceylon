@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared void bug504_foo2(Object? a1, Object? a2) {
 }
-@nomodel
+@noanno
 shared void bug504_foo3(Object? a1, Object? a2, Object? a3) {
 }
-@nomodel
+@noanno
 shared void bug504_bar(){
     bug504_foo2(null, [""]*.size);
     bug504_foo3(null, null, [""]*.size);

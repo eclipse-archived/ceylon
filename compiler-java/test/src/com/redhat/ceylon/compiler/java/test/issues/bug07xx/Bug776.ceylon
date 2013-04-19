@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface MyList<out Item> satisfies MyCorrespondence<Integer, Item> {}
 
-@nomodel
+@noanno
 shared interface MyCorrespondence<in Key, out Item> given Key satisfies Object {
     class Items(Sequence<Key> keys) satisfies MyList<Item>{
     }

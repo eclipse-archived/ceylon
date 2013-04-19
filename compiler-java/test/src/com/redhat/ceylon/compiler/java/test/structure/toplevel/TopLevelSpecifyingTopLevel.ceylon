@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer f(Integer i) {
     return i;
 }
-@nomodel
+@noanno
 Integer g(Integer x) => f(x);

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared Iterable<Entry<Integer,Element&Object>> bug675<Element>(Element* elements) {
     for (k->v in bug675(1,2)){}
     return elements.indexed;

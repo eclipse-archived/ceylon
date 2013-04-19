@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodIfConditionListExistsIsBool() {
     Boolean m(Anything[] x) {
         if (exists z=x[0], is Integer y = z, y > 0) {

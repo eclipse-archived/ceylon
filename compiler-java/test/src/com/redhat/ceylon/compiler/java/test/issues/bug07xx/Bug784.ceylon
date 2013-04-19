@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Bug784 {
     shared class Foo(){}
 }
 
-@nomodel
+@noanno
 shared class Bug784Impl() satisfies Bug784 {}

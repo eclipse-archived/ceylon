@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class SequenceInstantiation(){
     shared Sequence<Integer> m() {
         return [ 1, 2, 3, n1, n2() ];

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Bug446<T>() satisfies List<T>{
     shared actual T?[] items({Integer*} keys) {
         return nothing;

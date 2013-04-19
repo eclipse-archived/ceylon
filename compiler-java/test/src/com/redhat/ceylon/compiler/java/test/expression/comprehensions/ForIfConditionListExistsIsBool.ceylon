@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfConditionListExistsIsBool() {
     Boolean[] m(Anything[][] xs) {
         return [ for (x in xs) if (exists z=x[0], is Integer y = z, y > 0) y == 1 ];

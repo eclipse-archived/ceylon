@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ObjectInSetter() {
     String foo {
         return "";
@@ -25,7 +25,7 @@ class ObjectInSetter() {
     assign foo {
         if (true) {
             Integer i = 1;
-            @nomodel
+            @noanno
             object bar {
                 shared actual String string { return i.string; }
             }

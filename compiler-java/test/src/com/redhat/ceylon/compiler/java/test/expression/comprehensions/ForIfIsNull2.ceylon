@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfIsNull() {
     shared void m(Object?[] xs) {
         print({ for (x in xs) if (is Null x) true });

@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Boxer<T> {
     shared formal variable T one;
     shared formal variable T two;
 }
-@nomodel
+@noanno
 class IntBoxer() satisfies Boxer<Integer> {
     shared actual variable Integer one = +1;
     shared actual variable Integer two = +2;
 }
-@nomodel
+@noanno
 void bug253() {
     value boxer = IntBoxer();
     boxer.one = +1;

@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.interop { JavaOverloadedSpecialFields { foo = toString }}
 
-@nomodel
+@noanno
 void overloadedSpecialFields() {
     JavaOverloadedSpecialFields java = JavaOverloadedSpecialFields();
     variable Object sync;

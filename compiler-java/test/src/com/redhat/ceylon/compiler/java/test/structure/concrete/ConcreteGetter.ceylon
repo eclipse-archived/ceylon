@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface ConcreteGetter {
     shared default Integer i {
         return 1;
     }
 }
-@nomodel
+@noanno
 class ConcreteGetterImplementor() satisfies ConcreteGetter {
 
 }
-@nomodel
+@noanno
 class ConcreteGetterOverrider() satisfies ConcreteGetter {
     shared actual Integer i {
         return 2;
     }
 }
-@nomodel
+@noanno
 class ConcreteGetterOverrider2() satisfies ConcreteGetter {
     shared actual default Integer i {
         return 3;

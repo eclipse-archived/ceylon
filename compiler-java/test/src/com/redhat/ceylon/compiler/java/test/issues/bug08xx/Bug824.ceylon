@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug824_X {
     shared String name { return "Gavin"; }
 }
-@nomodel
+@noanno
 interface Bug824_Y => Bug824_X;
-@nomodel
+@noanno
 interface Bug824_Z => Bug824_Y;
-@nomodel
+@noanno
 class Bug824_W() satisfies Bug824_Y {}
-@nomodel
+@noanno
 class Bug824_W2() satisfies Bug824_Z {}

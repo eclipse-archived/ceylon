@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 String get() => "hello";
 
-@nomodel
+@noanno
 class X() {
     print("package.X");
 }
 
-@nomodel
+@noanno
 shared class Outer() {
     Integer get() => 0;
     class X() {

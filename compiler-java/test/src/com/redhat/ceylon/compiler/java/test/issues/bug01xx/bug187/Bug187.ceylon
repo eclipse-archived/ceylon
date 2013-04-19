@@ -19,7 +19,7 @@
  */
 import bug187 { main }
 
-@nomodel
+@noanno
 void bar() {
     main();
 }

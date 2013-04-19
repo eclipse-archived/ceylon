@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class DefaultedAndTypeParams<X>(X init) {
     shared void m<Y>(Y y, X x = init) {}
 }
-@nomodel
+@noanno
 void defaultedAndTypeParams_m() {
     DefaultedAndTypeParams<Integer> i = DefaultedAndTypeParams<Integer>(1);
     i.m("");

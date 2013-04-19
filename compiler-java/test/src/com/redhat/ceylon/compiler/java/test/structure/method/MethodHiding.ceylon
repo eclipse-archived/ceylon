@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodHiding() { 
     shared String m() => "";
     shared actual default String string => m();
 }
-@nomodel
+@noanno
 class MethodHidingSub() extends MethodHiding() { 
     String m() => "";
     shared actual default String string => m(); 

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug866_Visitable<Visited> of Visited satisfies Iterable<Integer|Visited> 
     given Visited satisfies Bug866_Visitable<Visited> {
 

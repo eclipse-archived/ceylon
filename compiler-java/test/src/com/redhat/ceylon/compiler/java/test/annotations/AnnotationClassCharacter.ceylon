@@ -1,11 +1,11 @@
 import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
 
-@nomodel
+@noanno
 annotation class AnnotationClassCharacter(shared Character c) satisfies SequencedAnnotation<AnnotationClassCharacter, Type<Anything>>{}
-@nomodel
+@noanno
 annotation class AnnotationClassCharacterDefaulted(shared Character c='a') satisfies OptionalAnnotation<AnnotationClassCharacterDefaulted, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassCharacter annotationClassCharacter(Character c='z') => AnnotationClassCharacter(c);
-@nomodel
+@noanno
 annotationClassCharacter()
 class AnnotationClassCharacter_callsite() {}

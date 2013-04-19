@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
- @nomodel
+ @noanno
 abstract class TypeFamilyGeneric<N>() 
     given N satisfies Node {
 
@@ -26,10 +26,10 @@ abstract class TypeFamilyGeneric<N>()
 
 }
 
-@nomodel
+@noanno
 interface Inv<T> {}
 
-@nomodel
+@noanno
 void typeFamilyGeneric<X>() given X satisfies TypeFamilyGeneric<X>.Node{
     Inv<TypeFamilyGeneric<X>.Node> l1 { throw; }
     Inv<X> l2 { throw; }

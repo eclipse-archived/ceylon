@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void forIfIsBooleanConditions(Anything[] xs) {
     Integer[] z = [ for (x in xs) if (is Integer y = x, y > 0) y+1 ];
 }

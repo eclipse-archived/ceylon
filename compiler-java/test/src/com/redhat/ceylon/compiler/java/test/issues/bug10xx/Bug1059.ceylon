@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class Bug1059<SomeType>(i) 
     given SomeType satisfies Object {
     Boolean(String) i;

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class SequenceOperators() {
     
     Correspondence<Integer, String> c1 = [""];
@@ -82,7 +82,7 @@ shared class SequenceOperators() {
     }
  }
 
-@nomodel
+@noanno
 void sequenceOperators() {
     value t = [1, "2", Singleton('3')];
     value t3 = t[0...];

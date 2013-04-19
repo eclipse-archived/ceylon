@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 interface I<T> {
     shared formal void m(Integer i = 1);
 
@@ -31,7 +31,7 @@ interface I<T> {
     shared formal Integer m5<U>(Integer i, T? t = null, U? u = null);
 }
 
-@nomodel
+@noanno
 void positional<T>(I<T> i, I<String> i2) {
     i.m();
     i2.m(2);
@@ -47,7 +47,7 @@ void positional<T>(I<T> i, I<String> i2) {
     i.m5<String>(5, null, "");
 }
 
-@nomodel
+@noanno
 void named<T>(I<T> i, I<String> i2) {
     i.m{};
     i2.m{i=2;};
@@ -65,7 +65,7 @@ void named<T>(I<T> i, I<String> i2) {
     i.m5<String>(5, null, "");
 }
  
-@nomodel
+@noanno
 class C<T>() satisfies I<T> {
     shared actual void m(Integer i) {}
 

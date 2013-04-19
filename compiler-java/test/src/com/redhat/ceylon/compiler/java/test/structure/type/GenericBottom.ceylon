@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 class GenericBottom<T,U>(T&U argObject){
     T attrTp = nothing;
     

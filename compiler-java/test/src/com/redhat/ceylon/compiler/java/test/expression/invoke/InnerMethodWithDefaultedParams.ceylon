@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class InnerMethodWithDefaultedParams(Integer init) {
     shared Integer prop = 42;
     Integer privProp = 24;

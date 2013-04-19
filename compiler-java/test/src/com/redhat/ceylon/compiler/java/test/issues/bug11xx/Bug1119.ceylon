@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Bug1119Operation() of bug1119Addition {
     shared formal Integer evaluate(Integer left, Integer right);
     shared default Boolean isOperator(String token) {
@@ -25,7 +25,7 @@ abstract class Bug1119Operation() of bug1119Addition {
     }
 }
 
-@nomodel
+@noanno
 object bug1119Addition extends Bug1119Operation() {
     evaluate(Integer left, Integer right) => left + right;
     string = "+";
@@ -36,7 +36,7 @@ object bug1119Addition extends Bug1119Operation() {
     }
 }
 
-@nomodel
+@noanno
 shared void bug1119Test() {
     print("Should consider '+' as addition operator but returns ``bug1119Addition.isOperator("+")``"); 
 }

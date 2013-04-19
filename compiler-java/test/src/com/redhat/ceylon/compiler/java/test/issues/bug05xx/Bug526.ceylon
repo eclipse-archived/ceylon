@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Bug526Top() {
     shared formal Integer formalAttr;
     shared formal variable Integer formalVar;
@@ -30,7 +30,7 @@ abstract class Bug526Top() {
     assign defaultSetter {}
 }
 
-@nomodel
+@noanno
 class Bug526Bottom1() extends Bug526Top() {
     shared actual variable Integer formalAttr = 2;
     shared actual variable Integer formalVar = 2;
@@ -42,7 +42,7 @@ class Bug526Bottom1() extends Bug526Top() {
     shared actual variable Integer defaultSetter = 2;
 }
 
-@nomodel
+@noanno
 class Bug526Bottom2() extends Bug526Top() {
     shared actual Integer formalAttr { return 2;} assign formalAttr {}
     shared actual Integer formalVar { return 2;} assign formalVar {}

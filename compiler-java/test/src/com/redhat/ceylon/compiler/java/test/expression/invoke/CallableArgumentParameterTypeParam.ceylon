@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentParameterTypeParam_f<T>(void foo(T t)) {
 }
-@nomodel
+@noanno
 void callableArgumentParameterTypeParam_bar<X>(X s) {
 }
-@nomodel
+@noanno
 void callableArgumentParameterTypeParam_baz(Integer i) {
 }
-@nomodel
+@noanno
 void callableArgumentParameterTypeParam_m() {
     callableArgumentParameterTypeParam_f<String>(callableArgumentParameterTypeParam_bar<String>);
     callableArgumentParameterTypeParam_f<Integer>(callableArgumentParameterTypeParam_baz);

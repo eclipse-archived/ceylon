@@ -17,20 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Boolean b1 = true;
-@nomodel
+@noanno
 shared Boolean b2 = true;
-@nomodel
+@noanno
 Boolean b3 {
     return true;
 }
-@nomodel
+@noanno
 shared Boolean b4 {
     return true;
 }
 
-@nomodel
+@noanno
 class TopLevelAccess(){
     void m(){
         Boolean bb1 = b1;

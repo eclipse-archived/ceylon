@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared abstract class Bug966<Element>(first, last) 
         extends Object() 
         satisfies [Element+] & Category

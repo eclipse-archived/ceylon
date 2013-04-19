@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class C<T>() {
 
     shared variable T? t = null;
 
 }
-@nomodel
+@noanno
 void m() {
     value c = C<Object>();
     Object o = 1;

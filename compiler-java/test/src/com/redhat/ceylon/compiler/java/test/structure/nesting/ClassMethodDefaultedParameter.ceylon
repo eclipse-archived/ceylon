@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 class C<T>() {
     void m(Integer i = 1) {
     }

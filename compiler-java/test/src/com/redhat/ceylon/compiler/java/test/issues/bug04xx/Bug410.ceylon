@@ -19,7 +19,7 @@
  */
 import java.lang {JString = String }
 
-@nomodel
+@noanno
 void bug410(){
     Collection<Character> s = "foo";
     // test used to be required but now the typechecker figures out by itself that there's no intersection between

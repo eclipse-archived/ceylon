@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug991Iterable{
     shared default void f() {}
 }
 
-@nomodel
+@noanno
 interface Bug991List satisfies Bug991Iterable {
     shared default actual void f() {}
 }
 
-@nomodel
+@noanno
 interface Bug991Sequence satisfies Bug991List {
     shared default actual void f() => Bug991List::f();
 }
 
-@nomodel
+@noanno
 class Bug991SequenceClass() satisfies Bug991List {
     shared default actual void f() => Bug991List::f();
     

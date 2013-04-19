@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void wait() { }
-@nomodel
+@noanno
 void notify() { }
-@nomodel
+@noanno
 void notifyAll() { }
-@nomodel
+@noanno
 void getClass() { }
-@nomodel
+@noanno
 void finalize() { }
-@nomodel
+@noanno
 void clone() { }
-@nomodel
+@noanno
 void bug609test() {
     wait();
     notify();
@@ -38,7 +38,7 @@ void bug609test() {
     finalize();
     clone();
 }
-@nomodel
+@noanno
 void bug609mth() {
     void wait() { }
     void notify() { }
@@ -54,7 +54,7 @@ void bug609mth() {
     finalize();
     clone();
 }
-@nomodel
+@noanno
 class Bug609cls() {
     void mth() {
         void wait() { }

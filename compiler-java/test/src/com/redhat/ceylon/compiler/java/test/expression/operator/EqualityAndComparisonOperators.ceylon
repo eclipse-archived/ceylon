@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface BasicOperatorsA {}
-@nomodel
+@noanno
 interface BasicOperatorsB {}
 
-@nomodel
+@noanno
 shared abstract class EqualityAndComparisonInteger()
         extends Object()
         satisfies Integral<EqualityAndComparisonInteger> &
                   Comparable<EqualityAndComparisonInteger> {}
 
-@nomodel
+@noanno
 shared class EqualityAndComparisonOperators() {
 
 // M2 b1 = n1 extends Integer;

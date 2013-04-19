@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface This {
     shared formal Integer m1();
     shared default Integer m2(Integer i1 = m1(), Integer i2 = this.m1()) {

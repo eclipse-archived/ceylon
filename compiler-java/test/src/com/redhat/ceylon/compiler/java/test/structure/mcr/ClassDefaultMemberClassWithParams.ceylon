@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ClassDefaultMemberClassWithParams() {
     shared default class Member(Integer i) {
     }
@@ -26,7 +26,7 @@ class ClassDefaultMemberClassWithParams() {
         return Member(1);
     }
 }
-@nomodel
+@noanno
 class ClassDefaultMemberClassWithParams_sub() extends ClassDefaultMemberClassWithParams() {
     shared actual class Member(Integer i) extends super.Member(i) {
     }

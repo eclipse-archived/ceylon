@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer hash { return 1; }
-@nomodel
+@noanno
 String string { return "hello"; }
-@nomodel
+@noanno
 String equals(Object o) { return ""; }
-@nomodel
+@noanno
 void bug605test() {
     Integer i = hash;
     String s = string;
     String q = equals("");
 }
-@nomodel
+@noanno
 void bug605mth() {
     Integer hash { return 1; }
     String string { return "hello"; }
@@ -39,7 +39,7 @@ void bug605mth() {
     String s = string;
     String q = equals("");
 }
-@nomodel
+@noanno
 class Bug605cls() {
     void mth() {
         Integer hash { return 1; }

@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug202_ReadList<out T> {
     shared formal T get(Integer i);
 }
 
-@nomodel
+@noanno
 class Bug202_Tricky() satisfies Bug202_ReadList<Bug202_ReadList<Bug202_Tricky>> {
     shared actual Bug202_ReadList<Bug202_Tricky> get(Integer i) {
         throw;
     }
 }
 
-@nomodel
+@noanno
 Bug202_Tricky|Bug202_ReadList<Bug202_Tricky> bug202_tricky(Integer i) { 
     if ( i <= 0) {
         return Bug202_Tricky(); 

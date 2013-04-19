@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void v() {
     Integer three = 1.plus { other=2; };
     1.plus { other=2; }.equals{that=3;};

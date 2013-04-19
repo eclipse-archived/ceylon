@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Boolean bug509(Object[] objs) {
     for (obj in objs) {
         if (obj==1) {

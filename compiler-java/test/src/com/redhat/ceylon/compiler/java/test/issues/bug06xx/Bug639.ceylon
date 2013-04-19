@@ -18,18 +18,18 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 interface Bug639Widening {
     shared formal Object? implementation;
 }
-@nomodel
+@noanno
 class Bug639WideningImpl(String impl) satisfies Bug639Widening {
     shared actual String implementation = impl;
     shared Integer length {
         return implementation.size;
     }
 }
-@nomodel
+@noanno
 class Bug639WideningImpl2(Integer impl) satisfies Bug639Widening {
     shared actual Integer implementation = impl;
     shared void neg(Bug639Widening w) {

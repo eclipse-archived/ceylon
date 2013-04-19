@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface SatisfiesWithMembers {
     formal shared Boolean b;
     formal shared variable Boolean b2;
     formal shared void m();
 }
 
-@nomodel
+@noanno
 class SatisfiesWithMembersClass() satisfies SatisfiesWithMembers {
     actual shared Boolean b = true;
     actual default shared variable Boolean b2 = false;

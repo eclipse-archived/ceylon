@@ -41,7 +41,7 @@ import java.lang {
 import com.redhat.ceylon.compiler.java.test.interop { TypesJava }
 import java.io { File }
 
-@nomodel
+@noanno
 void testFiles() {
     File f = File(".");
     ObjectArray<File> items = f.listFiles();
@@ -58,7 +58,7 @@ BooleanArray booleanArray({Boolean*} values){
     return ret;
 }
 
-@nomodel
+@noanno
 void test_booleans() {
     TypesJava java = TypesJava();
     BooleanArray items = java.return_booleans();
@@ -100,7 +100,7 @@ void test_booleans() {
     }
 }
 
-@nomodel
+@noanno
 void test_JBooleans() {
     TypesJava java = TypesJava();
     ObjectArray<JBoolean> items = java.return_Booleans();
@@ -112,7 +112,7 @@ void test_JBooleans() {
     java.take_Booleans(items);
 }
 
-@nomodel
+@noanno
 void test_bytes() {
     TypesJava java = TypesJava();
     ByteArray items = java.return_bytes();
@@ -124,7 +124,7 @@ void test_bytes() {
     java.take_bytes(items);
 }
 
-@nomodel
+@noanno
 void test_JBytes() {
     TypesJava java = TypesJava();
     ObjectArray<JByte> items = java.return_Bytes();
@@ -136,7 +136,7 @@ void test_JBytes() {
     java.take_Bytes(items);
 }
 
-@nomodel
+@noanno
 void test_shorts() {
     TypesJava java = TypesJava();
     ShortArray items = java.return_shorts();
@@ -148,7 +148,7 @@ void test_shorts() {
     java.take_shorts(items);
 }
 
-@nomodel
+@noanno
 void test_JShorts() {
     TypesJava java = TypesJava();
     ObjectArray<JShort> items = java.return_Shorts();
@@ -160,7 +160,7 @@ void test_JShorts() {
     java.take_Shorts(items);
 }
 
-@nomodel
+@noanno
 void test_ints() {
     TypesJava java = TypesJava();
     IntArray items = java.return_ints();
@@ -172,7 +172,7 @@ void test_ints() {
     java.take_ints(items);
 }
 
-@nomodel
+@noanno
 void test_JIntegers() {
     TypesJava java = TypesJava();
     ObjectArray<JInteger> items = java.return_Integers();
@@ -184,7 +184,7 @@ void test_JIntegers() {
     java.take_Integers(items);
 }
 
-@nomodel
+@noanno
 void test_longs() {
     TypesJava java = TypesJava();
     LongArray items = java.return_longs();
@@ -196,7 +196,7 @@ void test_longs() {
     java.take_longs(items);
 }
 
-@nomodel
+@noanno
 void test_JLongs() {
     TypesJava java = TypesJava();
     ObjectArray<JLong> items = java.return_Longs();
@@ -208,7 +208,7 @@ void test_JLongs() {
     java.take_Longs(items);
 }
 
-@nomodel
+@noanno
 void test_floats() {
     TypesJava java = TypesJava();
     FloatArray items = java.return_floats();
@@ -220,7 +220,7 @@ void test_floats() {
     java.take_floats(items);
 }
 
-@nomodel
+@noanno
 void test_JFloats() {
     TypesJava java = TypesJava();
     ObjectArray<JFloat> items = java.return_Floats();
@@ -232,7 +232,7 @@ void test_JFloats() {
     java.take_Floats(items);
 }
 
-@nomodel
+@noanno
 void test_doubles() {
     TypesJava java = TypesJava();
     DoubleArray items = java.return_doubles();
@@ -244,7 +244,7 @@ void test_doubles() {
     java.take_doubles(items);
 }
 
-@nomodel
+@noanno
 void test_JDoubles() {
     TypesJava java = TypesJava();
     ObjectArray<JDouble> items = java.return_Doubles();
@@ -256,7 +256,7 @@ void test_JDoubles() {
     java.take_Doubles(items);
 }
 
-@nomodel
+@noanno
 void test_chars() {
     TypesJava java = TypesJava();
     CharArray items = java.return_chars();
@@ -272,7 +272,7 @@ void test_chars() {
     assert(arrays.asCodePointArray(chars) == ints);
 }
 
-@nomodel
+@noanno
 void test_JCharacters() {
     TypesJava java = TypesJava();
     ObjectArray<JCharacter> items = java.return_Characters();
@@ -284,7 +284,7 @@ void test_JCharacters() {
     java.take_Characters(items);
 }
 
-@nomodel
+@noanno
 void test_Strings() {
     TypesJava java = TypesJava();
     ObjectArray<JString> items = java.return_Strings();
@@ -303,7 +303,7 @@ void test_Strings() {
     ObjectArray<String> ceylonStrings2 = arrays.toStringArray(javaStringArray);
 }
 
-@nomodel
+@noanno
 void test_Objects() {
     TypesJava java = TypesJava();
     ObjectArray<Object> items = java.return_Objects();

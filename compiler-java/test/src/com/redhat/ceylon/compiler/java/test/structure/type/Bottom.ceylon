@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Object toplevelObject = nothing;
-@nomodel
+@noanno
 Integer toplevelInteger = nothing;
 
-@nomodel
+@noanno
 class BottomClass(Object argObject, Integer argInteger){
     Object attrObject = nothing;
     Integer attrInteger = nothing;

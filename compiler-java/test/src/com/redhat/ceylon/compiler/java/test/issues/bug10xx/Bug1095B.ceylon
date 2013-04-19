@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 class Bug1095B() {
     void selfType<Summand>(Summand x) 
         given Summand satisfies Summable<Summand> {

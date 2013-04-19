@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void defaultFunctionReference(void f(Object o)=>print(o)) {
     f(1);
 }
 void defaultFunctionReference2(String s="hi", void f(Object* o) => print(s + o.string)) {
     f(1);
 }
-@nomodel
+@noanno
 void defaultFunctionReference_call() {
     defaultFunctionReference();
     defaultFunctionReference2();

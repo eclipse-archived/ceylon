@@ -1,14 +1,14 @@
 import ceylon.language.metamodel{OptionalAnnotation, SequencedAnnotation, Type}
 
-@nomodel
+@noanno
 annotation class AnnotationClassNullary() satisfies OptionalAnnotation<AnnotationClassNullary, Type<Anything>>{}
-@nomodel
+@noanno
 annotation class AnnotationClassNullarySequenced() satisfies SequencedAnnotation<AnnotationClassNullarySequenced, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassNullary annotationClassNullary() => AnnotationClassNullary();
-@nomodel
+@noanno
 annotation AnnotationClassNullarySequenced annotationClassNullarySequenced() => AnnotationClassNullarySequenced();
-@nomodel
+@noanno
 annotationClassNullary
 annotationClassNullarySequenced
 class AnnotationClassNullary_callsite() {}

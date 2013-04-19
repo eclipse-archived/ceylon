@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug457() {
     shared actual String string {
         return "foo";
     }
 }
 
-@nomodel
+@noanno
 class Bug457b() {
     shared actual String string = "foo";
 }

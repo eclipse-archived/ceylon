@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 interface Bug260_Interface {
     // we will narrow those to Null
     shared formal Integer? attr;
@@ -32,19 +32,19 @@ interface Bug260_Interface {
     shared formal Bug260_Interface2 m3();
 }
 
-@nomodel
+@noanno
 interface Bug260_Interface2 {
 }
 
-@nomodel
+@noanno
 interface Bug260_Interface3 {
 }
 
-@nomodel
+@noanno
 class Bug260_Intersection() satisfies Bug260_Interface2 & Bug260_Interface3 {
 }
 
-@nomodel
+@noanno
 class Bug260() satisfies Bug260_Interface & Bug260_Interface2 {
     // narrow to Null
     shared actual Null attr = null;

@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface AbstractSatisfier_I satisfies Iterable<Anything> {
 }
-@nomodel
+@noanno
 abstract class AbstractSatisfier<T>() satisfies AbstractSatisfier_I&Iterable<T> {
 }

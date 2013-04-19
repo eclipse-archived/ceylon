@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class KlassTypeParams<U,V>(U uu, V vv) {
     U foo(U u, V v){
         return u;

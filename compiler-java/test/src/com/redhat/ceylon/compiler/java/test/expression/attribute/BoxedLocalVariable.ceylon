@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class BoxedLocalVariable<T>() {
      shared default void m2(T t) {
         variable T t2;
@@ -28,7 +28,7 @@ class BoxedLocalVariable<T>() {
         }
     }
 }
-@nomodel
+@noanno
 class BoxedLocalVariable_sub() extends BoxedLocalVariable<String>(){
      shared actual void m2(String t) {
         variable String t2;

@@ -1,10 +1,10 @@
-@nomodel
+@noanno
 String reifiedCallable(Integer i){
     value c = reifiedCallable;
     return "";
 }
 
-@nomodel
+@noanno
 void reifiedCallable2(Boolean foo(String i)){
     reifiedCallable2{
         Boolean foo(String i){
@@ -13,7 +13,7 @@ void reifiedCallable2(Boolean foo(String i)){
     };
 }
 
-@nomodel
+@noanno
 void reifiedCallable3(Boolean foo(String i)(Integer i2)){
     reifiedCallable3{
         Boolean foo(String i)(Integer i2){

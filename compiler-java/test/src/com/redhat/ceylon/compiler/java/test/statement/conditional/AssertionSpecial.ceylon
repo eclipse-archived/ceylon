@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void assertionSpecial() {
     String|Integer v1 = 5;
     assert(is Integer a1 = v1);

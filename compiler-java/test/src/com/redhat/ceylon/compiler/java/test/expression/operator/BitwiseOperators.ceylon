@@ -19,40 +19,40 @@
  */
 
 // we need those to test for boxed numbers
-@nomodel
+@noanno
 abstract class BWMyInteger()
         extends Object()
         satisfies Binary<BWMyInteger> &
                   Integral<BWMyInteger> &
                   Exponentiable<BWMyInteger, BWMyInteger>{}
 
-@nomodel
+@noanno
 variable Integer bwToplevelN1 = 0;
-@nomodel
+@noanno
 variable Integer bwToplevelN2 = 0;
-@nomodel
+@noanno
 variable Integer bwToplevelI1 = 0;
 
-@nomodel 
+@noanno 
 Integer bwToplevelGetterN1 {
     return bwToplevelN1; 
 }assign bwToplevelGetterN1 {
     bwToplevelN1 = bwToplevelGetterN1; 
 }
-@nomodel 
+@noanno 
 Integer bwToplevelGetterN2 {
     return bwToplevelN2; 
 }assign bwToplevelGetterN2 {
     bwToplevelN2 = bwToplevelGetterN2; 
 }
-@nomodel 
+@noanno 
 Integer bwToplevelGetterI1 {
     return bwToplevelI1; 
 }assign bwToplevelGetterI1 {
     bwToplevelI1 = bwToplevelGetterI1; 
 }
 
-@nomodel
+@noanno
 class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
     shared variable Integer n1 = 0;
     shared variable Integer n2 = 0;
@@ -245,7 +245,7 @@ class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
     }
 }
 
-@nomodel
+@noanno
 class BitwiseOperatorsSub(BWMyInteger initN, BWMyInteger initI) extends BitwiseOperators(initN, initI) {
     shared actual void unboxedQualifiedAttributes() {
 

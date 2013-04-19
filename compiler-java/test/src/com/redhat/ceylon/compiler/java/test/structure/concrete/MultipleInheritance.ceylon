@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface MultipleInheritance {
     shared default Integer a {
         return 1;
@@ -27,23 +27,23 @@ shared interface MultipleInheritance {
     shared default void m() {
     }
 }
-@nomodel
+@noanno
 class MultipleInheritanceImpl() satisfies MultipleInheritance {
 }
-@nomodel
+@noanno
 interface MultipleInheritanceSub satisfies MultipleInheritance {
 }
-@nomodel
+@noanno
 class MultipleInheritanceSubImpl() satisfies MultipleInheritanceSub {
 }
-@nomodel
+@noanno
 class MultipleInheritanceImplSub() extends MultipleInheritanceImpl() satisfies MultipleInheritanceSub {
     shared actual variable Integer a = 1;
     shared actual void m() {
         MultipleInheritanceSub::m();
     }
 }
-@nomodel
+@noanno
 class MultipleInheritanceSubImplSub() extends MultipleInheritanceSubImpl() satisfies MultipleInheritance {
     shared actual variable Integer a = 1;
     shared actual void m() {

@@ -20,7 +20,7 @@
 import java.io { File, FileInputStream }
 import java.lang { ByteArray }
 
-@nomodel
+@noanno
 void bug1007() {
     value file = File("/foo");
     value fileData = ByteArray { size = file.length(); element = 0; };

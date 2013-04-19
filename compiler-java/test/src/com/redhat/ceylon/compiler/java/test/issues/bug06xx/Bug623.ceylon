@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug623Direct() extends Object() satisfies Identifiable {}
-@nomodel
+@noanno
 interface Bug623 satisfies Identifiable {}
-@nomodel
+@noanno
 class Bug623Indirect() extends Object() satisfies Bug623 {}

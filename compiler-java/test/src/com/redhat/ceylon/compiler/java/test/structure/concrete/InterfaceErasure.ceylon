@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface InterfaceErasure<Element, Absent>
     given Absent satisfies Null {
     // should be erased
@@ -29,7 +29,7 @@ interface InterfaceErasure<Element, Absent>
     shared default class Class(Absent|Element p = nothing, Absent|Element p2 = nothing){}
 }
 
-@nomodel
+@noanno
 class InterfaceErasureImpl<Element>() satisfies InterfaceErasure<Element, Null> {
     // make sure the generated bridges are appropriately casted
 }

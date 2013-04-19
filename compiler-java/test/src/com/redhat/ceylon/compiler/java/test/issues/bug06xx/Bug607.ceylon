@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug607mth(arg1, arg2, arg3) {
     String arg1;
     variable String arg2;
@@ -27,7 +27,7 @@ void bug607mth(arg1, arg2, arg3) {
         arg3 = "bar";
     }
 }
-@nomodel
+@noanno
 class Bug607cls() {
     void mth(arg1, arg2, arg3) {
         String arg1;

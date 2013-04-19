@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class QualifiedAttributeAssign(){
    variable Boolean b = true;
    shared variable Boolean b2 = true;
@@ -32,7 +32,7 @@ class QualifiedAttributeAssign(){
        f.b = f.b;
    }
 }
-@nomodel
+@noanno
 class QualifiedAttributeAssignFoo() {
    shared variable Boolean b = true;
 }

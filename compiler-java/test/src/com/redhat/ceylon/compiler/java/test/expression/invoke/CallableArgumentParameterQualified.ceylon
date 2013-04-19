@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentParameterQualified_f(void foo()) {
 }
-@nomodel
+@noanno
 class CallableArgumentParameterQualified(Callable<Anything, []> bar) {
     void m(CallableArgumentParameterQualified c) {
         callableArgumentParameterQualified_f(c.bar);

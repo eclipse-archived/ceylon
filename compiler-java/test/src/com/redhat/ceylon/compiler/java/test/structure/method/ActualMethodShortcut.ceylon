@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class ActualMethodShortcut() {
     shared formal void print1();
     shared formal void print2(String s);
     shared formal void foo(String s);
     shared formal String foo2(String s);
 }
-@nomodel
+@noanno
 class ActualMethodShortcutSub() extends ActualMethodShortcut() {
     print1 = () => process.writeLine("hello");
     print2 = process.writeLine;

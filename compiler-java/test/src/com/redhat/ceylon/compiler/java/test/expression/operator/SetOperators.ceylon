@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class SetOperators() {
 
     void testSetOperatorsWithSameTypes(Set<Integer> a, Set<Integer> b) {
@@ -110,7 +110,7 @@ shared class SetOperators() {
         sync ~= a;
     }
 }
-@nomodel
+@noanno
 class SetOperatorsSuper(a, b) {
     shared variable Set<Integer> sync = a;
     shared variable Set<Integer> a;
@@ -125,7 +125,7 @@ class SetOperatorsSuper(a, b) {
         sync ~= a;
     }
 }
-@nomodel
+@noanno
 class SetOperatorsSub(Set<Integer> a, Set<Nothing> b) extends SetOperatorsSuper(a, b) {
     shared actual void m() {
         super.sync = super.a | super.b;

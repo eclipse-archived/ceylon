@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class InitializerParamHidingAttribute(b){
    Boolean b;
    Boolean b2 = b;
 }
-@nomodel
+@noanno
 class InitializerParamHidingAttribute2(b){
    shared Boolean b;
    shared Boolean b2 = b;

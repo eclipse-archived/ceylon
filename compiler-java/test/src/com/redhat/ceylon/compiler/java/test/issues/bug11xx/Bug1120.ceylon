@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Bug1120Top() {
   shared formal Integer method();
   shared formal Integer attr1;
   shared formal Integer attr2;
 }
 
-@nomodel
+@noanno
 class Bug1120Bottom() extends Bug1120Top() {
     method() => 1;
     attr1 => 1;
     attr2 = 2;
 }
 
-@nomodel
+@noanno
 void bug1120() {
     Bug1120Top t3 = Bug1120Bottom();
     print(t3.method());

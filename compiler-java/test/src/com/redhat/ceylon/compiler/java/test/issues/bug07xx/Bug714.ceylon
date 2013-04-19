@@ -19,7 +19,7 @@
  */
 import java.util { Map, Set, Collection }
 
-@nomodel
+@noanno
 class MyMap() satisfies Map<String, Object> {
     shared actual Boolean equals(Object that) {
         return nothing;

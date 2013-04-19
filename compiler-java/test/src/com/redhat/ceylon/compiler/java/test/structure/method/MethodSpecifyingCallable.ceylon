@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Callable<String,[Integer]> methodSpecifyingCallable_f() {
     throw;
 }
-@nomodel
+@noanno
 class MethodSpecifyingCallable() {
     String foo(Integer i) => methodSpecifyingCallable_f()(i);
     

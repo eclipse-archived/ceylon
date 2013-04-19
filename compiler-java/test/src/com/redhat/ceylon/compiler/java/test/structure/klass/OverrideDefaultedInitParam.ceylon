@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class OverrideDefaultedInitParam(id="") {
     String id;
 }
-@nomodel
+@noanno
 class OverrideDefaultedInitParamSub(String id="") extends OverrideDefaultedInitParam(id) {
 }

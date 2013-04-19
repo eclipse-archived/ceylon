@@ -17,29 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 variable Integer topLevelGetterSetterX = 0;
-@nomodel
+@noanno
 Integer topLevelGetterSetter {
     return topLevelGetterSetterX;
 }
-@nomodel
+@noanno
 shared Integer topLevelGetterSetterShared {
     return topLevelGetterSetterX;
 }
-@nomodel
+@noanno
 assign topLevelGetterSetter {
     topLevelGetterSetterX = topLevelGetterSetter;
 }
-@nomodel
+@noanno
 assign topLevelGetterSetterShared {
     topLevelGetterSetterX = topLevelGetterSetterShared;
 }
-@nomodel
+@noanno
 Integer topLevelGetterSetter2 => topLevelGetterSetterX;
-@nomodel
+@noanno
 shared Integer topLevelGetterSetterShared2 => topLevelGetterSetterX;
-@nomodel
+@noanno
 assign topLevelGetterSetter2 => topLevelGetterSetterX = topLevelGetterSetter2;
-@nomodel
+@noanno
 assign topLevelGetterSetterShared2 => topLevelGetterSetterX = topLevelGetterSetterShared2;

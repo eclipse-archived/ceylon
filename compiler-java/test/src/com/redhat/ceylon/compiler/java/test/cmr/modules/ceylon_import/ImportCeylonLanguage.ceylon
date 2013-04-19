@@ -19,7 +19,7 @@
  */
 import ceylon.language { print }
 
-@nomodel
+@noanno
 void importCeylonLanguage() {
     print("foo");
 }

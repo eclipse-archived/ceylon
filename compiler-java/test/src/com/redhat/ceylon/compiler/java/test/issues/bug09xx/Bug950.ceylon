@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Bug950_Top{
     shared formal void foo();
 }
-@nomodel
+@noanno
 shared interface Bug950_Left satisfies Bug950_Top {
     shared actual void foo(){}
 }
-@nomodel
+@noanno
 shared interface Bug950_Right satisfies Bug950_Top {
     shared actual void foo(){}
 }
-@nomodel
+@noanno
 doc "Goo"
 shared class Bug950_Bottom() satisfies Bug950_Left & Bug950_Right {
 }

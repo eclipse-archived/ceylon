@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer concreteMethodBySpecificationMethod() {
     return 1;
 }
-@nomodel
+@noanno
 interface ConcreteMethodBySpecification {
     shared formal Integer mFormal(Integer i);
     
@@ -31,13 +31,13 @@ interface ConcreteMethodBySpecification {
     shared default Integer mDefaultFn() => concreteMethodBySpecificationMethod();
     shared default Integer mDefaultMem(Integer i = 1) => mFormal(i);
 }
-@nomodel
+@noanno
 interface ConcreteMethodBySpecificationSub satisfies ConcreteMethodBySpecification {
     
     shared Integer mSharedSup(Integer i = 1) => mFormal(i);
     shared default Integer mDefaultSup(Integer i = 1) => mFormal(i);
 }
-@nomodel
+@noanno
 class ConcreteMethodBySpecificationImpl() satisfies ConcreteMethodBySpecificationSub {
     shared actual Integer mFormal(Integer i) {
         return i;

@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Scalable<in T,out S> of S 
         given S satisfies Scalable<T,S> {
     shared formal S scaleUp(T t);
     shared formal S scaleDown(T t);
 }
 
-@nomodel
+@noanno
 interface Numeric<T> of T 
         satisfies Scalable<T,T>
         given T satisfies Numeric<T> {
@@ -34,19 +34,19 @@ interface Numeric<T> of T
     shared  actual T scaleDown(T t) => divided(t);
 }
 
-@nomodel
+@noanno
 S scale<T,S>(T x, Scalable<T,S> y) 
         given S satisfies Scalable<T,S>
         => y.scaleUp(x);
 
-@nomodel
+@noanno
 abstract class Vector() satisfies Scalable<Real,Vector> {}
-@nomodel
+@noanno
 abstract class Real() satisfies Numeric<Real>&Scalable<Int|Real,Real> {}
-@nomodel
+@noanno
 abstract class Int() satisfies Numeric<Int> {}
 
-@nomodel
+@noanno
 void bug1036(Real real, Vector vector, Int int) {
     Vector vectorScaledUp = scale(real,vector);
     Real realProduct = scale(real,real);

@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class KlassMethodTypeParams() {
         shared U bar<U, V>(U u, V v) {
                 return u;
         }
 }
 
-@nomodel
+@noanno
 class GenericMethodInvocation(){
     shared String m() {
         value k = KlassMethodTypeParams();

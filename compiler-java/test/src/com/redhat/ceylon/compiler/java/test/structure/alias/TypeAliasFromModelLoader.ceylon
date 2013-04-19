@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void typeAliasFromModelLoader(TypeAlias1 p1,
                               TypeAlias2 p2,
                               TypeAlias3 p3,

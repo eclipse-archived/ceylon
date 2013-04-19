@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class RefinedVarianceInheritance2Top() {
  shared formal Integer m();
  shared formal Integer? m2();
 }
 
-@nomodel
+@noanno
 class RefinedVarianceInheritance2Nothing() extends RefinedVarianceInheritance2Top() {
  shared actual Nothing m(){ return nothing; }
  shared actual Integer m2(){ return 1; }

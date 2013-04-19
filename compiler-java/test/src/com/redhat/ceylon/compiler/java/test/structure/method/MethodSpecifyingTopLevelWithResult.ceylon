@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer methodSpecifyingToplevelWithResult_f() {
     return 1;
 }
-@nomodel
+@noanno
 class MethodSpecifyingToplevelWithResult() {
     Integer foo() => methodSpecifyingToplevelWithResult_f();
 }

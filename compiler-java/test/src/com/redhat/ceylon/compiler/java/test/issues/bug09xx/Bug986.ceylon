@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 shared void bug986() {
     value values = { 100, 110, 120 };
     class Fun(shared Integer() fun) {}

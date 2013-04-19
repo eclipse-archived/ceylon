@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Foo(String* name) {
 }
-@nomodel
+@noanno
 class Bar(String name1, String name2) extends Foo(name1, name2) {}

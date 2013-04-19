@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class TypeFamily<N,E>() 
     given N satisfies Node
     given E satisfies Edge {
@@ -34,7 +34,7 @@ abstract class TypeFamily<N,E>()
         }
     }
 }
-@nomodel
+@noanno
 class TypeFamilyBasic() extends TypeFamily<Node,Edge>() {
     
     shared actual class Node() 

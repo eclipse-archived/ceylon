@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodWhileConditionListExistsIsBool() {
     Boolean m(Anything[] x) {
         while (exists z=x[0], is Integer y = z, y > 0) {

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void getterArgumentNamedInvocation(Integer num) {
     void callFunction(Integer i = 2, String s = "") {
     }

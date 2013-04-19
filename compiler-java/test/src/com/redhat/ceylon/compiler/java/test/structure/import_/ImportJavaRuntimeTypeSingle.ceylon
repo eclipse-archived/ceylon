@@ -20,7 +20,7 @@
 import java.lang{Exception}
 import java.util{List}
 
-@nomodel
+@noanno
 class ImportJavaRuntimeTypeSingle() {
     void m(@error List<Integer> l) {
         @error

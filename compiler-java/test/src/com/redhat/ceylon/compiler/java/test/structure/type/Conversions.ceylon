@@ -17,28 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Foo() {
     shared void a() { }
 }
-@nomodel
+@noanno
 class Bar() extends Foo() {
     shared void b() { }
 }
-@nomodel
+@noanno
 class Baz() extends Foo() {
     shared void c() { }
 }
 
-@nomodel
+@noanno
 class GenInv<T>() {
     shared void a() { }
 }
-@nomodel
+@noanno
 class GenCov<out T>() {
     shared void a() { }
 }
-@nomodel
+@noanno
 class GenCon<in T>() {
     shared void a() { }
 }
@@ -46,15 +46,15 @@ class GenCon<in T>() {
 // For an ordinary class or interface type T:
 // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
 //   results in the Java type Foo<T>
-@nomodel
+@noanno
 interface ISats {
     shared formal void z();
 }
-@nomodel
+@noanno
 class Sats<T>() given T satisfies ISats {
     shared void a() { }
 }
-@nomodel
+@noanno
 class BarSats() extends Bar() satisfies ISats {
     shared actual void z() { }
 }
@@ -62,18 +62,18 @@ class BarSats() extends Bar() satisfies ISats {
 // For the root type Anything:
 // - The Ceylon type Foo<Anything> appearing in an extends or satisfies
 //   clause results in the Java raw type Foo<Object>
-@nomodel
+@noanno
 class ExtAnything() extends GenInv<Anything>() {
 }
 
 // For the nothing type Nothing:
 // - The Ceylon type Foo<Nothing> appearing in an extends or satisfies
 //   clause results in the Java raw type Foo
-@nomodel
+@noanno
 class ExtNothing() extends GenInv<Nothing>() {
 }
 
-@nomodel
+@noanno
 class Conversions() {
     shared void m() {
         // For an ordinary class or interface type T:
@@ -154,10 +154,10 @@ class Conversions() {
 
 // Test upper bound erasure
 
-@nomodel
+@noanno
 interface ISats2 {}
 
-@nomodel
+@noanno
 class UpperBoundErasure1<T>() given T satisfies ISats & ISats2 & Basic & Identifiable {
     void foo<T>() given T satisfies ISats & ISats2 & Basic & Identifiable {
         

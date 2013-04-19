@@ -17,37 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug544(String s) {}
 
-@nomodel
+@noanno
 class Bug544SharedAttribute(s) extends Bug544(s) {
     shared String s;
 }
 
-@nomodel
+@noanno
 class Bug544Captured(String s) extends Bug544(s) {
     String m(){
         return s;
     }
 }
 
-@nomodel
+@noanno
 class Bug544NonSharedAttr(String s) extends Bug544(s) {
 }
 
-@nomodel
+@noanno
 String s = "";
 
-@nomodel
+@noanno
 class Bug544Toplevel() extends Bug544(s) {
 }
 
-@nomodel
+@noanno
 class Bug544Qualified(Bug544SharedAttribute b) extends Bug544(b.s) {
 }
 
-@nomodel
+@noanno
 class Bug544ContainerClass() {
     
     shared String s = "";
@@ -56,7 +56,7 @@ class Bug544ContainerClass() {
     }
 }
 
-@nomodel
+@noanno
 interface Bug544ContainerInterface {
     
     shared formal String s;

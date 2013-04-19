@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class OuterClass() {
    shared class InnerClass() {
    }
 }
-@nomodel
+@noanno
 void m() {
     OuterClass o = OuterClass();
     OuterClass.InnerClass i = o.InnerClass();

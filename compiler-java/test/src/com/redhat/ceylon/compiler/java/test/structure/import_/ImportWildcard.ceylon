@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{...}
 
-@nomodel
+@noanno
 class ImportWildcard() {
     void m() {
         C1();

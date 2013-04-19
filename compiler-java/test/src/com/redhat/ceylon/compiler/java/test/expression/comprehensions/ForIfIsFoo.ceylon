@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfIsFoo() {
     shared void m(Object?[] xs) {
         print({ for (x in xs) if (is Foo x) x.foo() });

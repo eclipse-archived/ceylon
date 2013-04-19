@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer topLevelGetter {
     return 0;
 }
-@nomodel
+@noanno
 shared Integer topLevelGetterShared {
     return 0;
 }
-@nomodel
+@noanno
 Integer topLevelGetter2 => 0;
-@nomodel
+@noanno
 shared Integer topLevelGetterShared2 => 0;

@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface IBug441 satisfies Cloneable<IBug441> {}
-@nomodel
+@noanno
 class Bug441() satisfies IBug441&Cloneable<Bug441> {
     shared actual Bug441 clone { return this; }
 }

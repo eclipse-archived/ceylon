@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug997() {
     function format(String first, String second) => first + " " + second;
     value printf = compose(print,format);

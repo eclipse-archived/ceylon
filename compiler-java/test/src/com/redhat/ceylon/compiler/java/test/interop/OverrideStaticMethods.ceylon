@@ -20,7 +20,7 @@
 
 // see https://github.com/ceylon/ceylon-spec/issues/211
 @error
-@nomodel
+@noanno
 class StaticMethodsOverriding() extends JavaWithStaticMembers() {
     @error
     shared actual void topMethod(){}

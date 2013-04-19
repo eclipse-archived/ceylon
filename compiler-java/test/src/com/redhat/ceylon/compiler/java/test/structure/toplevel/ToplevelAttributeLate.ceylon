@@ -1,9 +1,9 @@
 
-@nomodel
+@noanno
 late Integer toplevelAttributeLate;
-@nomodel
+@noanno
 late variable Integer toplevelAttributeLateVariable;
-@nomodel
+@noanno
 void toplevelAttributeLateInit() {
     toplevelAttributeLate = 0;
     toplevelAttributeLateVariable = 0;

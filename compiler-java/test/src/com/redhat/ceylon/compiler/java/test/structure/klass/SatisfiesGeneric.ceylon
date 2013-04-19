@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface SatisfiesGeneric_Foo<in T> {
 }
-@nomodel
+@noanno
 interface SatisfiesGeneric_Bar<out T> {
     
 }
-@nomodel
+@noanno
 interface SatisfiesGeneric_Baz<T> {
     
 }
-@nomodel
+@noanno
 interface SatisfiesGeneric<out X, in Y, Z> {
 }
-@nomodel
+@noanno
 class SatisfiesGenericImpl()
     satisfies SatisfiesGeneric<SatisfiesGeneric_Foo<Integer>, SatisfiesGeneric_Bar<Integer>, SatisfiesGeneric_Baz<String>> {
 }

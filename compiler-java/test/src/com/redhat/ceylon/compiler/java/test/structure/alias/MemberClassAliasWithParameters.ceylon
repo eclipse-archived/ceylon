@@ -26,7 +26,7 @@ shared class MemberClassAliasWithParameters_Foo(){
     }
 }
 
-@nomodel
+@noanno
 void memberClassAliasWithParametersMethod(){
     value foo = MemberClassAliasWithParameters_Foo().MemberClassAlias(1, "a");
 }

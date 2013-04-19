@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callablePositionalInvocationSequencedComprehension(void foo(Integer* i), void bar(String a, Integer* i)) {
     Integer[] em = {};
     foo(for (i in {1}) i);

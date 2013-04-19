@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 abstract class RefiningAnythingMembersClass<T>(T t) {
     shared void notRefinable(){}
     
@@ -49,7 +49,7 @@ abstract class RefiningAnythingMembersClass<T>(T t) {
     shared formal T formalReturnsT();
 }
 
-@nomodel
+@noanno
 abstract class RefiningAnythingMembersClass_Boxed() extends RefiningAnythingMembersClass<Anything>(1) {
     /*shared actual Anything defaultGettervoid {
         return 1;
@@ -75,7 +75,7 @@ abstract class RefiningAnythingMembersClass_Boxed() extends RefiningAnythingMemb
     }
 }
 
-@nomodel
+@noanno
 abstract class RefiningAnythingMembersClass_Unboxed() extends RefiningAnythingMembersClass<Anything>(1) {
     /* shared actual void defaultGetterAnything {
     }*/
@@ -95,7 +95,7 @@ abstract class RefiningAnythingMembersClass_Unboxed() extends RefiningAnythingMe
 }
 
 
-@nomodel
+@noanno
 interface RefiningAnythingMembersInterface<T> {
     
     shared void notRefinable(){}
@@ -127,7 +127,7 @@ interface RefiningAnythingMembersInterface<T> {
     shared formal T formalReturnsT();
 }
 
-@nomodel
+@noanno
 abstract class RefiningAnythingMembersInterface_Boxed() satisfies RefiningAnythingMembersInterface<Anything> {
     shared actual Anything defaultGetterT {
         return 1;
@@ -150,7 +150,7 @@ abstract class RefiningAnythingMembersInterface_Boxed() satisfies RefiningAnythi
     }   
 }
 
-@nomodel
+@noanno
 abstract class RefiningAnythingMembersInterface_Unboxed() satisfies RefiningAnythingMembersInterface<Anything> {
     /* shared actual void defaultGetterAnything {
     }*/

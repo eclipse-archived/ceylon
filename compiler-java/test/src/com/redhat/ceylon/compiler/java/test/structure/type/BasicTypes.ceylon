@@ -17,51 +17,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared Integer globalMethodInteger(Integer i){ return i; }
-@nomodel
+@noanno
 shared Float globalMethodFloat(Float i){ return i; }
-@nomodel
+@noanno
 shared String globalMethodString(String i){ return i; }
-@nomodel
+@noanno
 shared Boolean globalMethodBoolean(Boolean i){ return i; }
-@nomodel
+@noanno
 shared Character globalMethodCharacter(Character i){ return i; }
 
-@nomodel
+@noanno
 shared Integer? globalMethodOptionalInteger(Integer? i){ return i; }
-@nomodel
+@noanno
 shared Float? globalMethodOptionalFloat(Float? i){ return i; }
-@nomodel
+@noanno
 shared String? globalMethodOptionalString(String? i){ return i; }
-@nomodel
+@noanno
 shared Boolean? globalMethodOptionalBoolean(Boolean? i){ return i; }
-@nomodel
+@noanno
 shared Character? globalMethodOptionalCharacter(Character? i){ return i; }
 
-@nomodel
+@noanno
 shared Integer globalAttrInteger = +1;
-@nomodel
+@noanno
 shared Float globalAttrFloat = 1.0;
-@nomodel
+@noanno
 shared String globalAttrString = "a";
-@nomodel
+@noanno
 shared Boolean globalAttrBoolean = true;
-@nomodel
+@noanno
 shared Character globalAttrCharacter = 'a';
 
-@nomodel
+@noanno
 shared Integer? globalAttrOptionalInteger = null;
-@nomodel
+@noanno
 shared Float? globalAttrOptionalFloat = null;
-@nomodel
+@noanno
 shared String? globalAttrOptionalString = null;
-@nomodel
+@noanno
 shared Boolean? globalAttrOptionalBoolean = null;
-@nomodel
+@noanno
 shared Character? globalAttrOptionalCharacter = null;
 
-@nomodel
+@noanno
 class BasicTypes(Integer paramInteger,
                  Float paramFloat,
                  String paramString,
@@ -134,13 +134,13 @@ class BasicTypes(Integer paramInteger,
   Boolean? methodOptionalBoolean(Boolean? i){ return i; }
   Character? methodOptionalCharacter(Character? i){ return i; }
 }
-@nomodel
+@noanno
 abstract class TypeParameterClass<ClassParam>(ClassParam classParam){
  shared formal ClassParam attr;
  shared formal ClassParam classParamMethod(ClassParam param);
 }
 
-@nomodel
+@noanno
 class IntegerParameterClass(Integer classParam) extends TypeParameterClass<Integer>(classParam) {
  shared actual Integer attr = classParam;
  shared actual Integer classParamMethod(Integer param){ return param; }

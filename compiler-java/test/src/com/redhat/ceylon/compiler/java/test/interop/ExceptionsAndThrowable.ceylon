@@ -19,10 +19,10 @@
  */
 import java.lang { Error, JException = Exception, RuntimeException }
 
-@nomodel
+@noanno
 shared class MyException() extends Exception(){}
 
-@nomodel
+@noanno
 shared void testExceptions(Exception param){
     Exception x = MyException();
     Object o = x;
@@ -33,7 +33,7 @@ shared void testExceptions(Exception param){
     }
 }
 
-@nomodel
+@noanno
 shared void testThrowable(JavaExceptionsAndThrowable j){
     Exception t = j.throwable();
     if(2 > 1){
@@ -49,7 +49,7 @@ shared void testThrowable(JavaExceptionsAndThrowable j){
     }
 }
 
-@nomodel
+@noanno
 shared class ExceptionsAndThrowableRefinement() extends JavaExceptionsAndThrowable() {
     shared actual Exception t(Exception? x){ if(exists x){ return x; } else { return nothing;} }
     shared actual Error e(Error? x){ if(exists x){ return x; } else { return nothing;} }

@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug955(String str()) { print(str()); }
-@nomodel
+@noanno
 class Bug595(str, att) {
     String str();
     String att;
 }
-@nomodel
+@noanno
 void testbug955() {
     bug955 { function str() => "hello world"; };
     bug955 { str() => "hello world"; };

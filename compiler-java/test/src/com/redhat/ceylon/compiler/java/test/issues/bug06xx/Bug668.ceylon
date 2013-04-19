@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Bug668_X<out Element, out Nada>
         given Nada satisfies Null {
     shared formal Nada|Element first;
 }
 
-@nomodel
+@noanno
 shared interface Bug668_Y<out Element> 
         satisfies Bug668_X<Element,Null> {
     shared actual default Element? first {
@@ -32,7 +32,7 @@ shared interface Bug668_Y<out Element>
 
 }
 
-@nomodel
+@noanno
 void bug668_method<Nada>(Nada n) given Nada satisfies Null { 
     object obj satisfies Bug668_Y<Nothing> & Bug668_X<Nothing,Null> {}
 }

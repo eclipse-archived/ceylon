@@ -20,7 +20,7 @@
 import java.io{File}
 
 @error
-@nomodel
+@noanno
 class ImplementOverloadedMethods() extends JavaWithOverloadedMembersSubClass() {
     @error
     shared actual void method(){}

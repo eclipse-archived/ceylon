@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface LazySpec {
     shared default Object a() => b();
     shared formal Object b();
 }
-@nomodel
+@noanno
 shared interface LazySpecSub satisfies LazySpec {
     shared actual default Object a() => nothing;    
 }

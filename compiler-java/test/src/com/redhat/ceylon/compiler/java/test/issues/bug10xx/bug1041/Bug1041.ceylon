@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Buffer<T>() {
     shared formal T get();
 }
 
-@nomodel
+@noanno
 class ByteBuffer() extends Buffer<Integer>(){
     shared actual Integer get(){ return 1; }
 }
 
-@nomodel
+@noanno
 class Bug1041<T>() {
     shared String? stringProp = null;
     shared String? stringMethod() => null;

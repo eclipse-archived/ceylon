@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.interop { \Isatisfies }
 
-@nomodel
+@noanno
 @error
 void ceylonKeywords(){
     @error

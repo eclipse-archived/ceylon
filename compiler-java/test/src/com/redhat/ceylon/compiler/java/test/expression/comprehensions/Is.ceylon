@@ -17,36 +17,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Common {
     shared formal Common common();
 }
 
-@nomodel 
+@noanno 
 interface FooInterface {
     shared formal FooInterface foo();
 }
 
-@nomodel
+@noanno
 class Foo() satisfies Common & FooInterface {
     shared actual Common common() {return nothing;}
     shared actual Foo foo() {return nothing;}
 }
-@nomodel
+@noanno
 class FooSub() extends Foo() {
     shared FooSub foo2() {return nothing;}
 }
 
-@nomodel
+@noanno
 interface BarInterface {
     shared formal BarInterface bar();
 }
-@nomodel
+@noanno
 class Bar() satisfies Common & BarInterface {
     shared actual Common common() {return nothing;}
     shared actual Bar bar() {return nothing;}
 }
-@nomodel
+@noanno
 void isCond(Common?[] seq) {
     variable Foo[] foos = [ for (x in seq) if (is Foo x) x.foo() ];
     foos = [ for (x in seq) if (is FooSub x) x.foo() ];

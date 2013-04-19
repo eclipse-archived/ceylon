@@ -1,14 +1,14 @@
-@nomodel
+@noanno
 shared interface TestInterface<Key, Value>{}
 
-@nomodel
+@noanno
 shared interface TestInterface2<out Key, out Value>{}
 
-@nomodel
+@noanno
 shared class TestClass<Key, Value>() 
     satisfies TestInterface<Key, Integer>{}
 
-@nomodel
+@noanno
 void test<Key,Value>(Object obj){
     if(is TestClass<String,Integer> obj){
     }

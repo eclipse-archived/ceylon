@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 shared interface Bug1106_Resource {
     shared formal String path;
     shared formal String contents;

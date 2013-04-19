@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared void f1(Integer n = 5) {}
-@nomodel
+@noanno
 shared void f2(Integer n, String s = "test") {}
-@nomodel
+@noanno
 shared void f3(Integer n = 5, Integer m = n) {}
-@nomodel
+@noanno
 shared void f4(Integer n = 5, Integer m = n + 1) {}
-@nomodel
+@noanno
 shared void f5(Integer n = 5, Integer* seq) {}

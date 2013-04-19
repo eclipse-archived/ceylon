@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class NamedArgumentSequencedTypeParamInvocation<T>() {
     shared void algo(T* strings) {}
 }
-@nomodel
+@noanno
 void foo() {
     NamedArgumentSequencedTypeParamInvocation<String>().algo{strings=["x", "y"];};
 }

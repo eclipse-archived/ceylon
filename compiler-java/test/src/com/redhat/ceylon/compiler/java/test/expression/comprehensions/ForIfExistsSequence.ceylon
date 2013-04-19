@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfExistsSequence() {
     shared Integer[] mvar(Integer[][] xs) {
         return [ for (x in xs) if (exists y=x[0]) y ];

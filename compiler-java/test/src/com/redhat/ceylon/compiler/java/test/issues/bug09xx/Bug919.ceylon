@@ -38,7 +38,7 @@ shared class Duple<out Element, out First, out Rest>(first, rest)
 }
 */
 
-@nomodel
+@noanno
 class Bug919() {
     void m(){
         value t = Tuple("a", Tuple({}, {}));
@@ -49,12 +49,12 @@ class Bug919() {
     }
 }
 
-@nomodel
+@noanno
 shared void bug919_2(){
     bug919_3({{{}},{}});
     bug919_3(Tuple(Tuple({}, {}),Tuple({}, {})));
     bug919_3({{}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}});
 }
-@nomodel
+@noanno
 shared void bug919_3(Iterable<Iterable<Iterable<String>>> iterables){
 }

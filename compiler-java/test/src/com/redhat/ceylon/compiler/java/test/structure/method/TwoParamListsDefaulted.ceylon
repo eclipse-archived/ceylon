@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared String twoParamListsDefaulted(String firstName = "John")(String lastName) {
     return firstName + " " + lastName;
 }
-@nomodel
+@noanno
 void twoParamListsDefaulted_caller() {
     twoParamListsDefaulted()("Doe");
     twoParamListsDefaulted{}("Doe");

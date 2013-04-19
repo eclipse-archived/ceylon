@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug781Class() {
     shared void c(){}
 }
 
-@nomodel
+@noanno
 interface Bug781Interface {
     shared formal void i();
 }
 
-@nomodel
+@noanno
 class Bug781_1<T>(T t) given T satisfies Bug781Interface & Bug781Class {
     t.c();
     t.i();
@@ -37,7 +37,7 @@ class Bug781_1<T>(T t) given T satisfies Bug781Interface & Bug781Class {
     }
 }
 
-@nomodel
+@noanno
 interface Bug781_2<T> given T satisfies Bug781Interface & Bug781Class {
     void m<T>(T t) given T satisfies Bug781Interface & Bug781Class {
         t.c();
@@ -45,7 +45,7 @@ interface Bug781_2<T> given T satisfies Bug781Interface & Bug781Class {
     }
 }
 
-@nomodel
+@noanno
 shared void bug781<T>(T t) given T satisfies Bug781Interface & Bug781Class {
     t.c();
     t.i();

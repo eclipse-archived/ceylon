@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface RNParameters<Element, Absent>
     given Absent satisfies Null {
     shared formal void m(Absent|Element p);
     shared default void m2(Absent|Element p){}
 }
 
-@nomodel
+@noanno
 class RNParametersImpl<Element>() satisfies RNParameters<Element, Null> {
     shared actual void m(Element? p){}
 }

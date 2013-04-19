@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class InitializerObjectInStatement() {
     if (true) {
         Integer i = 1;
-        @nomodel
+        @noanno
         object foo { shared actual String string = i.string; }
         String s = foo.string;
     }

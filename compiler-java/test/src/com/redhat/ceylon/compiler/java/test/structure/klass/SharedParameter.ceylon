@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class SharedParameter(shared String s) {
     String m() {
         return s;// capture it, to check we don't generate two setters'

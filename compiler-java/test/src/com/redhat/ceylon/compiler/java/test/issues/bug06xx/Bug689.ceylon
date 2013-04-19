@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug689<X,Y>(X x, Y y, X&Y xy) {
     
     Sequence<X|Y> parameterisedMethodWithUnion<X,Y>(X x, Y y) {

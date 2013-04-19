@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Bug801_Interface {
     shared interface MemberInterface {}
 }
 
-@nomodel
+@noanno
 shared class Bug801_Class() {
     shared interface MemberInterface {}
 }
 
-@nomodel
+@noanno
 shared class Bug801_ImplClass() satisfies Bug801_Interface {
     shared class MemberInterfaceImpl() satisfies MemberInterface {}
     shared interface MemberInterface2 satisfies MemberInterface {}
@@ -43,7 +43,7 @@ shared class Bug801_ImplClass() satisfies Bug801_Interface {
     }
 }
 
-@nomodel
+@noanno
 shared class Bug801_ImplClass2() extends Bug801_Class() {
     shared class MemberInterfaceImpl() satisfies MemberInterface {}
     shared interface MemberInterface2 satisfies MemberInterface {}

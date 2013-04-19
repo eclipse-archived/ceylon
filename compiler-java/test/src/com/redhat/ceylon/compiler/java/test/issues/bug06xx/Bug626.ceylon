@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug626() satisfies Iterable<Nothing[]> {
     shared actual Boolean equals(Object that) {return nothing;}
     shared actual Integer hash = nothing;
     shared actual Iterator<Nothing[]> iterator() => nothing;
 }
 
-@nomodel
+@noanno
 void bug626f(Iterable<Iterable<Container<Nothing>|Closeable>> f, Iterable<Iterable<Container<Nothing>&Closeable>> f2, Iterable<Iterable<Nothing>> f3){
     Iterable<Iterable<Object>> i = f;
     Iterable<Iterable<Object>> i2 = f2;

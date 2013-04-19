@@ -21,18 +21,18 @@
 // test let expressions in every context:
 
 // static final field 
-@nomodel
+@noanno
 Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};
 
-@nomodel
+@noanno
 variable Entry<Integer,String> bug270Variable = Entry<Integer,String> {item="hello";key=1;};
 
-@nomodel
+@noanno
 T bug270_eatEntry<T>(T entry){
     return entry;
 }
 
-@nomodel
+@noanno
 Entry<Entry<Integer,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Integer,String>,String> {
     item="hello";
     key=Entry<Integer,String>{
@@ -42,7 +42,7 @@ Entry<Entry<Integer,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Integ
 });
 
 // static field 
-@nomodel
+@noanno
 class Bug270() {
     // in the constructor
     Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};

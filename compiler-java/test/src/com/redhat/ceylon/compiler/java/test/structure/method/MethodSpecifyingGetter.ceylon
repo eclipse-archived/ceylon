@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodSpecifierGetter() {
     Callable<Integer, [Boolean]> f { throw;}
     Integer foo(Boolean b) => f(b);

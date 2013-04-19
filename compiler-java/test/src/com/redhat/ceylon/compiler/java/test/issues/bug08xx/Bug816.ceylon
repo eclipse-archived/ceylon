@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug816I<out T> {
 }
-@nomodel
+@noanno
 class Bug816C<T1, T2>() satisfies Bug816I<T1|T2> {
 }
-@nomodel
+@noanno
 void f<X>(Bug816I<X> set) {
 }
-@nomodel
+@noanno
 void test() {
     value x = Bug816C<String, Nothing>();
     f(x);

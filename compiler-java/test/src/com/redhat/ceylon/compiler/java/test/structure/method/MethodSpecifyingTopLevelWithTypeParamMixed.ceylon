@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class C<X>() {
     shared X f<Y>(X x,Y y) {
         throw;
     }
 }
-@nomodel
+@noanno
 class MethodSpecifyingTopLevelWithTypeParamMixed<S,T>() {
     shared C<String> c => C<String>();
     shared C<S> c2 => C<S>();

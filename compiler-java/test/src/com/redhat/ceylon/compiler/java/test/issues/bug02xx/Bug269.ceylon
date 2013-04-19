@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug269() {
     shared actual String string = "";
     shared actual Integer hash = +0;
 }
 
-@nomodel
+@noanno
 class Bug269_2() {
     shared actual String string {
         print(this.string);
@@ -35,17 +35,17 @@ class Bug269_2() {
     }
 }
 
-@nomodel
+@noanno
 void string(){
     string();
 }
 
-@nomodel
+@noanno
 void hash(){
     hash();
 }
 
-@nomodel
+@noanno
 void bug269() {
     String string = "hello";
     Integer hash = +0;
@@ -55,7 +55,7 @@ void bug269() {
     print(Bug269().hash);
 }
 
-@nomodel
+@noanno
 void bug269_2() {
     void string(){}
     void hash(){}

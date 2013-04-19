@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug843_1<out Element, out Rest>(rest) 
         given Rest of Empty|Sequence<Element> {
     Rest&Element[] rest;
 }
-@nomodel
+@noanno
 class Bug843_2<out Rest>(rest) 
         given Rest of Empty|Sequence<Integer> {
     Rest&Integer[] rest;
 }
 
-@nomodel
+@noanno
 void bug843_test() {
     Bug843_1<Integer, Empty>({});
     Bug843_2<Empty>({});

@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface IntersectionSatisfier_X<out T, out N> given N satisfies Null {
     shared formal T|N x;
 }
-@nomodel
+@noanno
 interface IntersectionSatisfier_I1<out T> satisfies IntersectionSatisfier_X<T, Null> {
     shared actual default T? x { return null; }
 }
-@nomodel
+@noanno
 interface IntersectionSatisfier_I2 satisfies IntersectionSatisfier_I1<Anything> {}
-@nomodel
+@noanno
 class IntersectionSatisfier_C<T>() satisfies IntersectionSatisfier_I2&IntersectionSatisfier_I1<T> {}

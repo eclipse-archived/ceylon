@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentParameterCtor_f<T>(T t) given T(String s){
 }
-@nomodel
+@noanno
 class CallableArgumentParameterCtor(String s){
 }
-@nomodel
+@noanno
 void callableArgumentParameterCtor_m() {
     callableArgumentParameterCtor_f(CallableArgumentParameterCtor);
 }

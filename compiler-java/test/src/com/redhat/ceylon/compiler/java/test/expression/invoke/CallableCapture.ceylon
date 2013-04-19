@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 String higher(String f(Integer i)) {
   return "";
 }
-@nomodel
+@noanno
 String callableCapture_foo(Integer i) {
     return "";
 }
-@nomodel
+@noanno
 void callableCapture_m() {
     value callableCapture_bar = callableCapture_foo;
     Boolean b = higher(callableCapture_bar) == "";

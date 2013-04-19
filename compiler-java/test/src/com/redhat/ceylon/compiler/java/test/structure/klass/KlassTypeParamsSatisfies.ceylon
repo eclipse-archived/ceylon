@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class KlassTypeParamsSatisfies<U,V,W>()
     given U satisfies Container<Integer>
     given V satisfies Summable<Integer>

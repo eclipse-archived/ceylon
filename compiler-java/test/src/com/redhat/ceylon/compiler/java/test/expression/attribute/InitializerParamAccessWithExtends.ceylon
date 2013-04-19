@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class InitializerParamAccessWithExtends(Boolean b) extends Object() {
     Boolean m() {
         return b;
@@ -28,7 +28,7 @@ class InitializerParamAccessWithExtends(Boolean b) extends Object() {
     shared actual Integer hash {return +0;}
 }
 
-@nomodel
+@noanno
 class InitializerParamAccessWithExtends2(Boolean b) extends InitializerParamAccessWithExtends(b) {
     Boolean m() {
         return b;

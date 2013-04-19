@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class SelfType<T>() of T given T satisfies SelfType<T> {
     shared formal Integer compareTo(T other);
     shared Integer reverseCompareTo(T other) {
@@ -28,13 +28,13 @@ abstract class SelfType<T>() of T given T satisfies SelfType<T> {
         return this of T;
     }
 }
-@nomodel
+@noanno
 void selfType<X>(SelfType<X> x, SelfType<X> y) 
         given X satisfies SelfType<X> {
     x.compareTo(y of X);
 }
 
-@nomodel
+@noanno
 abstract class SelfType2<T>() of T {
     shared formal Integer compareTo(T other);
     shared T self() {
@@ -42,17 +42,17 @@ abstract class SelfType2<T>() of T {
         return this of T;
     }
 }
-@nomodel
+@noanno
 void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
     x.compareTo(y of X);
 }
-@nomodel
+@noanno
 interface A satisfies Comparable<C|A> {}
-@nomodel
+@noanno
 interface C satisfies Comparable<C|A> {}
-@nomodel
+@noanno
 interface D satisfies Comparable<D> {}
-@nomodel
+@noanno
 void selfTypeTest(Comparable<D> d) {
     value temp = d of D;
     value v = print("");

@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class C<T>() given T satisfies Identifiable {}
-@nomodel
+@noanno
 class A() {}
-@nomodel
+@noanno
 C<A> test = C<A>();

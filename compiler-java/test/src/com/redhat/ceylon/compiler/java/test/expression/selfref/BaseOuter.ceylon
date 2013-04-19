@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface BaseOuter {
     shared default Object inverse {
         object inverse {
@@ -29,7 +29,7 @@ shared interface BaseOuter {
         return inverse;
     }
 }
-@nomodel
+@noanno
 shared abstract class BaseOuterClass() {
     shared default Object inverse {
         object inverse {

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 [Sequential<[Integer,Element]>,Sequential<Element>] bug934_collectMatches<Element>(Element[] data, Integer search(Element element)){
     value ok = SequenceBuilder<[Integer,Element]>();
     value ko = SequenceBuilder<Element>();
@@ -32,7 +32,7 @@
     return [ok.sequence, ko.sequence];
 }
 
-@nomodel
+@noanno
 void bug934(){
    value results = bug934_collectMatches(["Merry Christmas", "Happy Holidays"], function (String s) => 2);
    print("Uppercase letters: " + ", ".join({*results[1]}));

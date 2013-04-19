@@ -19,7 +19,7 @@
  */
 import java.lang { ObjectArray, LongArray, arrays }
 
-@nomodel
+@noanno
 shared void bug640() {
     value x = array { Accept(), Accept(), Accept() };
     Accept().accepts(arrays.toObjectArray(x));
@@ -28,7 +28,7 @@ shared void bug640() {
     value z = array { 1, 2, 3 };
     Accept().longs(arrays.toLongArray(z));
 }
-@nomodel
+@noanno
 shared void bug640gen<T>(SequenceBuilder<T> sb) {
     value x = array(sb.sequence);
 }

@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer foo(Boolean b) {
     return 2;
 }
-@nomodel
+@noanno
 class RefinedMethodSpecifyingTopLevel() {
     default shared Integer f(Boolean b) {
         return 1;
     }
 }
-@nomodel
+@noanno
 class RefinedMethodSpecifyingTopLevelSub() extends RefinedMethodSpecifyingTopLevel() {
     actual shared Integer f(Boolean b) => foo(b); 
 }

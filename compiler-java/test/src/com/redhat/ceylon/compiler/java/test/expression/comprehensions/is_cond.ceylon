@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void isCond() {
   Sequence<Integer|String> seq = [ 1, "2", 3, "4", 5 ];
   print({ for (x in seq) if (is Integer x) x*2 });

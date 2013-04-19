@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void run() {
     value people = {"stef", "gavin"};
     value v = (String nm) => nm == "stef";

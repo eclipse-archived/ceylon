@@ -19,7 +19,7 @@
  */
 import java.lang { ProcessBuilder }
 
-@nomodel
+@noanno
 void bug608() {
     value b = ProcessBuilder();
     String[] args = ["a", "b"];

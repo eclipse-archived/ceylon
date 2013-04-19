@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class OuterReferenceSuper() {
     shared Boolean superTest() {
         return true;
     }
 }
-@nomodel
+@noanno
 class OuterReference() extends OuterReferenceSuper() {
     class InnerClass(Boolean b = outer.superTest()) {
         Boolean m(Boolean b = outer.superTest()) {

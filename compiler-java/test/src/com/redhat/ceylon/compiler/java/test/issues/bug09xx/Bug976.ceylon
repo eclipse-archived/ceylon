@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared Object bug976method<Default>(Default defaultValue)
             (Anything anything)
         given Default satisfies Object
         => anything else defaultValue;
         //{ return anything else defaultValue; }
 
-@nomodel
+@noanno
 void bug976() {
     bug976method(0)(1);
 }

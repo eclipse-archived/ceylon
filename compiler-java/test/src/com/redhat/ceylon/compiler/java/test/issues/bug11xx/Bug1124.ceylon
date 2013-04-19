@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug1124Interface<in Key, out Value> {
     shared formal Value? get1(Key k);
     shared formal Value? get2(Key k);
     shared formal Anything get3(Key k);
 }
-@nomodel
+@noanno
 class Bug1124(Integer i, Boolean f()) 
         satisfies Bug1124Interface<Integer, Boolean> {
     get1 = function(Integer j) => i==j then f();

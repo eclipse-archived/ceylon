@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableWithDefaulted() {
     Callable<Anything, [Integer, String=, Integer*]> defaultedVariadic = function (Integer a, String b = "b", Integer* args) => a;
     defaultedVariadic(1);
@@ -52,7 +52,7 @@ void callableWithDefaulted() {
     Callable<Anything, [Integer]> oneAgain = oneOrPlenty;
 }
 
-@nomodel
+@noanno
 class CallableWithDefaulted(){
     void defaultedVariadic(Integer a, String b = "b", Integer* args){
     }

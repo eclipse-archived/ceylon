@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug823(Anything[] xx) {
     assert(nonempty xx, is Character z=xx[0]);
 }

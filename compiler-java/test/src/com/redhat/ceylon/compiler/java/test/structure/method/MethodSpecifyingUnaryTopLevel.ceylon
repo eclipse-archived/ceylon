@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void methodSpecifyingUnaryTopLevel_f(String s) {
 }
-@nomodel
+@noanno
 class MethodSpecifyingUnaryTopLevel() {
     Anything foo(String s) => methodSpecifyingUnaryTopLevel_f(s);
 }

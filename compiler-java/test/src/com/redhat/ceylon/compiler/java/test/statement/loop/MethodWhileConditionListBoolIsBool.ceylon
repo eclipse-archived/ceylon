@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodWhileConditionListBoolIsBool() {
     Boolean m(Anything x, Integer z) {
         while (z < 10, is Integer x, x > 0) {

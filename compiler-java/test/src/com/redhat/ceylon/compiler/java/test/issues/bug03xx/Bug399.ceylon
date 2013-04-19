@@ -19,7 +19,7 @@
  */
 import java.lang { S=String }
 
-@nomodel
+@noanno
 @error
 void bug399() {
     S s = S("i=");

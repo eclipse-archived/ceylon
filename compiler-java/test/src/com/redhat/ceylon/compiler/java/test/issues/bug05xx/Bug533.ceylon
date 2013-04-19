@@ -19,7 +19,7 @@
  */
 import java.util { JMap = Map }
 
-@nomodel
+@noanno
 void bug533(JMap<Object, Object> jmap) {
     value foo = jmap.entrySet().iterator().next();
     value es = jmap.entrySet();

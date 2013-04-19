@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug1001() {
     [Integer, Integer][] next() => [ for (i in 0:10) for (j in 0:10) [i,j] ];
 }

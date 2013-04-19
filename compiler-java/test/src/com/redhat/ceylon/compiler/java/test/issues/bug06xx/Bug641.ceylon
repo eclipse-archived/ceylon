@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug641(Set<Integer> a, Set<Nothing> b) {
     Set<Integer> foo1 = a.union(b);
     Set<Integer> foo2 = a.intersection(b);
     Set<Integer> foo3 = a.exclusiveUnion(b);
     Set<Integer> foo4 = a.complement(b);
 }
-@nomodel
+@noanno
 interface Bug641Set<out Element>
         given Element satisfies Object {
 

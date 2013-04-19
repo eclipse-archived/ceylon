@@ -1,19 +1,19 @@
 import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
-@nomodel
+@noanno
 annotation class AnnotationClassParam(String name) {}
-@nomodel
+@noanno
 annotation AnnotationClassParam annotationClassParam(String name) => AnnotationClassParam(name);
-@nomodel
+@noanno
 annotation class AnnotationClassAnnotationClass(AnnotationClassParam param) satisfies SequencedAnnotation<AnnotationClassAnnotationClass, Type<Anything>>{}
-@nomodel
+@noanno
 annotation class AnnotationClassAnnotationClassSequence(AnnotationClassParam[] params) satisfies SequencedAnnotation<AnnotationClassAnnotationClassSequence, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassAnnotationClassSequence annotationClassAnnotationClassSequence(AnnotationClassParam[] params) => AnnotationClassAnnotationClassSequence(params);
-@nomodel
+@noanno
 annotation class AnnotationClassAnnotationClassDefaulted(AnnotationClassParam a=AnnotationClassParam("defaulted")) {}
-@nomodel
+@noanno
 annotation AnnotationClassAnnotationClass annotationClassAnnotationClass(AnnotationClassParam a) => AnnotationClassAnnotationClass(a);
-@nomodel
+@noanno
 annotationClassAnnotationClass(AnnotationClassParam("class"))
 annotationClassAnnotationClass(annotationClassParam("constructor"))
 annotationClassAnnotationClassSequence([annotationClassParam("constructor"), AnnotationClassParam("class")])

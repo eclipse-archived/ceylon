@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class DefaultMethodSpecified() { 
     shared actual default String string => "";
 }
-@nomodel
+@noanno
 class DefaultMethodSpecifiedSub() extends DefaultMethodSpecified() { 
     shared actual default String string => "";
 }

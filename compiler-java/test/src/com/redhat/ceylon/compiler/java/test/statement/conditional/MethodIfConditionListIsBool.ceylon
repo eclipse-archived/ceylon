@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodIfConditionListIsBool() {
    void m(String|Integer x) {
         if (is String x, x.uppercased=="S") {

@@ -17,28 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface RefinementAndIntersection_G {
     shared void g(){}
 }
-@nomodel 
+@noanno 
 interface RefinementAndIntersection_H {
     shared void h(){}
 }
-@nomodel
+@noanno
 interface RefinementAndIntersection_Co<out T> {
     formal shared T get();
 }
-@nomodel
+@noanno
 class RefinementAndIntersection_SuperCoGood() satisfies RefinementAndIntersection_Co<RefinementAndIntersection_G> {
     default shared actual RefinementAndIntersection_G get() { return nothing; }
 }
-@nomodel
+@noanno
 class RefinementAndIntersection_SubCoGood() extends RefinementAndIntersection_SuperCoGood() satisfies RefinementAndIntersection_Co<RefinementAndIntersection_H> {
     default shared actual RefinementAndIntersection_H&RefinementAndIntersection_G get() { return nothing; }
 }
 
-@nomodel
+@noanno
 void refinementAndIntersection_method(){
     RefinementAndIntersection_SubCoGood sub = RefinementAndIntersection_SubCoGood();
     // make sure we can call methods of H

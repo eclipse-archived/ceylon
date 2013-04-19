@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface ConcreteAttribute<A> {
     A? aNonShared {
         return null;
@@ -31,7 +31,7 @@ interface ConcreteAttribute<A> {
         return null;
     }
 }
-@nomodel
+@noanno
 void concreteAttributeCallsite(ConcreteAttribute<Integer|Float> a) {
     variable Null|Integer|Float v;
     v = a.aShared;
@@ -42,7 +42,7 @@ void concreteAttributeCallsite(ConcreteAttribute<Integer|Float> a) {
     a.aVariableFormal = 1.0;
     v = a.aDefault;
 }
-@nomodel
+@noanno
 class ConcreteAttributeGetterImpl<B>() satisfies ConcreteAttribute<B> {
     shared actual B? aFormal {
         return null;
@@ -58,7 +58,7 @@ class ConcreteAttributeGetterImpl<B>() satisfies ConcreteAttribute<B> {
     assign aDefault {
     }
 }
-@nomodel
+@noanno
 void concreteAttributeGetterImplCallsite(ConcreteAttributeGetterImpl<Integer|Float> a) {
     variable Null|Integer|Float v;
     v = a.aShared;
@@ -72,13 +72,13 @@ void concreteAttributeGetterImplCallsite(ConcreteAttributeGetterImpl<Integer|Flo
     a.aDefault = 1;
     a.aDefault = 1.0;
 }
-@nomodel
+@noanno
 class ConcreteAttributeValueImpl<C>() satisfies ConcreteAttribute<C> {
     shared actual C? aFormal = null;
     shared variable actual C? aVariableFormal = null;
     shared variable actual C? aDefault = null;
 }
-@nomodel
+@noanno
 void concreteAttributeValueImplCallsite(ConcreteAttributeValueImpl<Integer|Float> a) {
     variable Null|Integer|Float v;
     v = a.aShared;

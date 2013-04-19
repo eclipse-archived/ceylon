@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug518() {
     value sp = [ 1 ].span(0,1);
     value sp2 = [ 1 ][0..1];

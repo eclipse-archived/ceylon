@@ -1,12 +1,12 @@
-@nomodel
+@noanno
 shared class Bug1132_B() {}
 
-@nomodel
+@noanno
 Bug1132_B bug1132_defaultParse() {
     return Bug1132_B();
 }
 
-@nomodel
+@noanno
 shared class Bug1132_X (
     String error() => "",
     Bug1132_B localeParser(String error()) => bug1132_defaultParse()
@@ -15,7 +15,7 @@ shared class Bug1132_X (
     localeParser(error);
 }
 
-@nomodel
+@noanno
 void bug1132_testX() {
     Bug1132_X();
 }

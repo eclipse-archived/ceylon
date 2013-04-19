@@ -19,6 +19,6 @@
  */
 import ceylon.language{Integer}
 
-@nomodel
+@noanno
 class ImportCeylonLanguageType(Integer n) {
 }

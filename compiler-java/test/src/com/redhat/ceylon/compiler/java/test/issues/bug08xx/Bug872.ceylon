@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Visitor{
     shared default void openTag(String name){}
     shared default void closeTag(String name){}
@@ -26,7 +26,7 @@ shared interface Visitor{
     }
 }
 
-@nomodel
+@noanno
 shared interface Visitable{
     shared formal void visit(Visitor visitor);
     shared void visitAroundText(Visitor visitor, String name, String text){
@@ -37,7 +37,7 @@ shared interface Visitable{
     }
 }
 
-@nomodel
+@noanno
 shared class Html(head = null, body = null) satisfies Visitable {
     shared Head? head;
     shared Body? body;
@@ -46,19 +46,19 @@ shared class Html(head = null, body = null) satisfies Visitable {
     }
 }
 
-@nomodel
+@noanno
 shared class Head(title = null) satisfies Visitable {
     shared String? title;
     shared actual void visit(Visitor visitor) {
     }
 }
 
-@nomodel
+@noanno
 shared interface Tag satisfies Visitable {}
-@nomodel
+@noanno
 shared interface InlineTag satisfies Tag{}
 
-@nomodel
+@noanno
 shared class Container<TagType>(String name, TagType|String* initialTags) satisfies Visitable 
     given TagType satisfies Tag {
 
@@ -69,17 +69,17 @@ shared class Container<TagType>(String name, TagType|String* initialTags) satisf
     }
 }
 
-@nomodel
+@noanno
 shared class Body(Tag|String* initialTags) extends Container<Tag>("body", *initialTags) {}
 
-@nomodel
+@noanno
 shared class Block(String name, Tag|String* initialTags) extends Container<Tag>(name, *initialTags) satisfies Tag {}
 
-@nomodel
+@noanno
 shared class P(Tag|String* tags) extends Block("p", *tags){}
 
-@nomodel
+@noanno
 shared class Inline(String name, InlineTag|String* initialTags) extends Container<InlineTag>(name, *initialTags) satisfies InlineTag {}
 
-@nomodel
+@noanno
 shared class B(InlineTag|String* tags) extends Inline("b", *tags){}

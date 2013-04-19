@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class SuperClass() {
     shared variable Integer a = 2;
     shared Integer i {
@@ -34,7 +34,7 @@ abstract class SuperClass() {
     }
 }
 
-@nomodel
+@noanno
 abstract class SuperClass_Sub() extends SuperClass() {
     shared actual Integer m() {
         SuperClass::a++;

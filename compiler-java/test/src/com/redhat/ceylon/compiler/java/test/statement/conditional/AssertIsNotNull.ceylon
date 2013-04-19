@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class AssertIsNotNull() {
     shared void m(Object? x) {
         assert (!is Null x);

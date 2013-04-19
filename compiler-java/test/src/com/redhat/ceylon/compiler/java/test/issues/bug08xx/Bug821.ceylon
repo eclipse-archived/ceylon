@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 alias Bug821Alias => Integer|Float;
-@nomodel
+@noanno
 void bug821a(){
     Sequence<Bug821Alias> ns = [ 1 ];
     value num = ns[0];
 }
-@nomodel
+@noanno
 void bug821b(){
     Bug821Alias n = 1;
     Sequence<Bug821Alias> ns = [ n ];

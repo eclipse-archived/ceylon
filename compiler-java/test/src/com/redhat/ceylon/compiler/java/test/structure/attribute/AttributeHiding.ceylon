@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class AttributeHiding() { 
     shared variable String name="";
     shared actual default String string => name;
 }
-@nomodel
+@noanno
 class AttributeHidingSub() extends AttributeHiding() { 
     variable String name="";
     shared actual default String string => name; 

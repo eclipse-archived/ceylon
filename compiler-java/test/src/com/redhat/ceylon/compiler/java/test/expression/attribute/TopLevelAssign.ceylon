@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 variable Boolean topLevelAssignB1 = true;
-@nomodel
+@noanno
 variable shared Boolean topLevelAssignB2 = true;
-@nomodel
+@noanno
 Boolean topLevelAssignB3 {
     return true;
 }
 assign topLevelAssignB3 {
     throw;
 }
-@nomodel
+@noanno
 shared Boolean topLevelAssignB4 {
     return true;
 }
@@ -36,7 +36,7 @@ assign topLevelAssignB4 {
     throw;
 }
 
-@nomodel
+@noanno
 class TopLevelAssign(){
     void m(){
         topLevelAssignB1 = false;

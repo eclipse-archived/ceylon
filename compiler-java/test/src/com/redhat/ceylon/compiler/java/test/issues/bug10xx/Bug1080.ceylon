@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Anything bug1080Attr = 1;
 
-@nomodel
+@noanno
 void bug1080() {
     if( is Object bug1080Attr) { Object a = bug1080Attr; }
 }

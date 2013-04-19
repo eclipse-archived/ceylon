@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 class Bug1116() {
     void m([String] s) {
         [Object] objects = s;//cast

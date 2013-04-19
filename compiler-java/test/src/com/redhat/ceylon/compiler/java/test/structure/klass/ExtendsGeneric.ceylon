@@ -17,30 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface ExtendsGeneric_Foo<in T> {
 }
-@nomodel
+@noanno
 interface ExtendsGeneric_Bar<out T> {   
 }
-@nomodel
+@noanno
 interface ExtendsGeneric_Baz<T> {
 }
-@nomodel
+@noanno
 class ExtendsGeneric<T>() {
 }
-@nomodel
+@noanno
 class ExtendsGeneric2<out T>() {
 }
-@nomodel
+@noanno
 class ExtendsGeneric_FooSub() 
     extends ExtendsGeneric2<ExtendsGeneric_Foo<Integer>>() {
 }
-@nomodel
+@noanno
 class ExtendsGeneric_BarSub() 
     extends ExtendsGeneric<ExtendsGeneric_Bar<Integer>>() {
 }
-@nomodel
+@noanno
 class ExtendsGeneric_BazSub() 
     extends ExtendsGeneric<ExtendsGeneric_Baz<Integer>>() {
 }

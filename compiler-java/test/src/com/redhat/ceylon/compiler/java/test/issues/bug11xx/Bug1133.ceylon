@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 shared void bug1133<Args>()
     given Args satisfies Anything[] {
     

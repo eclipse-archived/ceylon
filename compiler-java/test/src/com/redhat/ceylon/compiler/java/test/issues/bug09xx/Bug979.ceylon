@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug979Iterable({String*} strings) satisfies {String*} {
     shared actual Iterator<String> iterator() { return strings.iterator(); }
 }
-@nomodel
+@noanno
 class Bug979Set({String*} strings) 
     extends Object() 
     satisfies Set<String> {

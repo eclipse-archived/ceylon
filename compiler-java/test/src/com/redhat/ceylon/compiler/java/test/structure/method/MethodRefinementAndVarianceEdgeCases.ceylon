@@ -17,42 +17,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MRAVEC_Invariant<Element>()  {}
-@nomodel
+@noanno
 class MRAVEC_Covariant<out Element>() {}
-@nomodel
+@noanno
 class MRAVEC_Contravariant<in Element>() {}
 
-@nomodel
+@noanno
 class MRAVEC_Top<Element>() {
     shared default Element f() => nothing;
     shared default MRAVEC_Invariant<Element> f2() => nothing;
     shared default MRAVEC_Covariant<Element> f3() => nothing;
     shared default MRAVEC_Contravariant<Element> f4() => nothing;
 }
-@nomodel
+@noanno
 class MRAVEC_BottomNull() extends MRAVEC_Top<Null>(){
     shared actual Null f() => nothing;
     shared actual MRAVEC_Invariant<Null> f2() => nothing;
     shared actual MRAVEC_Covariant<Null> f3() => nothing;
     shared actual MRAVEC_Contravariant<Null> f4() => nothing;
 }
-@nomodel
+@noanno
 class MRAVEC_BottomNothing() extends MRAVEC_Top<Nothing>(){
     shared actual Nothing f() => nothing;
     shared actual MRAVEC_Invariant<Nothing> f2() => nothing;
     shared actual MRAVEC_Covariant<Nothing> f3() => nothing;
     shared actual MRAVEC_Contravariant<Nothing> f4() => nothing;
 }
-@nomodel
+@noanno
 class MRAVEC_BottomAnything() extends MRAVEC_Top<Anything>(){
     shared actual Anything f() => nothing;
     shared actual MRAVEC_Invariant<Anything> f2() => nothing;
     shared actual MRAVEC_Covariant<Anything> f3() => nothing;
     shared actual MRAVEC_Contravariant<Anything> f4() => nothing;
 }
-@nomodel
+@noanno
 class MRAVEC_BottomErased() extends MRAVEC_Top<MRAVEC_BottomErased|MRAVEC_BottomNothing>(){
     shared actual MRAVEC_BottomErased|MRAVEC_BottomNothing f() => nothing;
     shared actual MRAVEC_Invariant<MRAVEC_BottomErased|MRAVEC_BottomNothing> f2() => nothing;

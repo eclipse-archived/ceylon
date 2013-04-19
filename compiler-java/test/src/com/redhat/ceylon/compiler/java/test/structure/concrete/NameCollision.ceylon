@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 import ceylon.language{C=Container}
-@nomodel
+@noanno
 interface Container {
 }
-@nomodel
+@noanno
 class NameCollision() satisfies Container&C<Integer> {
     shared actual Boolean empty = true;
     shared actual Boolean contains(Object element){ return false; }

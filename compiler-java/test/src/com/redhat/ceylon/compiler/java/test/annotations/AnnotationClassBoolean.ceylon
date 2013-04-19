@@ -1,38 +1,38 @@
 import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
 
-@nomodel
+@noanno
 annotation class AnnotationClassBoolean(Boolean b) satisfies SequencedAnnotation<AnnotationClassBoolean, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassBoolean annotationClassBoolean(Boolean x = true) => AnnotationClassBoolean(x);
-@nomodel
+@noanno
 annotation class AnnotationClassBooleanDefaulted(Boolean b=true) satisfies OptionalAnnotation<AnnotationClassBooleanDefaulted, Type<Anything>>{}
-@nomodel
+@noanno
 annotation class AnnotationClassBooleanVariadic(Boolean* b) satisfies SequencedAnnotation<AnnotationClassBooleanVariadic, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassBooleanVariadic annotationClassVariadicVariadic(Boolean* b) => AnnotationClassBooleanVariadic(*b);
-@nomodel
+@noanno
 annotation AnnotationClassBooleanVariadic annotationClassVariadicSequence(Boolean[] b) => AnnotationClassBooleanVariadic(*b);
-@nomodel
+@noanno
 annotation AnnotationClassBooleanVariadic annotationClassVariadicIterable({Boolean*} b) => AnnotationClassBooleanVariadic(*b);
 
-@nomodel
+@noanno
 annotation class AnnotationClassBooleanSequence(Boolean[] b) satisfies SequencedAnnotation<AnnotationClassBooleanSequence, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassBooleanSequence annotationClassSequenceVariadic(Boolean* b) => AnnotationClassBooleanSequence(b);
-@nomodel
+@noanno
 annotation AnnotationClassBooleanSequence annotationClassSequenceSequence(Boolean[] b) => AnnotationClassBooleanSequence(b);
-//@nomodel
+//@noanno
 //annotation AnnotationClassBooleanSequence annotationClassSequenceIterable({Boolean*} b) => AnnotationClassBooleanSequence(b.sequence);
 
-@nomodel
+@noanno
 annotation class AnnotationClassBooleanIterable({Boolean*} b) satisfies SequencedAnnotation<AnnotationClassBooleanIterable, Type<Anything>>{}
-@nomodel
+@noanno
 annotation AnnotationClassBooleanIterable annotationClassIterableVariadic(Boolean* b) => AnnotationClassBooleanIterable(b);
-@nomodel
+@noanno
 annotation AnnotationClassBooleanIterable annotationClassIterableSequence(Boolean[] b) => AnnotationClassBooleanIterable(b);
-@nomodel
+@noanno
 annotation AnnotationClassBooleanIterable annotationClassIterableIterable({Boolean*} b) => AnnotationClassBooleanIterable(b);
-@nomodel
+@noanno
 annotationClassBoolean()
 annotationClassBoolean{}
 annotationClassVariadicVariadic()//*

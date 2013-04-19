@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class GenericMethodInvocationMixedClass<U>() {
     shared U bar<V>(U u, V v) {
         return u;
     }
 }
 
-@nomodel
+@noanno
 class GenericMethodInvocationMixed<X>(){
     shared String m() {
         value k = GenericMethodInvocationMixedClass<String>();

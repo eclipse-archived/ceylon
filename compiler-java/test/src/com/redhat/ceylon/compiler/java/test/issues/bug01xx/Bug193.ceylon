@@ -24,11 +24,11 @@
 
 /* The current version of this issue just doesn't make sense anymore now that Sized is gone.
    Not sure if we should find another example of this or just remove this test.
-@nomodel
+@noanno
 void x<X>(X x) given X satisfies Sized { 
     print(x.size);
 }
-@nomodel
+@noanno
 void bug193(){
     String[] arr = {"hello"}; 
     x(arr);

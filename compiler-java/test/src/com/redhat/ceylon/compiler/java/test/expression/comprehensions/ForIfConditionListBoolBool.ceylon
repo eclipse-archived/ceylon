@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfConditionListBoolBool() {
     void m(Integer[] xs) {
         print({ for (x in xs) if (x > 0, x < 10) x });

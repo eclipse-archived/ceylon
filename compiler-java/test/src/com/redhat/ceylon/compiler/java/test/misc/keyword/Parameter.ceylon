@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Parameter() {
     void m1(Boolean abstract) {}
     void m3(Boolean boolean) { }

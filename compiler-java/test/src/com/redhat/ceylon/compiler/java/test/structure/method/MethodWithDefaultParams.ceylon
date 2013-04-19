@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodWithDefaultParams() {
     shared Integer prop = 42;
     void f1(Integer n = 5) {}
@@ -27,7 +27,7 @@ class MethodWithDefaultParams() {
     shared void f5(Integer n = prop) {}
     shared void f6(Integer n = prop, Integer* seq) {}
 }
-@nomodel
+@noanno
 interface MethodWithDefaultParams2 {
     shared formal Integer prop;
     shared formal void f1(Integer n = 5);

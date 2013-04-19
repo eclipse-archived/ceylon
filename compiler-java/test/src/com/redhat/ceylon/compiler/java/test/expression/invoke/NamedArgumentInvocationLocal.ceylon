@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class NamedArgumentInvocationLocal() {
     shared void f() {
         Integer m(Integer n, String s) {
@@ -38,7 +38,7 @@ shared class NamedArgumentInvocationLocal() {
 }
 
 // qualified
-@nomodel
+@noanno
 class X() {
     void foo(String s, Boolean b) {
     } 

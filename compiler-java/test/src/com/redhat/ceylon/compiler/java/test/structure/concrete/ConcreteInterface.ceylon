@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface I1 {
     shared formal String m1(Integer i = 0, Boolean b = false);
 }
-@nomodel
+@noanno
 interface I2 {
     shared formal String m2(Integer i = 0, Boolean b = false);
 }
 
-@nomodel
+@noanno
 class C() satisfies I1&I2 {
     shared actual String m1(Integer i, Boolean b) {
         return "";

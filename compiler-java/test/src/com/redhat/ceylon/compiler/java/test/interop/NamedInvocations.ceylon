@@ -19,7 +19,7 @@
  */
 import java.io{File{createTempFile, listRoots}}
 
-@nomodel
+@noanno
 @error
 void namedInvocations() {
     // See https://github.com/ceylon/ceylon-spec/issues/208

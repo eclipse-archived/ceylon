@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void spreadArguments(Integer i, String s) {}
-@nomodel
+@noanno
 class SpreadArguments<T>(Integer i,  T s) {
     shared void m(Integer i, T s) {}
     shared void m2(Integer i, T* s) {}

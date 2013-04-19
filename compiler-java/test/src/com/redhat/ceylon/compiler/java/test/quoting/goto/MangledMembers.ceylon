@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 class MangledMembers_class() {
     //shared String equals(Void other) {
     //    return "";
@@ -25,11 +25,11 @@ class MangledMembers_class() {
         return "";
     }
 }
-@nomodel
+@noanno
 class MangledMembers_clone()  {
     shared String clone => "";
 }
-@nomodel 
+@noanno 
 interface MangledMembers_interface {
     //shared formal String equals(Void other);
     shared formal String clone();

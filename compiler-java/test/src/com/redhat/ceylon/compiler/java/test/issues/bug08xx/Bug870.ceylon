@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared void bug870<Value,Nada>(Iterable<Value>&Container<Value,Nada> values) 
         given Value satisfies Comparable<Value>
         given Nada satisfies Null {

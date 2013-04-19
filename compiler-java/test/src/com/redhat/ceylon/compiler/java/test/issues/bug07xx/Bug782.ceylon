@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 object bug782 {}
 
-@nomodel
+@noanno
 class Bug782Top(Object t) {}
 
-@nomodel
+@noanno
 class Bug782Bottom() extends Bug782Top(bug782) {}

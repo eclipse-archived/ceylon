@@ -17,5 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer[] forIfIf = [ for (x in 1..10) if (x%2==0) if (x>5) x ];

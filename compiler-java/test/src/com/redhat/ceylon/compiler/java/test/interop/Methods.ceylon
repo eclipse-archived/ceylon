@@ -20,7 +20,7 @@
 import java.lang { JString = String, JInteger = Integer }
 import java.io{File}
 
-@nomodel
+@noanno
 @error
 void methods() {
     @error
@@ -35,7 +35,7 @@ void methods() {
 }
 
 @error
-@nomodel
+@noanno
 void overloadedMethodsAndSubClasses() {
     @error
     JavaWithOverloadedMembersSubClass inst = JavaWithOverloadedMembersSubClass();
@@ -50,7 +50,7 @@ void overloadedMethodsAndSubClasses() {
 }
 
 @error
-@nomodel
+@noanno
 void overloadedConstructors() {
     @error
     JavaWithOverloadedMembersSubClass inst = JavaWithOverloadedMembersSubClass();
@@ -59,7 +59,7 @@ void overloadedConstructors() {
 }
 
 @error
-@nomodel
+@noanno
 class OverloadedMembersAndSubClasses() extends JavaWithOverloadedMembersSubClass() {
     void test(){
         @error
@@ -74,11 +74,11 @@ class OverloadedMembersAndSubClasses() extends JavaWithOverloadedMembersSubClass
 }
 
 @error
-@nomodel
+@noanno
 class OverloadedMembersAndSubClasses2() extends JavaWithOverloadedMembersSubClass(2) {
 }
 
-@nomodel
+@noanno
 @error
 void variadicMethods() {
     T box<T>(T t){return t;}

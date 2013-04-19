@@ -19,6 +19,6 @@
  */
 import com.redhat.ceylon.compiler.java.test.interop.access{JavaDefaultAccessClass}
 
-@nomodel
+@noanno
 class ExtendsDefaultAccessClassInAnotherPkg() extends JavaDefaultAccessClass() {
 }

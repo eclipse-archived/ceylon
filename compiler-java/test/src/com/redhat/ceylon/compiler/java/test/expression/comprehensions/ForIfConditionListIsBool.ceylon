@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfConditionListIsBool() {
    String[] m(Sequence<String|Integer> xs) {
         return [ for (x in xs) if (is String x, x.uppercased=="S") x.uppercased ];

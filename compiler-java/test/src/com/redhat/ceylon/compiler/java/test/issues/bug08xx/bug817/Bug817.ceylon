@@ -19,7 +19,7 @@
  */
 import java.lang { JString = String, ObjectArray } 
 
-@nomodel
+@noanno
 shared void bug817() {
     bug817_1();
     bug817_2();

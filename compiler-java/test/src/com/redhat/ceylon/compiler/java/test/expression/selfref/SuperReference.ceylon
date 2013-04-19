@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class SuperReference(){
     shared variable Integer a = 0;
     shared default void m(SuperReferenceChild x) {
@@ -29,7 +29,7 @@ class SuperReference(){
     }
 }
 
-@nomodel
+@noanno
 class SuperReferenceChild() extends SuperReference() {
     shared actual void test() {
         super.a++;

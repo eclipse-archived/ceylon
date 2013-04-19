@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared Absent|Value bug973_first<Value,Absent>(Iterable<Value,Absent> values)
         given Absent satisfies Null 
         => values.first;
-@nomodel
+@noanno
 Integer bug973_ff=bug973_first { for (x in 1..5) x };

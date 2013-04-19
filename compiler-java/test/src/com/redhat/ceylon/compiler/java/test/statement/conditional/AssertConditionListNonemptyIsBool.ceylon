@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class AssertConditionList() {
     Boolean m(Anything[] x) {
         assert (nonempty x, is Integer y = x[0], y > 0);

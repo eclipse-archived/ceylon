@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 
-@nomodel
+@noanno
 class ImplementOverloadedConstructor1() extends JavaWithOverloadedMembers() {
 }
 
-@nomodel
+@noanno
 class ImplementOverloadedConstructor2() extends JavaWithOverloadedMembers(2) {
 }
 
-@nomodel
+@noanno
 class ImplementOverloadedConstructor3(Integer i) extends JavaWithOverloadedMembers(i) {
 }

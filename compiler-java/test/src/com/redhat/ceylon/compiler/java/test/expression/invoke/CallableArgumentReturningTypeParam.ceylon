@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentReturningTypeParam_f<T>(T foo()) given T satisfies Numeric<T> {
 }
-@nomodel
+@noanno
 X callableArgumentReturningTypeParam_bar<X>() {
     throw;
 }
-@nomodel
+@noanno
 Integer callableArgumentReturningTypeParam_baz() {
     return 1;
 }
-@nomodel
+@noanno
 void callableArgumentReturningTypeParam_m() {
     callableArgumentReturningTypeParam_f<Integer>(callableArgumentReturningTypeParam_bar<Integer>);
     callableArgumentReturningTypeParam_f<Integer>(callableArgumentReturningTypeParam_baz);

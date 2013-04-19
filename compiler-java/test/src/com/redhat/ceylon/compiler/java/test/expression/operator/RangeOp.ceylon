@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class RangeOp<T>() {
     void int(Integer i1, Integer i2) {   
         Range<Integer> range = i1..i2;
@@ -29,23 +29,23 @@ class RangeOp<T>() {
     
 }
 // #1027
-@nomodel
+@noanno
 abstract class RangeOpEnum(Integer i) of rangeOpE|rangeOpF 
         satisfies Comparable<RangeOpEnum> & Ordinal<RangeOpEnum> {
     shared actual Comparison compare(RangeOpEnum other) 
             => i<=>other.i;
 }
-@nomodel
+@noanno
 object rangeOpF extends RangeOpEnum(1) {
     shared actual RangeOpEnum predecessor => rangeOpE;
     shared actual RangeOpEnum successor => rangeOpE;
 }
-@nomodel
+@noanno
 object rangeOpE extends RangeOpEnum(2) {
     shared actual RangeOpEnum predecessor => rangeOpF;
     shared actual RangeOpEnum successor => rangeOpF;
 }
-@nomodel
+@noanno
 void bug() {
     Range<RangeOpEnum> range = rangeOpE..rangeOpF;
 }

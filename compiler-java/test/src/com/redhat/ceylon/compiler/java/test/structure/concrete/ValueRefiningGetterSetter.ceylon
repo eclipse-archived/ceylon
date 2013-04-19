@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface ValueRefiningGetterSetter {
     shared default Integer i {
         return 0;
@@ -25,7 +25,7 @@ interface ValueRefiningGetterSetter {
     assign i {
     }
 }
-@nomodel
+@noanno
 class ValueRefiningGetterSetter_Sub() satisfies ValueRefiningGetterSetter {
     shared actual variable Integer i = 0;
 }

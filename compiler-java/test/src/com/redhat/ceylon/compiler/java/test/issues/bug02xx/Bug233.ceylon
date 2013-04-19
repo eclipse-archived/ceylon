@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug233_Ceylon(Bug233_Type? arg) extends Bug233_Java(arg){
     shared actual Bug233_Type f(Bug233_Type? arg){
         return arg else Bug233_Type();

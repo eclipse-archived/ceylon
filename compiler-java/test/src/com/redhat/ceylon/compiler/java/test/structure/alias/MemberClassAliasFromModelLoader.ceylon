@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void memberClassAliasFromModelLoader(){
     value a = MemberClassAlias_Foo().MemberClassAlias();
     value b = MemberClassAliasWithParameters_Foo().MemberClassAlias(1, "a");

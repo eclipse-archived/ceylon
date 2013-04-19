@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void existsCond() {
   Sequence<String?> seq = [ null, "a", null, "b", null ];
   print({ for (x in seq) if (exists x) if (exists c=x.initial(1)[0]) c.uppercased });

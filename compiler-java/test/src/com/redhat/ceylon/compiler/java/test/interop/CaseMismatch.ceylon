@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.interop { \IjavaCaseMismatch { SubClass=\IsubClass } }
 
-@nomodel
+@noanno
 @error
 void caseMismatch(){
     @error

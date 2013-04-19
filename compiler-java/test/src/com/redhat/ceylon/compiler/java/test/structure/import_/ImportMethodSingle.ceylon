@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{m1}
 
-@nomodel
+@noanno
 class ImportMethodSingle() {
     void m() {
         m1();

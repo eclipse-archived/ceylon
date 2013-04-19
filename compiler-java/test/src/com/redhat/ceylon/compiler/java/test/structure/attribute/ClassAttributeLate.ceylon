@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 class ClassAttributeLate() {
     shared late Integer lateAttr;
     shared variable late Integer lateVariableAttr;

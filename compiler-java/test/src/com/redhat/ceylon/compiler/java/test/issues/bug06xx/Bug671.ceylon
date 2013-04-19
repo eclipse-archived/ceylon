@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared void bug671() {
     value a6 = array<Integer?> { 1 };
     a6.set(0,null);

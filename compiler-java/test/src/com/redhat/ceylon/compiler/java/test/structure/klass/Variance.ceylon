@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface VarianceTop {} 
 
-@nomodel
+@noanno
 interface VarianceMiddle satisfies VarianceTop {} 
 
-@nomodel
+@noanno
 interface VarianceBottom satisfies VarianceMiddle {} 
 
-@nomodel
+@noanno
 class VarianceClass(VarianceMiddle classParam){
     shared default VarianceMiddle classAttr = classParam;
     
@@ -35,7 +35,7 @@ class VarianceClass(VarianceMiddle classParam){
     }
 }
 
-@nomodel
+@noanno
 class VarianceSubClass(VarianceBottom classParam) extends VarianceClass(classParam){
     shared actual VarianceBottom classAttr = classParam;
     

@@ -19,39 +19,39 @@
  */
 
 // we need those to test for boxed numbers
-@nomodel
+@noanno
 abstract class MyInteger()
         extends Object()
         satisfies Integral<MyInteger> &
                   Exponentiable<MyInteger, MyInteger>{}
 
-@nomodel
+@noanno
 variable Integer toplevelN1 = 0;
-@nomodel
+@noanno
 variable Integer toplevelN2 = 0;
-@nomodel
+@noanno
 variable Integer toplevelI1 = +0;
 
-@nomodel 
+@noanno 
 Integer toplevelGetterN1 {
     return toplevelN1; 
 }assign toplevelGetterN1 {
     toplevelN1 = toplevelGetterN1; 
 }
-@nomodel 
+@noanno 
 Integer toplevelGetterN2 {
     return toplevelN2; 
 }assign toplevelGetterN2 {
     toplevelN2 = toplevelGetterN2; 
 }
-@nomodel 
+@noanno 
 Integer toplevelGetterI1 {
     return toplevelI1; 
 }assign toplevelGetterI1 {
     toplevelI1 = toplevelGetterI1; 
 }
 
-@nomodel
+@noanno
 class ArithmeticOperators(MyInteger initN, MyInteger initI) {
     shared variable Integer n1 = 0;
     shared variable Integer n2 = 0;
@@ -337,7 +337,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
     }
 }
 
-@nomodel
+@noanno
 class ArithmeticOperatorsSub(MyInteger initN, MyInteger initI) extends ArithmeticOperators(initN, initI) {
     shared actual void unboxedQualifiedGetterAttributes() {
         super.getterN1++;

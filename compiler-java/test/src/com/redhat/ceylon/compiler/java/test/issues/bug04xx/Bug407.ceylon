@@ -19,7 +19,7 @@
  */
 import java.util {HashMap, Map}
 
-@nomodel
+@noanno
 void bug407() {
     Map<String, Integer> map = HashMap<String, Integer>();
     for (me in map.entrySet()) {}

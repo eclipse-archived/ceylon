@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.interop { JCM=\IjavaCaseMismatch { fld=\iField, mth=\iMethod, Kls=\IsubClass } }
 
-@nomodel
+@noanno
 @error
 void caseMismatch(){
     @error

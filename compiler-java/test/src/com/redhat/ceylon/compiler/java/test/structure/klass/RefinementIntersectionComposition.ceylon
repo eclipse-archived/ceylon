@@ -17,30 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface RIC_A {}
-@nomodel
+@noanno
 interface RIC_B {}
-@nomodel
+@noanno
 interface RIC_C {}
 
-@nomodel
+@noanno
 interface RIC_Top<out T> {
     shared formal T val;
     formal shared T get();
 }
-@nomodel
+@noanno
 abstract class RIC_Middle() satisfies RIC_Top<RIC_A> {}
-@nomodel
+@noanno
 interface RIC_Left satisfies RIC_Top<RIC_B> {}
-@nomodel
+@noanno
 interface RIC_Right satisfies RIC_Top<RIC_C> {}
-@nomodel
+@noanno
 class RIC_Nothing_From_Class() extends RIC_Middle() satisfies RIC_Left & RIC_Right {
     shared actual Nothing val { return nothing; }
     shared actual RIC_A & RIC_B & RIC_C get() { return nothing; }
 }
-@nomodel
+@noanno
 class RIC_Nothing_From_Interface() satisfies RIC_Left & RIC_Right {
     shared actual Nothing val { return nothing; }
     shared actual RIC_B & RIC_C get() { return nothing; }

@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug731_0(String string) {
     shared Integer capacity = string.size;
 }
 
-@nomodel
+@noanno
 class Bug731_1(String string) {
     shared Integer capacity = string.size;
     shared void capture() {
@@ -30,7 +30,7 @@ class Bug731_1(String string) {
     }
 }
 
-@nomodel
+@noanno
 class Bug731_2(str) {
     variable String str;
     shared Integer capacity = str.size;
@@ -39,7 +39,7 @@ class Bug731_2(str) {
     }
 }
 
-@nomodel
+@noanno
 class Bug731_3(str) {
     String str;
     shared Integer capacity = str.size;

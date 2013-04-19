@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface InterfaceWithConcreteMembers {
     shared default Integer foo(Boolean b) {
         return 1;
@@ -30,6 +30,6 @@ interface InterfaceWithConcreteMembers {
     shared default Integer bar2 => 1;
 }
 
-@nomodel
+@noanno
 class InterfaceWithConcreteMembersImpl() satisfies InterfaceWithConcreteMembers {
 }

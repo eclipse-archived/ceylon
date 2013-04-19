@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug1042<in T> {}
-@nomodel
+@noanno
 void bug1042(Bug1042<String> xx) {
     Bug1042<Nothing> x1 = xx;
 }

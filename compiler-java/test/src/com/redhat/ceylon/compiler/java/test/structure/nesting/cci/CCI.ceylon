@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class C<out T,in X>() given T satisfies String given X satisfies Boolean {
     T m1<U>(X? b, U? u = null) { throw; }
     class CC() {

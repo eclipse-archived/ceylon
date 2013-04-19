@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug708_2() {
     if (exists s = bug708<String>()) {}
     if (exists s = Bug708_Class<String>("","").param2) {}

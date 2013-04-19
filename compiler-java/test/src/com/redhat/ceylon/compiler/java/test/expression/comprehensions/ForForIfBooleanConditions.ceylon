@@ -17,5 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer[] forForIfBooleanConditions = [ for (y in 1..5) for (x in 1..5) if (x>y, y > 2) x*y ];

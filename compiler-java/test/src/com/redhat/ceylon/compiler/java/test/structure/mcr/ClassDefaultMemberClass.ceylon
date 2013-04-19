@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ClassDefaultMemberClass() {
     shared default class Member() {
     }
@@ -28,7 +28,7 @@ class ClassDefaultMemberClass() {
         qual.Member{};
     }
 }
-@nomodel
+@noanno
 class ClassDefaultMemberClass_sub() extends ClassDefaultMemberClass() {
     shared actual class Member() extends super.Member() {
     }

@@ -17,38 +17,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface I1 {
     shared formal Integer i1();
     shared default Integer m1(Integer n = i1()) {
         return n + i1();
     }
 }
-@nomodel
+@noanno
 class CI1() satisfies I1 {
     shared actual Integer i1() {
         return 1;
     }
 }
-@nomodel
+@noanno
 interface I2 {
     shared formal Integer i2();
     shared default Integer m2(Integer n = i2()) {
         return n + this.i2();
     }
 }
-@nomodel
+@noanno
 interface I3 satisfies I1&I2{
     
 }
-@nomodel
+@noanno
 interface I4 {
     shared formal Integer i4();
     shared default Integer m4(Integer n = i4()) {
         return n;
     }
 }
-@nomodel
+@noanno
 class CI3() satisfies I1&I2 {
     shared actual Integer i1() {
         return 1;
@@ -60,7 +60,7 @@ class CI3() satisfies I1&I2 {
         return 2;
     }
 }
-@nomodel
+@noanno
 abstract class A7() satisfies I3&I4 {
     shared actual Integer i1() {
         return 1;
@@ -69,7 +69,7 @@ abstract class A7() satisfies I3&I4 {
         return 5;
     }
 }
-@nomodel
+@noanno
 class CA7() extends A7() {
     shared actual Integer i2() {
         return 2;

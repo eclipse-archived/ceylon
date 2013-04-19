@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 @error
 void attributes() {
     @error
@@ -61,7 +61,7 @@ void attributes() {
     java.épardaud = 0;
 }
 
-@nomodel
+@noanno
 @error
 class CeylonAttributes() extends JavaBean() {
 

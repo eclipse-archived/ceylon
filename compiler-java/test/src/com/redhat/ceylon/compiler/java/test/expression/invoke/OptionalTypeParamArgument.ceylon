@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Foo<T>() {
     shared void bar(T? t) {
     }
 }
-@nomodel 
+@noanno 
 void m() {
     Foo<Object> f = Foo<Object>();
     Object o = 1;

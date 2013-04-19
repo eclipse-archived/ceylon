@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class ClassVariable(){
     shared variable String publicvar;
     variable String uncapturedvar;
@@ -32,7 +32,7 @@ abstract class ClassVariable(){
         capturedvar = "new value";
     }
 }
-@nomodel
+@noanno
 class SubClassVariable() extends ClassVariable() {
     shared actual variable String formalvar = "";
 }

@@ -1,14 +1,14 @@
-@nomodel
+@noanno
 class Foo(
             shared String s, 
             shared Boolean b,
             shared Character c, 
             shared Integer i = 5) { }
 
-@nomodel
+@noanno
 annotation Foo bar(String s, Character c='h') => Foo(s, true, c);
 
-@nomodel
+@noanno
 //doc("Type doc")
 //shared 
 //abstract 

@@ -18,23 +18,23 @@
  * MA  02110-1301, USA.
  */
 T|String? bug708<T>() { return null; }
-@nomodel
+@noanno
 class Bug708<T>() { 
     shared T|String? test() { return null; }
 }
-@nomodel
+@noanno
 String? bug708extra1 = bug708<String>();
-@nomodel
+@noanno
 String? bug708extra2 = Bug708<String>().test();
-@nomodel
+@noanno
 Bug708<String>? bug708obj = Bug708<String>();
-@nomodel
+@noanno
 String? bug708extra3 = bug708obj?.test();
-@nomodel
+@noanno
 Bug708<String>[] bug708seq = [ Bug708<String>() ];
-@nomodel
+@noanno
 String?[] bug708extra4 = bug708seq*.test();
-@nomodel
+@noanno
 void bug708_test() {
     if (exists s = bug708<String>()) {}
 }

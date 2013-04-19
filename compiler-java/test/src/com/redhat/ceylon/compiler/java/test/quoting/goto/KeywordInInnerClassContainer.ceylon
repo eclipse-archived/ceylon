@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 object transient {
 
     shared class InnerClass_0() {
@@ -37,7 +37,7 @@ object transient {
     }
 }
 
-@nomodel
+@noanno
 void m() {
     transient.InnerClass_0();
     Integer int = transient.goto;

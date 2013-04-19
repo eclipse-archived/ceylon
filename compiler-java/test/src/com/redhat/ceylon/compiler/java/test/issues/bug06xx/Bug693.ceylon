@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Bug693_Interface {
     shared formal Integer? x;
 }
-@nomodel
+@noanno
 shared class Bug693_Class(x, Boolean b = false) satisfies Bug693_Interface {
     shared actual Integer x;
 }
-@nomodel
+@noanno
 void bug693() {
     Bug693_Class c = Bug693_Class(0, true);
 }

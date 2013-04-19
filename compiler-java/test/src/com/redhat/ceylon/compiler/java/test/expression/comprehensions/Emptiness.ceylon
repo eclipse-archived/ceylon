@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void emptiness() {
     Iterable<Integer> maybeEmpty = {1};
     Iterable<Integer,Nothing> nonEmpty = {1};
@@ -31,14 +31,14 @@ void emptiness() {
     emptinessNonEmpty{for (i in nonEmpty) i};
 }
 
-@nomodel
+@noanno
 void emptinessMaybeEmpty(Iterable<Integer> s){}
 
-@nomodel
+@noanno
 void emptinessNonEmpty(Iterable<Integer> s){}
 
 // take straight from the spec tests
-@nomodel
+@noanno
 void emptinessParameterised<Element,Absent>(Iterable<Element,Absent> it) 
         given Absent satisfies Null {
     @type:"Iterable<Element,Absent>" value c1 = { for (e in it) e };

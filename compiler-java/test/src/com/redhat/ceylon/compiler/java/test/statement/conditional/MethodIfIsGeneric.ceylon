@@ -17,20 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Base<T> {
     shared formal void baseMethod();
 }
-@nomodel
+@noanno
 interface A<T> satisfies Base<T> {
     shared formal void aMethod();
 }
-@nomodel
+@noanno
 interface B<T> satisfies Base<T> {
     shared formal void bMethod();
 }
 
-@nomodel
+@noanno
 class MethodIfIsGeneric() {
     
     shared void m(Object x) {

@@ -21,7 +21,7 @@ import java.nio.file { FileSystems { newFileSystem } }
 import java.util { HashMap }
 import java.net { URI { create } }
 
-@nomodel
+@noanno
 void bug593() {
     value map = HashMap<String,Object>();
     newFileSystem(create("file:/"), map);

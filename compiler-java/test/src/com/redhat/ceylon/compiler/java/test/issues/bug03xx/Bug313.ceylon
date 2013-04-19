@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug313() {
     String? name = "";
     String? name2 = name?.uppercased;
 }
 
 // duplicate but make sure anyways
-@nomodel
+@noanno
 interface Bug310 { shared formal Integer i; }
-@nomodel
+@noanno
 void bug310() {
     Bug310? x = null;
     Integer? j = x?.i;
 }
 
-@nomodel
+@noanno
 void bug310_2() {
     String? s1 = null;
     Boolean b = s1?.equals("") else false;

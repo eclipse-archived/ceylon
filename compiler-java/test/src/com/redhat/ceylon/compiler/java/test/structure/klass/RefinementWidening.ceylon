@@ -17,29 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class RWInvParam<T>(){}
-@nomodel
+@noanno
 class RWInvParamExt<T>() extends RWInvParam<T>(){}
 
-@nomodel
+@noanno
 class RWCovParam<out T>(){}
-@nomodel
+@noanno
 class RWCovParamExt<out T>() extends RWCovParam<T>(){}
 
-@nomodel
+@noanno
 class RWContrParam<in T>(){}
-@nomodel
+@noanno
 class RWContrParamExt<in T>() extends RWContrParam<T>(){}
 
-@nomodel
+@noanno
 interface RWTopI{}
-@nomodel
+@noanno
 interface RWLeft satisfies RWTopI{}
-@nomodel
+@noanno
 interface RWRight satisfies RWTopI{}
 
-@nomodel
+@noanno
 abstract class RWTop<X, Y>() {
     shared formal RWInvParam<Number> m();
     shared formal RWCovParam<Number> m2();
@@ -55,7 +55,7 @@ abstract class RWTop<X, Y>() {
     shared formal Y classBound_erasure();
 }
 
-@nomodel
+@noanno
 abstract class RWBottom<Z>() extends RWTop<Number, Z>() {
     shared actual formal RWInvParamExt<Number> m();
     shared actual formal RWCovParamExt<Integer> m2();

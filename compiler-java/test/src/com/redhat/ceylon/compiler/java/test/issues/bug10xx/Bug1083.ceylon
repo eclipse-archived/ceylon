@@ -19,7 +19,7 @@
  */
 import java.math { BigInteger, BigDecimal }
 
-@nomodel
+@noanno
 void bug1083() {
     BigInteger bi =  BigInteger();
 }

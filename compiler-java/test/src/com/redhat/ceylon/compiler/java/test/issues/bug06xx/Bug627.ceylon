@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Bug627Enum() of Bug627Two|Bug627Three|Bug627Four {}
-@nomodel
+@noanno
 class Bug627Four() extends Bug627Enum() {}
-@nomodel
+@noanno
 class Bug627Three() extends Bug627Enum() {}
-@nomodel
+@noanno
 class Bug627Two() extends Bug627Enum() {}
 
-@nomodel
+@noanno
 interface Bug627Abstract {
     shared formal Iterable<Bug627Enum> elements();
 }
 
-@nomodel
+@noanno
 class Bug627Concrete() satisfies Bug627Abstract {
     shared actual Iterable<Bug627Two|Bug627Four> elements() {
         return {};

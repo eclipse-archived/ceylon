@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug774() {
     value m = arrayOfSize<Array<Integer>>(10, arrayOfSize(10,0));
     if (exists row=m[0]) {

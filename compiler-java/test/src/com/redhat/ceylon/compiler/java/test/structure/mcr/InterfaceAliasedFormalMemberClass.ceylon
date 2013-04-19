@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface InterfaceAliasedFormalMemberClass {
     shared formal class Member() {
     }
@@ -30,7 +30,7 @@ interface InterfaceAliasedFormalMemberClass {
         qual.Member();
     }
 }
-@nomodel
+@noanno
 class InterfaceAliasedFormalMemberClass_sub() satisfies InterfaceAliasedFormalMemberClass {
     shared class Alias() => InterfaceAliasedFormalMemberClass::Member();
     shared actual class Member() extends Alias() {

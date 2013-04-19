@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared void bug871(){
     if(bug871_2({}) != ""){ throw; }
     //bug871_2({{},{}});
     value res = bug871_2({{}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}, {{"a", "b"}, {}, {"c"}, {}, {"d", "e"}}, {}});
     if(res != "abcdeabcde") { throw Exception("Expected something else than `` res ``"); }
 }
-@nomodel
+@noanno
 shared String bug871_2(Iterable<Iterable<Iterable<String>>> iterables){
     StringBuilder b = StringBuilder();
     for(s in { for (it1 in iterables) for (it2 in it1) for (val in it2) val }){

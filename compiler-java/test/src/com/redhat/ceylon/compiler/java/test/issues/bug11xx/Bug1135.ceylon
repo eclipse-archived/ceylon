@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 shared class Bug1135<Args>() given Args satisfies Anything[] {
 
     alias Listener => Callable<Anything, Args>;

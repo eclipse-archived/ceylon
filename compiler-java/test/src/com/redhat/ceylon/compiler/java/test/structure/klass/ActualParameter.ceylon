@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class ActualParameterSuper() {
     shared formal String? s;
 }
-@nomodel
+@noanno
 class ActualParameter(shared actual String string, 
         shared actual String s) 
     extends ActualParameterSuper() {

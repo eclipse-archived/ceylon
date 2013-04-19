@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class SwitchIsEnumeratedPrimitive() {
     void m<Number>(Number n) given Number of Integer | Float | Null {
         switch (n)

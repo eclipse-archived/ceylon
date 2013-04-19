@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 @error
 abstract class SwitchMatchTop() of switchMatch_foo | switchMatch_bar {}
 
-@nomodel
+@noanno
 object switchMatch_foo extends SwitchMatchTop() {}
-@nomodel
+@noanno
 object switchMatch_bar extends SwitchMatchTop() {}
 
-@nomodel
+@noanno
 class SwitchMatch() {
     void onObject() {
         SwitchMatchTop fb = switchMatch_foo;

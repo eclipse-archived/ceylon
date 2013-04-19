@@ -17,34 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface EC_A {
     shared formal Integer int();
 }
 
-@nomodel
+@noanno
 interface EC_B {}
 
-@nomodel
+@noanno
 interface EC_C {}
 
-@nomodel
+@noanno
 interface EC_ABC satisfies EC_A & EC_B & EC_C {}
 
-@nomodel
+@noanno
 interface EC_Parameterised<out T>{
     shared formal T t();
 }
 
-@nomodel
+@noanno
 interface EC_ParameterisedSelfBound<out T> of T {
     shared formal T t();
 }
 
-@nomodel
+@noanno
 interface EC_DoubleParameters<T1,T2> satisfies EC_Parameterised<T1|T2>{}
 
-@nomodel
+@noanno
 void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
                     EC_Parameterised<EC_A & EC_B & EC_C> rawParam,
                     EC_Parameterised<EC_Parameterised<EC_A & EC_B>> hasRawParam,
@@ -194,7 +194,7 @@ void erasureCasting(EC_A & EC_B & EC_C tripleIntersectionParam,
     Null n2 = min{};
 }
 
-@nomodel
+@noanno
 void valueOrNada<Value,Nada>(Value|Nada valueOrNada) 
         given Nada satisfies Null {
     // this looks like valueOrNada would be unboxed to Value, because isOptional may return true
@@ -204,53 +204,53 @@ void valueOrNada<Value,Nada>(Value|Nada valueOrNada)
     }
 }
 
-@nomodel
+@noanno
 interface EC_ParameterisedTOrString<T> {
     shared formal T|String t();
 }
 
-@nomodel
+@noanno
 T|String? ec_TOrOptionalString<T>() { return null; }
 
 
-@nomodel
+@noanno
 void ec_boundsOnElement<Element>(Element elements) 
         given Element satisfies EC_Parameterised<Element> {
 }
 
-@nomodel
+@noanno
 void ec_boundsOnElement2<Element>(Sequential<Element> elements) 
         given Element satisfies EC_A {
 }
 
-@nomodel
+@noanno
 void ec_boundsOnElement3<Element>(EC_Parameterised<Element> elements) 
         given Element satisfies EC_A {
 }
 
-@nomodel
+@noanno
 void ec_boundsOnElement4<Element, Rest>(Rest&Element[] elements) 
         given Rest of Empty|Sequence<Element> {
 }
 
-@nomodel
+@noanno
 void ec_boundsOnElement5<Element>(Element t)
         given Element satisfies EC_A {
 }
 
 // Sequential<Sequential<Element|String>> erases to Sequential<Sequential<Object>>
 // note that this bug is specific to Sequential, it does not happen with EC_Parameterised
-@nomodel
+@noanno
 Sequential<Sequential<Element|String>> ec_methodWithErasedBounds<Element>(Element data){
     return nothing;
 }
 
-@nomodel
+@noanno
 EC_Parameterised<EC_Parameterised<Element|String>> ec_methodWithErasedBounds2<Element>(Element data){
     return nothing;
 }
 
-@nomodel
+@noanno
 interface EC_ErasedMember<Element, Absent>
     given Absent satisfies Null {
     // should be erased
@@ -262,18 +262,18 @@ interface EC_ErasedMember<Element, Absent>
     shared default class Class(Absent|Element p = nothing){}
 }
 
-@nomodel
+@noanno
 class EC_ErasedMemberImpl<Element>() satisfies EC_ErasedMember<Element, Null> {
     // make sure the generated bridges are appropriately casted
 }
 
-@nomodel
+@noanno
 class EC_Tuple<out Element, out First>(first)
     given First satisfies Element{
     shared First first;
 }
 
-@nomodel
+@noanno
 // See shuffle
 Callable<Callable<Result,FirstArgs>,SecondArgs> ec_callableWithBonds<Result,FirstArgs,SecondArgs>(Callable<Callable<Result,SecondArgs>,FirstArgs> c)
         given FirstArgs satisfies Anything[]

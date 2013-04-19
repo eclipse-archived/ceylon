@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Concrete<A> {
     void mNonShared(A? a = null, A?* aseq) {
     }
@@ -28,7 +28,7 @@ interface Concrete<A> {
     shared default void mDefault(A? a = null, A?* aseq) {
     }
 }
-@nomodel
+@noanno
 void concreteCallsites(Concrete<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);
@@ -57,12 +57,12 @@ void concreteCallsites(Concrete<Integer|Float> conc) {
     conc.mDefault{a=1;};
     conc.mDefault{a=1.0;};
 }
-@nomodel
+@noanno
 class ConcreteImpl<B>() satisfies Concrete<B> {
     shared actual void mFormal(B? b, B?* bseq) {
     }
 }
-@nomodel
+@noanno
 void concreteImplCallsites(ConcreteImpl<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);
@@ -91,14 +91,14 @@ void concreteImplCallsites(ConcreteImpl<Integer|Float> conc) {
     conc.mDefault{a=1;};
     conc.mDefault{a=1.0;};
 }
-@nomodel
+@noanno
 class ConcreteImplWithDefault<C>() satisfies Concrete<C> {
     shared actual void mFormal(C? c, C?* cseq) {
     }
     shared actual void mDefault(C? c, C?* cseq) {
     }
 }
-@nomodel
+@noanno
 void concreteImplWithDefaultCallsites(ConcreteImplWithDefault<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);
@@ -127,10 +127,10 @@ void concreteImplWithDefaultCallsites(ConcreteImplWithDefault<Integer|Float> con
     conc.mDefault{c=1;};
     conc.mDefault{c=1.0;};
 }
-@nomodel
+@noanno
 abstract class Abstract<D>() satisfies Concrete<D> {
 }
-@nomodel
+@noanno
 void abstractCallsites(Abstract<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);
@@ -159,12 +159,12 @@ void abstractCallsites(Abstract<Integer|Float> conc) {
     conc.mDefault{a=1;};
     conc.mDefault{a=1.0;};
 }
-@nomodel
+@noanno
 class AbstractSub<E>() extends Abstract<E>() {
     shared actual void mFormal(E? e, E?* eseq) {
     }
 }
-@nomodel
+@noanno
 void abstractSubCallsites(AbstractSub<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);
@@ -193,14 +193,14 @@ void abstractSubCallsites(AbstractSub<Integer|Float> conc) {
     conc.mDefault{a=1;};
     conc.mDefault{a=1.0;};
 }
-@nomodel
+@noanno
 abstract class AbstractImpl<F>() satisfies Concrete<F> {
     shared actual void mFormal(F? f, F?* fseq) {
     }
     shared actual default void mDefault(F? f, F?* fseq) {
     }
 }
-@nomodel
+@noanno
 void abstractImpl(AbstractImpl<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);
@@ -229,12 +229,12 @@ void abstractImpl(AbstractImpl<Integer|Float> conc) {
     conc.mDefault{f=1;};
     conc.mDefault{f=1.0;};
 }
-@nomodel
+@noanno
 class AbstractImplSub<G>() extends AbstractImpl<G>() {
     shared actual void mDefault(G? g, G?* gseq) {
     }
 }
-@nomodel
+@noanno
 void abstractImplSubCallsites(AbstractImplSub<Integer|Float> conc) {
     conc.mShared();
     conc.mShared(null);

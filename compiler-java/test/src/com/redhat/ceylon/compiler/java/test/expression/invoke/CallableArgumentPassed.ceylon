@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentPassed_f(void foo()) {
 }
-@nomodel
+@noanno
 void callableArgumentPassed_m(void bar()) {
     callableArgumentPassed_f(bar);
 }

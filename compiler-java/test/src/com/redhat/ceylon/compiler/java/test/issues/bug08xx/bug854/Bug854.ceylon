@@ -19,11 +19,11 @@
  */
 import java.util { JList=ArrayList }
 
-@nomodel
+@noanno
 T bug854<T>(T x) { return Bug854<T>().id(x); }
-@nomodel
+@noanno
 T bug854b<T>(T x) given T satisfies Object { return Bug854<T>().id(x); }
-@nomodel
+@noanno
 Element|Finished x<Element>() {
     value jit = JList<Element>().iterator();
     return jit.next();

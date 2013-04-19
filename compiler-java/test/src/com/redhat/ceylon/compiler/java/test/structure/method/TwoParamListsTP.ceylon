@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void twoParamListsTP<T>(String name)(T i) 
         given T satisfies Ordinal<T>&Comparable<T>&Invertable<T> { 
     for (x in -i..i) { print("hello " + name); } 
 }
-@nomodel
+@noanno
 void twoParamListsTP_simple<T>(String name)(T i) 
         given T satisfies Ordinal<T> { 
 }

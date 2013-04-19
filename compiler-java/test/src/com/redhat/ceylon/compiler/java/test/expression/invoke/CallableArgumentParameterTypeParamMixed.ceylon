@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentParameterTypeParamMixed_f<S,T>(S foo(S s, T t)) {
 }
-@nomodel
+@noanno
 U callableArgumentParameterTypeParamMixed_bar<U,V>(U u, V v) {
     return u;
 }
-@nomodel
+@noanno
 Integer callableArgumentParameterTypeParamMixed_baz(Integer i, Boolean b) {
     return i;
 }
-@nomodel
+@noanno
 class CallableArgumentParameterTypeParamMixed<X>() {
     void m<Y>() {
         callableArgumentParameterTypeParamMixed_f<Integer,Boolean>(callableArgumentParameterTypeParamMixed_baz);

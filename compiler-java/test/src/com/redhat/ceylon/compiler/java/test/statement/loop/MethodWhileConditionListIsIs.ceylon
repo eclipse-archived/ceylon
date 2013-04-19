@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodWhileConditionListIsIs() {
     Boolean m(Anything x, Anything y) {
         while (is Integer x1=x, is Integer y1=y) {

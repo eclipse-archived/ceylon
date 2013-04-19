@@ -19,7 +19,7 @@
  */
 import java.lang { NullPointerException }
 
-@nomodel
+@noanno
 void test() {
     try {
         throw NullPointerException();

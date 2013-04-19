@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug999Interface<in Key, out Value> {
     shared formal Value? get1(Key k);
     shared formal Value? get2(Key k);
@@ -30,7 +30,7 @@ interface Bug999Interface<in Key, out Value> {
     shared formal Boolean attr7;
     shared formal Boolean attr8;
 }
-@nomodel
+@noanno
 class Bug999(Integer i, Boolean f()) 
         satisfies Bug999Interface<Integer, Boolean> {
     get1(Integer j) => i==j then f();

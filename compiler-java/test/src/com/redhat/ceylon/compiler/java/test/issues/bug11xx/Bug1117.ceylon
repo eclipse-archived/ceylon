@@ -17,37 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class Bug1117Tree() {
         shared formal Integer evaluate();
 }
 
-@nomodel
+@noanno
 class Bug1117Constant(Integer val) extends Bug1117Tree() {
 
         evaluate() => val;
 }
 
-@nomodel
+@noanno
 class Bug1117UnaryOperator(Bug1117Tree branch, Integer f(Integer i)) extends Bug1117Tree() {
 
         evaluate() => f(branch.evaluate());
 }
 
-@nomodel
+@noanno
 class Bug1117BinaryOperator(Bug1117Tree left, Bug1117Tree right, Integer f(Integer i, Integer j)) extends Bug1117Tree() {
 
         evaluate() => f(left.evaluate(), right.evaluate());
 }
 
-@nomodel
+@noanno
 class Bug1117UnaryMinus(Bug1117Tree t) extends Bug1117UnaryOperator(t, (Integer t) => -t) {}
 
-@nomodel
+@noanno
 class Bug1117Plus(Bug1117Tree left, Bug1117Tree right) extends 
   Bug1117BinaryOperator(left, right, (Integer l, Integer r) => l + r) {}
 
-@nomodel
+@noanno
 void bug1117() {
     value t = Bug1117Plus(Bug1117UnaryMinus(Bug1117Constant(2)), Bug1117Constant(3));
     print(t.evaluate()); // [Backend error] java primitive boxing/unboxing in ceylon-generated code!

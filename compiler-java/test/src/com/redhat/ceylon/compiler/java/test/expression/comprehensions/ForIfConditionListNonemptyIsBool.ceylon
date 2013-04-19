@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfConditionList() {
     Boolean[] m(Anything[][] xs) {
         return [ for (x in xs) if (nonempty x, is Integer y = x[0], y > 0) y == 1 ];

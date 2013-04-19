@@ -17,24 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void f1(Integer i = 1) {}
 
-@nomodel
+@noanno
 Integer f2(Integer i = 1) { return i; }
 
-@nomodel
+@noanno
 Integer f3(Integer i = 1, Integer n = 2*i) { return i; }
 
-@nomodel
+@noanno
 Integer f4(Integer i, Integer n = 2*i) { return i; }
 
-@nomodel
+@noanno
 Integer f5<U>(Integer i, U? u = null) {
     return i;
 }
 
-@nomodel
+@noanno
 void positional() {
     f1();
     f1(1);
@@ -49,7 +49,7 @@ void positional() {
     f5<String>(1, "");
 }
 
-@nomodel
+@noanno
 void named() {
     f1{};
     f1{i=1;};

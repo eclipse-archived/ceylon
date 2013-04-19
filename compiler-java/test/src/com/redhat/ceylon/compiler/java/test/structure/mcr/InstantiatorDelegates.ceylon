@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface InstantiatorDelegates<X> {
     shared class Nullary() {
     }
@@ -32,10 +32,10 @@ interface InstantiatorDelegates<X> {
     shared class TypeArg(X x) {
     }
 }
-@nomodel
+@noanno
 class InstantiatorDelegatesImpl<X>() satisfies InstantiatorDelegates<X> {
 }
-@nomodel
+@noanno
 void instantiatorDelegates(InstantiatorDelegates<String> a) {
     a.Nullary();
     a.Nullary{};

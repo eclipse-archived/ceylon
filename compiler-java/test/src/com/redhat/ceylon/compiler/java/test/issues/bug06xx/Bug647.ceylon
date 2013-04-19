@@ -1,9 +1,9 @@
-@nomodel
+@noanno
 void bug647<T>(T x) {
 }
-@nomodel
+@noanno
 Array<Element> arrayOfSome<Element>(Element* elements) => nothing;
-@nomodel
+@noanno
 void bug647test() {
     bug647("foo");
     bug647<Object>("foo");

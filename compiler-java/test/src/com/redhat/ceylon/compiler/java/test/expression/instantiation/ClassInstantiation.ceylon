@@ -17,28 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ClassInstantiation(){
     shared ClassInstantiation m() {
         return ClassInstantiation();
     }
 }
 
-@nomodel
+@noanno
 class ClassInstantiationWithParam(Integer i){
     shared ClassInstantiationWithParam m() {
         return ClassInstantiationWithParam(2);
     }
 }
 
-@nomodel
+@noanno
 class ClassInstantiationWithParams(Integer i, String j){
     shared ClassInstantiationWithParams m() {
         return ClassInstantiationWithParams(2, "");
     }
 }
 
-@nomodel
+@noanno
 class InnerClassInstantiation() {
     class InnerClass() {
     }
@@ -47,7 +47,7 @@ class InnerClassInstantiation() {
     }
 }
 
-@nomodel
+@noanno
 class LocalClassInstantiation() {
     void m () {
         class LocalClass() {

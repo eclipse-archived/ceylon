@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.quoting.goto.transient{TwoKeywordsInPackage}
 
-@nomodel
+@noanno
 class KeywordInImport() {
     TwoKeywordsInPackage();
 }

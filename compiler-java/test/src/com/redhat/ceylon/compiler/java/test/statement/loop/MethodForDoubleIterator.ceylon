@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class MethodForDoubleIterator(){
     shared void m(){
         for (Integer i -> String s in {1->"a", 2->"b", 3->"c"}) {

@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug1108(shared String foo, shared String() bar) {}
-@nomodel
+@noanno
 void bug1108() {
     class Bug1108Inner(shared String foo, shared String() bar) {}
     String f1 = Bug1108("", process.readLine).foo;

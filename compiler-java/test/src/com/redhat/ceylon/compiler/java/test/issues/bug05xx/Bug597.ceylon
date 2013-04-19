@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug597() satisfies Super {}
 
-@nomodel
+@noanno
 shared interface Super  {
    shared default String foo {
        return "foo";

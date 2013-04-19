@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableReturnUnary_foo(Integer i) {
 }
-@nomodel
+@noanno
 Callable<Anything, [Integer]> callableReturnUnary_bar() {
     return callableReturnUnary_foo;
 }

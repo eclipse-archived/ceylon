@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface {
     shared actual JavaOptionalInterface method(JavaOptionalInterface x){
         Object o1 = x.prop1;

@@ -19,7 +19,7 @@
  */
 import java.io{...}
 
-@nomodel
+@noanno
 class ImportJavaRuntimeTypeWildcard() {
     void m() {
         @error

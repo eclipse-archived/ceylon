@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface AssignOuter {
     Integer a {
         return 0;
@@ -60,7 +60,7 @@ interface AssignOuter {
         }
     }
 }
-@nomodel
+@noanno
 abstract class AssignOuterClass() {
      Integer a {
         return 0;

@@ -1,4 +1,4 @@
-@nomodel
+@noanno
 class Bug1095() {
     shared Value variadicSum<Value>(Value* values) 
         given Value satisfies Summable<Value> {

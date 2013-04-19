@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Ret bug1113<Ret, Args>(Callable<Ret, Args> f)
  given Args satisfies Anything[] {
     if(is Callable<Ret,[]> f){

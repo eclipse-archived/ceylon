@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class QualifiedAttributeAccess(){
    Boolean b = true;
    variable Boolean b2 = true;
@@ -51,7 +51,7 @@ class QualifiedAttributeAccess(){
        return f.b;
    }
 }
-@nomodel
+@noanno
 class Foo() {
    shared Boolean b = true;
 }

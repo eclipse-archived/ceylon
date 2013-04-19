@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug1016({Anything+} iterable) {
     if (is Anything[] iterable) {
         value sequence = iterable of [Anything+];

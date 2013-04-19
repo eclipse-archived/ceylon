@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void bug1043() {
     class Delegate<in T>() {}
     class Consumer<in T>(Delegate<T>* dels) {}

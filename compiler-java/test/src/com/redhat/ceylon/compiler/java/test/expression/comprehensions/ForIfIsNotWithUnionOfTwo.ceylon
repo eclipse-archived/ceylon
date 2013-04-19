@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfIsNotWithUnionOfTwo() {
     shared void m(Sequence<String|Integer> xs) {
         print({ for (x in xs) if (!is Integer x) x.reversed });

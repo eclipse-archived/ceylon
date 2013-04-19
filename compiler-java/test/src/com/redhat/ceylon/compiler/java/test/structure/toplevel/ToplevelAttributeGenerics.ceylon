@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 List<String> topLevelAttributeGenerics = [ "hello" ];
-@nomodel
+@noanno
 shared List<String> topLevelAttributeGenericsShared = [ "hello" ];
-@nomodel
+@noanno
 variable List<String> topLevelVariableGenerics = [ "hello" ];
-@nomodel
+@noanno
 shared variable List<String> topLevelVariableGenericsShared = [ "hello" ];

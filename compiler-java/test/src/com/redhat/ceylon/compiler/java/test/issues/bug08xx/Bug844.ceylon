@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 // simplest test case
-@nomodel
+@noanno
 shared class Bug844_Top<out Element>(){
     shared default Element first(){ return nothing; }
     shared default Element firstAttribute = nothing;
 }
-@nomodel
+@noanno
 shared class Bug844_Bottom<out Element, out First>(firstAttribute) extends Bug844_Top<Element>()
     given First satisfies Element {
     shared actual First first(){ return nothing; }
@@ -31,7 +31,7 @@ shared class Bug844_Bottom<out Element, out First>(firstAttribute) extends Bug84
 }
 
 // full error report
-@nomodel
+@noanno
 shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()
         satisfies Sequence<Element>

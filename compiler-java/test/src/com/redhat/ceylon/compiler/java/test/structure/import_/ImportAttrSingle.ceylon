@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{f1}
 
-@nomodel
+@noanno
 class ImportAttrSingle() {
     void m() {
         Boolean b = f1;

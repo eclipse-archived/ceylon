@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 @error
 void checkedExceptionsInMethod() {
     @error
@@ -26,7 +26,7 @@ void checkedExceptionsInMethod() {
     x.m();
 }
 
-@nomodel
+@noanno
 @error
 class CheckedExceptions() extends JavaCheckedExceptions() {
     @error

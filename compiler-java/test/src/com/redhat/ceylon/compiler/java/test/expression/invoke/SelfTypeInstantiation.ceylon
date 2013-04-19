@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class SelfTypeInstantiation<T>() of T {
 }
-@nomodel
+@noanno
 class BaseSelfTypeInstantiation() extends SelfTypeInstantiation<BaseSelfTypeInstantiation>(){}

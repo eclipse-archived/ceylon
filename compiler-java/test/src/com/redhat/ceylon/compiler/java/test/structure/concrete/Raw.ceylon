@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface RawInv<T,U> {
     shared formal T a;
     shared default T aDefault { 
@@ -33,7 +33,7 @@ interface RawInv<T,U> {
     
     shared formal U a2;
 }
-@nomodel
+@noanno
 class RawInvImplementor<X,Y>() satisfies RawInv<X&Y, Y> {
     shared actual X&Y a {
         throw;
@@ -50,7 +50,7 @@ class RawInvImplementor<X,Y>() satisfies RawInv<X&Y, Y> {
 }
 
 
-@nomodel
+@noanno
 interface RawIn<in T,U> {
     shared formal void m(T t);
     shared default void mDefault(T t) {
@@ -60,7 +60,7 @@ interface RawIn<in T,U> {
     shared formal void m2(U u);
 }
 
-@nomodel
+@noanno
 class RawInImplementor<X,Y>() satisfies RawIn<X&Y,Y> {
     shared actual void m2(Y u) {
     }
@@ -71,7 +71,7 @@ class RawInImplementor<X,Y>() satisfies RawIn<X&Y,Y> {
 }
 
 
-@nomodel
+@noanno
 interface RawOut<out T,U> {
     shared formal T a;
     shared T aDefault { 
@@ -85,7 +85,7 @@ interface RawOut<out T,U> {
     shared formal U a2;
 }
 
-@nomodel
+@noanno
 class RawOutImplementor<X,Y>() satisfies RawOut<X&Y,Y> {
     shared actual X&Y a {
         throw;

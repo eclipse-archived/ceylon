@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void spread(Sequence<String> seq, String x) {
     Sequence<Integer> ini1 = seq*.size;
     Sequence<String> ini2 = seq*.replace(x, x);

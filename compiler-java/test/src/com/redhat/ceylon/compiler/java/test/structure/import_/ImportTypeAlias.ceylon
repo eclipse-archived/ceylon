@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{Foo=C1}
 
-@nomodel
+@noanno
 class ImportTypeAlias() {
     void m() {
         Foo();

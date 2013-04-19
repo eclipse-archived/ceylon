@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug241<T>() {
     
 }
 
-@nomodel
+@noanno
 void bug241<Key,Item>() given Key satisfies Summable<Integer> given Item satisfies Summable<Integer>  {
     value builder = Bug241<Entry<Key,Item>>();   
 }

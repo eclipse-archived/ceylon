@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Array<T?> bug657<T>(Integer size, T? elem){
     return arrayOfSize<T?>(size, elem);
 }

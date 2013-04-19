@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void callableArgumentTernary_f(void foo(Integer i, String s, Boolean c)) {
 }
-@nomodel
+@noanno
 void callableArgumentTernary_bar(Integer i, String s, Boolean b) {
 }
-@nomodel
+@noanno
 void callableArgumentTernary_m() {
     callableArgumentTernary_f(callableArgumentTernary_bar);
 }

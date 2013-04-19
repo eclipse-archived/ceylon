@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void anonFunctionNullary<T>(T t) {
     Callable<String, []> s1 = () => "";
     Callable<String?, []> s2 = () => "";

@@ -24,7 +24,7 @@ import java.lang{
     JLong = Long
 }
 
-@nomodel
+@noanno
 @error
 class SatisfiesFileFilter() satisfies FileFilter {
     @error
@@ -33,7 +33,7 @@ class SatisfiesFileFilter() satisfies FileFilter {
     }
 }
 
-@nomodel
+@noanno
 @error
 class SatisfiesFilenameFilter() satisfies FilenameFilter {
     @error
@@ -42,7 +42,7 @@ class SatisfiesFilenameFilter() satisfies FilenameFilter {
     }
 }
 
-@nomodel
+@noanno
 @error
 void test() {
     @error
@@ -54,7 +54,7 @@ void test() {
 }
 
 @error
-@nomodel
+@noanno
 class JavaInterfaceImpl() satisfies JavaInterface<Boolean,Integer> {
     @error
     shared actual Boolean booleanMethod(Boolean b){ return true; }

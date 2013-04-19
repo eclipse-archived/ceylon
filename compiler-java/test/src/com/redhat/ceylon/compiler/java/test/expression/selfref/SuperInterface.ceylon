@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface SuperInterface {
     shared Integer i {
         return 2;
@@ -30,7 +30,7 @@ interface SuperInterface {
     }
 }
 
-@nomodel
+@noanno
 class SuperInterface_Sub() satisfies SuperInterface {
     shared actual Integer m() {
         SuperInterface::i++;
@@ -44,7 +44,7 @@ class SuperInterface_Sub() satisfies SuperInterface {
     }
 }
 
-@nomodel
+@noanno
 interface SuperInterface_SubInterface satisfies SuperInterface {
     shared actual Integer m() {
         SuperInterface::i++;

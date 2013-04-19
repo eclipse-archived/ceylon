@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void methodIfIsAnythingSeq() {
     // basically just test if everything can be called without error
     Anything args = process.arguments;

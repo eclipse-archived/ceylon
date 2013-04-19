@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug329_Something {
     shared formal Object something;
 }
 
-@nomodel
+@noanno
 object bug329_se satisfies Bug329_Something {
     shared actual String something = "somethingElse";
 }
 
-@nomodel
+@noanno
 object bug329_se2 satisfies Bug329_Something {
     shared actual String something { 
         return "somethingElse"; 

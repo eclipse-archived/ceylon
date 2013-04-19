@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class DefaultedInitializerParameter(Integer n = 5) {}
-@nomodel
+@noanno
 class DefaultedInitializerParameter2(Integer n, String s = "test") {}
-@nomodel
+@noanno
 class DefaultedInitializerParameter3(Integer n = 5, Integer m = n) {}
-@nomodel
+@noanno
 class DefaultedInitializerParameter4(Integer n = 5, Integer m = n + 1) {}
-@nomodel
+@noanno
 class DefaultedInitializerParameter5(Integer n = 5, Integer* seq) {}

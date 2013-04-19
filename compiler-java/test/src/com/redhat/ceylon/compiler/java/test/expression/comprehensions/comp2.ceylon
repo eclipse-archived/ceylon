@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void comp2(Integer[] ints) {
     value i = {for (i in ints) for (j in ints) i*2+3/j };
 }

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 void anonymousArgument2<Y>(Y y) {
     void callFunction<X>(X f(Integer i)) {
     }

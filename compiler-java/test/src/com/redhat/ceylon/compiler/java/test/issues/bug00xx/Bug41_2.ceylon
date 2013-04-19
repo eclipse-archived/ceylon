@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class Bug41_2() extends Bug41() {
 }

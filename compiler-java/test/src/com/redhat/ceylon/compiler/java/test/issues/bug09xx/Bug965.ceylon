@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared interface Bug965_Interface {
     shared default Boolean isFoo() { return false; }
     shared default Boolean getFoo() { return false; }
     shared default Boolean foo() { return false; }
 }
-@nomodel
+@noanno
 shared class Bug965_Class() satisfies Bug965_Interface {
     shared actual Boolean isFoo() {
         return true;

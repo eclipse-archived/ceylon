@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 variable Integer bug247_toplevel = 0;
-@nomodel
+@noanno
 void bug247() {
     bug247_toplevel += 1;
 }

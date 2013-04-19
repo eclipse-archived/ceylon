@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class AssertExists2dArray() {
     void ints() {
         value t = arrayOfSize(2,arrayOfSize(2,0));

@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug920_Tuple<out Element, out First>(first)
  given First satisfies Element{
  shared First first;
 }
-@nomodel
+@noanno
 void bug920([String,Sequential<Character>] p){
     value t = Bug920_Tuple<Integer|String,Integer>(1);
     value s = t.first;

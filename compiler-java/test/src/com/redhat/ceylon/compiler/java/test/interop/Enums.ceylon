@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.interop { JavaEnum { one = \iONE, two = \iTWO } }
 
-@nomodel
+@noanno
 @error
 void enums(){
     JavaEnum e = one;

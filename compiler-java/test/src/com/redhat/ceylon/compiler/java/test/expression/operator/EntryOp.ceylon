@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared class EntryOp() {
     void m(Integer n1, Integer i2) {
         Entry<Integer, Integer> entry = n1 -> i2;

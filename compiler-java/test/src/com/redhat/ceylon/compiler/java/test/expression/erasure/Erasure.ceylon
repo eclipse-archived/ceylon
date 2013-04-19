@@ -17,24 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Top {
     shared formal void top();
     shared formal Integer topAttribute;
     shared formal Left&Right leftAndRightAttribute;
     shared formal Left&Right leftAndRightMethod(Left&Right param);
 }
-@nomodel
+@noanno
 interface Left satisfies Top {
     shared formal void left();
     shared formal Integer leftAttribute;
 }
-@nomodel
+@noanno
 interface Right satisfies Top {
     shared formal void right();
     shared formal Integer rightAttribute;
 }
-@nomodel
+@noanno
 class CMiddle() satisfies Left & Right{
     shared actual void left() {}
     shared actual void top() {}
@@ -47,7 +47,7 @@ class CMiddle() satisfies Left & Right{
         return param;
     }
 }
-@nomodel
+@noanno
 class CLeft() satisfies Left {
     shared actual void left() {}
     shared actual void top() {}
@@ -58,21 +58,21 @@ class CLeft() satisfies Left {
         return param;
     }
 }
-@nomodel
+@noanno
 interface EmptyInterface {}
 
-@nomodel
+@noanno
 variable Left topLevelLeftAttribute = CLeft();
 
-@nomodel
+@noanno
 class MyException(String? m, Exception? x) 
  extends Exception(m, x)
  satisfies EmptyInterface {}
 
-@nomodel
+@noanno
 interface MyNumeric satisfies Numeric<MyNumeric> & Integral<MyNumeric> & Comparable<MyNumeric>{}
 
-@nomodel
+@noanno
 class Test(Integer&EmptyInterface n) {
     
     void takesTop(Top top){}

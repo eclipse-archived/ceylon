@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 shared Integer namedArgumentInvocationTopLevelF(Integer n, String s) {
     return n; 
 }
 
-@nomodel
+@noanno
 shared void namedArgumentInvocationTopLevelV(Integer n, String s) {
 }
 
-@nomodel
+@noanno
 Integer namedArgumentInvocationTopLevelX = namedArgumentInvocationTopLevelF{
     s="abc";
     n=123;
 };
-@nomodel
+@noanno
 Anything namedArgumentInvocationTopLevelY = namedArgumentInvocationTopLevelV{
     s="abc";
     n=123;

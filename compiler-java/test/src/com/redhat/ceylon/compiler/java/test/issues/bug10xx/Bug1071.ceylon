@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug1071(Float f()=>nothing) {}
-@nomodel
+@noanno
 class Bug1071_2<T>(T f()=>nothing) {}
-@nomodel
+@noanno
 void bug1071() {
     Bug1071 { function f() { return nothing; } };
     Bug1071_2<Float> { function f() { return nothing; } };

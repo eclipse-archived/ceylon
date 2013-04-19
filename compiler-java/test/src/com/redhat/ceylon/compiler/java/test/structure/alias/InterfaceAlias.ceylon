@@ -21,6 +21,6 @@ shared interface InterfaceAlias_Foo{}
 
 shared interface InterfaceAlias => InterfaceAlias_Foo;
 
-@nomodel
+@noanno
 void interfaceAliasMethod(InterfaceAlias foo){
 }

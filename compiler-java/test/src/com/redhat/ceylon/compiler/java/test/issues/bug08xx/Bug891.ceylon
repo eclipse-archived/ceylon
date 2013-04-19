@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug891_Interface {
     shared formal void f();
 }
-@nomodel
+@noanno
 class Bug891_Class(void arg()) satisfies Bug891_Interface {
     f = arg;
 }

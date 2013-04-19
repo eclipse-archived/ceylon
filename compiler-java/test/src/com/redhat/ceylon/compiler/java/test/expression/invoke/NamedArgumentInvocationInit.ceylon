@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class NamedArgumentInvocationInit(String a, Integer b) {
     class Inner(Boolean x, String y, Integer z) {
         shared void m2() { }

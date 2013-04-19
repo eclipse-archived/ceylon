@@ -19,12 +19,12 @@
  */
 // simplest test case
 
-@nomodel
+@noanno
 class Bug667TopClass() {
     default shared String? get { throw; }
 }
 
-@nomodel
+@noanno
 class Bug667BottomClass(Nothing n) extends Bug667TopClass() {    
     shared actual Nothing get { return n; }
     shared String? perhaps(){
@@ -34,18 +34,18 @@ class Bug667BottomClass(Nothing n) extends Bug667TopClass() {
 
 // original test case
 
-@nomodel
+@noanno
 interface Bug667Interface<T> {
     default shared T? get { throw; }
 }
  
-@nomodel
+@noanno
 class Bug667Class<Nada>(Nada n) satisfies Bug667Interface<String> 
         given Nada satisfies Null {    
     shared actual Nada get { return n; }
 }
 
-@nomodel
+@noanno
 void bug667Method<Nada>(Nada n) given Nada satisfies Null {
     object x satisfies Bug667Interface<String> {    
         shared actual Nada get { return n; }

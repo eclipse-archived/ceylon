@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Bug476A{}
-@nomodel
+@noanno
 interface Bug476B satisfies Bug476A{}
-@nomodel
+@noanno
 interface Bug476C{}
  
-@nomodel
+@noanno
 abstract class Bug476Top<out T>() {
     shared formal T m();
     shared formal Bug476Top<T> m2();
@@ -32,7 +32,7 @@ abstract class Bug476Top<out T>() {
     shared formal T attr2;
 }
 
-@nomodel
+@noanno
 class Bug476Bottom<T,U>() extends Bug476Top<Bug476A>(){
     shared actual Bug476A&T&U m() {
         return nothing;
@@ -48,7 +48,7 @@ class Bug476Bottom<T,U>() extends Bug476Top<Bug476A>(){
     }
 }
 
-@nomodel
+@noanno
 shared abstract class Bug476<out T>() satisfies List<T> {
     shared actual T[] span(Integer from, Integer to) {
         return nothing;

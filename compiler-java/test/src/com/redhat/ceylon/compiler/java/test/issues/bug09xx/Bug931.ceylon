@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class Bug931BinaryOperator(Integer f(Integer a)){
  shared Integer evaluate2() {
   return f{ a = 1; };

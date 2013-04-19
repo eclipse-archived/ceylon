@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class CallableArgumentParameterClass() {
 }
-@nomodel
+@noanno
 void callableArgumentParameterClass_f(void foo(CallableArgumentParameterClass c)) {
 }
-@nomodel
+@noanno
 void callableArgumentParameterClass_bar(CallableArgumentParameterClass c) {
 }
-@nomodel
+@noanno
 void callableArgumentParameterClass_m() {
     callableArgumentParameterClass_f(callableArgumentParameterClass_bar);
 }

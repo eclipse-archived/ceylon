@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface I<out T,in X> given T satisfies String given X satisfies Boolean {
     shared formal T m1<U>(X? b, U? u=null);
     interface II {

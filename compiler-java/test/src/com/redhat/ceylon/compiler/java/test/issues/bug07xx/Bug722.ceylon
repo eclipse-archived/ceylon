@@ -19,5 +19,5 @@
  */
 import javax.swing{JFrame}
  
-@nomodel
+@noanno
 class Bug722() extends JFrame() {}

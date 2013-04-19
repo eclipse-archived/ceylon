@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ThrowExceptionSubclassE(String? description, Exception? cause) extends Exception(description, cause) {
     
 }
 
-@nomodel
+@noanno
 class ThrowExceptionSubclass() {
     void t() {
         throw ThrowExceptionSubclassE("Bang!", null);

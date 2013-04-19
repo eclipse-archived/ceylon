@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class ForIfIsNullUnion() {
     shared void m(Anything[] xs) {
         print({ for (x in xs) if (is Character? x) x });

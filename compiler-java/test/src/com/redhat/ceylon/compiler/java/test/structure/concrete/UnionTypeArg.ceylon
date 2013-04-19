@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class UnionTypeArg() satisfies Iterable<String|Integer>{
     shared actual Iterator<String|Integer> iterator() => nothing;
 }
-@nomodel
+@noanno
 class UnionTypeArgOverride() satisfies Iterable<String|Integer>{
     shared actual Iterator<String|Integer> iterator() => nothing;
     shared actual default String|Integer? find(Boolean selecting(String|Integer elem)) {

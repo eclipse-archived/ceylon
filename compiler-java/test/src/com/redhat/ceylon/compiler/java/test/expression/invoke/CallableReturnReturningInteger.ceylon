@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 Integer callableReturnReturningInteger_foo() {
     return 1;
 }
-@nomodel
+@noanno
 Callable<Integer, []> callableReturnReturningInteger_bar() {
     return callableReturnReturningInteger_foo;
 }

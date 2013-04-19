@@ -37,7 +37,7 @@ shared class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     }
 }
 
-@nomodel
+@noanno
 void memberClassAliasTricksMethod(){
     value foo1 = MemberClassAliasTricks_Foo(1,2).MemberClassAliasToToplevel(3,4);
     value foo2 = MemberClassAliasTricks_Foo(1,2).MemberClassAliasToToplevel2(3,4);

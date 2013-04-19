@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 @error
 void fields() {
     @error
@@ -42,7 +42,7 @@ void fields() {
     java.setFieldWithNoGetter(2);
 }
 
-@nomodel
+@noanno
 @error
 class CeylonFields() extends JavaFields() {
     

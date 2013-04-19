@@ -19,7 +19,7 @@
  */
 import java.lang.ref { WeakReference, ReferenceQueue }
 
-@nomodel
+@noanno
 @error
 shared class Bug366<T>(T obj, @error ReferenceQueue<T> q)
             extends WeakReference<T>(obj, q) {}

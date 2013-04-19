@@ -19,7 +19,7 @@
  */
 import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{C1, C2}
 
-@nomodel
+@noanno
 class ImportTypeMultiple() {
     void m() {
         C1();

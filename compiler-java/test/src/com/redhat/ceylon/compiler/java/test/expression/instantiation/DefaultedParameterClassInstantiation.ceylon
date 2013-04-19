@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 class DefaultedParameterClassInstantiation(Integer m = 1, Integer n = m + 1, Integer* seq){
     shared void test() {
         DefaultedParameterClassInstantiation a = DefaultedParameterClassInstantiation();

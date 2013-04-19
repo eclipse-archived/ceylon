@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 interface Self<T> of T given T satisfies Self<T> {}
 
-@nomodel
+@noanno
 class X() satisfies Self<X> {}
 
-@nomodel
+@noanno
 interface Inv<T> {}
 
-@nomodel
+@noanno
 void selfTypeGeneric() {
     Inv<Self<X>> l1 { throw; }
     Inv<X> l2 { throw; }

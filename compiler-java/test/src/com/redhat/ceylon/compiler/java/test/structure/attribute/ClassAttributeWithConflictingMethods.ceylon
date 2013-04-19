@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
+@noanno
 abstract class ClassAttributeWithConflictingMethods(){
     shared variable String attr = "";
     shared Boolean isAttr(){ return true; }
@@ -34,7 +34,7 @@ abstract class ClassAttributeWithConflictingMethods(){
     } 
 }
 
-@nomodel
+@noanno
 interface InterfaceAttributeWithConflictingMethods {
     shared formal variable String attr;
     shared formal Boolean isAttr();
