@@ -32,16 +32,17 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -253,24 +254,35 @@ public class CeylonTransformer extends AbstractTransformer {
     /** Creates a module class in the package, with the Module annotation required by the runtime. */
     public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
         at(module);
-        return ClassDefinitionBuilder
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder
                 .klass(this, "module_", null)
                 .modifiers(Flags.FINAL)
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(makeAtModule(module.getUnit().getPackage().getModule()))
-                .build();
-
+                .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
+        builder.annotations(expressionGen().transform(module.getAnnotationList()));
+        for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
+            List<JCAnnotation> importAnnotations = expressionGen().transform(imported.getAnnotationList());
+            JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
+            StringBuilder sb = new StringBuilder();
+            for (Tree.Identifier part : imported.getImportPath().getIdentifiers()) {
+                sb.append(part.getText()).append('$');
+            }
+            Name fieldName = names().fromString(sb.substring(0, sb.length()-1));
+            //imported.getVersion();
+            builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), makeNull())));
+        }
+        return builder.build();
     }
 
     public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
         at(pack);
-        return ClassDefinitionBuilder
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder
                 .klass(this, "package_", null)
                 .modifiers(Flags.FINAL)
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(makeAtPackage(pack.getUnit().getPackage()))
-                .build();
-
+                .annotations(makeAtPackage(pack.getUnit().getPackage()));
+        builder.annotations(expressionGen().transform(pack.getAnnotationList()));
+        return builder.build();
     }
 
     public List<JCTree> transformAttribute(
