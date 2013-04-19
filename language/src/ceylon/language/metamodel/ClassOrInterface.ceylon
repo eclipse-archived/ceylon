@@ -17,4 +17,6 @@ shared interface ClassOrInterface<out Type>
     
     shared formal Member<Subtype,Kind>[] annotatedMembers<Subtype,Kind,Annotation>() 
             given Kind satisfies Declaration;
+    
+    shared formal ClassOrInterfaceType<Type> apply(ProducedType* types);
 }

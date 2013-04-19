@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Null;
@@ -17,8 +18,8 @@ import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -140,6 +141,7 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
+    // FIXME: this is just wrong because types are not applied
     public static TypeDescriptor getTypeDescriptorForDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         if(declaration instanceof LazyClass){
             ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
@@ -150,6 +152,40 @@ public class Metamodel {
             return TypeDescriptor.klass(classMirror.klass);
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
+    }
+
+    public static TypeDescriptor getTypeDescriptorForProducedType(com.redhat.ceylon.compiler.typechecker.model.ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof LazyClass){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getTypeArgumentList());
+            return TypeDescriptor.klass(classMirror.klass, tdArgs);
+        }
+        if(declaration instanceof LazyInterface){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getTypeArgumentList());
+            return TypeDescriptor.klass(classMirror.klass, tdArgs);
+        }
+        if(declaration instanceof NothingType){
+            return TypeDescriptor.NothingType;
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getCaseTypes());
+            return TypeDescriptor.union(tdArgs);
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getSatisfiedTypes());
+            return TypeDescriptor.intersection(tdArgs);
+        }
+        throw new RuntimeException("Unsupported declaration type: " + declaration);
+    }
+
+    private static TypeDescriptor[] getTypeDescriptorsForProducedTypes(List<ProducedType> args) {
+        TypeDescriptor[] tdArgs = new TypeDescriptor[args.size()];
+        for(int i=0;i<tdArgs.length;i++){
+            tdArgs[i] = getTypeDescriptorForProducedType(args.get(i));
+        }
+        return tdArgs;
     }
 
     public static Function getMetamodel(Method method) {
@@ -166,4 +202,9 @@ public class Metamodel {
         throw new RuntimeException("Unsupported method container for "+method.getName()+": "+container);
     }
 
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.ProducedType pt) {
+        if(pt instanceof ClassOrInterfaceType)
+            return ((ClassOrInterfaceType)pt).producedType;
+        throw new RuntimeException("Unsupported produced type: " + pt);
+    }
 }

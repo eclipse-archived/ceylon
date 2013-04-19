@@ -31,7 +31,7 @@ public class ClassOrInterfaceType<Type>
     implements ceylon.language.metamodel.ClassOrInterfaceType<Type>, ReifiedType {
 
     private volatile boolean initialised;
-    private final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
+    final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface<? extends Type> declaration;
     protected ceylon.language.Map<? extends ceylon.language.metamodel.TypeParameter, ? extends ceylon.language.metamodel.ProducedType> typeArguments;
     protected ceylon.language.metamodel.ClassType<? extends Object, ? super Sequential<? extends Object>> superclass;

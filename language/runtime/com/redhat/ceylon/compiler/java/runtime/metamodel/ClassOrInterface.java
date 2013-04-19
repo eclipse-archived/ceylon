@@ -7,6 +7,7 @@ import ceylon.language.Anything;
 import ceylon.language.Empty;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Parameterised$impl;
@@ -15,18 +16,20 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 4)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({@TypeParameter(value = "Type", variance = Variance.OUT)})
-public class ClassOrInterface<Type>
+public abstract class ClassOrInterface<Type>
     extends Declaration
     implements ceylon.language.metamodel.ClassOrInterface<Type> {
 
@@ -191,7 +194,7 @@ public class ClassOrInterface<Type>
         checkInit();
         return TypeDescriptor.klass(ClassOrInterface.class, $reifiedType);
     }
-    
+
     @Ignore
     TypeDescriptor $getReifiedType(){
         checkInit();

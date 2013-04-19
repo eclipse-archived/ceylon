@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.Sequential;
 import ceylon.language.metamodel.InterfaceType$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;

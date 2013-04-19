@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Class;
 import ceylon.language.metamodel.ClassType$impl;
@@ -11,6 +14,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 4)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -21,6 +26,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public class ClassType<Type, Arguments extends Sequential<? extends Object>> 
     extends ClassOrInterfaceType<Type>
     implements ceylon.language.metamodel.ClassType<Type, Arguments> {
+
+    private TypeDescriptor $reifiedArguments;
+    private TypeDescriptor $reifiedType;
 
     public ClassType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
         super(producedType);
@@ -40,9 +48,23 @@ public class ClassType<Type, Arguments extends Sequential<? extends Object>>
     }
 
     @Override
+    protected void init() {
+        super.init();
+        com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> elemTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
+        for(Parameter param : decl.getParameterList().getParameters()){
+            com.redhat.ceylon.compiler.typechecker.model.ProducedType paramType = param.getType().substitute(producedType.getTypeArguments());
+            elemTypes.add(paramType);
+        }
+        // FIXME: last three params
+        ProducedType tupleType = decl.getUnit().getTupleType(elemTypes, false, false, -1);
+        this.$reifiedArguments = Metamodel.getTypeDescriptorForProducedType(tupleType);
+        this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
+    }
+    
+    @Override
     public TypeDescriptor $getType() {
         checkInit();
-        com.redhat.ceylon.compiler.java.runtime.metamodel.Class<Type, Arguments> declaration = (com.redhat.ceylon.compiler.java.runtime.metamodel.Class<Type, Arguments>) this.declaration;
-        return TypeDescriptor.klass(ClassType.class, declaration.$getReifiedType(), declaration.$getReifiedArguments());
+        return TypeDescriptor.klass(ClassType.class, $reifiedType, $reifiedArguments);
     }
 }
