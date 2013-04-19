@@ -79,6 +79,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -344,9 +345,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getDeclarationModel();
-            annoBuilder.method(makeAnnotationMethod(naming.selector(parameterModel, Naming.NA_ANNOTATION_MEMBER), 
-                    transformAnnotationMethodType(p),
-                    parameterModel.isDefaulted() ? transformAnnotationParameterDefault(p) : null));
+            annoBuilder.method(makeAnnotationMethod(p));
         }
         List<JCTree> result = annoBuilder.build();
         if (isSequencedAnnotation(klass)) {
@@ -354,13 +353,13 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null);
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
             sequencedBuilder.annotations(makeAtRetentionRuntime());
-            ClassDefinitionBuilder sequencedAnnotation = sequencedBuilder.method(makeAnnotationMethod("value", 
-                    make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)), 
-                    null));
-            
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, "value");
+            mdb.modifiers(PUBLIC | ABSTRACT);
+            mdb.resultType(null, make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)));
+            mdb.noBody();
+            ClassDefinitionBuilder sequencedAnnotation = sequencedBuilder.method(mdb);
             result = result.appendList(sequencedAnnotation.build());
         }
-        
         
         return result;
     }
@@ -386,7 +385,12 @@ public class ClassTransformer extends AbstractTransformer {
                 defaultLiteral = makeBoolean(true);
             } else if (isBooleanFalse(decl)) {
                 defaultLiteral = makeBoolean(false);
+            } else {
+                defaultLiteral = make().Literal(bme.getDeclaration().getQualifiedNameString());
             }
+        } else if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression)term;
+            defaultLiteral = make().Literal(mte.getDeclaration().getQualifiedNameString());
         } else if (term instanceof Tree.SequenceEnumeration) {
             Tree.SequenceEnumeration seq = (Tree.SequenceEnumeration)term;
             SequencedArgument sequencedArgument = seq.getSequencedArgument();
@@ -408,19 +412,31 @@ public class ClassTransformer extends AbstractTransformer {
         return defaultLiteral;
     }
 
-    private JCExpression transformAnnotationMethodType(Tree.Parameter p) {
-        ProducedType parameterType = p.getDeclarationModel().getType();
+    private JCExpression transformAnnotationMethodType(Tree.Parameter parameter) {
+        ProducedType parameterType = parameter.getDeclarationModel().getType();
         JCExpression type = null;
         if (isScalarAnnotationParameter(parameterType)) {
             type = makeJavaType(parameterType, JT_ANNOTATION);
-        } else if (typeFact().isIterableType(parameterType)
-                && isScalarAnnotationParameter(typeFact().getIteratedType(parameterType))) {
-            JCExpression scalarType = makeJavaType(typeFact().getIteratedType(parameterType), JT_ANNOTATION);
-            type = make().TypeArray(scalarType);
+        } else if (isMetamodelReference(parameterType)) {
+            type = make().Type(syms().stringType);
+        } else if (typeFact().isIterableType(parameterType)) {
+            ProducedType iteratedType = typeFact().getIteratedType(parameterType);
+            if (isScalarAnnotationParameter(iteratedType)) {
+                JCExpression scalarType = makeJavaType(iteratedType, JT_ANNOTATION);
+                type = make().TypeArray(scalarType);
+            } else if (isMetamodelReference(iteratedType)) {
+                JCExpression scalarType = make().Type(syms().stringType);
+                type = make().TypeArray(scalarType);
+            }
         } else {
-            type = makeErroneous(p, "Unsupported annotation parameter type");
+            type = makeErroneous(parameter, "Unsupported annotation parameter type");
         }
         return type;
+    }
+
+    private boolean isMetamodelReference(ProducedType parameterType) {
+        // TODO Handle metamodel references properly
+        return typeFact().getAnythingDeclaration().getType().isExactly(parameterType);
     }
 
 
@@ -1678,8 +1694,19 @@ public class ClassTransformer extends AbstractTransformer {
                 ));
     }
 
-    private MethodDefinitionBuilder makeAnnotationMethod(String name, JCExpression type, JCExpression defaultValue) {
+    private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
+        Parameter parameterModel = parameter.getDeclarationModel();
+        String name = naming.selector(parameterModel, Naming.NA_ANNOTATION_MEMBER);
+        JCExpression type = transformAnnotationMethodType(parameter);
+        JCExpression defaultValue = parameterModel.isDefaulted() ? transformAnnotationParameterDefault(parameter) : null;
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, name);
+        if (isMetamodelReference(parameterModel.getType())
+                || 
+                (typeFact().isIterableType(parameterModel.getType())
+                && isMetamodelReference(typeFact().getIteratedType(parameterModel.getType())))) {
+            mdb.annotations(List.of(make().Annotation(make().Type(syms().ceylonAtMetamodelReferenceType), 
+                    List.<JCExpression>nil())));
+        }
         mdb.modifiers(PUBLIC | ABSTRACT);
         mdb.resultType(null, type);
         mdb.defaultValue(defaultValue);

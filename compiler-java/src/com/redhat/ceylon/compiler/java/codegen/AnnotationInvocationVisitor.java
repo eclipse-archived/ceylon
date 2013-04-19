@@ -255,8 +255,13 @@ class AnnotationInvocationVisitor extends Visitor {
                 || exprGen.isBooleanFalse(term.getDeclaration())) {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
         } else {
-            append(exprGen.makeErroneous(term, "Unable to use that kind of term (only booleans)"));
+            super.visit(term);
         }
+    }
+    
+    public void visit(Tree.MemberOrTypeExpression term) {
+        // Metamodel reference
+        append(exprGen.make().Literal(term.getDeclaration().getQualifiedNameString()));
     }
     
     private ListBuffer<JCExpression> startArray() {
