@@ -1,15 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface AnnotationTarget$annotation {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.ceylon.language.Annotation$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
 class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     AnnotationTarget(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation anno) {
         this();
     }
@@ -17,22 +13,17 @@ class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model
     AnnotationTarget() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget();
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.$TypeDescriptor;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class)
 final class annotationTarget_ {
     
@@ -40,60 +31,41 @@ final class annotationTarget_ {
     }
     
     @.ceylon.language.Annotation$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotation")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::AnnotationTarget")
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget annotationTarget() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget_.annotationTarget();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
 class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    AnnotationTargetClass(@.com.redhat.ceylon.compiler.java.metadata.Name("parameter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
+    AnnotationTargetClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter) {
         this.attribute = true;
     }
     private final boolean attribute;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public final boolean getAttribute() {
         return attribute;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     private final boolean getGetter$priv() {
         return true;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    private final void setGetter$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
-    final boolean getter) {
+    private final void setGetter$priv(final boolean getter) {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private final void method$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("parameter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
+    private final void method$priv(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter) {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
         if (true) {
@@ -101,65 +73,40 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.annotations::AnnotationTargetClass")
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
 final class AnnotationTargetAlias {
     
     private AnnotationTargetAlias() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
 interface AnnotationTargetInterface {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$impl $com$redhat$ceylon$compiler$java$test$annotations$AnnotationTargetInterface$impl();
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Formal$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    public abstract .java.lang.Object formalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("parameter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
+    public abstract .java.lang.Object formalMethod(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter);
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Default$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    public .java.lang.Object defaultMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("parameter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
+    public .java.lang.Object defaultMethod(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter);
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    public void sharedMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("parameter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
+    public void sharedMethod(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter);
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class AnnotationTargetInterface$impl {
     
     AnnotationTargetInterface$impl(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface $this) {
@@ -178,27 +125,16 @@ final class AnnotationTargetInterface$impl {
     private void method$priv(final .java.lang.String parameter) {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class annotationTargetMethod_ {
     
     private annotationTargetMethod_() {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    static void annotationTargetMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("parameter")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
+    static void annotationTargetMethod(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter) {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Name("annotationTargetObject")
-@.com.redhat.ceylon.compiler.java.metadata.Object
-@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
 final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private annotationTargetObject_() {
@@ -208,9 +144,7 @@ final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.
         value = new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_[]{new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_()};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::annotationTargetObject")
     static .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ getAnnotationTargetObject$() {
         try {
             return value[0];
@@ -220,13 +154,10 @@ final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class annotationTargetValue_ {
     
     private annotationTargetValue_() {
@@ -236,9 +167,7 @@ final class annotationTargetValue_ {
         value = new boolean[]{true};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("annotationTarget")})
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     static boolean getAnnotationTargetValue$() {
         try {
             return value[0];

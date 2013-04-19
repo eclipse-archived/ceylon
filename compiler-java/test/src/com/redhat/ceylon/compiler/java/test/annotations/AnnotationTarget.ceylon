@@ -1,6 +1,10 @@
+@nomodel
 annotation class AnnotationTarget(){}
+
+@nomodel
 annotation AnnotationTarget annotationTarget() => AnnotationTarget();
 
+@nomodel
 annotationTarget
 class AnnotationTargetClass(annotationTarget String parameter) {
     
@@ -20,10 +24,11 @@ class AnnotationTargetClass(annotationTarget String parameter) {
     }
 }
 
+@nomodel
 annotationTarget
 alias AnnotationTargetAlias => AnnotationTargetClass;
 
-
+@nomodel
 annotationTarget
 interface AnnotationTargetInterface {
     annotationTarget
@@ -36,12 +41,15 @@ interface AnnotationTargetInterface {
     void method(annotationTarget String parameter) {}
 }
 
+@nomodel
 annotationTarget
 void annotationTargetMethod(annotationTarget String parameter) {
 }
 
+@nomodel
 annotationTarget
 Boolean annotationTargetValue = true;
 
+@nomodel
 annotationTarget
 object annotationTargetObject {}
