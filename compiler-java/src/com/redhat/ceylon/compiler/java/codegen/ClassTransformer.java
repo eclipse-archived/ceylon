@@ -623,6 +623,7 @@ public class ClassTransformer extends AbstractTransformer {
             type = type.getQualifyingType();
         }
         
+        classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
         classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
         // Build the companion class
         buildCompanion(def, (Interface)model, classBuilder, typeParameterList);
