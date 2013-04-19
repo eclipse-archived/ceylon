@@ -41,6 +41,11 @@ final class annotationTarget_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+interface AnnotationTargetClass$InnerInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.InnerInterface$impl $com$redhat$ceylon$compiler$java$test$annotations$AnnotationTargetClass$InnerInterface$impl();
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
 class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationTargetClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
@@ -67,9 +72,30 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     private final void method$priv(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter) {
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+        MISSING
         if (true) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "true"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        InnerClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+        final .java.lang.String parameter) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.InnerClass.class));
+        }
+    }
+    
+    final class InnerInterface$impl {
+        
+        InnerInterface$impl(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass$InnerInterface $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass$InnerInterface $this;
     }
     
     @.java.lang.Override
@@ -83,6 +109,17 @@ final class AnnotationTargetAlias {
     
     private AnnotationTargetAlias() {
     }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+final class AnnotationTargetClassAlias {
+    
+    private AnnotationTargetClassAlias(MISSING) {
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+interface AnnotationTargetInterface$InnerInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$impl.InnerInterface$impl $com$redhat$ceylon$compiler$java$test$annotations$AnnotationTargetInterface$impl$InnerInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
 interface AnnotationTargetInterface {
@@ -121,9 +158,33 @@ final class AnnotationTargetInterface$impl {
     public void sharedMethod(final .java.lang.String parameter) {
     }
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    MISSING
     private void method$priv(final .java.lang.String parameter) {
     }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        InnerClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+        final .java.lang.String parameter) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$impl.InnerClass.class));
+        }
+    }
+    
+    final class InnerInterface$impl {
+        
+        InnerInterface$impl(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$InnerInterface $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface$InnerInterface $this;
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+interface AnnotationTargetInterfaceAlias {
 }
 final class annotationTargetMethod_ {
     

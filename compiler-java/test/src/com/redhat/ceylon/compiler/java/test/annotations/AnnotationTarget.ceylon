@@ -22,6 +22,14 @@ class AnnotationTargetClass(annotationTarget String parameter) {
         annotationTarget
         assert(true);
     }
+    
+    annotationTarget
+    class InnerClass(annotationTarget String parameter) {
+    }
+    
+    annotationTarget
+    interface InnerInterface {
+    }
 }
 
 @nomodel
@@ -30,16 +38,36 @@ alias AnnotationTargetAlias => AnnotationTargetClass;
 
 @nomodel
 annotationTarget
+class AnnotationTargetClassAlias(annotationTarget String parameter) => AnnotationTargetClass(parameter);
+
+@nomodel
+annotationTarget
 interface AnnotationTargetInterface {
+    
     annotationTarget
     shared formal void formalMethod(annotationTarget String parameter);
+    
     annotationTarget
     shared default void defaultMethod(annotationTarget String parameter) {}
+    
     annotationTarget
     shared void sharedMethod(annotationTarget String parameter) {}
+    
     annotationTarget
     void method(annotationTarget String parameter) {}
+    
+    annotationTarget
+    class InnerClass(annotationTarget String parameter) {
+    }
+    
+    annotationTarget
+    interface InnerInterface {
+    }
 }
+
+@nomodel
+annotationTarget
+interface AnnotationTargetInterfaceAlias => AnnotationTargetInterface;
 
 @nomodel
 annotationTarget
