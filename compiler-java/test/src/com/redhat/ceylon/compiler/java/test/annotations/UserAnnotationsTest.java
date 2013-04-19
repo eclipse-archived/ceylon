@@ -67,6 +67,18 @@ public class UserAnnotationsTest extends CompilerTest {
         compareWithJavaSource("AnonymousAnnotation");
     }
     
+    @Test
+    public void testAnnotationTarget_fail(){
+        compareWithJavaSource("AnnotationTarget");
+    }
+    
+    @Test
+    public void testAnnotationModule_fail(){
+        compareWithJavaSource("modules/a/module");
+        compareWithJavaSource("modules/b/module");
+        compareWithJavaSource("modules/c/module");
+    }
+    
     // TODO Commit what I have
     // TODO rebase what I have
     // TODO Specify what we actually support

@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.annotations.modules.b;
+
+@.ceylon.language.Doc$annotation(description="")
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.b", doc = "Module B doc", version = "0.1", dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", version = "0.1", export = true)})
+final class module_ {
+   
+    @.ceylon.language.Optional$annotation
+    public final static com.redhat.ceylon...Module 
+        com$redhat$ceylon$compiler$java$test$annotations$modules$b = 
+        new com.redhat.ceylon...ModuleRef(
+        "com.redhat.ceylon.compiler.java.test.annotations.modules.b", "0.1");
+    
+    private module_() {
+    }
+}
