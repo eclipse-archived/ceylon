@@ -261,13 +261,25 @@ public class CeylonTransformer extends AbstractTransformer {
                 .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
         builder.annotations(expressionGen().transform(module.getAnnotationList()));
         for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
+            String quotedName;
+            if (imported.getImportPath() != null) {
+                StringBuilder sb = new StringBuilder();
+                for (Tree.Identifier part : imported.getImportPath().getIdentifiers()) {
+                    sb.append(part.getText()).append('$');
+                }
+                quotedName = sb.substring(0, sb.length()-1);
+            } else if (imported.getQuotedLiteral() != null) {
+                quotedName = imported.getQuotedLiteral().getText();
+                quotedName = quotedName.substring(1, quotedName.length()-1);
+            } else {
+                throw Assert.fail();
+            }
+            if (quotedName.equals("ceylon$language")) {
+                continue;
+            }
             List<JCAnnotation> importAnnotations = expressionGen().transform(imported.getAnnotationList());
             JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
-            StringBuilder sb = new StringBuilder();
-            for (Tree.Identifier part : imported.getImportPath().getIdentifiers()) {
-                sb.append(part.getText()).append('$');
-            }
-            Name fieldName = names().fromString(sb.substring(0, sb.length()-1));
+            Name fieldName = names().fromString(quotedName);
             //imported.getVersion();
             builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), makeNull())));
         }
