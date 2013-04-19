@@ -126,6 +126,8 @@ class AnnotationInvocationVisitor extends Visitor {
                         } else if (parameterArgument.getSourceParameter().isDefaulted()) {
                             // Use the default parameter from the constructor
                             appendConstructorDefaultParameter(parameterArgument);
+                        } else if (parameterArgument.getSourceParameter().isSequenced()) {
+                            append(endArray(startArray()));
                         }
                     }
                 } else if (invocation.getNamedArgumentList() != null) {
@@ -196,7 +198,7 @@ class AnnotationInvocationVisitor extends Visitor {
 
     public void transformSpreadArgument(java.util.List<PositionalArgument> arguments, Parameter classParameter) {
         boolean varargs = classParameter.isSequenced()
-                && arguments.size() > 1 || arguments.size() == 0;;
+                && arguments.size() > 1 || arguments.size() == 0;
         ListBuffer<JCExpression> prevCollect = varargs ? startArray() : null;
         try {
             for (Tree.PositionalArgument arg : arguments) {
