@@ -3971,16 +3971,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (annotationList.getAnonymousAnnotation() != null) {
                 transformAnonymousAnnotation(annotationList.getAnonymousAnnotation(), annotationSet);
             }
-            java.util.List<String> blacklist = Arrays.asList(
-                    "see", 
-                    "throws" 
-                    );
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
-                    if (Decl.isLanguageModuleDeclaration(((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration())//) {
-                            && blacklist.contains(((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration().getName())) {
-                        continue;
-                    }
                     transformAnnotation(annotation, annotationSet);
                 }
             }
