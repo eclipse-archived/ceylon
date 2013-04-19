@@ -55,7 +55,10 @@ public class UserAnnotationsTest extends CompilerTest {
     public void testAnnotationClassAnnotationClass(){
         compareWithJavaSource("AnnotationClassAnnotationClass");
     }
-    
+    @Test
+    public void testAnnotationClassMetamodelReference(){
+        compareWithJavaSource("AnnotationClassMetamodelReference");
+    }
     @Test
     public void testAnnotationModelLoading(){
         compile("AnnotationConstructor.ceylon");
