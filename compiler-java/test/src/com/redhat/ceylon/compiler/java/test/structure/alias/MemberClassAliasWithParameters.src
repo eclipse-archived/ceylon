@@ -57,6 +57,7 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithParameters_Foo.Member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

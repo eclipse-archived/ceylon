@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Key", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Value", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
 public interface CompositeInterface<Key, Value> {

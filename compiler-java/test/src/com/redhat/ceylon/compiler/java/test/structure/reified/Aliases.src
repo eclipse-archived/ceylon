@@ -1,11 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
-<<<<<<< HEAD
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-=======
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.ceylon.language.Shared$annotation
->>>>>>> Change the .src of tests without either @noanno or @nomodel
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class TargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -27,6 +23,7 @@ public class TargetClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.reified::TargetClass")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -42,6 +39,7 @@ public final class ClassAlias<T> {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface TargetInterface {
     
@@ -59,6 +57,7 @@ public final class TargetInterface$impl {
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.reified::TargetInterface")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -66,6 +65,7 @@ public interface InterfaceAlias<T> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.reified::TargetClass&com.redhat.ceylon.compiler.java.test.structure.reified::TargetInterface")
+@.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
 public final class TypeAlias<T> {
