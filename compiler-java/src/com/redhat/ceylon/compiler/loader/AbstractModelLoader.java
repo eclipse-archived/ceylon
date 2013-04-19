@@ -858,6 +858,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void loadPackageDescriptor(Package pkg) {
+        // Don't try to load a package descriptor for ceylon.language 
+        // if we're bootstrapping
+        if (isBootstrap 
+                && pkg.getQualifiedNameString().startsWith("ceylon.language")) {
+            return;
+        }
+        
         // let's not load package descriptors for Java modules
         if(pkg.getModule() != null 
                 && ((LazyModule)pkg.getModule()).isJava()){
