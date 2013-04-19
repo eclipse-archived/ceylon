@@ -73,9 +73,10 @@ public class UserAnnotationsTest extends CompilerTest {
     }
     
     @Test
-    public void testAnnotationModule_fail(){
+    public void testAnnotationModule(){
         // TODO Add a package.ceylon, so we can check that too.
         compareWithJavaSource("modules/a/module");
+        compareWithJavaSource("modules/a/package");
         compareWithJavaSource("modules/b/module");
         compareWithJavaSource("modules/c/module");
     }

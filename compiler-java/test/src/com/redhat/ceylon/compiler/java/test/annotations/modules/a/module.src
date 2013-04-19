@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
 
-Doc
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", doc = "Module A doc", version = "0.1", dependencies = {})
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", doc = "Module A doc", license = "http://www.apache.org/licenses/LICENSE-2.0.html", by = {"Tom"}, version = "0.1", dependencies = {})
+@.ceylon.language.Doc$annotation(description = "Module A doc")
+@.ceylon.language.Authors$annotation(authors = "Tom")
+@.ceylon.language.License$annotation(url = "http://www.apache.org/licenses/LICENSE-2.0.html")
+@.ceylon.language.Tags$annotation(tags = {"test", "annotations"})
+@.ceylon.language.Deprecation$annotation(description = "doesn\'t _do_ anything")
 final class module_ {
     
     private module_() {

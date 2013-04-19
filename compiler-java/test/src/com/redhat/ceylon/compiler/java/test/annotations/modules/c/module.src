@@ -1,16 +1,16 @@
-package com.redhat.ceylon.compiler.java.test.annotations.modules.b;
+package com.redhat.ceylon.compiler.java.test.annotations.modules.c;
 
-@.ceylon.language.Doc$annotation(description="")
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
-@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.b", doc = "Module B doc", version = "0.1", dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", version = "0.1", export = true)})
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.c", doc = "Module C doc, with imports!", version = "0.1", dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", version = "0.1", export = true), @.com.redhat.ceylon.compiler.java.metadata.Import(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.b", version = "0.1", optional = true)})
+@.ceylon.language.Doc$annotation(description = "Module C doc, with imports!")
 final class module_ {
-   
-    @.ceylon.language.Optional$annotation
-    public final static com.redhat.ceylon...Module 
-        com$redhat$ceylon$compiler$java$test$annotations$modules$b = 
-        new com.redhat.ceylon...ModuleRef(
-        "com.redhat.ceylon.compiler.java.test.annotations.modules.b", "0.1");
     
     private module_() {
     }
+    @.ceylon.language.Shared$annotation
+    public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$a = null;
+    @.ceylon.language.Doc$annotation(description = "Optionally depend on b")
+    @.ceylon.language.Deprecation$annotation(description = "doesn\'t _do_ anything either")
+    @.ceylon.language.Optional$annotation
+    public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$b = null;
 }
