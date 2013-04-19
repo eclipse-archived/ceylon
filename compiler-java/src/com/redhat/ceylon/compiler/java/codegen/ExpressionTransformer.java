@@ -3973,8 +3973,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             java.util.List<String> blacklist = Arrays.asList(
                     "see", 
-                    "throws", 
-                    "deprecated" 
+                    "throws" 
                     );
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
