@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
-public class InterfaceType<Type, Arguments extends Sequential<? extends Object>> 
+public class InterfaceType<Type> 
     extends ClassOrInterfaceType<Type>
     implements ceylon.language.metamodel.InterfaceType<Type> {
 
