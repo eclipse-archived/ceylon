@@ -1725,7 +1725,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     boolean checkCompilerAnnotations(Tree.Declaration decl){
         boolean old = gen().disableModelAnnotations;
-        if(CodegenUtil.hasCompilerAnnotation(decl, "nomodel"))
+        if(CodegenUtil.hasCompilerAnnotation(decl, "noanno"))
             gen().disableModelAnnotations  = true;
         return old;
     }
