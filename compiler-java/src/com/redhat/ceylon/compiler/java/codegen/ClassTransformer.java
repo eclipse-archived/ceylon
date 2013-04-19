@@ -166,7 +166,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(generateInstantiator){
                 generateInstantiators(model, classBuilder, paramList, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
             }
-
+            classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.ClassDefinition){
                 transformClass(def, model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
             }else{
@@ -178,6 +178,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyInterface) {
+            classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.InterfaceDefinition){
                 transformInterface(def, model, classBuilder, typeParameterList);
             }else{
@@ -574,7 +575,6 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
-        classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
         satisfaction((Class)model, classBuilder);
         at(def);
         // Generate the inner members list for model loading
@@ -623,7 +623,6 @@ public class ClassTransformer extends AbstractTransformer {
             type = type.getQualifyingType();
         }
         
-        classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
         classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
         // Build the companion class
         buildCompanion(def, (Interface)model, classBuilder, typeParameterList);
