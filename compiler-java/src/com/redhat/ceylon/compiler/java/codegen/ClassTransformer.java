@@ -1704,7 +1704,7 @@ public class ClassTransformer extends AbstractTransformer {
                 || 
                 (typeFact().isIterableType(parameterModel.getType())
                 && isMetamodelReference(typeFact().getIteratedType(parameterModel.getType())))) {
-            mdb.annotations(List.of(make().Annotation(make().Type(syms().ceylonAtMetamodelReferenceType), 
+            mdb.modelAnnotations(List.of(make().Annotation(make().Type(syms().ceylonAtMetamodelReferenceType), 
                     List.<JCExpression>nil())));
         }
         mdb.modifiers(PUBLIC | ABSTRACT);
@@ -1835,7 +1835,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (transformMethod) {
-            methodBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
+            if (actualAndAnnotations || !model.isShared()) {
+                methodBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
+            }
             methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {
                 copyTypeParameters(model, methodBuilder);

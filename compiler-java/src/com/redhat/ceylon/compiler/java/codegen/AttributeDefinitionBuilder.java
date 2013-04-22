@@ -177,7 +177,7 @@ public class AttributeDefinitionBuilder {
             getterBuilder.modifiers(getGetSetModifiers());
             getterBuilder.noAnnotations(noAnnotations);
             if (this.annotations != null) {
-                getterBuilder.annotations(this.annotations.toList());
+                getterBuilder.modelAnnotations(this.annotations.toList());
             }
             defs.append(getterBuilder.build());
         }
@@ -186,7 +186,7 @@ public class AttributeDefinitionBuilder {
             setterBuilder.modifiers(getGetSetModifiers());
             setterBuilder.noAnnotations(noAnnotations);
             if (this.annotations != null && !readable) {
-                setterBuilder.annotations(this.annotations.toList());
+                setterBuilder.modelAnnotations(this.annotations.toList());
             }
             defs.append(setterBuilder.build());
         }
