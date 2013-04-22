@@ -95,11 +95,11 @@ public class Metamodel {
         return instanceType.toProducedType(moduleManager);
     }
 
-    public static ceylon.language.metamodel.ProducedType getMetamodel(TypeDescriptor typeDescriptor) {
+    public static ceylon.language.metamodel.AppliedProducedType getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw new RuntimeException("Metamodel not yet supported for Java types");
         ProducedType pt = typeDescriptor.toProducedType(moduleManager);
-        return getMetamodel(pt);
+        return getAppliedMetamodel(pt);
     }
     
     public static com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration){
@@ -141,6 +141,26 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
+    public static ceylon.language.metamodel.AppliedProducedType getAppliedMetamodel(ProducedType pt) {
+        TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassType(pt);
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterfaceType(pt);
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
+            return new AppliedUnionType(declaration.getCaseTypes());
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType){
+            return new AppliedIntersectionType(declaration.getSatisfiedTypes());
+        }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
+            return ceylon.language.metamodel.appliedNothingType_.getAppliedNothingType$();
+        }
+        throw new RuntimeException("Declaration type not supported yet: "+declaration);
+    }
+
     // FIXME: this is just wrong because types are not applied
     public static TypeDescriptor getTypeDescriptorForDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         if(declaration instanceof LazyClass){
@@ -150,6 +170,18 @@ public class Metamodel {
         if(declaration instanceof LazyInterface){
             ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
             return TypeDescriptor.klass(classMirror.klass);
+        }
+        throw new RuntimeException("Unsupported declaration type: " + declaration);
+    }
+
+    public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+        if(declaration instanceof LazyClass){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
+            return classMirror.klass;
+        }
+        if(declaration instanceof LazyInterface){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
+            return classMirror.klass;
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
     }
@@ -206,5 +238,11 @@ public class Metamodel {
         if(pt instanceof ClassOrInterfaceType)
             return ((ClassOrInterfaceType)pt).producedType;
         throw new RuntimeException("Unsupported produced type: " + pt);
+    }
+
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.AppliedProducedType pt) {
+        if(pt instanceof AppliedClassOrInterfaceType)
+            return ((AppliedClassOrInterfaceType)pt).producedType;
+        throw new RuntimeException("Unsupported applied produced type: " + pt);
     }
 }

@@ -1,6 +1,4 @@
-shared interface Class<out Type, in Arguments> 
-        satisfies ClassOrInterface<Type> & 
-                  Callable<Type,Arguments> & Declaration 
-        given Arguments satisfies Anything[] {
-    shared formal actual ClassType<Type, Anything[]> apply(ProducedType* types);
+shared interface Class 
+        satisfies ClassOrInterface & Declaration {
+    shared formal actual AppliedClassType<Anything, Anything[]> apply(AppliedProducedType* types);
 }

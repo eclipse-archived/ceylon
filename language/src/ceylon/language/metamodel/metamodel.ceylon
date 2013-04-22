@@ -1,1 +1,1 @@
-shared native ProducedType type(Anything instance);
+shared native AppliedProducedType type(Anything instance);

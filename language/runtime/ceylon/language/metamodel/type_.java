@@ -12,10 +12,10 @@ public final class type_ {
     
     private type_() {}
     
-    @TypeInfo("ceylon.language.metamodel::ProducedType")
-    public static ProducedType type(@Name("instance")
+    @TypeInfo("ceylon.language.metamodel::AppliedProducedType")
+    public static AppliedProducedType type(@Name("instance")
         @TypeInfo("ceylon.language::Anything")
         final Object instance) {
-        return Metamodel.getMetamodel(Metamodel.getTypeDescriptor(instance));
+        return Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
     }
 }

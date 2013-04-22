@@ -1,16 +1,16 @@
-shared interface ClassOrInterface<out Type> 
-        of Class<Type,Nothing[]> | Interface<Type> 
+shared interface ClassOrInterface 
+        of Class | Interface 
         satisfies Declaration & Parameterised {
     
     shared formal Boolean typeOf(Anything instance);
     
-    shared formal Boolean supertypeOf(ClassOrInterface<Anything> type);
+    shared formal Boolean supertypeOf(ClassOrInterface type);
     
-    shared formal Boolean subtypeOf(ClassOrInterface<Anything> type);
+    shared formal Boolean subtypeOf(ClassOrInterface type);
     
-    shared formal ClassType<Anything,Nothing[]>? superclass;
+    shared formal ClassType? superclass;
     
-    shared formal InterfaceType<Anything>[] interfaces;
+    shared formal InterfaceType[] interfaces;
     
     shared formal Member<Subtype,Kind>[] members<Subtype,Kind>() 
             given Kind satisfies Declaration;
@@ -18,5 +18,5 @@ shared interface ClassOrInterface<out Type>
     shared formal Member<Subtype,Kind>[] annotatedMembers<Subtype,Kind,Annotation>() 
             given Kind satisfies Declaration;
     
-    shared formal ClassOrInterfaceType<Type> apply(ProducedType* types);
+    shared formal AppliedClassOrInterfaceType<Anything> apply(AppliedProducedType* types);
 }

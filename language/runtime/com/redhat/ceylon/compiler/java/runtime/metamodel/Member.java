@@ -20,9 +20,9 @@ public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
 
     Kind declaration;
 
-    private ClassOrInterface<? extends Type> container;
+    private ClassOrInterface container;
 
-    public Member(ClassOrInterface<? extends Type> container, 
+    public Member(ClassOrInterface container, 
                   Kind declaration) {
         this.container = container;
         this.declaration = declaration;
@@ -36,8 +36,8 @@ public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<Type>")
-    public ClassOrInterface<? extends Type> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.metamodel::ClassOrInterface")
+    public ClassOrInterface getDeclaringClassOrInterface() {
         return container;
     }
 

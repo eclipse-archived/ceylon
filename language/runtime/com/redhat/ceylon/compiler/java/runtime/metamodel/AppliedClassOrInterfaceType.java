@@ -7,9 +7,9 @@ import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.ClassOrInterfaceType$impl;
-import ceylon.language.metamodel.ProducedType;
-import ceylon.language.metamodel.ProducedType$impl;
+import ceylon.language.metamodel.AppliedClassOrInterfaceType$impl;
+import ceylon.language.metamodel.AppliedProducedType;
+import ceylon.language.metamodel.AppliedProducedType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -27,32 +27,30 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
-public class ClassOrInterfaceType
-    implements ceylon.language.metamodel.ClassOrInterfaceType, ReifiedType {
+public class AppliedClassOrInterfaceType<Type> 
+    implements ceylon.language.metamodel.AppliedClassOrInterfaceType<Type>, ReifiedType {
 
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(ClassOrInterfaceType.class);
-    
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface declaration;
-    protected ceylon.language.Map<? extends ceylon.language.metamodel.TypeParameter, ? extends ceylon.language.metamodel.ProducedType> typeArguments;
-    protected ceylon.language.metamodel.ClassType superclass;
-    protected Sequential<ceylon.language.metamodel.InterfaceType> interfaces;
+    protected ceylon.language.Map<? extends ceylon.language.metamodel.TypeParameter, ? extends ceylon.language.metamodel.AppliedProducedType> typeArguments;
+    protected ceylon.language.metamodel.AppliedClassType<? extends Object, ? super Sequential<? extends Object>> superclass;
+    protected Sequential<ceylon.language.metamodel.AppliedInterfaceType<? extends Object>> interfaces;
     
-    ClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
+    AppliedClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
     }
 
     @Override
     @Ignore
-    public ProducedType$impl $ceylon$language$metamodel$ProducedType$impl() {
+    public AppliedProducedType$impl $ceylon$language$metamodel$AppliedProducedType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public ClassOrInterfaceType$impl $ceylon$language$metamodel$ClassOrInterfaceType$impl() {
+    public AppliedClassOrInterfaceType$impl<Type> $ceylon$language$metamodel$AppliedClassOrInterfaceType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -72,8 +70,8 @@ public class ClassOrInterfaceType
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = Metamodel.getOrCreateMetamodel(decl);
-        java.util.Map<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.ProducedType> typeArguments 
-            = new LinkedHashMap<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.ProducedType>();
+        java.util.Map<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.AppliedProducedType> typeArguments 
+            = new LinkedHashMap<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.AppliedProducedType>();
         Iterator<? extends ceylon.language.metamodel.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
@@ -82,33 +80,34 @@ public class ClassOrInterfaceType
             com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.TypeParameter) it;
             com.redhat.ceylon.compiler.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.compiler.typechecker.model.TypeParameter) tp.declaration;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
-            ProducedType ptArgWrapped = Metamodel.getMetamodel(ptArg);
+            AppliedProducedType ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
         this.typeArguments = new InternalMap<ceylon.language.metamodel.TypeParameter, 
-                                             ceylon.language.metamodel.ProducedType>(ceylon.language.metamodel.TypeParameter.$TypeDescriptor, 
-                                                                                     ceylon.language.metamodel.ProducedType.$TypeDescriptor, 
-                                                                                     typeArguments);
+                                             ceylon.language.metamodel.AppliedProducedType>(ceylon.language.metamodel.TypeParameter.$TypeDescriptor, 
+                                                                                            ceylon.language.metamodel.ProducedType.$TypeDescriptor, 
+                                                                                            typeArguments);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.metamodel.ClassType) Metamodel.getMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.metamodel.AppliedClassType) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.metamodel.InterfaceType[] interfaces = new ceylon.language.metamodel.InterfaceType[satisfiedTypes.size()];
+        ceylon.language.metamodel.AppliedInterfaceType[] interfaces = new ceylon.language.metamodel.AppliedInterfaceType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.metamodel.InterfaceType) Metamodel.getMetamodel(resolvedPt);
+            interfaces[i++] = (ceylon.language.metamodel.AppliedInterfaceType) Metamodel.getAppliedMetamodel(resolvedPt);
         }
+        // FIXME: reified type is wrong here and most likely in ClassOrInterfaceType too
         this.interfaces = (Sequential)Util.sequentialInstance(ClassOrInterface.$InterfacesTypeDescriptor, interfaces);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel::TypeParameter,ceylon.language.metamodel::ProducedType>")
-    public Map<? extends ceylon.language.metamodel.TypeParameter, ? extends ProducedType> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel::TypeParameter,ceylon.language.metamodel::AppliedProducedType>")
+    public Map<? extends ceylon.language.metamodel.TypeParameter, ? extends AppliedProducedType> getTypeArguments() {
         return typeArguments;
     }
 
@@ -120,21 +119,22 @@ public class ClassOrInterfaceType
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::InterfaceType>")
-    public Sequential<? extends ceylon.language.metamodel.InterfaceType> getInterfaces() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedInterfaceType<ceylon.language::Anything>>")
+    public Sequential<? extends ceylon.language.metamodel.AppliedInterfaceType<? extends Object>> getInterfaces() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassType|ceylon.language::Null")
-    public ceylon.language.metamodel.ClassType getSuperclass() {
+    @TypeInfo("ceylon.language.metamodel::AppliedClassType<ceylon.language::Anything,ceylon.language::Sequential<ceylon.language::Nothing>>|ceylon.language::Null")
+    public ceylon.language.metamodel.AppliedClassType<? extends Object, ? super Sequential<? extends Object>> getSuperclass() {
         checkInit();
         return superclass;
     }
 
     @Override
     public TypeDescriptor $getType() {
-        return $TypeDescriptor;
+        checkInit();
+        return TypeDescriptor.klass(AppliedClassOrInterfaceType.class, this.declaration.$getReifiedType());
     }
 }

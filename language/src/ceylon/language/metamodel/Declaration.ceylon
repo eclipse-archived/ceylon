@@ -1,6 +1,6 @@
 shared interface Declaration of Value<Anything> |
                                 Function<Anything,Nothing[]> |
-                                ClassOrInterface<Anything> |
+                                ClassOrInterface |
                                 TypeParameter {
     
     shared formal String name;

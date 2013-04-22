@@ -7,7 +7,6 @@ import ceylon.language.Anything;
 import ceylon.language.Empty;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
-import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Parameterised$impl;
@@ -16,11 +15,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -28,11 +23,13 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 4)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@TypeParameters({@TypeParameter(value = "Type", variance = Variance.OUT)})
-public abstract class ClassOrInterface<Type>
+public abstract class ClassOrInterface
     extends Declaration
-    implements ceylon.language.metamodel.ClassOrInterface<Type> {
+    implements ceylon.language.metamodel.ClassOrInterface {
 
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(ClassOrInterface.class);
+    
     @Ignore
     static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.InterfaceType.class, Anything.$TypeDescriptor);
 
@@ -44,12 +41,12 @@ public abstract class ClassOrInterface<Type>
     @Ignore
     protected TypeDescriptor $reifiedType;
     private volatile boolean initialised = false;
-    private ceylon.language.metamodel.ClassType<? extends Object, ? super Sequential<? extends Object>> superclass;
-    private Sequential<ceylon.language.metamodel.InterfaceType<? extends Object>> interfaces;
+    private ceylon.language.metamodel.ClassType superclass;
+    private Sequential<ceylon.language.metamodel.InterfaceType> interfaces;
     private Sequential<ceylon.language.metamodel.TypeParameter> typeParameters;
 
-    private Sequential<ceylon.language.metamodel.Member<Type, ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>>>> functions;
-    private Sequential<ceylon.language.metamodel.Member<Type, ceylon.language.metamodel.Value<? extends Object>>> values;
+    private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>>>> functions;
+    private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Value<? extends Object>>> values;
 
     public ClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -57,7 +54,7 @@ public abstract class ClassOrInterface<Type>
 
     @Override
     @Ignore
-    public ClassOrInterface$impl<Type> $ceylon$language$metamodel$ClassOrInterface$impl() {
+    public ClassOrInterface$impl $ceylon$language$metamodel$ClassOrInterface$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -150,29 +147,29 @@ public abstract class ClassOrInterface<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::InterfaceType<ceylon.language::Anything>>")
-    public Sequential<? extends ceylon.language.metamodel.InterfaceType<? extends Object>> getInterfaces() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::InterfaceType>")
+    public Sequential<? extends ceylon.language.metamodel.InterfaceType> getInterfaces() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassType<ceylon.language::Anything,ceylon.language::Sequential<ceylon.language::Nothing>>|ceylon.language::Null")
-    public ceylon.language.metamodel.ClassType<? extends Object, ? super Sequential<? extends Object>> getSuperclass() {
+    @TypeInfo("ceylon.language.metamodel::ClassType|ceylon.language::Null")
+    public ceylon.language.metamodel.ClassType getSuperclass() {
         checkInit();
         return superclass;
     }
 
     @Override
-    public boolean supertypeOf(@Name("type") @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>") 
-                               ceylon.language.metamodel.ClassOrInterface<? extends Object> type) {
+    public boolean supertypeOf(@Name("type") @TypeInfo("ceylon.language.metamodel::ClassOrInterface") 
+                               ceylon.language.metamodel.ClassOrInterface type) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean subtypeOf(@Name("type") @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>") 
-                             ceylon.language.metamodel.ClassOrInterface<? extends Object> type) {
+    public boolean subtypeOf(@Name("type") @TypeInfo("ceylon.language.metamodel::ClassOrInterface") 
+                             ceylon.language.metamodel.ClassOrInterface type) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -206,8 +203,7 @@ public abstract class ClassOrInterface<Type>
 
     @Override
     public TypeDescriptor $getType() {
-        checkInit();
-        return TypeDescriptor.klass(ClassOrInterface.class, $reifiedType);
+        return $TypeDescriptor;
     }
 
     @Ignore

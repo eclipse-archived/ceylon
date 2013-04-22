@@ -1,4 +1,4 @@
-shared interface Interface<out Type> 
-        satisfies ClassOrInterface<Type> {
-    shared formal actual InterfaceType<Type> apply(ProducedType* types);
+shared interface Interface
+        satisfies ClassOrInterface {
+    shared formal actual AppliedInterfaceType<Anything> apply(AppliedProducedType* types);
 }
