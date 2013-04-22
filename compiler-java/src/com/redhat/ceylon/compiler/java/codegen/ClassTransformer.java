@@ -1597,7 +1597,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    public List<JCTree> makeLiteralArguments(Tree.AnyMethod method) {
+    public List<JCTree> makeLiteralArguments(final Tree.AnyMethod method) {
         class AnnotationConstructorVisitor extends Visitor implements NaturalVisitor {
             
             private ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
@@ -1661,7 +1661,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             private void appendStaticArgument(Tree.Primary bme, JCExpression init) {
-                staticArgs.append(makeVar(STATIC | FINAL, 
+                staticArgs.append(makeVar(STATIC | FINAL | (method.getDeclarationModel().isShared() ? PUBLIC : 0), 
                         fieldName,
                         makeJavaType(bme.getTypeModel()), 
                         init));
