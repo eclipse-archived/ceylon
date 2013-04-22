@@ -158,7 +158,7 @@ final class AnnotationTargetInterface$impl {
     public void sharedMethod(final .java.lang.String parameter) {
     }
     
-    MISSING
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     private void method$priv(final .java.lang.String parameter) {
     }
     
