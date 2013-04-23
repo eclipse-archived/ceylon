@@ -42,15 +42,14 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -68,7 +67,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -1566,7 +1564,7 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         
         if (Decl.isAnnotationConstructor(def)) {
-            InlineInfo inlineInfo = def.getDeclarationModel().getInlineInfo();
+            AnnotationInstantiation inlineInfo = def.getDeclarationModel().getAnnotationInstantiation();
             builder.defs(makeLiteralArguments(def));
             builder.annotations(List.of(makeAtAnnotationInstantiation(inlineInfo)));
         }
@@ -1677,9 +1675,9 @@ public class ClassTransformer extends AbstractTransformer {
         return (List)v.staticArgs.toList();
     }
     
-    public JCAnnotation makeAtAnnotationInstantiation(InlineInfo inlineInfo) {
+    public JCAnnotation makeAtAnnotationInstantiation(AnnotationInstantiation inlineInfo) {
         ListBuffer<JCExpression> arguments = ListBuffer.lb();
-        for (InlineArgument inlineArgument : inlineInfo.getArguments()) {
+        for (AnnotationArgument inlineArgument : inlineInfo.getArguments()) {
             arguments.append(make().Literal(Decl.encodeAnnotationConstructor(inlineArgument)));
         }
         return make().Annotation(

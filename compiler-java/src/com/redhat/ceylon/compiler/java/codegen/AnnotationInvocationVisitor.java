@@ -3,11 +3,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -38,7 +37,7 @@ class AnnotationInvocationVisitor extends Visitor {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof Method) {
             annotationConstructor = (Method)declaration;
-            annotationClass = (Class)annotationConstructor.getInlineInfo().getPrimary();
+            annotationClass = (Class)annotationConstructor.getAnnotationInstantiation().getPrimary();
         } else if (declaration instanceof Class) {
             annotationConstructor = null;
             annotationClass  = (Class)declaration;
@@ -97,7 +96,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public JCAnnotation transformConstructor(Tree.InvocationExpression invocation) {
         
-        List<AnnotationArgument> arguments = annotationConstructor.getInlineInfo().getArguments();
+        List<AnnotationArgument> arguments = annotationConstructor.getAnnotationInstantiation().getArguments();
         java.util.List<Parameter> classParameters = annotationClass.getParameterList().getParameters();
         for (int classParameterIndex = 0; classParameterIndex < classParameters.size(); classParameterIndex++) {
             Parameter classParameter = classParameters.get(classParameterIndex);

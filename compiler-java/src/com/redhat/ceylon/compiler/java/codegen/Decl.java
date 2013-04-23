@@ -27,21 +27,21 @@ import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
+import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -545,14 +545,14 @@ public class Decl {
         return pkg != null && pkg.getNameAsString().startsWith("ceylon.language");
     }
     
-    public static int encodeAnnotationConstructor(InlineInfo.InlineArgument inlineArgument) {
+    public static int encodeAnnotationConstructor(AnnotationArgument inlineArgument) {
         // On the JVM the number of method parameters is limited to 255
         // So 0-255 are for unmodified parameter expressions being used as arguments
         // 256-511 are for spread parameter expressions being used as arguments
-        if (inlineArgument instanceof InlineInfo.LiteralArgument) {
+        if (inlineArgument instanceof LiteralAnnotationArgument) {
             return Short.MIN_VALUE;
-        } else if (inlineArgument instanceof InlineInfo.ParameterArgument) {
-            ParameterArgument parameterArgument = (InlineInfo.ParameterArgument)inlineArgument;
+        } else if (inlineArgument instanceof ParameterAnnotationArgument) {
+            ParameterAnnotationArgument parameterArgument = (ParameterAnnotationArgument)inlineArgument;
             Parameter parameter = parameterArgument.getSourceParameter();
             int index = ((Functional)parameter.getContainer()).getParameterLists().get(0).getParameters().indexOf(parameter);
             if (parameterArgument.isSpread()) {
@@ -563,18 +563,18 @@ public class Decl {
         throw Assert.fail();
     }
     
-    public static InlineInfo.InlineArgument decodeAnnotationConstructor(List<Parameter> sourceParameters, InlineInfo info, int code) {
+    public static AnnotationArgument decodeAnnotationConstructor(List<Parameter> sourceParameters, AnnotationInstantiation info, int code) {
         Class ac = (Class)info.getPrimary();
-        InlineArgument result;
+        AnnotationArgument result;
         if (code == Short.MIN_VALUE) {
-            result = info.new LiteralArgument();
+            result = new LiteralAnnotationArgument();
         } else if (code >= 0 && code < 512) {
             boolean spread = false;
             if (code >= 256) {
                 spread = true;
                 code-=256;
             }
-            ParameterArgument parameterArgument = info.new ParameterArgument();
+            ParameterAnnotationArgument parameterArgument = new ParameterAnnotationArgument();
             parameterArgument.setSpread(spread);
             Parameter sourceParameter = sourceParameters.get(code);
             parameterArgument.setSourceParameter(sourceParameter);

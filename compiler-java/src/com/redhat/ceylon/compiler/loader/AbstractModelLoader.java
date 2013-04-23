@@ -67,13 +67,13 @@ import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -94,7 +94,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
 
 /**
  * Abstract class of a model loader that can load a model from a compiled Java representation,
@@ -2066,29 +2065,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      }
 
     private void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
-        InlineInfo inlineInfo = new InlineInfo();
+        AnnotationInstantiation annotationInstantiation = new AnnotationInstantiation();
         if (method.classMirror != null) {
             TypeMirror annotationTypeMirror = (TypeMirror)getAnnotationClassValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "annotationClass");
             if (annotationTypeMirror != null) {
                 ClassMirror annotationClassMirror = annotationTypeMirror.getDeclaredClass();
                 Class convertToDeclaration = (Class)convertToDeclaration(annotationClassMirror, DeclarationType.TYPE);
-                inlineInfo.setPrimary(convertToDeclaration);
-                method.setInlineInfo(inlineInfo);
+                annotationInstantiation.setPrimary(convertToDeclaration);
+                method.setAnnotationInstantiation(annotationInstantiation);
             }
             
             List<Short> argumentCodes = getAnnotationShortArrayValue(method.classMirror, CEYLON_ANNOTATION_INSTANTIATION, "arguments");
             if (argumentCodes != null) {
-                Class ac = (Class)inlineInfo.getPrimary();
-                List<InlineArgument> args = new ArrayList<>(argumentCodes.size());
+                Class ac = (Class)annotationInstantiation.getPrimary();
+                List<AnnotationArgument> args = new ArrayList<>(argumentCodes.size());
                 for (int ii = 0; ii < argumentCodes.size(); ii++) {
                     Short code = argumentCodes.get(ii);                    
-                    InlineArgument inlineArg = Decl.decodeAnnotationConstructor(method.getParameterLists().get(0).getParameters(), inlineInfo, code);
+                    AnnotationArgument annotationArg = Decl.decodeAnnotationConstructor(method.getParameterLists().get(0).getParameters(), annotationInstantiation, code);
                     Parameter classParameter = ac.getParameterList().getParameters().get(ii);
-                    inlineArg.setTargetParameter(classParameter);
-                    args.add(inlineArg);
+                    annotationArg.setTargetParameter(classParameter);
+                    args.add(annotationArg);
                 }
-                inlineInfo.setArguments(args);
-                method.setInlineInfo(inlineInfo);
+                annotationInstantiation.setArguments(args);
+                method.setAnnotationInstantiation(annotationInstantiation);
             }
         }
     }

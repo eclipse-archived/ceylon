@@ -45,7 +45,7 @@ public class AnnotationInlineVisitor extends Visitor {
         }
         super.visit(d);
         if (Decl.isAnnotationConstructor(d)) {
-            d.getDeclarationModel().setInlineInfo(inlineInfo);
+            d.getDeclarationModel().setAnnotationInstantiation(inlineInfo);
             inlineInfo = null;
             annotationConstructor = null;
         }
@@ -62,7 +62,7 @@ public class AnnotationInlineVisitor extends Visitor {
         super.visit(d);
         if (Decl.isAnnotationConstructor(d)
                 && d.getSpecifierExpression() != null) {
-            d.getDeclarationModel().setInlineInfo(inlineInfo);
+            d.getDeclarationModel().setAnnotationInstantiation(inlineInfo);
             inlineInfo = null;
             annotationConstructor = null;
         }
