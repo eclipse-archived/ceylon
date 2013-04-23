@@ -25,6 +25,8 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
@@ -148,8 +150,13 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     @Override
     protected PhasedUnits createPhasedUnits() {
         PhasedUnits units = super.createPhasedUnits();
-        if(tool.getEncoding() != null)
-            units.setEncoding(tool.getEncoding());
+        String fileEncoding  = tool.getEncoding();
+        if (fileEncoding == null) {
+            fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
+        }
+        if (fileEncoding != null) {
+            units.setEncoding(fileEncoding);
+        }
         return units;
     }
 }

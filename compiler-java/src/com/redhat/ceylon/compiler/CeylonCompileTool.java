@@ -27,6 +27,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -227,9 +229,13 @@ public class CeylonCompileTool implements Tool{
             arguments.add(pass);
         }
 
-        if (encoding != null) {
+        String fileEncoding = encoding;
+        if (fileEncoding == null) {
+            fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
+        }
+        if (fileEncoding != null) {
             arguments.add("-encoding");
-            arguments.add(encoding);
+            arguments.add(fileEncoding);
         }
 
         if (systemRepo != null) {
