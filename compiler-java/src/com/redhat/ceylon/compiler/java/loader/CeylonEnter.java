@@ -30,7 +30,6 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
-import com.redhat.ceylon.compiler.java.codegen.AnnotationInlineVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -49,6 +48,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnnotationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -451,7 +451,7 @@ public class CeylonEnter extends Enter {
             pu.getCompilationUnit().visit(boxingVisitor);
         }
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
-            AnnotationInlineVisitor aiv = new AnnotationInlineVisitor();
+            AnnotationVisitor aiv = new AnnotationVisitor();
             pu.getCompilationUnit().visit(aiv);
         }
         
