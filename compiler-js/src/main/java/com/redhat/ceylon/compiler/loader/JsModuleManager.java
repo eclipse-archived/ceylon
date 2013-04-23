@@ -14,6 +14,8 @@ import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -192,8 +194,13 @@ public class JsModuleManager extends ModuleManager {
     @Override
     protected PhasedUnits createPhasedUnits() {
     	PhasedUnits units = super.createPhasedUnits();
-    	if(encoding != null)
-    		units.setEncoding(encoding);
+        String fileEncoding = encoding;
+        if (fileEncoding == null) {
+            fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
+        }
+        if (fileEncoding != null) {
+    		units.setEncoding(fileEncoding);
+        }
     	return units;
     }
 }
