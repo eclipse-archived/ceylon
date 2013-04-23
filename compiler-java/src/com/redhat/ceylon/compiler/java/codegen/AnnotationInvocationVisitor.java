@@ -6,11 +6,12 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.InlineArgument;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -96,7 +97,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public JCAnnotation transformConstructor(Tree.InvocationExpression invocation) {
         
-        List<InlineArgument> arguments = annotationConstructor.getInlineInfo().getArguments();
+        List<AnnotationArgument> arguments = annotationConstructor.getInlineInfo().getArguments();
         java.util.List<Parameter> classParameters = annotationClass.getParameterList().getParameters();
         for (int classParameterIndex = 0; classParameterIndex < classParameters.size(); classParameterIndex++) {
             Parameter classParameter = classParameters.get(classParameterIndex);
@@ -105,10 +106,10 @@ class AnnotationInvocationVisitor extends Visitor {
                 // => We're using the annotation class's defaulted parameter
                 continue;
             }
-            InlineArgument argument = arguments.get(classParameterIndex);
+            AnnotationArgument argument = arguments.get(classParameterIndex);
             
-            if (argument instanceof InlineInfo.ParameterArgument) {
-                InlineInfo.ParameterArgument parameterArgument = (InlineInfo.ParameterArgument)argument;
+            if (argument instanceof ParameterAnnotationArgument) {
+                ParameterAnnotationArgument parameterArgument = (ParameterAnnotationArgument)argument;
                 int argumentIndex = ((Functional)parameterArgument.getSourceParameter().getContainer()).getParameterLists().get(0).getParameters().indexOf(parameterArgument.getSourceParameter());
                 if (invocation.getPositionalArgumentList() != null) {
                     java.util.List<PositionalArgument> pa = invocation.getPositionalArgumentList().getPositionalArguments();
@@ -153,7 +154,7 @@ class AnnotationInvocationVisitor extends Visitor {
                         }    
                     }
                 }
-            } else if (argument instanceof LiteralArgument) {
+            } else if (argument instanceof LiteralAnnotationArgument) {
                 exprGen.at(invocation);
                 append(exprGen.naming.makeQuotedQualIdent(
                                 exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
@@ -168,7 +169,7 @@ class AnnotationInvocationVisitor extends Visitor {
     }
 
     private void appendConstructorDefaultParameter(
-            InlineInfo.ParameterArgument parameterArgument) {
+            ParameterAnnotationArgument parameterArgument) {
         String constructorParameterName = parameterArgument.getSourceParameter().getName();
         append(exprGen.naming.makeQuotedQualIdent(
                 exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),

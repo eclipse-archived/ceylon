@@ -2,10 +2,11 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.ArrayList;
 
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.LiteralArgument;
-import com.redhat.ceylon.compiler.typechecker.model.InlineInfo.ParameterArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
+import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -20,7 +21,7 @@ public class AnnotationInlineVisitor extends Visitor {
     private boolean spread;
     private boolean checkingInvocationPrimary;
     private boolean checkingArguments;
-    private InlineInfo inlineInfo;
+    private AnnotationInstantiation inlineInfo;
     
     @Override
     public void handleException(Exception e, Node node) {
@@ -39,8 +40,8 @@ public class AnnotationInlineVisitor extends Visitor {
     public void visit(Tree.MethodDefinition d) {
         if (Decl.isAnnotationConstructor(d)) {
             annotationConstructor = d;
-            inlineInfo = new InlineInfo();
-            inlineInfo.setArguments(new ArrayList());
+            inlineInfo = new AnnotationInstantiation();
+            inlineInfo.setArguments(new ArrayList<AnnotationArgument>());
         }
         super.visit(d);
         if (Decl.isAnnotationConstructor(d)) {
@@ -55,8 +56,8 @@ public class AnnotationInlineVisitor extends Visitor {
         if (Decl.isAnnotationConstructor(d)
                 && d.getSpecifierExpression() != null) {
             annotationConstructor = d;
-            inlineInfo = new InlineInfo();
-            inlineInfo.setArguments(new ArrayList());
+            inlineInfo = new AnnotationInstantiation();
+            inlineInfo.setArguments(new ArrayList<AnnotationArgument>());
         }
         super.visit(d);
         if (Decl.isAnnotationConstructor(d)
@@ -155,7 +156,7 @@ public class AnnotationInlineVisitor extends Visitor {
                 Declaration declaration = bme.getDeclaration();
                 if (declaration instanceof ValueParameter) {
                     ValueParameter constructorParameter = (ValueParameter)declaration;
-                    ParameterArgument a = inlineInfo.new ParameterArgument();
+                    ParameterAnnotationArgument a = new ParameterAnnotationArgument();
                     a.setSpread(spread);
                     a.setTargetParameter(classParameter);
                     a.setSourceParameter(constructorParameter);
@@ -174,7 +175,7 @@ public class AnnotationInlineVisitor extends Visitor {
         if (spread) {
             error(bme, "Spread static arguments not supported");
         }
-        LiteralArgument a = inlineInfo.new LiteralArgument();
+        LiteralAnnotationArgument a = new LiteralAnnotationArgument();
         a.setTargetParameter(classParameter);
         inlineInfo.getArguments().add(a);
     }
