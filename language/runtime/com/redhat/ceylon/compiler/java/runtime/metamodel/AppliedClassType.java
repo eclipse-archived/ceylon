@@ -129,6 +129,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     public Type $call() {
+        checkInit();
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
@@ -140,6 +141,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     public Type $call(Object arg0) {
+        checkInit();
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
@@ -151,6 +153,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     public Type $call(Object arg0, Object arg1) {
+        checkInit();
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
@@ -162,6 +165,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     public Type $call(Object arg0, Object arg1, Object arg2) {
+        checkInit();
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
@@ -173,6 +177,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     public Type $call(Object... args) {
+        checkInit();
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         return null;
