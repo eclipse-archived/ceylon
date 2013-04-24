@@ -95,7 +95,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         } else {
             // Note we trim the array which means copyOrNot_length$hidden() 
             // can use USE_ARRAY_SIZE
-            return new SequenceBuilder<>(null).appendAll(elements).trim$priv().array;
+            return new SequenceBuilder(null).appendAll(elements).trim$priv().array;
         }
     }
     
@@ -181,7 +181,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
      */
     @Ignore
     static <Element> ArraySequence<Element> backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, Element[] array, long first, long length) {
-        return new ArraySequence<>($reifiedElement, array, first, length, false);
+        return new ArraySequence<Element>($reifiedElement, array, first, length, false);
     }
     
     // TODO Is this used any more?

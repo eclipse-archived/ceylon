@@ -93,8 +93,8 @@ public abstract class ClassOrInterface
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
-        List<ceylon.language.metamodel.Member<? extends Object, Function>> functions = new LinkedList<>();
-        List<ceylon.language.metamodel.Member<? extends Object, Value>> values = new LinkedList<>();
+        List<ceylon.language.metamodel.Member<? extends Object, Function>> functions = new LinkedList<ceylon.language.metamodel.Member<? extends Object, Function>>();
+        List<ceylon.language.metamodel.Member<? extends Object, Value>> values = new LinkedList<ceylon.language.metamodel.Member<? extends Object, Value>>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof Method){
                 functions.add(new Member(this, new Function((Method) memberModelDeclaration)));
