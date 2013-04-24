@@ -84,7 +84,7 @@ public class ArraySequenceTest {
      * array.
      */
     Map<java.lang.String, ArraySequence<ceylon.language.String>> abcs() {
-        Map<java.lang.String, ArraySequence<ceylon.language.String>> result = new LinkedHashMap<>();
+        Map<java.lang.String, ArraySequence<ceylon.language.String>> result = new LinkedHashMap<java.lang.String, ArraySequence<ceylon.language.String>>();
         result.put("{a b c}: ", 
                 ArraySequence.<String>instance(
                         ceylon.language.String.$TypeDescriptor, 
