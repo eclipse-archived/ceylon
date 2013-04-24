@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.LinkedList;
 import java.util.List;
 
-import ceylon.language.Anything;
-import ceylon.language.Empty;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.Function$impl;
 import ceylon.language.metamodel.Parameterised$impl;
@@ -15,26 +15,19 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 
 @Ceylon(major = 4)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@TypeParameters({
-    @TypeParameter(value = "Type", variance = Variance.OUT),
-    @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
-    })
-public class Function<Type, Arguments extends Sequential<? extends Object>> 
+public class Function 
     extends Declaration
-    implements ceylon.language.metamodel.Function<Type, Arguments> {
+    implements ceylon.language.metamodel.Function {
 
     @Ignore
-    private final TypeDescriptor $reifiedType;
-    @Ignore
-    private final TypeDescriptor $reifiedArguments;
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Function.class);
     
     private Sequential<? extends ceylon.language.metamodel.TypeParameter> typeParameters;
     
@@ -42,9 +35,6 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
 
     public Function(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
-        // FIXME
-        $reifiedType = Anything.$TypeDescriptor;
-        $reifiedArguments = Empty.$TypeDescriptor;
 
         // FIXME: share with ClassOrInterface
         List<com.redhat.ceylon.compiler.typechecker.model.TypeParameter> typeParameters = declaration.getTypeParameters();
@@ -60,7 +50,7 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     @Ignore
-    public Function$impl<Type, Arguments> $ceylon$language$metamodel$Function$impl() {
+    public Function$impl $ceylon$language$metamodel$Function$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -71,37 +61,6 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public Type $call() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type $call(Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type $call(Object arg0, Object arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type $call(Object arg0, Object arg1, Object arg2) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type $call(Object... args) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::TypeParameter>")
@@ -130,6 +89,6 @@ public class Function<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(Function.class, $reifiedType, $reifiedArguments);
+        return $TypeDescriptor;
     }
 }

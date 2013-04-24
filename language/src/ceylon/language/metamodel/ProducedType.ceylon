@@ -60,9 +60,11 @@ shared interface AppliedClassOrInterfaceType<out Type>
     
     shared formal Map<TypeParameter, AppliedProducedType> typeArguments;
     
-    shared formal AppliedClassType<Anything,Nothing[]>? superclass;
+    shared formal AppliedClassType<Anything, Nothing[]>? superclass;
     
     shared formal AppliedInterfaceType<Anything>[] interfaces;
+    
+    shared formal AppliedFunction<Anything, Nothing>? getFunction(String name, AppliedProducedType* types);
 }
 
 shared interface AppliedClassType<out Type, in Arguments>
@@ -89,3 +91,12 @@ shared interface AppliedIntersectionType satisfies AppliedProducedType {
 }
 
 shared object appliedNothingType satisfies AppliedProducedType {}
+
+shared interface AppliedFunction<out Type, in Arguments> 
+        satisfies Callable<Type, Arguments> 
+        given Arguments satisfies Anything[] {
+    
+    shared formal Function declaration;
+
+    shared formal AppliedProducedType type;
+}

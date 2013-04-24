@@ -1,11 +1,13 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.AppliedClassOrInterfaceType$impl;
 import ceylon.language.metamodel.AppliedProducedType;
@@ -15,12 +17,15 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 
 @Ceylon(major = 4)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -130,6 +135,37 @@ public class AppliedClassOrInterfaceType<Type>
     public ceylon.language.metamodel.AppliedClassType<? extends Object, ? super Sequential<? extends Object>> getSuperclass() {
         checkInit();
         return superclass;
+    }
+
+    @Ignore
+    @Override
+    public Sequential<? extends ceylon.language.metamodel.AppliedProducedType> getFunction$types(String name){
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public ceylon.language.metamodel.AppliedFunction<? extends Object, ? super Sequential<? extends Object>> getFunction(String name){
+        return getFunction(name, getFunction$types(name));
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::AppliedFunction<ceylon.language::Anything,ceylon.language::Sequential<ceylon.language::Nothing>>|ceylon.language::Null")
+    public ceylon.language.metamodel.AppliedFunction<? extends Object, ? super Sequential<? extends Object>> getFunction(String name, @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedProducedType> types) {
+        checkInit();
+        Function method = declaration.findMethod(name);
+        if(method == null)
+            return null;
+        Iterator iterator = types.iterator();
+        Object it;
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
+        while((it = iterator.next()) != finished_.getFinished$()){
+            ceylon.language.metamodel.AppliedProducedType pt = (ceylon.language.metamodel.AppliedProducedType) it;
+            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
+            producedTypes.add(modelPt);
+        }
+        ProducedReference appliedFunction = method.declaration.getProducedReference(null, producedTypes);
+        return new AppliedFunction(appliedFunction, method, this);
     }
 
     @Override

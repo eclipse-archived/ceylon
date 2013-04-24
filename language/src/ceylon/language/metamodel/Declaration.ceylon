@@ -1,5 +1,5 @@
 shared interface Declaration of Value<Anything> |
-                                Function<Anything,Nothing[]> |
+                                Function |
                                 ClassOrInterface |
                                 TypeParameter {
     

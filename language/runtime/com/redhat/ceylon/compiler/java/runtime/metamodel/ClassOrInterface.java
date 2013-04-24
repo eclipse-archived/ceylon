@@ -45,7 +45,7 @@ public abstract class ClassOrInterface
     private Sequential<ceylon.language.metamodel.InterfaceType> interfaces;
     private Sequential<ceylon.language.metamodel.TypeParameter> typeParameters;
 
-    private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>>>> functions;
+    private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Function>> functions;
     private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Value<? extends Object>>> values;
 
     public ClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
@@ -212,7 +212,7 @@ public abstract class ClassOrInterface
         return $reifiedType;
     }
 
-    Function<? extends Object, ? super Sequential<? extends Object>> findMethod(String name) {
+    Function findMethod(String name) {
         checkInit();
         Iterator iterator = functions.iterator();
         Object it;

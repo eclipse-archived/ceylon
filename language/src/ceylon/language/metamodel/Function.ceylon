@@ -1,6 +1,5 @@
-shared interface Function<out Type, in Arguments> 
-        satisfies Callable<Type,Arguments> & Declaration & Parameterised 
-        given Arguments satisfies Anything[] {
+shared interface Function 
+        satisfies Declaration & Parameterised {
 
     shared formal ProducedType type;
 }
