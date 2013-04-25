@@ -172,6 +172,7 @@ defineAttr(Identifiable$proto, 'hash', function(){ return $identityHash(this); }
 //Compiled from Ceylon sources
 //#COMPILED
 //Ends compiled from Ceylon sources
+//#include metamodel.js
 
 function Number$(wat) {
     return wat;
