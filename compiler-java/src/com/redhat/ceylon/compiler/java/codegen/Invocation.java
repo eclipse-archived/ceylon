@@ -202,6 +202,7 @@ abstract class Invocation {
         } else {
             if (this instanceof IndirectInvocationBuilder
                     && (Decl.isGetter(getPrimaryDeclaration())
+                            || Decl.isToplevel(getPrimaryDeclaration())
                             || (Decl.isValueOrSharedParam(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
                             && !Decl.isLocal(getPrimaryDeclaration()))) {
                 actualPrimExpr = gen.make().Apply(null, 

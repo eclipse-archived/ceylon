@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1134Toplevel1_ {
+    
+    private bug1134Toplevel1_() {
+    }
+    private static final .ceylon.language.Callable<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.Callable[]{(.ceylon.language.Callable).ceylon.language.nothing_.getNothing$()};
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.String> getBug1134Toplevel1$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
+final class bug1134Toplevel2_ {
+    
+    private bug1134Toplevel2_() {
+    }
+    private static final .java.lang.String[] value;
+    static {
+        value = new .java.lang.String[]{.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.getBug1134Toplevel1$().$call(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Anything.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).toString()};
+    }
+    
+    static .java.lang.String getBug1134Toplevel2$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+        }
+    }
+}
