@@ -3480,10 +3480,37 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(TryCatchStatement that) {
+        Resource resource = that.getTryClause().getResource();
+        String resourceVar = null;
+        if (resource != null) {
+            resourceVar = names.createTempVariable();
+            out("var ", resourceVar, "=null");
+            endLine(true);
+            out("var ", resourceVar, "$exc=null");
+            endLine(true);
+            out("var ", resourceVar, "$cls=false");
+            endLine(true);
+        }
         out("try");
+        if (resource != null) {
+            out("{", resourceVar, "=");
+            resource.visit(this);
+            endLine(true);
+            out(resourceVar, ".open()");
+            endLine(true);
+            out(resourceVar, "$cls=true");
+            endLine(true);
+        }
         encloseBlockInFunction(that.getTryClause().getBlock());
+        if (resource != null) {
+            out(resourceVar, "$cls=false");
+            endLine(true);
+            out(resourceVar, ".close()");
+            endLine(true);
+            out("}");
+        }
 
-        if (!that.getCatchClauses().isEmpty()) {
+        if (!that.getCatchClauses().isEmpty() || resource != null) {
             String catchVarName = names.createTempVariable("ex");
             out("catch(", catchVarName, ")");
             beginBlock();
@@ -3491,6 +3518,10 @@ public class GenerateJsVisitor extends Visitor
             out("if (", catchVarName, ".getT$name === undefined) ", catchVarName, "=",
                     clAlias, "NativeException(", catchVarName, ")");
             endLine(true);
+            if (resource != null) {
+                out(resourceVar, "$exc=", catchVarName);
+                endLine(true);
+            }
             boolean firstCatch = true;
             for (CatchClause catchClause : that.getCatchClauses()) {
                 Variable variable = catchClause.getCatchVariable().getVariable();
@@ -3513,13 +3544,24 @@ public class GenerateJsVisitor extends Visitor
                     endBlockNewLine();
                 }
             }
-            out("else{throw ", catchVarName, "}");
+            if (!that.getCatchClauses().isEmpty()) {
+                out("else{throw ", catchVarName, "}");
+            }
             endBlockNewLine();
         }
 
-        if (that.getFinallyClause() != null) {
+        if (that.getFinallyClause() != null || resource != null) {
             out("finally");
-            encloseBlockInFunction(that.getFinallyClause().getBlock());
+            if (resource != null) {
+                out("{try{if(",resourceVar, "$cls)", resourceVar, ".close(",
+                        resourceVar, "$exc);}catch(",resourceVar,"$swallow){}finally{");
+            }
+            if (that.getFinallyClause() != null) {
+                encloseBlockInFunction(that.getFinallyClause().getBlock());
+            }
+            if (resource != null) {
+                out("}}");
+            }
         }
     }
 
