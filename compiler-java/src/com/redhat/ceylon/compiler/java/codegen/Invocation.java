@@ -201,6 +201,7 @@ abstract class Invocation {
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {
             if (this instanceof IndirectInvocationBuilder
+                    && getPrimaryDeclaration() != null
                     && (Decl.isGetter(getPrimaryDeclaration())
                             || Decl.isToplevel(getPrimaryDeclaration())
                             || (Decl.isValueOrSharedParam(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
