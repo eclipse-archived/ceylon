@@ -86,10 +86,11 @@ public class TypeUtils {
 
     static void outputQualifiedTypename(final boolean imported, ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration t = pt.getDeclaration();
-        if (t.getQualifiedNameString().equals("ceylon.language::Nothing")) {
+        final String qname = t.getQualifiedNameString();
+        if (qname.equals("ceylon.language::Nothing")) {
             //Hack in the model means hack here as well
             gen.out(GenerateJsVisitor.getClAlias(), "Nothing");
-        } else if (t.getQualifiedNameString().equals("ceylon.language::null")) {
+        } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
             gen.out(GenerateJsVisitor.getClAlias(), "Null");
         } else if (pt.isUnknown()) {
             gen.out(GenerateJsVisitor.getClAlias(), "Anything");
@@ -111,7 +112,11 @@ public class TypeUtils {
                     gen.out(gen.getNames().name(p), ".");
                 }
             } else if (imported) {
-                gen.out(gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()), ".");
+                //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.metamodel types
+                final String modAlias = gen.getNames().moduleAlias(t.getUnit().getPackage().getModule());
+                if (modAlias != null && !modAlias.isEmpty()) {
+                    gen.out(modAlias, ".");
+                }
                 qual = true;
             }
 
