@@ -38,3 +38,8 @@ Map,LazyMap,LazyList,LazySet
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo
 every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,sum,product,zip,print,nothing
 identical,compose,shuffle,plus,times,combine,sort
+
+#metamodel
+metamodel/Annotated,metamodel/Declaration,metamodel/Package,metamodel/TypeParameter,metamodel/Annotation,metamodel/Function,metamodel/Parameterised,metamodel/Value,metamodel/Class,metamodel/Interface,metamodel/ProducedType,metamodel/Variable,metamodel/ClassOrInterface,metamodel/Member,metamodel/SequencedAnnotation,metamodel/annotations,metamodel/ConstrainedAnnotation,metamodel/OptionalAnnotation,metamodel/Type
+#metamodel/metamodel
+
