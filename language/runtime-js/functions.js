@@ -189,8 +189,13 @@ function className(obj) {
         }
     }
     if (obj === null) return String$('ceylon.language::Null');
-    var tn = obj.getT$name();
-    if (obj.$$targs$$) {
+    var tn = obj.getT$name === undefined ? 'UNKNOWN' : obj.getT$name();
+    if (tn === 'UNKNOWN') {
+        if (typeof obj === 'function') {
+            tn = 'ceylon.language::Callable';
+        }
+    }
+    else if (obj.$$targs$$) {
         /*tn += '<';
         for (var i=0; i < obj.$$targs$$.length; i++) {
             if (i>0) { tn += ','; }

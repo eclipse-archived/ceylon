@@ -6,9 +6,16 @@ var exports;//IGNORE
 function Callable(wat) {
     return wat;
 }
-initType(Callable, 'ceylon.language::Callable');
-Callable.$$.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}}};
 exports.Callable=Callable;
+function $init$Callable() {
+    if (Callable.$$===undefined) {
+        initType(Callable, 'ceylon.language::Callable');
+    }
+    Callable.$$.$$metamodel$$={$nm:'Callable',$mt:'ifc'};
+    return Callable;
+}
+exports.$init$Callable=$init$Callable;
+$init$Callable();
 
 function $JsCallable(callable,targs) {
     callable.getT$all=Callable.getT$all;
@@ -23,6 +30,7 @@ function noop() { return null; }
 
 //This is used for plain method references
 function JsCallable(o,f) {
+    Callable(o);
 	return (o !== null) ? function() { return f.apply(o, arguments); }
 	                    : noop;
 }
