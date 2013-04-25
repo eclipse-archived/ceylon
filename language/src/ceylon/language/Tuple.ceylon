@@ -88,7 +88,7 @@ shared class Tuple<out Element, out First, out Rest=[]>
             rest.reversed.withTrailing(first);
     
     shared actual Element[] segment(Integer from, Integer length) {
-        if(length < 0){
+        if(length <= 0){
             return [];
         }
         Integer realFrom = from < 0 then 0 else from;
