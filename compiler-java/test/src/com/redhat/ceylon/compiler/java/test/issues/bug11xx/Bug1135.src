@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+public class Bug1135<Args extends .ceylon.language.Sequential<? extends .java.lang.Object>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1135(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs) {
+        this.$reifiedArgs = $reifiedArgs;
+        this.listeners = .ceylon.language.array_.<.ceylon.language.Callable<? extends .java.lang.Object>>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .ceylon.language.Callable.class, (.ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs;
+    
+    final class Listener {
+        
+        private Listener() {
+        }
+    }
+    private .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> listeners;
+    
+    private final .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> getListeners$priv() {
+        return listeners;
+    }
+    
+    private final void setListeners$priv(final .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> listeners) {
+        this.listeners = listeners;
+    }
+    
+    public final void fireEvent(final Args args) {
+        getListeners$priv().<.java.lang.Object>map(.ceylon.language.Anything.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .ceylon.language.Empty.$TypeDescriptor), "Anything(Listener)"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.Callable<? extends .java.lang.Object> listener = (.ceylon.language.Callable<? extends .java.lang.Object>)$param$0;
+                return listener.$call(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Anything.$TypeDescriptor, new .java.lang.Object[]{args}));
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1135(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1135.class, $reifiedArgs);
+    }
+}
