@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_
 import java.util.ArrayList;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -145,8 +146,14 @@ public class CallableBuilder {
                 parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
         }else{
             // get them from our declaration
-            for(Parameter p : paramLists.getParameters())
-                parameterTypes.add(p.getType());
+            for(Parameter p : paramLists.getParameters()){
+                ProducedType pt;
+                if(p instanceof FunctionalParameter)
+                    pt = gen.getTypeForFunctionalParameter((FunctionalParameter) p);
+                else
+                    pt = p.getType();
+                parameterTypes.add(pt);
+            }
         }
             
         // now generate a method for each supported minimum number of parameters below 4
