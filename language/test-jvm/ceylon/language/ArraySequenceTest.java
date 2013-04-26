@@ -188,7 +188,7 @@ public class ArraySequenceTest {
         final ceylon.language.String toMatch = s(str);
         return new AbstractCallable<ceylon.language.Boolean>(Boolean.$TypeDescriptor, 
                 TypeDescriptor.klass(Tuple.class, String.$TypeDescriptor, String.$TypeDescriptor, Empty.$TypeDescriptor),
-                "") {
+                "", (short)-1) {
             public ceylon.language.Boolean $call(java.lang.Object arg0) {
                 ceylon.language.String argString = (ceylon.language.String)arg0;
                 return ceylon.language.Boolean.instance(toMatch.equals(argString));
@@ -212,7 +212,7 @@ public class ArraySequenceTest {
     private AbstractCallable<ceylon.language.Comparison> alphabeticalOrder() {
         AbstractCallable<ceylon.language.Comparison> alphabeticOrder = new AbstractCallable<ceylon.language.Comparison>(Comparison.$TypeDescriptor, 
                 TypeDescriptor.klass(Tuple.class, String.$TypeDescriptor, String.$TypeDescriptor, TypeDescriptor.klass(Tuple.class, String.$TypeDescriptor, String.$TypeDescriptor, Empty.$TypeDescriptor)),
-                "") {
+                "", (short)-1) {
             public ceylon.language.Comparison $call(java.lang.Object arg0, java.lang.Object arg1) {
                 ceylon.language.String first = (ceylon.language.String)arg0;
                 ceylon.language.String second = (ceylon.language.String)arg1;

@@ -198,6 +198,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
     
     @Override
+    public short $getVariadicParameterIndex() {
+        // TODO Auto-generated method stub
+        return -1;
+    }
+
+    @Override
     @TypeInfo("ceylon.language.metamodel::AppliedProducedType")
     public AppliedProducedType getType() {
         return type;

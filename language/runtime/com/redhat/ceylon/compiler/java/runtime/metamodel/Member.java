@@ -68,6 +68,12 @@ public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
     }
 
     @Override
+    public short $getVariadicParameterIndex() {
+        // TODO Auto-generated method stub
+        return -1;
+    }
+
+    @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

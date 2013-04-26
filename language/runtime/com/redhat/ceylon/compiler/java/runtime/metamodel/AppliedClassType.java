@@ -182,7 +182,13 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         return null;
     }
-    
+
+    @Override
+    public short $getVariadicParameterIndex() {
+        // TODO Auto-generated method stub
+        return -1;
+    }
+
     @Override
     public TypeDescriptor $getType() {
         checkInit();

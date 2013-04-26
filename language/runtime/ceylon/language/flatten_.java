@@ -64,6 +64,11 @@ public final class flatten_ {
 				}
 				return tupleFunction.$call(t);
 			}
+
+            @Override
+            public short $getVariadicParameterIndex() {
+                return -1;
+            }
         	
 		};    
     }

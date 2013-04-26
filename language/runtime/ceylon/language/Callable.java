@@ -22,4 +22,8 @@ public interface Callable<Return> {
     
     public Return $call(java.lang.Object... args);
 
+    /**
+     * @return the index of the variadic parameter if any, -1 otherwise.
+     */
+    public short $getVariadicParameterIndex();
 }

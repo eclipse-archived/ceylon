@@ -70,6 +70,11 @@ public final class unflatten_ {
 			public Return $call(java.lang.Object... args) {
 				throw new UnsupportedOperationException();
 			}
+
+            @Override
+            public short $getVariadicParameterIndex() {
+                return -1;
+            }
         	
 		};    
     }

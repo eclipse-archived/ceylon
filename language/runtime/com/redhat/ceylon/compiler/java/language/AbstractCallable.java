@@ -14,13 +14,15 @@ import ceylon.language.Callable;
 public class AbstractCallable<Return> implements Callable<Return>, ReifiedType {
     
     private final String string;
-    private TypeDescriptor $reifiedArguments;
-    private TypeDescriptor $reifiedReturn;
+    private final TypeDescriptor $reifiedArguments;
+    private final TypeDescriptor $reifiedReturn;
+    private final short variadicParameterIndex;
 
-    public AbstractCallable(TypeDescriptor $reifiedReturn, TypeDescriptor $reifiedArguments, String string) {
+    public AbstractCallable(TypeDescriptor $reifiedReturn, TypeDescriptor $reifiedArguments, String string, short variadicParameterIndex) {
         this.string = string;
         this.$reifiedReturn = $reifiedReturn;
         this.$reifiedArguments = $reifiedArguments;
+        this.variadicParameterIndex = variadicParameterIndex;
     }
     
     public Return $call() {
@@ -51,5 +53,10 @@ public class AbstractCallable<Return> implements Callable<Return>, ReifiedType {
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(Callable.class, $reifiedReturn, $reifiedArguments);
+    }
+
+    @Override
+    public short $getVariadicParameterIndex() {
+        return variadicParameterIndex;
     }
 }

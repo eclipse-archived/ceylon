@@ -1064,7 +1064,7 @@ public class String
     public static Callable<? extends Boolean> split$separator(){
         return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
-                "whitespace") {
+                "whitespace", (short)-1) {
             @Override
             public Boolean $call(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).getWhitespace());
@@ -1086,7 +1086,7 @@ public class String
     public Iterable<? extends String, ? extends java.lang.Object> getLines() {
         return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
-                "whitespace") {
+                "whitespace", (short)-1) {
             @Override
             public Boolean $call(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).toString().equals("\n"));
@@ -1098,7 +1098,7 @@ public class String
     public static Iterable<? extends String, ? extends java.lang.Object> getLines(java.lang.String value) {
         return split(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
-                "whitespace") {
+                "whitespace", (short)-1) {
             @Override
             public Boolean $call(java.lang.Object ch) {
                 return Boolean.instance(((Character) ch).toString().equals("\n"));
