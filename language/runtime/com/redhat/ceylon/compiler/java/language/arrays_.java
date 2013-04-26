@@ -35,7 +35,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @Object
 public final class arrays_ {
         

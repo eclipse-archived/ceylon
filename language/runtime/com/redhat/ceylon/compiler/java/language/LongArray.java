@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @Class
 @ValueType
 public final class LongArray implements ReifiedType {

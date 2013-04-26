@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @Method
 public final class type_ {
     

@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
     implements ceylon.language.metamodel.Member<Type, Kind>, Callable<Kind>, ReifiedType {

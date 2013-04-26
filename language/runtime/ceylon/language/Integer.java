@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @SatisfiedTypes({
     "ceylon.language::Scalar<ceylon.language::Integer>",
     "ceylon.language::Integral<ceylon.language::Integer>",

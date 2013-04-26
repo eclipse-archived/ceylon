@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class ClassType 
     extends ClassOrInterfaceType

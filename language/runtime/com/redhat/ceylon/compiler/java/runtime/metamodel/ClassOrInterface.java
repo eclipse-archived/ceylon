@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-@Ceylon(major = 4)
+@Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class ClassOrInterface
     extends Declaration
