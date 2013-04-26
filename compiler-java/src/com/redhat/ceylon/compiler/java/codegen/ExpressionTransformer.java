@@ -2073,6 +2073,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Spread tuple Argument
         // invoking f(*args), where declared f(A a, B a) (last param not sequenced)
         final Expression tupleArgument = invocation.getArgumentExpression(argIndex);
+        int minimumTupleArguments = typeFact().getTupleMinimumLength(tupleArgument.getTypeModel());
+        boolean tupleUnbounded = typeFact().isTupleLengthUnbounded(tupleArgument.getTypeModel());
         final ProducedType callableType = invocation.getPrimary().getTypeModel().getFullType();
         
         // Only evaluate the tuple expr once
@@ -2089,9 +2091,30 @@ public class ExpressionTransformer extends AbstractTransformer {
         callBuilder.voidMethod(invocation.getReturnType() == null 
                 || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration())); 
         
+        /* Cases:
+            *[] -> () => nothing
+            *[] -> (Integer=) => nothing
+            *[] -> (Integer*) => nothing
+            *[Integer] -> (Integer) => extract
+            *[Integer] -> (Integer=) => extract
+            *[Integer] -> (Integer*) => pass the tuple as-is
+            *[Integer*] -> (Integer*) => pass the tuple as-is
+            *[Integer+] -> (Integer*) => pass the tuple as-is
+            *[Integer] -> (Integer, Integer*) => extract and drop the tuple
+            *[Integer,Integer] -> (Integer, Integer) => extract
+            *[Integer,Integer] -> (Integer=, Integer=) => extract
+            *[Integer,Integer] -> (Integer, Integer*) => extract and pass the tuple rest
+            *[Integer,Integer*] -> (Integer, Integer*) => extract and pass the tuple rest
+            *[Integer,Integer+] -> (Integer, Integer*) => extract and pass the tuple rest
+        */
+        
         int spreadArgIndex = argIndex;
-        int lastArgIndex = Math.min(getNumParametersOfCallable(callableType), getMinimumParameterCountForCallable(callableType)); 
-        for (; spreadArgIndex < lastArgIndex; spreadArgIndex++) {
+        int maxParameters = getNumParametersOfCallable(callableType);
+        boolean variadic = maxParameters > 0 && invocation.isParameterSequenced(maxParameters-1);
+        // we extract from the tuple not more than we have tuple members, but even less than that if we don't
+        // have enough parameters to put them in
+        int argumentsToExtract = Math.min(argIndex + minimumTupleArguments, variadic ? maxParameters - 1 : maxParameters); 
+        for (; spreadArgIndex < argumentsToExtract; spreadArgIndex++) {
             boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
             ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
             JCExpression tupleIndex = boxType(make().Literal((long)spreadArgIndex-argIndex), 
@@ -2106,13 +2129,21 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
             result = result.append(new ExpressionAndType(tupleElement, argType));
         }
-        if (spreadArgIndex < getNumParametersOfCallable(callableType)) {
+        // if we're variadic AND
+        // - the tuple is unbounded (which means we must have an unknown number of elements left to pass)
+        // - OR the tuple is bounded but we did not pass them all
+        if (variadic 
+                && (tupleUnbounded || argumentsToExtract < (minimumTupleArguments + argIndex))) {
             boxingStrategy = invocation.getParameterBoxingStrategy(spreadArgIndex);
             ProducedType paramType = getParameterTypeOfCallable(callableType, spreadArgIndex);
             JCExpression tupleElement = tupleAlias.makeIdent();
-            for (int kk = spreadArgIndex; kk <  getNumParametersOfCallable(callableType); kk++) {
-                tupleElement = make().Apply(null, naming.makeQualIdent(tupleElement, "getRest"),
-                        List.<JCExpression>nil());
+            // argIndex = 1, tuple = [Integer], params = [Integer, Integer*], spreadArgIndex = 1 => no span
+            // argIndex = 0, tuple = [Integer+], params = [Integer, Integer*], spreadArgIndex = 1 => spanFrom(1)
+            if(spreadArgIndex - argIndex > 0){
+                JCExpression tupleIndex = boxType(make().Literal((long)spreadArgIndex-argIndex), 
+                        typeFact().getIntegerDeclaration().getType());
+                tupleElement = make().Apply(null, naming.makeQualIdent(tupleElement, "spanFrom"),
+                        List.<JCExpression>of(tupleIndex));
             }
             tupleElement = applyErasureAndBoxing(tupleElement, 
                     typeFact().getAnythingDeclaration().getType(), 
