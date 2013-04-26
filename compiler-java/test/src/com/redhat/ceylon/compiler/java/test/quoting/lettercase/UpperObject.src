@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public final class Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -10,7 +10,7 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class InnerObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

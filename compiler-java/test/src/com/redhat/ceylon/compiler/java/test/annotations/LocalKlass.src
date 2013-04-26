@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -10,7 +10,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>>"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
         class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>> {

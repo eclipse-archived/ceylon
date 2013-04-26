@@ -16,7 +16,7 @@ final class testFiles_ {
         .com.redhat.ceylon.compiler.java.test.interop.testFiles_.testFiles();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class booleanArray_ {
     

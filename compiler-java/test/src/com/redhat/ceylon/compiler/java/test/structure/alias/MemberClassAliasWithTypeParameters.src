@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAlias3", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.MemberClassAlias3", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAlias2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.MemberClassAlias2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAlias1", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.MemberClassAlias1", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.Member", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "C", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -23,7 +23,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<T>($reifiedT, t);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
@@ -51,7 +51,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<S>($reifiedS, s);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<S>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -67,7 +67,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, s);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<ceylon.language::Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -82,7 +82,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<C>($reifiedC, s);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<C>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

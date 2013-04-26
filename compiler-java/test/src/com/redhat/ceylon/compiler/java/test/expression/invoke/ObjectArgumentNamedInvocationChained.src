@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ObjectArgumentNamedInvocationChained() {
@@ -29,7 +29,7 @@ class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compile
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class objectArgumentNamedInvocationChained_ {
     
@@ -47,7 +47,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     {
                         .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained $arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
                         
-                        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+                        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
                         @.com.redhat.ceylon.compiler.java.metadata.Name("o")
                         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -95,7 +95,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     returning $arg$1$callable$.callFunction($arg$1$0);
                 );
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("o")
                 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
                 @.com.redhat.ceylon.compiler.java.metadata.Object

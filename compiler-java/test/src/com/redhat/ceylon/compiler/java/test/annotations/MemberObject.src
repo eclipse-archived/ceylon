@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class MemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -10,7 +10,7 @@ public class MemberObject implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     private final .com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_ member;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Name("member")
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

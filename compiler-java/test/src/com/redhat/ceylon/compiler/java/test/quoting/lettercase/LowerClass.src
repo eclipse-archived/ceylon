@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("c")
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "cc", javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.cc_", packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")})
 class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -8,7 +8,7 @@ class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     c_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.com.redhat.ceylon.compiler.java.metadata.Name("cc")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "c", javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_", packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")
     class cc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -26,7 +26,7 @@ class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
         @.com.redhat.ceylon.compiler.java.metadata.Name("mc")
         class mc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
