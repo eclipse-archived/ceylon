@@ -822,21 +822,21 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile("<a class='link' href='"+url+"/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/C.type.html'>C</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<a class='link' href='https://modules.ceylon-lang.org/test/ceylon/collection/0.5/module-doc/HashMap.type.html'>HashMap</a>"));
+                Pattern.compile("<a class='link' href='https://modules.ceylon-lang.org/test/ceylon/collection/0.6/module-doc/HashMap.type.html'>HashMap</a>"));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("zero = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.5/module-doc/decimal/index.html#zero'>zero</a>"));
+                Pattern.compile("zero = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/decimal/index.html#zero'>zero</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("Decimal = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.5/module-doc/decimal/Decimal.type.html'>Decimal</a>"));
+                Pattern.compile("Decimal = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/decimal/Decimal.type.html'>Decimal</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("Decimal.divided = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.5/module-doc/decimal/Decimal.type.html#divided'>Decimal.divided</a>"));
+                Pattern.compile("Decimal.divided = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/decimal/Decimal.type.html#divided'>Decimal.divided</a>"));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::one = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.5/module-doc/whole/index.html#one'>ceylon.math.whole::one</a>"));
+                Pattern.compile("ceylon.math.whole::one = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/whole/index.html#one'>ceylon.math.whole::one</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::Whole = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.5/module-doc/whole/Whole.type.html'>ceylon.math.whole::Whole</a>"));
+                Pattern.compile("ceylon.math.whole::Whole = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/whole/Whole.type.html'>ceylon.math.whole::Whole</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::Whole.power = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.5/module-doc/whole/Whole.type.html#power'>ceylon.math.whole::Whole.power</a>"));
+                Pattern.compile("ceylon.math.whole::Whole.power = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/whole/Whole.type.html#power'>ceylon.math.whole::Whole.power</a>"));
     }
     
     private void assertSharedParameterOfClass(File destDir) throws IOException {
