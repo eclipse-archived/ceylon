@@ -65,4 +65,32 @@ class SpreadArguments<T>(Integer i,  T s) {
         sas*.m4(*iter);
         sas*.m4(*nonEmptyIter);
     }
+    
+    void spreadTupleWithDefaultedAndSequenced(){
+        value f = function(Integer a, Integer b=2, Integer* c) => 1;
+        value one = [1];
+        value two = [1, 2];
+        value three = [1, 2, 3];
+        value four = [1, 2, 3, 4];
+        
+        f(*one);
+        f(*two);
+        f(*three);
+        f(*four);
+        
+        // FIXME: this should work https://github.com/ceylon/ceylon-spec/issues/643
+        //f(1, *empty);
+        f(1, *one);
+        f(1, *two);
+        f(1, *three);
+        f(1, *four);
+        
+        f(1, 2, *empty);
+        f(1, 2, *one);
+        f(1, 2, *two);
+        
+        f(1, 2, 3, *empty);
+        f(1, 2, 3, *one);
+        f(1, 2, 3, *two);
+    }
 }
