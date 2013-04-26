@@ -18,7 +18,7 @@ class Bug655 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     private final void get$priv() {
-        select$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()"){
+        select$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {

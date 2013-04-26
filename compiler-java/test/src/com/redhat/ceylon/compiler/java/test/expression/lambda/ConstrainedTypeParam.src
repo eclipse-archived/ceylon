@@ -11,7 +11,7 @@ class ConstrainedTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     private final void test$priv() {
-        method$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedT, $reifiedT, .ceylon.language.Empty.$TypeDescriptor), "Anything(T)"){
+        method$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedT, $reifiedT, .ceylon.language.Empty.$TypeDescriptor), "Anything(T)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

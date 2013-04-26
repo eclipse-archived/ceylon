@@ -14,7 +14,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> $enum() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
@@ -30,7 +30,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
         }
         final enum_ enum = new enum_();
-        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
+        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -43,7 +43,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
                 );
             }
         });
-        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, "Anything()()"){
+        m$priv(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor, "Anything()()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call() {

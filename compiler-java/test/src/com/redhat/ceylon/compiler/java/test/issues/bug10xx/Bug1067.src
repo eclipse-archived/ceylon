@@ -19,7 +19,7 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> $init$g(final .java.lang.Object f$) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

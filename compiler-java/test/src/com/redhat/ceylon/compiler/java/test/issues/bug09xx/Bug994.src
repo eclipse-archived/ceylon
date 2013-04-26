@@ -29,7 +29,7 @@ final class Bug994$impl {
             }
         }
         final localMethod_ localMethod = new localMethod_();
-        final .ceylon.language.Callable<? extends .java.lang.Object> b = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> b = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

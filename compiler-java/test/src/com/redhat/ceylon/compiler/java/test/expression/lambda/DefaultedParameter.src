@@ -16,7 +16,7 @@ final class defaultedParameter_ {
     }
     
     static final .ceylon.language.Callable<? extends .ceylon.language.String> defaultedParameter$f() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {

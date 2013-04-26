@@ -17,14 +17,14 @@ final class methodSpecifyingCallable_f_ {
 class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MethodSpecifyingCallable() {
-        this.noParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Empty.$TypeDescriptor, "Nothing()"){
+        this.noParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Empty.$TypeDescriptor, "Nothing()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
                 return .ceylon.language.nothing_.getNothing$();
             }
         };
-        this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Nothing(Integer)"){
+        this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Nothing(Integer)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -32,7 +32,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                 return .ceylon.language.nothing_.getNothing$();
             }
         };
-        this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor), "Nothing(Integer*)"){
+        this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor), "Nothing(Integer*)", (short)0){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$i() {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
@@ -54,7 +54,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                 return .ceylon.language.nothing_.getNothing$();
             }
         };
-        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor)), "Nothing(Integer, Integer*)"){
+        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor)), "Nothing(Integer, Integer*)", (short)1){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$i(final long a) {
                 return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();

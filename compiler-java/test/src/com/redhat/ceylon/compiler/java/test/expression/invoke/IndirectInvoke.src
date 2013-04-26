@@ -4,7 +4,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     IndirectInvoke(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
-        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
+        this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -17,28 +17,28 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
                 );
             }
         };
-        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
+        this.value2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
                 return .ceylon.language.Integer.instance(mGetter2$priv());
             }
         };
-        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()"){
+        this.value3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Boolean()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call() {
                 return .ceylon.language.Boolean.instance(mGetter3$priv());
             }
         };
-        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()"){
+        this.value4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "String()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {
                 return .ceylon.language.String.instance(mGetter4$priv());
             }
         };
-        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reifiedX, .ceylon.language.Empty.$TypeDescriptor, "X()"){
+        this.value5 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reifiedX, .ceylon.language.Empty.$TypeDescriptor, "X()", (short)-1){
             
             @.java.lang.Override
             public X $call() {

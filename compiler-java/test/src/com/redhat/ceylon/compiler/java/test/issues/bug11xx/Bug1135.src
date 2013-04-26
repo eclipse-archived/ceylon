@@ -24,7 +24,7 @@ public class Bug1135<Args extends .ceylon.language.Sequential<? extends .java.la
     }
     
     public final void fireEvent(final Args args) {
-        getListeners$priv().<.java.lang.Object>map(.ceylon.language.Anything.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .ceylon.language.Empty.$TypeDescriptor), "Anything(Listener)"){
+        getListeners$priv().<.java.lang.Object>map(.ceylon.language.Anything.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor, $reifiedArgs), .ceylon.language.Empty.$TypeDescriptor), "Anything(Listener)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

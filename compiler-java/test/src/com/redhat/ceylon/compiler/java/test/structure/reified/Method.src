@@ -5,7 +5,7 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public MethodClass() {
-        this.methodSpec = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()"){
+        this.methodSpec = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -247,7 +247,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c) {
         this.c = c;
         this.$com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl(this);
-        this.m$specifier = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
+        this.m$specifier = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore

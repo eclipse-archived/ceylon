@@ -42,14 +42,14 @@ final class callableArgumentReturningTypeParam_m_ {
     }
     
     static void callableArgumentReturningTypeParam_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
                 return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_bar(.ceylon.language.Integer.$TypeDescriptor);
             }
         });
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Integer()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
