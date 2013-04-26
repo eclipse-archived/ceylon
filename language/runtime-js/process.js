@@ -19,7 +19,7 @@ defineAttr(lang$proto, 'majorVersion', function(){ return 0; });
 defineAttr(lang$proto, 'minorVersion', function(){ return 6; });
 defineAttr(lang$proto, 'releaseVersion', function(){ return 0; });
 defineAttr(lang$proto, 'versionName', function(){ return String$("Transmogrifier",14); });
-defineAttr(lang$proto, 'majorVersionBinary', function(){ return 4; });
+defineAttr(lang$proto, 'majorVersionBinary', function(){ return 5; });
 defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; });
 var languageString = String$("language", 8);
 defineAttr(lang$proto, 'string', function() {
