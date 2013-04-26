@@ -170,12 +170,14 @@ public class CallableBuilder {
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
+        int variadicIndex = isVariadic ? numParams - 1 : -1;
         JCNewClass instance = gen.make().NewClass(null, 
                 null, 
                 gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
                 List.<JCExpression>of(gen.makeReifiedTypeArgument(typeModel.getTypeArgumentList().get(0)),
                                       gen.makeReifiedTypeArgument(typeModel.getTypeArgumentList().get(1)),
-                                      gen.make().Literal(typeModel.getProducedTypeName(true))),
+                                      gen.make().Literal(typeModel.getProducedTypeName(true)),
+                                      gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
                 classDef);
         return instance;
     }
