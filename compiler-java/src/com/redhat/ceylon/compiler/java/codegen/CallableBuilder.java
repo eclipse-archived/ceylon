@@ -128,7 +128,8 @@ public class CallableBuilder {
                 break;
             minimumParams++;
         }
-        boolean isVariadic = minimumParams != numParams;
+        boolean isVariadic = numParams > 0 && paramLists.getParameters().get(numParams-1).isSequenced();
+        boolean hasOptionalParameters = minimumParams != numParams;
         if(parameterListTree != null){
             // generate a method for each defaulted param
             for(Tree.Parameter p : parameterListTree.getParameters()){
@@ -159,13 +160,13 @@ public class CallableBuilder {
         // now generate a method for each supported minimum number of parameters below 4
         // which delegates to the $call$typed method if required
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-            classBody.append(makeDefaultedCall(i, isVariadic, parameterTypes));
+            classBody.append(makeDefaultedCall(i, hasOptionalParameters, parameterTypes));
         }
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
-        classBody.append(makeDefaultedCall(numParams, isVariadic, parameterTypes));
+        classBody.append(makeDefaultedCall(numParams, hasOptionalParameters, parameterTypes));
         // generate the $call$typed method if required
-        if(isVariadic && forwardCallTo == null)
+        if(hasOptionalParameters && forwardCallTo == null)
             classBody.append(makeCallTypedMethod(body, parameterTypes));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
@@ -208,7 +209,7 @@ public class CallableBuilder {
         return argExpr;
     }
     
-    private JCTree makeDefaultedCall(int i, boolean isVariadic, java.util.List<ProducedType> parameterTypes) {
+    private JCTree makeDefaultedCall(int i, boolean hasOptionalParameters, java.util.List<ProducedType> parameterTypes) {
         // collect every parameter
         int a = 0;
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
@@ -278,7 +279,7 @@ public class CallableBuilder {
             } finally {
                 gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
             }
-        }else if(isVariadic){
+        }else if(hasOptionalParameters){
             // chain to n param typed method
             List<JCExpression> args = List.nil();
             // pass along the parameters
