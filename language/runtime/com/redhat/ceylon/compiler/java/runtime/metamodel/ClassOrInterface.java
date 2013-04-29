@@ -224,4 +224,17 @@ public abstract class ClassOrInterface
         }
         return null;
     }
+
+    Value findValue(String name) {
+        checkInit();
+        Iterator iterator = values.iterator();
+        Object it;
+        while((it = iterator.next()) != finished_.getFinished$()){
+            Member member = (Member) it;
+            Value f = (Value) member.declaration;
+            if(f.getName().equals(name))
+                return f;
+        }
+        return null;
+    }
 }

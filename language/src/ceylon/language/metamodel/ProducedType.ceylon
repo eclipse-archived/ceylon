@@ -57,6 +57,7 @@ shared object nothingType satisfies ProducedType {}
 
 shared interface AppliedDeclaration of AppliedClassOrInterfaceType<Anything>
                                      | AppliedFunction<Anything, Nothing> 
+                                     | AppliedValue<Anything>
     satisfies AppliedProducedType {
     
     shared formal Declaration declaration;
@@ -76,6 +77,7 @@ shared interface AppliedClassOrInterfaceType<out Type>
     shared formal AppliedInterfaceType<Anything>[] interfaces;
     
     shared formal AppliedFunction<Anything, Nothing>? getFunction(String name, AppliedProducedType* types);
+    shared formal AppliedValue<Anything>? getAttribute(String name);
 }
 
 shared interface AppliedClassType<out Type, in Arguments>
@@ -114,4 +116,18 @@ shared interface AppliedFunction<out Type, in Arguments>
     // FIXME: instance should be of Type
     // FIXME: we should be able to derive Arguments from the AppliedFunction Arguments
     shared formal Callable<Type, Nothing> bind(Object instance);
+}
+
+shared interface AppliedValue<out Type>
+        satisfies AppliedDeclaration {
+    
+    shared formal Type get(Object instance);
+    
+    shared formal AppliedProducedType type;
+}
+
+shared interface AppliedVariable<Type> 
+        satisfies AppliedValue<Type> {
+    
+    shared formal void set(Object instance, Type newValue);
 }

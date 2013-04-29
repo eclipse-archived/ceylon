@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -176,6 +177,19 @@ public class AppliedClassOrInterfaceType<Type>
         return new AppliedFunction(appliedFunction, method, this);
     }
 
+    @Override
+    @TypeInfo("ceylon.language.metamodel::AppliedValue<ceylon.language::Anything>|ceylon.language::Null")
+    public ceylon.language.metamodel.AppliedValue<? extends Object> getAttribute(String name) {
+        checkInit();
+        Value value = declaration.findValue(name);
+        if(value == null)
+            return null;
+        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
+        ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
+        
+        return new AppliedValue(value, valueType, this);
+    }
+    
     @Override
     public TypeDescriptor $getType() {
         checkInit();
