@@ -12,6 +12,7 @@ import ceylon.language.finished_;
 import ceylon.language.metamodel.AppliedClassOrInterfaceType$impl;
 import ceylon.language.metamodel.AppliedProducedType;
 import ceylon.language.metamodel.AppliedProducedType$impl;
+import ceylon.language.metamodel.AppliedDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -49,6 +50,13 @@ public class AppliedClassOrInterfaceType<Type>
     @Override
     @Ignore
     public AppliedProducedType$impl $ceylon$language$metamodel$AppliedProducedType$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public AppliedDeclaration$impl $ceylon$language$metamodel$AppliedDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

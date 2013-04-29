@@ -5,7 +5,7 @@ shared interface ProducedType of ClassOrInterfaceType
                                  | IntersectionType
                                  | nothingType {}
 
-shared interface AppliedProducedType of AppliedClassOrInterfaceType<Anything>
+shared interface AppliedProducedType of AppliedDeclaration
                                       | AppliedUnionType
                                       | AppliedIntersectionType
                                       | appliedNothingType {}
@@ -52,11 +52,22 @@ shared interface IntersectionType satisfies ProducedType {
 
 shared object nothingType satisfies ProducedType {}
 
-shared interface AppliedClassOrInterfaceType<out Type> 
-    of AppliedClassType<Type, Nothing[]> | AppliedInterfaceType<Type>
+//
+// Applied
+
+shared interface AppliedDeclaration of AppliedClassOrInterfaceType<Anything>
+                                     | AppliedFunction<Anything, Nothing> 
     satisfies AppliedProducedType {
     
-    shared formal ClassOrInterface declaration;
+    shared formal Declaration declaration;
+}
+
+
+shared interface AppliedClassOrInterfaceType<out Type> 
+    of AppliedClassType<Type, Nothing[]> | AppliedInterfaceType<Type>
+    satisfies AppliedDeclaration {
+    
+    shared formal actual ClassOrInterface declaration;
     
     shared formal Map<TypeParameter, AppliedProducedType> typeArguments;
     
@@ -93,10 +104,10 @@ shared interface AppliedIntersectionType satisfies AppliedProducedType {
 shared object appliedNothingType satisfies AppliedProducedType {}
 
 shared interface AppliedFunction<out Type, in Arguments> 
-        satisfies Callable<Type, Arguments> 
+        satisfies Callable<Type, Arguments> & AppliedDeclaration 
         given Arguments satisfies Anything[] {
     
-    shared formal Function declaration;
+    shared formal actual Function declaration;
 
     shared formal AppliedProducedType type;
 }
