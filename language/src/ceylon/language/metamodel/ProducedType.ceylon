@@ -103,11 +103,15 @@ shared interface AppliedIntersectionType satisfies AppliedProducedType {
 
 shared object appliedNothingType satisfies AppliedProducedType {}
 
-shared interface AppliedFunction<out Type, in Arguments> 
+shared interface AppliedFunction<out Type, in Arguments>
         satisfies Callable<Type, Arguments> & AppliedDeclaration 
         given Arguments satisfies Anything[] {
     
     shared formal actual Function declaration;
 
     shared formal AppliedProducedType type;
+
+    // FIXME: instance should be of Type
+    // FIXME: we should be able to derive Arguments from the AppliedFunction Arguments
+    shared formal Callable<Type, Nothing> bind(Object instance);
 }

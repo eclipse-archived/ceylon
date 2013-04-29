@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ceylon.language.Callable;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.AppliedFunction$impl;
 import ceylon.language.metamodel.AppliedProducedType;
@@ -212,13 +213,22 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // TODO Auto-generated method stub
         return null;
     }
-    
+
     @Override
     public short $getVariadicParameterIndex() {
         // TODO Auto-generated method stub
         return -1;
     }
 
+    @Override
+    public Callable<Type> bind(@TypeInfo("ceylon.language::Object") Object instance){
+        if(method == null)
+            throw new RuntimeException("No method found for: "+declaration.getName());
+        // bound arguments type is the third type arg of Tuple
+        TypeDescriptor boundArguments = ((TypeDescriptor.Class)$reifiedArguments).getTypeArguments()[2];
+        return new BoundFunction<Type, Arguments>($reifiedType, boundArguments, method.bindTo(instance));
+    }
+    
     @Override
     @TypeInfo("ceylon.language.metamodel::AppliedProducedType")
     public AppliedProducedType getType() {
