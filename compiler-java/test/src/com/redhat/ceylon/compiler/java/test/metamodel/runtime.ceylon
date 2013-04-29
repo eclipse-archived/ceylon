@@ -2,6 +2,10 @@ shared class NoParams(){
     shared NoParams noParams() => NoParams();
     shared NoParams fixedParams(String s, Integer i) => NoParams();
     shared NoParams typeParams<T>(T s, Integer i) => NoParams();
+    
+    shared Integer i = 2;
+    shared String s = "hello";
+    shared NoParams o => this;
 }
 
 shared class FixedParams(String s, Integer i){}
@@ -45,13 +49,31 @@ shared void runtime() {
     
     value noParamsInstance = NoParams();
     if(is AppliedFunction<NoParams, [NoParams]> f = noParamsType.getFunction("noParams")){
-        print("invocation: `` f(noParamsInstance) ``\n");
+        print("invocation1: `` f(noParamsInstance) ``\n");
+        if(is Callable<NoParams, []> bf = f.bind(noParamsInstance)){
+            print("invocation1: `` bf() ``\n");
+        }
     }
     if(is AppliedFunction<NoParams, [NoParams, String, Integer]> f = noParamsType.getFunction("fixedParams")){
-        print("invocation: `` f(noParamsInstance, "a", 1) ``\n");
+        print("invocation2: `` f(noParamsInstance, "a", 1) ``\n");
+        if(is Callable<NoParams, [String, Integer]> bf = f.bind(noParamsInstance)){
+            print("invocation2: `` bf("a", 1) ``\n");
+        }
     }
-    if(is AppliedFunction<NoParams, [NoParams, String, Integer]> f = noParamsType.getFunction("noParams", classType)){
-        print("invocation: `` f(noParamsInstance, "a", 1) ``\n");
+    if(is AppliedFunction<NoParams, [NoParams, String, Integer]> f = noParamsType.getFunction("typeParams", classType)){
+        print("invocation3: `` f(noParamsInstance, "a", 1) ``\n");
+        if(is Callable<NoParams, [String, Integer]> bf = f.bind(noParamsInstance)){
+            print("invocation3: `` bf("a", 1) ``\n");
+        }
+    }
+    if(is AppliedValue<Integer> a = noParamsType.getAttribute("i")){
+        print("attribute i: `` a.get(noParamsInstance) ``\n");
+    }
+    if(is AppliedValue<String> a = noParamsType.getAttribute("s")){
+        print("attribute s: `` a.get(noParamsInstance) ``\n");
+    }
+    if(is AppliedValue<NoParams> a = noParamsType.getAttribute("o")){
+        print("attribute o: `` a.get(noParamsInstance) ``\n");
     }
 
     value fixedParamsType = type(FixedParams("a", 1));
