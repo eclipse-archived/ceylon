@@ -80,7 +80,9 @@ PRE, div.syntaxhighlighter {
     padding: 5px !important;
 }
 
-PRE, .syntaxhighlighter .lines {
+PRE, .syntaxhighlighter .lines, 
+.synopsis span.emphasis, 
+.literal span.emphasis  {
     font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
 }
 
@@ -89,12 +91,12 @@ PRE, .syntaxhighlighter .lines {
     border-left: 5px solid #f0f0f0;
 }
 
-.brush, .screen {
+.brush, .screen, .synopsis {
     font-size: 85%;
     line-height: 1.4em;
 }
 
-.screen {
+.screen, .synopsis {
     border-left: none;
     margin: 15px !important;
 }

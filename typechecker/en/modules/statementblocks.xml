@@ -735,13 +735,13 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
         control structures, and declarations, surrounded by braces.</para>
         
-        <screen>Block: "{" (Declaration | Statement)* "}"</screen>
+        <synopsis>Block: "{" (Declaration | Statement)* "}"</synopsis>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
         invocation of a method, an instantiation of a class, a control structure, a 
         control directive, or an assertion.</para>
 
-        <screen>Statement: ExpressionStatement | Specification | Assertion | DirectiveStatement | ControlStructure</screen>
+        <synopsis>Statement: ExpressionStatement | Specification | Assertion | DirectiveStatement | ControlStructure</synopsis>
         
         <para>A statement or declaration contained in a block may not evaluate a value, 
         invoke a function, instantiate a class, or extend a class whose declaration 
@@ -797,7 +797,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <screen>ExpressionStatement: ( Assignment | IncrementOrDecrement | Invocation ) ";"</screen>
+        <synopsis>ExpressionStatement: ( Assignment | IncrementOrDecrement | Invocation ) ";"</synopsis>
         
         <para>For example:</para>
         
@@ -815,7 +815,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
         current block and forces the flow of execution to resume in some outer scope. 
         They may only occur as the lexically last statement of a block.</para>
 
-        <screen>DirectiveStatement: Directive ";"</screen>
+        <synopsis>DirectiveStatement: Directive ";"</synopsis>
         
         <para>There are four control directives:</para>
         
@@ -829,7 +829,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
         </itemizedlist>
                 
-        <screen>Directive: Return | Throw | Break | Continue</screen>
+        <synopsis>Directive: Return | Throw | Break | Continue</synopsis>
 
         <para>For example:</para>
         
@@ -846,17 +846,17 @@ Integer f(Integer n) => n+package.n;</programlisting>
         type of the function or the type of the value. When the directive is executed, the 
         expression is evaluated to determine the return value of the function or getter.</para>
         
-        <screen>Return: "return" Expression?</screen>
+        <synopsis>Return: "return" Expression?</synopsis>
         
         <para>The <literal>break</literal> directive must sequentially occur in the body 
         of a loop.</para>
         
-        <screen>Break: "break"</screen>
+        <synopsis>Break: "break"</synopsis>
         
         <para>The <literal>continue</literal> directive must sequentially occur in the body 
         of a loop.</para>
         
-        <screen>Continue: "continue"</screen>
+        <synopsis>Continue: "continue"</synopsis>
         
         <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
         expression, whose type must be a subtype of type <literal>Exception</literal> 
@@ -864,7 +864,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
         expression is evaluated and the resulting exception is thrown. If no expression is 
         specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
         
-        <screen>Throw: "throw" Expression?</screen>
+        <synopsis>Throw: "throw" Expression?</synopsis>
         
         </section>
         
@@ -875,7 +875,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
         persistent value of a forward-declared reference, or specify the implementation of 
         a forward-declared getter or function.</para>
         
-        <screen>Specification: ValueSpecification | LazySpecification</screen>
+        <synopsis>Specification: ValueSpecification | LazySpecification</synopsis>
         
         <para>The persistent value of a forward-declared reference or the 
         implementation of a forward-declared function may be specified using 
@@ -884,7 +884,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
         declaration which sequentially occurs earlier in the body in which the 
         specification statement occurs.</para>
         
-        <screen>ValueSpecification: MemberName Specifier ";"</screen>
+        <synopsis>ValueSpecification: MemberName Specifier ";"</synopsis>
         
         <para>The type of the specified expression must be assignable to the type of 
         the reference, or to the callable type of the function.</para>
@@ -939,12 +939,12 @@ else {
         <literal>R</literal>. Then the type of the parameterized reference is
         <literal>R</literal>.</para>
         
-        <screen>ParameterizedReference: MemberName Parameters+</screen>
+        <synopsis>ParameterizedReference: MemberName Parameters+</synopsis>
         
         <para>Thus, the specification statement consists of a parameterized reference
         followed by a lazy specifier.</para>
         
-        <screen>LazySpecification: (MemberName | ParameterizedReference) LazySpecifier ";"</screen>
+        <synopsis>LazySpecification: (MemberName | ParameterizedReference) LazySpecifier ";"</synopsis>
         
         <para>The type of the specified expression must be assignable to the type of 
         the parameterized reference, or to the type of the value reference.</para>
@@ -1223,7 +1223,7 @@ else {
             </listitem>
         </itemizedlist>
                 
-        <screen>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Dynamic</screen>
+        <synopsis>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally | Dynamic</synopsis>
        
         <comment><para>Control structures are not considered to be expressions, and therefore 
         do not evaluate to a value. However, comprehensions&mdash;and conditional expressions, 
@@ -1249,11 +1249,11 @@ else {
             <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
             a reference that is scoped to the control structure body.</para>
             
-            <screen>TypedVariable: Type MemberName</screen>
+            <synopsis>TypedVariable: Type MemberName</synopsis>
             
             <para>In most cases, the explicit type be omitted.</para>
             
-            <screen>Variable: Type? MemberName</screen>
+            <synopsis>Variable: Type? MemberName</synopsis>
             
             <para>If the type is missing from the declaration, the type of the variables is 
             inferred from the type of the expression that follows.</para>
@@ -1269,16 +1269,16 @@ else {
             <para>A <literal>for</literal> loop requires an <emphasis>iteration variable</emphasis> 
             declaration. An iteration variable declaration must specify an iteration variable.</para>
 
-            <screen>IteratorVariable: Variable | CallableVariable | EntryVariablePair</screen>
+            <synopsis>IteratorVariable: Variable | CallableVariable | EntryVariablePair</synopsis>
             
             <para>An iteration variable of type <literal>Entry</literal> may be specified in 
             destructured form.</para>
         
-            <screen>EntryVariablePair: Variable "->" Variable</screen>
+            <synopsis>EntryVariablePair: Variable "->" Variable</synopsis>
             
             <para>An iteration variable may be callable.</para>
             
-            <screen>CallableVariable: (Type | "void")? MemberName Parameters+</screen>
+            <synopsis>CallableVariable: (Type | "void")? MemberName Parameters+</synopsis>
         
             <para>If the return type is missing from the declaration, the return type of the 
             callable variable is inferred.</para>
@@ -1318,11 +1318,11 @@ else {
                 </listitem-->
             </itemizedlist>
             
-            <screen>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</screen>
+            <synopsis>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition</synopsis>
             
             <para>A condition list has one or more conditions.</para>
             
-            <screen>ConditionList: "(" Condition ("," Condition) ")"</screen>
+            <synopsis>ConditionList: "(" Condition ("," Condition) ")"</synopsis>
             
             <para>A condition in the list may refer to a condition variable defined earlier in the list.</para>
             
@@ -1337,7 +1337,7 @@ else {
         
             <para>A boolean condition is just an expression.</para>
             
-            <screen>BooleanCondition: Expression</screen>
+            <synopsis>BooleanCondition: Expression</synopsis>
             
             <para>The expression must be of type <literal>Boolean</literal>.</para>
                 
@@ -1361,9 +1361,9 @@ else {
             <para>In the case of an assignability or existence condition, the type of the variable 
             may be inferred.</para>
                     
-            <screen>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</screen>
+            <synopsis>IsCondition: "!"? "is" (TypedVariable Specifier | Type MemberName)</synopsis>
             
-            <screen>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</screen>
+            <synopsis>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</synopsis>
             
             <para>The type of the value reference or expression must be:</para>
             
@@ -1497,7 +1497,7 @@ else {
             <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
             <emphasis>given type</emphasis> (second).</para>
             
-            <screen>SatisfiesCondition: "satisfies" Type Type</screen>        
+            <synopsis>SatisfiesCondition: "satisfies" Type Type</synopsis>        
             
             <para>The given type will be treated by the compiler as a subtype of the specified type 
             inside the block that immediately follows the condition.</para>
@@ -1553,11 +1553,11 @@ else {
             
             <para>The <literal>if/else</literal> conditional has the following form:</para>
             
-            <screen>IfElse: If Else?</screen>
+            <synopsis>IfElse: If Else?</synopsis>
 
-            <screen>If: "if" ConditionList Block</screen>
+            <synopsis>If: "if" ConditionList Block</synopsis>
             
-            <screen>Else: "else" (Block | IfElse)</screen>
+            <synopsis>Else: "else" (Block | IfElse)</synopsis>
             
             <para>The construct may include a chain of an arbitrary number of child 
             <literal>else if</literal> clauses.</para>
@@ -1594,15 +1594,15 @@ else {
             <para>The <literal>switch/case/else</literal> conditional has the following 
             form:</para>
             
-            <screen>SwitchCaseElse: Switch Cases</screen>
+            <synopsis>SwitchCaseElse: Switch Cases</synopsis>
             
-            <screen>Switch: "switch" "(" Expression ")"</screen>
+            <synopsis>Switch: "switch" "(" Expression ")"</synopsis>
             
-            <screen>Cases: CaseItem+ DefaultCaseItem?</screen>
+            <synopsis>Cases: CaseItem+ DefaultCaseItem?</synopsis>
 
-            <screen>CaseItem: "case" "(" Case ")" Block</screen>
+            <synopsis>CaseItem: "case" "(" Case ")" Block</synopsis>
             
-            <screen>DefaultCaseItem: "else" Block</screen>
+            <synopsis>DefaultCaseItem: "else" Block</synopsis>
 
             <para>For a <literal>switch</literal> statement whose <literal>switch</literal> 
             expression is of type <literal>U</literal>, each <literal>case</literal> must 
@@ -1622,7 +1622,7 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <screen>Case: Expression ("," Expression)* | "is" Type</screen>
+            <synopsis>Case: Expression ("," Expression)* | "is" Type</synopsis>
             
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
             if the intersection of their types is exactly <literal>Nothing</literal>. In every
@@ -1712,17 +1712,17 @@ case (is Float) {
             
             <para>The <literal>for/else</literal> loop has the following form:</para>
              
-            <screen>ForFail: For Fail?</screen>
+            <synopsis>ForFail: For Fail?</synopsis>
 
-            <screen>For: "for" ForIterator Block</screen>
+            <synopsis>For: "for" ForIterator Block</synopsis>
             
-            <screen>Fail: "else" Block</screen>
+            <synopsis>Fail: "else" Block</synopsis>
 
             <para>The <literal>for</literal> iterator consists of an iteration variable 
             declaration and an iterated expression that contains the range of values to 
             be iterated.</para>
             
-            <screen>ForIterator: "(" IteratorVariable "in" Expression ")"</screen>
+            <synopsis>ForIterator: "(" IteratorVariable "in" Expression ")"</synopsis>
 
             <para>The type of the iterated expression depends upon the iteration variable 
             declarations:</para>
@@ -1774,11 +1774,11 @@ else {
             
             <para>The <literal>while</literal> loop has the form:</para>
             
-            <screen>While: LoopCondition Block</screen>
+            <synopsis>While: LoopCondition Block</synopsis>
             
             <para>The loop condition list determines when the loop terminates.</para>
             
-            <screen>LoopCondition: "while" ConditionList</screen>
+            <synopsis>LoopCondition: "while" ConditionList</synopsis>
             
             <comment><para>TODO: does <literal>while</literal> need a <literal>fail</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
@@ -1800,13 +1800,13 @@ while (n&lt;=max) {
             <para>The <literal>try/catch/finally</literal> exception manager has the 
             form:</para>
             
-            <screen>TryCatchFinally: Try Catch* Finally?</screen>
+            <synopsis>TryCatchFinally: Try Catch* Finally?</synopsis>
 
-            <screen>Try: "try" ("(" Resource ")")? Block</screen>
+            <synopsis>Try: "try" ("(" Resource ")")? Block</synopsis>
             
-            <screen>Catch: "catch" "(" Variable ")" Block</screen>
+            <synopsis>Catch: "catch" "(" Variable ")" Block</synopsis>
             
-            <screen>Finally: "finally" Block</screen>
+            <synopsis>Finally: "finally" Block</synopsis>
 
             <para>Each <literal>catch</literal> block defines a variable. The type of
             the variable must be assignable to <literal>Exception</literal> in
@@ -1849,7 +1849,7 @@ while (n&lt;=max) {
             resource expression must be of type assignable to <literal>Closeable</literal>
             in <literal>ceylon.language</literal>.</para>
             
-            <screen>Resource: MemberName | InitializerReference Arguments | Variable Specifier </screen>
+            <synopsis>Resource: MemberName | InitializerReference Arguments | Variable Specifier </synopsis>
                         
             <para>For example:</para>
             
@@ -1884,7 +1884,7 @@ finally {
             <para>An assertion has an asserted condition list and, optionally, 
             an annotation list.</para>
             
-            <screen>Assertion: Annotations "assert" ConditionList ";"</screen>
+            <synopsis>Assertion: Annotations "assert" ConditionList ";"</synopsis>
             
             <para>The message carried by the assertion failure may be specified
             using a <literal>doc</literal> annotation.</para>
@@ -1915,7 +1915,7 @@ else "total must be less than ``bound``";</programlisting>
             <para>A <literal>dynamic</literal> block allows interoperation with 
             dynamically typed native code.</para>
             
-            <screen>Dynamic: "dynamic" Block</screen>
+            <synopsis>Dynamic: "dynamic" Block</synopsis>
             
             <para>Inside a <literal>dynamic</literal> block, a value reference 
             or qualified or unqualified reference occurring in an expression that 

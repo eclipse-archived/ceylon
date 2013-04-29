@@ -71,7 +71,7 @@
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para></comment>
     
-    <screen>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</screen>
+    <synopsis>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
     
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -284,7 +284,7 @@ shared interface Color { ... }</programlisting>
         <para>A character <emphasis>string template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <screen>StringTemplate: StringStart (ValueExpression StringMid)* ValueExpression StringEnd</screen>
+        <synopsis>StringTemplate: StringStart (ValueExpression StringMid)* ValueExpression StringEnd</synopsis>
         
         <para>Each interpolated expression contained in the string template must have 
         a type assignable to <literal>Object</literal> defined in 
@@ -320,7 +320,7 @@ shared interface Color { ... }</programlisting>
         <para>The type of the following expressions depends upon the context in which 
         they appear.</para>
         
-        <screen>SelfReference: "this" | "super" | "outer" | "package"</screen>
+        <synopsis>SelfReference: "this" | "super" | "outer" | "package"</synopsis>
         
     <section>
         <title><literal>this</literal></title>
@@ -381,7 +381,7 @@ shared interface Color { ... }</programlisting>
             an expression. It comprises one or more parameter lists, followed by an 
             expression.</para>
             
-            <screen>FunctionExpression: ("function" | "void")? Parameters+ ("=>" Expression | Block)</screen>
+            <synopsis>FunctionExpression: ("function" | "void")? Parameters+ ("=>" Expression | Block)</synopsis>
             
             <para>The parameters are the parameters of the function. The lazy 
             specifier or block of code is the implementation of the function. if 
@@ -416,24 +416,24 @@ shared interface Color { ... }</programlisting>
         string template, an iterable or tuple enumeration, or a parenthesized 
         expression.</para>
         
-        <screen>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple</screen>
+        <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple</synopsis>
         
         <para>A <emphasis>primary</emphasis> is formed by recursively forming 
         qualified expression and invocation expression from from an atom or 
         base expression.</para>
         
-        <screen>Primary: Atom | BaseExpression | QualifiedExpression | Invocation</screen>
+        <synopsis>Primary: Atom | BaseExpression | QualifiedExpression | Invocation</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and anonymous functions.</para>    
         
-        <screen>ValueExpression: Primary | OperatorExpression</screen>
+        <synopsis>ValueExpression: Primary | OperatorExpression</synopsis>
         
-        <screen>Expression: ValueExpression | FunctionExpression</screen>
+        <synopsis>Expression: ValueExpression | FunctionExpression</synopsis>
         
         <para>Parentheses are used for grouping:</para>
         
-        <screen>GroupedExpression: "(" Expression ")"</screen>
+        <synopsis>GroupedExpression: "(" Expression ")"</synopsis>
         
         <para>A compound expression occurring in a <literal>dynamic</literal> 
         block, and involving a qualified or unqualified reference with no type,
@@ -450,7 +450,7 @@ shared interface Color { ... }</programlisting>
         <para>A <emphasis>base expression</emphasis> is an unqualified 
         identifier, with an optional list of type arguments:</para>
         
-        <screen>BaseExpression: (MemberName | TypeName) TypeArguments</screen>
+        <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments</synopsis>
         
         <para>A base expression is either:</para>
         
@@ -477,7 +477,7 @@ shared interface Color { ... }</programlisting>
         expression</emphasis>, followed by a <emphasis>member operator</emphasis>,
         followed by an identifier, with an optional list of type arguments.</para>
         
-        <screen>QualifiedExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</screen>
+        <synopsis>QualifiedExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</synopsis>
         
         <para>A qualified expression is a reference to a member of a type: an
         attribute, method, or member class.</para>
@@ -555,7 +555,7 @@ shared interface Color { ... }</programlisting>
         <emphasis>invocation</emphasis> consists of an <emphasis>invoked expression</emphasis>, 
         together with an argument list and, optionally, an explicit type argument list.</para>
         
-        <screen>Invocation: Primary Arguments</screen>
+        <synopsis>Invocation: Primary Arguments</synopsis>
         
         <para>The invoked expression must be of type <literal>Callable&lt;R,P&gt;</literal>.</para>
         
@@ -584,7 +584,7 @@ shared interface Color { ... }</programlisting>
         <para>An invocation expression must specify arguments for parameters of the callable 
         object, either as a positional argument list, or a named argument list.</para>
         
-        <screen>Arguments: PositionalArguments | NamedArguments</screen>
+        <synopsis>Arguments: PositionalArguments | NamedArguments</synopsis>
         
         <para>The arguments must conform to the type of the parameter list:</para>
         
@@ -640,7 +640,7 @@ shared interface Color { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <screen>ArgumentList: ((ListedArgument ",")* (ListedArgument | SpreadArgument | Comprehension))?</screen>
+            <synopsis>ArgumentList: ((ListedArgument ",")* (ListedArgument | SpreadArgument | Comprehension))?</synopsis>
             
             <para>Every such list of arguments has a type, which captures the types
             of the individual arguments in the list. This type is always a subtype 
@@ -675,7 +675,7 @@ shared interface Color { ... }</programlisting>
             
             <para>A listed argument is an expression.</para>
             
-            <screen>ListedArgument: Expression</screen>
+            <synopsis>ListedArgument: Expression</synopsis>
             
             <para>If a listed argument is an expression of type <literal>T</literal>, 
             and an argument list has type <literal>P</literal>, an invariant subtype of 
@@ -691,7 +691,7 @@ shared interface Color { ... }</programlisting>
             <para>A spread argument is an expression prefixed by the 
             <emphasis>spread operator</emphasis> <literal>*</literal>.</para>
             
-            <screen>SpreadArgument: "* "Expression</screen>
+            <synopsis>SpreadArgument: "* "Expression</synopsis>
             
             <para>The expression type <literal>T</literal> must be an invariant subtype of 
             <literal>{X*}</literal> for some type <literal>X</literal>. We form the
@@ -738,10 +738,10 @@ shared interface Color { ... }</programlisting>
             and ends with an expression. There may be any number of intervening 
             <literal>for</literal> or <literal>if</literal> clauses.</para>
             
-            <screen>Comprehension: ForComprehensionClause</screen>
-            <screen>ForComprehensionClause: "for" ForIterator ComprehensionClause</screen>
-            <screen>IfComprehensionClause: "if" ConditionList ComprehensionClause</screen>
-            <screen>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</screen>
+            <synopsis>Comprehension: ForComprehensionClause</synopsis>
+            <synopsis>ForComprehensionClause: "for" ForIterator ComprehensionClause</synopsis>
+            <synopsis>IfComprehensionClause: "if" ConditionList ComprehensionClause</synopsis>
+            <synopsis>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</synopsis>
             
             <para>A child comprehension clause may refer to iteration variables 
             and condition variables declared by outer clauses of the comprehension.</para>
@@ -765,8 +765,8 @@ shared interface Color { ... }</programlisting>
             tuple and iterable object instantiation. Iterable enumerations are delimited
             using braces. Tuple enumerations are delimeted by brackets.</para>
             
-            <screen>Iterable: "{" ArgumentList "}"</screen>
-            <screen>Tuple: "[" ArgumentList "]"</screen>
+            <synopsis>Iterable: "{" ArgumentList "}"</synopsis>
+            <synopsis>Tuple: "[" ArgumentList "]"</synopsis>
             
             <para>The type of an iterable enumeration expression is:</para>
             
@@ -803,7 +803,7 @@ shared interface Color { ... }</programlisting>
         <para>When invocation arguments are listed positionally, the argument list is 
         enclosed in parentheses.</para>
             
-        <screen>PositionalArguments: "(" ArgumentList ")"</screen>
+        <synopsis>PositionalArguments: "(" ArgumentList ")"</synopsis>
         
         <para>The type of the positional argument list is the type of the argument 
         list.</para>
@@ -849,7 +849,7 @@ shared interface Color { ... }</programlisting>
         <para>When invocation arguments are listed by name, the argument list is enclosed 
         in braces.</para>
         
-        <screen>NamedArguments: "{" NamedArgument* ArgumentList "}"</screen>
+        <synopsis>NamedArguments: "{" NamedArgument* ArgumentList "}"</synopsis>
         
         <para>Named arguments may be listed in a different order to the corresponding
         parameters.</para>
@@ -879,17 +879,17 @@ shared interface Color { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
-        <screen>NamedArgument: AnonymousArgument | SpecifiedArgument | ValueArgument | FunctionArgument | ObjectArgument</screen>
+        <synopsis>NamedArgument: AnonymousArgument | SpecifiedArgument | ValueArgument | FunctionArgument | ObjectArgument</synopsis>
         
-        <screen>AnonymousArgument: Expression</screen>
+        <synopsis>AnonymousArgument: Expression</synopsis>
         
-        <screen>SpecifiedArgument: Specification</screen>
+        <synopsis>SpecifiedArgument: Specification</synopsis>
         
-        <screen>ValueArgument: AttributeHeader (Block | (Specifier | LazySpecifier) ";")</screen>
+        <synopsis>ValueArgument: AttributeHeader (Block | (Specifier | LazySpecifier) ";")</synopsis>
         
-        <screen>FunctionArgument: MethodHeader (Block | LazySpecifier ";")</screen>
+        <synopsis>FunctionArgument: MethodHeader (Block | LazySpecifier ";")</synopsis>
         
-        <screen>ObjectArgument: ObjectHeader ClassBody</screen>
+        <synopsis>ObjectArgument: ObjectHeader ClassBody</synopsis>
         
         <comment><para>Note: there is an ambiguity here between assignment expressions 
         and specified arguments. This ambiguity is resolved in favor of interpreting the
@@ -1054,7 +1054,7 @@ shared interface Color { ... }</programlisting>
         <para>An argument to a tuple parameter is always a single expression followed by 
         an ellipsis.</para>
                         
-        <screen>Sequence: Expression ("," Expression)* | Expression "..."</screen>
+        <synopsis>Sequence: Expression ("," Expression)* | Expression "..."</synopsis>
         
         <comment><para>Note: the ellipsis <literal>...</literal> is like the opposite of 
         a sequence instantiation: <literal>{ x... }</literal> means <literal>x</literal>
@@ -1097,7 +1097,7 @@ shared interface Color { ... }</programlisting>
         <para>The metamodel object representing a type or program element may be obtained
         using a completely typesafe syntax.</para>
         
-        <screen>Meta: TypeMeta | MethodMeta | AttributeMeta | FunctionMeta | ValueMeta</screen>
+        <synopsis>Meta: TypeMeta | MethodMeta | AttributeMeta | FunctionMeta | ValueMeta</synopsis>
         
         <para>Metamodel references are compile-time typesafe.</para>
         
@@ -1143,7 +1143,7 @@ shared interface Color { ... }</programlisting>
         <para>A <literal>Type</literal> object may be obtained by specifying the full
         type, including type arguments if the type is generic.</para>
         
-        <screen>TypeMeta: Type</screen>
+        <synopsis>TypeMeta: Type</synopsis>
         
         <para>The metamodel expression, <literal>X</literal>, for a type, class or interface 
         is:</para>
@@ -1189,7 +1189,7 @@ shared interface Color { ... }</programlisting>
         obtained by specifying the method name, with type arguments if the toplevel method 
         is generic.</para>
         
-        <screen>FunctionMeta: MemberName TypeArguments?</screen>
+        <synopsis>FunctionMeta: MemberName TypeArguments?</synopsis>
                
         <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
         is:</para>
@@ -1217,7 +1217,7 @@ shared interface Color { ... }</programlisting>
         obtained by specifying the type (with type arguments) and member name, together 
         with type arguments if the method is generic.</para>
         
-        <screen>MethodMeta: Type "." MemberName TypeArguments?</screen>
+        <synopsis>MethodMeta: Type "." MemberName TypeArguments?</synopsis>
                
         <para>The metamodel expression, <literal>X.member</literal>, for a member method 
         is:</para>
@@ -1242,7 +1242,7 @@ shared interface Color { ... }</programlisting>
         obtained by specifying the attribute name, with type arguments if the toplevel method 
         is generic.</para>
         
-        <screen>ValueMeta: MemberName TypeArguments?</screen>
+        <synopsis>ValueMeta: MemberName TypeArguments?</synopsis>
                
         <para>The metamodel expression, <literal>attribute</literal>, for a toplevel attribute 
         is:</para>
@@ -1266,7 +1266,7 @@ shared interface Color { ... }</programlisting>
         <para>An <literal>Attribute</literal> object representing a member attribute may 
         be obtained by specifying the type (with type arguments) and member name.</para>
         
-        <screen>AttributeMeta: Type "." MemberName</screen>
+        <synopsis>AttributeMeta: Type "." MemberName</synopsis>
 
         <para>The metamodel expression, <literal>X.member</literal>, for a member 
         attribute is:</para>

@@ -70,11 +70,11 @@ TypeConstraints?
         
         <programlisting>ModuleDescriptor | PackageDescriptor | Import* Declaration*</programlisting>
         
-        <screen>Declaration: FunctionValueDeclaration | TypeDeclaration</screen>
+        <synopsis>Declaration: FunctionValueDeclaration | TypeDeclaration</synopsis>
         
-        <screen>FunctionValueDeclaration: FunctionDeclaration | ValueDeclaration | SetterDeclaration</screen>
+        <synopsis>FunctionValueDeclaration: FunctionDeclaration | ValueDeclaration | SetterDeclaration</synopsis>
         
-        <screen>TypeDeclaration: ClassDeclaration | ObjectDeclaration | InterfaceDeclaration | TypeAliasDeclaration</screen>
+        <synopsis>TypeDeclaration: ClassDeclaration | ObjectDeclaration | InterfaceDeclaration | TypeAliasDeclaration</synopsis>
         
         <section id="topleveldeclarations">
             <title>Toplevel and nested declarations</title>
@@ -110,12 +110,12 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
-        <screen>Import: "import" FullPackageName "{" ImportElements "}"</screen>
+        <synopsis>Import: "import" FullPackageName "{" ImportElements "}"</synopsis>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>
         
-        <screen>FullPackageName: PackageName ("." PackageName)*</screen>
+        <synopsis>FullPackageName: PackageName ("." PackageName)*</synopsis>
         
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
@@ -141,9 +141,9 @@ TypeConstraints?
         declarations from the given package, specifying a list of <emphasis>import
         elements</emphasis>.</para>
         
-        <screen>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)?</screen>
+        <synopsis>ImportElements: (ImportElement ",")* (ImportElement | ImportWildcard)?</synopsis>
         
-        <screen>ImportElement: ImportTypeElement | ImportFunctionValueElement</screen>
+        <synopsis>ImportElement: ImportTypeElement | ImportFunctionValueElement</synopsis>
         
         <para>An import element is a reference to either:</para>
         
@@ -178,7 +178,7 @@ TypeConstraints?
         <para>An import element that specifies a type name imports the toplevel type 
         with that name from the given package.</para>
         
-        <screen>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</screen>
+        <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</synopsis>
         
         <para>A compilation unit may not import two types with the same name.</para>
         
@@ -201,7 +201,7 @@ TypeConstraints?
         <para>An import element that specifies a function or value name imports the 
         toplevel function or value with that name from the given package.</para>
         
-        <screen>ImportFunctionValueElement: FunctionValueAlias? MemberName</screen>
+        <synopsis>ImportFunctionValueElement: FunctionValueAlias? MemberName</synopsis>
         
         <para>A compilation unit may not import two methods or attributes with the same 
         name.</para>
@@ -216,9 +216,9 @@ TypeConstraints?
         <para>The optional alias clause in a fully-explicit import allows resolution 
         of cross-namespace declaration name collisions.</para>
         
-        <screen>TypeAlias: TypeName "="</screen>
+        <synopsis>TypeAlias: TypeName "="</synopsis>
         
-        <screen>FunctionValueAlias: MemberName "="</screen>
+        <synopsis>FunctionValueAlias: MemberName "="</synopsis>
         
         <para>An alias assigns a different name to the imported declaration, or to a
         member of the imported declaration. This name is visible within the compilation
@@ -249,7 +249,7 @@ TypeConstraints?
         <literal>import</literal> statements. An <literal>import</literal> statement 
         that specifies a wildcard imports all toplevel declarations of the package.</para>
         
-        <screen>ImportWildcard: "..."</screen>
+        <synopsis>ImportWildcard: "..."</synopsis>
         
         <para>An <literal>import</literal> statement may specify a list of alias imports 
         followed by a wildcard. In this case, the alias imports are imported with the 
@@ -334,7 +334,7 @@ TypeConstraints?
         <para>In a parameter list, parameters with default values, if any, must occur after 
         required parameters, if any. The variadic parameter, if any, must occur last.</para>
         
-        <screen>Parameters: "(" ( (Parameter ",")* ( Parameter | (DefaultParameter ",")* (DefaultParameter | VariadicParameter) ) )? ")"</screen>
+        <synopsis>Parameters: "(" ( (Parameter ",")* ( Parameter | (DefaultParameter ",")* (DefaultParameter | VariadicParameter) ) )? ")"</synopsis>
         
         <para>Every parameter list has a type, which captures the types of the individual 
         parameters in the list, whether they are defaulted, and whether the last parameter 
@@ -351,7 +351,7 @@ TypeConstraints?
         <para>A required parameter is a value or callable parameter without a default 
         argument.</para>
         
-        <screen>Parameter: ValueParameter | CallableParameter | MemberName</screen>
+        <synopsis>Parameter: ValueParameter | CallableParameter | MemberName</synopsis>
         
         <para>Required parameters must occur before any other parameters in the parameter 
         list.</para>
@@ -364,13 +364,13 @@ TypeConstraints?
         <para>A defaulted parameter is a value or callable parameter that specifies a 
         default argument.</para>
         
-        <screen>DefaultParameter: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</screen>
+        <synopsis>DefaultParameter: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
         
         <para>The <literal>=</literal> and <literal>=&gt;</literal> specifiers are used 
         throughout the language.</para>
         
-        <screen>Specifier: "=" Expression</screen>
-        <screen>LazySpecifier: "=&gt;" Expression</screen>
+        <synopsis>Specifier: "=" Expression</synopsis>
+        <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
         
         <para>Defaulted parameters must occur after required parameters in the parameter 
         list.</para>
@@ -410,7 +410,7 @@ TypeConstraints?
         a sequence of arguments of type <literal>T</literal>. Inside the function or class, 
         the variadic parameter has type <literal>T[]</literal>.</para>
         
-        <screen>VariadicParameter: Annotations UnionType "*" MemberName</screen>
+        <synopsis>VariadicParameter: Annotations UnionType "*" MemberName</synopsis>
         
         <para>The variadic parameter must be the last parameter in a parameter list.</para>
         
@@ -432,7 +432,7 @@ TypeConstraints?
         parameter list. Like any other value declaration, it has a name, type, and, 
         optionally, annotations.</para>
         
-        <screen>ValueParameter: Annotations Type MemberName</screen>
+        <synopsis>ValueParameter: Annotations Type MemberName</synopsis>
         
         <para>An argument to a value parameter must be an expression whose type is
         assignable to the type of the value parameter.</para>
@@ -460,7 +460,7 @@ TypeConstraints?
         in a parameter list. Like any other function declaration, it has a name, type, 
         one or more parameter lists, and, optionally, annotations.</para>
         
-        <screen>CallableParameter: Annotations (Type | "void") MemberName Parameters+</screen>
+        <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
         
         <para>An argument to a callable parameter must be an expression whose type is
         assignable to the callable type of the callable parameter.</para>
@@ -485,7 +485,7 @@ TypeConstraints?
         <para>A parameter of type <literal>Entry</literal> may be specified in 
         <emphasis>destructured</emphasis> form.</para>
         
-        <screen>EntryParamPair: SimpleParam "->" SimpleParam</screen>
+        <synopsis>EntryParamPair: SimpleParam "->" SimpleParam</synopsis>
         
         <para>A destructured parameter declaration of form <literal>U u -> V v</literal> 
         results in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>,
@@ -508,16 +508,16 @@ TypeConstraints?
         implementation details for some members of the type. Interfaces may not 
         be directly instantiated.</para>
         
-        <screen>InterfaceDeclaration: Annotations InterfaceHeader (InterfaceBody | TypeSpecifier ";")</screen>
+        <synopsis>InterfaceDeclaration: Annotations InterfaceHeader (InterfaceBody | TypeSpecifier ";")</synopsis>
         
         <para>An interface declaration may optionally specify a list of type 
         parameters. An interface declaration may also have a list of interfaces 
         is satisfies, a self type or an enumerated list of cases, and/or a list 
         of type constraints.</para>
         
-        <screen>InterfaceHeader: "interface" TypeName TypeParameters? InterfaceInheritance TypeConstraints?</screen>
+        <synopsis>InterfaceHeader: "interface" TypeName TypeParameters? InterfaceInheritance TypeConstraints?</synopsis>
         
-        <screen>InterfaceInheritance: CaseTypes? SatisfiedTypes?</screen>
+        <synopsis>InterfaceInheritance: CaseTypes? SatisfiedTypes?</synopsis>
         
         <para>To obtain a concrete instance of an interface, it is necessary to 
         define and instantiate a class that satisfies the interface, or define 
@@ -539,7 +539,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <screen>InterfaceBody: "{" Declaration* "}"</screen>
+        <synopsis>InterfaceBody: "{" Declaration* "}"</synopsis>
         
         <para>Unlike the body of a class, method, or attribute, the body of an 
         interface is not executable, and does not directly contain procedural 
@@ -687,7 +687,7 @@ TypeConstraints?
         type defines an <emphasis>interface alias</emphasis> of the specified interface 
         type.</para>
         
-        <screen>TypeSpecifier: "=>" Type</screen>
+        <synopsis>TypeSpecifier: "=>" Type</synopsis>
 
         <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
         a reference to an interface with no type parameters, or a produced type formed by 
@@ -717,16 +717,16 @@ TypeConstraints?
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.</para>
 
-        <screen>ClassDeclaration: Annotations ClassHeader (ClassBody | ClassSpecifier ";")</screen>
+        <synopsis>ClassDeclaration: Annotations ClassHeader (ClassBody | ClassSpecifier ";")</synopsis>
         
         <para>An ordinary class declaration specifies a list of parameters required 
         to instantiate the type, and, optionally a list of type parameters.  A class 
         declaration may have a superclass, a list of interfaces it satisfies, a self
         type or an enumerated list of cases, and/or a list of type constraints.</para>
         
-        <screen>ClassHeader: "class" TypeName TypeParameters? Parameters ClassInheritance TypeConstraints?</screen>
+        <synopsis>ClassHeader: "class" TypeName TypeParameters? Parameters ClassInheritance TypeConstraints?</synopsis>
         
-        <screen>ClassInheritance: CaseTypes? ExtendedType? SatisfiedTypes?</screen>
+        <synopsis>ClassInheritance: CaseTypes? ExtendedType? SatisfiedTypes?</synopsis>
         
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
@@ -749,7 +749,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
 
-        <screen>ClassBody: "{" (Declaration | Statement)* "}"</screen>
+        <synopsis>ClassBody: "{" (Declaration | Statement)* "}"</synopsis>
         
         <para>The body of a class may contain executable code.</para>
         
@@ -1304,15 +1304,15 @@ TypeConstraints?
         a class, instantiate the class, and declare an attribute referring to the 
         resulting class instance in a single declaration.</para>
         
-        <screen>ObjectDeclaration: Annotations ObjectHeader ClassBody</screen>
+        <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
         
         <para>An <literal>object</literal> has an initial lowercase identifier.
         An <literal>object</literal> declaration does not specify parameters or
         type parameters.</para>
         
-         <screen>ObjectHeader: "object" MemberName ObjectInheritance</screen>
+         <synopsis>ObjectHeader: "object" MemberName ObjectInheritance</synopsis>
          
-         <screen>ObjectInheritance: ExtendedType? SatisfiedTypes?</screen>
+         <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
          
          <para>An <literal>object</literal> declaration specifies the name of the
          attribute and the schema, supertypes, and implementation of the class. It
@@ -1472,7 +1472,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A class declaration which specifies a reference to another class type 
         defines a <emphasis>class alias</emphasis> of the specified class type.</para>
         
-        <screen>ClassSpecifier: "=>" QualifiedType PositionalArguments</screen>
+        <synopsis>ClassSpecifier: "=>" QualifiedType PositionalArguments</synopsis>
         
         <para>The specified type must be a <emphasis>class type</emphasis>, that is,
         a reference to a class with no type parameters, or a produced type formed by 
@@ -1523,9 +1523,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A type alias declaration assigns a name to an arbitrary type expression,
         usually involving a union and/or intersection of types.</para>
         
-        <screen>TypeAliasDeclaration: Annotations AliasHeader TypeSpecifier</screen>
+        <synopsis>TypeAliasDeclaration: Annotations AliasHeader TypeSpecifier</synopsis>
         
-        <screen>AliasHeader: "alias" TypeName TypeParameters? TypeConstraints?</screen>
+        <synopsis>AliasHeader: "alias" TypeName TypeParameters? TypeConstraints?</synopsis>
         
         <para>The specified type may be any kind of type. A reference to the alias 
         may be used anywhere a union or intersection type may be used. The alias may
@@ -1551,7 +1551,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         may have parameters and may return a value. If a function belongs to a type,
         it is called a <emphasis>method</emphasis>.</para>
         
-        <screen>FunctionDeclaration: Annotations FunctionHeader (Block | LazySpecifier? ";")</screen>
+        <synopsis>FunctionDeclaration: Annotations FunctionHeader (Block | LazySpecifier? ";")</synopsis>
         
         <para>All function declarations specify the function name, one or more parameter 
         lists, and, optionally, a list of type parameters. A function declaration may 
@@ -1563,7 +1563,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <literal>ceylon.language</literal>. A generic function declaration may have a list 
         of type constraints.</para>
         
-        <screen>FunctionHeader: (Type | "function" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</screen>
+        <synopsis>FunctionHeader: (Type | "function" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
         
         <para>The Ceylon compiler preserves the names of function parameters.</para>
         
@@ -2009,7 +2009,7 @@ case (hexadecimal) {
         or assigned. A getter is defined using a block or lazy specifier, which is executed 
         every time the value is evaluated.</para>
         
-        <screen>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</screen>
+        <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
         
         <para>If a value belongs to a type, it is called an <emphasis>attribute</emphasis>.</para>
         
@@ -2019,7 +2019,7 @@ case (hexadecimal) {
         operators. This is the case for a reference annotated <literal>variable</literal>, 
         or for a getter with a matching setter.</para>
             
-        <screen>ValueHeader: (Type | "value") MemberName</screen>
+        <synopsis>ValueHeader: (Type | "value") MemberName</synopsis>
         
         <para>If a reference is a parameter, it must not specify a persistent value.</para>
         
@@ -2124,7 +2124,7 @@ case (hexadecimal) {
             
             <para>A setter defines how the value of a getter is assigned.</para>
             
-            <screen>SetterDeclaration: "assign" MemberName (Block | LazySpecifier)</screen>
+            <synopsis>SetterDeclaration: "assign" MemberName (Block | LazySpecifier)</synopsis>
             
             <para>The name specified in a setter declaration must be the name of a
             matching getter that directly occurs earlier in the body containing the 
@@ -2417,14 +2417,14 @@ print(greeting);</programlisting>
         <para>Any declaration may be preceded by a list of annotations. An annotation is 
         an initial lowercase identifier, optionally followed by an argument list.</para>
         
-        <screen>Annotation: MemberName ( Arguments | Literal+ )?</screen>
+        <synopsis>Annotation: MemberName ( Arguments | Literal+ )?</synopsis>
         
         <para>A list of annotations does not require punctuation between the individual 
         annotations in the list. An annotation list may begin with a string literal, in
         which case it is interpreted as the argument of a <literal>doc</literal>
         annotation.</para>
         
-        <screen>Annotations: StringLiteral? Annotation*</screen>
+        <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
         
         <para>For an annotation with no arguments, or with only literal-valued positional
         arguments, the parentheses around, and commas between, the positional arguments 

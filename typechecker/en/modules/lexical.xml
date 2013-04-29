@@ -26,7 +26,7 @@
         <literal>HT</literal>, <literal>FF</literal>, <literal>LF</literal> and 
         <literal>CR</literal> characters.</para>
         
-        <screen>Whitespace: " " | Tab | Formfeed | Newline | Return</screen>
+        <synopsis>Whitespace: " " | Tab | Formfeed | Newline | Return</synopsis>
         
         <para>Outside of a comment, string literal, or single quoted literal,
         whitespace acts as a token separator and is immediately discarded by
@@ -54,11 +54,11 @@
         
         <para>Both kinds of comments can be nested.</para>
         
-        <screen>LineComment: ("//"|"#!") ~(Newline|Return)* (Return Newline | Return | Newline)?</screen>
+        <synopsis>LineComment: ("//"|"#!") ~(Newline|Return)* (Return Newline | Return | Newline)?</synopsis>
         
-        <screen>MultilineComment: "/*" (MultilineCommmentCharacter | MultilineComment)* "*/"</screen>
+        <synopsis>MultilineComment: "/*" (MultilineCommmentCharacter | MultilineComment)* "*/"</synopsis>
         
-        <screen>MultilineCommmentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</screen>
+        <synopsis>MultilineCommmentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</synopsis>
         
         <para>The following examples are legal comments:</para>
         
@@ -83,9 +83,9 @@
         <para>Identifiers may contain upper and lowercase letters, digits and 
         underscores.</para>
         
-        <screen>LowercaseChar: LowercaseLetter | "_"</screen>
-        <screen>UppercaseChar: UppercaseLetter</screen>
-        <screen>IdentifierChar: LowercaseChar | UppercaseChar | Number</screen>
+        <synopsis>LowercaseChar: LowercaseLetter | "_"</synopsis>
+        <synopsis>UppercaseChar: UppercaseLetter</synopsis>
+        <synopsis>IdentifierChar: LowercaseChar | UppercaseChar | Number</synopsis>
         
         <para>All identifiers are case sensitive: <literal>Person</literal> and
         <literal>person</literal> are two different legal identifiers.</para>
@@ -97,8 +97,8 @@
         from a reserved word or to explicitly specify whether it should be considered
         an uppercase or lowercase identifier.</para>
         
-        <screen>LIdentifier: LowercaseChar IdentifierChar* | "\i" IdentifierChar+</screen>
-        <screen>UIdentifier: UppercaseChar IdentifierChar* | "\I" IdentifierChar+</screen>
+        <synopsis>LIdentifier: LowercaseChar IdentifierChar* | "\i" IdentifierChar+</synopsis>
+        <synopsis>UIdentifier: UppercaseChar IdentifierChar* | "\I" IdentifierChar+</synopsis>
 
         <para>The following examples are legal identifiers:</para>
         
@@ -144,49 +144,49 @@
         <para>An integer literal may be expressed in decimal, hexadecimal, or binary 
         notation:</para>
         
-        <screen>IntegerLiteral: DecimalLiteral | HexLiteral | BinLiteral</screen>
+        <synopsis>IntegerLiteral: DecimalLiteral | HexLiteral | BinLiteral</synopsis>
         
         <para>A decimal literal has this form:</para>
         
-        <screen>DecimalLiteral: Digits Magnitude?</screen>
+        <synopsis>DecimalLiteral: Digits Magnitude?</synopsis>
         
         <para>Hexadecimal literals are prefixed by <literal>#</literal>:</para>
         
-        <screen>HexLiteral: "#" HexDigits</screen>
+        <synopsis>HexLiteral: "#" HexDigits</synopsis>
         
         <para>Binary literals are prefixed by <literal>$</literal>:</para>
         
-        <screen>BinLiteral: "$" BinDigits</screen>
+        <synopsis>BinLiteral: "$" BinDigits</synopsis>
         
         <para>A floating point literal has this form:</para>
         
-        <screen>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</screen>
+        <synopsis>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</synopsis>
         
         <para>Decimal digits may be separated into groups of three using an underscore.</para>
         
-        <screen>Digits: Digit+ | Digit{1..3} ("_" Digit{3})+</screen>
-        <screen>FractionalDigits: Digit+ | (Digit{3} "_")+ Digit{1..3} </screen>
+        <synopsis>Digits: Digit+ | Digit{1..3} ("_" Digit{3})+</synopsis>
+        <synopsis>FractionalDigits: Digit+ | (Digit{3} "_")+ Digit{1..3} </synopsis>
         
         <para>Hexadecimal or binary digits may be separated into groups of four using 
         an underscore. Hexadecimal digits may even be separated into groups of two.</para>
 
-        <screen>HexDigits: HexDigit+ | HexDigit{1..4} ("_" HexDigit{4})+ | HexDigit{1..2} ("_" HexDigit{2})+</screen>
-        <screen>BinDigits: BinDigit+ | BinDigit{1..4} ("_" Digit{4})+</screen>
+        <synopsis>HexDigits: HexDigit+ | HexDigit{1..4} ("_" HexDigit{4})+ | HexDigit{1..2} ("_" HexDigit{2})+</synopsis>
+        <synopsis>BinDigits: BinDigit+ | BinDigit{1..4} ("_" Digit{4})+</synopsis>
 
         <para>A digit is a decimal, hexadecimal, or binary digit.</para>
         
-        <screen>Digit: "0".."9"</screen>
-        <screen>HexDigit: "0".."9" | "A".."F" | "a".."f"</screen>
-        <screen>BinDigit: "0"|"1"</screen>
+        <synopsis>Digit: "0".."9"</synopsis>
+        <synopsis>HexDigit: "0".."9" | "A".."F" | "a".."f"</synopsis>
+        <synopsis>BinDigit: "0"|"1"</synopsis>
         
         <para>A floating point literal may include either an <emphasis>exponent</emphasis> 
         (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
         prefix). An integer literal may include a magnitude.</para>
         
-        <screen>Exponent: ("E"|"e") ("+"|"-")? Digit+</screen>
+        <synopsis>Exponent: ("E"|"e") ("+"|"-")? Digit+</synopsis>
         
-        <screen>Magnitude: "k" | "M" | "G" | "T" | "P"</screen>
-        <screen>FractionalMagnitude: "m" | "u" | "n" | "p" | "f"</screen>
+        <synopsis>Magnitude: "k" | "M" | "G" | "T" | "P"</synopsis>
+        <synopsis>FractionalMagnitude: "m" | "u" | "n" | "p" | "f"</synopsis>
         
         <para>The following examples are legal numeric literals:</para>
         
@@ -221,16 +221,16 @@
         <para>A single character literal consists of a character, surrounded by single
         quotes.</para> 
         
-        <screen>CharacterLiteral: "'" Character "'"</screen>
+        <synopsis>CharacterLiteral: "'" Character "'"</synopsis>
         
-        <screen>Character: ~("'" | "\") | EscapeSequence</screen>
+        <synopsis>Character: ~("'" | "\") | EscapeSequence</synopsis>
         
-        <screen>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | "{" CharacterCode "}")</screen>
+        <synopsis>EscapeSequence: "\" ("b" | "t" | "n" | "f" | "r" | "\" | "&quot;" | "'" | "`" | "{" CharacterCode "}")</synopsis>
         
         <para>A Unicode codepoint escape is a four-digit or eight-digit hexadecimal literal 
         surrounded by braces.</para>
         
-        <screen>CharacterCode: "#" HexDigit{4} | HexDigit{8}</screen>
+        <synopsis>CharacterCode: "#" HexDigit{4} | HexDigit{8}</synopsis>
                 
         <para>The following are legal character literals:</para>
         
@@ -251,25 +251,25 @@
         <para>A character string literal is a character sequence surrounded by double 
         quotes.</para>
         
-        <screen>StringLiteral: "&quot;" StringCharacter* "&quot;"</screen>
+        <synopsis>StringLiteral: "&quot;" StringCharacter* "&quot;"</synopsis>
         
-        <screen>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</screen>
+        <synopsis>StringCharacter: ~( "\" | "&quot;" | "`" ) | "`" ~"`" | EscapeSequence</synopsis>
         
         <para>A sequence of two backticks is used to delimit an interpolated expression
         embedded in a string template.</para>
         
-        <screen>StringStart: "&quot;" StringCharacter* "``"</screen>
-        <screen>StringMid: "``" StringCharacter* "``"</screen>
-        <screen>StringEnd: "``" StringCharacter* "&quot;"</screen>
+        <synopsis>StringStart: "&quot;" StringCharacter* "``"</synopsis>
+        <synopsis>StringMid: "``" StringCharacter* "``"</synopsis>
+        <synopsis>StringEnd: "``" StringCharacter* "&quot;"</synopsis>
         
         <para>A <emphasis>verbatim string</emphasis> is a character sequence delimited
         by a sequence of three double quotes. Verbatim strings do not contain escape
         sequences or interpolated expressions, so every character occurring inside the
         verbatim string is interpreted literally.</para>
         
-        <screen>VerbatimStringLiteral: "&quot;&quot;&quot;" VerbatimCharacter* "&quot;&quot;&quot;"</screen>
+        <synopsis>VerbatimStringLiteral: "&quot;&quot;&quot;" VerbatimCharacter* "&quot;&quot;&quot;"</synopsis>
         
-        <screen>VerbatimCharacter: ~"&quot;" | "&quot;" ~"&quot;" | "&quot;" "&quot;" ~"&quot;"</screen>
+        <synopsis>VerbatimCharacter: ~"&quot;" | "&quot;" ~"&quot;" | "&quot;" "&quot;" ~"&quot;"</synopsis>
         
         <para>The following are legal strings:</para>
         

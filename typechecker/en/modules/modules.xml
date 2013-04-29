@@ -223,7 +223,7 @@
         the module name and version identifier. A module archive name is of 
         the following standard form:</para>
         
-        <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.car</screen>
+        <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.car</synopsis>
         
         <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
         is the full name of the module, and 
@@ -238,7 +238,7 @@
         <para>Finally, a <emphasis>legacy archive name</emphasis> is of the 
         following standard form:</para>
         
-        <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.jar</screen>
+        <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.jar</synopsis>
         
         <para>For example:</para>
         
@@ -253,7 +253,7 @@
         from the module name and version identifier. A module script name is of 
         the following standard form:</para>
         
-        <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.js</screen>
+        <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.js</synopsis>
         
         <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
         is the full name of the module, and 
@@ -273,7 +273,7 @@
         <para>A <emphasis>source archive name</emphasis> is of the following 
         standard form:</para>
         
-        <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.src</screen>
+        <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.src</synopsis>
         
         <para>For example:</para>
         
@@ -453,7 +453,7 @@
         and source archives. The address of an artifact belonging to the 
         repository adheres to the following standard form:</para>
         
-        <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;artifact&gt;</emphasis></screen>
+        <synopsis><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;artifact&gt;</emphasis></synopsis>
         
         <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
         is the filesystem path or URL of the repository,
@@ -465,7 +465,7 @@
         <para>The default module having no version, its access path does not 
         contain the version.</para>
 
-        <screen><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></screen>
+        <synopsis><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></synopsis>
         
         <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal>,
         module script, and source archive <literal>ceylon.language-1.0.1.src</literal> 
@@ -497,7 +497,7 @@
         of the archive. The address of a checksum file adheres to the following standard 
         form:</para>
         
-        <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis>.sha1</screen>
+        <synopsis><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis>.sha1</synopsis>
         
         <para>The compiler or module runtime verifies the checksum after downloading
         the archive from the module repository.</para>
@@ -507,7 +507,7 @@
         <emphasis>module documentation directory</emphasis>, a directory with address 
         adhering to the following standard form:</para>
         
-        <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/module-doc/</screen>
+        <synopsis><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/module-doc/</synopsis>
         
         <para>For example, the home page for the documentation of the module
         <literal>org.hibernate</literal> is:</para>
@@ -522,7 +522,7 @@
         <para>A <emphasis>package descriptor</emphasis> is defined in a source file
         named <literal>package.ceylon</literal> in the package it describes.</para>
         
-        <screen>PackageDescriptor: Annotations "package" FullPackageName ";"</screen>
+        <synopsis>PackageDescriptor: Annotations "package" FullPackageName ";"</synopsis>
         
         <para>A <literal>package</literal> may be annotated <literal>shared</literal>. 
         A <literal>shared</literal> package is visible outside the containing module,
@@ -547,7 +547,7 @@ shared package org.hibernate.query;</programlisting>
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
         toplevel method or class with no parameters.</para-->
         
-        <screen>ModuleDescriptor: Annotations "module" (FullPackageName|QuotedLiteral) QuotedLiteral ModuleBody</screen>
+        <synopsis>ModuleDescriptor: Annotations "module" (FullPackageName|QuotedLiteral) QuotedLiteral ModuleBody</synopsis>
         
         <para>The name of the imported module may be specified using the usual syntax
         for a module name, or as a quoted literal, to allow interoperation with
@@ -560,8 +560,8 @@ shared package org.hibernate.query;</programlisting>
         
         <para>A module may import other modules.</para>
         
-        <screen>ModuleBody: "{" ModuleImport* "}"</screen>
-        <screen>ModuleImport: Annotations "import" FullPackageName QuotedLiteral ";"</screen>
+        <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
+        <synopsis>ModuleImport: Annotations "import" FullPackageName QuotedLiteral ";"</synopsis>
         
         <para>The quoted literal after the imported module name specifies the version 
         of the imported module.</para>
