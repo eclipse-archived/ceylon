@@ -265,5 +265,7 @@ class ControlStructures() {
     
     @error if () {}
     @error while () {}
+    @error try () {}
+    @error try {}
 
 }

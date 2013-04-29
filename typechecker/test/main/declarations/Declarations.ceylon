@@ -71,6 +71,7 @@ interface Declarations {
                 try {
                     @error Integer hello = 1;
                 }
+                finally {}
             }
         }
         Integer? count = null;
@@ -112,8 +113,8 @@ interface Declarations {
     @error shared assign getterForSharedSetter {
     }
     
-    class Ni�o() {
-        Ni�o ni�o = Ni�o();
+    class Ni���o() {
+        Ni���o ni���o = Ni���o();
     }
     
     void _bar() { _bar(); }

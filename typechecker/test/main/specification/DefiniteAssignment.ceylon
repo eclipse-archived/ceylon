@@ -421,6 +421,7 @@ interface DefiniteAssignment {
         try {
             x = X();
         }
+        finally {}
         use(x);
     }
 

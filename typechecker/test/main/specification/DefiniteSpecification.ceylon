@@ -471,6 +471,7 @@ interface DefiniteSpecification {
         try {
             x = X();
         }
+        finally {}
         use(x);
     }
 

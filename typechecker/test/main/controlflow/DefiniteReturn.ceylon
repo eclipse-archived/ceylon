@@ -1308,12 +1308,14 @@ interface DefiniteReturn {
         try {
             return;
         }
+        finally {}
         @error testSomething();
     }
     
     void try2() {
         try {
         }
+        finally {}
         testSomething();
     }
     
