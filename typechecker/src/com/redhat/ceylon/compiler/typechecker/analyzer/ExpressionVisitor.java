@@ -506,8 +506,9 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         ProducedType t = null;
         Node typedNode = null;
-        if (that.getExpression()!=null) {
-            Tree.Expression e = that.getExpression();
+        Tree.Expression e = that.getExpression();
+		Tree.Variable v = that.getVariable();
+        if (e!=null) {
             t = e.getTypeModel();
             typedNode = e;
             if (e.getTerm() instanceof Tree.InvocationExpression) {
@@ -518,19 +519,22 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (!(e.getTerm() instanceof Tree.BaseMemberExpression)){
-                e.addError("resource expression is not an unqualified value reference or instantiation");
+            	e.addError("resource expression is not an unqualified value reference or instantiation");
             }
+        } 
+        else if (v!=null) {
+        	t = v.getType().getTypeModel();
+        	typedNode = v.getType();
+        	Tree.SpecifierExpression se = v.getSpecifierExpression();
+        	if (se==null) {
+        		v.addError("missing resource specifier");
+        	}
+        	else if (typedNode instanceof Tree.ValueModifier){
+        		typedNode = se.getExpression();
+        	}
         }
-        else if (that.getVariable()!=null) {
-            t = that.getVariable().getType().getTypeModel();
-            typedNode = that.getVariable().getType();
-            Tree.SpecifierExpression se = that.getVariable().getSpecifierExpression();
-            if (se==null) {
-                that.getVariable().addError("missing resource specifier");
-            }
-            else if (typedNode instanceof Tree.ValueModifier){
-                typedNode = se.getExpression();
-            }
+        else {
+        	that.addError("missing resource expression");
         }
         if (typedNode!=null) {
             if (!t.isUnknown()) {
