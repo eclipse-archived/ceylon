@@ -81,14 +81,22 @@ PRE, div.syntaxhighlighter {
 }
 
 PRE, .syntaxhighlighter .lines {
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+}
+
+.syntaxhighlighter .lines {
     margin: 5px !important;
     border-left: 5px solid #f0f0f0;
-    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
 }
 
 .brush, .screen {
     font-size: 85%;
     line-height: 1.4em;
+}
+
+.screen {
+    border-left: none;
+    margin: 15px !important;
 }
 
 HR  {

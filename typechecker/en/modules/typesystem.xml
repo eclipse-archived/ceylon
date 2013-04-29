@@ -160,13 +160,13 @@
         be named with an initial uppercase letter. Methods, attributes, parameters, 
         and locals must be named with an initial lowercase letter or underscore.</para>
         
-        <programlisting>TypeName: UIdentifier</programlisting>
-        <programlisting>MemberName: LIdentifier</programlisting>
+        <screen>TypeName: UIdentifier</screen>
+        <screen>MemberName: LIdentifier</screen>
         
         <para>A package or module name is a sequence of identifiers, each with an 
         initial lowercase letter or underscore.</para>
         
-        <programlisting>PackageName: LIdentifier</programlisting>
+        <screen>PackageName: LIdentifier</screen>
 
         <para>Ceylon defines three identifier namespaces:</para>
         
@@ -355,7 +355,7 @@
         <para>The union type constructor <literal>|</literal> is associative, so the union 
         of three types may be written <literal>X|Y|Z</literal>.</para>
             
-        <programlisting>UnionType: IntersectionType ("|" IntersectionType)*</programlisting>
+        <screen>UnionType: IntersectionType ("|" IntersectionType)*</screen>
         
         <para>If <literal>X</literal> and <literal>Y</literal> are both subtypes of a third type 
         <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
@@ -449,7 +449,7 @@
         <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
         of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
             
-        <programlisting>IntersectionType: PrimaryType ("&amp;" PrimaryType)*</programlisting>
+        <screen>IntersectionType: PrimaryType ("&amp;" PrimaryType)*</screen>
         
         <para>The intersection <literal>X&amp;Y</literal> inherits all members of both
         <literal>X</literal> and <literal>Y</literal>.</para>
@@ -604,26 +604,26 @@
         <para>Function and value declarations usually declare a type, by specifying
         a <emphasis>type expression</emphasis>.</para>
         
-        <programlisting>Type: UnionType | EntryType</programlisting>
+        <screen>Type: UnionType | EntryType</screen>
         
         <para>Type expressions are formed by combining produced types using union,
         intersection, and type abbreviations.</para>
         
         <para>Type expressions support grouping using angle brackets:</para>
         
-        <programlisting>GroupedType: "&lt;" Type "&gt;"</programlisting>
+        <screen>GroupedType: "&lt;" Type "&gt;"</screen>
         
         <para>Produced types are identified by the name of the type (a class, interface, 
         or type parameter), together with a list of type arguments if the type definition 
         specifies type parameters.</para>
         
-        <programlisting>TypeNameWithArguments: TypeName TypeArguments?</programlisting>
+        <screen>TypeNameWithArguments: TypeName TypeArguments?</screen>
         
         <para>If the type is a class or interface nested inside a containing class or 
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
-        <programlisting>QualifiedType: TypeNameWithArguments ("." TypeNameWithArguments)*</programlisting>
+        <screen>QualifiedType: TypeNameWithArguments ("." TypeNameWithArguments)*</screen>
         
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
         list must be specified. If a type has no type parameters, and no sequenced type 
@@ -641,15 +641,15 @@
         
         <para>Certain important types may be written using an abbreviated syntax.</para>
         
-        <programlisting>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</programlisting>   
-        <programlisting>AtomicType: QualifiedType | EmptyType | TupleType | IterableType | GroupedType</programlisting>
+        <screen>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</screen>   
+        <screen>AtomicType: QualifiedType | EmptyType | TupleType | IterableType | GroupedType</screen>
         
         <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
         <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
                 
-        <programlisting>OptionalType: PrimaryType "?"</programlisting>
-        <programlisting>SequenceType: PrimaryType "[" "]"</programlisting>
-        <programlisting>CallableType: PrimaryType "(" TypeList? ")"</programlisting>
+        <screen>OptionalType: PrimaryType "?"</screen>
+        <screen>SequenceType: PrimaryType "[" "]"</screen>
+        <screen>CallableType: PrimaryType "(" TypeList? ")"</screen>
         
         <itemizedlist>
             <listitem>
@@ -675,7 +675,7 @@
         <para>Next, abbreviations for <emphasis>iterable types</emphasis> are written
         using braces.</para>
         
-        <programlisting>IterableType: "{" UnionType ("*"|"+") "}"</programlisting>
+        <screen>IterableType: "{" UnionType ("*"|"+") "}"</screen>
         
         <itemizedlist>
             <listitem>
@@ -691,11 +691,11 @@
         <para>Next, abbreviations for <emphasis>sequence types</emphasis> and 
         <emphasis>tuple types</emphasis> may be written using brackets.</para>
         
-        <programlisting>EmptyType: "[" "]"</programlisting>
+        <screen>EmptyType: "[" "]"</screen>
         
-        <programlisting>TupleType: "[" TypeList "]"</programlisting>
+        <screen>TupleType: "[" TypeList "]"</screen>
         
-        <programlisting>TypeList: (EntryType ",")* UnionType ("*"|"+")?</programlisting>
+        <screen>TypeList: (EntryType ",")* UnionType ("*"|"+")?</screen>
         
         <itemizedlist>
             <listitem>
@@ -728,7 +728,7 @@
         <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
         an arrow.</para>
                 
-        <programlisting>EntryType: UnionType "->" UnionType</programlisting>
+        <screen>EntryType: UnionType "->" UnionType</screen>
         
         <itemizedlist>
             <listitem>
@@ -934,7 +934,7 @@ Float|Integer num = one;</programlisting></comment>
         <para>A class may extend another class, in which case the first class is a subtype
         of the second class and inherits its members.</para>
         
-        <programlisting>ExtendedType: "extends" ("super" ".")? QualifiedType PositionalArguments</programlisting>
+        <screen>ExtendedType: "extends" ("super" ".")? QualifiedType PositionalArguments</screen>
     
         <para>The <literal>extends</literal> clause must specify exactly one superclass.</para>
         
@@ -1002,7 +1002,7 @@ Float|Integer num = one;</programlisting></comment>
         in combination with other upper bounds. This restriction will likely be removed in
         future.</para></comment>
         
-        <programlisting>SatisfiedTypes: "satisfies" PrimaryType ("&amp;" PrimaryType)*</programlisting>
+        <screen>SatisfiedTypes: "satisfies" PrimaryType ("&amp;" PrimaryType)*</screen>
     
         <para>The <literal>satisfies</literal> clause may specify multiple types. If a 
         satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
@@ -1124,9 +1124,9 @@ Float|Integer num = one;</programlisting></comment>
         <para>The <literal>of</literal> clause may specify multiple types, called
         <emphasis>cases</emphasis>.</para>
         
-        <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
+        <screen>CaseTypes: "of" CaseType ("|" CaseType)*</screen>
         
-        <programlisting>CaseType: MemberName | PrimaryType</programlisting>
+        <screen>CaseType: MemberName | PrimaryType</screen>
         
         <!--
         <para>The compiler is able to infer certain subtyping relationships from the 
@@ -1280,7 +1280,7 @@ Item item = comp of Item;</programlisting>
         parameterized class or function schema defines a function that produces the 
         signature of an invokable operation given a tuple of compatible type arguments.</para>
         
-        <programlisting>TypeParameters: "&lt;" (TypeParameter ",")* TypeParameter "&gt;"</programlisting>
+        <screen>TypeParameters: "&lt;" (TypeParameter ",")* TypeParameter "&gt;"</screen>
         
         <para>A declaration with type parameters is called <emphasis>generic</emphasis> or
         <emphasis>parameterized</emphasis>.</para>
@@ -1330,11 +1330,11 @@ Item item = comp of Item;</programlisting>
         <para>A <emphasis>type parameter</emphasis> allows a declaration to be abstracted 
         over a constrained set of types.</para>
         
-        <programlisting>TypeParameter: Variance? TypeName ("=" Type)</programlisting>
+        <screen>TypeParameter: Variance? TypeName ("=" Type)</screen>
         
         <para>Every type parameter has a name and a <emphasis>variance</emphasis>.</para>
         
-        <programlisting>Variance: "out" | "in"</programlisting>
+        <screen>Variance: "out" | "in"</screen>
         
         <itemizedlist>
             <listitem>
@@ -1603,18 +1603,18 @@ Item item = comp of Item;</programlisting>
         <para>A parameterized method, class, or interface declaration may declare constraints 
         upon ordinary type parameters using the <literal>given</literal> clause.</para>
         
-        <programlisting>TypeConstraints: TypeConstraint+</programlisting>
+        <screen>TypeConstraints: TypeConstraint+</screen>
         
         <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
         
-        <programlisting>TypeConstraint: "given" TypeName TypeParameters? TypeConstraintInheritance</programlisting>
+        <screen>TypeConstraint: "given" TypeName TypeParameters? TypeConstraintInheritance</screen>
         
-        <programlisting>TypeConstraintInheritance: CaseTypes? SatisfiedTypes?</programlisting>
+        <screen>TypeConstraintInheritance: CaseTypes? SatisfiedTypes?</screen>
         
         <!--
-        <programlisting>TypeConstraintInheritance: CaseTypes? SatisfiedTypes? AbstractedType?</programlisting>
+        <screen>TypeConstraintInheritance: CaseTypes? SatisfiedTypes? AbstractedType?</screen>
         
-        <programlisting>AbstractedType: "abstracts" Type</programlisting>
+        <screen>AbstractedType: "abstracts" Type</screen>
         -->
         
         <comment>
@@ -1775,7 +1775,7 @@ Item item = comp of Item;</programlisting>
         
         <para>A type argument list is a list of types.</para>
         
-        <programlisting>TypeArguments: "&lt;" (Type ",")* Type "&gt;"</programlisting>
+        <screen>TypeArguments: "&lt;" (Type ",")* Type "&gt;"</screen>
         
         <para>A type argument may itself be a parameterized type or type parameter.</para>
         

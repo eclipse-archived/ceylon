@@ -522,7 +522,7 @@
         <para>A <emphasis>package descriptor</emphasis> is defined in a source file
         named <literal>package.ceylon</literal> in the package it describes.</para>
         
-        <programlisting>PackageDescriptor: Annotations "package" FullPackageName ";"</programlisting>
+        <screen>PackageDescriptor: Annotations "package" FullPackageName ";"</screen>
         
         <para>A <literal>package</literal> may be annotated <literal>shared</literal>. 
         A <literal>shared</literal> package is visible outside the containing module,
@@ -547,7 +547,7 @@ shared package org.hibernate.query;</programlisting>
         for a runnable module specifies an <emphasis>entry point</emphasis>, a 
         toplevel method or class with no parameters.</para-->
         
-        <programlisting>ModuleDescriptor: Annotations "module" (FullPackageName|QuotedLiteral) QuotedLiteral ModuleBody</programlisting>
+        <screen>ModuleDescriptor: Annotations "module" (FullPackageName|QuotedLiteral) QuotedLiteral ModuleBody</screen>
         
         <para>The name of the imported module may be specified using the usual syntax
         for a module name, or as a quoted literal, to allow interoperation with
@@ -560,8 +560,8 @@ shared package org.hibernate.query;</programlisting>
         
         <para>A module may import other modules.</para>
         
-        <programlisting>ModuleBody: "{" ModuleImport* "}"</programlisting>
-        <programlisting>ModuleImport: Annotations "import" FullPackageName QuotedLiteral ";"</programlisting>
+        <screen>ModuleBody: "{" ModuleImport* "}"</screen>
+        <screen>ModuleImport: Annotations "import" FullPackageName QuotedLiteral ";"</screen>
         
         <para>The quoted literal after the imported module name specifies the version 
         of the imported module.</para>
