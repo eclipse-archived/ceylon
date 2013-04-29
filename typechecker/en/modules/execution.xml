@@ -387,7 +387,7 @@ String result = middleObject.string;</programlisting>
                                  
         </section>
         
-        <section>
+        <section id="exceptionhandling">
              <title>Exception handling</title>
              
              <para>When a <literal>try/catch/finally</literal> construct is executed:</para>
@@ -423,6 +423,16 @@ String result = middleObject.string;</programlisting>
              <literal>CloseException</literal>, bypassing any handler for the exception 
              from the <literal>try</literal> block?</para></comment>
              
+        </section>
+        
+        <section id="assertionfailure">
+            <title>Assertion failure</title>
+            
+            <para>When an <literal>assert</literal> statement is executed, its condition
+            list is evaluated. If the condition list is not satisfied, an exception of
+            type <literal>AssertionException</literal> in <literal>ceylon.language</literal>
+            occurs.</para>
+            
         </section>
         
     </section>
