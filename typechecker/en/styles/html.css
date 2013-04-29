@@ -86,7 +86,7 @@ PRE, .syntaxhighlighter .lines {
     font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
 }
 
-.Brush {
+.brush, .screen {
     font-size: 85%;
     line-height: 1.4em;
 }
@@ -114,8 +114,4 @@ HR  {
 
 .term { 
     font-weight:bold;
-}
-
-.screen {
-    font-size: 10px;
 }
