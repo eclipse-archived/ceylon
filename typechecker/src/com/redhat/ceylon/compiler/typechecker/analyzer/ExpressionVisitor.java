@@ -1482,7 +1482,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     if (!et.isUnknown() && !at.isUnknown()) {
-                        checkAssignable(at, et, that.getExpression(), 
+                        checkAssignable(at, et, e, 
                                 "returned expression must be assignable to return type of " +
                                         name, 2100);
                     }
