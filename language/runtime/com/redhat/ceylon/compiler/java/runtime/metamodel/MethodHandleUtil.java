@@ -51,10 +51,49 @@ public class MethodHandleUtil {
                     filters[i] = unbox.asType(MethodType.methodType(boolean.class, java.lang.Object.class));
                 }
             }
-        } catch (NoSuchMethodException | IllegalAccessException e) {
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Failed to filter parameter", e);
+        } catch (IllegalAccessException e) {
             throw new RuntimeException("Failed to filter parameter", e);
         }
         return MethodHandles.filterArguments(method, filterIndex, filters);
+    }
+
+    public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type) {
+        try {
+            // FIXME: more boxing for interop
+            if(type == java.lang.String.class){
+                // ceylon.language.String.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.String.class, "instance", 
+                                                        MethodType.methodType(ceylon.language.String.class, java.lang.String.class));
+                method = MethodHandles.filterReturnValue(method, box);
+            }else if(type == long.class){
+                // ceylon.language.Integer.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Integer.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Integer.class, long.class));
+                return MethodHandles.filterReturnValue(method, box);
+            }else if(type == double.class){
+                // ceylon.language.Float.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Float.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Float.class, double.class));
+                return MethodHandles.filterReturnValue(method, box);
+            }else if(type == int.class){
+                // ceylon.language.Character.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Character.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Character.class, int.class));
+                return MethodHandles.filterReturnValue(method, box);
+            }else if(type == boolean.class){
+                // ceylon.language.Boolean.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Boolean.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Boolean.class, boolean.class));
+                return MethodHandles.filterReturnValue(method, box);
+            }
+            return method;
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Failed to filter return value", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to filter return value", e);
+        }
     }
 
 }

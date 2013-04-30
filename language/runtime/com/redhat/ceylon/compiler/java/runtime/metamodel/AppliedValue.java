@@ -45,19 +45,8 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValu
             try {
                 Method m = javaClass.getMethod(getterName);
                 getter = MethodHandles.lookup().unreflect(m);
-                java.lang.Class<?> paramType = m.getReturnType();
-                // FIXME: more boxing
-                if(paramType == java.lang.String.class){
-                    // ceylon.language.String.instance(obj)
-                    MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.String.class, "instance", 
-                                                                         MethodType.methodType(ceylon.language.String.class, java.lang.String.class));
-                    getter = MethodHandles.filterReturnValue(getter, box);
-                }else if(paramType == long.class){
-                    // ceylon.language.Integer.instance(obj)
-                    MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Integer.class, "instance", 
-                                                                         MethodType.methodType(ceylon.language.Integer.class, long.class));
-                    getter = MethodHandles.filterReturnValue(getter, box);
-                }
+                java.lang.Class<?> getterType = m.getReturnType();
+                getter = MethodHandleUtil.boxReturnValue(getter, getterType);
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class, Object.class));
             } catch (NoSuchMethodException e) {
