@@ -66,3 +66,15 @@ void bli(Integer* p){
     bli(1, 2);
     bli(*[1, 2]);
 }
+
+void testIndirectSpread() {
+    value f = function(Integer a, Integer b=2, Integer* c) => 1;
+    f(*[1]);
+    f(1, *[]);
+    f(1, *[2]);
+    f(*[1, 2]);
+    f(1, 2, *[]);
+    f(1, 2, *[3]);
+    f(1, 2, 3, *[]);
+    f(*[1, 2, 3]);
+}

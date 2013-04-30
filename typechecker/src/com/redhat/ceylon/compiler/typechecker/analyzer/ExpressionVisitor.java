@@ -2409,7 +2409,7 @@ public class ExpressionVisitor extends Visitor {
                     if (arg instanceof Tree.SpreadArgument) {
                         checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
                                 paramTypes.subList(i, paramTypes.size()), 
-                                sequenced, firstDefaulted, at);
+                                sequenced, firstDefaulted-i, at);
                         break;
                     }
                     else if (arg instanceof Tree.Comprehension) {
