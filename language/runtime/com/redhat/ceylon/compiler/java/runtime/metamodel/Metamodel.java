@@ -40,6 +40,9 @@ public class Metamodel {
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.Package> typeCheckPackagesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.Package>();
 
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.Module> typeCheckModulesToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.Module>();
+
     public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
         moduleManager.loadModule(name, version, result, classLoader);
     }
@@ -126,6 +129,17 @@ public class Metamodel {
             if(ret == null){
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Package(declaration); 
                 typeCheckPackagesToRuntimeModel.put(declaration, ret);
+            }
+            return ret;
+        }
+    }
+
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.Module getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Module declaration){
+        synchronized(typeCheckModulesToRuntimeModel){
+            com.redhat.ceylon.compiler.java.runtime.metamodel.Module ret = typeCheckModulesToRuntimeModel.get(declaration);
+            if(ret == null){
+                ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Module(declaration); 
+                typeCheckModulesToRuntimeModel.put(declaration, ret);
             }
             return ret;
         }

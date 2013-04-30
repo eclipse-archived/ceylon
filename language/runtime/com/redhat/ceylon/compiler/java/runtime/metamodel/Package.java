@@ -21,6 +21,8 @@ public class Package implements ceylon.language.metamodel.Package, ReifiedType{
     
     private com.redhat.ceylon.compiler.typechecker.model.Package declaration;
 
+    private Module module;
+
     public Package(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
         this.declaration = declaration;
     }
@@ -36,6 +38,16 @@ public class Package implements ceylon.language.metamodel.Package, ReifiedType{
     @TypeInfo("ceylon.language::String")
     public String getName() {
         return declaration.getNameAsString();
+    }
+
+    @Override
+    public ceylon.language.metamodel.Module getContainer() {
+        // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
+        // assign module twice we get the same result
+        if(module == null){
+            module = Metamodel.getOrCreateMetamodel(declaration.getModule());
+        }
+        return module;
     }
 
     @Override
