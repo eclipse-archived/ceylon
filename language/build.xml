@@ -185,6 +185,7 @@
             src="${module.language.src}:${runtime.src}"
             out="${build.dist}">
             <javacoption>-Xbootstrapceylon</javacoption>
+            <javacoption>-g</javacoption>
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="com/redhat/**/*.java"/>
