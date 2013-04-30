@@ -73,11 +73,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
@@ -1781,58 +1779,82 @@ public class ClassTransformer extends AbstractTransformer {
     List<MethodDefinitionBuilder> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        if (Decl.withinInterface(model)) {
-            // Transform it for the companion
-            final Block block;
-            final SpecifierExpression specifier;
-            if (def instanceof MethodDeclaration) {
-                block = null;
-                specifier = ((MethodDeclaration) def).getSpecifierExpression();
-            } else if (def instanceof MethodDefinition) {
-                block = ((MethodDefinition) def).getBlock();
-                specifier = null;
+        
+        List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
+        if (!Decl.withinInterface(model)) {
+            // Transform to the class
+            result = transformMethod(def, 
+                    true,
+                    true,
+                    true,
+                    transformMplBody(def.getParameterLists(), model, body),
+                    true,
+                    OL_BODY,
+                    true,
+                    !Strategy.defaultParameterMethodOnSelf(model));
+        } else {// Is within interface
+            // Transform the definition to the companion class, how depends
+            // on what kind of method it is
+            List<MethodDefinitionBuilder> companionDefs;
+            if (def instanceof Tree.MethodDeclaration) {
+                final SpecifierExpression specifier = ((Tree.MethodDeclaration) def).getSpecifierExpression();
+                if (specifier == null) {
+                    // formal or abstract 
+                    // (still need overloads and DPMs on the companion)
+                    companionDefs = transformMethod(def,  
+                            false,
+                            true,
+                            true,
+                            null,
+                            true,
+                            OL_BODY | OL_IMPLEMENTOR | OL_DELEGATOR,
+                            true,
+                            false);   
+                } else {
+                    companionDefs = transformMethod(def,
+                            true,
+                            false,
+                            !model.isShared(),
+                            transformMplBody(def.getParameterLists(), model, body),
+                            true,
+                            OL_BODY | OL_IMPLEMENTOR | OL_DELEGATOR,
+                            true,
+                            false);
+                }
+            } else if (def instanceof Tree.MethodDefinition) {
+                companionDefs = transformMethod(def,  
+                        true,
+                        false,
+                        !model.isShared(),
+                        transformMethodBlock((Tree.MethodDefinition)def),
+                        true,
+                        OL_BODY | OL_IMPLEMENTOR,
+                        true,
+                        false);
             } else {
                 throw new RuntimeException();
             }
-            boolean transformMethod = specifier != null || block != null;
-            boolean actual = def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null;
-            boolean includeAnnotations = !model.isShared() || 
-                    (def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null);
-            List<JCStatement> cbody = specifier != null ? transformMplBody(def.getParameterLists(), model, body) 
-                    : block != null ? transformMethodBlock(model, block) 
-                    : null;
-                    
-            boolean transformOverloads = def instanceof MethodDeclaration || block != null;
-            int overloadsDelegator = OL_BODY | OL_IMPLEMENTOR | (def instanceof MethodDeclaration ? OL_DELEGATOR : 0);
+            classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
+                .methods(companionDefs);
             
-            boolean transformDefaultValues = def instanceof MethodDeclaration || block != null;
-            
-            List<MethodDefinitionBuilder> companionDefs = transformMethod(def, model,  
-                        transformMethod,
-                        actual, includeAnnotations,
-                        cbody,
-                        transformOverloads,
-                        overloadsDelegator,
-                        transformDefaultValues,
-                        false);
-            classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).methods(companionDefs);
+            // Transform the declaration to the target interface
+            // but only if it's shared
+            if (Decl.isShared(model)) {
+                result = transformMethod(def, 
+                        true,
+                        true,
+                        true,
+                        null,
+                        true,
+                        0,
+                        true,
+                        !Strategy.defaultParameterMethodOnSelf(model));
+            }
         }
-        
-        List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
-        if (!Strategy.onlyOnCompanion(model)) {
-            // Transform it for the interface/class
-            List<JCStatement> cbody = !model.isInterfaceMember() ? transformMplBody(def.getParameterLists(), model, body) : null;
-            result = transformMethod(def, model, true, true,true, 
-                    cbody, 
-                    true, 
-                    Decl.withinInterface(model) ? 0 : OL_BODY,
-                    true,
-                    !Strategy.defaultParameterMethodOnSelf(model));
-        }
-        
         return result;
     }
 
+    
     /**
      * Transforms a method, optionally generating overloads and 
      * default value methods
@@ -1849,11 +1871,11 @@ public class ClassTransformer extends AbstractTransformer {
      * @param defaultValuesBody Whether the default value methods should have a body
      */
     private List<MethodDefinitionBuilder> transformMethod(Tree.AnyMethod def,
-            final Method model, 
             boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
             boolean transformOverloads, int overloadsFlags, 
             boolean transformDefaultValues, boolean defaultValuesBody) {
         
+        final Method model = def.getDeclarationModel();
         ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
         boolean needsRaw = false;
         if (Decl.withinClassOrInterface(model)) {
@@ -2006,8 +2028,7 @@ public class ClassTransformer extends AbstractTransformer {
             Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
-                final Block block = ((Tree.MethodDefinition) def).getBlock();
-                body = transformMethodBlock(model, block);
+                body = transformMethodBlock((Tree.MethodDefinition)def);
             } 
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
@@ -2016,8 +2037,10 @@ public class ClassTransformer extends AbstractTransformer {
         return body;
     }
 
-    private List<JCStatement> transformMethodBlock(final Method model,
-            final Block block) {
+    private List<JCStatement> transformMethodBlock(
+            final Tree.MethodDefinition def) {
+        final Method model = def.getDeclarationModel();
+        final Tree.Block block = def.getBlock();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
         try {
