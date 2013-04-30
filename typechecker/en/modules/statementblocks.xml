@@ -1802,14 +1802,14 @@ while (n&lt;=max) {
             
             <synopsis>TryCatchFinally: Try Catch* Finally?</synopsis>
 
-            <synopsis>Try: "try" ("(" Resource ")")? Block</synopsis>
+            <synopsis>Try: "try" ("(" Resource ("," Resource) ")")? Block</synopsis>
             
             <synopsis>Catch: "catch" "(" Variable ")" Block</synopsis>
             
             <synopsis>Finally: "finally" Block</synopsis>
 
-            <para>Each <literal>catch</literal> block defines a variable. The type of
-            the variable must be assignable to <literal>Exception</literal> in
+            <para>Each <literal>catch</literal> block defines a variable. The type 
+            of the variable must be assignable to <literal>Exception</literal> in
             <literal>ceylon.language</literal>. If no type is explicitly specified, 
             the type is inferred to be <literal>Exception</literal>.</para> 
             
@@ -1830,18 +1830,20 @@ while (n&lt;=max) {
                     <para>If the type of a <literal>catch</literal> variable is a union
                     type <literal>E1|E2|...|En</literal> then no member <literal>Ei</literal>
                     of the union may be a subtype of any catch variable of an earlier 
-                    <literal>catch</literal> block belonging to the same control structure.</para>
+                    <literal>catch</literal> block belonging to the same control 
+                    structure.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>The <literal>try</literal> block may declare a <emphasis>resource</emphasis>
-            expression, which may be either:</para>
+            <para>The <literal>try</literal> block may have a list of <emphasis>resource
+            expressions</emphasis>, each of which may be either:</para>
             
             <itemizedlist>
-                <listitem><para>an unqualified value reference to a non-<literal>variable</literal> 
-                reference,</para></listitem>
+                <!--listitem><para>an unqualified value reference to a non-<literal>variable</literal> 
+                reference,</para></listitem-->
                 <listitem><para>an instantiation expression, or</para></listitem>
-                <listitem><para>an inline variable declaration together with an expression.</para></listitem>
+                <listitem><para>an inline variable declaration together with an 
+                instantiation expression.</para></listitem>
             </itemizedlist>
             
             <para>A resource expresson produces a heavyweight object that must be 

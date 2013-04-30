@@ -90,15 +90,15 @@ class ControlStructures() {
     
     Transaction tx = Transaction();
     function trans() { return tx; }
-    try (tx) {}
-    try (t = tx) {}
-    try (Transaction t = tx) {}
+    try (@error tx) {}
+    try (@error t = tx) {}
+    try (@error Transaction t = tx) {}
     try (Transaction()) {}
     try (t = Transaction()) {}
     try (Transaction t = Transaction()) {}
-    @error try (trans()) {}
-    try (t = trans()) {}
-    try (Transaction t = trans()) {}
+    try (@error trans()) {}
+    try (@error t = trans()) {}
+    try (@error Transaction t = trans()) {}
     
     try {
         print("hello");
@@ -160,6 +160,18 @@ class ControlStructures() {
     }
     finally {
     	@error t.rollbackOnly();
+    }
+    
+    Transaction tt = Transaction();
+    try (@error tt) {}
+    variable Transaction vtt = Transaction();
+    try (@error vtt) {}
+    
+    try (t1 = Transaction(), 
+         Transaction(), 
+         Transaction t2=Transaction()) {
+        Transaction t3 = t1;
+        Transaction t4 = t2;
     }
     
     @error while ("hello") {}

@@ -3032,8 +3032,8 @@ tryBlock returns [TryClause clause]
     : TRY_CLAUSE 
       { $clause = new TryClause($TRY_CLAUSE); }
       (
-        resource
-        { $clause.setResource($resource.resource); }
+        resources
+        { $clause.setResourceList($resources.resources); }
         controlBlock
         { $clause.setBlock($controlBlock.block); }
       |
@@ -3070,18 +3070,32 @@ finallyBlock returns [FinallyClause clause]
       { $clause.setBlock($block.block); }
     ;
 
-resource returns [Resource resource]
+resources returns [ResourceList resources]
     : LPAREN 
-    { $resource = new Resource($LPAREN); }
+    { $resources = new ResourceList($LPAREN); }
     (
-    (COMPILER_ANNOTATION|declarationStart|specificationStart) 
-      => specifiedVariable
-      { $resource.setVariable($specifiedVariable.variable); }
-    | expression
-      { $resource.setExpression($expression.expression); }
+    r1=resource
+    { $resources.addResource($r1.resource); }
+    (
+      c=COMMA 
+      { $resources.setEndToken($c); }
+      r2=resource
+      { $resources.addResource($r2.resource);
+        $resources.setEndToken(null); }
+    )*
     )?
     RPAREN
-    { $resource.setEndToken($RPAREN); }
+    { $resources.setEndToken($RPAREN); }
+    ;
+
+resource returns [Resource resource]
+    @init { $resource = new Resource(null); }
+    : ( (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+        => specifiedVariable
+        { $resource.setVariable($specifiedVariable.variable); }
+      | expression
+        { $resource.setExpression($expression.expression); }
+      )
     ;
 
 specifiedVariable returns [Variable variable]

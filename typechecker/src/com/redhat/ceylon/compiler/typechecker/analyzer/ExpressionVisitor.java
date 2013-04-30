@@ -272,6 +272,13 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
     }
 
+    @Override public void visit(Tree.ResourceList that) {
+        if (that.getResources().isEmpty()) {
+            that.addError("empty resource list");
+        }
+        super.visit(that);
+    }
+
     private void initOriginalDeclaration(Tree.Variable that) {
         if (that.getType() instanceof Tree.SyntheticVariable) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) that
@@ -511,16 +518,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             t = e.getTypeModel();
             typedNode = e;
-            if (e.getTerm() instanceof Tree.InvocationExpression) {
-                Tree.InvocationExpression ie = (Tree.InvocationExpression) e.getTerm();
-                if (!(ie.getPrimary() instanceof Tree.BaseTypeExpression 
-                        || ie.getPrimary() instanceof Tree.QualifiedTypeExpression)) {
-                    e.addError("resource expression is not an unqualified value reference or instantiation");
-                }
-            }
-            else if (!(e.getTerm() instanceof Tree.BaseMemberExpression)){
-            	e.addError("resource expression is not an unqualified value reference or instantiation");
-            }
+            checkInstantiationExpression(e);
         } 
         else if (v!=null) {
         	t = v.getType().getTypeModel();
@@ -529,8 +527,11 @@ public class ExpressionVisitor extends Visitor {
         	if (se==null) {
         		v.addError("missing resource specifier");
         	}
-        	else if (typedNode instanceof Tree.ValueModifier){
-        		typedNode = se.getExpression();
+        	else {
+        		checkInstantiationExpression(se.getExpression());
+        		if (typedNode instanceof Tree.ValueModifier) {
+        			typedNode = se.getExpression();
+        		}
         	}
         }
         else {
@@ -543,6 +544,21 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+	private void checkInstantiationExpression(Tree.Expression e) {
+		Tree.Term term = e.getTerm();
+		if (term instanceof Tree.InvocationExpression) {
+		    Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+		    Tree.Primary p = ie.getPrimary();
+			if (!(p instanceof Tree.BaseTypeExpression 
+		            || p instanceof Tree.QualifiedTypeExpression)) {
+		        e.addError("resource expression is not an instantiation");
+		    }
+		}
+		else {
+			e.addError("resource expression is not an instantiation");
+		}
+	}
     
     @Override public void visit(Tree.ForIterator that) {
         super.visit(that);
