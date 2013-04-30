@@ -161,19 +161,6 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
-    // FIXME: this is just wrong because types are not applied
-    public static TypeDescriptor getTypeDescriptorForDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
-        if(declaration instanceof LazyClass){
-            ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
-            return TypeDescriptor.klass(classMirror.klass);
-        }
-        if(declaration instanceof LazyInterface){
-            ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
-            return TypeDescriptor.klass(classMirror.klass);
-        }
-        throw new RuntimeException("Unsupported declaration type: " + declaration);
-    }
-
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         if(declaration instanceof LazyClass){
             ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;

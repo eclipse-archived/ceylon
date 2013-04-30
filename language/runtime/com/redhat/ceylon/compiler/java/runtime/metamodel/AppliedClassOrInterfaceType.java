@@ -43,9 +43,12 @@ public class AppliedClassOrInterfaceType<Type>
     protected ceylon.language.Map<? extends ceylon.language.metamodel.TypeParameter, ? extends ceylon.language.metamodel.AppliedProducedType> typeArguments;
     protected ceylon.language.metamodel.AppliedClassType<? extends Object, ? super Sequential<? extends Object>> superclass;
     protected Sequential<ceylon.language.metamodel.AppliedInterfaceType<? extends Object>> interfaces;
+    @Ignore
+    protected final TypeDescriptor $reifiedType;
     
     AppliedClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
+        this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
     }
 
     @Override
@@ -193,6 +196,6 @@ public class AppliedClassOrInterfaceType<Type>
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(AppliedClassOrInterfaceType.class, this.declaration.$getReifiedType());
+        return TypeDescriptor.klass(AppliedClassOrInterfaceType.class, $reifiedType);
     }
 }

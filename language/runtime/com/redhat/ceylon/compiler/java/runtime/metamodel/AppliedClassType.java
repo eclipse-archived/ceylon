@@ -33,7 +33,6 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     implements ceylon.language.metamodel.AppliedClassType<Type, Arguments>, Callable<Type> {
 
     private TypeDescriptor $reifiedArguments;
-    private TypeDescriptor $reifiedType;
     private MethodHandle constructor;
     
     public AppliedClassType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
@@ -65,7 +64,6 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         // FIXME: last three params
         com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType = decl.getUnit().getTupleType(elemTypes, false, false, -1);
         this.$reifiedArguments = Metamodel.getTypeDescriptorForProducedType(tupleType);
-        this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
         // FIXME: delay constructor setup for when we actually use it?
         // FIXME: finding the right MethodHandle for the constructor could actually be done in the Class declaration
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);

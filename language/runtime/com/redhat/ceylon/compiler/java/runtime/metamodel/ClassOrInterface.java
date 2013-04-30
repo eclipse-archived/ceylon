@@ -38,8 +38,6 @@ public abstract class ClassOrInterface
     @Ignore
     private static final TypeDescriptor $ValueTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.Value.class, Anything.$TypeDescriptor);
     
-    @Ignore
-    protected TypeDescriptor $reifiedType;
     private volatile boolean initialised = false;
     private ceylon.language.metamodel.ClassType superclass;
     private Sequential<ceylon.language.metamodel.InterfaceType> interfaces;
@@ -67,8 +65,6 @@ public abstract class ClassOrInterface
     }
 
     protected void init(){
-        // FIXME: should be on ProducedType to get something fully reified
-        this.$reifiedType = Metamodel.getTypeDescriptorForDeclaration(declaration);
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) this.declaration;
         
         ProducedType superType = declaration.getExtendedType();
@@ -103,11 +99,10 @@ public abstract class ClassOrInterface
             }
         }
 
-        TypeDescriptor thisTD = TypeDescriptor.klass(ClassOrInterface.class, $reifiedType);
-        TypeDescriptor functionMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.Member.class, thisTD, $FunctionTypeDescriptor);
+        TypeDescriptor functionMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.Member.class, $TypeDescriptor, $FunctionTypeDescriptor);
         this.functions = (Sequential)Util.sequentialInstance(functionMemberTD, functions.toArray(new ceylon.language.metamodel.Member[functions.size()]));
 
-        TypeDescriptor valueMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.Member.class, thisTD, $ValueTypeDescriptor);
+        TypeDescriptor valueMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.Member.class, $TypeDescriptor, $ValueTypeDescriptor);
         this.values = (Sequential)Util.sequentialInstance(valueMemberTD, values.toArray(new ceylon.language.metamodel.Member[values.size()]));
 }
     
@@ -204,12 +199,6 @@ public abstract class ClassOrInterface
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
-    }
-
-    @Ignore
-    TypeDescriptor $getReifiedType(){
-        checkInit();
-        return $reifiedType;
     }
 
     Function findMethod(String name) {
