@@ -37,6 +37,9 @@ public class Metamodel {
     private static Map<com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface, com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface> typeCheckModelToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface, com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface>();
 
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.Package> typeCheckPackagesToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.Package>();
+
     public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
         moduleManager.loadModule(name, version, result, classLoader);
     }
@@ -116,7 +119,18 @@ public class Metamodel {
             return ret;
         }
     }
-    
+
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.Package getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
+        synchronized(typeCheckPackagesToRuntimeModel){
+            com.redhat.ceylon.compiler.java.runtime.metamodel.Package ret = typeCheckPackagesToRuntimeModel.get(declaration);
+            if(ret == null){
+                ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Package(declaration); 
+                typeCheckPackagesToRuntimeModel.put(declaration, ret);
+            }
+            return ret;
+        }
+    }
+
     public static ceylon.language.metamodel.ProducedType getMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
@@ -231,5 +245,14 @@ public class Metamodel {
         if(pt instanceof AppliedClassOrInterfaceType)
             return ((AppliedClassOrInterfaceType)pt).producedType;
         throw new RuntimeException("Unsupported applied produced type: " + pt);
+    }
+
+    public static com.redhat.ceylon.compiler.typechecker.model.Package getPackage(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+        Scope scope = declaration.getContainer();
+        while(scope != null && scope instanceof com.redhat.ceylon.compiler.typechecker.model.Package == false)
+            scope = scope.getContainer();
+        if(scope == null)
+            throw new RuntimeException("Declaration with no package: "+declaration);
+        return (com.redhat.ceylon.compiler.typechecker.model.Package)scope;
     }
 }

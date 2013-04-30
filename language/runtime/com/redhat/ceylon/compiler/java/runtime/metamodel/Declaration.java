@@ -22,6 +22,8 @@ public class Declaration
 
     @Ignore
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
+    
+    private Package pkg;
 
     public Declaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
@@ -41,8 +43,12 @@ public class Declaration
 
     @Override
     public Package getPackageContainer() {
-        // TODO Auto-generated method stub
-        return null;
+        // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
+        // assign pkg twice we get the same result
+        if(pkg == null){
+            pkg = Metamodel.getOrCreateMetamodel(Metamodel.getPackage(declaration));
+        }
+        return pkg;
     }
 
     @Override
