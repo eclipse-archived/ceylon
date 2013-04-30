@@ -1,94 +1,226 @@
 shared class NoParams(){
-    shared NoParams noParams() => NoParams();
-    shared NoParams fixedParams(String s, Integer i) => NoParams();
-    shared NoParams typeParams<T>(T s, Integer i) => NoParams();
+    shared variable String str2 = "a";
+    shared variable Integer integer2 = 1;
+    shared variable Float float2 = 1.2;
+    shared variable Character character2 = 'a';
+    shared variable Boolean boolean2 = true;
+    shared variable Object obj2 = 2;
+
+    shared String str = "a";
+    shared Integer integer = 1;
+    shared Float float = 1.2;
+    shared Character character = 'a';
+    shared Boolean boolean = true;
+    shared NoParams obj => this;
+
+    shared NoParams noParams() => this;
+
+    shared NoParams fixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
+        assert(s == "a");
+        assert(i == 1);
+        assert(f == 1.2);
+        assert(c == 'a');
+        assert(b == true);
+        assert(is NoParams o);
+        
+        return this;
+    }
     
-    shared Integer i = 2;
-    shared String s = "hello";
-    shared NoParams o => this;
+    shared NoParams typeParams<T>(T s, Integer i)
+        given T satisfies Object {
+        
+        assert(s == "a");
+        assert(i == 1);
+        
+        // check that our reified T got passed correctly
+        assert(is TypeParams<String> t = TypeParams<T>(s, i));
+        
+        return this;
+    }
+    
+    shared String getString() => "a";
+    shared Integer getInteger() => 1;
+    shared Float getFloat() => 1.2;
+    shared Character getCharacter() => 'a';
+    shared Boolean getBoolean() => true;
 }
 
-shared class FixedParams(String s, Integer i){}
+shared class FixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
+    assert(s == "a");
+    assert(i == 1);
+    assert(f == 1.2);
+    assert(c == 'a');
+    assert(b == true);
+    assert(is NoParams o);
+}
 
-shared class TypeParams<T>(T s, Integer i){}
-
-@nomodel
-shared void runtime() {
-    value classType = type("falbala");
+shared class TypeParams<T>(T s, Integer i)
+    given T satisfies Object {
     
-    doc "metamodel is AppliedClassType"
-    assert(is AppliedClassType<Anything,[]> classType);
+    assert(s == "a");
+    assert(i == 1);
+}
 
-    value klass = classType.declaration;
-
-    doc "metamodel class name is String"
-    assert(klass.name == "String");
-
-    value st = klass.superclass;
-
-    doc "super class exists"
-    assert(exists st);
-
-    doc "metamodel superclass name is Object"
-    assert(st.declaration.name == "Object");
-
-    queue = [klass];
-    emptyQueue();
-    
-    visitInheritedTypes(classType);
-    
+void checkConstructors(){
+    // no parameters
     value noParamsType = type(NoParams());
     assert(is AppliedClassType<NoParams, []> noParamsType);
     value noParamsClass = noParamsType.declaration;
+    assert(noParamsClass.name == "NoParams");
     // not sure how to do this ATM
     //value noParamsType2 = noParamsClass.apply();
     //assert(is ClassType<NoParams, []> noParamsType2);
-    value noParams = noParamsType();
-    print(noParams);
-    print("\n");
+    Anything noParams = noParamsType();
+    assert(is NoParams noParams);
     
-    value noParamsInstance = NoParams();
-    if(is AppliedFunction<NoParams, [NoParams]> f = noParamsType.getFunction("noParams")){
-        print("invocation1: `` f(noParamsInstance) ``\n");
-        if(is Callable<NoParams, []> bf = f.bind(noParamsInstance)){
-            print("invocation1: `` bf() ``\n");
-        }
-    }
-    if(is AppliedFunction<NoParams, [NoParams, String, Integer]> f = noParamsType.getFunction("fixedParams")){
-        print("invocation2: `` f(noParamsInstance, "a", 1) ``\n");
-        if(is Callable<NoParams, [String, Integer]> bf = f.bind(noParamsInstance)){
-            print("invocation2: `` bf("a", 1) ``\n");
-        }
-    }
-    if(is AppliedFunction<NoParams, [NoParams, String, Integer]> f = noParamsType.getFunction("typeParams", classType)){
-        print("invocation3: `` f(noParamsInstance, "a", 1) ``\n");
-        if(is Callable<NoParams, [String, Integer]> bf = f.bind(noParamsInstance)){
-            print("invocation3: `` bf("a", 1) ``\n");
-        }
-    }
-    if(is AppliedValue<Integer> a = noParamsType.getAttribute("i")){
-        print("attribute i: `` a.get(noParamsInstance) ``\n");
-    }
-    if(is AppliedValue<String> a = noParamsType.getAttribute("s")){
-        print("attribute s: `` a.get(noParamsInstance) ``\n");
-    }
-    if(is AppliedValue<NoParams> a = noParamsType.getAttribute("o")){
-        print("attribute o: `` a.get(noParamsInstance) ``\n");
-    }
-
-    value fixedParamsType = type(FixedParams("a", 1));
-    assert(is AppliedClassType<FixedParams, [String, Integer]> fixedParamsType);
+    // static parameters
+    value fixedParamsType = type(FixedParams("a", 1, 1.2, 'a', true, noParams));
+    assert(is AppliedClassType<FixedParams, [String, Integer, Float, Character, Boolean, Object]> fixedParamsType);
     value fixedParamsClass = fixedParamsType.declaration;
-    value fixedParams = fixedParamsType("b", 2);
-    print(fixedParams);
-    print("\n");
+    assert(fixedParamsClass.name == "FixedParams");
+    Anything fixedParams = fixedParamsType("a", 1, 1.2, 'a', true, noParams);
+    assert(is FixedParams fixedParams);
 
+    // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
     assert(is AppliedClassType<TypeParams<String>, [String, Integer]> typeParamsType);
     value typeParamsClass = typeParamsType.declaration;
-    value typeParams = typeParamsType("b", 2);
-    print(typeParams);
-    print("\n");
+    assert(typeParamsClass.name == "TypeParams");
+    Anything typeParams = typeParamsType("a", 1);
+    // this checks that we did pass the reified type arguments correctly
+    assert(is TypeParams<String> typeParams);
+}
+
+void checkMemberAttributes(){
+    value noParamsInstance = NoParams();
+    value noParamsType = type(noParamsInstance);
+    assert(is AppliedClassType<NoParams, []> noParamsType);
+    
+    assert(is AppliedValue<String> string = noParamsType.getAttribute("str"));
+    assert(!is AppliedVariable<String> string);
+    assert(string.get(noParamsInstance) == "a");
+    
+    assert(is AppliedValue<Integer> integer = noParamsType.getAttribute("integer"));
+    assert(integer.get(noParamsInstance) == 1);
+    
+    assert(is AppliedValue<Float> float = noParamsType.getAttribute("float"));
+    assert(float.get(noParamsInstance) == 1.2);
+    
+    assert(is AppliedValue<Character> character = noParamsType.getAttribute("character"));
+    assert(character.get(noParamsInstance) == 'a');
+    
+    assert(is AppliedValue<Boolean> boolean = noParamsType.getAttribute("boolean"));
+    assert(boolean.get(noParamsInstance) == true);
+    
+    assert(is AppliedValue<NoParams> obj = noParamsType.getAttribute("obj"));
+    assert(obj.get(noParamsInstance) === noParamsInstance);
+
+    assert(is AppliedVariable<String> string2 = noParamsType.getAttribute("str2"));
+    assert(string2.get(noParamsInstance) == "a");
+    string2.set(noParamsInstance, "b");
+    assert(string2.get(noParamsInstance) == "b");
+    assert(noParamsInstance.str2 == "b");
+    
+    assert(is AppliedVariable<Integer> integer2 = noParamsType.getAttribute("integer2"));
+    assert(integer2.get(noParamsInstance) == 1);
+    integer2.set(noParamsInstance, 2);
+    assert(integer2.get(noParamsInstance) == 2);
+    assert(noParamsInstance.integer2 == 2);
+
+    assert(is AppliedVariable<Float> float2 = noParamsType.getAttribute("float2"));
+    assert(float2.get(noParamsInstance) == 1.2);
+    float2.set(noParamsInstance, 2.1);
+    assert(float2.get(noParamsInstance) == 2.1);
+    assert(noParamsInstance.float2 == 2.1);
+    
+    assert(is AppliedVariable<Character> character2 = noParamsType.getAttribute("character2"));
+    assert(character2.get(noParamsInstance) == 'a');
+    character2.set(noParamsInstance, 'b');
+    assert(character2.get(noParamsInstance) == 'b');
+    assert(noParamsInstance.character2 == 'b');
+    
+    assert(is AppliedVariable<Boolean> boolean2 = noParamsType.getAttribute("boolean2"));
+    assert(boolean2.get(noParamsInstance) == true);
+    boolean2.set(noParamsInstance, false);
+    assert(boolean2.get(noParamsInstance) == false);
+    assert(noParamsInstance.boolean2 == false);
+    
+    assert(is AppliedVariable<Object> obj2 = noParamsType.getAttribute("obj2"));
+    assert(obj2.get(noParamsInstance) == 2);
+    obj2.set(noParamsInstance, 3);
+    assert(obj2.get(noParamsInstance) == 3);
+    assert(noParamsInstance.obj2 == 3);
+}
+
+void checkMemberFunctions(){
+    value noParamsInstance = NoParams();
+    value noParamsType = type(noParamsInstance);
+    assert(is AppliedClassType<NoParams, []> noParamsType);
+    assert(is AppliedClassType<String, []> stringType = type("foo"));
+    
+    assert(is AppliedFunction<NoParams, [NoParams]> f1 = noParamsType.getFunction("noParams"));
+    Anything o1 = f1(noParamsInstance);
+    assert(is NoParams o1);
+    assert(is Callable<NoParams, []> bf1 = f1.bind(noParamsInstance));
+    Anything o2 = bf1();
+    assert(is NoParams o2);
+    
+    assert(is AppliedFunction<NoParams, [NoParams, String, Integer, Float, Character, Boolean, Object]> f2 = noParamsType.getFunction("fixedParams"));
+    Anything o3 = f2(noParamsInstance, "a", 1, 1.2, 'a', true, noParamsInstance);
+    assert(is NoParams o3);
+    assert(is Callable<NoParams, [String, Integer, Float, Character, Boolean, Object]> bf2 = f2.bind(noParamsInstance));
+    Anything o4 = bf2("a", 1, 1.2, 'a', true, noParamsInstance);
+    assert(is NoParams o4);
+    
+    assert(is AppliedFunction<NoParams, [NoParams, String, Integer]> f3 = noParamsType.getFunction("typeParams", stringType));
+    Anything o5 = f3(noParamsInstance, "a", 1);
+    assert(is NoParams o5);
+    assert(is Callable<NoParams, [String, Integer]> bf3 = f3.bind(noParamsInstance));
+    Anything o6 = bf3("a", 1);
+    assert(is NoParams o6);
+
+    assert(is AppliedFunction<String, [NoParams]> f4 = noParamsType.getFunction("getString"));
+    assert(f4(noParamsInstance) == "a");
+    assert(is AppliedFunction<Integer, [NoParams]> f5 = noParamsType.getFunction("getInteger"));
+    assert(f5(noParamsInstance) == 1);
+    assert(is AppliedFunction<Float, [NoParams]> f6 = noParamsType.getFunction("getFloat"));
+    assert(f6(noParamsInstance) == 1.2);
+    assert(is AppliedFunction<Character, [NoParams]> f7 = noParamsType.getFunction("getCharacter"));
+    assert(f7(noParamsInstance) == 'a');
+    assert(is AppliedFunction<Boolean, [NoParams]> f8 = noParamsType.getFunction("getBoolean"));
+    assert(f8(noParamsInstance) == true);
+}
+
+@nomodel
+shared void runtime() {
+//    value classType = type("falbala");
+//    
+//    doc "metamodel is AppliedClassType"
+//    assert(is AppliedClassType<Anything,[]> classType);
+//
+//    value klass = classType.declaration;
+//
+//    doc "metamodel class name is String"
+//    assert(klass.name == "String");
+//
+//    value st = klass.superclass;
+//
+//    doc "super class exists"
+//    assert(exists st);
+//
+//    doc "metamodel superclass name is Object"
+//    assert(st.declaration.name == "Object");
+//
+//    queue = [klass];
+//    emptyQueue();
+//    
+//    visitInheritedTypes(classType);
+
+    checkConstructors();    
+
+    checkMemberFunctions();
+
+    checkMemberAttributes();
 }
 
 void visitInheritedTypes(AppliedClassOrInterfaceType<Anything> type){
