@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.AppliedDeclaration$impl;
@@ -12,8 +11,6 @@ import ceylon.language.metamodel.AppliedProducedType$impl;
 import ceylon.language.metamodel.AppliedValue$impl;
 import ceylon.language.metamodel.Declaration;
 
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -25,8 +22,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValue<Type>, ReifiedType {
 
     private AppliedProducedType type;
-    private TypeDescriptor $reifiedType;
-    private Value declaration;
+    @Ignore
+    protected TypeDescriptor $reifiedType;
+    protected Value declaration;
     private MethodHandle getter;
 
     public AppliedValue(Value value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
@@ -39,9 +37,9 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValu
 
     private void initField(AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration decl = declaration.declaration;
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass(appliedClassOrInterfaceType.declaration.declaration);
         if(decl instanceof JavaBeanValue){
             String getterName = ((JavaBeanValue) decl).getGetterName();
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass(appliedClassOrInterfaceType.declaration.declaration);
             try {
                 Method m = javaClass.getMethod(getterName);
                 getter = MethodHandles.lookup().unreflect(m);
@@ -49,6 +47,8 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValu
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType);
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class, Object.class));
+
+                initField(decl, javaClass, getterType);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -59,6 +59,9 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValu
         }else
             throw new RuntimeException("Unsupported attribute type: "+decl);
     }
+
+    // for AppliedVariable
+    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType) {}
 
     @Override
     @Ignore

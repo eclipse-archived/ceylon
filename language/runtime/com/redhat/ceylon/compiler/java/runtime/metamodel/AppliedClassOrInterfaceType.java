@@ -187,7 +187,7 @@ public class AppliedClassOrInterfaceType<Type>
         com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
         ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
         
-        return new AppliedValue(value, valueType, this);
+        return decl.isVariable() ? new AppliedVariable(value, valueType, this) : new AppliedValue(value, valueType, this);
     }
     
     @Override
