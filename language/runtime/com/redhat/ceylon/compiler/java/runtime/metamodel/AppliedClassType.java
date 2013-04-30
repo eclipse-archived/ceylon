@@ -156,7 +156,12 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         checkInit();
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
-        return null;
+        try {
+            // FIXME: this does not do invokeExact and does boxing/widening
+            return (Type)constructor.invokeWithArguments(args);
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
+        }
     }
 
     @Override

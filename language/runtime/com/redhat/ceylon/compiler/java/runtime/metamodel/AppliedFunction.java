@@ -185,8 +185,14 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Override
     public Type $call(Object... args) {
-        // TODO Auto-generated method stub
-        return null;
+        if(method == null)
+            throw new RuntimeException("No method found for: "+declaration.getName());
+        try {
+            // FIXME: this does not do invokeExact and does boxing/widening
+            return (Type)method.invokeWithArguments(args);
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
+        }
     }
 
     @Override

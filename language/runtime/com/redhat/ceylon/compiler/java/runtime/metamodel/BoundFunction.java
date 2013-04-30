@@ -73,8 +73,12 @@ public class BoundFunction<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     public Type $call(Object... args) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            // FIXME: this does not do invokeExact and does boxing/widening
+            return (Type)method.invokeWithArguments(args);
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to invoke bound method", e);
+        }
     }
 
     @Override
