@@ -24,6 +24,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.loader.model.JavaMethod;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -71,12 +73,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // FIXME: delay method setup for when we actually use it?
         // FIXME: methods not in ClassOrInterfaces?
         java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)container.producedType.getDeclaration());
-        // FIXME: deal with Java classes
+        // FIXME: deal with Java classes and overloading
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         // FIXME: perhaps we should just store the damn method in the underlying JavaMethod?
         Method found = null;
-        // FIXME: name mapping?
-        String name = function.getName();
+        JavaMethod modelDecl = (JavaMethod)function.declaration;
+        String name = modelDecl.getRealName();
         for(Method method : javaClass.getDeclaredMethods()){
             if(method.isAnnotationPresent(Ignore.class))
                 continue;
