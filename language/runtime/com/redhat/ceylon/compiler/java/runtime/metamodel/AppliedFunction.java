@@ -106,35 +106,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
                     typeArguments.add(typeArgumentMap.get(tp));
                 }
-
-                Object[] typeDescriptors = new TypeDescriptor[typeArguments.size()];
-                for(int i=0;i<typeDescriptors.length;i++){
-                    typeDescriptors[i] = Metamodel.getTypeDescriptorForProducedType(typeArguments.get(i));
-                }
-                method = MethodHandles.insertArguments(method, 1, typeDescriptors);
+                method = MethodHandleUtil.insertReifiedTypeArguments(method, 1, typeArguments);
             }
             // now convert all arguments (we may need to unbox)
-            MethodHandle[] filters = new MethodHandle[parameterTypes.length - typeParametersCount];
-            try {
-                for(int i=0;i<filters.length;i++){
-                    java.lang.Class<?> paramType = parameterTypes[i+typeParametersCount];
-                    // FIXME: more boxing
-                    if(paramType == java.lang.String.class){
-                        // ((ceylon.language.String)obj).toString()
-                        MethodHandle toString = MethodHandles.lookup().findVirtual(ceylon.language.String.class, "toString", 
-                                                                                   MethodType.methodType(java.lang.String.class));
-                        filters[i] = toString.asType(MethodType.methodType(java.lang.String.class, java.lang.Object.class));
-                    }else if(paramType == long.class){
-                        // ((ceylon.language.Integer)obj).longValue()
-                        MethodHandle toLong = MethodHandles.lookup().findVirtual(ceylon.language.Integer.class, "longValue", 
-                                                                                 MethodType.methodType(long.class));
-                        filters[i] = toLong.asType(MethodType.methodType(long.class, java.lang.Object.class));
-                    }
-                }
-            } catch (NoSuchMethodException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to filter parameter", e);
-            }
-            method = MethodHandles.filterArguments(method, 1, filters);
+            method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 1, parameterTypes);
         }
 }
 
