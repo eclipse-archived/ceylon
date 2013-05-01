@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Resource;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ResourceList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiesCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchCaseList;
@@ -1695,8 +1696,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCBlock tryBlock = transform(tryClause.getBlock());
 
-        Resource res = tryClause.getResource();
-        if (res != null) {
+        ResourceList resList = tryClause.getResourceList();
+        for (Resource res : resList.getResources()) {
             List<JCStatement> stats = List.nil();
 
             Expression resExpr;
