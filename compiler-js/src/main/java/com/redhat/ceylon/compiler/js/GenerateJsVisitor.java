@@ -3480,37 +3480,54 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(TryCatchStatement that) {
-        Resource resource = that.getTryClause().getResource();
-        String resourceVar = null;
-        if (resource != null) {
-            resourceVar = names.createTempVariable();
-            out("var ", resourceVar, "=null");
-            endLine(true);
-            out("var ", resourceVar, "$exc=null");
-            endLine(true);
-            out("var ", resourceVar, "$cls=false");
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
+        List<Resource> resources = that.getTryClause().getResourceList() == null ? null :
+            that.getTryClause().getResourceList().getResources();
+        if (resources != null && resources.isEmpty()) {
+            resources = null;
+        }
+        List<String> resourceVars = null;
+        String excVar = null;
+        if (resources != null) {
+            resourceVars = new ArrayList<>(resources.size());
+            for (Resource res : resources) {
+                final String resourceVar = names.createTempVariable(res.getVariable().getIdentifier().getText());
+                out("var ", resourceVar, "=null");
+                endLine(true);
+                out("var ", resourceVar, "$cls=false");
+                endLine(true);
+                resourceVars.add(resourceVar);
+            }
+            excVar = names.createTempVariable();
+            out("var ", excVar, "$exc=null");
             endLine(true);
         }
         out("try");
-        if (resource != null) {
-            out("{", resourceVar, "=");
-            resource.visit(this);
-            endLine(true);
-            out(resourceVar, ".open()");
-            endLine(true);
-            out(resourceVar, "$cls=true");
-            endLine(true);
+        if (resources != null) {
+            int pos = 0;
+            out("{");
+            for (String resourceVar : resourceVars) {
+                out(resourceVar, "=");
+                resources.get(pos++).visit(this);
+                endLine(true);
+                out(resourceVar, ".open()");
+                endLine(true);
+                out(resourceVar, "$cls=true");
+                endLine(true);
+            }
         }
         encloseBlockInFunction(that.getTryClause().getBlock());
-        if (resource != null) {
-            out(resourceVar, "$cls=false");
-            endLine(true);
-            out(resourceVar, ".close()");
-            endLine(true);
+        if (resources != null) {
+            for (String resourceVar : resourceVars) {
+                out(resourceVar, "$cls=false");
+                endLine(true);
+                out(resourceVar, ".close()");
+                endLine(true);
+            }
             out("}");
         }
 
-        if (!that.getCatchClauses().isEmpty() || resource != null) {
+        if (!that.getCatchClauses().isEmpty() || resources != null) {
             String catchVarName = names.createTempVariable("ex");
             out("catch(", catchVarName, ")");
             beginBlock();
@@ -3518,8 +3535,8 @@ public class GenerateJsVisitor extends Visitor
             out("if (", catchVarName, ".getT$name === undefined) ", catchVarName, "=",
                     clAlias, "NativeException(", catchVarName, ")");
             endLine(true);
-            if (resource != null) {
-                out(resourceVar, "$exc=", catchVarName);
+            if (excVar != null) {
+                out(excVar, "$exc=", catchVarName);
                 endLine(true);
             }
             boolean firstCatch = true;
@@ -3550,17 +3567,20 @@ public class GenerateJsVisitor extends Visitor
             endBlockNewLine();
         }
 
-        if (that.getFinallyClause() != null || resource != null) {
+        if (that.getFinallyClause() != null || resources != null) {
             out("finally");
-            if (resource != null) {
-                out("{try{if(",resourceVar, "$cls)", resourceVar, ".close(",
-                        resourceVar, "$exc);}catch(",resourceVar,"$swallow){}finally{");
+            if (resources != null) {
+                out("{");
+                for (String resourceVar : resourceVars) {
+                    out("try{if(",resourceVar, "$cls)", resourceVar, ".close(",
+                            excVar, "$exc);}catch(",resourceVar,"$swallow){}");
+                }
             }
             if (that.getFinallyClause() != null) {
                 encloseBlockInFunction(that.getFinallyClause().getBlock());
             }
-            if (resource != null) {
-                out("}}");
+            if (resources != null) {
+                out("}");
             }
         }
     }
