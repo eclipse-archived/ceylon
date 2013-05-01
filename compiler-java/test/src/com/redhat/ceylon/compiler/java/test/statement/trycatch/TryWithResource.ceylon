@@ -27,15 +27,21 @@ class TryWithResource() satisfies Closeable {
     }
 
     shared void m() {
-        value me = this;
-        try(me) {
-        }
+        //value me = this;
+        //try(me) {
+        //}
         try(TryWithResource()) {
         }
-        try(r = TryWithResource()) {
-            r.m();
-        } catch (Exception ex) {
-        } finally {
+        try(TryWithResource(), TryWithResource(), TryWithResource()) {
         }
+        //try(r = getResource()) {
+        //    r.m();
+        //} catch (Exception ex) {
+        //} finally {
+        //}
+    }
+    
+    Closeable getResource() {
+        return TryWithResource();
     }
 }
