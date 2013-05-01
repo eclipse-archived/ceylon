@@ -1851,7 +1851,7 @@ while (n&lt;=max) {
             resource expression must be of type assignable to <literal>Closeable</literal>
             in <literal>ceylon.language</literal>.</para>
             
-            <synopsis>Resource: MemberName | InitializerReference Arguments | Variable Specifier </synopsis>
+            <synopsis>Resource: Invocation | Variable Specifier </synopsis>
                         
             <para>For example:</para>
             
