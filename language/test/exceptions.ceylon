@@ -1,11 +1,15 @@
 class MyException() extends Exception("my exception", null) {}
 class OtherException() extends Exception("other exception", null) {}
 
+variable Integer sharedState = -1;
+
 class ResourceException(String msg) extends Exception(msg, null) {}
+
 class MyResource(Integer err) satisfies Closeable {
     shared variable Integer state = 0;
-    
+
     if (err == 1) {
+        sharedState=0;
         throw ResourceException("init resource");
     }
 
@@ -14,17 +18,21 @@ class MyResource(Integer err) satisfies Closeable {
     shared actual void open() {
         state += 2;
         if (err == 2) {
+            sharedState = state;
             throw ResourceException("open resource");
         }
         state += 4;
+        sharedState = state;
     }
 
     shared actual void close(Exception? exception) {
         state += 8;
         if (err == 3) {
+            sharedState = state;
             throw ResourceException("close resource");
         }
         state += 16;
+        sharedState = state;
     }
 }
 
@@ -108,8 +116,7 @@ void exceptions() {
     check(!caught, "caught");
 
     variable Integer pass = 0;
-    variable MyResource res = MyResource(0);
-    try (res) {
+    try (r=MyResource(0)) {
         pass++;
     } catch (Exception e) {
         fail("try-with-resource 1 unexpected exception");
@@ -117,11 +124,10 @@ void exceptions() {
         pass++;
     }
     check(pass==2, "try-with-resource 1 pass check");
-    check(res.state==31, "try-with-resource 1 resource state check");
+    check(sharedState==31, "try-with-resource 1 resource state check");
 
     pass = 0;
-    res = MyResource(0);
-    try (res) {
+    try (r=MyResource(0)) {
         pass++;
         throw MyException();
     } catch (Exception e) {
@@ -131,10 +137,10 @@ void exceptions() {
         pass++;
     }
     check(pass==3, "try-with-resource 2 final check");
-    check(res.state==31, "try-with-resource 2 resource state check");
+    check(sharedState==31, "try-with-resource 2 resource state check");
     
     pass = 0;
-    try (MyResource(1)) {
+    try (r=MyResource(1)) {
         fail("try-with-resource 3 unexpected try-block execution");
     } catch (Exception e) {
         pass++;
@@ -145,8 +151,7 @@ void exceptions() {
     check(pass==2, "try-with-resource 3 pass check");
     
     pass = 0;
-    res = MyResource(2);
-    try (res) {
+    try (r=MyResource(2)) {
         fail("try-with-resource 4 unexpected try-block execution");
     } catch (Exception e) {
         pass++;
@@ -155,11 +160,10 @@ void exceptions() {
         pass++;
     }
     check(pass==2, "try-with-resource 4 pass check");
-    check(res.state==3, "try-with-resource 4 resource state check");
+    check(sharedState==3, "try-with-resource 4 resource state check");
     
     pass = 0;
-    res = MyResource(3);
-    try (res) {
+    try (r=MyResource(3)) {
         pass++;
     } catch (Exception e) {
         pass++;
@@ -168,11 +172,10 @@ void exceptions() {
         pass++;
     }
     check(pass==3, "try-with-resource 5 pass check");
-    check(res.state==15, "try-with-resource 5 resource state check");
+    check(sharedState==15, "try-with-resource 5 resource state check");
     
     pass = 0;
-    res = MyResource(3);
-    try (res) {
+    try (r=MyResource(3)) {
         throw MyException();
     } catch (Exception e) {
         pass++;
@@ -181,5 +184,17 @@ void exceptions() {
         pass++;
     }
     check(pass==2, "try-with-resource 6 pass check");
-    check(res.state==15, "try-with-resource 6 resource state check");
+    check(sharedState==15, "try-with-resource 6 resource state check");
+
+    pass = 0;
+    try (r1=MyResource(0), r2=MyResource(2)) {
+        fail("try-with-resources 7 unexpected try-block execution");
+    } catch (ResourceException ex) {
+        pass++;
+        check(ex.message=="open resource", "try-with-resource 7 exception message");
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-resource 7 pass check");
+    check(sharedState==31, "try-with-resource 7 resource state check gave ``sharedState`` instead of 31");
 }
