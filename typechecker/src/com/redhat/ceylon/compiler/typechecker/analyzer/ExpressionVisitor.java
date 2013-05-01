@@ -2029,10 +2029,10 @@ public class ExpressionVisitor extends Visitor {
                     //typecheck arguments using the type args of Callable
                     if (typeArgs.size()>=2) {
                         ProducedType tt = typeArgs.get(1);
-                        checkIndirectInvocationArguments(that, 
-                                unit.getTupleElementTypes(tt),
-                                unit.isTupleLengthUnbounded(tt),
-                                unit.getTupleMinimumLength(tt));
+                        checkIndirectInvocationArguments(that, tt,
+                        		unit.getTupleElementTypes(tt),
+                        		unit.isTupleLengthUnbounded(tt),
+                        		unit.getTupleMinimumLength(tt));
                     }
                 }
             }
@@ -2404,22 +2404,33 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
-            List<ProducedType> paramTypes, boolean sequenced, int firstDefaulted) {
+    		ProducedType tt, List<ProducedType> paramTypes, boolean sequenced, 
+    		int firstDefaulted) {
         
         if (that.getNamedArgumentList()!=null) {
             that.addError("named arguments not supported for indirect invocations");
         }
         
-        for (int i=0; i<paramTypes.size(); i++) {
-        	if (paramTypes.get(i).isUnknown()) {
-        		that.addError("parameter types cannot be determined from function reference");
-        		return;
-        	}
-        }
-        
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pal!=null) {
             List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+            
+            if (tt.getDeclaration() instanceof TypeParameter) {
+            	//TODO: really this should handle types like
+            	//          [String,Integer,*Args]
+            	//      by recursively walking the tuple type
+            	checkAssignable(getTupleType(args, false), tt, that, 
+            			"argument list type not assignable to parameter list type");
+            	return;
+            }
+            
+            for (int i=0; i<paramTypes.size(); i++) {
+            	if (paramTypes.get(i).isUnknown()) {
+            		that.addError("parameter types cannot be determined from function reference");
+            		return;
+            	}
+            }
+            
             for (int i=0; i<paramTypes.size(); i++) {
                 if (i>=args.size()) {
                     if (i<firstDefaulted && (!sequenced || i!=paramTypes.size()-1)) {
@@ -4127,7 +4138,7 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType spreadType(ProducedType et, Unit unit,
             boolean requireSequential) {
         if (et==null) return null;
-        if (unit.isSequentialType(et)) {
+        if (unit.isSequentialType(et) && !(et.getDeclaration() instanceof TypeParameter)) {
             // if it's already a subtype of Sequential, erase 
             // out extraneous information, like that it is a
             // String, just keeping information about what

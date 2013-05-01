@@ -90,3 +90,16 @@ void testIndirectWithUnknownParamTypes() {
     @error f5(1);
     @error f5(1, 3);
 }
+
+shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun) 
+    given Args satisfies Anything[] {
+
+    fun(*args);
+    @error fun();
+    @error fun(args);
+    @error fun(1, 2, 3);
+
+    Anything(String,Integer) fn = (String s, Integer i) => s[i];
+    fn(*["a", 2]);
+    parameterizedByArgs(["a", 2], fn);
+}

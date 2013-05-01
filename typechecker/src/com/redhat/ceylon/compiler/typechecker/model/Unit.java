@@ -707,9 +707,11 @@ public class Unit {
                 return new LinkedList<ProducedType>();
             }
             else if (isSequentialType(args)) {
-                LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
-                sequenced.add(args);
-                return sequenced;
+            	if (!(args.getDeclaration() instanceof TypeParameter)) {
+            		LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
+            		sequenced.add(args);
+            		return sequenced;
+            	}
             }
         }
         LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
@@ -730,7 +732,7 @@ public class Unit {
                 return false;
             }
             else if (isSequentialType(args)) {
-                return true;
+                return !(args.getDeclaration() instanceof TypeParameter);
             }
         }
         return false;
