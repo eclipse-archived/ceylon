@@ -78,6 +78,8 @@ function unflatten(ff, $$$mptypes) {
     ru.$$targs$$=$$$mptypes;
     return ru;
 }
+exports.flatten=flatten;
+exports.unflatten=unflatten;
 
 //internal
 function toTuple(iterable) {

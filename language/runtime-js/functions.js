@@ -29,10 +29,10 @@ function isOfType(obj, type) {
         if (type.t == 'i' || type.t == 'u') {
             return isOfTypes(obj, type);
         }
-        if (obj === null) {
+        if (obj === null || obj === undefined) {
             return type.t===Null || type.t===Anything;
         }
-        if (obj === undefined || obj.getT$all === undefined) { return false; }
+        if (obj.getT$all === undefined) { return false; }
         if (type.t.$$.T$name in obj.getT$all()) {
             if (type.a && obj.$$targs$$) {
                 for (var i in type.a) {
