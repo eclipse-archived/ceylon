@@ -33,6 +33,8 @@ public class TypeUtils {
     final TypeDeclaration _float;
     final TypeDeclaration _null;
     final TypeDeclaration anything;
+    final TypeDeclaration callable;
+    final TypeDeclaration empty;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
@@ -44,6 +46,8 @@ public class TypeUtils {
         _float = (TypeDeclaration)pkg.getMember("Float", null, false);
         _null = (TypeDeclaration)pkg.getMember("Null", null, false);
         anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
+        callable = (TypeDeclaration)pkg.getMember("Callable", null, false);
+        empty = (TypeDeclaration)pkg.getMember("Empty", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */
@@ -445,6 +449,46 @@ public class TypeUtils {
             first = false;
         }
         gen.out("]}");
+    }
+
+    ProducedType tupleFromParameters(List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params) {
+        if (params == null || params.isEmpty()) {
+            return empty.getType();
+        }
+        ProducedType tt = empty.getType();
+        ProducedType et = null;
+        for (int i = params.size()-1; i>=0; i--) {
+            com.redhat.ceylon.compiler.typechecker.model.Parameter p = params.get(i);
+            if (et == null) {
+                et = p.getType();
+            } else {
+                UnionType ut = new UnionType(p.getUnit());
+                ArrayList<ProducedType> types = new ArrayList<>();
+                if (et.getCaseTypes() == null || et.getCaseTypes().isEmpty()) {
+                    types.add(et);
+                } else {
+                    types.addAll(et.getCaseTypes());
+                }
+                types.add(p.getType());
+                ut.setCaseTypes(types);
+                et = ut.getType();
+            }
+            Map<TypeParameter,ProducedType> args = new HashMap<>();
+            for (TypeParameter tp : tuple.getTypeParameters()) {
+                if ("First".equals(tp.getName())) {
+                    args.put(tp, p.getType());
+                } else if ("Element".equals(tp.getName())) {
+                    args.put(tp, et);
+                } else if ("Rest".equals(tp.getName())) {
+                    args.put(tp, tt);
+                }
+            }
+            if (i == params.size()-1) {
+                tt = tuple.getType();
+            }
+            tt = tt.substitute(args);
+        }
+        return tt;
     }
 
 }
