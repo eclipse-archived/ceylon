@@ -52,23 +52,25 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>A <emphasis>module descriptor</emphasis> consists of a 
+                <para>A regular compilation unit contains a list of toplevel type, 
+                value, or function definitions.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>module descriptor</emphasis> contains a 
                 <literal>module</literal> declaration. The file must be named
                 <literal>module.ceylon</literal>.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>package descriptor</emphasis> consists of a 
-                <literal>module</literal> declaration. The file must be named
+                <para>A <emphasis>package descriptor</emphasis> contains a 
+                <literal>package</literal> declaration. The file must be named
                 <literal>package.ceylon</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>A regular compilation unit consists of a list of imported types, 
-                values, and functions, followed by a list of toplevel type, value, or 
-                function definitions.</para>
             </listitem>
         </itemizedlist>
         
-        <programlisting>ModuleDescriptor | PackageDescriptor | Import* Declaration*</programlisting>
+        <para>Any compilation unit may begin with a list of imported types, values, 
+        and functions.</para>
+        
+        <programlisting>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</programlisting>
         
         <synopsis>Declaration: FunctionValueDeclaration | TypeDeclaration</synopsis>
         

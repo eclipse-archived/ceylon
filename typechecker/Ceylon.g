@@ -45,17 +45,17 @@ compilationUnit returns [CompilationUnit compilationUnit]
         SEMICOLON
         { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
       )?
+      importList
+      { $compilationUnit.setImportList($importList.importList); }
       (
         (compilerAnnotations annotations MODULE)=>
         moduleDescriptor 
         { $compilationUnit.setModuleDescriptor($moduleDescriptor.moduleDescriptor); }
-      | 
+      |
         (compilerAnnotations annotations PACKAGE)=>
         packageDescriptor
         { $compilationUnit.setPackageDescriptor($packageDescriptor.packageDescriptor); }
       |
-        importList 
-        { $compilationUnit.setImportList($importList.importList); }
         ( 
           ca2=compilerAnnotations declaration
           { if ($declaration.declaration!=null)
