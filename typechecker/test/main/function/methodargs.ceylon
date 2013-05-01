@@ -78,3 +78,15 @@ void testIndirectSpread() {
     f(1, 2, 3, *[]);
     f(*[1, 2, 3]);
 }
+
+void testIndirectWithUnknownParamTypes() {
+    Callable<Anything, Nothing> f4 = function (String a, Integer b) => 2;
+    @error f4();
+    @error f4(1);
+    @error f4(1, 3);
+
+    Callable<Anything, Nothing[]> f5 = function (Integer* a) => 2;
+    f5();
+    @error f5(1);
+    @error f5(1, 3);
+}

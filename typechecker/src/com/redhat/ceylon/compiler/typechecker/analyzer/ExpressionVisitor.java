@@ -2410,6 +2410,13 @@ public class ExpressionVisitor extends Visitor {
             that.addError("named arguments not supported for indirect invocations");
         }
         
+        for (int i=0; i<paramTypes.size(); i++) {
+        	if (paramTypes.get(i).isUnknown()) {
+        		that.addError("parameter types cannot be determined from function reference");
+        		return;
+        	}
+        }
+        
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pal!=null) {
             List<Tree.PositionalArgument> args = pal.getPositionalArguments();
