@@ -1124,7 +1124,10 @@ public class GenerateJsVisitor extends Visitor
             singleExprFunction(that.getParameterLists(),
                     that.getSpecifierExpression().getExpression(), that.getScope());
             endLine(true);
-            out(names.name(m), "$$metamodel$$=");
+            if (outer != null) {
+                out(names.self(outer), ".");
+            }
+            out(names.name(m), ".$$metamodel$$=");
             TypeUtils.encodeForRuntime(m, this);
             endLine(true);
             share(m);
@@ -1499,10 +1502,12 @@ public class GenerateJsVisitor extends Visitor
                     //Add parameters
                     TypeUtils.encodeParameterListForRuntime(((Method)decl).getParameterLists().get(0),
                             GenerateJsVisitor.this);
-                    out(",");
                 } else {
-                    out("[],");
+                    //Type of value must be Callable
+                    //And the Args Type Parameters is a Tuple
+                    types.encodeTupleAsParameterListForRuntime(decl.getType(), this);
                 }
+                out(",");
                 TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
             }
             boxUnboxEnd(boxType);
@@ -2407,7 +2412,7 @@ public class GenerateJsVisitor extends Visitor
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
-                                    out("[],");
+                                    out("[/*VALUE Callable params", moval.getClass().getName(), "*/],");
                                 }
                                 TypeUtils.printTypeArguments(specStmt.getSpecifierExpression().getExpression(),
                                         specStmt.getSpecifierExpression().getExpression().getTypeModel().getTypeArguments(),

@@ -332,6 +332,40 @@ public class TypeUtils {
         gen.out("]");
     }
 
+    /** This method encodes the type parameters of a Tuple (taken from a Callable) in the same way
+     * as a parameter list for runtime. */
+    void encodeTupleAsParameterListForRuntime(ProducedType _callable, GenerateJsVisitor gen) {
+        if (!_callable.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
+            gen.out("[/*WARNING: got ", _callable.getProducedTypeQualifiedName(), " instead of Callable*/]");
+            return;
+        }
+        List<ProducedType> targs = _callable.getTypeArgumentList();
+        if (targs == null || targs.size() != 2) {
+            gen.out("[/*WARNING: missing argument types for Callable*/]");
+            return;
+        }
+        ProducedType _tuple = targs.get(1);
+        gen.out("[");
+        int pos = 1;
+        while (!empty.equals(_tuple.getDeclaration())) {
+            if (pos > 1) gen.out(",");
+            gen.out("{", MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos++), "',");
+            gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
+            gen.out(MetamodelGenerator.KEY_TYPE, ":");
+            if (tuple.equals(_tuple.getDeclaration())) {
+                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
+                _tuple = _tuple.getTypeArgumentList().get(2);
+            } else if (sequential.equals(_tuple.getDeclaration())) {
+                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
+                _tuple = _tuple.getTypeArgumentList().get(0);
+            } else {
+                System.out.println("QUE CARAJOS? tuple es " + _tuple.getProducedTypeQualifiedName());
+            }
+            gen.out("}");
+        }
+        gen.out("]");
+    }
+
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(Declaration d, GenerateJsVisitor gen) {
         gen.out("{", MetamodelGenerator.KEY_NAME, ":'", d.getNameAsString(),

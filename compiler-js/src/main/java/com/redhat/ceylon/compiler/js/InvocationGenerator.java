@@ -254,7 +254,7 @@ public class InvocationGenerator {
                         //Add parameters
                         Method _m = extractMethod(expr.getTerm());
                         if (_m == null) {
-                            gen.out("[],");
+                            gen.out("[/*INVOKE callable params 1*/],");
                         } else {
                             TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
                             gen.out(",");
@@ -281,7 +281,7 @@ public class InvocationGenerator {
                             gen.out(",");
                             Method _m = extractMethod(expr.getTerm());
                             if (_m == null) {
-                                gen.out("[],");
+                                gen.out("[/*INVOKE callable params 2*/],");
                             } else {
                                 TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
                                 gen.out(",");
