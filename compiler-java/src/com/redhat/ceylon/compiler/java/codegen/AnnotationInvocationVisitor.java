@@ -43,6 +43,7 @@ class AnnotationInvocationVisitor extends Visitor {
         } else {
             throw Assert.fail();
         }
+        Assert.that(annotationClass != null, "Annotation class for invocation of " + declaration + " could not be determined");
     }
     
     public Class getAnnotationClass() {
