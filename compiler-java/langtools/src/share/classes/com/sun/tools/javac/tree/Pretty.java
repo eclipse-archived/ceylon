@@ -196,8 +196,22 @@ public class Pretty extends JCTree.Visitor {
 
     /** Derived visitor method: print list of expression trees, separated by commas.
      */
+    public <T extends JCTree> void printExprs(List<T> trees, boolean multiline) throws IOException {
+        if (multiline && trees.length() > 1) {
+            indent();
+            indent();
+            println();
+            align();
+            printExprs(trees, ",\n");
+            undent();
+            undent();
+        } else {
+            printExprs(trees, ", ");
+        }
+    }
+    
     public <T extends JCTree> void printExprs(List<T> trees) throws IOException {
-        printExprs(trees, ", ");
+        printExprs(trees, false);
     }
 
     /** Derived visitor method: print list of statements, each on a separate line.
@@ -904,7 +918,7 @@ public class Pretty extends JCTree.Visitor {
             if (tree.elems != null) {
                 if (tree.elemtype != null) print("[]");
                 print("{");
-                printExprs(tree.elems);
+                printExprs(tree.elems, true);
                 print("}");
             }
         } catch (IOException e) {
@@ -1298,7 +1312,7 @@ public class Pretty extends JCTree.Visitor {
 	                    printExpr(annot);
 	                }
 	            } else {
-	                printExprs(tree.args);
+	                printExprs(tree.args, true);
 	            }
 	            print(")");
             }
