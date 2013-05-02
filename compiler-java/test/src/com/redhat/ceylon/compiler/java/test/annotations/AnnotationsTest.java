@@ -89,4 +89,59 @@ public class AnnotationsTest extends CompilerTest {
     public void testTypeParameters(){
         compareWithJavaSource("TypeParameters");
     }
+    
+    // User annotations
+    @Test
+    public void testAnnotationClassNullary(){
+        compareWithJavaSource("AnnotationClassNullary");
+    }
+    @Test
+    public void testAnnotationClassString(){
+        compareWithJavaSource("AnnotationClassString");
+    }
+    
+    @Test
+    public void testAnnotationClassInteger(){
+        compareWithJavaSource("AnnotationClassInteger");
+    }
+    @Test
+    public void testAnnotationClassBoolean(){
+        compareWithJavaSource("AnnotationClassBoolean");
+    }
+    @Test
+    public void testAnnotationClassCharacter(){
+        compareWithJavaSource("AnnotationClassCharacter");
+    }
+    @Test
+    public void testAnnotationClassFloat(){
+        compareWithJavaSource("AnnotationClassFloat");
+    }
+    
+    @Test
+    public void testAnnotationClassAnnotationClass(){
+        compareWithJavaSource("AnnotationClassAnnotationClass");
+    }
+    @Test
+    public void testAnnotationClassMetamodelReference(){
+        compareWithJavaSource("AnnotationClassMetamodelReference");
+    }
+    @Test
+    public void testAnnotationModelLoading(){
+        compile("AnnotationConstructor.ceylon");
+        compile("AnnotationConstructorUse.ceylon");
+    }
+    
+    @Test
+    public void testAnnotationTarget_fail(){
+        compareWithJavaSource("AnnotationTarget");
+    }
+    
+    @Test
+    public void testAnnotationModule(){
+        // TODO Add a package.ceylon, so we can check that too.
+        compareWithJavaSource("modules/a/module");
+        compareWithJavaSource("modules/a/package");
+        compareWithJavaSource("modules/b/module");
+        compareWithJavaSource("modules/c/module");
+    }
  }
