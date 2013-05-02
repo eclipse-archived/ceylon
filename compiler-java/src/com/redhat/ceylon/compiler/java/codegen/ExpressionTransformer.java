@@ -25,7 +25,9 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
@@ -86,6 +88,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
@@ -3956,5 +3959,115 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         return null;
+    }
+    
+    public List<JCAnnotation> transform(Tree.AnnotationList annotationList) {
+        
+        LinkedHashMap<Class, List<JCAnnotation>> annos = new LinkedHashMap<>();
+        if (annotationList != null) {
+            if (annotationList.getAnonymousAnnotation() != null) {
+                //result.append(transform(annotationList.getAnonymousAnnotation()));
+            }
+            if (annotationList.getAnnotations() != null) {
+                for (Tree.Annotation annotation : annotationList.getAnnotations()) {
+                    if (Decl.isLanguageModuleDeclaration(((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration())) {
+                        continue;
+                    }
+                    transformAnnotation(annotation, annos);
+                }
+            }
+        }
+        ListBuffer<JCAnnotation> result = ListBuffer.lb();
+        for (Class ac : annos.keySet()) {
+            if (isSequencedAnnotation(ac)) {
+                JCAnnotation wrapperAnnotation = make().Annotation(
+                        makeJavaType(ac.getType(), JT_ANNOTATIONS), 
+                        List.<JCExpression>of(make().NewArray(null,  null, (List)annos.get(ac))));
+                result.append(wrapperAnnotation);
+            } else {
+                result.appendList(annos.get(ac));
+            }
+        }
+        return result.toList();
+    }
+    
+    void transformAnnotation(Tree.InvocationExpression invocation, 
+            Map<Class, List<JCAnnotation>> annotationSet) {
+        at(invocation);
+        Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+        final Method annotationConstructor = (Method)declaration;
+        int[] argumentIndices = annotationConstructor.getAnnotationArguments();
+        Class annotationClass = annotationConstructor.getAnnotationClass();
+        int index = 0;
+        ListBuffer<JCExpression> constructorArguments = ListBuffer.lb();
+        for (Parameter p : annotationClass.getParameterList().getParameters()) {
+            if (index >= argumentIndices.length) {
+                // => We're using the annotation classes defaulted parameter
+                //makeErroneous(invocation, "Oh no!");
+                index++;
+                continue;
+            }
+            int argumentIndex = argumentIndices[index];
+            JCExpression argExpr = null;
+            if (argumentIndex >= 0 && argumentIndex < 256) {
+                if (invocation.getPositionalArgumentList() != null) {
+                    Tree.PositionalArgument arg = invocation.getPositionalArgumentList().getPositionalArguments().get(argumentIndex);
+                    if (arg instanceof Tree.ListedArgument) {
+                        Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
+                        Tree.Term term = expression.getTerm();
+                        // TODO Special case tuple, sequence enumeration
+                        argExpr = transformExpression(term, BoxingStrategy.UNBOXED, expression.getTypeModel());
+                    } else {
+                        argExpr = makeErroneous(arg, "Unable to find use that kind of argument");
+                    }
+                } else if (invocation.getNamedArgumentList() != null) {
+                    for (Tree.NamedArgument na : invocation.getNamedArgumentList().getNamedArguments()) {
+                        Parameter parameter = na.getParameter();
+                        int parameterIndex = annotationConstructor.getParameterLists().get(0).getParameters().indexOf(parameter);
+                        if (parameterIndex == argumentIndex) {
+                            if (na instanceof Tree.SpecifiedArgument) {
+                                Tree.SpecifiedArgument sa = (Tree.SpecifiedArgument)na;
+                                Tree.Expression expression = sa.getSpecifierExpression().getExpression();
+                                argExpr = transformExpression(expression.getTerm(), BoxingStrategy.UNBOXED, expression.getTypeModel());
+                            } else {
+                                argExpr = makeErroneous(na, "Unable to find use that kind of argument");
+                            }
+                            break;
+                        }
+                    }
+                    if (argExpr == null) {
+                        argExpr = makeErroneous(invocation, "Unable to find argument");
+                    }
+                }
+            } else if (argumentIndex == 256) {
+                at(invocation);
+                argExpr = naming.makeQuotedQualIdent(
+                                naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
+                                p.getName());
+            } else {
+                argExpr = makeErroneous(invocation, "Unable to find argument");
+            }
+            constructorArguments.append(make().Assign(
+                    naming.makeQuotedIdent(p.getName()), argExpr));
+            index++;
+        }
+        
+        JCAnnotation annotation = at(invocation).Annotation(makeJavaType(annotationClass.getType(), JT_ANNOTATION), constructorArguments.toList());
+        List<JCAnnotation> list = annotationSet.get(annotationClass);
+        if (list == null) {
+            list = List.nil();
+        } else if (!isSequencedAnnotation(annotationClass)) {
+            makeErroneous(invocation, "Multiple occurances of OptionalAnnotation!");
+        }
+        annotationSet.put(annotationClass, list.prepend(annotation));
+    }
+
+
+    public JCAnnotation transform(Tree.AnonymousAnnotation annotation) {
+        return at(annotation).Annotation(
+                naming.makeName((TypedDeclaration)typeFact().getLanguageModuleDeclaration("doc"), 
+                        Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_ANNOTATION), 
+                List.<JCExpression>of(make().Assign(naming.makeUnquotedIdent("description"),
+                        transform(annotation.getStringLiteral()))));
     }
 }
