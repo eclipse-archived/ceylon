@@ -708,7 +708,7 @@ shared interface Color { ... }</programlisting>
                     <para>if the expression type <literal>T</literal> is an invariant 
                     subtype of <literal>{X+}</literal>, for some type <literal>X</literal> 
                     then the sequential type of the spread argument is 
-                    <literal>{X+]</literal>, or, otherwise,</para>
+                    <literal>[X+]</literal>, or, otherwise,</para>
                 </listitem>
                 <listitem>
                     <para>the expression type <literal>T</literal> is an invariant 
