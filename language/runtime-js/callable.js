@@ -17,10 +17,22 @@ function $init$Callable() {
 exports.$init$Callable=$init$Callable;
 $init$Callable();
 
-function $JsCallable(callable,targs) {
-    callable.getT$all=Callable.getT$all;
-    if (targs !== undefined) {
-        callable.$$targs$$=targs;
+function $JsCallable(callable,parms,targs) {
+    if (callable.getT$all === undefined) {
+        callable.getT$all=Callable.getT$all;
+        var set_meta = callable.$$metamodel$$ === undefined;
+        if (set_meta) {
+            callable.$$metamodel$$={$mt:'mthd',$ps:[]};
+            if (parms !== undefined) {
+                callable.$$metamodel$$['$ps']=parms;
+            }
+        }
+        if (targs !== undefined) {
+            callable.$$targs$$=targs;
+            if (set_meta) {
+                callable.$$metamodel$$['$t']=targs['Return'];
+            }
+        }
     }
     return callable;
 }
