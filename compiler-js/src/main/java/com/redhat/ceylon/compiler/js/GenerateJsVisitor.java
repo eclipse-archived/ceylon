@@ -122,6 +122,10 @@ public class GenerateJsVisitor extends Visitor
     private boolean needIndent = true;
     private int indentLevel = 0;
 
+    Package getCurrentPackage() {
+        return root.getUnit().getPackage();
+    }
+
     private static void setCLAlias(String alias) {
         clAlias = alias + ".";
     }
@@ -1120,6 +1124,9 @@ public class GenerateJsVisitor extends Visitor
             singleExprFunction(that.getParameterLists(),
                     that.getSpecifierExpression().getExpression(), that.getScope());
             endLine(true);
+            out(names.name(m), "$$metamodel$$=");
+            TypeUtils.encodeForRuntime(m, this);
+            endLine(true);
             share(m);
         }
         else if (outer == null) { // don't do the following in a prototype definition
@@ -1155,7 +1162,23 @@ public class GenerateJsVisitor extends Visitor
             //Add reference to metamodel
             out(names.name(d), ".$$metamodel$$=");
             TypeUtils.encodeForRuntime(d, this);
-            out(";");
+            out(";//", names.name(d), ".$$targs$$=");
+            Map<TypeParameter, ProducedType> _parms = new HashMap<>();
+            for (TypeParameter ctp : types.callable.getTypeParameters()) {
+                if ("Return".equals(ctp.getName())) {
+                    _parms.put(ctp, d.getType());
+                } else if ("Arguments".equals(ctp.getName())) {
+                    try {
+                        com.redhat.ceylon.compiler.typechecker.model.ParameterList plist = d.getParameterLists().get(0);
+                        _parms.put(ctp, types.tupleFromParameters(plist.getParameters()));
+                    } catch (Exception ex) {
+                        System.err.println("WTF????? This should never happen! JS compiler is seriously broken...");
+                        ex.printStackTrace();
+                    }
+                }
+            }
+            TypeUtils.printTypeArguments(that, _parms, this);
+            endLine(true);
         }
     }
 
@@ -1472,6 +1495,14 @@ public class GenerateJsVisitor extends Visitor
             if (boxType == 4) {
                 //Pass Callable argument types
                 out(",");
+                if (decl instanceof Method) {
+                    //Add parameters
+                    TypeUtils.encodeParameterListForRuntime(((Method)decl).getParameterLists().get(0),
+                            GenerateJsVisitor.this);
+                    out(",");
+                } else {
+                    out("[],");
+                }
                 TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
             }
             boxUnboxEnd(boxType);
@@ -2369,6 +2400,15 @@ public class GenerateJsVisitor extends Visitor
                             }
                             if (boxType == 4) {
                                 out(",");
+                                if (moval instanceof Method) {
+                                    //Add parameters
+                                    TypeUtils.encodeParameterListForRuntime(((Method)moval).getParameterLists().get(0),
+                                            GenerateJsVisitor.this);
+                                    out(",");
+                                } else {
+                                    //TODO extract parameters from Value
+                                    out("[],");
+                                }
                                 TypeUtils.printTypeArguments(specStmt.getSpecifierExpression().getExpression(),
                                         specStmt.getSpecifierExpression().getExpression().getTypeModel().getTypeArguments(),
                                         GenerateJsVisitor.this);
@@ -3802,6 +3842,7 @@ public class GenerateJsVisitor extends Visitor
                 if (count==0) {
                     out(function);
                 } else {
+                    //TODO add metamodel
                     out("return function");
                 }
                 paramList.visit(this);

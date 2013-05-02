@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -250,6 +251,14 @@ public class InvocationGenerator {
                     }
                     if (boxType == 4) {
                         gen.out(",");
+                        //Add parameters
+                        Method _m = extractMethod(expr.getTerm());
+                        if (_m == null) {
+                            gen.out("[],");
+                        } else {
+                            TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
+                            gen.out(",");
+                        }
                         TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
                     }
                     gen.boxUnboxEnd(boxType);
@@ -270,6 +279,13 @@ public class InvocationGenerator {
                         arg.visit(gen);
                         if (boxType == 4) {
                             gen.out(",");
+                            Method _m = extractMethod(expr.getTerm());
+                            if (_m == null) {
+                                gen.out("[],");
+                            } else {
+                                TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
+                                gen.out(",");
+                            }
                             TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
                         }
                         gen.boxUnboxEnd(boxType);
@@ -341,6 +357,21 @@ public class InvocationGenerator {
                 gen.out("()");
             }
         }
+    }
+
+    Method extractMethod(Tree.Term term) {
+        if (term instanceof Tree.FunctionArgument) {
+            return (((Tree.FunctionArgument)term).getDeclarationModel());
+        } else if (term instanceof Tree.MemberOrTypeExpression) {
+            if (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Method) {
+                return (Method)((Tree.MemberOrTypeExpression)term).getDeclaration();
+            }
+        } else if (term instanceof Tree.InvocationExpression) {
+            gen.out("/*Callable from Invocation ", term.toString(), "*/");
+        } else {
+            gen.out("/*Callable EXPR of type ", term.getClass().getName(), "*/");
+        }
+        return null;
     }
 
 }

@@ -312,6 +312,26 @@ public class TypeUtils {
         gen.out(")?", tmp, ":", GenerateJsVisitor.getClAlias(), "throwexc('dynamic objects cannot be used here'))");
     }
 
+    static void encodeParameterListForRuntime(ParameterList plist, GenerateJsVisitor gen) {
+        boolean first = true;
+        gen.out("[");
+        for (Parameter p : plist.getParameters()) {
+            if (first) first=false; else gen.out(",");
+            gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getNameAsString(), "',");
+            gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
+            if (p.isSequenced()) {
+                gen.out("seq:1,");
+            }
+            if (p.isDefaulted()) {
+                gen.out(MetamodelGenerator.KEY_DEFAULT, ":1,");
+            }
+            gen.out(MetamodelGenerator.KEY_TYPE, ":");
+            metamodelTypeNameOrList(gen.getCurrentPackage(), p.getType(), gen);
+            gen.out("}");
+        }
+        gen.out("]");
+    }
+
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(Declaration d, GenerateJsVisitor gen) {
         gen.out("{", MetamodelGenerator.KEY_NAME, ":'", d.getNameAsString(),
@@ -339,9 +359,9 @@ public class TypeUtils {
             gen.out(MetamodelGenerator.METATYPE_METHOD, "',", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
             metamodelTypeNameOrList(d.getUnit().getPackage(), ((Method)d).getType(), gen);
-            gen.out(",", MetamodelGenerator.KEY_PARAMS, ":[");
-            //TODO: parameter lists, parameters
-            gen.out("]");
+            gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
+            //Parameter types of the first parameter list
+            encodeParameterListForRuntime(((Method)d).getParameterLists().get(0), gen);
             tparms = ((Method) d).getTypeParameters();
 
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Value) {
@@ -410,6 +430,10 @@ public class TypeUtils {
      * already existing params. */
     static void metamodelTypeNameOrList(final com.redhat.ceylon.compiler.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
+        if (pt == null) {
+            //In dynamic blocks we sometimes get a null producedType
+            pt = ((TypeDeclaration)pkg.getModule().getLanguageModule().getDirectPackage("ceylon.language").getDirectMember("Anything", null, false)).getType();
+        }
         TypeDeclaration type = pt.getDeclaration();
         if (type.isAlias()) {
             type = type.getExtendedTypeDeclaration();
@@ -423,7 +447,17 @@ public class TypeUtils {
         } else {
             gen.out("{t:");
             outputQualifiedTypename(gen.isImported(pkg, type), pt, gen);
-            //TODO type parameters
+            //Type Parameters
+            if (!pt.getTypeArgumentList().isEmpty()) {
+                gen.out(",a:{");
+                boolean first = true;
+                for (Map.Entry<TypeParameter, ProducedType> e : pt.getTypeArguments().entrySet()) {
+                    if (first) first=false; else gen.out(",");
+                    gen.out(e.getKey().getNameAsString(), ":");
+                    metamodelTypeNameOrList(pkg, e.getValue(), gen);
+                }
+                gen.out("}");
+            }
             gen.out("}");
         }
     }
