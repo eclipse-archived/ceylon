@@ -2415,14 +2415,14 @@ public class ExpressionVisitor extends Visitor {
         if (pal!=null) {
             List<Tree.PositionalArgument> args = pal.getPositionalArguments();
             
-            if (tt.getDeclaration() instanceof TypeParameter) {
+            /*if (tt.getDeclaration() instanceof TypeParameter) {
             	//TODO: really this should handle types like
             	//          [String,Integer,*Args]
             	//      by recursively walking the tuple type
             	checkAssignable(getTupleType(args, false), tt, that, 
             			"argument list type not assignable to parameter list type");
             	return;
-            }
+            }*/
             
             for (int i=0; i<paramTypes.size(); i++) {
             	if (paramTypes.get(i).isUnknown()) {

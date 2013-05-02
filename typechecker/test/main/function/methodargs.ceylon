@@ -94,7 +94,7 @@ void testIndirectWithUnknownParamTypes() {
 shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun) 
     given Args satisfies Anything[] {
 
-    fun(*args);
+    @error fun(*args); //TODO: note we should eventually support this!
     @error fun();
     @error fun(args);
     @error fun(1, 2, 3);
