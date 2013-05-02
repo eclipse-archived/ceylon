@@ -1,4 +1,4 @@
-shared interface Module {
+shared interface Module satisfies Identifiable {
     shared formal String name;
     shared formal String version;
     

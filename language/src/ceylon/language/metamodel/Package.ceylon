@@ -1,4 +1,4 @@
-shared interface Package {
+shared interface Package satisfies Identifiable {
     
     shared formal String name;
     
