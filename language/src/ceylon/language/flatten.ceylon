@@ -2,5 +2,4 @@ shared native Callable<Return,Args> flatten<Return,Args>(Return tupleFunction(Ar
         given Args satisfies Anything[];
 
 shared native Return unflatten<Return,Args>(Callable<Return,Args> flatFunction)(Args args)
-        given Args satisfies Anything[] =>
-                flatFunction(*args);
+        given Args satisfies Anything[];
