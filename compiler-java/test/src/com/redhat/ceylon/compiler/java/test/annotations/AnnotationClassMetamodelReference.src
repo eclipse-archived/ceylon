@@ -89,7 +89,7 @@ class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.c
     }
     
     static .java.lang.Object $init$mmr() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "AnnotationClassMetamodelReference(Anything)"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "AnnotationClassMetamodelReference(Anything)", (short)-1){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference $call(final .java.lang.Object $param$0) {
