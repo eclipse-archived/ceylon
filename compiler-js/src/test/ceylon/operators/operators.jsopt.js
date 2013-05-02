@@ -406,7 +406,7 @@ function testNullsafeOperators(){
     //AttributeDeclaration f2 at operators.ceylon (209:4-209:37)
     var f2$3655=$$$cl2592.$JsCallable((opt$3656=obj$3652,$$$cl2592.JsCallable(opt$3656,opt$3656!==null?opt$3656.f:null)),[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}});
     var opt$3656;
-    $$$c2593.check((!$$$cl2592.exists(nullsafeTest($$$cl2592.$JsCallable(f2$3655,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}})))),$$$cl2592.String("nullsafe method ref",19));
+    $$$c2593.check((!$$$cl2592.exists(nullsafeTest($$$cl2592.$JsCallable(f2$3655,[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}})))),$$$cl2592.String("nullsafe method ref",19));
     
     //AttributeDeclaration f3 at operators.ceylon (211:4-211:38)
     var f3$3657=$$$cl2592.$JsCallable((opt$3658=obj$3652,$$$cl2592.JsCallable(opt$3658,opt$3658!==null?opt$3658.f:null)),[/*WARNING: got ceylon.language::Null|ceylon.language::Callable<ceylon.language::Null|ceylon.language::Integer,ceylon.language::Empty> instead of Callable*/],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}});

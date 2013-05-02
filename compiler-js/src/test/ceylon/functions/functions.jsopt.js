@@ -91,16 +91,8 @@ function testAnonymous(){
     var f2$2943=$$$cl2592.$JsCallable(function (i$2944){
         return i$2944.minus((10)).string;
     },[{$nm:'p1',$mt:'prm',$t:{t:$$$cl2592.Integer}}],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}});
-    callFunction$2934($$$cl2592.$JsCallable(f2$2943,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}}),$$$cl2592.String("-10",3));
-    callFunction$2934($$$cl2592.$JsCallable(subtract((5)),/*Callable from Invocation +  [InvocationExpression] <String(Integer)> (66:15-66:25)
-|  +  [BaseMemberExpression] <String(Integer)(Integer)> (66:15-66:22) => Method[subtract:String(Integer)]
-|  |  + subtract [Identifier] (66:15-66:22)
-|  |  +  [InferredTypeArguments]
-|  + () [PositionalArgumentList] (66:23-66:25)
-|  |  +  [ListedArgument] (66:24-66:24) => ValueParameter[subtract#howMuch:Integer]
-|  |  |  +  [Expression] <Integer> (66:24-66:24)
-|  |  |  |  + 5 [NaturalLiteral] <Integer> (66:24-66:24)
-*/[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}}),$$$cl2592.String("-5",2));
+    callFunction$2934($$$cl2592.$JsCallable(f2$2943,[],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}}),$$$cl2592.String("-10",3));
+    callFunction$2934($$$cl2592.$JsCallable(subtract((5)),[{$nm:'p1',$mt:'prm',$t:{t:$$$cl2592.Integer}}],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}}),$$$cl2592.String("-5",2));
     found$2926=find2(nums$2924,$$$cl2592.$JsCallable(function (i$2945){
         return i$2945.compare((2)).equals($$$cl2592.getLarger());
     },[{$nm:'i',$mt:'prm',$t:{t:$$$cl2592.Integer}}],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Boolean}}),{Element:{t:$$$cl2592.Integer}});

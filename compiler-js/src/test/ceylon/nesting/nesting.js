@@ -1020,12 +1020,7 @@ function test(){
     $$$c2.check(Unwrapper().get().string.equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 1",11));
     $$$c2.check(Unwrapper().o.string.equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 2",11));
     $$$c2.check(Unwrapper().string.equals($$$cl1.String("23.56",5)),$$$cl1.String("unwrapper 3",11));
-    $$$c2.check($$$cl1.isOfType(producer(),{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Integer}}}),$$$cl1.StringBuilder().appendAll([$$$cl1.String("function 1 is ",14),$$$cl1.className($$$cl1.$JsCallable(producer(),/*Callable from Invocation +  [InvocationExpression] <Object()> (232:73-232:82)
-|  +  [BaseMemberExpression] <Object()()> (232:73-232:80) => Method[producer:Object()]
-|  |  + producer [Identifier] (232:73-232:80)
-|  |  +  [InferredTypeArguments]
-|  + () [PositionalArgumentList] (232:81-232:82)
-*/[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Object}})).string]).string);
+    $$$c2.check($$$cl1.isOfType(producer(),{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Integer}}}),$$$cl1.StringBuilder().appendAll([$$$cl1.String("function 1 is ",14),$$$cl1.className($$$cl1.$JsCallable(producer(),[],{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Object}})).string]).string);
     $$$c2.check($$$cl1.isOfType(producer()(),{t:$$$cl1.Integer}),$$$cl1.String("function 2",10));
     $$$c2.check((123).equals(producer()()),$$$cl1.String("function 3",10));
     $$$c2.check($$$cl1.String("something",9).equals(returner($$$cl1.String("something",9))()),$$$cl1.String("function 4",10));

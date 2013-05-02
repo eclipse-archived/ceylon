@@ -1055,7 +1055,7 @@ function test(){
     doIt($$$cl2592.$JsCallable((opt$3487=foo$3484,$$$cl2592.JsCallable(opt$3487,opt$3487!==null?opt$3487.inc:null)),[],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}}));
     var opt$3487;
     $$$c2593.check(foo$3484.count.equals((5)),$$$cl2592.String("Foo.count [2]",13));
-    doIt($$$cl2592.$JsCallable(Bar,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Empty},Return:{t:Bar}}));
+    doIt($$$cl2592.$JsCallable(Bar,[],{Arguments:{t:$$$cl2592.Empty},Return:{t:Bar}}));
     $$$cl2592.print(getFoob().name);
     
     //ObjectDefinition x at testit.ceylon (20:4-24:4)

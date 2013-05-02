@@ -91,16 +91,8 @@ function testAnonymous(){
     var f2$352=$$$cl1.$JsCallable(function (i$353){
         return i$353.minus((10)).string;
     },[{$nm:'p1',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}});
-    callFunction$343($$$cl1.$JsCallable(f2$352,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-10",3));
-    callFunction$343($$$cl1.$JsCallable(subtract((5)),/*Callable from Invocation +  [InvocationExpression] <String(Integer)> (66:15-66:25)
-|  +  [BaseMemberExpression] <String(Integer)(Integer)> (66:15-66:22) => Method[subtract:String(Integer)]
-|  |  + subtract [Identifier] (66:15-66:22)
-|  |  +  [InferredTypeArguments]
-|  + () [PositionalArgumentList] (66:23-66:25)
-|  |  +  [ListedArgument] (66:24-66:24) => ValueParameter[subtract#howMuch:Integer]
-|  |  |  +  [Expression] <Integer> (66:24-66:24)
-|  |  |  |  + 5 [NaturalLiteral] <Integer> (66:24-66:24)
-*/[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-5",2));
+    callFunction$343($$$cl1.$JsCallable(f2$352,[],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-10",3));
+    callFunction$343($$$cl1.$JsCallable(subtract((5)),[{$nm:'p1',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-5",2));
     found$335=find2(nums$333,$$$cl1.$JsCallable(function (i$354){
         return i$354.compare((2)).equals($$$cl1.getLarger());
     },[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.Boolean}}),{Element:{t:$$$cl1.Integer}});

@@ -534,7 +534,7 @@ function test_outer_inner_safety(){
     if((i1$3392=i1$3388)!==null){
         $$$c2593.fail($$$cl2592.String("i1 should be null",17));
     }
-    $$$c2593.check($$$cl2592.className($$$cl2592.$JsCallable(cons$3390,[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:Outer$3386.Inner$Outer}]}})).equals($$$cl2592.String("ceylon.language::JsCallable",27)),$$$cl2592.StringBuilder().appendAll([$$$cl2592.String("cons is Callable, ",18),$$$cl2592.className($$$cl2592.$JsCallable(cons$3390,[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:Outer$3386.Inner$Outer}]}})).string]).string);
+    $$$c2593.check($$$cl2592.className($$$cl2592.$JsCallable(cons$3390,[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:Outer$3386.Inner$Outer}]}})).equals($$$cl2592.String("ceylon.language::Callable",25)),$$$cl2592.StringBuilder().appendAll([$$$cl2592.String("cons is Callable, ",18),$$$cl2592.className($$$cl2592.$JsCallable(cons$3390,[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:Outer$3386.Inner$Outer}]}})).string]).string);
     
     //AttributeDeclaration i2 at outer.ceylon (14:2-14:30)
     var i2$3393=cons$3390();
