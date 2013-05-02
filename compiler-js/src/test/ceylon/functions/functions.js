@@ -90,8 +90,8 @@ function testAnonymous(){
     //AttributeDeclaration f2 at anonymous.ceylon (64:2-64:41)
     var f2$352=$$$cl1.$JsCallable(function (i$353){
         return i$353.minus((10)).string;
-    },[],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}});
-    callFunction$343($$$cl1.$JsCallable(f2$352,[],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-10",3));
+    },[{$nm:'p1',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}});
+    callFunction$343($$$cl1.$JsCallable(f2$352,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-10",3));
     callFunction$343($$$cl1.$JsCallable(subtract((5)),/*Callable from Invocation +  [InvocationExpression] <String(Integer)> (66:15-66:25)
 |  +  [BaseMemberExpression] <String(Integer)(Integer)> (66:15-66:22) => Method[subtract:String(Integer)]
 |  |  + subtract [Identifier] (66:15-66:22)
@@ -100,7 +100,7 @@ function testAnonymous(){
 |  |  +  [ListedArgument] (66:24-66:24) => ValueParameter[subtract#howMuch:Integer]
 |  |  |  +  [Expression] <Integer> (66:24-66:24)
 |  |  |  |  + 5 [NaturalLiteral] <Integer> (66:24-66:24)
-*/[],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-5",2));
+*/[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}}),$$$cl1.String("-5",2));
     found$335=find2(nums$333,$$$cl1.$JsCallable(function (i$354){
         return i$354.compare((2)).equals($$$cl1.getLarger());
     },[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.Boolean}}),{Element:{t:$$$cl1.Integer}});
@@ -253,7 +253,7 @@ function MySequence(seq$364, $$targs$$,$$mySequence){
     var iterator=function (){
         return seq$364.iterator();
     };
-    iterator$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:'Element'}},$ps:[]};
+    iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:'Element'}},$ps:[]};
     $$mySequence.iterator=iterator;
     
     //AttributeDeclaration size at functions.ceylon (42:4-42:42)
@@ -263,7 +263,7 @@ function MySequence(seq$364, $$targs$$,$$mySequence){
     var contains=function (other$373){
         return seq$364.contains(other$373);
     };
-    contains$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object}}]};
+    contains.$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object}}]};
     $$mySequence.contains=contains;
     return $$mySequence;
 }
@@ -578,14 +578,14 @@ function LazyExprTest($$lazyExprTest){
         };}
         return $$$cl1.StringBuilder().appendAll([i$454.string,$$$cl1.String(":",1),f$455().string]).string;
     };
-    f1$$metamodel$$={$nm:'f1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'f',$mt:'prm',$def:1,$t:{t:$$$cl1.String}}]};
+    f1.$$metamodel$$={$nm:'f1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'f',$mt:'prm',$def:1,$t:{t:$$$cl1.String}}]};
     $$lazyExprTest.f1=f1;
     
     //MethodDeclaration f2 at functions.ceylon (151:4-151:45)
     var f2=function (i$456){
         return (2).times(($$lazyExprTest.x=$$lazyExprTest.x.successor)).plus(i$456);
     };
-    f2$$metamodel$$={$nm:'f2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    f2.$$metamodel$$={$nm:'f2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$lazyExprTest.f2=f2;
     
     //AttributeDeclaration i1 at functions.ceylon (152:4-152:28)
@@ -606,7 +606,7 @@ function LazyExprTest($$lazyExprTest){
     var f3=function (f$458){
         return f$458(($$lazyExprTest.x=$$lazyExprTest.x.successor));
     };
-    f3$$metamodel$$={$nm:'f3',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'f',$mt:'prm',$t:{t:$$$cl1.String}}]};
+    f3.$$metamodel$$={$nm:'f3',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'f',$mt:'prm',$t:{t:$$$cl1.String}}]};
     $$lazyExprTest.f3=f3;
     return $$lazyExprTest;
 }
@@ -634,13 +634,13 @@ var lazy_f1=function (i$461,f$462){
     };}
     return f$462();
 };
-lazy_f1$$metamodel$$={$nm:'lazy_f1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'f',$mt:'prm',$def:1,$t:{t:$$$cl1.String}}]};
+lazy_f1.$$metamodel$$={$nm:'lazy_f1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'f',$mt:'prm',$def:1,$t:{t:$$$cl1.String}}]};
 
 //MethodDeclaration lazy_f2 at functions.ceylon (163:0-163:40)
 var lazy_f2=function (i$463){
     return (2).times((setLx(getLx().successor))).plus(i$463);
 };
-lazy_f2$$metamodel$$={$nm:'lazy_f2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+lazy_f2.$$metamodel$$={$nm:'lazy_f2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
 
 //AttributeDeclaration lazy_i1 at functions.ceylon (164:0-164:23)
 var getLazy_i1=function(){return (setLx(getLx().successor));};
@@ -663,7 +663,7 @@ function LazyExprTest2($$lazyExprTest2){
     var s2=function (i$465){
         return $$$cl1.StringBuilder().appendAll([($$lazyExprTest2.x=$$lazyExprTest2.x.successor).string,$$$cl1.String("-",1),i$465.string]).string;
     };
-    s2$$metamodel$$={$nm:'s2',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    s2.$$metamodel$$={$nm:'s2',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$lazyExprTest2.s2=s2;
     return $$lazyExprTest2;
 }
@@ -755,13 +755,13 @@ function testLazyExpressions(){
         };}
         return f$474();
     };
-    f1$472$$metamodel$$={$nm:'f1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'f',$mt:'prm',$def:1,$t:{t:$$$cl1.String}}]};
+    f1$472.$$metamodel$$={$nm:'f1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'f',$mt:'prm',$def:1,$t:{t:$$$cl1.String}}]};
     
     //MethodDeclaration f2 at functions.ceylon (197:4-197:38)
     var f2$475=function (i$476){
         return (2).times((x$470=x$470.successor)).plus(i$476);
     };
-    f2$475$$metamodel$$={$nm:'f2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    f2$475.$$metamodel$$={$nm:'f2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     
     //AttributeDeclaration i1 at functions.ceylon (198:4-198:21)
     var getI1$477=function(){return (x$470=x$470.successor);};
@@ -881,7 +881,7 @@ function testMultipleParamLists(){
     var comp$503=function (a$504,b$505){
         return multiCompare()(a$504,b$505);
     };
-    comp$503$$metamodel$$={$nm:'comp',$mt:'mthd',$t:{t:$$$cl1.Comparison},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'b',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    comp$503.$$metamodel$$={$nm:'comp',$mt:'mthd',$t:{t:$$$cl1.Comparison},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'b',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$$c2.check(comp$503((1),(1)).equals($$$cl1.getEqual()),$$$cl1.String("Multi compare 4",15));
     $$$c2.check(comp$503((1),(2)).equals($$$cl1.getSmaller()),$$$cl1.String("Multi compare 5",15));
     $$$c2.check(comp$503((2),(1)).equals($$$cl1.getLarger()),$$$cl1.String("Multi compare 6",15));
@@ -891,19 +891,19 @@ function testMultipleParamLists(){
     var apat$506=function (c$507){
         return multiFullname($$$cl1.String("A",1))($$$cl1.String("B",1).valueOf())(c$507.valueOf());
     };
-    apat$506$$metamodel$$={$nm:'apat',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'c',$mt:'prm',$t:{t:$$$cl1.String}}]};
+    apat$506.$$metamodel$$={$nm:'apat',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'c',$mt:'prm',$t:{t:$$$cl1.String}}]};
     $$$c2.check(apat$506($$$cl1.String("C",1)).equals($$$cl1.String("A B C",5)),$$$cl1.String("Multi fullname 2",16));
     
     //MethodDeclaration nombre at multiples.ceylon (33:4-33:61)
     var nombre$508=function (name$509){
         return multiFullname($$$cl1.String("Name",4))(name$509.valueOf());
     };
-    nombre$508$$metamodel$$={$nm:'nombre',$mt:'mthd',$t:{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},Return:{t:$$$cl1.String}}},$ps:[{$nm:'name',$mt:'prm',$t:{t:$$$cl1.String}}]};
+    nombre$508.$$metamodel$$={$nm:'nombre',$mt:'mthd',$t:{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},Return:{t:$$$cl1.String}}},$ps:[{$nm:'name',$mt:'prm',$t:{t:$$$cl1.String}}]};
     $$$c2.check(nombre$508($$$cl1.String("Z",1))($$$cl1.String("L",1).valueOf()).equals($$$cl1.String("Name Z L",8)),$$$cl1.String("Multi callable 2",16));
     $$$c2.check(multiDefaulted()($$$cl1.String("B",1).valueOf())($$$cl1.String("C",1).valueOf()).equals($$$cl1.String("A B C",5)),$$$cl1.String("Multi defaulted 1",17));
     
     //AttributeDeclaration md1 at multiples.ceylon (37:4-37:69)
-    var md1$510=$$$cl1.$JsCallable(multiDefaulted(),[],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},Return:{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},Return:{t:$$$cl1.String}}}});
+    var md1$510=$$$cl1.$JsCallable(multiDefaulted(),[{$nm:'p1',$mt:'prm',$t:{t:$$$cl1.String}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},Return:{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},Return:{t:$$$cl1.String}}}});
     $$$c2.check(md1$510($$$cl1.String("B",1).valueOf())($$$cl1.String("C",1).valueOf()).equals($$$cl1.String("A B C",5)),$$$cl1.String("Multi defaulted 2",17));
     $$$c2.check(md1$510($$$cl1.String("B",1).valueOf())($$$cl1.String("Z",1).valueOf()).equals($$$cl1.String("A B Z",5)),$$$cl1.String("Multi defaulted 3",17));
     $$$c2.check(md1$510($$$cl1.String("Z",1).valueOf())($$$cl1.String("C",1).valueOf()).equals($$$cl1.String("A Z C",5)),$$$cl1.String("Multi defaulted 4",17));
@@ -913,7 +913,7 @@ function testMultipleParamLists(){
     var md2$511=function (x$512){
         return multiDefaulted()($$$cl1.String("B",1).valueOf())(x$512.valueOf());
     };
-    md2$511$$metamodel$$={$nm:'md2',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.String}}]};
+    md2$511.$$metamodel$$={$nm:'md2',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.String}}]};
     $$$c2.check(md2$511($$$cl1.String("C",1)).equals($$$cl1.String("A B C",5)),$$$cl1.String("Multi defaulted 6",17));
     $$$c2.check(md2$511($$$cl1.String("Z",1)).equals($$$cl1.String("A B Z",5)),$$$cl1.String("Multi defaulted 7",17));
     $$$c2.check(multiSequenced([$$$cl1.String("A",1),$$$cl1.String("B",1),$$$cl1.String("C",1)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}))((1)).equals($$$cl1.String("A B C count 1",13)),$$$cl1.String("Multi sequenced 1",17));
@@ -922,7 +922,7 @@ function testMultipleParamLists(){
     var ms1$513=function (c$514){
         return multiSequenced([$$$cl1.String("x",1),$$$cl1.String("y",1),$$$cl1.String("z",1)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}))(c$514);
     };
-    ms1$513$$metamodel$$={$nm:'ms1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'c',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    ms1$513.$$metamodel$$={$nm:'ms1',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'c',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$$c2.check(ms1$513((5)).equals($$$cl1.String("x y z count 5",13)),$$$cl1.String("Multi sequenced 2",17));
     $$$c2.check(ms1$513((10)).equals($$$cl1.String("x y z count 10",14)),$$$cl1.String("Multi sequenced 3",17));
 };testMultipleParamLists.$$metamodel$$={$nm:'testMultipleParamLists',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//testMultipleParamLists.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};

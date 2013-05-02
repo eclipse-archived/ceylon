@@ -1119,7 +1119,7 @@ function test(){
 |  |  + producer [Identifier] (232:73-232:80)
 |  |  +  [InferredTypeArguments]
 |  + () [PositionalArgumentList] (232:81-232:82)
-*/[],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Object}})).string]).string);
+*/[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Object}})).string]).string);
     $$$c2593.check($$$cl2592.isOfType(producer()(),{t:$$$cl2592.Integer}),$$$cl2592.String("function 2",10));
     $$$c2593.check((123).equals(producer()()),$$$cl2592.String("function 3",10));
     $$$c2593.check($$$cl2592.String("something",9).equals(returner($$$cl2592.String("something",9))()),$$$cl2592.String("function 4",10));

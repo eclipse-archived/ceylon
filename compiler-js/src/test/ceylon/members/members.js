@@ -414,14 +414,14 @@ function AliasMemberTest($$aliasMemberTest){
     var f1=function (){
         return Util();
     };
-    f1$$metamodel$$={$nm:'f1',$mt:'mthd',$t:{t:Util},$ps:[]};
+    f1.$$metamodel$$={$nm:'f1',$mt:'mthd',$t:{t:Util},$ps:[]};
     $$aliasMemberTest.f1=f1;
     
     //MethodDeclaration f2 at members.ceylon (91:4-91:29)
     var f2=function (){
         return $$aliasMemberTest.AliasA$AliasMemberTest();
     };
-    f2$$metamodel$$={$nm:'f2',$mt:'mthd',$t:{t:AliasMemberTest.A$AliasMemberTest},$ps:[]};
+    f2.$$metamodel$$={$nm:'f2',$mt:'mthd',$t:{t:AliasMemberTest.A$AliasMemberTest},$ps:[]};
     $$aliasMemberTest.f2=f2;
     return $$aliasMemberTest;
 }
@@ -513,7 +513,7 @@ function test_outer_inner_safety(){
     var cons$775=function (){
         return (opt$776=o$772,$$$cl1.JsCallable(opt$776,opt$776!==null?opt$776.Inner$Outer:null))();
     };
-    cons$775$$metamodel$$={$nm:'cons',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl1.Null},{t:Outer$771.Inner$Outer}]},$ps:[]};
+    cons$775.$$metamodel$$={$nm:'cons',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl1.Null},{t:Outer$771.Inner$Outer}]},$ps:[]};
     var opt$776;
     var i1$777;
     if((i1$777=i1$773)!==null){

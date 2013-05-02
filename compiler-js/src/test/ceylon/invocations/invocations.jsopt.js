@@ -9,7 +9,7 @@ var mixseqs=function (chars$3202,nums$3203){
     if(nums$3203===undefined){nums$3203=$$$cl2592.getEmpty();}
     return $$$cl2592.StringBuilder().appendAll([$$$cl2592.String("C:",2),(opt$3204=chars$3202.first,opt$3204!==null?opt$3204:$$$cl2592.String("?",1)).string,$$$cl2592.String(" #",2),(opt$3205=nums$3203.get((0)),opt$3205!==null?opt$3205:$$$cl2592.String("?",1)).string]).string;
 };
-mixseqs$$metamodel$$={$nm:'mixseqs',$mt:'mthd',$t:{t:$$$cl2592.String},$ps:[{$nm:'chars',$mt:'prm',$t:{t:$$$cl2592.Iterable,a:{Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.Character}}}},{$nm:'nums',$mt:'prm',seq:1,$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Integer}}}}]};
+mixseqs.$$metamodel$$={$nm:'mixseqs',$mt:'mthd',$t:{t:$$$cl2592.String},$ps:[{$nm:'chars',$mt:'prm',$t:{t:$$$cl2592.Iterable,a:{Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.Character}}}},{$nm:'nums',$mt:'prm',seq:1,$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Integer}}}}]};
 var opt$3204,opt$3205;
 
 //MethodDefinition test at invocations.ceylon (6:0-33:0)
@@ -153,7 +153,7 @@ function testNamedArguments(){
                         var $$iter$3249=this;
                         return [(1),(3),(5),(8),(9)].reifyCeylonType({Absent:{t:$$$cl2592.Nothing},Element:{t:$$$cl2592.Integer}}).iterator();
                     };
-                    iterator$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.Integer}}},$ps:[]};
+                    $$iter$3249.iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.Integer}}},$ps:[]};
                 })(iter$3249.$$.prototype);
             }
             iter$3249.$$.$$metamodel$$={$nm:'iter',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[{t:$$$cl2592.Iterable,a:{Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.Integer}}}]};
@@ -496,7 +496,7 @@ function $init$TestList(){
                 var $$testList=this;
                 return $$$cl2592.getEmptyIterator();
             };
-            iterator$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.String}}},$ps:[]};
+            $$testList.iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.String}}},$ps:[]};
             
             //MethodDefinition equals at qualified.ceylon (74:4-74:75)
             $$testList.equals=function equals(that$3299){

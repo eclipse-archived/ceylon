@@ -267,7 +267,7 @@ function $init$MiMatrix(){
                 var $$miMatrix=this;
                 return $$miMatrix.grid$3407.equals(other$3416);
             };
-            equals$$metamodel$$={$nm:'equals',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl2592.Object}}]};
+            $$miMatrix.equals.$$metamodel$$={$nm:'equals',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl2592.Object}}]};
             
             //AttributeDeclaration reversed at aliases.ceylon (52:4-52:58)
             $$$cl2592.defineAttr($$miMatrix,'reversed',function(){return this.reversed$3412_;});
@@ -280,7 +280,7 @@ function $init$MiMatrix(){
                 var $$miMatrix=this;
                 return $$miMatrix.grid$3407.get(i$3417);
             };
-            get$$metamodel$$={$nm:'get',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}]},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
+            $$miMatrix.get.$$metamodel$$={$nm:'get',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}]},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
             
             //AttributeDeclaration rest at aliases.ceylon (55:4-55:47)
             $$$cl2592.defineAttr($$miMatrix,'rest',function(){return this.rest$3414_;});
@@ -305,7 +305,7 @@ function $init$MiMatrix(){
                 var $$miMatrix=this;
                 return $$miMatrix.grid$3407.contains(other$3418);
             };
-            contains$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl2592.Object}}]};
+            $$miMatrix.contains.$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl2592.Object}}]};
             $$$cl2592.defineAttr($$miMatrix,'last',function(){
                 var $$miMatrix=this;
                 return $$miMatrix.grid$3407.last;
@@ -316,14 +316,14 @@ function $init$MiMatrix(){
                 var $$miMatrix=this;
                 return (opt$3420=(to$3419.compare((0)).equals($$$cl2592.getSmaller())?$$$cl2592.getEmpty():null),opt$3420!==null?opt$3420:$$miMatrix.span((0),to$3419));
             };
-            spanTo$$metamodel$$={$nm:'spanTo',$mt:'mthd',$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
+            $$miMatrix.spanTo.$$metamodel$$={$nm:'spanTo',$mt:'mthd',$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
             
             //MethodDeclaration spanFrom at aliases.ceylon (64:4-65:28)
             $$miMatrix.spanFrom=function (from$3421){
                 var $$miMatrix=this;
                 return $$miMatrix.span(from$3421,$$miMatrix.size);
             };
-            spanFrom$$metamodel$$={$nm:'spanFrom',$mt:'mthd',$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
+            $$miMatrix.spanFrom.$$metamodel$$={$nm:'spanFrom',$mt:'mthd',$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
         })(MiMatrix.$$.prototype);
     }
     MiMatrix.$$.$$metamodel$$={$nm:'MiMatrix',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[{t:$$$cl2592.Sequence,a:{Cell:{t:$$$cl2592.Integer}}}]};
@@ -368,7 +368,7 @@ function testAliasing(){
         if(bits$3429===undefined){bits$3429=$$$cl2592.getEmpty();}
         return $$$cl2592.any(bits$3429);
     };
-    cualquiera$3428$$metamodel$$={$nm:'cualquiera',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'bits',$mt:'prm',seq:1,$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Boolean}}}}]};
+    cualquiera$3428.$$metamodel$$={$nm:'cualquiera',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'bits',$mt:'prm',seq:1,$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Boolean}}}}]};
     $$$c2593.check(cualquiera$3428([true,true,true].reifyCeylonType({Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.true$3430}})),$$$cl2592.String("seq arg method alias",20));
 };testAliasing.$$metamodel$$={$nm:'testAliasing',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};//testAliasing.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}};
 

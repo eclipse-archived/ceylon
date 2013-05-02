@@ -227,7 +227,7 @@ function MiMatrix(gridSize$783, $$miMatrix){
     var equals=function (other$793){
         return grid$792.equals(other$793);
     };
-    equals$$metamodel$$={$nm:'equals',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object}}]};
+    equals.$$metamodel$$={$nm:'equals',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object}}]};
     $$miMatrix.equals=equals;
     var span=$$$cl1.$JsCallable((opt$794=grid$792,$$$cl1.JsCallable(opt$794,opt$794!==null?opt$794.span:null)),[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'to',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}}});
     $$miMatrix.span=span;
@@ -248,7 +248,7 @@ function MiMatrix(gridSize$783, $$miMatrix){
     var get=function (i$796){
         return grid$792.get(i$796);
     };
-    get$$metamodel$$={$nm:'get',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl1.Null},{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}]},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    get.$$metamodel$$={$nm:'get',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl1.Null},{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}]},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$miMatrix.get=get;
     
     //AttributeDeclaration rest at aliases.ceylon (55:4-55:47)
@@ -269,7 +269,7 @@ function MiMatrix(gridSize$783, $$miMatrix){
     var contains=function (other$797){
         return grid$792.contains(other$797);
     };
-    contains$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object}}]};
+    contains.$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object}}]};
     $$miMatrix.contains=contains;
     $$$cl1.defineAttr($$miMatrix,'last',function(){
         return grid$792.last;
@@ -279,7 +279,7 @@ function MiMatrix(gridSize$783, $$miMatrix){
     var spanTo=function (to$798){
         return (opt$799=(to$798.compare((0)).equals($$$cl1.getSmaller())?$$$cl1.getEmpty():null),opt$799!==null?opt$799:$$miMatrix.span((0),to$798));
     };
-    spanTo$$metamodel$$={$nm:'spanTo',$mt:'mthd',$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    spanTo.$$metamodel$$={$nm:'spanTo',$mt:'mthd',$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$miMatrix.spanTo=spanTo;
     var opt$799;
     
@@ -287,7 +287,7 @@ function MiMatrix(gridSize$783, $$miMatrix){
     var spanFrom=function (from$800){
         return $$miMatrix.span(from$800,$$miMatrix.size);
     };
-    spanFrom$$metamodel$$={$nm:'spanFrom',$mt:'mthd',$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
+    spanFrom.$$metamodel$$={$nm:'spanFrom',$mt:'mthd',$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer}}]};
     $$miMatrix.spanFrom=spanFrom;
     return $$miMatrix;
 }
@@ -336,7 +336,7 @@ function testAliasing(){
         if(bits$808===undefined){bits$808=$$$cl1.getEmpty();}
         return $$$cl1.any(bits$808);
     };
-    cualquiera$807$$metamodel$$={$nm:'cualquiera',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'bits',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Boolean}}}}]};
+    cualquiera$807.$$metamodel$$={$nm:'cualquiera',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'bits',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Boolean}}}}]};
     $$$c2.check(cualquiera$807([true,true,true].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.true$809}})),$$$cl1.String("seq arg method alias",20));
 };testAliasing.$$metamodel$$={$nm:'testAliasing',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//testAliasing.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};
 

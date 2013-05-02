@@ -9,7 +9,7 @@ var mixseqs=function (chars$598,nums$599){
     if(nums$599===undefined){nums$599=$$$cl1.getEmpty();}
     return $$$cl1.StringBuilder().appendAll([$$$cl1.String("C:",2),(opt$600=chars$598.first,opt$600!==null?opt$600:$$$cl1.String("?",1)).string,$$$cl1.String(" #",2),(opt$601=nums$599.get((0)),opt$601!==null?opt$601:$$$cl1.String("?",1)).string]).string;
 };
-mixseqs$$metamodel$$={$nm:'mixseqs',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'chars',$mt:'prm',$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Character}}}},{$nm:'nums',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Integer}}}}]};
+mixseqs.$$metamodel$$={$nm:'mixseqs',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'chars',$mt:'prm',$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Character}}}},{$nm:'nums',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Integer}}}}]};
 var opt$600,opt$601;
 
 //MethodDefinition test at invocations.ceylon (6:0-33:0)
@@ -146,7 +146,7 @@ function testNamedArguments(){
             var iterator=function (){
                 return [(1),(3),(5),(8),(9)].reifyCeylonType({Absent:{t:$$$cl1.Nothing},Element:{t:$$$cl1.Integer}}).iterator();
             };
-            iterator$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}},$ps:[]};
+            iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}},$ps:[]};
             $$iter$645.iterator=iterator;
             return $$iter$645;
         }
@@ -497,7 +497,7 @@ function TestList($$testList){
     var iterator=function (){
         return $$$cl1.getEmptyIterator();
     };
-    iterator$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.String}}},$ps:[]};
+    iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.String}}},$ps:[]};
     $$testList.iterator=iterator;
     
     //MethodDefinition equals at qualified.ceylon (74:4-74:75)

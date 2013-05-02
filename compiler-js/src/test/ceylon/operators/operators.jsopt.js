@@ -406,10 +406,10 @@ function testNullsafeOperators(){
     //AttributeDeclaration f2 at operators.ceylon (209:4-209:37)
     var f2$3655=$$$cl2592.$JsCallable((opt$3656=obj$3652,$$$cl2592.JsCallable(opt$3656,opt$3656!==null?opt$3656.f:null)),[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}});
     var opt$3656;
-    $$$c2593.check((!$$$cl2592.exists(nullsafeTest($$$cl2592.$JsCallable(f2$3655,[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}})))),$$$cl2592.String("nullsafe method ref",19));
+    $$$c2593.check((!$$$cl2592.exists(nullsafeTest($$$cl2592.$JsCallable(f2$3655,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}})))),$$$cl2592.String("nullsafe method ref",19));
     
     //AttributeDeclaration f3 at operators.ceylon (211:4-211:38)
-    var f3$3657=$$$cl2592.$JsCallable((opt$3658=obj$3652,$$$cl2592.JsCallable(opt$3658,opt$3658!==null?opt$3658.f:null)),[],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}});
+    var f3$3657=$$$cl2592.$JsCallable((opt$3658=obj$3652,$$$cl2592.JsCallable(opt$3658,opt$3658!==null?opt$3658.f:null)),[/*WARNING: got ceylon.language::Null|ceylon.language::Callable<ceylon.language::Null|ceylon.language::Integer,ceylon.language::Empty> instead of Callable*/],{Arguments:{t:$$$cl2592.Empty},Return:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]}});
     var opt$3658;
     $$$c2593.check($$$cl2592.exists(f3$3657),$$$cl2592.String("nullsafe method ref 2",21));
     (opt$3659=obj$3652,$$$cl2592.JsCallable(opt$3659,opt$3659!==null?opt$3659.f:null))();
@@ -426,7 +426,7 @@ function testNullsafeOperators(){
     var f4$3662=function (){
         return (opt$3663=getNullsafe$3661(),$$$cl2592.JsCallable(opt$3663,opt$3663!==null?opt$3663.f:null))();
     };
-    f4$3662$$metamodel$$={$nm:'f4',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]},$ps:[]};
+    f4$3662.$$metamodel$$={$nm:'f4',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]},$ps:[]};
     var opt$3663;
     
     //AttributeDeclaration result_f4 at operators.ceylon (217:4-217:29)
@@ -454,7 +454,7 @@ function testNullsafeOperators(){
     var obj2_f$3671=function (){
         return (opt$3672=obj2$3668,$$$cl2592.JsCallable(opt$3672,opt$3672!==null?opt$3672.f:null))();
     };
-    obj2_f$3671$$metamodel$$={$nm:'obj2_f',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]},$ps:[]};
+    obj2_f$3671.$$metamodel$$={$nm:'obj2_f',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Integer}]},$ps:[]};
     var opt$3672;
     var i3$3673;
     if((i3$3673=obj2_f$3671())!==null){

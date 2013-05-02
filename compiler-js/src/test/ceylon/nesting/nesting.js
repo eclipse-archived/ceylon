@@ -1025,7 +1025,7 @@ function test(){
 |  |  + producer [Identifier] (232:73-232:80)
 |  |  +  [InferredTypeArguments]
 |  + () [PositionalArgumentList] (232:81-232:82)
-*/[],{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Object}})).string]).string);
+*/[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Object}})).string]).string);
     $$$c2.check($$$cl1.isOfType(producer()(),{t:$$$cl1.Integer}),$$$cl1.String("function 2",10));
     $$$c2.check((123).equals(producer()()),$$$cl1.String("function 3",10));
     $$$c2.check($$$cl1.String("something",9).equals(returner($$$cl1.String("something",9))()),$$$cl1.String("function 4",10));
