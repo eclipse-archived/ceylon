@@ -32,7 +32,37 @@ function isOfType(obj, type) {
         if (obj === null || obj === undefined) {
             return type.t===Null || type.t===Anything;
         }
-        if (obj.getT$all === undefined) { return false; }
+        if (obj.getT$all === undefined) {
+            if (obj.$$metamodel$$) {
+                //We can navigate the metamodel
+                if (obj.$$metamodel$$['$mt'] === 'mthd') {
+                    if (type.t === Callable) { //It's a callable reference
+                        if (type.a && type.a.Return && obj.$$metamodel$$['$t']) {
+                            //Check if return type matches
+                            if (extendsType(obj.$$metamodel$$['$t'], type.a.Return)) {
+                                if (type.a.Arguments && obj.$$metamodel$$['$ps'] !== undefined) {
+                                    var metaparams = obj.$$metamodel$$['$ps'];
+                                    if (metaparams.length == 0) {
+                                        return type.a.Arguments.t === Empty;
+                                    } else {
+                                        //check if arguments match
+                                        var comptype = type.a.Arguments;
+                                        for (var i=0; i < metaparams.length; i++) {
+                                            if (comptype.t !== Tuple || !extendsType(metaparams[i]['$t'], comptype.a.First)) {
+                                                return false;
+                                            }
+                                            comptype = comptype.a.Rest;
+                                        }
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         if (type.t.$$.T$name in obj.getT$all()) {
             if (type.a && obj.$$targs$$) {
                 for (var i in type.a) {
