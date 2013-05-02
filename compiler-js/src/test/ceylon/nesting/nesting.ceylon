@@ -229,7 +229,7 @@ shared void test() {
     check(Unwrapper().get().string=="23.56","unwrapper 1");
     check(Unwrapper().o.string=="23.56","unwrapper 2");
     check(Unwrapper().string=="23.56","unwrapper 3");
-    check(producer() is Callable<Integer,[]>, "function 1");
+    check(producer() is Callable<Integer,[]>, "function 1 is ``className(producer())``");
     check(producer()() is Integer, "function 2");
     check(123==producer()(), "function 3");
     check("something"==returner("something")(), "function 4");
