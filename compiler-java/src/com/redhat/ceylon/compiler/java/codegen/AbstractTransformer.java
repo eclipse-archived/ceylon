@@ -3040,4 +3040,12 @@ public abstract class AbstractTransformer implements Transformation {
                 && supportsReified(decl)
                 && Decl.isToplevel(decl);
     }
+    
+    boolean isSequencedAnnotation(Class klass) {
+        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleDeclaration("SequencedAnnotation");
+        return meta != null && klass.getType().isSubtypeOf(
+                meta.getProducedType(null, 
+                Arrays.asList(typeFact().getAnythingDeclaration().getType(),
+                typeFact().getNothingDeclaration().getType())));
+    }
 }
