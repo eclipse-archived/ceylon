@@ -23,7 +23,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private boolean abstraction;
     private List<Declaration> overloads;
     private boolean declaredAnything;
-    private AnnotationInstantiation inlineInfo;
+    private AnnotationInstantiation annotationInstantiation;
     
 
     /*public boolean isFormal() {
@@ -35,12 +35,12 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
      }*/
     
 
-    public AnnotationInstantiation getInlineInfo() {
-        return inlineInfo;
+    public AnnotationInstantiation getAnnotationInstantiation() {
+        return annotationInstantiation;
     }
 
-    public void setAnnotationInstantiation(AnnotationInstantiation inlineInfo) {
-        this.inlineInfo = inlineInfo;
+    public void setAnnotationInstantiation(AnnotationInstantiation annotationInstantiation) {
+        this.annotationInstantiation = annotationInstantiation;
     }
 
     @Override
