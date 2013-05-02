@@ -1066,6 +1066,8 @@ public abstract class AbstractTransformer implements Transformation {
     
     /** Generates the Java type of the companion class of the given class */
     static final int JT_ANNOTATION = 1 << 12;
+    /** Generates the Java type of the companion class of the given class */
+    static final int JT_ANNOTATIONS = 1 << 13;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -1565,6 +1567,9 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if ((flags & JT_ANNOTATION) != 0) {
             args.add(DeclNameFlag.ANNOTATION);
+        }
+        if ((flags & JT_ANNOTATIONS) != 0) {
+            args.add(DeclNameFlag.ANNOTATIONS);
         }
         if ((flags & JT_NON_QUALIFIED) == 0) {
             args.add(DeclNameFlag.QUALIFIED);

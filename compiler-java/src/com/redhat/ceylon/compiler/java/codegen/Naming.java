@@ -65,6 +65,7 @@ public class Naming implements LocalId {
 
     private static final String IMPL_POSTFIX = "$impl";
     private static final String ANNO_POSTFIX = "$annotation";
+    private static final String ANNOS_POSTFIX = "$annotations";
 
     static enum DeclNameFlag {
         /** 
@@ -77,7 +78,9 @@ public class Naming implements LocalId {
         /** The name of the companion type of this thing */
         COMPANION,
         /** The name of the annotation type of this thing */
-        ANNOTATION
+        ANNOTATION,
+        /** The name of the annotation type of this thing */
+        ANNOTATIONS
     }
     
     /** Quote the given name by prefixing it with a dollar ($) */
@@ -255,6 +258,10 @@ public class Naming implements LocalId {
         flags.addAll(Arrays.asList(options));
         
         Assert.that(!flags.contains(DeclNameFlag.ANNOTATION) || Decl.isAnnotationClass(decl), decl.toString());
+        Assert.that(!flags.contains(DeclNameFlag.ANNOTATIONS) 
+                || Decl.isAnnotationClass(decl) 
+                    && decl instanceof Class 
+                    && gen().isSequencedAnnotation((Class)decl), decl.toString());
         
         DeclName helper = new DeclName(decl, qualifyingExpr);
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
@@ -298,6 +305,9 @@ public class Naming implements LocalId {
                 } else if (flags.contains(DeclNameFlag.ANNOTATION)
                         && last) {
                     helper.append(ANNO_POSTFIX);
+                } else if (flags.contains(DeclNameFlag.ANNOTATIONS)
+                        && last) {
+                    helper.append(ANNOS_POSTFIX);
                 }
             }
         } else if (scope instanceof Interface) {
