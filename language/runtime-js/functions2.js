@@ -66,14 +66,31 @@ function flatten(tf, $$$mptypes) {
     return rf;
 }
 function unflatten(ff, $$$mptypes) {
-    var ru = function ru(seq) {
-        if (seq===undefined || seq.size === 0) { return ff(); }
-        var a = [];
-        for (var i = 0; i < seq.size; i++) {
-            a[i] = seq.get(i);
+    if (ff.$$metamodel$$ && ff.$$metamodel$$['$ps']) {
+        var ru = function ru(seq) {
+            if (seq===undefined || seq.size === 0) { return ff(); }
+            var pmeta = ff.$$metamodel$$['$ps'];
+            var a = [];
+            for (var i = 0; i < pmeta.length; i++) {
+                if (pmeta[i]['seq'] == 1) {
+                    a[i] = seq.skipping(i).sequence;
+                } else {
+                    a[i] = seq.get(i);
+                }
+            }
+            a[i]=ru.$$targs$$;
+            return ff.apply(ru, a);
         }
-        a[i]=ru.$$targs$$;
-        return ff.apply(ru, a);
+    } else {
+        var ru = function ru(seq) {
+            if (seq===undefined || seq.size === 0) { return ff(); }
+            var a = [];
+            for (var i = 0; i < seq.size; i++) {
+                a[i] = seq.get(i);
+            }
+            a[i]=ru.$$targs$$;
+            return ff.apply(ru, a);
+        }
     }
     ru.$$targs$$=$$$mptypes;
     return ru;
