@@ -1014,14 +1014,14 @@ function testReifiedRuntime(){
     $$$c2593.check($$$cl2592.isOfType(localInteger$3478,{t:Local$3477,a:{T:{t:$$$cl2592.Integer}}}),$$$cl2592.String("reified runtime local 1",23));
     
     //AttributeDeclaration m at reifiedRuntime.ceylon (68:4-68:28)
-    var m$3479=$$$cl2592.$JsCallable(runtimeMethod,[],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}});
+    var m$3479=$$$cl2592.$JsCallable(runtimeMethod,[/*WARNING: got ceylon.language::Object instead of Callable*/],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}});
     $$$c2593.check($$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}}}),$$$cl2592.String("reified runtime callable 1",26));
     $$$c2593.check((!$$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Integer}}})),$$$cl2592.String("reified runtime callable 2",26));
     $$$c2593.check((!$$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.String},Element:{t:$$$cl2592.String}}},Return:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime callable 3",26));
     $$$c2593.check((!$$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime callable 4",26));
     
     //AttributeDeclaration m2 at reifiedRuntime.ceylon (73:4-73:34)
-    var m2$3480=$$$cl2592.$JsCallable(testReifiedRuntime,[],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}});
+    var m2$3480=$$$cl2592.$JsCallable(testReifiedRuntime,[/*WARNING: got ceylon.language::Object instead of Callable*/],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}});
     $$$c2593.check($$$cl2592.isOfType(m2$3480,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}}}),$$$cl2592.String("reified runtime callable 5",26));
     $$$c2593.check((!$$$cl2592.isOfType(m2$3480,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime callable 6",26));
     $$$c2593.check((!$$$cl2592.isOfType(m2$3480,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Anything}}})),$$$cl2592.String("reified runtime callable 7",26));
@@ -1055,7 +1055,7 @@ function test(){
     doIt($$$cl2592.$JsCallable((opt$3487=foo$3484,$$$cl2592.JsCallable(opt$3487,opt$3487!==null?opt$3487.inc:null)),[],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}}));
     var opt$3487;
     $$$c2593.check(foo$3484.count.equals((5)),$$$cl2592.String("Foo.count [2]",13));
-    doIt($$$cl2592.$JsCallable(Bar,[],{Arguments:{t:$$$cl2592.Empty},Return:{t:Bar}}));
+    doIt($$$cl2592.$JsCallable(Bar,[/*INVOKE callable params 1*/],{Arguments:{t:$$$cl2592.Empty},Return:{t:Bar}}));
     $$$cl2592.print(getFoob().name);
     
     //ObjectDefinition x at testit.ceylon (20:4-24:4)
