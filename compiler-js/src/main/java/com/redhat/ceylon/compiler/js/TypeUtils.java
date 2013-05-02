@@ -347,7 +347,7 @@ public class TypeUtils {
         ProducedType _tuple = targs.get(1);
         gen.out("[");
         int pos = 1;
-        while (!empty.equals(_tuple.getDeclaration())) {
+        while (!(empty.equals(_tuple.getDeclaration()) || _tuple.getDeclaration() instanceof TypeParameter)) {
             if (pos > 1) gen.out(",");
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos++), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
@@ -359,7 +359,10 @@ public class TypeUtils {
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
                 _tuple = _tuple.getTypeArgumentList().get(0);
             } else {
-                System.out.println("QUE CARAJOS? tuple es " + _tuple.getProducedTypeQualifiedName());
+                System.out.println("WTF? Tuple is actually " + _tuple.getProducedTypeQualifiedName() + ", " + _tuple.getClass().getName());
+                if (pos > 100) {
+                    System.exit(1);
+                }
             }
             gen.out("}");
         }

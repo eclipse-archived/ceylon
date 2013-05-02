@@ -252,13 +252,8 @@ public class InvocationGenerator {
                     if (boxType == 4) {
                         gen.out(",");
                         //Add parameters
-                        Method _m = extractMethod(expr.getTerm());
-                        if (_m == null) {
-                            gen.out("[/*INVOKE callable params 1*/],");
-                        } else {
-                            TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
-                            gen.out(",");
-                        }
+                        describeMethodParameters(expr.getTerm());
+                        gen.out(",");
                         TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
                     }
                     gen.boxUnboxEnd(boxType);
@@ -279,13 +274,8 @@ public class InvocationGenerator {
                         arg.visit(gen);
                         if (boxType == 4) {
                             gen.out(",");
-                            Method _m = extractMethod(expr.getTerm());
-                            if (_m == null) {
-                                gen.out("[/*INVOKE callable params 2*/],");
-                            } else {
-                                TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
-                                gen.out(",");
-                            }
+                            describeMethodParameters(expr.getTerm());
+                            gen.out(",");
                             TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen);
                         }
                         gen.boxUnboxEnd(boxType);
@@ -359,19 +349,25 @@ public class InvocationGenerator {
         }
     }
 
-    Method extractMethod(Tree.Term term) {
+    private void describeMethodParameters(Tree.Term term) {
+        Method _m = null;
         if (term instanceof Tree.FunctionArgument) {
-            return (((Tree.FunctionArgument)term).getDeclarationModel());
+            _m = (((Tree.FunctionArgument)term).getDeclarationModel());
         } else if (term instanceof Tree.MemberOrTypeExpression) {
             if (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Method) {
-                return (Method)((Tree.MemberOrTypeExpression)term).getDeclaration();
+                _m = (Method)((Tree.MemberOrTypeExpression)term).getDeclaration();
             }
         } else if (term instanceof Tree.InvocationExpression) {
-            gen.out("/*Callable from Invocation ", term.toString(), "*/");
+            gen.getTypeUtils().encodeTupleAsParameterListForRuntime(term.getTypeModel(), gen);
+            return;
         } else {
             gen.out("/*Callable EXPR of type ", term.getClass().getName(), "*/");
         }
-        return null;
+        if (_m == null) {
+            gen.out("[]");
+        } else {
+            TypeUtils.encodeParameterListForRuntime(_m.getParameterLists().get(0), gen);
+        }
     }
 
 }
