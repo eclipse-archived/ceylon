@@ -111,7 +111,6 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.UnionTypeInfo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
 @.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

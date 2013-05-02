@@ -121,7 +121,6 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
     @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberInterfaceAliasTricksImpl", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})

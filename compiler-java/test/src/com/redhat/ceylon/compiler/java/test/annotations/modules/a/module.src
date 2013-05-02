@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 4)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", doc = "Module A doc", license = "http://www.apache.org/licenses/LICENSE-2.0.html", by = {"Tom"}, version = "0.1", dependencies = {})
 @.ceylon.language.Doc$annotation(description = "Module A doc")
 @.ceylon.language.Authors$annotation(authors = "Tom")
