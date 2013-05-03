@@ -321,6 +321,7 @@ public class ClassTransformer extends AbstractTransformer {
      * </pre>
      * is transformed into
      * <pre>
+     * @Retention(RetentionPolicy.RUNTIME)
      * @interface Foo$annotation {
      *     String s();
      *     long i() default 1;
@@ -329,6 +330,7 @@ public class ClassTransformer extends AbstractTransformer {
      * If the annotation class is a subtype of SequencedAnnotation a wrapper
      * annotation is also generated:
      * <pre>
+     * @Retention(RetentionPolicy.RUNTIME)
      * @interface Foo$annotations{
      *     Foo$annotation[] value();
      * }
