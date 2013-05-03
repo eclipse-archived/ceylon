@@ -40,6 +40,6 @@ every,first,forItem,forKey,greaterThan,join,largest,lessThan,max,min,smallest,su
 identical,compose,shuffle,plus,times,combine,sort
 
 #metamodel
-metamodel/Annotated,metamodel/Declaration,metamodel/Package,metamodel/Module,metamodel/TypeParameter,metamodel/Annotation,metamodel/Function,metamodel/Parameterised,metamodel/Value,metamodel/Class,metamodel/Interface,metamodel/ProducedType,metamodel/Variable,metamodel/ClassOrInterface,metamodel/Member,metamodel/SequencedAnnotation,metamodel/annotations,metamodel/ConstrainedAnnotation,metamodel/OptionalAnnotation,metamodel/Type
+metamodel/Annotated,metamodel/Declaration,metamodel/ModuleAndPackage,metamodel/TypeParameter,metamodel/Annotation,metamodel/Function,metamodel/Parameterised,metamodel/Value,metamodel/Class,metamodel/Interface,metamodel/ProducedType,metamodel/Variable,metamodel/ClassOrInterface,metamodel/Member,metamodel/SequencedAnnotation,metamodel/annotations,metamodel/ConstrainedAnnotation,metamodel/OptionalAnnotation,metamodel/Type
 #metamodel/metamodel
 
