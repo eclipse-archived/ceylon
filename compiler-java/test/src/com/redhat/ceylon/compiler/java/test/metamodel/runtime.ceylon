@@ -191,36 +191,94 @@ void checkMemberFunctions(){
     assert(f8(noParamsInstance) == true);
 }
 
+void checkHierarchy(){
+    value noParamsAppliedType = type(NoParams());
+    
+    assert(is AppliedClassType<Anything,[]> noParamsAppliedType);
+    
+    value noParamsDecl = noParamsAppliedType.declaration;
+    
+    assert(noParamsDecl.name == "NoParams");
+    
+    value basicType = noParamsDecl.superclass;
+    
+    assert(exists basicType);
+    
+    assert(basicType.declaration.name == "Basic");
+
+    value objectType = basicType.declaration.superclass;
+    
+    assert(exists objectType);
+    
+    assert(objectType.declaration.name == "Object");
+    
+    value anythingType = objectType.declaration.superclass;
+    
+    assert(exists anythingType);
+    
+    assert(anythingType.declaration.name == "Anything");
+
+    assert(!anythingType.declaration.superclass exists);
+}
+
+void checkPackageAndModule(){
+    value noParamsAppliedType = type(NoParams());
+    
+    assert(is AppliedClassType<Anything,[]> noParamsAppliedType);
+    
+    value noParamsDecl = noParamsAppliedType.declaration;
+
+    value pkg = noParamsDecl.packageContainer;
+
+    assert(pkg.name == "com.redhat.ceylon.compiler.java.test.metamodel");
+
+    value mod = pkg.container;
+
+    assert(mod.name == "com.redhat.ceylon.compiler.java.test.metamodel");
+    assert(mod.version == "123");
+    
+    assert(mod.members.size == 1);
+    assert(exists modPackage = mod.members[0], modPackage === pkg);
+}
+
 @nomodel
 shared void runtime() {
-//    value classType = type("falbala");
-//    
-//    doc "metamodel is AppliedClassType"
-//    assert(is AppliedClassType<Anything,[]> classType);
-//
-//    value klass = classType.declaration;
-//
-//    doc "metamodel class name is String"
-//    assert(klass.name == "String");
-//
-//    value st = klass.superclass;
-//
-//    doc "super class exists"
-//    assert(exists st);
-//
-//    doc "metamodel superclass name is Object"
-//    assert(st.declaration.name == "Object");
-//
-//    queue = [klass];
-//    emptyQueue();
-//    
-//    visitInheritedTypes(classType);
+    //visitStringHierarchy();
+
+    checkPackageAndModule();
+
+    checkHierarchy();
 
     checkConstructors();    
 
     checkMemberFunctions();
 
     checkMemberAttributes();
+}
+
+void visitStringHierarchy(){
+    value classType = type("falbala");
+    
+    doc "metamodel is AppliedClassType"
+    assert(is AppliedClassType<Anything,[]> classType);
+    
+    value klass = classType.declaration;
+    
+    doc "metamodel class name is String"
+    assert(klass.name == "String");
+    
+    value st = klass.superclass;
+    
+    doc "super class exists"
+    assert(exists st);
+    
+    doc "metamodel superclass name is Object"
+    assert(st.declaration.name == "Object");
+    
+    queue = [klass];
+    emptyQueue();
+    
+    visitInheritedTypes(classType);
 }
 
 void visitInheritedTypes(AppliedClassOrInterfaceType<Anything> type){

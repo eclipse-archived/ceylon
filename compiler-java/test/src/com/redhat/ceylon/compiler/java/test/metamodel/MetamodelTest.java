@@ -25,6 +25,11 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class MetamodelTest extends CompilerTest {
 
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact(){
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.metamodel", "123");
+    }
+
     @Test
     public void testRuntime() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.runtime", "runtime.ceylon");
