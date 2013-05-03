@@ -104,6 +104,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
     public static final String CEYLON_LANGUAGE = "ceylon.language";
+    public static final String CEYLON_LANGUAGE_METADATA = "ceylon.language.metamodel";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String JDK_MODULE_VERSION = "7";
@@ -340,7 +341,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
          */
         if(!isBootstrap){
             loadPackage(CEYLON_LANGUAGE, true);
-            loadPackage("ceylon.language.metamodel", true);
+            loadPackage(CEYLON_LANGUAGE_METADATA, true);
         }
     }
 
