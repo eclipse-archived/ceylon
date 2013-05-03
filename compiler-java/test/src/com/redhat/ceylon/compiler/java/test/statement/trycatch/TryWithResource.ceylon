@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class TryWithResource() satisfies Closeable {
+class TryWithResource(Integer n) satisfies Closeable {
     
     shared actual void open() {
     }
@@ -30,9 +30,9 @@ class TryWithResource() satisfies Closeable {
         //value me = this;
         //try(me) {
         //}
-        try(TryWithResource()) {
+        try(TryWithResource(0)) {
         }
-        try(TryWithResource(), TryWithResource(), TryWithResource()) {
+        try(TryWithResource(1), TryWithResource(2), TryWithResource(3)) {
         }
         //try(r = getResource()) {
         //    r.m();
@@ -42,6 +42,6 @@ class TryWithResource() satisfies Closeable {
     }
     
     Closeable getResource() {
-        return TryWithResource();
+        return TryWithResource(4);
     }
 }

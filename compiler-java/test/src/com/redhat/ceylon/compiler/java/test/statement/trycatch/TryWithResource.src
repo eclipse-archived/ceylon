@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Closeable {
     
-    TryWithResource() {
+    TryWithResource(final long n) {
         this.$ceylon$language$Closeable$this = new .ceylon.language.Closeable$impl(this);
     }
     protected final .ceylon.language.Closeable$impl $ceylon$language$Closeable$this;
@@ -24,7 +24,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public final void m() {
         {
-            .ceylon.language.Closeable $ceylontmptry0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+            .ceylon.language.Closeable $ceylontmptry0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(0L);
             $ceylontmptry0.open();
             .java.lang.Exception $ceylontmpex1 = null;
             try {
@@ -39,15 +39,15 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             }
         }
         {
-            .ceylon.language.Closeable $ceylontmptry12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+            .ceylon.language.Closeable $ceylontmptry12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(1L);
             $ceylontmptry12.open();
             .java.lang.Exception $ceylontmpex13 = null;
             try {
-                .ceylon.language.Closeable $ceylontmptry8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+                .ceylon.language.Closeable $ceylontmptry8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(2L);
                 $ceylontmptry8.open();
                 .java.lang.Exception $ceylontmpex9 = null;
                 try {
-                    .ceylon.language.Closeable $ceylontmptry4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+                    .ceylon.language.Closeable $ceylontmptry4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(3L);
                     $ceylontmptry4.open();
                     .java.lang.Exception $ceylontmpex5 = null;
                     try {
@@ -82,12 +82,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     private final .ceylon.language.Closeable $getResource$priv() {
-        return new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource();
+        return new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(4L);
     }
     
     @.java.lang.Override

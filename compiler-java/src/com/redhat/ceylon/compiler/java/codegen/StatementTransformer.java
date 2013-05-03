@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
@@ -1698,7 +1699,9 @@ public class StatementTransformer extends AbstractTransformer {
 
         ResourceList resList = tryClause.getResourceList();
         if (resList != null) {
-            for (Resource res : resList.getResources()) {
+            ArrayList<Resource> resources = new ArrayList<Resource>(resList.getResources());
+            Collections.reverse(resources);
+            for (Resource res : resources) {
                 List<JCStatement> stats = List.nil();
     
                 Expression resExpr;
