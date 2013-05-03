@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.annotations;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -131,6 +132,7 @@ public class AnnotationsTest extends CompilerTest {
         compile("AnnotationConstructorUse.ceylon");
     }
     
+    @Ignore("M6: Until it is implemented")
     @Test
     public void testAnnotationTarget_fail(){
         compareWithJavaSource("AnnotationTarget");

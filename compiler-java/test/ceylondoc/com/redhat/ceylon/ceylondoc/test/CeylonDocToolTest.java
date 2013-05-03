@@ -45,6 +45,7 @@ import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -227,6 +228,7 @@ public class CeylonDocToolTest {
         externalLinks(links);
     }
     
+    @Ignore("Needs a 0.6 SDK published, we should rewrite that test: https://github.com/ceylon/ceylon-compiler/issues/1139")
     @Test
     public void externalLinksWithoutModuleNamePattern() throws IOException {
         // Relies on having a ceylon.collection in your ~/.ceylon/repo or cache
