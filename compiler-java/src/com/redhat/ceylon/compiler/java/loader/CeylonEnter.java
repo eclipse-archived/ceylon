@@ -450,8 +450,8 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             pu.getCompilationUnit().visit(boxingVisitor);
         }
+        AnnotationVisitor aiv = new AnnotationVisitor();
         for (PhasedUnit pu : phasedUnitsForExtraPhase) {
-            AnnotationVisitor aiv = new AnnotationVisitor();
             pu.getCompilationUnit().visit(aiv);
         }
         
