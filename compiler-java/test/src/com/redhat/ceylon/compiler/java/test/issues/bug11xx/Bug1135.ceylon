@@ -1,12 +1,12 @@
 @noanno
-shared class Bug1135<Args>() given Args satisfies Anything[] {
+shared class Bug1135() {
 
-    alias Listener => Callable<Anything, Args>;
+    alias Listener => Callable<Anything, []>;
 
     variable Array<Listener> listeners = array<Listener>([]);
 
-    shared void fireEvent(Args args) {
-        listeners.map((Listener listener) => listener(args));
+    shared void fireEvent() {
+        listeners.map((Listener listener) => listener());
     }
 
 }
