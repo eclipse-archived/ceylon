@@ -539,11 +539,6 @@ public class Decl {
         return (declarationModel instanceof Class)
                 && containsAnnotationAnnotation(declarationModel);
     }
-
-    public static boolean isLanguageModuleDeclaration(Declaration declarationModel) {
-        Package pkg = getPackageContainer(declarationModel.getContainer());
-        return pkg != null && pkg.getNameAsString().startsWith("ceylon.language");
-    }
     
     public static int encodeAnnotationConstructor(AnnotationArgument inlineArgument) {
         // On the JVM the number of method parameters is limited to 255
