@@ -36,7 +36,7 @@ public class Value
     @TypeInfo("ceylon.language.metamodel::AppliedValue<ceylon.language::Anything>")
     public ceylon.language.metamodel.AppliedValue<? extends Object> getApplied() {
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        return new AppliedValue(this, modelDecl.getType(), null);
+        return modelDecl.isVariable() ? new AppliedVariable(this, modelDecl.getType(), null) : new AppliedValue(this, modelDecl.getType(), null);
     }
 
     @Override

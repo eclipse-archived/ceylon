@@ -72,7 +72,7 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValu
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 
-//                initField(decl, javaClass, getterType);
+                initField(decl, javaClass, getterType);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (SecurityException e) {
