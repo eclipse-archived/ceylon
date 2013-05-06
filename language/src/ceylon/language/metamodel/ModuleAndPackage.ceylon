@@ -15,4 +15,6 @@ shared interface Package satisfies Identifiable {
             given Kind satisfies Declaration;
     shared formal Declaration[] annotatedMembers<Kind,Annotation>() 
             given Kind satisfies Declaration;
+
+    shared formal Value? getAttribute(String name);
 }

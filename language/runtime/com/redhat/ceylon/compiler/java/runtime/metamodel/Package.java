@@ -5,6 +5,7 @@ import java.util.List;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Declaration;
 import ceylon.language.metamodel.Package$impl;
+import ceylon.language.metamodel.Value;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -14,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -71,6 +73,16 @@ public class Package implements ceylon.language.metamodel.Package, ReifiedType{
             this.members = Util.sequentialInstance(Declaration.$TypeDescriptor, members);
         }
         return members;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::Value|ceylon.language::Null")
+    public ceylon.language.metamodel.Value getAttribute(String name) {
+        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
+            return null;
+        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) toplevel;
+        return (Value) Metamodel.getOrCreateMetamodel(decl);
     }
 
     @Override
