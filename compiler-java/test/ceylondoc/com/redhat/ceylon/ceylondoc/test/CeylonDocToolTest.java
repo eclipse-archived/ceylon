@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -244,8 +243,7 @@ public class CeylonDocToolTest {
     
     @Test
     public void externalLinksToRemoteRepoWithoutModuleNamePattern() throws IOException {
-        int port = findFreePort();
-        HttpServer stubServer = HttpServer.create(new InetSocketAddress(port), 1);
+        HttpServer stubServer = HttpServer.create(new InetSocketAddress(0), 1);
         stubServer.createContext("/repo", new HttpHandler() {
             @Override
             public void handle(HttpExchange httpExchange) throws IOException {
@@ -260,7 +258,7 @@ public class CeylonDocToolTest {
         stubServer.start();
         
         try {
-            String repoUrl = "http://localhost:" + port + "/repo";
+            String repoUrl = "http://localhost:" + stubServer.getAddress().getPort() + "/repo";
             externalLinks(repoUrl, "file://not-existing-dir", "https://not-existing-url", repoUrl);
         } finally {
             stubServer.stop(0);
@@ -946,24 +944,6 @@ public class CeylonDocToolTest {
         JavacTask task = compiler.getTask(null, null, null, options, null, fileObjects);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
-    }
-    
-    public int findFreePort() {
-        ServerSocket socket = null;
-        try {
-            socket = new ServerSocket(0);
-            return socket.getLocalPort();
-        } catch (IOException e) {
-            return -1;
-        } finally {
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    // noop
-                }
-            }
-        }
     }
     
 }
