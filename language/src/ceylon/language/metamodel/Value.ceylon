@@ -1,7 +1,7 @@
-shared interface Value<out Type>
+shared interface Value
         satisfies Declaration {
     
-    shared formal Type get();
+    shared formal AppliedValue<Anything> applied;
     
     shared formal ProducedType type;
 }

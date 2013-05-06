@@ -1,4 +1,4 @@
-shared interface Declaration of Value<Anything> |
+shared interface Declaration of Value |
                                 Function |
                                 ClassOrInterface |
                                 TypeParameter {

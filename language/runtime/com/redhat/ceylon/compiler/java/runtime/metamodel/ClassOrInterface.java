@@ -44,7 +44,7 @@ public abstract class ClassOrInterface
     private Sequential<ceylon.language.metamodel.TypeParameter> typeParameters;
 
     private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Function>> functions;
-    private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Value<? extends Object>>> values;
+    private Sequential<ceylon.language.metamodel.Member<? extends Object, ceylon.language.metamodel.Value>> values;
 
     public ClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
