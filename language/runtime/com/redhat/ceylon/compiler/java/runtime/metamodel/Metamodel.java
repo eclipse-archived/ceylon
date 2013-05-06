@@ -34,8 +34,8 @@ public class Metamodel {
     }
 
     // FIXME: this will need better thinking in terms of memory usage
-    private static Map<com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface, com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface> typeCheckModelToRuntimeModel
-        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface, com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface>();
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.Declaration> typeCheckModelToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.Declaration>();
 
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.Package> typeCheckPackagesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.Package>();
@@ -108,14 +108,20 @@ public class Metamodel {
         return getAppliedMetamodel(pt);
     }
     
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration){
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.Declaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
         synchronized(typeCheckModelToRuntimeModel){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface ret = typeCheckModelToRuntimeModel.get(declaration);
+            com.redhat.ceylon.compiler.java.runtime.metamodel.Declaration ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Class((com.redhat.ceylon.compiler.typechecker.model.Class)declaration); 
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Interface((com.redhat.ceylon.compiler.typechecker.model.Interface)declaration);
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
+                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Function((com.redhat.ceylon.compiler.typechecker.model.Method)declaration);
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
+                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.Value((com.redhat.ceylon.compiler.typechecker.model.Value)declaration);
+                }else{
+                    throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }
                 typeCheckModelToRuntimeModel.put(declaration, ret);
             }
@@ -239,7 +245,7 @@ public class Metamodel {
         // find its container
         Scope container = method.getContainer();
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface classOrInterface = getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
+            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface classOrInterface = (ClassOrInterface) getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
             // now find the method
             Function ret = classOrInterface.findMethod(method.getName());
             if(ret == null)

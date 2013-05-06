@@ -71,7 +71,7 @@ public class ClassOrInterfaceType
     
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
-        this.declaration = Metamodel.getOrCreateMetamodel(decl);
+        this.declaration = (ClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
         java.util.Map<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.ProducedType> typeArguments 
             = new LinkedHashMap<ceylon.language.metamodel.TypeParameter, ceylon.language.metamodel.ProducedType>();
         Iterator<? extends ceylon.language.metamodel.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();

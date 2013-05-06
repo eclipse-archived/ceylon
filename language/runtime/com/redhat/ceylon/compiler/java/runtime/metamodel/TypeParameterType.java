@@ -55,7 +55,7 @@ public class TypeParameterType
         Scope container = wrapped.getContainer();
         // FIXME: support more container sources, such as methods and outer declarations
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface containerMetamodel = Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
+            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface containerMetamodel = (ClassOrInterface) Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
             ceylon.language.metamodel.TypeParameter typeParameter = containerMetamodel.getTypeParameter(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;

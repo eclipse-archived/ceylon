@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.List;
+
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Declaration;
 import ceylon.language.metamodel.Package$impl;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -22,6 +25,8 @@ public class Package implements ceylon.language.metamodel.Package, ReifiedType{
     private com.redhat.ceylon.compiler.typechecker.model.Package declaration;
 
     private Module module;
+
+    private Sequential<Declaration> members;
 
     public Package(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
         this.declaration = declaration;
@@ -54,8 +59,18 @@ public class Package implements ceylon.language.metamodel.Package, ReifiedType{
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Declaration>")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Declaration"))
     public <Kind extends Declaration> Sequential<? extends Declaration> members(@Ignore TypeDescriptor $reifiedKind) {
-        // TODO Auto-generated method stub
-        return null;
+        // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
+        // assign module twice we get the same result
+        if(members == null){
+            List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+            Declaration[] members = new Declaration[modelMembers.size()];
+            int i=0;
+            for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+                members[i++] = Metamodel.getOrCreateMetamodel(modelDecl);
+            }
+            this.members = Util.sequentialInstance(Declaration.$TypeDescriptor, members);
+        }
+        return members;
     }
 
     @Override
