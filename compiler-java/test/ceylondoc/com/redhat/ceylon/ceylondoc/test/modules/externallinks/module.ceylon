@@ -20,6 +20,4 @@
 module com.redhat.ceylon.ceylondoc.test.modules.externallinks '1.0' {
     import com.redhat.ceylon.ceylondoc.test.modules.dependency.b '1.0';
     import com.redhat.ceylon.ceylondoc.test.modules.dependency.c '1.0';
-    import ceylon.math '0.6';
-    import ceylon.collection '0.6';
 }

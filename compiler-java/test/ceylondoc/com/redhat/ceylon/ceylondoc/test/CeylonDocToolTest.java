@@ -24,6 +24,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -45,7 +48,6 @@ import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -58,6 +60,9 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import com.sun.source.util.JavacTask;
 import com.sun.tools.javac.file.JavacFileManager;
 
@@ -220,29 +225,49 @@ public class CeylonDocToolTest {
     }
 
     @Test
-    public void externalLinksWithModuleNamePattern() throws IOException {
-        List<String> links = new ArrayList<String>();
-        links.add("com.redhat=file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName());
-        links.add("ceylon=https://modules.ceylon-lang.org/test/");
-        
-        externalLinks(links);
+    public void externalLinksToLocalRepoWithModuleNamePattern() throws IOException {
+        String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
+        externalLinks(repoUrl, "com.redhat=" + repoUrl);
+    }
+
+    @Test
+    public void externalLinksToRemoteRepoWithModuleNamePattern() throws IOException {
+        String repoUrl = "http://acme.com/repo";
+        externalLinks(repoUrl, "com.redhat=" + repoUrl);
     }
     
-    @Ignore("Needs a 0.6 SDK published, we should rewrite that test: https://github.com/ceylon/ceylon-compiler/issues/1139")
     @Test
-    public void externalLinksWithoutModuleNamePattern() throws IOException {
-        // Relies on having a ceylon.collection in your ~/.ceylon/repo or cache
-        List<String> links = new ArrayList<String>();
-        links.add("file://not-existing-dir");
-        links.add("https://not-existing-url");        
-        links.add("file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName());
-        links.add("https://modules.ceylon-lang.org/test/");
-        
-        externalLinks(links);
+    public void externalLinksToLocalRepoWithoutModuleNamePattern() throws IOException {
+        String repoUrl = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
+        externalLinks(repoUrl, "file://not-existing-dir", "https://not-existing-url", repoUrl);
     }    
     
-    private void externalLinks(List<String> links) throws IOException {
-        // Relies on having a ceylon.collection in your ~/.ceylon/repo or cache
+    @Test
+    public void externalLinksToRemoteRepoWithoutModuleNamePattern() throws IOException {
+        int port = findFreePort();
+        HttpServer stubServer = HttpServer.create(new InetSocketAddress(port), 1);
+        stubServer.createContext("/repo", new HttpHandler() {
+            @Override
+            public void handle(HttpExchange httpExchange) throws IOException {
+                if (httpExchange.getRequestMethod().equals("HEAD")) {
+                    httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+                } else {
+                    httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_IMPLEMENTED, -1);
+                }
+                httpExchange.close();
+            }
+        });
+        stubServer.start();
+        
+        try {
+            String repoUrl = "http://localhost:" + port + "/repo";
+            externalLinks(repoUrl, "file://not-existing-dir", "https://not-existing-url", repoUrl);
+        } finally {
+            stubServer.stop(0);
+        }
+    }    
+    
+    private void externalLinks(String repoUrl, String... linkArgs) throws IOException {
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         compile("test/ceylondoc", "com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
 
@@ -252,7 +277,7 @@ public class CeylonDocToolTest {
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.externallinks");
 
         CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), modules, true, "build/ceylon-cars");
-        tool.setLinks(links);
+        tool.setLinks(Arrays.asList(linkArgs));
         tool.makeDoc();
 
         Module module = new Module();
@@ -260,7 +285,7 @@ public class CeylonDocToolTest {
         module.setVersion("1.0");        
 
         File destDir = getOutputDir(tool, module);
-        assertExternalLinks(destDir);
+        assertExternalLinks(destDir, repoUrl);
     }
 
     @Test
@@ -816,29 +841,41 @@ public class CeylonDocToolTest {
                 Pattern.compile("<a href='stubObject.object.html#stubInnerObject'><span title='Jump to singleton object declaration'>Singleton object declaration</span></a>"));
     }
     
-    private void assertExternalLinks(File destDir) throws IOException {
-        String url = "file://" + new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
+    private void assertExternalLinks(File destDir, String repoUrl) throws IOException {
+        String linkStart = "<a class='link' href='" + repoUrl + "/com/redhat/ceylon/ceylondoc/test/modules/dependency";
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<a class='link' href='"+url+"/com/redhat/ceylon/ceylondoc/test/modules/dependency/b/1.0/module-doc/B.type.html'>B</a>"));
+                Pattern.compile(linkStart + "/b/1.0/module-doc/B.type.html'>B</a> fceB"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<a class='link' href='"+url+"/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/C.type.html'>C</a>"));
-        assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<a class='link' href='https://modules.ceylon-lang.org/test/ceylon/collection/0.6/module-doc/HashMap.type.html'>HashMap</a>"));
+                Pattern.compile(linkStart + "/c/1.0/module-doc/C.type.html'>C</a> fceC"));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("zero = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/decimal/index.html#zero'>zero</a>"));
+                Pattern.compile("b = " + linkStart + "/b/1.0/module-doc/index.html#b'>b</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("Decimal = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/decimal/Decimal.type.html'>Decimal</a>"));
+                Pattern.compile("B = " + linkStart + "/b/1.0/module-doc/B.type.html'>B</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("Decimal.divided = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/decimal/Decimal.type.html#divided'>Decimal.divided</a>"));
+                Pattern.compile("B.b = " + linkStart + "/b/1.0/module-doc/B.type.html#b'>B.b</a>"));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::one = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/whole/index.html#one'>ceylon.math.whole::one</a>"));
+                Pattern.compile("b2 = " + linkStart + "/b/1.0/module-doc/bb/index.html#b2'>b2</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::Whole = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/whole/Whole.type.html'>ceylon.math.whole::Whole</a>"));
+                Pattern.compile("B2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html'>B2</a>"));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("ceylon.math.whole::Whole.power = <a class='link' href='https://modules.ceylon-lang.org/test/ceylon/math/0.6/module-doc/whole/Whole.type.html#power'>ceylon.math.whole::Whole.power</a>"));
+                Pattern.compile("B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2'>B2.b2</a>"));
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = " + linkStart + "/b/1.0/module-doc/index.html#b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B = " + linkStart + "/b/1.0/module-doc/B.type.html'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = " + linkStart + "/b/1.0/module-doc/B.type.html#b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b</a>"));
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = " + linkStart + "/b/1.0/module-doc/bb/index.html#b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2</a>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2</a>"));
     }
     
     private void assertSharedParameterOfClass(File destDir) throws IOException {
@@ -910,4 +947,23 @@ public class CeylonDocToolTest {
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
     }
+    
+    public int findFreePort() {
+        ServerSocket socket = null;
+        try {
+            socket = new ServerSocket(0);
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            return -1;
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    // noop
+                }
+            }
+        }
+    }
+    
 }

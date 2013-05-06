@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class B() {
-    shared void b() {}
+shared class B2() {
+    shared void b2() {}
 }
 
-shared void b() {}
+shared void b2() {}
