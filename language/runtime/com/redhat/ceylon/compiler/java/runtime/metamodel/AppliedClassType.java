@@ -9,7 +9,7 @@ import java.util.List;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.AppliedClassType$impl;
+import ceylon.language.metamodel.Class$impl;
 import ceylon.language.metamodel.Class;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     })
 public class AppliedClassType<Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterfaceType<Type>
-    implements ceylon.language.metamodel.AppliedClassType<Type, Arguments>, Callable<Type> {
+    implements ceylon.language.metamodel.Class<Type, Arguments>, Callable<Type> {
 
     private TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
@@ -41,15 +41,15 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     @Ignore
-    public AppliedClassType$impl<Type, Arguments> $ceylon$language$metamodel$AppliedClassType$impl() {
+    public Class$impl<Type, Arguments> $ceylon$language$metamodel$Class$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Class")
-    public ceylon.language.metamodel.Class getDeclaration() {
-        return (Class) super.getDeclaration();
+    @TypeInfo("ceylon.language.metamodel.untyped::Class")
+    public ceylon.language.metamodel.untyped.Class getDeclaration() {
+        return (ceylon.language.metamodel.untyped.Class) super.getDeclaration();
     }
 
     @Override

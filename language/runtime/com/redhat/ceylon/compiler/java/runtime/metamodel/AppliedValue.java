@@ -5,11 +5,10 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 
-import ceylon.language.metamodel.AppliedDeclaration$impl;
-import ceylon.language.metamodel.AppliedProducedType;
-import ceylon.language.metamodel.AppliedProducedType$impl;
-import ceylon.language.metamodel.AppliedValue$impl;
-import ceylon.language.metamodel.Declaration;
+import ceylon.language.metamodel.Declaration$impl;
+import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.AppliedType$impl;
+import ceylon.language.metamodel.Value$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -22,15 +21,15 @@ import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValue<Type>, ReifiedType {
+public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>, ReifiedType {
 
-    private AppliedProducedType type;
+    private AppliedType type;
     @Ignore
     protected TypeDescriptor $reifiedType;
-    protected Value declaration;
+    protected FreeValue declaration;
     private MethodHandle getter;
 
-    public AppliedValue(Value value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
+    public AppliedValue(FreeValue value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
         this.type = Metamodel.getAppliedMetamodel(valueType);
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(valueType);
         this.declaration = value;
@@ -89,45 +88,43 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.AppliedValu
 
     @Override
     @Ignore
-    public AppliedProducedType$impl $ceylon$language$metamodel$AppliedProducedType$impl() {
+    public AppliedType$impl $ceylon$language$metamodel$AppliedType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AppliedValue$impl<Type> $ceylon$language$metamodel$AppliedValue$impl() {
+    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AppliedDeclaration$impl $ceylon$language$metamodel$AppliedDeclaration$impl() {
+    public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Declaration")
-    public Declaration getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.untyped::Value")
+    public ceylon.language.metamodel.untyped.Value getDeclaration() {
         return declaration;
     }
 
     @Override
-    public Type get(@Name("instance") @TypeInfo("ceylon.language::Object") Object instance) {
+    public Type get() {
         try {
-            if(declaration.getToplevel())
-                return (Type) getter.invokeExact();
-            return (Type) getter.invokeExact(instance);
+            return (Type) getter.invokeExact();
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke getter for "+declaration.getName(), e);
         }
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::AppliedProducedType")
-    public AppliedProducedType getType() {
+    @TypeInfo("ceylon.language.metamodel::AppliedType")
+    public AppliedType getType() {
         return type;
     }
 

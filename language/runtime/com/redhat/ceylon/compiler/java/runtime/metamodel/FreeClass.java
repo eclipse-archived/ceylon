@@ -7,7 +7,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.Class$impl;
+import ceylon.language.metamodel.untyped.Class$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -17,27 +17,27 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class Class 
-    extends ClassOrInterface
-    implements ceylon.language.metamodel.Class {
+public class FreeClass 
+    extends FreeClassOrInterface
+    implements ceylon.language.metamodel.untyped.Class {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Class.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClass.class);
     
-    public Class(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
+    public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
         super(declaration);
     }
 
     @Override
     @Ignore
-    public Class$impl $ceylon$language$metamodel$Class$impl() {
+    public Class$impl $ceylon$language$metamodel$untyped$Class$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.metamodel.AppliedProducedType> apply$types(){
+    public Sequential<? extends ceylon.language.metamodel.AppliedType> apply$types(){
         return (Sequential) empty_.getEmpty$();
     }
 
@@ -48,12 +48,12 @@ public class Class
     }
 
     @Override
-    public AppliedClassType<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedProducedType> types){
+    public AppliedClassType<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
         Iterator iterator = types.iterator();
         Object it;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
         while((it = iterator.next()) != finished_.getFinished$()){
-            ceylon.language.metamodel.AppliedProducedType pt = (ceylon.language.metamodel.AppliedProducedType) it;
+            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
         }

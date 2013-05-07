@@ -1,7 +1,13 @@
-shared interface Value
+import ceylon.language.metamodel.untyped {
+    UntypedValue = Value
+}
+
+shared interface Value<out Type>
         satisfies Declaration {
+
+    shared formal actual UntypedValue declaration;
     
-    shared formal AppliedValue<Anything> applied;
+    shared formal Type get();
     
-    shared formal ProducedType type;
+    shared formal AppliedType type;
 }

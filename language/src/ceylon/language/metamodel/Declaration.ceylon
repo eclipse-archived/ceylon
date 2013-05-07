@@ -1,15 +1,11 @@
-shared interface Declaration of Value |
-                                Function |
-                                ClassOrInterface |
-                                TypeParameter {
+import ceylon.language.metamodel.untyped {
+    UntypedDeclaration = Declaration
+}
+
+shared interface Declaration of ClassOrInterface<Anything>
+                              | Function<Anything, Nothing> 
+                              | Value<Anything>
+    satisfies AppliedType {
     
-    shared formal String name;
-    
-    shared formal Annotation[] annotations<Annotation>()
-            given Annotation satisfies Object;
-    
-    // FIXME: that name sucks
-    shared formal Package packageContainer;
-    
-    shared formal Boolean toplevel;
+    shared formal UntypedDeclaration declaration;
 }

@@ -5,7 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 
-import ceylon.language.metamodel.AppliedVariable$impl;
+import ceylon.language.metamodel.Variable$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -16,11 +16,11 @@ import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.language.metamodel.AppliedVariable<Type> {
+public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.language.metamodel.Variable<Type> {
 
     private MethodHandle setter;
 
-    public AppliedVariable(Value value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
+    public AppliedVariable(FreeValue value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
         super(value, valueType, appliedClassOrInterfaceType);
     }
 
@@ -61,18 +61,15 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
 
     @Override
     @Ignore
-    public AppliedVariable$impl<Type> $ceylon$language$metamodel$AppliedVariable$impl() {
+    public Variable$impl<Type> $ceylon$language$metamodel$Variable$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Object set(@Name("instance") @TypeInfo("ceylon.language::Object") Object instance, Type value) {
+    public Object set(Type value) {
         try {
-            if(declaration.getToplevel())
-                setter.invokeExact(value);
-            else
-                setter.invokeExact(instance, value);
+            setter.invokeExact(value);
             return null;
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke setter for "+declaration.getName(), e);

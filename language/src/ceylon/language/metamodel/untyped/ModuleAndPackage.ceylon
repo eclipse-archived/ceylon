@@ -11,9 +11,9 @@ shared interface Package satisfies Identifiable {
     
     shared formal Module container;
     
-    shared formal Declaration[] members<Kind>() 
+    shared formal Kind[] members<Kind>() 
             given Kind satisfies Declaration;
-    shared formal Declaration[] annotatedMembers<Kind,Annotation>() 
+    shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies Declaration;
 
     shared formal Value? getAttribute(String name);

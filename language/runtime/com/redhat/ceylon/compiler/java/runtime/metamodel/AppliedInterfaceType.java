@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.AppliedInterfaceType$impl;
+import ceylon.language.metamodel.Interface$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     })
 public class AppliedInterfaceType<Type> 
     extends AppliedClassOrInterfaceType<Type>
-    implements ceylon.language.metamodel.AppliedInterfaceType<Type> {
+    implements ceylon.language.metamodel.Interface<Type> {
 
     public AppliedInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
         super(producedType);
@@ -25,15 +25,15 @@ public class AppliedInterfaceType<Type>
 
     @Override
     @Ignore
-    public AppliedInterfaceType$impl<Type> $ceylon$language$metamodel$AppliedInterfaceType$impl() {
+    public Interface$impl<Type> $ceylon$language$metamodel$Interface$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Interface")
-    public ceylon.language.metamodel.Interface getDeclaration() {
-        return (Interface) super.getDeclaration();
+    @TypeInfo("ceylon.language.metamodel.untyped::Interface")
+    public ceylon.language.metamodel.untyped.Interface getDeclaration() {
+        return (FreeInterface) super.getDeclaration();
     }
 
     @Override

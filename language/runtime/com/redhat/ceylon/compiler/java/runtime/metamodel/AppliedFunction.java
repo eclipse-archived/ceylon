@@ -11,10 +11,10 @@ import java.util.Map;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.AppliedFunction$impl;
-import ceylon.language.metamodel.AppliedProducedType;
-import ceylon.language.metamodel.AppliedProducedType$impl;
-import ceylon.language.metamodel.AppliedDeclaration$impl;
+import ceylon.language.metamodel.Function$impl;
+import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.AppliedType$impl;
+import ceylon.language.metamodel.Declaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -37,18 +37,18 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 public class AppliedFunction<Type, Arguments extends Sequential<? extends Object>> 
-    implements ceylon.language.metamodel.AppliedFunction<Type, Arguments>, ReifiedType {
+    implements ceylon.language.metamodel.Function<Type, Arguments>, ReifiedType {
 
     @Ignore
     private final TypeDescriptor $reifiedType;
     @Ignore
     private final TypeDescriptor $reifiedArguments;
     
-    private AppliedProducedType type;
-    private Function declaration;
+    private AppliedType type;
+    private FreeFunction declaration;
     private MethodHandle method;
 
-    public AppliedFunction(ProducedReference appliedFunction, Function function, AppliedClassOrInterfaceType<?> container) {
+    public AppliedFunction(ProducedReference appliedFunction, FreeFunction function, AppliedClassOrInterfaceType<?> container) {
         ProducedType appliedType = appliedFunction.getType();
         
         // FIXME: check that this returns a Callable if we have multiple parameter lists
@@ -118,27 +118,27 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 }
 
     @Override
-    public Function getDeclaration(){
+    public FreeFunction getDeclaration(){
         return declaration;
     }
     
     @Override
     @Ignore
-    public AppliedProducedType$impl $ceylon$language$metamodel$AppliedProducedType$impl() {
+    public AppliedType$impl $ceylon$language$metamodel$AppliedType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AppliedDeclaration$impl $ceylon$language$metamodel$AppliedDeclaration$impl() {
+    public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AppliedFunction$impl<Type, Arguments> $ceylon$language$metamodel$AppliedFunction$impl() {
+    public Function$impl<Type, Arguments> $ceylon$language$metamodel$Function$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -206,17 +206,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     @Override
-    public Callable<Type> bind(@TypeInfo("ceylon.language::Object") Object instance){
-        if(method == null)
-            throw new RuntimeException("No method found for: "+declaration.getName());
-        // bound arguments type is the third type arg of Tuple
-        TypeDescriptor boundArguments = ((TypeDescriptor.Class)$reifiedArguments).getTypeArguments()[2];
-        return new BoundFunction<Type, Arguments>($reifiedType, boundArguments, method.bindTo(instance));
-    }
-    
-    @Override
-    @TypeInfo("ceylon.language.metamodel::AppliedProducedType")
-    public AppliedProducedType getType() {
+    @TypeInfo("ceylon.language.metamodel::AppliedType")
+    public AppliedType getType() {
         return type;
     }
 

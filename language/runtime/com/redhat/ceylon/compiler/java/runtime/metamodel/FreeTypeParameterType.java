@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.ProducedType$impl;
-import ceylon.language.metamodel.TypeParameterType$impl;
+import ceylon.language.metamodel.untyped.Type$impl;
+import ceylon.language.metamodel.untyped.TypeParameterType$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -13,39 +13,39 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class TypeParameterType 
-    implements ceylon.language.metamodel.TypeParameterType, ReifiedType {
+public class FreeTypeParameterType 
+    implements ceylon.language.metamodel.untyped.TypeParameterType, ReifiedType {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(TypeParameterType.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameterType.class);
     
-    protected ceylon.language.metamodel.TypeParameter declaration;
+    protected ceylon.language.metamodel.untyped.TypeParameter declaration;
 
     private TypeParameter wrapped;
 
     private volatile boolean initialised;
     
-    TypeParameterType(TypeParameter tp){
+    FreeTypeParameterType(TypeParameter tp){
         this.wrapped = tp;
     }
 
     @Override
     @Ignore
-    public ProducedType$impl $ceylon$language$metamodel$ProducedType$impl() {
+    public Type$impl $ceylon$language$metamodel$untyped$Type$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public TypeParameterType$impl $ceylon$language$metamodel$TypeParameterType$impl() {
+    public TypeParameterType$impl $ceylon$language$metamodel$untyped$TypeParameterType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::TypeParameter")
-    public ceylon.language.metamodel.TypeParameter getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.untyped::TypeParameter")
+    public ceylon.language.metamodel.untyped.TypeParameter getDeclaration() {
         checkInit();
         return declaration;
     }
@@ -55,16 +55,16 @@ public class TypeParameterType
         Scope container = wrapped.getContainer();
         // FIXME: support more container sources, such as methods and outer declarations
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.ClassOrInterface containerMetamodel = (ClassOrInterface) Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
-            ceylon.language.metamodel.TypeParameter typeParameter = containerMetamodel.getTypeParameter(wrapped.getName());
+            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface containerMetamodel = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
+            ceylon.language.metamodel.untyped.TypeParameter typeParameter = containerMetamodel.getTypeParameter(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else
                 throw new RuntimeException("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
         }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
             // try to find it in the method
-            com.redhat.ceylon.compiler.java.runtime.metamodel.Function method = Metamodel.getMetamodel((com.redhat.ceylon.compiler.typechecker.model.Method)container);
-            ceylon.language.metamodel.TypeParameter typeParameter = method.getTypeParameter(wrapped.getName());
+            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction method = Metamodel.getMetamodel((com.redhat.ceylon.compiler.typechecker.model.Method)container);
+            ceylon.language.metamodel.untyped.TypeParameter typeParameter = method.getTypeParameter(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else

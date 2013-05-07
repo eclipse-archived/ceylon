@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Declaration$impl;
-import ceylon.language.metamodel.Package;
+import ceylon.language.metamodel.untyped.Declaration$impl;
+import ceylon.language.metamodel.untyped.Package;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -14,24 +14,24 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class Declaration 
-    implements ceylon.language.metamodel.Declaration, ReifiedType {
+public class FreeDeclaration 
+    implements ceylon.language.metamodel.untyped.Declaration, ReifiedType {
     
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Declaration.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeDeclaration.class);
 
     @Ignore
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
     
     private Package pkg;
 
-    public Declaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+    public FreeDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
     }
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
+    public Declaration$impl $ceylon$language$metamodel$untyped$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

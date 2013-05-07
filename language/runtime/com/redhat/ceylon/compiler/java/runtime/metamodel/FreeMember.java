@@ -1,8 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Callable;
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.Member$impl;
+import ceylon.language.metamodel.untyped.Member$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -12,17 +11,17 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
-    implements ceylon.language.metamodel.Member<Type, Kind>, Callable<Kind>, ReifiedType {
+public class FreeMember<Kind extends ceylon.language.metamodel.untyped.Declaration>
+    implements ceylon.language.metamodel.untyped.Member<Kind>, Callable<Kind>, ReifiedType {
     
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(Member.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeMember.class);
 
     Kind declaration;
 
-    private ClassOrInterface container;
+    private FreeClassOrInterface container;
 
-    public Member(ClassOrInterface container, 
+    public FreeMember(FreeClassOrInterface container, 
                   Kind declaration) {
         this.container = container;
         this.declaration = declaration;
@@ -30,26 +29,25 @@ public class Member<Type, Kind extends ceylon.language.metamodel.Declaration>
 
     @Override
     @Ignore
-    public Member$impl<Type, Kind> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Kind> $ceylon$language$metamodel$untyped$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface")
-    public ClassOrInterface getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.metamodel.untyped::ClassOrInterface")
+    public ceylon.language.metamodel.untyped.ClassOrInterface getDeclaringClassOrInterface() {
         return container;
     }
 
     @Override
     public Kind $call() {
-        throw new UnsupportedOperationException();
+        return declaration;
     }
 
     @Override
     public Kind $call(Object arg0) {
-        // FIXME: WTF do we do with the argument?
-        return declaration;
+        throw new UnsupportedOperationException();
     }
 
     @Override
