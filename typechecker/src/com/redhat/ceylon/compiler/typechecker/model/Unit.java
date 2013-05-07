@@ -198,7 +198,8 @@ public class Unit {
             if ("Nothing".equals(name)) {
                 return getNothingDeclaration();
             }
-            for (Package languageScope : languageModule.getPackages() ) {
+            Package languageScope = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
+            if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
                     return d;
