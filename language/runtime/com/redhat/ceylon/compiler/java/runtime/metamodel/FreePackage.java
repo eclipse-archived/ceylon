@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Sequential;
@@ -61,20 +62,29 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package, R
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"))
     public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> members(@Ignore TypeDescriptor $reifiedKind) {
-        // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
-        // assign module twice we get the same result
-        if(members == null){
+        
+        if($reifiedKind instanceof TypeDescriptor.Class){
             List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-            FreeDeclaration[] members = new FreeDeclaration[modelMembers.size()];
-            int i=0;
+            Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
+            List<Kind> members = new ArrayList<Kind>(modelMembers.size());
             for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-                members[i++] = Metamodel.getOrCreateMetamodel(modelDecl);
+                if((declarationClass == ceylon.language.metamodel.untyped.Value.class 
+                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value)
+                   || (declarationClass == ceylon.language.metamodel.untyped.Function.class 
+                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
+                   || (declarationClass == ceylon.language.metamodel.untyped.Class.class 
+                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
+                   || (declarationClass == ceylon.language.metamodel.untyped.Interface.class 
+                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Interface)
+                   || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class 
+                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
+                   || declarationClass == ceylon.language.metamodel.untyped.Declaration.class
+                        )
+                    members.add((Kind)Metamodel.getOrCreateMetamodel(modelDecl));
             }
-            this.members = Util.sequentialInstance(FreeDeclaration.$TypeDescriptor, members);
+            return (Sequential) Util.sequentialInstance($reifiedKind, members.toArray());
         }
-        // FIXME
-        return null;
-//        return members;
+        throw new UnsupportedOperationException("Kind not supported yet: "+$reifiedKind);
     }
 
     @Override
