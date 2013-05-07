@@ -5,6 +5,7 @@ import ceylon.language.metamodel.untyped.Value$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -33,10 +34,21 @@ public class FreeValue
     }
 
     @Override
+    public Object apply$instance() {
+        return null;
+    }
+
+    @Override
+    public ceylon.language.metamodel.Value<? extends Object> apply() {
+        return apply(null);
+    }
+    
+    @Override
     @TypeInfo("ceylon.language.metamodel::Value<ceylon.language::Anything>")
-    public ceylon.language.metamodel.Value<? extends Object> getApplied() {
+    public ceylon.language.metamodel.Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
+        // FIXME: validate that instance is null for toplevels and not null for memberss
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        return modelDecl.isVariable() ? new AppliedVariable(this, modelDecl.getType(), null) : new AppliedValue(this, modelDecl.getType(), null);
+        return modelDecl.isVariable() ? new AppliedVariable(this, modelDecl.getType(), instance) : new AppliedValue(this, modelDecl.getType(), instance);
     }
 
     @Override
