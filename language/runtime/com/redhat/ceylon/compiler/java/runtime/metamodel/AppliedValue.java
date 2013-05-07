@@ -5,14 +5,13 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 
-import ceylon.language.metamodel.Declaration$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.AppliedType$impl;
+import ceylon.language.metamodel.Declaration$impl;
 import ceylon.language.metamodel.Value$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -29,28 +28,29 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>
     protected FreeValue declaration;
     private MethodHandle getter;
 
-    public AppliedValue(FreeValue value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
+    public AppliedValue(FreeValue value, ProducedType valueType, Object instance) {
         this.type = Metamodel.getAppliedMetamodel(valueType);
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(valueType);
         this.declaration = value;
         
-        initField(appliedClassOrInterfaceType);
+        initField(instance);
     }
 
-    private void initField(AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
+    private void initField(Object instance) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration decl = declaration.declaration;
         if(decl instanceof JavaBeanValue){
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass(appliedClassOrInterfaceType.declaration.declaration);
+            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
                 Method m = javaClass.getMethod(getterName);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType);
+                getter = getter.bindTo(instance);
                 // we need to cast to Object because this is what comes out when calling it in $call
-                getter = getter.asType(MethodType.methodType(Object.class, Object.class));
+                getter = getter.asType(MethodType.methodType(Object.class));
 
-                initField(decl, javaClass, getterType);
+                initField(decl, javaClass, getterType, instance);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -71,7 +71,7 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 
-                initField(decl, javaClass, getterType);
+                initField(decl, javaClass, getterType, null);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -84,7 +84,7 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>
     }
 
     // for AppliedVariable
-    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType) {}
+    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType, Object instance) {}
 
     @Override
     @Ignore

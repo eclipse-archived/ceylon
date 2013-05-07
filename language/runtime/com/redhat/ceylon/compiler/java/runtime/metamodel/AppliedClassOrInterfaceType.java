@@ -180,7 +180,7 @@ public class AppliedClassOrInterfaceType<Type>
                                                                     @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types) {
         
         checkInit();
-        FreeFunction method = declaration.findMethod(name);
+        final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
         Iterator iterator = types.iterator();
@@ -191,10 +191,13 @@ public class AppliedClassOrInterfaceType<Type>
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
         }
-        ProducedReference appliedFunction = method.declaration.getProducedReference(null, producedTypes);
-        // FIXME:
-        return null;
-//        return new AppliedFunction(appliedFunction, method, this);
+        final ProducedReference appliedFunction = method.declaration.getProducedReference(null, producedTypes);
+        return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind, (AppliedClassOrInterfaceType<SubType>) this){
+            @Override
+            protected Kind bindTo(Object instance) {
+                return (Kind) new AppliedFunction(appliedFunction, method, instance);
+            }
+        };
     }
 
     @Override
@@ -209,15 +212,18 @@ public class AppliedClassOrInterfaceType<Type>
                                                                      String name) {
         
         checkInit();
-        FreeValue value = declaration.findValue(name);
+        final FreeValue value = declaration.findValue(name);
         if(value == null)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
-        ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
+        final com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
+        final ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
         
-        // FIXME:
-        return null;
-//        return decl.isVariable() ? new AppliedVariable(value, valueType, this) : new AppliedValue(value, valueType, this);
+        return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind, (AppliedClassOrInterfaceType<SubType>) this){
+            @Override
+            protected Kind bindTo(Object instance) {
+                return (Kind) (decl.isVariable() ? new AppliedVariable(value, valueType, instance) : new AppliedValue(value, valueType, instance));
+            }
+        };
     }
     
     @Override

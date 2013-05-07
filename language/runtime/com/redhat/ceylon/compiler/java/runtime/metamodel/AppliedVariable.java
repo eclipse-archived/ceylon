@@ -20,18 +20,19 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
 
     private MethodHandle setter;
 
-    public AppliedVariable(FreeValue value, ProducedType valueType, AppliedClassOrInterfaceType<Type> appliedClassOrInterfaceType) {
-        super(value, valueType, appliedClassOrInterfaceType);
+    public AppliedVariable(FreeValue value, ProducedType valueType, Object instance) {
+        super(value, valueType, instance);
     }
 
     @Override
-    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType) {
+    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType, Object instance) {
         if(decl instanceof JavaBeanValue){
             String setterName = ((JavaBeanValue) decl).getSetterName();
             try {
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 setter = MethodHandles.lookup().unreflect(m);
-                setter = setter.asType(MethodType.methodType(void.class, Object.class, getterReturnType));
+                setter = setter.bindTo(instance);
+                setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 1, new java.lang.Class[]{getterReturnType});
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);

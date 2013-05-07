@@ -6,11 +6,16 @@ import ceylon.language.metamodel.untyped.Member$impl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
+@TypeParameters({
+    @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration")
+})
 public class FreeMember<Kind extends ceylon.language.metamodel.untyped.Declaration>
     implements ceylon.language.metamodel.untyped.Member<Kind>, Callable<Kind>, ReifiedType {
     

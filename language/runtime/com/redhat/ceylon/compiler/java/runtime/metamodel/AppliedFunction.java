@@ -9,12 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ceylon.language.Callable;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Function$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.AppliedType$impl;
 import ceylon.language.metamodel.Declaration$impl;
+import ceylon.language.metamodel.Function$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -25,7 +24,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -48,7 +46,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private FreeFunction declaration;
     private MethodHandle method;
 
-    public AppliedFunction(ProducedReference appliedFunction, FreeFunction function, AppliedClassOrInterfaceType<?> container) {
+    public AppliedFunction(ProducedReference appliedFunction, FreeFunction function, Object instance) {
         ProducedType appliedType = appliedFunction.getType();
         
         // FIXME: check that this returns a Callable if we have multiple parameter lists
@@ -56,8 +54,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> elemTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        // first parameter is our container
-        elemTypes.add(container.producedType);
         for(Parameter param : decl.getParameterLists().get(0).getParameters()){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType paramType = param.getType().substitute(appliedFunction.getTypeArguments());
             elemTypes.add(paramType);
@@ -72,7 +68,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
         // FIXME: delay method setup for when we actually use it?
         // FIXME: methods not in ClassOrInterfaces?
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)container.producedType.getDeclaration());
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)function.declaration.getContainer());
         // FIXME: deal with Java classes and overloading
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         // FIXME: perhaps we should just store the damn method in the underlying JavaMethod?
@@ -100,7 +96,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             method = MethodHandleUtil.boxReturnValue(method, found.getReturnType());
             // we need to cast to Object because this is what comes out when calling it in $call
             java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
-            method = method.asType(MethodType.methodType(Object.class, Object.class, parameterTypes));
+            method = method.bindTo(instance);
+            method = method.asType(MethodType.methodType(Object.class, parameterTypes));
             int typeParametersCount = found.getTypeParameters().length;
             // insert any required type descriptors
             // FIXME: only if it's expecting them!
@@ -110,12 +107,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
                     typeArguments.add(typeArgumentMap.get(tp));
                 }
-                method = MethodHandleUtil.insertReifiedTypeArguments(method, 1, typeArguments);
+                method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
             }
             // now convert all arguments (we may need to unbox)
-            method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 1, parameterTypes);
+            method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes);
         }
-}
+    }
 
     @Override
     public FreeFunction getDeclaration(){
