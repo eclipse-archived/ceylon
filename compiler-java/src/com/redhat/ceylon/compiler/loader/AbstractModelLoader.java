@@ -669,7 +669,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Unit getCompiledUnit(LazyPackage pkg, ClassMirror classMirror) {
         Unit unit = unitsByPackage.get(pkg);
         if(unit == null){
-            unit = new LazyUnit();
+            unit = new Unit();
             unit.setPackage(pkg);
             unitsByPackage.put(pkg, unit);
         }
