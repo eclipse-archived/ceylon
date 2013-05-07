@@ -135,7 +135,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
 
     @Override
     public TypeDescriptor $getType() {
-        // FIXME: invalid
-        return null;
+        checkInit();
+        return TypeDescriptor.klass(FreeParameterisedType.class, declaration.$getType());
     }
 }
