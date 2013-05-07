@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.Formal$annotation;
-import ceylon.language.Shared$annotation;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.Member$impl;
 
@@ -43,8 +41,6 @@ public abstract class AppliedMember<Type, Declaration extends ceylon.language.me
     }
 
     @Override
-    @Shared$annotation
-    @Formal$annotation
     @TypeInfo("ceylon.language.metamodel::ClassOrInterface<Type>")
     public ClassOrInterface<? extends Type> getDeclaringClassOrInterface() {
         return container;
