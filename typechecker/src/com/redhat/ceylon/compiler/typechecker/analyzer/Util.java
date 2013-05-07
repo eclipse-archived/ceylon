@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -432,7 +433,7 @@ class Util {
 
     static boolean inLanguageModule(Unit unit) {
         return unit.getPackage().getQualifiedNameString()
-                .startsWith("ceylon.language");
+                .startsWith(Module.LANGUAGE_MODULE_NAME);
     }
 
     static String typeDescription(TypeDeclaration td, Unit unit) {

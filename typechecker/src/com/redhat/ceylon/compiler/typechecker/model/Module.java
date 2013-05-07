@@ -12,6 +12,7 @@ import java.util.TreeMap;
 public class Module 
         implements Referenceable, Annotated {
 
+    public static final String LANGUAGE_MODULE_NAME = "ceylon.language";
     public static final String DEFAULT_MODULE_NAME = "default";
 
     private List<String> name;
@@ -93,7 +94,7 @@ public class Module
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
     	for (Package p: getAllPackages()) {
     		String moduleName = p.getModule().getNameAsString();
-			boolean isLanguageModule = moduleName.equals("ceylon.language");
+			boolean isLanguageModule = moduleName.equals(LANGUAGE_MODULE_NAME);
 			String packageName = p.getNameAsString();
 			boolean isDefaultPackage = packageName.isEmpty();
 			if (!isDefaultPackage) {
