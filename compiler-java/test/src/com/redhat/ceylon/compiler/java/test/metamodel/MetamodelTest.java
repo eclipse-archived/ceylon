@@ -32,7 +32,7 @@ public class MetamodelTest extends CompilerTest {
 
     @Test
     public void testRuntime() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.runtime", "runtime.ceylon");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.runtime", "runtime.ceylon", "types.ceylon", "visitor.ceylon");
     }
 
 }

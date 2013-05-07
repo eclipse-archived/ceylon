@@ -1,70 +1,13 @@
-shared class NoParams(){
-    shared variable String str2 = "a";
-    shared variable Integer integer2 = 1;
-    shared variable Float float2 = 1.2;
-    shared variable Character character2 = 'a';
-    shared variable Boolean boolean2 = true;
-    shared variable Object obj2 = 2;
-
-    shared String str = "a";
-    shared Integer integer = 1;
-    shared Float float = 1.2;
-    shared Character character = 'a';
-    shared Boolean boolean = true;
-    shared NoParams obj => this;
-
-    shared NoParams noParams() => this;
-
-    shared NoParams fixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
-        assert(s == "a");
-        assert(i == 1);
-        assert(f == 1.2);
-        assert(c == 'a');
-        assert(b == true);
-        assert(is NoParams o);
-        
-        return this;
-    }
-    
-    shared NoParams typeParams<T>(T s, Integer i)
-        given T satisfies Object {
-        
-        assert(s == "a");
-        assert(i == 1);
-        
-        // check that our reified T got passed correctly
-        assert(is TypeParams<String> t = TypeParams<T>(s, i));
-        
-        return this;
-    }
-    
-    shared String getString() => "a";
-    shared Integer getInteger() => 1;
-    shared Float getFloat() => 1.2;
-    shared Character getCharacter() => 'a';
-    shared Boolean getBoolean() => true;
-}
-
-shared class FixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
-    assert(s == "a");
-    assert(i == 1);
-    assert(f == 1.2);
-    assert(c == 'a');
-    assert(b == true);
-    assert(is NoParams o);
-}
-
-shared class TypeParams<T>(T s, Integer i)
-    given T satisfies Object {
-    
-    assert(s == "a");
-    assert(i == 1);
+import ceylon.language.metamodel { ... }
+import ceylon.language.metamodel.untyped {
+    ValueDeclaration = Value,
+    UntypedDeclaration = Declaration
 }
 
 void checkConstructors(){
     // no parameters
     value noParamsType = type(NoParams());
-    assert(is AppliedClassType<NoParams, []> noParamsType);
+    assert(is Class<NoParams, []> noParamsType);
     value noParamsClass = noParamsType.declaration;
     assert(noParamsClass.name == "NoParams");
     // not sure how to do this ATM
@@ -75,7 +18,7 @@ void checkConstructors(){
     
     // static parameters
     value fixedParamsType = type(FixedParams("a", 1, 1.2, 'a', true, noParams));
-    assert(is AppliedClassType<FixedParams, [String, Integer, Float, Character, Boolean, Object]> fixedParamsType);
+    assert(is Class<FixedParams, [String, Integer, Float, Character, Boolean, Object]> fixedParamsType);
     value fixedParamsClass = fixedParamsType.declaration;
     assert(fixedParamsClass.name == "FixedParams");
     Anything fixedParams = fixedParamsType("a", 1, 1.2, 'a', true, noParams);
@@ -83,7 +26,7 @@ void checkConstructors(){
 
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
-    assert(is AppliedClassType<TypeParams<String>, [String, Integer]> typeParamsType);
+    assert(is Class<TypeParams<String>, [String, Integer]> typeParamsType);
     value typeParamsClass = typeParamsType.declaration;
     assert(typeParamsClass.name == "TypeParams");
     Anything typeParams = typeParamsType("a", 1);
@@ -94,107 +37,103 @@ void checkConstructors(){
 void checkMemberAttributes(){
     value noParamsInstance = NoParams();
     value noParamsType = type(noParamsInstance);
-    assert(is AppliedClassType<NoParams, []> noParamsType);
+    assert(is Class<NoParams, []> noParamsType);
     
-    assert(is AppliedValue<String> string = noParamsType.getAttribute("str"));
-    assert(!is AppliedVariable<String> string);
-    assert(string.get(noParamsInstance) == "a");
+    assert(exists string = noParamsType.getAttribute<NoParams, Value<String>>("str"));
+    assert(string(noParamsInstance).get() == "a");
     
-    assert(is AppliedValue<Integer> integer = noParamsType.getAttribute("integer"));
-    assert(integer.get(noParamsInstance) == 1);
+    assert(exists integer = noParamsType.getAttribute<NoParams, Value<Integer>>("integer"));
+    assert(integer(noParamsInstance).get() == 1);
     
-    assert(is AppliedValue<Float> float = noParamsType.getAttribute("float"));
-    assert(float.get(noParamsInstance) == 1.2);
+    assert(exists float = noParamsType.getAttribute<NoParams, Value<Float>>("float"));
+    assert(float(noParamsInstance).get() == 1.2);
     
-    assert(is AppliedValue<Character> character = noParamsType.getAttribute("character"));
-    assert(character.get(noParamsInstance) == 'a');
+    assert(exists character = noParamsType.getAttribute<NoParams, Value<Character>>("character"));
+    assert(character(noParamsInstance).get() == 'a');
     
-    assert(is AppliedValue<Boolean> boolean = noParamsType.getAttribute("boolean"));
-    assert(boolean.get(noParamsInstance) == true);
+    assert(exists boolean = noParamsType.getAttribute<NoParams, Value<Boolean>>("boolean"));
+    assert(boolean(noParamsInstance).get() == true);
     
-    assert(is AppliedValue<NoParams> obj = noParamsType.getAttribute("obj"));
-    assert(obj.get(noParamsInstance) === noParamsInstance);
+    assert(exists obj = noParamsType.getAttribute<NoParams, Value<NoParams>>("obj"));
+    assert(obj(noParamsInstance).get() === noParamsInstance);
 
-    assert(is AppliedVariable<String> string2 = noParamsType.getAttribute("str2"));
-    assert(string2.get(noParamsInstance) == "a");
-    string2.set(noParamsInstance, "b");
-    assert(string2.get(noParamsInstance) == "b");
+    assert(exists string2 = noParamsType.getAttribute<NoParams, Variable<String>>("str2"));
+    value string2Bound = string2(noParamsInstance);
+    assert(string2Bound.get() == "a");
+    string2Bound.set("b");
+    assert(string2Bound.get() == "b");
     assert(noParamsInstance.str2 == "b");
     
-    assert(is AppliedVariable<Integer> integer2 = noParamsType.getAttribute("integer2"));
-    assert(integer2.get(noParamsInstance) == 1);
-    integer2.set(noParamsInstance, 2);
-    assert(integer2.get(noParamsInstance) == 2);
+    assert(exists integer2 = noParamsType.getAttribute<NoParams, Variable<Integer>>("integer2"));
+    value integer2Bound = integer2(noParamsInstance);
+    assert(integer2Bound.get() == 1);
+    integer2Bound.set(2);
+    assert(integer2Bound.get() == 2);
     assert(noParamsInstance.integer2 == 2);
 
-    assert(is AppliedVariable<Float> float2 = noParamsType.getAttribute("float2"));
-    assert(float2.get(noParamsInstance) == 1.2);
-    float2.set(noParamsInstance, 2.1);
-    assert(float2.get(noParamsInstance) == 2.1);
+    assert(exists float2 = noParamsType.getAttribute<NoParams, Variable<Float>>("float2"));
+    value float2Bound = float2(noParamsInstance);
+    assert(float2Bound.get() == 1.2);
+    float2Bound.set(2.1);
+    assert(float2Bound.get() == 2.1);
     assert(noParamsInstance.float2 == 2.1);
     
-    assert(is AppliedVariable<Character> character2 = noParamsType.getAttribute("character2"));
-    assert(character2.get(noParamsInstance) == 'a');
-    character2.set(noParamsInstance, 'b');
-    assert(character2.get(noParamsInstance) == 'b');
+    assert(exists character2 = noParamsType.getAttribute<NoParams, Variable<Character>>("character2"));
+    value character2Bound = character2(noParamsInstance);
+    assert(character2Bound.get() == 'a');
+    character2Bound.set('b');
+    assert(character2Bound.get() == 'b');
     assert(noParamsInstance.character2 == 'b');
     
-    assert(is AppliedVariable<Boolean> boolean2 = noParamsType.getAttribute("boolean2"));
-    assert(boolean2.get(noParamsInstance) == true);
-    boolean2.set(noParamsInstance, false);
-    assert(boolean2.get(noParamsInstance) == false);
+    assert(exists boolean2 = noParamsType.getAttribute<NoParams, Variable<Boolean>>("boolean2"));
+    value boolean2Bound = boolean2(noParamsInstance);
+    assert(boolean2Bound.get() == true);
+    boolean2Bound.set(false);
+    assert(boolean2Bound.get() == false);
     assert(noParamsInstance.boolean2 == false);
     
-    assert(is AppliedVariable<Object> obj2 = noParamsType.getAttribute("obj2"));
-    assert(obj2.get(noParamsInstance) == 2);
-    obj2.set(noParamsInstance, 3);
-    assert(obj2.get(noParamsInstance) == 3);
+    assert(exists obj2 = noParamsType.getAttribute<NoParams, Variable<Object>>("obj2"));
+    value obj2Bound = obj2(noParamsInstance);
+    assert(obj2Bound.get() == 2);
+    obj2Bound.set(3);
+    assert(obj2Bound.get() == 3);
     assert(noParamsInstance.obj2 == 3);
 }
 
 void checkMemberFunctions(){
     value noParamsInstance = NoParams();
     value noParamsType = type(noParamsInstance);
-    assert(is AppliedClassType<NoParams, []> noParamsType);
-    assert(is AppliedClassType<String, []> stringType = type("foo"));
+    assert(is Class<NoParams, []> noParamsType);
+    assert(is Class<String, []> stringType = type("foo"));
     
-    assert(is AppliedFunction<NoParams, [NoParams]> f1 = noParamsType.getFunction("noParams"));
-    Anything o1 = f1(noParamsInstance);
+    assert(exists f1 = noParamsType.getFunction<NoParams, Function<NoParams, []>>("noParams"));
+    Anything o1 = f1(noParamsInstance)();
     assert(is NoParams o1);
-    assert(is Callable<NoParams, []> bf1 = f1.bind(noParamsInstance));
-    Anything o2 = bf1();
-    assert(is NoParams o2);
     
-    assert(is AppliedFunction<NoParams, [NoParams, String, Integer, Float, Character, Boolean, Object]> f2 = noParamsType.getFunction("fixedParams"));
-    Anything o3 = f2(noParamsInstance, "a", 1, 1.2, 'a', true, noParamsInstance);
+    assert(exists f2 = noParamsType.getFunction<NoParams, Function<NoParams, [String, Integer, Float, Character, Boolean, Object]>>("fixedParams"));
+    Anything o3 = f2(noParamsInstance)("a", 1, 1.2, 'a', true, noParamsInstance);
     assert(is NoParams o3);
-    assert(is Callable<NoParams, [String, Integer, Float, Character, Boolean, Object]> bf2 = f2.bind(noParamsInstance));
-    Anything o4 = bf2("a", 1, 1.2, 'a', true, noParamsInstance);
-    assert(is NoParams o4);
     
-    assert(is AppliedFunction<NoParams, [NoParams, String, Integer]> f3 = noParamsType.getFunction("typeParams", stringType));
-    Anything o5 = f3(noParamsInstance, "a", 1);
+    assert(exists f3 = noParamsType.getFunction<NoParams, Function<NoParams, [String, Integer]>>("typeParams", stringType));
+    Anything o5 = f3(noParamsInstance)("a", 1);
     assert(is NoParams o5);
-    assert(is Callable<NoParams, [String, Integer]> bf3 = f3.bind(noParamsInstance));
-    Anything o6 = bf3("a", 1);
-    assert(is NoParams o6);
 
-    assert(is AppliedFunction<String, [NoParams]> f4 = noParamsType.getFunction("getString"));
-    assert(f4(noParamsInstance) == "a");
-    assert(is AppliedFunction<Integer, [NoParams]> f5 = noParamsType.getFunction("getInteger"));
-    assert(f5(noParamsInstance) == 1);
-    assert(is AppliedFunction<Float, [NoParams]> f6 = noParamsType.getFunction("getFloat"));
-    assert(f6(noParamsInstance) == 1.2);
-    assert(is AppliedFunction<Character, [NoParams]> f7 = noParamsType.getFunction("getCharacter"));
-    assert(f7(noParamsInstance) == 'a');
-    assert(is AppliedFunction<Boolean, [NoParams]> f8 = noParamsType.getFunction("getBoolean"));
-    assert(f8(noParamsInstance) == true);
+    assert(exists f4 = noParamsType.getFunction<NoParams, Function<String, []>>("getString"));
+    assert(f4(noParamsInstance)() == "a");
+    assert(exists f5 = noParamsType.getFunction<NoParams, Function<Integer, []>>("getInteger"));
+    assert(f5(noParamsInstance)() == 1);
+    assert(exists f6 = noParamsType.getFunction<NoParams, Function<Float, []>>("getFloat"));
+    assert(f6(noParamsInstance)() == 1.2);
+    assert(exists f7 = noParamsType.getFunction<NoParams, Function<Character, []>>("getCharacter"));
+    assert(f7(noParamsInstance)() == 'a');
+    assert(exists f8 = noParamsType.getFunction<NoParams, Function<Boolean, []>>("getBoolean"));
+    assert(f8(noParamsInstance)() == true);
 }
 
 void checkHierarchy(){
     value noParamsAppliedType = type(NoParams());
     
-    assert(is AppliedClassType<Anything,[]> noParamsAppliedType);
+    assert(is Class<Anything,[]> noParamsAppliedType);
     
     value noParamsDecl = noParamsAppliedType.declaration;
     
@@ -224,13 +163,25 @@ void checkHierarchy(){
 void checkPackageAndModule(){
     value noParamsAppliedType = type(NoParams());
     
-    assert(is AppliedClassType<Anything,[]> noParamsAppliedType);
+    assert(is Class<Anything,[]> noParamsAppliedType);
     
     value noParamsDecl = noParamsAppliedType.declaration;
+
+    //
+    // Package
 
     value pkg = noParamsDecl.packageContainer;
 
     assert(pkg.name == "com.redhat.ceylon.compiler.java.test.metamodel");
+
+    print(pkg.members<UntypedDeclaration>().size);
+    assert(pkg.members<UntypedDeclaration>().size > 0);
+    for(decl in pkg.members<UntypedDeclaration>()){
+        print("decl: ``decl.name``");
+    }
+
+    //
+    // Module
 
     value mod = pkg.container;
 
@@ -241,9 +192,89 @@ void checkPackageAndModule(){
     assert(exists modPackage = mod.members[0], modPackage === pkg);
 }
 
-@nomodel
+void checkToplevelAttributes(){
+    value noParamsAppliedType = type(NoParams());
+    
+    assert(is Class<Anything,[]> noParamsAppliedType);
+    
+    value noParamsDecl = noParamsAppliedType.declaration;
+
+    value pkg = noParamsDecl.packageContainer;
+
+    assert(pkg.members<UntypedDeclaration>().find((UntypedDeclaration decl) => decl.name == "toplevelInteger") exists);
+
+    assert(is ValueDeclaration toplevelIntegerDecl = pkg.getAttribute("toplevelInteger"));
+    assert(is Value<Integer> toplevelIntegerValue = toplevelIntegerDecl.apply());
+    assert(toplevelIntegerValue.get() == 1);
+
+    assert(is ValueDeclaration toplevelStringDecl = pkg.getAttribute("toplevelString"));
+    assert(is Value<String> toplevelStringValue = toplevelStringDecl.apply());
+    assert(toplevelStringValue.get() == "a");
+
+    assert(is ValueDeclaration toplevelFloatDecl = pkg.getAttribute("toplevelFloat"));
+    assert(is Value<Float> toplevelFloatValue = toplevelFloatDecl.apply());
+    assert(toplevelFloatValue.get() == 1.2);
+
+    assert(is ValueDeclaration toplevelCharacterDecl = pkg.getAttribute("toplevelCharacter"));
+    assert(is Value<Character> toplevelCharacterValue = toplevelCharacterDecl.apply());
+    assert(toplevelCharacterValue.get() == 'a');
+
+    assert(is ValueDeclaration toplevelBooleanDecl = pkg.getAttribute("toplevelBoolean"));
+    assert(is Value<Boolean> toplevelBooleanValue = toplevelBooleanDecl.apply());
+    assert(toplevelBooleanValue.get() == true);
+
+    assert(is ValueDeclaration toplevelObjectDecl = pkg.getAttribute("toplevelObject"));
+    assert(is Value<Object> toplevelObjectValue = toplevelObjectDecl.apply());
+    assert(toplevelObjectValue.get() == 2);
+
+    //
+    // variables
+
+    assert(is ValueDeclaration toplevelIntegerVariableDecl = pkg.getAttribute("toplevelInteger2"));
+    assert(is Variable<Integer> toplevelIntegerVariable = toplevelIntegerVariableDecl.apply());
+    assert(toplevelIntegerVariable.get() == 1);
+    toplevelIntegerVariable.set(2);
+    assert(toplevelIntegerVariable.get() == 2);
+    assert(toplevelInteger2 == 2);
+
+    assert(is ValueDeclaration toplevelStringVariableDecl = pkg.getAttribute("toplevelString2"));
+    assert(is Variable<String> toplevelStringVariable = toplevelStringVariableDecl.apply());
+    assert(toplevelStringVariable.get() == "a");
+    toplevelStringVariable.set("b");
+    assert(toplevelStringVariable.get() == "b");
+    assert(toplevelString2 == "b");
+
+    assert(is ValueDeclaration toplevelFloatVariableDecl = pkg.getAttribute("toplevelFloat2"));
+    assert(is Variable<Float> toplevelFloatVariable = toplevelFloatVariableDecl.apply());
+    assert(toplevelFloatVariable.get() == 1.2);
+    toplevelFloatVariable.set(2.0);
+    assert(toplevelFloatVariable.get() == 2.0);
+    assert(toplevelFloat2 == 2.0);
+
+    assert(is ValueDeclaration toplevelCharacterVariableDecl = pkg.getAttribute("toplevelCharacter2"));
+    assert(is Variable<Character> toplevelCharacterVariable = toplevelCharacterVariableDecl.apply());
+    assert(toplevelCharacterVariable.get() == 'a');
+    toplevelCharacterVariable.set('b');
+    assert(toplevelCharacterVariable.get() == 'b');
+    assert(toplevelCharacter2 == 'b');
+
+    assert(is ValueDeclaration toplevelBooleanVariableDecl = pkg.getAttribute("toplevelBoolean2"));
+    assert(is Variable<Boolean> toplevelBooleanVariable = toplevelBooleanVariableDecl.apply());
+    assert(toplevelBooleanVariable.get() == true);
+    toplevelBooleanVariable.set(false);
+    assert(toplevelBooleanVariable.get() == false);
+    assert(toplevelBoolean2 == false);
+
+    assert(is ValueDeclaration toplevelObjectVariableDecl = pkg.getAttribute("toplevelObject2"));
+    assert(is Variable<Object> toplevelObjectVariable = toplevelObjectVariableDecl.apply());
+    assert(toplevelObjectVariable.get() == 2);
+    toplevelObjectVariable.set(3);
+    assert(toplevelObjectVariable.get() == 3);
+    assert(toplevelObject2 == 3);
+}
+
 shared void runtime() {
-    //visitStringHierarchy();
+    visitStringHierarchy();
 
     checkPackageAndModule();
 
@@ -254,264 +285,7 @@ shared void runtime() {
     checkMemberFunctions();
 
     checkMemberAttributes();
+
+    checkToplevelAttributes();
 }
 
-void visitStringHierarchy(){
-    value classType = type("falbala");
-    
-    doc "metamodel is AppliedClassType"
-    assert(is AppliedClassType<Anything,[]> classType);
-    
-    value klass = classType.declaration;
-    
-    doc "metamodel class name is String"
-    assert(klass.name == "String");
-    
-    value st = klass.superclass;
-    
-    doc "super class exists"
-    assert(exists st);
-    
-    doc "metamodel superclass name is Object"
-    assert(st.declaration.name == "Object");
-    
-    queue = [klass];
-    emptyQueue();
-    
-    visitInheritedTypes(classType);
-}
-
-void visitInheritedTypes(AppliedClassOrInterfaceType<Anything> type){
-    print("Types extended by ``type.declaration.name``:\n");
-    if(exists AppliedClassType<Anything, Nothing[]> xt = type.superclass){
-        visitExtendedTypes(xt);
-    }
-    print("Types satisfied by ``type.declaration.name``:\n");
-    for(AppliedInterfaceType<Anything> sat in type.interfaces){
-        visitSatisfiedTypes(sat);
-    }
-}
-
-void visitExtendedTypes(AppliedClassType<Anything, Nothing[]> type){
-    visitAppliedProducedType(type);
-    print("\n");
-    if(exists AppliedClassType<Anything, Nothing[]> xt = type.superclass){
-        visitExtendedTypes(xt);
-    }
-}
-
-void visitSatisfiedTypes(AppliedInterfaceType<Anything> type){
-    visitAppliedProducedType(type);
-    print("\n");
-    for(AppliedInterfaceType<Anything> sat in type.interfaces){
-        visitSatisfiedTypes(sat);
-    }
-}
-
-variable ClassOrInterface[] queue = {};
-
-void emptyQueue(){
-    while(nonempty q = queue){
-        visitDeclaration(q.first);
-        queue = queue.rest;
-    }
-}
-
-void queueDeclaration(ClassOrInterface decl){
-    queue = queue.withTrailing(decl);
-}
-
-void print(Anything obj){
-    if(exists obj){
-        process.write(obj.string);
-    }else{
-        process.write("<null>");
-    }
-}
-
-void visitDeclaration(Declaration decl){
-    if(is Class decl){
-        visitClass(decl);
-    }else if(is Interface decl){
-        visitInterface(decl);
-    }else{
-        print("Unknown declaration");
-    }
-}
-
-void visitClass(Class klass){
-    print("class ``klass.name``");
-    if(klass.typeParameters nonempty){
-        print("<");
-        print(",".join(klass.typeParameters.map(function (TypeParameter tp) => tp.name)));
-        print(">");
-    }
-    print("()");
-    if(exists ClassType superType = klass.superclass){
-        print("\n  extends ");
-        visitProducedType(superType);
-        print("()");
-        queueDeclaration(superType.declaration);
-    }
-    if(klass.interfaces nonempty){
-        print("\n  satisfies ");
-        variable Boolean once = true;
-        for(InterfaceType interf in klass.interfaces){
-            if(once){
-                once = false;
-            }else{
-                print("\n   & ");
-            }
-            visitProducedType(interf);
-            queueDeclaration(interf.declaration);
-        }
-    }
-    print(" {\n");
-    for(m in klass.members<Anything, Function>()){
-        visitFunction(m("ignored"));
-    }
-    for(v in klass.members<Anything, Value<Anything>>()){
-        visitValue(v("ignored"));
-    }
-    print("}\n");
-}
-
-void visitFunction(Function func) {
-    print(" ");
-    visitProducedType(func.type);
-    print(" ``func.name``();\n");
-}
-
-void visitValue(Value<Anything> val) {
-    print(" ");
-    visitProducedType(val.type);
-    print(" ``val.name``;\n");
-}
-
-void visitInterface(Interface klass){
-    print("interface ``klass.name``");
-    if(klass.typeParameters nonempty){
-        print("<");
-        print(",".join(klass.typeParameters.map(function (TypeParameter tp) => tp.name)));
-        print(">");
-    }
-    if(klass.interfaces nonempty){
-        print("\n satisfies ");
-        variable Boolean once = true;
-        for(InterfaceType interf in klass.interfaces){
-            if(once){
-                once = false;
-            }else{
-                print("\n   & ");
-            }
-            visitProducedType(interf);
-            queueDeclaration(interf.declaration);
-        }
-    }
-    print(" {\n");
-    for(m in klass.members<Anything, Function>()){
-        visitFunction(m("ignored"));
-    }
-    for(v in klass.members<Anything, Value<Anything>>()){
-        visitValue(v("ignored"));
-    }
-    print("}\n");
-}
-
-void visitProducedType(ProducedType pt){
-    if(is ClassOrInterfaceType pt){
-        print(pt.declaration.name);
-        variable Boolean once = true;
-        if(pt.declaration.typeParameters nonempty){
-            print("<");
-            for(TypeParameter tp in pt.declaration.typeParameters){
-                if(once){
-                    once = false;
-                }else{
-                    print(", ");
-                }
-                ProducedType? arg = pt.typeArguments.get(tp);
-                if(exists arg){
-                    visitProducedType(arg);
-                }else{
-                    print("Unknown Type Argument");
-                }
-            }
-            print(">");
-        }
-    }else if(is TypeParameterType pt){
-        print(pt.declaration.name);
-    }else if(is UnionType pt){
-        variable Boolean once = true;
-        for(ProducedType type in pt.caseTypes){
-            if(once){
-                once = false;
-            }else{
-                print(" | ");
-            }
-            visitProducedType(type);
-        }
-    }else if(is IntersectionType pt){
-        variable Boolean once = true;
-        for(ProducedType type in pt.satisfiedTypes){
-            if(once){
-                once = false;
-            }else{
-                print(" & ");
-            }
-            visitProducedType(type);
-        }
-    }else if(pt == nothingType){
-        print("Nothing");
-    }else{
-        print("Unsupported type ATM");
-    }
-}
-
-void visitAppliedProducedType(AppliedProducedType pt){
-    if(is AppliedClassOrInterfaceType<Anything> pt){
-        print(pt.declaration.name);
-        variable Boolean once = true;
-        if(pt.declaration.typeParameters nonempty){
-            print("<");
-            for(TypeParameter tp in pt.declaration.typeParameters){
-                if(once){
-                    once = false;
-                }else{
-                    print(", ");
-                }
-                AppliedProducedType? arg = pt.typeArguments.get(tp);
-                if(exists arg){
-                    visitAppliedProducedType(arg);
-                }else{
-                    print("Unknown Type Argument");
-                }
-            }
-            print(">");
-        }
-    }else if(is AppliedUnionType pt){
-        variable Boolean once = true;
-        for(AppliedProducedType type in pt.caseTypes){
-            if(once){
-                once = false;
-            }else{
-                print(" | ");
-            }
-            visitAppliedProducedType(type);
-        }
-    }else if(is AppliedIntersectionType pt){
-        variable Boolean once = true;
-        for(AppliedProducedType type in pt.satisfiedTypes){
-            if(once){
-                once = false;
-            }else{
-                print(" & ");
-            }
-            visitAppliedProducedType(type);
-        }
-    }else if(pt == appliedNothingType){
-        print("Nothing");
-    }else{
-        print("Unsupported type ATM");
-    }
-}
