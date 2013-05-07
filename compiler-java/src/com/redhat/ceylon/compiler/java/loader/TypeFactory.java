@@ -25,10 +25,14 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -140,5 +144,24 @@ public class TypeFactory extends Unit {
         else {
             return null;
         }
+    }
+
+    /**
+     * Search for a declaration in the language module metamodel package. 
+     */
+    public Declaration getLanguageModuleMetamodelDeclaration(String name) {
+        //all elements in ceylon.language are auto-imported
+        //traverse all default module packages provided they have not been traversed yet
+        Module languageModule = getPackage().getModule().getLanguageModule();
+        if ( languageModule != null && languageModule.isAvailable() ) {
+            Package languageScope = languageModule.getPackage(AbstractModelLoader.CEYLON_LANGUAGE_METADATA);
+            if (languageScope != null) {
+                Declaration d = languageScope.getMember(name, null, false);
+                if (d != null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
     }
 }
