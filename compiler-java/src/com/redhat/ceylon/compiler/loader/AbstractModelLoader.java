@@ -105,6 +105,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public static final String CEYLON_LANGUAGE = "ceylon.language";
     public static final String CEYLON_LANGUAGE_METADATA = "ceylon.language.metamodel";
+    public static final String CEYLON_LANGUAGE_METADATA_UNTYPED = "ceylon.language.metamodel.untyped";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String JDK_MODULE_VERSION = "7";
@@ -342,6 +343,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(!isBootstrap){
             loadPackage(CEYLON_LANGUAGE, true);
             loadPackage(CEYLON_LANGUAGE_METADATA, true);
+            loadPackage(CEYLON_LANGUAGE_METADATA_UNTYPED, true);
         }
     }
 
