@@ -54,6 +54,7 @@ public class LazyInterface extends Interface implements LazyContainer {
     private boolean isLoaded2 = false;
     private boolean isTypeParamsLoaded = false;
     private boolean isTypeParamsLoaded2 = false;
+    private boolean isAnnotationType = false;
 
     public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
@@ -61,6 +62,7 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.realName = classMirror.getName();
         setName(Util.getMirrorName(classMirror));
         this.isStatic = classMirror.isStatic();
+        this.isAnnotationType  = classMirror.isAnnotationType();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
     }
 
@@ -70,6 +72,10 @@ public class LazyInterface extends Interface implements LazyContainer {
 
     public boolean isStatic() {
         return isStatic;
+    }
+    
+    public boolean isAnnotationType() {
+        return isAnnotationType;
     }
 
     public String getRealName() {

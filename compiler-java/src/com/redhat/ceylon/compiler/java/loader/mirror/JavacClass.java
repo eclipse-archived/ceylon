@@ -90,6 +90,11 @@ public class JavacClass implements ClassMirror {
     public boolean isInterface() {
         return classSymbol.isInterface();
     }
+    
+    @Override
+    public boolean isAnnotationType() {
+        return (classSymbol.flags()& Flags.ANNOTATION) != 0;
+    }
 
     @Override
     public boolean isCeylonToplevelAttribute() {

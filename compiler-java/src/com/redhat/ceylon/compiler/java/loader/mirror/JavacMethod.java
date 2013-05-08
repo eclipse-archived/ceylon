@@ -144,5 +144,10 @@ public class JavacMethod implements MethodMirror {
         }
         return typeParams;
     }
+
+    @Override
+    public boolean isDefault() {
+        return methodSymbol.getDefaultValue() != null;
+    }
     
 }

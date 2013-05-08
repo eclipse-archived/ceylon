@@ -89,4 +89,10 @@ public interface MethodMirror extends AnnotatedMirror {
      * Returns the list of type parameters for this method
      */
     List<TypeParameterMirror> getTypeParameters();
+    
+    /**
+     * If this is a method on an annotation type, whether the method has a 
+     * {@code default} expression;
+     */
+    boolean isDefault();
 }

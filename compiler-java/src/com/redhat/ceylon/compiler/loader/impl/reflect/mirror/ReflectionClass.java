@@ -87,6 +87,11 @@ public class ReflectionClass implements ClassMirror {
     public boolean isInterface() {
         return klass.isInterface();
     }
+    
+    @Override
+    public boolean isAnnotationType() {
+        return klass.isAnnotation();
+    }
 
     @Override
     public boolean isAbstract() {

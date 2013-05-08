@@ -38,6 +38,11 @@ public interface ClassMirror extends AnnotatedMirror {
     boolean isInterface();
     
     /**
+     * Returns true if this is an {@code @interface}.
+     */
+    boolean isAnnotationType();
+    
+    /**
      * Returns true if this is an abstract class
      */
     boolean isAbstract();

@@ -194,4 +194,9 @@ public class ReflectionMethod implements MethodMirror {
     public String toString() {
         return "[ReflectionMethod: "+method.toString()+"]";
     }
+
+    @Override
+    public boolean isDefault() {
+        return ((Method)method).getDefaultValue() != null;
+    }
 }

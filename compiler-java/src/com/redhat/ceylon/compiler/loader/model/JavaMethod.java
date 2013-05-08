@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 public class JavaMethod extends Method {
 
     private String realName;
+    private boolean defaultedAnnotation;
 
     public void setRealName(String name) {
         this.realName = name;
@@ -36,5 +37,17 @@ public class JavaMethod extends Method {
 
     public String getRealName(){
         return realName;
+    }
+    
+    /**
+     * If this is a method on an annotation type, whether the method has a 
+     * {@code default} expression;
+     */
+    public boolean isDefaultedAnnotation() {
+        return defaultedAnnotation;
+    }
+    
+    public void setDefaultedAnnotation(boolean defaultedAnnotation) {
+        this.defaultedAnnotation = defaultedAnnotation;
     }
 }
