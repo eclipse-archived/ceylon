@@ -41,6 +41,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -105,6 +106,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     private Set<String> getVersions(String name, Configuration conf, boolean offline) {
         RepositoryManager repoman = createRepository(conf, offline);
         ModuleVersionQuery query = new ModuleVersionQuery(name, null, ModuleQuery.Type.JVM);
+        query.setBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
         ModuleVersionResult result = repoman.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
         return versionMap.keySet();
