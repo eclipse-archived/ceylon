@@ -183,14 +183,14 @@ class Usage {
     
     void run() throws Exception {
         if (!validToolName()) {
-            out.append(buildFirstLineBadToolName(toolName)).newline();
+            printFirstLineBadToolName(toolName);
             if (t instanceof InvalidArgumentValueException) {
                 printSuggestions(toolName, rootTool.getPluginLoader().getToolNames());
             }
             printHelpInvocation();
             out.flush();
         } else {
-            out.append(buildFirstLine()).newline();
+            printErrorMessage();
             if (t instanceof OptionArgumentException) {
                 printUsage((OptionArgumentException)t);
             }
@@ -203,7 +203,7 @@ class Usage {
         }
     }
 
-    private String buildFirstLine() {
+    private void printErrorMessage() {
         StringBuilder sb = new StringBuilder();
         sb.append(Tools.progName());
         if (toolName != null) {
@@ -213,24 +213,31 @@ class Usage {
         if (Tools.isFatal(t)) {
             sb.append(CeylonToolMessages.msg("fatal.error")).append(": ");
         }
+        
         if (t.getLocalizedMessage() != null) {
-            sb.append(t.getLocalizedMessage());
+            String[] lines = t.getLocalizedMessage().split("\n");
+            sb.append(lines[0]);
             if ((t instanceof InvalidOptionValueException 
                     || t instanceof InvalidArgumentValueException
                     || t instanceof ToolInitializationException)
                     && t.getCause() instanceof IllegalArgumentException) {
                 sb.append(": ").append(t.getCause().getLocalizedMessage());
             }
+            out.append(sb.toString()).newline();
+            
+            for (int i = 1; i < lines.length; i++) {
+                out.append(lines[i]).newline();
+            }
+        } else {
+            out.append(sb.toString()).newline();
         }
-        
-        return sb.toString();
     }
     
-    private String buildFirstLineBadToolName(String toolName) {
+    private void printFirstLineBadToolName(String toolName) {
         StringBuilder sb = new StringBuilder();
         sb.append(Tools.progName()).append(": ");
         sb.append(CeylonToolMessages.msg("bad.tool.name", toolName));
-        return sb.toString();
+        out.append(sb.toString()).newline();
     }
     
     private void printUsage(OptionArgumentException t) throws Exception {
