@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.javax.annotation.Generated({"Some", "code generator name"})
+class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationInterop() {
+        this.tom = "";
+    }
+    private .java.lang.String tom;
+    
+    @.javax.annotation.Resource(name = "tom", type = .com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.class, authenticationType = .javax.annotation.Resource.AuthenticationType.APPLICATION)
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Variable$annotation
+    public final .java.lang.String getTom() {
+        return tom;
+    }
+    
+    public final void setTom(final .java.lang.String tom) {
+        this.tom = tom;
+    }
+    
+    @.javax.annotation.PostConstruct
+    @.ceylon.language.Shared$annotation
+    public final void afterConstrution() {
+    }
+    
+    @.javax.annotation.PreDestroy
+    @.ceylon.language.Shared$annotation
+    public final void beforeDestruction() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.class);
+}

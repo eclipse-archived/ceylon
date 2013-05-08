@@ -299,4 +299,10 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(28, "member refines a non-default, non-formal member: topField in JavaWithStaticMembers")
         );
     }
+    
+
+    @Test
+    public void testAnnotationInterop(){
+        compareWithJavaSource("AnnotationInterop");
+    }
 }
