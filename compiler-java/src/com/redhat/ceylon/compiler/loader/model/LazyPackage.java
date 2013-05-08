@@ -212,7 +212,6 @@ public class LazyPackage extends Package {
                 {
                     ValueParameter klassParam = new ValueParameter();
                     klassParam.setContainer(klass);
-                    //klassParam.setDefaulted(m.isDefaultedAnnotation());
                     klassParam.setName(member.getName());
                     klassParam.setType(annotationParameterType(iface.getUnit(), m));
                     klassParam.setUnboxed(true);
@@ -261,6 +260,7 @@ public class LazyPackage extends Package {
         if (Decl.isJavaArray(type.getDeclaration())) {
             String name = type.getDeclaration().getQualifiedNameString();
             ProducedType elementType;
+            String underlyingType = null;
             if(name.equals("java.lang::ObjectArray")){
                 elementType = type.getTypeArgumentList().get(0);
                 if ("java.lang::String".equals(elementType.getDeclaration().getQualifiedNameString())) {
@@ -268,22 +268,33 @@ public class LazyPackage extends Package {
                 }
                 // TODO Class literals
                 // TODO Enum elements
-            } else if(name.equals("java.lang::LongArray")
-                    || name.equals("java.lang::ByteArray")
-                    || name.equals("java.lang::ShortArray")
-                    || name.equals("java.lang::IntArray")){
+            } else if(name.equals("java.lang::LongArray")) {
                 elementType = unit.getIntegerDeclaration().getType();
+            } else if (name.equals("java.lang::ByteArray")) {
+                elementType = unit.getIntegerDeclaration().getType();
+                underlyingType = "byte";
+            } else if (name.equals("java.lang::ShortArray")) {
+                elementType = unit.getIntegerDeclaration().getType();
+                underlyingType = "byte";
+            } else if (name.equals("java.lang::IntArray")){
+                elementType = unit.getIntegerDeclaration().getType();
+                underlyingType = "int";
             } else if(name.equals("java.lang::BooleanArray")){
                 elementType = unit.getBooleanDeclaration().getType();
             } else if(name.equals("java.lang::CharArray")){
                 elementType = unit.getCharacterDeclaration().getType();
-            } else if(name.equals("java.lang::DoubleArray")
-                    || name.equals("java.lang::FloatArray")){
+                underlyingType = "char";
+            } else if(name.equals("java.lang::DoubleArray")) {
                 elementType = unit.getFloatDeclaration().getType();
+            } else if (name.equals("java.lang::FloatArray")){
+                elementType = unit.getFloatDeclaration().getType();
+                underlyingType = "float";
             } else {
                 throw new RuntimeException();
             }
-            return unit.getIterableType(elementType);
+            elementType.setUnderlyingType(underlyingType);
+            ProducedType iterableType = unit.getIterableType(elementType);
+            return iterableType;
         } else if ("java.lang::Class".equals(type.getDeclaration().getQualifiedNameString())) {
             // TODO Replace with metamodel ClassOrInterface type
             // once we have support for metamodel references
