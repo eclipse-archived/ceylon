@@ -218,7 +218,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public String getDisplayString() {
-        return root;
+        String name = root;
+        if (!connectionAllowed()) {
+            name += " (offline)";
+        }
+        return name;
     }
     
     protected long lastModified(final URL url) throws IOException {
