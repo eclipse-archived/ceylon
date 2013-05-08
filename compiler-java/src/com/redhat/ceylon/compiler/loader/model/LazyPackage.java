@@ -262,16 +262,17 @@ public class LazyPackage extends Package {
             final ProducedType elementType;
             String underlyingType = null;
             if(name.equals("java.lang::ObjectArray")){
-                String elementTypeName = type.getTypeArgumentList().get(0).getDeclaration().getQualifiedNameString();
+                ProducedType eType = type.getTypeArgumentList().get(0);
+                String elementTypeName = eType.getDeclaration().getQualifiedNameString();
                 if ("java.lang::String".equals(elementTypeName)) {
                     elementType = unit.getStringDeclaration().getType();
-                } else if ("java.lang::Class".equals(elementTypeName)) {
+                } else if ("java.lang.Class".equals(eType.getUnderlyingType())) {
                     // TODO Replace with metamodel ClassOrInterface type
                     // once we have support for metamodel references
                     elementType = unit.getAnythingDeclaration().getType();
                     underlyingType = "java.lang.Class";
                 } else {
-                    elementType = type.getTypeArgumentList().get(0);   
+                    elementType = eType;   
                 }
                 // TODO Enum elements
             } else if(name.equals("java.lang::LongArray")) {
