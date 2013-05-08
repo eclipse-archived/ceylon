@@ -17,6 +17,9 @@
 
 package ceylon.modules.jboss.runtime;
 
+import java.util.NavigableMap;
+import java.util.Set;
+
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
@@ -28,6 +31,10 @@ import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
 
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -43,6 +50,38 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
+        if (RepositoryManager.DEFAULT_MODULE.equals(name)) {
+            if (version != null) {
+                throw new CeylonRuntimeException("Invalid module identifier: default module should not have any version");
+            }
+        } else {
+            if (version == null) {
+                Set<String> localVersions = getVersions(name, conf, true);
+                Set<String> remoteVersions = getVersions(name, conf, false);
+                remoteVersions.removeAll(localVersions);
+                StringBuilder sb = new StringBuilder("Invalid module identifier: missing required version");
+                if (localVersions.isEmpty() && remoteVersions.isEmpty()) {
+                    sb.append(" (should be of the form ");
+                    sb.append(name);
+                    sb.append("/version)");
+                } else {
+                    sb.append("\nTry any of the following ");
+                }
+                if (!localVersions.isEmpty()) {
+                    sb.append("locally installed versions:");
+                    appendVersions(sb, name, localVersions);
+                }
+                if (!remoteVersions.isEmpty()) {
+                    if (!localVersions.isEmpty()) {
+                        sb.append("\nOr any of the ");
+                    }
+                    sb.append("remotely available versions:");
+                    appendVersions(sb, name, remoteVersions);
+                }
+                throw new CeylonRuntimeException(sb.toString());
+            }
+        }
+        
         ModuleIdentifier moduleIdentifier;
         try {
             moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
@@ -57,33 +96,35 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             return SecurityActions.getClassLoader(module);
         } catch (ModuleNotFoundException e) {
             String spec = e.getMessage().replace(':', '/');
-            String hint = "";
-            if (RepositoryManager.DEFAULT_MODULE.equals(name)) {
-                if (version != null)
-                    hint = " (default module should not have any version)";
-            } else if (version != null) {
-                hint = " (invalid version?)";
-            } else {
-                spec = spec.replace("/null", "");
-                hint = " (missing required version, try " + spec + "/version)";
-            }
-            final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + hint);
+            final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + " (invalid version?)");
             cre.initCause(e);
             throw cre;
         }
     }
 
-    /**
-     * Get repository extension.
-     *
-     * @param conf the configuration
-     * @return repository extension
-     */
-    protected RepositoryManager createRepository(Configuration conf) {
+    private Set<String> getVersions(String name, Configuration conf, boolean offline) {
+        RepositoryManager repoman = createRepository(conf, offline);
+        ModuleVersionQuery query = new ModuleVersionQuery(name, null, ModuleQuery.Type.JVM);
+        ModuleVersionResult result = repoman.completeVersions(query);
+        NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
+        return versionMap.keySet();
+    }
+    
+    private void appendVersions(StringBuilder sb, String name, Set<String> versions) {
+        for (String v : versions) {
+            sb.append("\n    ");
+            sb.append(name);
+            sb.append("/");
+            sb.append(v);
+        }
+    }
+    
+    private RepositoryManager createRepository(Configuration conf, boolean offline) {
         Logger log = new JULLogger();
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
                 .systemRepo(conf.systemRepository)
                 .userRepos(conf.repositories)
+                .offline(offline)
                 .logger(log)
                 .buildManagerBuilder();
 
@@ -99,6 +140,17 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             builder.contentTransformer(ct);
 
         return builder.buildRepository();
+    }
+
+    
+    /**
+     * Get repository extension.
+     *
+     * @param conf the configuration
+     * @return repository extension
+     */
+    protected RepositoryManager createRepository(Configuration conf) {
+        return createRepository(conf, false);
     }
 
     /**
