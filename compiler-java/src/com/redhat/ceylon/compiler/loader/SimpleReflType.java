@@ -43,6 +43,11 @@ public class SimpleReflType implements TypeMirror {
         this.kind = kind;
         this.typeParameters = typeParameters;
     }
+    
+    public String toString() {
+        String p = Arrays.toString(typeParameters);
+        return getClass().getSimpleName() + " of " + name + "<" + p.substring(1, p.length()-1) + ">";
+    }
 
     @Override
     public String getQualifiedName() {

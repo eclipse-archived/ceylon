@@ -64,6 +64,10 @@ public class JavacClass implements ClassMirror {
         this.classSymbol = classSymbol;
     }
     
+    public String toString() {
+        return getClass().getSimpleName() + " of " + classSymbol;
+    }
+    
     @Override
     public boolean isPublic() {
         return (classSymbol.flags() & Flags.PUBLIC) != 0;

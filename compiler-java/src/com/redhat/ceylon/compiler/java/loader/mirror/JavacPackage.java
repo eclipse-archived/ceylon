@@ -30,6 +30,10 @@ public class JavacPackage implements PackageMirror {
         this.pkgSymbol = pkgSymbol;
     }
     
+    public String toString() {
+        return getClass().getSimpleName() + " of " + pkgSymbol.getQualifiedName();
+    }
+    
     @Override
     public String getQualifiedName() {
         return pkgSymbol.getQualifiedName().toString();

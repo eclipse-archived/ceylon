@@ -37,6 +37,10 @@ public class JavacField implements FieldMirror {
     public JavacField(VarSymbol sym) {
         this.fieldSymbol = sym;
     }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " of " + fieldSymbol;
+    }
 
     @Override
     public AnnotationMirror getAnnotation(String type) {

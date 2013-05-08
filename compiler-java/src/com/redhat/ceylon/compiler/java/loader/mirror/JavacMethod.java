@@ -57,6 +57,10 @@ public class JavacMethod implements MethodMirror {
         }
         return annotations.get(type);
     }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " of " + methodSymbol;
+    }
 
     @Override
     public String getName() {

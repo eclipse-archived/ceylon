@@ -48,6 +48,10 @@ public class JavacType implements TypeMirror {
     public JavacType(Type type) {
         this.type = type;
     }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " of " + type;
+    }
 
     @Override
     public String getQualifiedName() {

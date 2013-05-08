@@ -36,6 +36,10 @@ public class JavacTypeParameter implements TypeParameterMirror {
     public JavacTypeParameter(TypeSymbol typeSymbol) {
         this.typeSymbol = typeSymbol;
     }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " of " + typeSymbol;
+    }
 
     @Override
     public String getName() {

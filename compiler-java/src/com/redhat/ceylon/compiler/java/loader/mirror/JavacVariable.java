@@ -36,6 +36,10 @@ public class JavacVariable implements VariableMirror {
     public JavacVariable(VarSymbol varSymbol) {
         this.varSymbol = varSymbol;
     }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " of " + varSymbol;
+    }
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
