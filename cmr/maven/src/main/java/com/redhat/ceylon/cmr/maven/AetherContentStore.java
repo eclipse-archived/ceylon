@@ -41,9 +41,9 @@ public class AetherContentStore extends AbstractContentStore {
 
     private final AetherUtils utils;
 
-    public AetherContentStore(Logger log) {
-        super(log);
-        utils = new AetherUtils(log);
+    public AetherContentStore(Logger log, boolean offline) {
+        super(log, offline);
+        utils = new AetherUtils(log, offline);
     }
 
     AetherUtils getUtils() {
@@ -150,7 +150,11 @@ public class AetherContentStore extends AbstractContentStore {
 
     @Override
     public String getDisplayString() {
-        return "Aether";
+        String name = "Aether";
+        if (offline) {
+            name += " (offline)";
+        }
+        return name;
     }
 
     @Override
