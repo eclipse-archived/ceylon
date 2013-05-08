@@ -29,4 +29,8 @@ public class ParameterAnnotationArgument extends AnnotationArgument {
     public void setSpread(boolean spread) {
         this.spread = spread;
     }
+    
+    public String toString() {
+        return getTargetParameter().getName() + "=" + (isSpread() ? "*" : "") + getSourceParameter().getName();
+    }
 }

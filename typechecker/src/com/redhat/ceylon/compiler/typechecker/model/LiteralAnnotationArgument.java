@@ -7,4 +7,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
  * String literals.
  */
 public class LiteralAnnotationArgument extends AnnotationArgument {
+    
+    public String toString() {
+        return getTargetParameter() + "= /* literal */";
+    }
 }
