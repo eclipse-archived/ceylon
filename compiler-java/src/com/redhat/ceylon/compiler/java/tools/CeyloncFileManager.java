@@ -253,6 +253,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
                 .systemRepo(systemRepo)
                 .userRepos(userRepos)
                 .outRepo(outRepo)
+                .offline(getOfflineOption())
                 .logger(getLogger())
                 .buildManager();
         
@@ -294,6 +295,10 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private String getOutputRepoOption() {
         // we use D and not CEYLONOUT here since that's where the option is stored
         return options.get(OptionName.D);
+    }
+
+    private boolean getOfflineOption() {
+        return options.get(OptionName.CEYLONOFFLINE) != null;
     }
 
     @Override
