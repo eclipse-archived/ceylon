@@ -38,16 +38,19 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
     private RootRepositoryManager repository;
     private Logger log;
+    private boolean offline;
 
-    public RepositoryManagerBuilderImpl(Logger log) {
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline) {
         repository = new RootRepositoryManager(log);
         this.log = log;
+        this.offline = offline;
         init();
     }
 
-    public RepositoryManagerBuilderImpl(File mainRepository, Logger log) {
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline) {
         repository = new RootRepositoryManager(mainRepository, log);
         this.log = log;
+        this.offline = offline;
         init();
     }
 
@@ -61,7 +64,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
     @Override
     public RepositoryBuilder repositoryBuilder() {
-        return new RepositoryBuilderImpl(log);
+        return new RepositoryBuilderImpl(log, offline);
     }
 
     public RepositoryManagerBuilderImpl mergeStrategy(MergeStrategy strategy) {

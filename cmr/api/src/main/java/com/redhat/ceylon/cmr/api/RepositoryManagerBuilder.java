@@ -44,19 +44,19 @@ public class RepositoryManagerBuilder {
         return (Class<? extends RepositoryManagerBuilder>) classLoader.loadClass(DEFAULT_DELEGATE);
     }
 
-    public RepositoryManagerBuilder(Logger log) {
+    public RepositoryManagerBuilder(Logger log, boolean offline) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class);
-            delegate = ctor.newInstance(log);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class);
+            delegate = ctor.newInstance(log, offline);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public RepositoryManagerBuilder(File mainRepository, Logger log) {
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class);
-            delegate = ctor.newInstance(mainRepository, log);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class);
+            delegate = ctor.newInstance(mainRepository, log, offline);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
