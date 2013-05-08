@@ -34,9 +34,11 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
 class RepositoryBuilderImpl implements RepositoryBuilder {
 
     private Logger log;
-
-    RepositoryBuilderImpl(Logger log) {
+    private boolean offline;
+    
+    RepositoryBuilderImpl(Logger log, boolean offline) {
         this.log = log;
+        this.offline = offline;
     }
 
     public Repository buildRepository(String token) throws Exception {
@@ -52,22 +54,22 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
-            structureBuilder = new RemoteContentStore(token, log);
+            structureBuilder = new RemoteContentStore(token, log, offline);
         } else if (token.equals("mvn") || token.equals("mvn:")) {
             return MavenRepositoryHelper.getMavenRepository();
         } else if (token.startsWith("mvn:")) {
-            return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
+            return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log, offline);
         } else if (token.equals("jdk") || token.equals("jdk:")) {
             return new JDKRepository();
         } else if (token.equals("aether") || token.equals("aether:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
-            return (Repository) createRepository.invoke(null, log);
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, boolean.class);
+            return (Repository) createRepository.invoke(null, log, offline);
         } else if (token.startsWith("aether:")) {
             String settingsXml = token.substring("aether:".length());
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class);
-            return (Repository) createRepository.invoke(null, log, settingsXml);
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class);
+            return (Repository) createRepository.invoke(null, log, settingsXml, offline);
         } else {
             final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)
