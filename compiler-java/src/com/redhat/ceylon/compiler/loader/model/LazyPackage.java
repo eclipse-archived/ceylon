@@ -28,15 +28,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 /**
  * Represents a lazy Package declaration.
@@ -143,12 +152,130 @@ public class LazyPackage extends Package {
     public void addMember(Declaration d) {
         synchronized(modelLoader){
             compiledDeclarations.add(d);
+            if (d instanceof LazyInterface
+                    && !((LazyInterface)d).isCeylon()
+                    && ((LazyInterface)d).isAnnotationType()) {
+                makeInteropAnnotation((LazyInterface)d);
+                
+            }
             if (d instanceof LazyClass && d.getUnit().getFilename() != null) {
                 lazyUnits.add(d.getUnit());
             }
         }
     }
 
+    /**
+     * Adds extra members to the package for annotation interop.
+     * For a Java declaration {@code @interface Annotation} we generate 
+     * a model corresponding to:
+     * <pre>
+     *   annotation class Annotation$Proxy(...) satisfies Annotation {
+     *       // a `shared` class parameter for each method of Annotation
+     *   }
+     *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation$Proxy(...);
+     * </pre>
+     * @param iface
+     */
+    private void makeInteropAnnotation(LazyInterface iface) {
+        Class klass = new Class();
+        klass.setContainer(this);
+        klass.setName(iface.getName()+"$Proxy");
+        klass.setShared(iface.isShared());
+        Annotation annotationAnnotation = new Annotation();
+        annotationAnnotation.setName("annotation");
+        klass.getAnnotations().add(annotationAnnotation);
+        klass.getSatisfiedTypes().add(iface.getType());
+        ParameterList classpl = new ParameterList();
+        ParameterList ctorpl = new ParameterList();
+        List<AnnotationArgument> annotationArgs = new ArrayList<>();
+        for (Declaration member : iface.getMembers()) {
+            if (member instanceof JavaMethod) {
+                JavaMethod m = (JavaMethod)member;
+                ParameterAnnotationArgument a = new ParameterAnnotationArgument();
+                
+                {
+                    ValueParameter klassParam = new ValueParameter();
+                    klassParam.setContainer(klass);
+                    //klassParam.setDefaulted(m.isDefaultedAnnotation());
+                    klassParam.setName(member.getName());
+                    klassParam.setType(annotationParameterType(iface.getUnit(), m));
+                    klassParam.setUnboxed(true);
+                    klassParam.setUnit(iface.getUnit());
+                    classpl.getParameters().add(klassParam);
+                    a.setTargetParameter(klassParam);
+                }
+                {
+                    ValueParameter ctorParam = new ValueParameter();
+                    ctorParam.setContainer(klass);
+                    ctorParam.setDefaulted(m.isDefaultedAnnotation());
+                    ctorParam.setName(member.getName());
+                    ctorParam.setType(annotationParameterType(iface.getUnit(), m));
+                    ctorParam.setUnboxed(true);
+                    ctorParam.setUnit(iface.getUnit());
+                    ctorpl.getParameters().add(ctorParam);           
+                    a.setSourceParameter(ctorParam);
+                }
+                annotationArgs.add(a);
+            }
+        }
+        klass.addParameterList(classpl);
+        klass.setUnit(iface.getUnit());
+        
+        compiledDeclarations.add(klass);
+        
+        Method ctor = new Method();
+        ctor.setContainer(this);
+        ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
+        ctor.setShared(iface.isShared());
+        Annotation annotationAnnotation2 = new Annotation();
+        annotationAnnotation2.setName("annotation");
+        ctor.getAnnotations().add(annotationAnnotation2);
+        ctor.addParameterList(ctorpl);
+        ctor.setType(((TypeDeclaration)iface).getType());
+        ctor.setUnit(iface.getUnit());
+        AnnotationInstantiation annotationInstantiation = new AnnotationInstantiation();
+        annotationInstantiation.setPrimary(klass);
+        annotationInstantiation.setArguments(annotationArgs);
+        ctor.setAnnotationInstantiation(annotationInstantiation);
+        compiledDeclarations.add(ctor);
+    }
+
+    private ProducedType annotationParameterType(Unit unit, JavaMethod m) {
+        ProducedType type = m.getType();
+        if (Decl.isJavaArray(type.getDeclaration())) {
+            String name = type.getDeclaration().getQualifiedNameString();
+            ProducedType elementType;
+            if(name.equals("java.lang::ObjectArray")){
+                elementType = type.getTypeArgumentList().get(0);
+                if ("java.lang::String".equals(elementType.getDeclaration().getQualifiedNameString())) {
+                    elementType = unit.getStringDeclaration().getType();
+                }
+                // TODO Class literals
+                // TODO Enum elements
+            } else if(name.equals("java.lang::LongArray")
+                    || name.equals("java.lang::ByteArray")
+                    || name.equals("java.lang::ShortArray")
+                    || name.equals("java.lang::IntArray")){
+                elementType = unit.getIntegerDeclaration().getType();
+            } else if(name.equals("java.lang::BooleanArray")){
+                elementType = unit.getBooleanDeclaration().getType();
+            } else if(name.equals("java.lang::CharArray")){
+                elementType = unit.getCharacterDeclaration().getType();
+            } else if(name.equals("java.lang::DoubleArray")
+                    || name.equals("java.lang::FloatArray")){
+                elementType = unit.getFloatDeclaration().getType();
+            } else {
+                throw new RuntimeException();
+            }
+            return unit.getIterableType(elementType);
+        } else if ("java.lang::Class".equals(type.getDeclaration().getQualifiedNameString())) {
+            // TODO Replace with metamodel ClassOrInterface type
+            // once we have support for metamodel references
+            return unit.getAnythingDeclaration().getType();
+        } else {
+            return type;
+        }
+    }
     
     @Override
     public Iterable<Unit> getUnits() {
