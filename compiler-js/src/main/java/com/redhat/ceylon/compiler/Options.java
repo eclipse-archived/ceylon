@@ -28,12 +28,13 @@ public class Options {
     private boolean stdin;
     private boolean gensrc = true;
     private String encoding;
+    private boolean offline;
 
     public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
             String outputRepository, final String username, final String password,
             boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, boolean verbosity,
             boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
-            String srcEncoding) {
+            String srcEncoding, boolean offlineMode) {
         repos = repositories;
         srcDirs = sourceDirectories;
         if (systemRepository != null) systemRepo = systemRepository;
@@ -49,6 +50,7 @@ public class Options {
         stdin = fromStdin;
         gensrc = generateSrcArchive;
         encoding = srcEncoding;
+        offline = offlineMode;
     }
 
     private Options() {}
@@ -72,6 +74,7 @@ public class Options {
             args.remove("-compact");
         }
         opts.verbose = findOption("-verbose", args, true);
+        opts.offline = findOption("-offline", args, true);
         opts.profile = findOption("-profile", args, true);
         opts.stdin = findOption("--", args, true);
         //Review arg options
@@ -229,6 +232,9 @@ public class Options {
     /** The character encoding to use when reading source files. */
     public String getEncoding() {
         return encoding;
+    }
+    public boolean getOffline() {
+        return offline;
     }
 
     /** Sets the option to generate the source archive or skip it.

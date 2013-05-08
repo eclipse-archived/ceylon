@@ -16,6 +16,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
@@ -133,11 +134,18 @@ public class CeylonRunJsTool implements Tool {
     private String sysrep;
     private List<String> args;
     private PrintStream output;
+    private boolean offline;
     private boolean debug;
 
     /** Sets the PrintStream to use for output. Default is System.out. */
     public void setOutput(PrintStream value) {
         output = value;
+    }
+
+    @Option(longName="offline")
+    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    public void setOffline(boolean offline) {
+        this.offline = offline;
     }
 
     @OptionArgument(argumentName="debug")
@@ -306,7 +314,9 @@ public class CeylonRunJsTool implements Tool {
         //Create a repository manager to load the js module we're going to run
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .systemRepo(sysrep)
-                .userRepos(repos).buildManager();
+                .userRepos(repos)
+                .offline(offline)
+                .buildManager();
         ArtifactContext ac = new ArtifactContext(modname, version, ".js");
         ac.setFetchSingleArtifact(true);
         ac.setThrowErrorIfMissing(true);

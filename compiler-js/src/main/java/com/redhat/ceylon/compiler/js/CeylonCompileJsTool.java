@@ -40,6 +40,7 @@ public class CeylonCompileJsTool implements Tool {
     private String out = "modules";
     private String sysrep = null;
     private String encoding;
+    private boolean offline;
 
     private List<String> repos = Collections.emptyList();
     private List<String> src = Collections.singletonList("source");
@@ -53,6 +54,12 @@ public class CeylonCompileJsTool implements Tool {
 
     public String getEncoding(){
         return encoding;
+    }
+
+    @Option(longName="offline")
+    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    public void setOffline(boolean offline) {
+        this.offline = offline;
     }
 
     public boolean isProfile() {
@@ -201,7 +208,7 @@ public class CeylonCompileJsTool implements Tool {
     @Override
     public void run() throws Exception {
         final Options opts = new Options(getRepos(), getSrc(), sysrep, getOut(), getUser(), getPass(), isOptimize(),
-                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, encoding);
+                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, encoding, offline);
         run(opts, files);
     }
 
@@ -226,7 +233,10 @@ public class CeylonCompileJsTool implements Tool {
         }
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .systemRepo(opts.getSystemRepo())
-                .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager();
+                .userRepos(opts.getRepos())
+                .outRepo(opts.getOutDir())
+                .offline(opts.getOffline())
+                .buildManager();
         final Set<String> onlyFiles = new HashSet<String>();
         long t0, t1, t2, t3, t4;
         final TypeCheckerBuilder tcb;
