@@ -27,13 +27,13 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 @interface JavaAnnotationClass {
     java.lang.Class<?> clas();
-    //TODO java.lang.Class<? extends java.lang.Exception>[] classWithBound();
+    java.lang.Class<? extends java.lang.Throwable> classWithBound();
     java.lang.Class<?>[] classes();
-    //TODO java.lang.Class<? extends java.lang.Exception>[] classesWithBound();
+    java.lang.Class<? extends java.lang.Throwable>[] classesWithBound();
 }
 
 @interface JavaAnnotationAnnotation {
 
     JavaAnnotationEnum annotation();
-    //JavaAnnotationEnum[] annotations();
+    JavaAnnotationEnum[] annotations();
 }

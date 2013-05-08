@@ -43,9 +43,9 @@ javaAnnotationPrimitives {
 }
 javaAnnotationClass {
     clas=String;
-    //TODO classWithBound=Exception;
+    classWithBound=Exception;
     classes={String, Object};
-    //TODO classWithBound={Exception, AssertionException};
+    classesWithBound={Exception, AssertionException};
 }
 javaAnnotationEnum {
     threadState=new;
@@ -56,7 +56,10 @@ javaAnnotationAnnotation {
         threadState=new;
         threadStates={runnable, blocked};
     };
-    // TODO Annotations
+    annotations={javaAnnotationEnum{
+        threadState=new;
+        threadStates={runnable, blocked};
+    }};
 }
 class AnnotationInterop() {
     
