@@ -53,8 +53,8 @@ public class MavenRepositoryHelper {
         return new MavenRepository(new MavenContentStore(mvnRepository).createRoot());
     }
 
-    public static Repository getMavenRepository(String repositoryURL, Logger log) {
-        return new MavenRepository(new RemoteContentStore(repositoryURL, log).createRoot());
+    public static Repository getMavenRepository(String repositoryURL, Logger log, boolean offline) {
+        return new MavenRepository(new RemoteContentStore(repositoryURL, log, offline).createRoot());
     }
 
     public static Repository getMavenRepository(StructureBuilder structureBuilder) {
