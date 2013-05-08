@@ -67,6 +67,11 @@ public class Configuration {
      */
     public boolean verbose;
 
+    /**
+     * Offline mode
+     */
+    public boolean offline;
+
     // Non-Ceylon
     public String executable;
     public boolean cacheContent;
@@ -117,6 +122,9 @@ public class Configuration {
                 break;
             case VERBOSE:
                 verbose = true;
+                break;
+            case OFFLINE:
+                offline = true;
                 break;
             case HELP:
                 printUsage(0);

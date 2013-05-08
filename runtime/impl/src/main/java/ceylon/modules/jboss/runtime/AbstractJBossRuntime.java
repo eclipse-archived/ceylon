@@ -126,7 +126,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
                 .systemRepo(conf.systemRepository)
                 .userRepos(conf.repositories)
-                .offline(offline)
+                .offline(offline || conf.offline)
                 .logger(log)
                 .buildManagerBuilder();
 
