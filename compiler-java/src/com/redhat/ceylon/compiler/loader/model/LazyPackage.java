@@ -259,14 +259,20 @@ public class LazyPackage extends Package {
         ProducedType type = m.getType();
         if (Decl.isJavaArray(type.getDeclaration())) {
             String name = type.getDeclaration().getQualifiedNameString();
-            ProducedType elementType;
+            final ProducedType elementType;
             String underlyingType = null;
             if(name.equals("java.lang::ObjectArray")){
-                elementType = type.getTypeArgumentList().get(0);
-                if ("java.lang::String".equals(elementType.getDeclaration().getQualifiedNameString())) {
+                String elementTypeName = type.getTypeArgumentList().get(0).getDeclaration().getQualifiedNameString();
+                if ("java.lang::String".equals(elementTypeName)) {
                     elementType = unit.getStringDeclaration().getType();
+                } else if ("java.lang::Class".equals(elementTypeName)) {
+                    // TODO Replace with metamodel ClassOrInterface type
+                    // once we have support for metamodel references
+                    elementType = unit.getAnythingDeclaration().getType();
+                    underlyingType = "java.lang.Class";
+                } else {
+                    elementType = type.getTypeArgumentList().get(0);   
                 }
-                // TODO Class literals
                 // TODO Enum elements
             } else if(name.equals("java.lang::LongArray")) {
                 elementType = unit.getIntegerDeclaration().getType();
