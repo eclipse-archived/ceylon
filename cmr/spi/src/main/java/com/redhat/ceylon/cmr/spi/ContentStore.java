@@ -58,5 +58,7 @@ public interface ContentStore {
 
     String getDisplayString();
     
+    boolean isOffline();
+    
     boolean isHerd();
 }

@@ -42,10 +42,12 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
     protected static final String SEPARATOR = "/";
 
     protected final Set<String> suffixes = new HashSet<String>();
+    protected boolean offline;
     protected Logger log;
 
-    protected AbstractContentStore(Logger log) {
+    protected AbstractContentStore(Logger log, boolean offline) {
         this.log = log;
+        this.offline = offline;
         addSuffix(CAR);
         addSuffix(JAR);
         addSuffix(PROPERTIES);
@@ -72,5 +74,14 @@ public abstract class AbstractContentStore implements ContentStore, StructureBui
             if (child.endsWith(suffix))
                 return true;
         return false;
+    }
+    
+    @Override
+    public boolean isOffline() {
+        return offline;
+    }
+    
+    public void setOffline(boolean offline) {
+        this.offline = offline;
     }
 }

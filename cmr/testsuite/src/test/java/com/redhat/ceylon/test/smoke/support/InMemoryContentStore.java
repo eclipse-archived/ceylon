@@ -144,6 +144,11 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     }
 
     @Override
+    public boolean isOffline() {
+        return true;
+    }
+
+    @Override
     public boolean isHerd() {
         return false;
     }
