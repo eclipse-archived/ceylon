@@ -303,6 +303,7 @@ public class InteropTest extends CompilerTest {
 
     @Test
     public void testAnnotationInterop(){
+        compile("JavaAnnotation.java");
         compareWithJavaSource("AnnotationInterop");
     }
 }
