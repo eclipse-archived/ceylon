@@ -107,7 +107,23 @@ public class LazyPackage extends Package {
                 }
                 return d;
             }
-            return getDirectMemberFromSource(name);
+            d = getDirectMemberFromSource(name);
+            
+            if (d == null
+                    && Character.isLowerCase(name.charAt(0))) {
+                // Might be trying to get an annotation constructor for a Java annotation type
+                // So try to find the annotation type
+                String annotationName = Character.toUpperCase(name.charAt(0)) + (name.length() > 1 ? name.substring(1) : "");
+                Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
+                if (possibleAnnotationType != null
+                        && possibleAnnotationType instanceof LazyInterface
+                        && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
+                    // addMember() will have added a Method if we found an annotation type
+                    // so now we can look for the constructor again
+                    d = lookupMember(copy(compiledDeclarations), name, signature, ellipsis);
+                }
+            }
+            return d;
         }
     }
 
