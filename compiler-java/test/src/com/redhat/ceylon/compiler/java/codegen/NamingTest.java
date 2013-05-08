@@ -75,7 +75,7 @@ public class NamingTest {
         if (!file.exists()) {
             throw new RuntimeException("Unable to find resource " + name);
         }
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger());
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), false);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);

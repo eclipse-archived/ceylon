@@ -62,7 +62,7 @@ class ModuleDescriptorReader {
     private final Module moduleDescriptor;
 
     public ModuleDescriptorReader(String moduleName, File srcDir) {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger());
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), false);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
