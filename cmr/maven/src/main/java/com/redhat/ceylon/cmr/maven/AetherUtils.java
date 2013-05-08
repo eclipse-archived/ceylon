@@ -52,10 +52,12 @@ public class AetherUtils {
     private static final SingleScopedStrategy SCOPED_STRATEGY = new SingleScopedStrategy(SCOPES);
 
     private Logger log;
+    private boolean offline;
     private String settingsXml;
 
-    AetherUtils(Logger log) {
+    AetherUtils(Logger log, boolean offline) {
         this.log = log;
+        this.offline = offline;
         settingsXml = getDefaultMavenSettings();
     }
 
@@ -86,14 +88,14 @@ public class AetherUtils {
         final String artifactId = name.substring(p + 1);
         final String version = ac.getVersion();
 
-        return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact());
+        return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact(), offline);
     }
 
-    private ArtifactResult fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
+    private ArtifactResult fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact, final boolean offline) {
         final String name = toCanonicalForm(groupId, artifactId);
         final String coordinates = toCanonicalForm(name, version);
         try {
-            final MavenStrategyStage mss = getResolver().resolve(coordinates);
+            final MavenStrategyStage mss = getResolver(offline).resolve(coordinates);
             final MavenFormatStage mfs = mss.using(SCOPED_STRATEGY);
             final MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
             if (info == null) {
@@ -116,7 +118,7 @@ public class AetherUtils {
 
                         private synchronized ArtifactResult getResult() {
                             if (result == null) {
-                                result = fetchDependencies(dCo.getGroupId(), dCo.getArtifactId(), dVersion, false);
+                                result = fetchDependencies(dCo.getGroupId(), dCo.getArtifactId(), dVersion, false, offline);
                             }
                             return result;
                         }
@@ -168,14 +170,18 @@ public class AetherUtils {
         return "classpath:settings.xml";
     }
 
-    private MavenResolverSystem getResolver() {
+    private MavenResolverSystem getResolver(boolean offline) {
         ClassLoader classLoader = AetherUtils.class.getClassLoader();
         ConfiguredResolverSystemFactory<MavenResolverSystem, ConfigurableMavenResolverSystem> factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader);
 
+        MavenResolverSystem resolver;
         if (settingsXml.startsWith("classpath:"))
-            return factory.fromClassloaderResource(settingsXml.substring(10));
-
-        return factory.fromFile(settingsXml);
+            resolver = factory.fromClassloaderResource(settingsXml.substring(10));
+        else
+            resolver = factory.fromFile(settingsXml);
+        
+        resolver.offline(offline);
+        return resolver;
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
