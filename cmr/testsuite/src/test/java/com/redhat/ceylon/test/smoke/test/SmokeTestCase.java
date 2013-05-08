@@ -136,7 +136,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testExternalNodes() throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
 
         InMemoryContentStore imcs = new InMemoryContentStore();
         OpenNode root = imcs.createRoot();
@@ -192,8 +192,8 @@ public class SmokeTestCase extends AbstractTest {
             return; // probably not on the internet?
         }
 
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
-        RemoteContentStore rcs = new RemoteContentStore(repoURL, log);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
+        RemoteContentStore rcs = new RemoteContentStore(repoURL, log, false);
         Repository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.appendRepository(repo).buildRepository();
 
@@ -221,8 +221,8 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testMavenRemote() throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
-        Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
+        Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false);
         builder.prependRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA");
@@ -275,7 +275,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testPropertiesGet() throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
         RepositoryBuilder rb = builder.repositoryBuilder();
         Repository repository = rb.buildRepository("http://modules.ceylon-lang.org/test");
         builder.appendRepository(repository);

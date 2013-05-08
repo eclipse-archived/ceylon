@@ -44,7 +44,7 @@ public class AetherTestCase {
 
     @Test
     public void testSimpleTest() throws Throwable {
-        StructureBuilder structureBuilder = new AetherContentStore(log);
+        StructureBuilder structureBuilder = new AetherContentStore(log, false);
         Repository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         File artifact = manager.getArtifact("org.slf4j.slf4j-api", "1.6.4");
@@ -62,7 +62,7 @@ public class AetherTestCase {
 
     @Test
     public void testAether() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log);
+        Repository repository = AetherRepository.createRepository(log, false);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
         Assert.assertNotNull(result);
@@ -83,7 +83,7 @@ public class AetherTestCase {
 
     @Test
     public void testScopes() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log);
+        Repository repository = AetherRepository.createRepository(log, false);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult artifact = manager.getArtifactResult("org.jboss.xnio:xnio-api", "3.1.0.Beta7");
         File file = null;
@@ -152,6 +152,6 @@ public class AetherTestCase {
 
     private Repository createAetherRepository() throws Exception {
         URL settingsXml = getClass().getClassLoader().getResource("maven-settings/settings.xml");
-        return AetherRepository.createRepository(log, new File(settingsXml.toURI()).getPath());
+        return AetherRepository.createRepository(log, new File(settingsXml.toURI()).getPath(), false);
     }
 }

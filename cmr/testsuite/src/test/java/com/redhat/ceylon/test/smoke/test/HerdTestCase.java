@@ -41,21 +41,21 @@ public class HerdTestCase extends AbstractTest {
     public void testDummy() {
     }
 
-    private RepositoryManager getRepositoryManager(File root) throws Exception {
-        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root);
-        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
+    private RepositoryManager getRepositoryManager(File root, boolean offline) throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root, offline);
+        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log, false);
         Repository repo = new DefaultRepository(rcs.createRoot());
         return builder.appendRepository(repo).buildRepository();
     }
 
     protected RepositoryManager getRepositoryManager() throws Exception {
         // only Herd
-        return getRepositoryManager(getFolders());
+        return getRepositoryManager(getFolders(), false);
     }
 
     protected RepositoryManager getDualRepositoryManager() throws Exception {
         // Herd + /repo
-        return getRepositoryManager(getRepositoryRoot());
+        return getRepositoryManager(getRepositoryRoot(), false);
     }
 
     @Test
