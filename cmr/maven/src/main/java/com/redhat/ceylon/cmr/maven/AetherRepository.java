@@ -42,13 +42,13 @@ public class AetherRepository extends MavenRepository {
         utils = acs.getUtils();
     }
 
-    public static Repository createRepository(Logger log) {
-        AetherContentStore acs = new AetherContentStore(log);
+    public static Repository createRepository(Logger log, boolean offline) {
+        AetherContentStore acs = new AetherContentStore(log, offline);
         return new AetherRepository(acs);
     }
 
-    public static Repository createRepository(Logger log, String settingsXml) {
-        AetherContentStore acs = new AetherContentStore(log);
+    public static Repository createRepository(Logger log, String settingsXml, boolean offline) {
+        AetherContentStore acs = new AetherContentStore(log, offline);
         AetherRepository repo = new AetherRepository(acs);
         repo.utils.overrideSettingsXml(settingsXml);
         return repo;
