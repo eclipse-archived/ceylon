@@ -56,6 +56,7 @@ public class CeylonRunTool implements Tool {
     private boolean disableDefault;
     private boolean verbose = false;
     private String verboseFlags = "";
+    private boolean offline;
     private List<String> args = Collections.emptyList();
 
     @Argument(argumentName = "module", multiplicity = "1", order = 1)
@@ -103,6 +104,12 @@ public class CeylonRunTool implements Tool {
         this.verboseFlags = verboseFlags;
     }
 
+    @Option(longName="offline")
+    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    public void setOffline(boolean offline) {
+        this.offline = offline;
+    }
+
     @Override
     public void run() {
         ArrayList<String> argList = new ArrayList<String>();
@@ -123,6 +130,10 @@ public class CeylonRunTool implements Tool {
 
         if (disableDefault) {
             argList.add("-d");
+        }
+
+        if (offline) {
+            argList.add("-offline");
         }
 
         if (verbose) {
