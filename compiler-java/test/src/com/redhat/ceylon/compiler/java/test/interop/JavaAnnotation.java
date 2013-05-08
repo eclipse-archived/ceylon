@@ -28,7 +28,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
 @interface JavaAnnotationClass {
     java.lang.Class<?> clas();
     //TODO java.lang.Class<? extends java.lang.Exception>[] classWithBound();
-    //TODO java.lang.Class<?>[] classes();
+    java.lang.Class<?>[] classes();
     //TODO java.lang.Class<? extends java.lang.Exception>[] classesWithBound();
 }
 

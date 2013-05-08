@@ -44,7 +44,7 @@ javaAnnotationPrimitives {
 javaAnnotationClass {
     clas=String;
     //TODO classWithBound=Exception;
-    //TODO classes={String, Object};
+    classes={String, Object};
     //TODO classWithBound={Exception, AssertionException};
 }
 javaAnnotationEnum {
