@@ -2514,8 +2514,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             continue;
                         }
                         typeArgument = bound;
-                    }else
-                        return typeFactory.getObjectDeclaration().getType();
+                    } else {
+                        ProducedType result = typeFactory.getObjectDeclaration().getType();
+                        result.setUnderlyingType(type.getQualifiedName());
+                        return result;
+                    }
                 }
                 typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance));
             }
