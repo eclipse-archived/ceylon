@@ -70,7 +70,7 @@ public class Metamodel {
                 System.err.println("DEBUG: "+str);
             }
             
-        });
+        }, false);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
