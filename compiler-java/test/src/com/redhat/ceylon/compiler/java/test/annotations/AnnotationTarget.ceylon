@@ -1,8 +1,11 @@
 @nomodel
 annotation class AnnotationTarget(){}
-
 @nomodel
 annotation AnnotationTarget annotationTarget() => AnnotationTarget();
+@nomodel
+annotation class AnnotationTarget2(){}
+@nomodel
+annotation AnnotationTarget2 annotationTarget2() => AnnotationTarget2();
 
 @nomodel
 annotationTarget
@@ -12,15 +15,26 @@ class AnnotationTargetClass(annotationTarget String parameter) {
     shared Boolean attribute = true;
     
     annotationTarget
-    Boolean getter => true;
+    shared variable Boolean varAttribute = true;
     
     annotationTarget
+    Boolean getter => true;
+    
+    annotationTarget2
     assign getter {}
     
     annotationTarget
     void method(annotationTarget String parameter) {
         annotationTarget
         assert(true);
+        
+        annotationTarget
+        class LocalClass(annotationTarget String parameter) {
+        }
+    
+        annotationTarget
+        interface LocalInterface {
+        }
     }
     
     annotationTarget

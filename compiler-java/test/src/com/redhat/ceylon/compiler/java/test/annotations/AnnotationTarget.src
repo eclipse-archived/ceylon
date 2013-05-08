@@ -40,6 +40,51 @@ final class annotationTarget_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget_.annotationTarget();
     }
 }
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@interface AnnotationTarget2$annotation {
+}
+@.ceylon.language.Annotation$annotation
+class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationTarget2(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation anno) {
+        this();
+    }
+    
+    AnnotationTarget2() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class)
+final class annotationTarget2_ {
+    
+    private annotationTarget2_() {
+    }
+    
+    @.ceylon.language.Annotation$annotation
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2 annotationTarget2() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget2_.annotationTarget2();
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+interface AnnotationTargetClass$method$0$LocalInterface {
+    
+    public .java.lang.Object LocalInterface$impl();
+}
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
 interface AnnotationTargetClass$InnerInterface {
     
@@ -51,6 +96,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     AnnotationTargetClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     final .java.lang.String parameter) {
         this.attribute = true;
+        this.varAttribute = true;
     }
     private final boolean attribute;
     
@@ -59,13 +105,25 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     public final boolean getAttribute() {
         return attribute;
     }
+    private boolean varAttribute;
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Variable$annotation
+    public final boolean getVarAttribute() {
+        return varAttribute;
+    }
+    
+    public final void setVarAttribute(final boolean varAttribute) {
+        this.varAttribute = varAttribute;
+    }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
     private final boolean getGetter$priv() {
         return true;
     }
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation
     private final void setGetter$priv(final boolean getter) {
     }
     
@@ -75,6 +133,27 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
         MISSING
         if (true) {
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "true"));
+        
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            LocalClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+            final .java.lang.String parameter) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
+            }
+        }
+        
+        final class LocalInterface$impl {
+            
+            LocalInterface$impl(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass$method$0$LocalInterface $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass$method$0$LocalInterface $this;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
