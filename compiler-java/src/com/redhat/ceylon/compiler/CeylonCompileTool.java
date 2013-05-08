@@ -99,6 +99,7 @@ public class CeylonCompileTool implements Tool{
     private String encoding;
     private boolean verbose = false;
     private String verboseFlags = "";
+    private boolean offline;
 
     public CeylonCompileTool() {
     }
@@ -184,6 +185,12 @@ public class CeylonCompileTool implements Tool{
         this.javac = javac;
     }
 
+    @Option(longName="offline")
+    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    public void setOffline(boolean offline) {
+        this.offline = offline;
+    }
+
     @PostConstruct
     public void init() {
         if (module.isEmpty() &&
@@ -205,6 +212,10 @@ public class CeylonCompileTool implements Tool{
         
         if (d) {
             arguments.add("-d");
+        }
+        
+        if (offline) {
+            arguments.add("-offline");
         }
         
         if (verbose) {

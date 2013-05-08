@@ -7,12 +7,12 @@ import javax.annotation.PostConstruct;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
@@ -39,6 +39,8 @@ public class CeylonInfoTool implements Tool {
     private DependencyFilter depFilter;
 
     private int depth = 1;
+    private boolean offline;
+    
     private RepositoryManager rm;
     
     public void setOut(Appendable out) {
@@ -86,6 +88,12 @@ public class CeylonInfoTool implements Tool {
         this.depth = depth;
     }
     
+    @Option(longName="offline")
+    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    public void setOffline(boolean offline) {
+        this.offline = offline;
+    }
+
     @PostConstruct
     public void init() {
         if (depFilter == null) {
@@ -104,7 +112,8 @@ public class CeylonInfoTool implements Tool {
     
         CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .systemRepo(sysrep)
-                .userRepos(repo);
+                .userRepos(repo)
+                .offline(offline);
             
         rm = rmb.buildManager();   
     }
@@ -189,6 +198,7 @@ public class CeylonInfoTool implements Tool {
     
     private CeylonInfoTool errorMsg(String msgKey, Object...msgArgs) throws IOException {
         error.append(CeylonInfoMessages.msg(msgKey, msgArgs));
+        error.append(System.lineSeparator());
         return this;
     }
     

@@ -142,6 +142,7 @@ public class CeylonDocTool implements Tool {
     private List<String> links = new LinkedList<String>();
     private TypeChecker typeChecker;
     private String encoding;
+    private boolean offline;
 
     public CeylonDocTool() {
     }
@@ -245,6 +246,12 @@ public class CeylonDocTool implements Tool {
         }
     }
 
+    @Option(longName="offline")
+    @Description("Enables offline mode that will prevent the module loader from connecting to remote repositories.")
+    public void setOffline(boolean offline) {
+        this.offline = offline;
+    }
+
     @PostConstruct
     public void init() {
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
@@ -257,6 +264,7 @@ public class CeylonDocTool implements Tool {
         RepositoryManager repository = CeylonUtils.repoManager()
                 .systemRepo(systemRepository)
                 .userRepos(repositories)
+                .offline(offline)
                 .logger(log).buildManager();
         
         builder.setRepositoryManager(repository);
