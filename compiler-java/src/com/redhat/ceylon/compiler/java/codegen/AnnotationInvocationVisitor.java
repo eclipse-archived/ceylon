@@ -51,7 +51,8 @@ class AnnotationInvocationVisitor extends Visitor {
     private final Method annotationConstructor;
     
     private ListBuffer<JCExpression> exprs = null;
-    private String parameterName;
+    private Parameter parameter;
+    private ProducedType expectedType;
     private ListBuffer<JCExpression> annotationArguments = ListBuffer.lb();
 
     public AnnotationInvocationVisitor(
@@ -104,13 +105,13 @@ class AnnotationInvocationVisitor extends Visitor {
     public JCAnnotation transformInstantiation(Tree.InvocationExpression invocation) {        
         if (invocation.getPositionalArgumentList() != null) {
             for (Tree.PositionalArgument arg : invocation.getPositionalArgumentList().getPositionalArguments()) {
-                parameterName = arg.getParameter().getName();
+                this.parameter = arg.getParameter();
                 arg.visit(this);
             }
         } 
         if (invocation.getNamedArgumentList() != null) {
             for (Tree.NamedArgument arg : invocation.getNamedArgumentList().getNamedArguments()) {
-                parameterName = arg.getParameter().getName();
+                this.parameter = arg.getParameter();
                 arg.visit(this);
             }
         }
@@ -123,7 +124,7 @@ class AnnotationInvocationVisitor extends Visitor {
         java.util.List<Parameter> classParameters = annotationClass.getParameterList().getParameters();
         for (int classParameterIndex = 0; classParameterIndex < classParameters.size(); classParameterIndex++) {
             Parameter classParameter = classParameters.get(classParameterIndex);
-            parameterName = classParameter.getName();
+            this.parameter = classParameter;
             if (classParameterIndex >= arguments.size()) {
                 // => We're using the annotation class's defaulted parameter
                 continue;
@@ -180,7 +181,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 exprGen.at(invocation);
                 append(exprGen.naming.makeQuotedQualIdent(
                                 exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
-                                parameterName));
+                                this.parameter.getName()));
             } else {
                 append(exprGen.makeErroneous(invocation, "Unable to find argument"));
             }
@@ -226,7 +227,7 @@ class AnnotationInvocationVisitor extends Visitor {
             exprs.append(expr);
         } else {
             annotationArguments.append(exprGen.make().Assign(
-                    exprGen.naming.makeQuotedIdent(parameterName), expr));
+                    exprGen.naming.makeQuotedIdent(this.parameter == null ? null : this.parameter.getName()), expr));
         }
     }
 
@@ -283,7 +284,11 @@ class AnnotationInvocationVisitor extends Visitor {
     }
     
     public void visit(Tree.Literal term) {
-        append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
+        append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType()));
+    }
+
+    private ProducedType expectedType() {
+        return this.expectedType != null ?  this.expectedType : this.parameter.getType();
     }
     
     public void visit(Tree.BaseMemberExpression term) {
@@ -316,12 +321,14 @@ class AnnotationInvocationVisitor extends Visitor {
     private ListBuffer<JCExpression> startArray() {
         ListBuffer<JCExpression> prevCollect = exprs;
         exprs = ListBuffer.<JCExpression>lb();
+        expectedType = exprGen.typeFact().getIteratedType(parameter.getType());
         return prevCollect;
     }
     
     private JCNewArray endArray(ListBuffer<JCExpression> prevCollect) {
         ListBuffer<JCExpression> collected = exprs;
         exprs = prevCollect;
+        expectedType = null;
         return exprGen.make().NewArray(null,  null, collected.toList());
     }
 
