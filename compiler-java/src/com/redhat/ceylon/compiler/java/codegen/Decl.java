@@ -580,4 +580,20 @@ public class Decl {
         }
         return result;
     }
+    
+    public static boolean isJavaArray(TypeDeclaration decl) {
+        if(decl instanceof Class == false)
+            return false;
+        Class c = (Class) decl;
+        String name = c.getQualifiedNameString();
+        return name.equals("java.lang::ObjectArray")
+                || name.equals("java.lang::ByteArray")
+                || name.equals("java.lang::ShortArray")
+                || name.equals("java.lang::IntArray")
+                || name.equals("java.lang::LongArray")
+                || name.equals("java.lang::FloatArray")
+                || name.equals("java.lang::DoubleArray")
+                || name.equals("java.lang::BooleanArray")
+                || name.equals("java.lang::CharArray");
+    }
 }
