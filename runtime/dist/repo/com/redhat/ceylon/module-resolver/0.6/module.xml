@@ -31,5 +31,12 @@
         <module name="com.redhat.ceylon.common" slot="0.6"/>
         <module name="org.jboss.jandex"/>
         <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
+        <system export="true">
+            <paths>
+                <path name="javax/xml"/>
+                <path name="javax/xml/namespace"/>
+                <path name="javax/xml/stream"/>
+            </paths>
+        </system>
     </dependencies>
 </module>
