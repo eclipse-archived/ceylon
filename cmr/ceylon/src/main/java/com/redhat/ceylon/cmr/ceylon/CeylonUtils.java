@@ -6,6 +6,7 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.config.Repositories;
 
 import java.io.File;
@@ -30,8 +31,9 @@ public class CeylonUtils {
         private String outRepo;
         private String user;
         private String password;
-        private Logger log;
+        private boolean offline;
         private boolean jdkIncluded;
+        private Logger log;
 
         /**
          * Sets the current working directory to use for encountering the configuration
@@ -141,6 +143,15 @@ public class CeylonUtils {
         }
         
         /**
+         * Enables offline mode that will prevent the module loader from connecting
+         * to remote repositories (defaults to false)
+         */
+        public CeylonRepoManagerBuilder offline(boolean offline){
+            this.offline = offline;
+            return this;
+        }
+        
+        /**
          * Set to true to have JDK modules included in search/completion queries
          */
         public CeylonRepoManagerBuilder isJDKIncluded(boolean include){
@@ -196,51 +207,51 @@ public class CeylonUtils {
             Repositories.Repository cacheRepo = repositories.getCacheRepository();
             final File root = new File(absolute(cacheRepo.getUrl()));
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log);
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config));
 
             // The first two we add in reverse order because they get PREpended to the root
 
             if (outRepo == null) {
-                addRepo(builder, repositories.getOutputRepository(), true);
+                addRepo(config, builder, repositories.getOutputRepository(), true);
             } else {
-                addRepo(builder, repositories, outRepo, true);
+                addRepo(config, builder, repositories, outRepo, true);
             }
 
             if (systemRepo == null) {
-                addRepo(builder, repositories.getSystemRepository(), true);
+                addRepo(config, builder, repositories.getSystemRepository(), true);
             } else {
-                addRepo(builder, repositories, systemRepo, true);
+                addRepo(config, builder, repositories, systemRepo, true);
             }
 
             // The rest we add in the normal order becuase they get APpended to the root
 
             if (jdkIncluded)
-                addRepo(builder, repositories, "jdk", false);
+                addRepo(config, builder, repositories, "jdk", false);
 
             if (userRepos != null && !userRepos.isEmpty()) {
                 // Add user defined repos
                 for (String repo : userRepos) {
-                    addRepo(builder, repositories, repo, false);
+                    addRepo(config, builder, repositories, repo, false);
                 }
             } else {
                 // We add the configured local lookup repos only when no user defined repos have been passed
                 Repositories.Repository[] repos = repositories.getLocalLookupRepositories();
                 for (Repositories.Repository lookup : repos) {
-                    addRepo(builder, lookup, false);
+                    addRepo(config, builder, lookup, false);
                 }
             }
 
             // Add the extra user defined repos
             if (extraUserRepos != null && !extraUserRepos.isEmpty()) {
                 for (String repo : extraUserRepos) {
-                    addRepo(builder, repositories, repo, false);
+                    addRepo(config, builder, repositories, repo, false);
                 }
             }
                 
             // Add globally defined repos (like the user repo and the default remote Herd repo)
             Repositories.Repository[] lookups = repositories.getGlobalLookupRepositories();
             for (Repositories.Repository lookup : lookups) {
-                addRepo(builder, lookup, false);
+                addRepo(config, builder, lookup, false);
             }
 
             // Add the "remote" repos (not necessarily remote but they're called that way
@@ -248,13 +259,13 @@ public class CeylonUtils {
             if (remoteRepos != null && !remoteRepos.isEmpty()) {
                 // Add remote repos
                 for (String repo : remoteRepos) {
-                    addRepo(builder, repositories, repo, false);
+                    addRepo(config, builder, repositories, repo, false);
                 }
             } else {
                 // We add the configured remote lookup repos only when no user defined repos have been passed
                 Repositories.Repository[] repos = repositories.getRemoteLookupRepositories();
                 for (Repositories.Repository lookup : repos) {
-                    addRepo(builder, lookup, false);
+                    addRepo(config, builder, lookup, false);
                 }
             }
 
@@ -327,7 +338,7 @@ public class CeylonUtils {
                 File cachingDir = FileUtil.makeTempDir("ceylonc");
 
                 // HTTP
-                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log);
+                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false);
                 davContentStore.setUsername(user);
                 davContentStore.setPassword(password);
 
@@ -335,7 +346,7 @@ public class CeylonUtils {
             }
         }
 
-        private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
+        private void addRepo(CeylonConfig config, RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
             if (repoInfo != null) {
                 try {
                     String path = absolute(repoInfo.getUrl());
@@ -351,14 +362,14 @@ public class CeylonUtils {
             }
         }
 
-        private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl, boolean prepend) {
+        private void addRepo(CeylonConfig config, RepositoryManagerBuilder builder, Repositories repositories, String repoUrl, boolean prepend) {
             try {
                 if (repoUrl.startsWith("+")) {
                     // The token is the name of a repository defined in the Ceylon configuration file
                     String path = absolute(repoUrl.substring(1));
                     Repositories.Repository repo = repositories.getRepository(path);
                     if (repo != null) {
-                        addRepo(builder, repo, prepend);
+                        addRepo(config, builder, repo, prepend);
                         return;
                     }
                 }
@@ -403,6 +414,10 @@ public class CeylonUtils {
             // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
             // (except for "file:" which we don't support)
             return isHTTP(repo) || "mvn".equals(repo) || repo.startsWith("mvn:") || "aether".equals(repo) || repo.startsWith("aether:") || repo.equals("jdk") || repo.equals("jdk:");
+        }
+        
+        private boolean isOffline(CeylonConfig config) {
+            return offline || config.getBoolOption(DefaultToolOptions.DEFAULTS_OFFLINE, false);
         }
     }
 
