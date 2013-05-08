@@ -19,17 +19,21 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -110,7 +114,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 arg.visit(this);
             }
         }
-        return exprGen.at(invocation).Annotation(exprGen.makeJavaType(annotationClass.getType(), ExpressionTransformer.JT_ANNOTATION), annotationArguments.toList());
+        return exprGen.at(invocation).Annotation(makeAnnotationType(), annotationArguments.toList());
     }
     
     public JCAnnotation transformConstructor(Tree.InvocationExpression invocation) {
@@ -182,12 +186,23 @@ class AnnotationInvocationVisitor extends Visitor {
             }
             
         }
-        JCAnnotation annotation = exprGen.at(invocation).Annotation(exprGen.makeJavaType(annotationClass.getType(), ExpressionTransformer.JT_ANNOTATION), annotationArguments.toList());
+        JCAnnotation annotation = exprGen.at(invocation).Annotation(makeAnnotationType(), annotationArguments.toList());
         return annotation;
+    }
+
+    private JCExpression makeAnnotationType() {
+        if (Decl.isInteropAnnotationClass(annotationClass)) {
+            return exprGen.makeJavaType(annotationConstructor.getType());
+        } else {
+            return exprGen.makeJavaType(annotationClass.getType(), ExpressionTransformer.JT_ANNOTATION);
+        }
     }
 
     private void appendConstructorDefaultParameter(
             ParameterAnnotationArgument parameterArgument) {
+        if (Decl.isInteropAnnotationClass(annotationClass)) {
+            return;
+        }
         String constructorParameterName = parameterArgument.getSourceParameter().getName();
         append(exprGen.naming.makeQuotedQualIdent(
                 exprGen.naming.makeName(annotationConstructor, Naming.NA_FQ | Naming.NA_WRAPPER ),
@@ -275,6 +290,13 @@ class AnnotationInvocationVisitor extends Visitor {
         if (exprGen.isBooleanTrue(term.getDeclaration())
                 || exprGen.isBooleanFalse(term.getDeclaration())) {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
+        } else if (Decl.isInteropAnnotationClass(annotationClass)) {
+            ProducedType type = term.getTypeModel();
+            TypeDeclaration enumDecl = (TypeDeclaration)exprGen.loader().findPackage("java.lang").getDirectMember("Enum", null, false);
+            if (type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)))) {
+                // A Java enum
+                append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, null));
+            }
         } else {
             super.visit(term);
         }
@@ -282,7 +304,13 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public void visit(Tree.MemberOrTypeExpression term) {
         // Metamodel reference
-        append(exprGen.make().Literal(term.getDeclaration().getQualifiedNameString()));
+        if (Decl.isInteropAnnotationClass(annotationClass)) {
+            append(exprGen.naming.makeQualIdent(
+                    exprGen.makeJavaType(((ClassOrInterface)term.getDeclaration()).getType()),
+                    "class"));
+        } else {
+            append(exprGen.make().Literal(term.getDeclaration().getQualifiedNameString()));
+        }
     }
     
     private ListBuffer<JCExpression> startArray() {
