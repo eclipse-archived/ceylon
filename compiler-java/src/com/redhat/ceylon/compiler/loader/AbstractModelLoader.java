@@ -464,8 +464,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
         // add it to its package if it's not an inner class
         if(!classMirror.isInnerClass()){
-            pkg.addMember(d);
             d.setContainer(pkg);
+            pkg.addMember(d);
         }else if(d instanceof ClassOrInterface || d instanceof TypeAlias){
             // do overloads later, since their container is their abstract superclass's container and
             // we have to set that one first
