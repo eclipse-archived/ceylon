@@ -74,8 +74,10 @@ function unflatten(ff, $$$mptypes) {
             for (var i = 0; i < pmeta.length; i++) {
                 if (pmeta[i]['seq'] == 1) {
                     a[i] = seq.skipping(i).sequence;
-                } else {
+                } else if (seq.size > i) {
                     a[i] = seq.get(i);
+                } else {
+                    a[i] = undefined;
                 }
             }
             a[i]=ru.$$targs$$;
