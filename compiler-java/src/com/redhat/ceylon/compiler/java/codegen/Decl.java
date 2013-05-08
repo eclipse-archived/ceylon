@@ -580,6 +580,15 @@ public class Decl {
         }
         return result;
     }
+
+    /** 
+     * Determines whether the given annotation class is a synthetic "proxy" 
+     * created by LazyPackage
+     */
+    public static boolean isAnnotationClassProxy(
+            ClassOrInterface annotationClass) {   
+        return annotationClass.getName().endsWith("$Proxy");
+    }
     
     public static boolean isJavaArray(TypeDeclaration decl) {
         if(decl instanceof Class == false)
