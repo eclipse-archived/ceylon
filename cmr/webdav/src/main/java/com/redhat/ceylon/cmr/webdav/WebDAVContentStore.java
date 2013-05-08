@@ -52,8 +52,8 @@ public class WebDAVContentStore extends URLContentStore {
     private volatile Sardine sardine;
     private boolean forcedAuthenticationForPutOnHerd = false;
 
-    public WebDAVContentStore(String root, Logger log) {
-        super(root, log);
+    public WebDAVContentStore(String root, Logger log, boolean offline) {
+        super(root, log, offline);
     }
 
     protected Sardine getSardine() {
@@ -68,6 +68,9 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     public OpenNode create(Node parent, String child) {
+        if (!connectionAllowed()) {
+            return null;
+        }
         try {
             if(!isHerd())
                 mkdirs(getSardine(), parent);
@@ -78,6 +81,9 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     public ContentHandle peekContent(Node node) {
+        if (!connectionAllowed()) {
+            return null;
+        }
         try {
             final String url = getUrlAsString(node);
             return (getSardine().exists(url) ? new WebDAVContentHandle(url) : null);
@@ -91,8 +97,10 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
+        if (!connectionAllowed()) {
+            return null;
+        }
         final Sardine s = getSardine();
-
         try {
             /*
              * Most disgusting trick ever. Stef failed to set up Sardine to do preemptive auth on all hosts
@@ -159,6 +167,9 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     public Iterable<? extends OpenNode> find(Node parent) {
+        if (!connectionAllowed()) {
+            return Collections.emptyList();
+        }
         final String url = getUrlAsString(parent);
         try {
             final List<OpenNode> nodes = new ArrayList<OpenNode>();
@@ -181,6 +192,9 @@ public class WebDAVContentStore extends URLContentStore {
 
     @Override
     protected boolean urlExists(String path) {
+        if (!connectionAllowed()) {
+            return false;
+        }
         try {
             return getSardine().exists(getUrlAsString(path));
         } catch (IOException e) {
@@ -190,6 +204,9 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     protected boolean urlExists(URL url) {
+        if (!connectionAllowed()) {
+            return false;
+        }
         try {
             return getSardine().exists(url.toExternalForm());
         } catch (IOException e) {
@@ -212,6 +229,9 @@ public class WebDAVContentStore extends URLContentStore {
         }
 
         public boolean hasBinaries() {
+            if (!connectionAllowed()) {
+                return false;
+            }
             try {
                 final List<DavResource> list = getSardine().list(url);
                 return list.size() == 1 && list.get(0).isDirectory() == false;
@@ -222,6 +242,9 @@ public class WebDAVContentStore extends URLContentStore {
         }
 
         public InputStream getBinariesAsStream() throws IOException {
+            if (!connectionAllowed()) {
+                return null;
+            }
             return getSardine().get(url);
         }
 
@@ -230,13 +253,15 @@ public class WebDAVContentStore extends URLContentStore {
         }
 
         public long getLastModified() throws IOException {
-            if(isHerd())
-                return lastModified(new URL(url));
-            final List<DavResource> list = getSardine().list(url);
-            if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
-                Date modified = list.get(0).getModified();
-                if (modified != null) {
-                    return modified.getTime();
+            if (connectionAllowed()) {
+                if(isHerd())
+                    return lastModified(new URL(url));
+                final List<DavResource> list = getSardine().list(url);
+                if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
+                    Date modified = list.get(0).getModified();
+                    if (modified != null) {
+                        return modified.getTime();
+                    }
                 }
             }
             return -1L;

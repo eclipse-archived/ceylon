@@ -18,8 +18,12 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
@@ -61,8 +65,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private String herdCompleteVersionsURL;
     private String herdSearchModulesURL;
 
-    protected URLContentStore(String root, Logger log) {
-        super(log);
+    protected URLContentStore(String root, Logger log, boolean offline) {
+        super(log, offline);
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
@@ -81,6 +85,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     private boolean testHerd() {
+        if (!connectionAllowed()) {
+            // We should never come here, but just in case
+            return false;
+        }
         try{
             URL rootURL = getURL("");
             HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
@@ -119,6 +127,35 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         }
     }
 
+    
+    protected boolean connectionAllowed() {
+        return !offline || rootIsLocalMachine();
+    }
+    
+    private boolean rootIsLocalMachine() {
+        URL url = getURL("");
+        return hostIsLocalMachine(url.getHost());
+    }
+    
+    private boolean hostIsLocalMachine(String host) {
+        Enumeration<NetworkInterface> interfaces;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface nic = interfaces.nextElement();
+                Enumeration<InetAddress> addresses = nic.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    if (host.equalsIgnoreCase(address.getCanonicalHostName()) || host.equalsIgnoreCase(address.getHostAddress())) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            // Ignore error
+        }
+        return false;
+    }
     
     public void setUsername(String username) {
         this.username = username;
@@ -190,16 +227,18 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     protected HttpURLConnection head(final URL url) throws IOException {
-        final URLConnection conn = url.openConnection();
-        if (conn instanceof HttpURLConnection) {
-            HttpURLConnection huc = (HttpURLConnection) conn;
-            huc.setRequestMethod("HEAD");
-            addCredentials(huc);
-            int code = huc.getResponseCode();
-            huc.disconnect();
-            log.debug("Got " + code + " for url: " + url);
-            if (code == 200) {
-                return huc;
+        if (connectionAllowed()) {
+            final URLConnection conn = url.openConnection();
+            if (conn instanceof HttpURLConnection) {
+                HttpURLConnection huc = (HttpURLConnection) conn;
+                huc.setRequestMethod("HEAD");
+                addCredentials(huc);
+                int code = huc.getResponseCode();
+                huc.disconnect();
+                log.debug("Got " + code + " for url: " + url);
+                if (code == 200) {
+                    return huc;
+                }
             }
         }
         return null;
@@ -219,7 +258,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public void completeModules(final ModuleQuery query, final ModuleSearchResult result) {
-        if(isHerd() && herdCompleteModulesURL != null){
+        if(connectionAllowed() && isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
                 WS.getXML(herdCompleteModulesURL,
@@ -254,7 +293,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public void completeVersions(ModuleVersionQuery lookup, final ModuleVersionResult result) {
-        if(isHerd() && herdCompleteVersionsURL != null){
+        if(connectionAllowed() && isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{
                 WS.getXML(herdCompleteVersionsURL,
@@ -317,7 +356,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public void searchModules(final ModuleQuery query, final ModuleSearchResult result) {
-        if(isHerd() && herdSearchModulesURL != null){
+        if(connectionAllowed() && isHerd() && herdSearchModulesURL != null){
             // let's try Herd
             try{
                 WS.getXML(herdSearchModulesURL,

@@ -39,23 +39,25 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  */
 public class RemoteContentStore extends URLContentStore {
 
-    public RemoteContentStore(String root, Logger log) {
-        super(root, log);
+    public RemoteContentStore(String root, Logger log, boolean offline) {
+        super(root, log, offline);
     }
 
     protected InputStream openStream(final URL url) throws IOException {
-        final URLConnection conn = url.openConnection();
-        if (conn instanceof HttpURLConnection) {
-            HttpURLConnection huc = (HttpURLConnection) conn;
-            addCredentials(huc);
-            InputStream stream = conn.getInputStream();
-            int code = huc.getResponseCode();
-            if (code != -1 && code != 200) {
-                log.info("Got " + code + " for url: " + url);
-                return null;
+        if (connectionAllowed()) {
+            final URLConnection conn = url.openConnection();
+            if (conn instanceof HttpURLConnection) {
+                HttpURLConnection huc = (HttpURLConnection) conn;
+                addCredentials(huc);
+                InputStream stream = conn.getInputStream();
+                int code = huc.getResponseCode();
+                if (code != -1 && code != 200) {
+                    log.info("Got " + code + " for url: " + url);
+                    return null;
+                }
+                log.debug("Got " + code + " for url: " + url);
+                return stream;
             }
-            log.debug("Got " + code + " for url: " + url);
-            return stream;
         }
         return null;
     }
