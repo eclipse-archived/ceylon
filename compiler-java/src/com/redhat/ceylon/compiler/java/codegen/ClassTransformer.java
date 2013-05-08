@@ -1554,7 +1554,6 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
-        setter.annotations(expressionGen().transform(decl.getAnnotationList()));
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
 
