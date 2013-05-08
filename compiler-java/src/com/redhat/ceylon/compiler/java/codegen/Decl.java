@@ -585,7 +585,7 @@ public class Decl {
      * Determines whether the given annotation class is a synthetic "proxy" 
      * created by LazyPackage
      */
-    public static boolean isAnnotationClassProxy(
+    public static boolean isInteropAnnotationClass(
             ClassOrInterface annotationClass) {   
         return annotationClass.getName().endsWith("$Proxy");
     }
