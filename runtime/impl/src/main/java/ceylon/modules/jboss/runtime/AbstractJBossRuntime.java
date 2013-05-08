@@ -50,7 +50,7 @@ import com.redhat.ceylon.common.Versions;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
-    public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
+    public Module loadModule(String name, String version, Configuration conf) throws Exception {
         if (RepositoryManager.DEFAULT_MODULE.equals(name)) {
             if (version != null) {
                 throw new CeylonRuntimeException("Invalid module identifier: default module should not have any version");
@@ -93,8 +93,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         }
         try {
             ModuleLoader moduleLoader = createModuleLoader(conf);
-            Module module = moduleLoader.loadModule(moduleIdentifier);
-            return SecurityActions.getClassLoader(module);
+            return moduleLoader.loadModule(moduleIdentifier);
         } catch (ModuleNotFoundException e) {
             String spec = e.getMessage().replace(':', '/');
             final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + " (invalid version?)");

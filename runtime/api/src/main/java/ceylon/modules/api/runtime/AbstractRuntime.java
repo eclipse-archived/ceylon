@@ -46,7 +46,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
      * @return new module instance or null if no such descriptor
      * @throws Exception for any error
      */
-    public static Module loadModule(ClassLoader cl, String moduleName) throws Exception {
+    public static Module loadModuleMetaData(ClassLoader cl, String moduleName) throws Exception {
         final String moduleClassName = moduleName + MODULE_INFO_CLASS;
         try {
             Class<?> klass = cl.loadClass(moduleClassName);
@@ -57,11 +57,11 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
 
     }
 
-    protected Module readModule(String name, File moduleFile) throws Exception {
+    protected Module readModuleMetaData(String name, File moduleFile) throws Exception {
         final URL url = moduleFile.toURI().toURL();
         final ClassLoader parent = getClass().getClassLoader();
         final ClassLoader cl = new URLClassLoader(new URL[]{url}, parent);
-        return loadModule(cl, name);
+        return loadModuleMetaData(cl, name);
     }
 
     protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
@@ -102,8 +102,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         String name = exe.substring(0, p > 0 ? p : exe.length());
         String mv = (p > 0 ? exe.substring(p + 1) : null);
 
-        ClassLoader cl = createClassLoader(name, mv, conf);
-        Module runtimeModule = loadModule(cl, name);
+        org.jboss.modules.Module m = loadModule(name, mv, conf);
+        ClassLoader cl = SecurityActions.getClassLoader(m);
+        Module runtimeModule = loadModuleMetaData(cl, name);
         if (runtimeModule != null) {
             final String mn = runtimeModule.name();
             if (name.equals(mn) == false)

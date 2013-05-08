@@ -17,6 +17,8 @@
 
 package ceylon.modules.spi.runtime;
 
+import org.jboss.modules.Module;
+
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Executable;
 
@@ -35,5 +37,5 @@ public interface Runtime extends Executable {
      * @return module classloader instance
      * @throws Exception for ay error
      */
-    ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception;
+    Module loadModule(String name, String version, Configuration conf) throws Exception;
 }
