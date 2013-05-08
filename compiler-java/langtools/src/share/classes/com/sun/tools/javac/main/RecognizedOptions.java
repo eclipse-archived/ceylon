@@ -150,6 +150,7 @@ public class RecognizedOptions {
         PROCESSORPATH,
         D,
         CEYLONOUT,
+        CEYLONOFFLINE,
         S,
         IMPLICIT,
         ENCODING,
@@ -409,6 +410,7 @@ public class RecognizedOptions {
                 return super.process(options, "-d", arg);
             } 
         },
+        new COption(CEYLONOFFLINE,      "opt.ceylonoffline"),
         new Option(S,                   "opt.arg.directory",    "opt.sourceDest"),
         new Option(IMPLICIT,                                    "opt.implicit",
                 Option.ChoiceKind.ONEOF, "none", "class"),

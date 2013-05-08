@@ -66,6 +66,7 @@ public enum OptionName {
     PROCESSORPATH("-processorpath"),
     D("-d"),
     CEYLONOUT("-out"),
+    CEYLONOFFLINE("-offline"),
     S("-s"),
     IMPLICIT("-implicit:"),
     ENCODING("-encoding"),
