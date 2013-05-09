@@ -553,6 +553,10 @@ public class GenerateJsVisitor extends Visitor
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
+        //Add reference to metamodel
+        out(names.name(d), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        endLine(true);
         share(d);
 
         typeInitialization(that);
@@ -629,6 +633,10 @@ public class GenerateJsVisitor extends Visitor
         that.getClassBody().visit(this);
         returnSelf(d);
         endBlockNewLine();
+        //Add reference to metamodel
+        out(names.name(d), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        endLine(true);
         share(d);
 
         typeInitialization(that);
@@ -768,7 +776,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         };
-        typeInitialization(extendedType, satisfiedTypes, isInterface, decl, type.getAnnotationList(), callback);
+        typeInitialization(extendedType, satisfiedTypes, isInterface, decl, callback);
     }
 
     /** This is now the main method to generate the type initialization code.
@@ -779,7 +787,7 @@ public class GenerateJsVisitor extends Visitor
      * @param callback A callback to add something more to the type initializer in prototype style.
      */
     private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
-            final ClassOrInterface d, final AnnotationList annotations, PrototypeInitCallback callback) {
+            final ClassOrInterface d, PrototypeInitCallback callback) {
 
         //Let's always use initTypeProto to avoid #113
         String initFuncName = "initTypeProto";
@@ -847,10 +855,6 @@ public class GenerateJsVisitor extends Visitor
             callback.addToPrototypeCallback();
         }
         endBlockNewLine();
-        //Add reference to metamodel
-        out(names.name(d), ".$$.$$metamodel$$=");
-        TypeUtils.encodeForRuntime(d, annotations, this);
-        endLine(true);
         out("return ", names.name(d), ";");
         endBlockNewLine();
         //If it's nested, share the init function
@@ -2232,8 +2236,12 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         out("}");
         endLine();
+        //Add reference to metamodel
+        out(names.name(c), ".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(c, null/*TODO check if an object arg can have annotations */, this);
+        endLine(true);
 
-        typeInitialization(xt, sts, false, c, null/*TODO check if an object arg can have annotations */, new PrototypeInitCallback() {
+        typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
                 addToPrototype(c, body.getStatements());

@@ -479,7 +479,8 @@ public class TypeUtils {
             ProducedType pt, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
-            pt = ((TypeDeclaration)pkg.getModule().getLanguageModule().getDirectPackage("ceylon.language").getDirectMember("Anything", null, false)).getType();
+            pt = ((TypeDeclaration)pkg.getModule().getLanguageModule().getDirectPackage(
+                    "ceylon.language").getDirectMember("Anything", null, false)).getType();
         }
         TypeDeclaration type = pt.getDeclaration();
         if (type.isAlias()) {
