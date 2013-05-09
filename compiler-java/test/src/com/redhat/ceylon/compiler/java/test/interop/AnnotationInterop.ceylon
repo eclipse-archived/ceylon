@@ -43,9 +43,13 @@ javaAnnotationPrimitives {
 }
 javaAnnotationClass {
     clas=String;
+    classRaw=String;
     classWithBound=Exception;
+    classExact=String;
     classes={String, Object};
+    classesRaw={String, Object};
     classesWithBound={Exception, AssertionException};
+    classesExact={String};
 }
 javaAnnotationEnum {
     threadState=new;

@@ -27,9 +27,13 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 @interface JavaAnnotationClass {
     java.lang.Class<?> clas();
+    java.lang.Class classRaw();
     java.lang.Class<? extends java.lang.Throwable> classWithBound();
+    java.lang.Class<java.lang.String> classExact();
     java.lang.Class<?>[] classes();
+    java.lang.Class[] classesRaw();
     java.lang.Class<? extends java.lang.Throwable>[] classesWithBound();
+    java.lang.Class<java.lang.String>[] classesExact();
 }
 
 @interface JavaAnnotationAnnotation {
