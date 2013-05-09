@@ -103,6 +103,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         String mv = (p > 0 ? exe.substring(p + 1) : null);
 
         org.jboss.modules.Module m = loadModule(name, mv, conf);
+        mv = m.getIdentifier().getSlot();
         ClassLoader cl = SecurityActions.getClassLoader(m);
         Module runtimeModule = loadModuleMetaData(cl, name);
         if (runtimeModule != null) {

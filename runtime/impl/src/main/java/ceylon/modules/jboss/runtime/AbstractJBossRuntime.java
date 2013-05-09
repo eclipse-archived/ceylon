@@ -58,28 +58,33 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         } else {
             if (version == null) {
                 Set<String> localVersions = getVersions(name, conf, true);
-                Set<String> remoteVersions = getVersions(name, conf, false);
-                remoteVersions.removeAll(localVersions);
-                StringBuilder sb = new StringBuilder("Invalid module identifier: missing required version");
-                if (localVersions.isEmpty() && remoteVersions.isEmpty()) {
-                    sb.append(" (should be of the form ");
-                    sb.append(name);
-                    sb.append("/version)");
-                } else {
-                    sb.append("\nTry any of the following ");
-                }
-                if (!localVersions.isEmpty()) {
-                    sb.append("locally installed versions:");
-                    appendVersions(sb, name, localVersions);
-                }
-                if (!remoteVersions.isEmpty()) {
-                    if (!localVersions.isEmpty()) {
-                        sb.append("\nOr any of the ");
+                if (localVersions.size() != 1) {
+                    Set<String> remoteVersions = getVersions(name, conf, false);
+                    remoteVersions.removeAll(localVersions);
+                    StringBuilder sb = new StringBuilder("Invalid module identifier: missing required version");
+                    if (localVersions.isEmpty() && remoteVersions.isEmpty()) {
+                        sb.append(" (should be of the form ");
+                        sb.append(name);
+                        sb.append("/version)");
+                    } else {
+                        sb.append("\nTry any of the following ");
                     }
-                    sb.append("remotely available versions:");
-                    appendVersions(sb, name, remoteVersions);
+                    if (!localVersions.isEmpty()) {
+                        sb.append("locally installed versions:");
+                        appendVersions(sb, name, localVersions);
+                    }
+                    if (!remoteVersions.isEmpty()) {
+                        if (!localVersions.isEmpty()) {
+                            sb.append("\nOr any of the ");
+                        }
+                        sb.append("remotely available versions:");
+                        appendVersions(sb, name, remoteVersions);
+                    }
+                    throw new CeylonRuntimeException(sb.toString());
+                } else {
+                    // Automatically select the only locally available version
+                    version = localVersions.iterator().next();
                 }
-                throw new CeylonRuntimeException(sb.toString());
             }
         }
         
