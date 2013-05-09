@@ -121,6 +121,8 @@ public class InvocationGenerator {
         }
     }
 
+    /** Generates the code to evaluate the expressions in the named argument list and assign them
+     * to variables, then returns a map with the parameter names and the corresponding variable names. */
     Map<String, String> defineNamedArguments(Tree.NamedArgumentList argList) {
         Map<String, String> argVarNames = new HashMap<String, String>();
         for (Tree.NamedArgument arg: argList.getNamedArguments()) {
