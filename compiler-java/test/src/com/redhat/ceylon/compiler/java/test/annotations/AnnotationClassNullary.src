@@ -105,7 +105,9 @@ class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.jav
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class)
 final class annotationClassNullary_ {
     
     private annotationClassNullary_() {
@@ -121,7 +123,9 @@ final class annotationClassNullary_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullary_.annotationClassNullary();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.class)
 final class annotationClassNullarySequenced_ {
     
     private annotationClassNullarySequenced_() {

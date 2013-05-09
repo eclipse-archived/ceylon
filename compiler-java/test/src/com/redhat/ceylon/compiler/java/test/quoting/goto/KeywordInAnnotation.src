@@ -22,7 +22,9 @@ public class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.class)
 public final class enum_ {
     
     private enum_() {

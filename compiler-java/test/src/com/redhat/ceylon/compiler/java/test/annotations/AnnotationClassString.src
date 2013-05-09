@@ -269,7 +269,9 @@ class AnnotationClassStringVariadic implements .com.redhat.ceylon.compiler.java.
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringVariadic.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassString_ {
     
     private annotationClassString_() {
@@ -280,7 +282,9 @@ final class annotationClassString_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString(s);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {-32768}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassStringStatic_ {
     
     private annotationClassStringStatic_() {
@@ -297,7 +301,9 @@ final class annotationClassStringStatic_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.annotationClassStringStatic();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassStringDropped_ {
     
     private annotationClassStringDropped_() {
@@ -308,7 +314,9 @@ final class annotationClassStringDropped_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString(s);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {1}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {1},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.class)
 final class annotationClassStringDropped2_ {
     
     private annotationClassStringDropped2_() {
@@ -319,7 +327,9 @@ final class annotationClassStringDropped2_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString(s);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.class)
 final class annotationClassStringDefaulted_ {
     
     private annotationClassStringDefaulted_() {
@@ -335,7 +345,11 @@ final class annotationClassStringDefaulted_ {
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringDefaulted_.annotationClassStringDefaulted();
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes"), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes"), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.s), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "baz")})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "yes"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassStringStatic_.s),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation(s = "baz")})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotation})
 class AnnotationClassString_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

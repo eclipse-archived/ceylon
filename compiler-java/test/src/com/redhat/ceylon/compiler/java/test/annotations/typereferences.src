@@ -3,7 +3,11 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Shared$annotation
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
 public interface References<T> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -11,26 +15,42 @@ public interface References<T> {
     
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Formal$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Interface|T", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.annotations::Interface|T",
+            erased = true)
     public abstract .java.lang.Object iface();
     
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Formal$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::Klass|T", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.annotations::Klass|T",
+            erased = true)
     public abstract .java.lang.Object klass();
     
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Formal$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member|T", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member|T",
+            erased = true)
     public abstract .java.lang.Object memberKlass();
     
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Formal$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member.MemberMember|T", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.annotations::MemberKlass.Member.MemberMember|T",
+            erased = true)
     public abstract .java.lang.Object memberMember();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore

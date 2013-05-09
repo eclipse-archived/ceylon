@@ -24,7 +24,9 @@ class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget.class)
 final class annotationTarget_ {
     
     private annotationTarget_() {
@@ -64,7 +66,9 @@ class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2.class)
 final class annotationTarget2_ {
     
     private annotationTarget2_() {

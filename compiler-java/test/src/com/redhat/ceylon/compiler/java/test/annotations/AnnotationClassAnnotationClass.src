@@ -21,7 +21,9 @@ class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.class)
 final class annotationClassParam_ {
     
     private annotationClassParam_() {
@@ -142,7 +144,9 @@ class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon.compi
         return sb$.getSequence();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class)
 final class annotationClassAnnotationClassSequence_ {
     
     private annotationClassAnnotationClassSequence_() {
@@ -194,7 +198,9 @@ class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.comp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.class)
 final class annotationClassAnnotationClass_ {
     
     private annotationClassAnnotationClass_() {
@@ -205,8 +211,12 @@ final class annotationClassAnnotationClass_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass(a);
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor")), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class"))})
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation(params = {@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor"), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class")})})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor")),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class"))})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation(params = {
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class")})})
 class AnnotationClassAnnotationClass_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassAnnotationClass_callsite() {

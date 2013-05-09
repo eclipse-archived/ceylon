@@ -7,7 +7,11 @@ final class bug676_ {
     
     static void bug676() {
         .ceylon.language.Integer $l$1;
-        if (($l$1 = .ceylon.language.array_.<.ceylon.language.Integer>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.Integer.class, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), null, .ceylon.language.Integer.instance(3L)})).getLast()) != null) {
+        if (($l$1 = .ceylon.language.array_.<.ceylon.language.Integer>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.Integer.class, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                null,
+                .ceylon.language.Integer.instance(3L)})).getLast()) != null) {
             final long $l$2 = $l$1.longValue();
         }
     }

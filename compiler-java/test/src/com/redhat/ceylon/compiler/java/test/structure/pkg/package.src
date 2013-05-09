@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.pkg;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Package(name = "com.redhat.ceylon.compiler.java.test.structure.pkg", doc = "Great documentation", shared = true)
+@.com.redhat.ceylon.compiler.java.metadata.Package(
+        name = "com.redhat.ceylon.compiler.java.test.structure.pkg",
+        doc = "Great documentation",
+        shared = true)
 @.ceylon.language.Doc$annotation(description = "Great documentation")
 @.ceylon.language.Shared$annotation
 final class package_ {

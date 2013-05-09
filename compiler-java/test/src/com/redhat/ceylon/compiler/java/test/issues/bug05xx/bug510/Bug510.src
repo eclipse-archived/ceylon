@@ -2,14 +2,20 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
-@.com.redhat.ceylon.compiler.java.metadata.Container(name = "Bug510", javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510", packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        name = "Bug510",
+        javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510",
+        packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")
 interface Bug510$Bug510inner {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$impl.Bug510inner$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$bug510$Bug510$impl$Bug510inner$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Bug510inner", javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner", packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Bug510inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")})
 interface Bug510 {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

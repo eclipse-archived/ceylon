@@ -13,7 +13,11 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>>"})
-        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "T",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
         class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>> {
             
             Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -83,7 +87,9 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.ceylon.language.Shared$annotation
             @.ceylon.language.Actual$annotation
-            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+                    @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>")
             public final Local<T> plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")

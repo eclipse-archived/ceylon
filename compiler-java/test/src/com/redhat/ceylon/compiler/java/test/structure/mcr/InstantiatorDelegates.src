@@ -373,7 +373,9 @@ final class instantiatorDelegates_ {
             }
             returning $arg$38$callable$.Sequenced$new($arg$38$0, $arg$38$1);
         );
-        a.Sequenced$new(true, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)}));
+        a.Sequenced$new(true, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L)}));
         (
             let
             {

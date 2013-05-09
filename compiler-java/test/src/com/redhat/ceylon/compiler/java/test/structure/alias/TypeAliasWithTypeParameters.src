@@ -43,7 +43,11 @@ final class TypeAliasWithTypeParameters1 {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<T>")
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
 final class TypeAliasWithTypeParameters2<T> {
     
     private TypeAliasWithTypeParameters2() {
@@ -51,7 +55,17 @@ final class TypeAliasWithTypeParameters2<T> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "V", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "T",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "V",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
 final class TypeAliasWithTypeParameters3<T, V> {
     
     private TypeAliasWithTypeParameters3() {
@@ -59,7 +73,17 @@ final class TypeAliasWithTypeParameters3<T, V> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "V", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "T",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "V",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
 final class TypeAliasWithTypeParameters4<T, V> {
     
     private TypeAliasWithTypeParameters4() {
@@ -72,9 +96,13 @@ final class typeAliasWithTypeParametersMethod1_ {
     private typeAliasWithTypeParametersMethod1_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>",
+            erased = true)
     static .java.lang.Object typeAliasWithTypeParametersMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>",
+            erased = true)
     final .java.lang.Object f) {
         return f;
     }
@@ -86,9 +114,13 @@ final class typeAliasWithTypeParametersMethod2_ {
     private typeAliasWithTypeParametersMethod2_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>",
+            erased = true)
     static .java.lang.Object typeAliasWithTypeParametersMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>", erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>",
+            erased = true)
     final .java.lang.Object f) {
         return f;
     }
@@ -101,7 +133,17 @@ final class typeAliasWithTypeParametersMethod3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "V", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "T",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "V",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
     static <T, V>.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass<T> typeAliasWithTypeParametersMethod3(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
@@ -118,7 +160,17 @@ final class typeAliasWithTypeParametersMethod4_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "V", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "T",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "V",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
     static <T, V>.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<V> typeAliasWithTypeParametersMethod4(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, @.com.redhat.ceylon.compiler.java.metadata.Name("f")

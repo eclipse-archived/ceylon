@@ -52,7 +52,9 @@ class AnnotationClassBoolean implements .com.redhat.ceylon.compiler.java.runtime
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean.class)
 final class annotationClassBoolean_ {
     
     private annotationClassBoolean_() {
@@ -217,7 +219,9 @@ class AnnotationClassBooleanVariadic implements .com.redhat.ceylon.compiler.java
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {256}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {256},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
 final class annotationClassVariadicVariadic_ {
     
     private annotationClassVariadicVariadic_() {
@@ -242,7 +246,9 @@ final class annotationClassVariadicVariadic_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic(b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {256}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {256},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
 final class annotationClassVariadicSequence_ {
     
     private annotationClassVariadicSequence_() {
@@ -253,7 +259,9 @@ final class annotationClassVariadicSequence_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic(b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {256}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {256},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.class)
 final class annotationClassVariadicIterable_ {
     
     private annotationClassVariadicIterable_() {
@@ -316,7 +324,9 @@ class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compiler.java
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
 final class annotationClassSequenceVariadic_ {
     
     private annotationClassSequenceVariadic_() {
@@ -341,7 +351,9 @@ final class annotationClassSequenceVariadic_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence(b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence.class)
 final class annotationClassSequenceSequence_ {
     
     private annotationClassSequenceSequence_() {
@@ -404,7 +416,9 @@ class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compiler.java
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
 final class annotationClassIterableVariadic_ {
     
     private annotationClassIterableVariadic_() {
@@ -429,7 +443,9 @@ final class annotationClassIterableVariadic_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable(b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
 final class annotationClassIterableSequence_ {
     
     private annotationClassIterableSequence_() {
@@ -440,7 +456,9 @@ final class annotationClassIterableSequence_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable(b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(arguments = {0}, annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        annotationClass = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable.class)
 final class annotationClassIterableIterable_ {
     
     private annotationClassIterableIterable_() {
@@ -451,10 +469,40 @@ final class annotationClassIterableIterable_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable(b);
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.x), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.x)})
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {true, false}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {true, false}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {true, false}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = true), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {})})
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {true, false}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {true, false})})
-@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {true, false}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {true, false}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {}), @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {true, false})})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.x),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.x)})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = true),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {})})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {
+                true,
+                false})})
+@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotations({
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {
+                true,
+                false})})
 class AnnotationClassBoolean_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassBoolean_callsite() {

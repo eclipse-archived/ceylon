@@ -2,7 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Inner", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Inner",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
 interface OuterClass$outerMethod$0$InnerInterface<Inner> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -10,9 +14,16 @@ interface OuterClass$outerMethod$0$InnerInterface<Inner> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "InnerClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "InnerClass",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Outer", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Outer",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
 public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public OuterClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -30,9 +41,16 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "OuterClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "OuterClass",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Inner", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Inner",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
     public class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -57,7 +75,11 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
     final .java.lang.Object o) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Inner", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Inner",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
         class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -113,9 +135,22 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Container(name = "OuterInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        name = "OuterInterface",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Outer", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Inner", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Outer",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Inner",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
 public interface OuterInterface$InnerInterface<Outer, Inner> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -123,9 +158,16 @@ public interface OuterInterface$InnerInterface<Outer, Inner> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "InnerInterface", javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$InnerInterface", packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "InnerInterface",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$InnerInterface",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Outer", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Outer",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
 public interface OuterInterface<Outer> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -162,7 +204,11 @@ public final class OuterInterface$impl<Outer> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Inner", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Inner",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
 interface outerMethod$0$InnerInterface_<Inner> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -183,7 +229,11 @@ public final class outerMethod_ {
     final .java.lang.Object o) {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Inner", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}, caseTypes = {})})
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Inner",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
         class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -239,7 +289,10 @@ public final class outerMethod_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.ceylon.language.Shared$annotation
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "InnerClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "InnerClass",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -253,7 +306,10 @@ public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "OuterClass2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2", packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "OuterClass2",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.reified")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         

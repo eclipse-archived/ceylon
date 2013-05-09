@@ -10,7 +10,10 @@ public final class bug640_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class);
-                .ceylon.language.Iterable $arg$0$0 = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept()});
+                .ceylon.language.Iterable $arg$0$0 = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class), new .java.lang.Object[]{
+                        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(),
+                        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept(),
+                        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept()});
             }
             returning .ceylon.language.array_.<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept>array($arg$0$reified$0, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug640.Accept.class, $arg$0$0);
         );
@@ -19,7 +22,10 @@ public final class bug640_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$1$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")});
+                .ceylon.language.Iterable $arg$1$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
+                        .ceylon.language.String.instance("aap"),
+                        .ceylon.language.String.instance("noot"),
+                        .ceylon.language.String.instance("mies")});
             }
             returning .ceylon.language.array_.<.ceylon.language.String>array($arg$1$reified$0, .ceylon.language.String.class, $arg$1$0);
         );
@@ -28,7 +34,10 @@ public final class bug640_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .ceylon.language.Iterable $arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)});
+                .ceylon.language.Iterable $arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.Integer.instance(3L)});
             }
             returning .ceylon.language.array_.<.ceylon.language.Integer>array($arg$2$reified$0, .ceylon.language.Integer.class, $arg$2$0);
         );

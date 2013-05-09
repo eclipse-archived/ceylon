@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Package(name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a", doc = "Module A doc", by = {"Tom"}, shared = false)
+@.com.redhat.ceylon.compiler.java.metadata.Package(
+        name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a",
+        doc = "Module A doc",
+        by = {"Tom"},
+        shared = false)
 @.ceylon.language.Doc$annotation(description = "Module A doc")
 @.ceylon.language.Authors$annotation(authors = "Tom")
 final class package_ {

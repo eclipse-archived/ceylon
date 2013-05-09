@@ -43,7 +43,10 @@ class MemberOverriding_Bar extends .com.redhat.ceylon.compiler.java.test.structu
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Inner", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.Inner", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     MemberOverriding_Super() {
@@ -58,8 +61,13 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Default$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Super", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "MemberOverriding_Super",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
     public final class Inner {
         
         private Inner() {
@@ -81,7 +89,10 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Inner", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.Inner", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
 class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
     
@@ -98,8 +109,13 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub1", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "MemberOverriding_Sub1",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     public final class Inner {
         
         private Inner() {
@@ -121,7 +137,10 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Inner", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.Inner", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
 class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
     
@@ -138,8 +157,13 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Actual$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "MemberOverriding_Sub2",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     public final class Inner {
         
         private Inner() {
@@ -161,7 +185,10 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Inner", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
 class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
     
@@ -178,9 +205,14 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Actual$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub3", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "MemberOverriding_Sub3",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     public class Inner extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
         
         protected Inner() {
@@ -209,7 +241,10 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Inner", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
 class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
     
@@ -225,9 +260,14 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Actual$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub4", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "MemberOverriding_Sub4",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     public class Inner extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
         
         protected Inner() {
@@ -256,7 +296,10 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
-@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Inner", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
 class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
     
@@ -272,9 +315,14 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
     @.ceylon.language.Shared$annotation
     @.ceylon.language.Actual$annotation
-    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberOverriding_Sub5", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "MemberOverriding_Sub5",
+            javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5",
+            packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     public class Inner extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar {
         
         protected Inner() {
