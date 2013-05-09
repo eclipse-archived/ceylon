@@ -266,7 +266,12 @@ public class LazyPackage extends Package {
                 String elementTypeName = eType.getDeclaration().getQualifiedNameString();
                 if ("java.lang::String".equals(elementTypeName)) {
                     elementType = unit.getStringDeclaration().getType();
-                } else if ("java.lang.Class".equals(eType.getUnderlyingType())) {
+                } else if ("java.lang::Class".equals(elementTypeName)
+                        || "java.lang.Class".equals(eType.getUnderlyingType())) {
+                    // Two cases because the types 
+                    // Class[] and Class<?>[] are treated differently by 
+                    // AbstractModelLoader.obtainType()
+                    
                     // TODO Replace with metamodel ClassOrInterface type
                     // once we have support for metamodel references
                     elementType = unit.getAnythingDeclaration().getType();
