@@ -6,12 +6,12 @@ var exports;//IGNORE
 function Callable(wat) {
     return wat;
 }
+Callable.$$metamodel$$={$nm:'Callable',$mt:'ifc',$an:function(){return[shared()];}};
 exports.Callable=Callable;
 function $init$Callable() {
     if (Callable.$$===undefined) {
         initType(Callable, 'ceylon.language::Callable');
     }
-    Callable.$$.$$metamodel$$={$nm:'Callable',$mt:'ifc'};
     return Callable;
 }
 exports.$init$Callable=$init$Callable;
@@ -46,7 +46,7 @@ function JsCallable(o,f) {
 	return (o !== null) ? function() { return f.apply(o, arguments); }
 	                    : noop;
 }
-JsCallable.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}}};
+JsCallable.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];}};
 
 //This is used for spread method references
 function JsCallableList(value) {
@@ -59,7 +59,7 @@ function JsCallableList(value) {
         return ArraySequence(rval);
     };
 }
-JsCallableList.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}}};
+JsCallableList.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];}};
 
 exports.JsCallableList=JsCallableList;
 exports.JsCallable=JsCallable;

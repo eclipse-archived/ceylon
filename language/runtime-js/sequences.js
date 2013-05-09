@@ -13,6 +13,8 @@ function Array$() {
     List(that);
     return that;
 }
+Array$.$$metamodel$$={$nm:'Array',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract(),native()];}};
+
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Cloneable, Ranged, $init$List());
 var Array$proto = Array.prototype;
@@ -149,6 +151,8 @@ exports.array=function(elems, $$$ptypes) {
     e.$$targs$$=$$$ptypes;
     return e;
 }
+exports.array.$$metamodel$$={$nm:'array',$mt:'mthd',$an:function(){return[shared()];}};
+
 exports.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
         var elems = [];
@@ -159,6 +163,7 @@ exports.arrayOfSize=function(size, elem, $$$mptypes) {
         return elems;
     } else return [];
 }
+exports.arrayOfSize.$$metamodel$$={$nm:'arrayOfSize',$mt:'mthd',$an:function(){return[shared()];}};
 
 function TypeCategory(seq, type) {
     var that = new TypeCategory.$$;
@@ -178,6 +183,8 @@ function SequenceBuilder($$targs$$) {
     that.$$targs$$=$$targs$$;
     return that;
 }
+SequenceBuilder.$$metamodel$$={$nm:'SequenceBuilder',$mt:'cls',$ps:[],$an:function(){return[shared()];}};
+
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 defineAttr(SequenceBuilder$proto, 'sequence', function() {
@@ -200,6 +207,8 @@ function SequenceAppender(other, $$targs$$) {
     that.appendAll(other);
     return that;
 }
+SequenceAppender.$$metamodel$$={$nm:'SequenceAppender',$mt:'cls',$ps:[],$an:function(){return[shared()];}};
+
 initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
 
 exports.Sequence=Sequence;

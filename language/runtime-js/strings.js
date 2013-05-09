@@ -12,6 +12,8 @@ function String$(value,size) {
     that.codePoints = size;
     return that;
 }
+String$.$$metamodel$$={$nm:'String',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract(),native()];}};
+
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
         Ranged, Summable, Cloneable);
 var origStrToString = String.prototype.toString;
@@ -519,6 +521,8 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
+StringIterator.$$metamodel$$={$nm:'StringIterator',$mt:'cls',$ps:[{t:String$}],$an:function(){return[shared()];}};
+
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
 StringIterator$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
@@ -558,6 +562,8 @@ function Character(value) {
     that.value = value;
     return that;
 }
+Character.$$metamodel$$={$nm:'Character',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract()];}};
+
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
 defineAttr(Character$proto, 'string', function(){ return String$(codepointToString(this.value)); });
@@ -662,6 +668,8 @@ function StringBuilder(/*String...*/comps) {
     }
     return that;
 }
+StringBuilder.$$metamodel$$={$nm:'StringBuilder',$mt:'cls',$ps:[],$an:function(){return[shared()];}};
+
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
 defineAttr(StringBuilder$proto, 'string', function(){ return String$(this.value); });

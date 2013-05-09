@@ -142,6 +142,7 @@ function Object$(wat) {
     return wat;
 }
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
+Object$.$$metamodel$$={$nm:'Object',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract()]}};
 var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
@@ -159,6 +160,7 @@ function $identityHash(x) {
 
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable");
+Identifiable.$$metamodel$$={$nm:'Identifiable',$mt:'ifc',$an:function(){return[shared()]}};
 function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
@@ -178,6 +180,7 @@ function Number$(wat) {
     return wat;
 }
 initType(Number$, 'ceylon.language::Number');
+Number$.$$metamodel$$={$nm:'Number',$mt:'ifc',$an:function(){return[shared()]}};
 exports.Number=Number$;
 function $init$Number$() {
     if (Number$.$$===undefined) {
@@ -192,6 +195,7 @@ function $init$Number$() {
 function getNull() { return null }
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
+Boolean$.$$metamodel$$={$nm:'Boolean',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract()]}};
 function trueClass() {}
 initType(trueClass, "ceylon.language::true", Boolean$);
 function falseClass() {}
@@ -218,6 +222,7 @@ function Comparison(name) {
     return that;
 }
 initTypeProto(Comparison, 'ceylon.language::Comparison', $init$Basic());
+Comparison.$$metamodel$$={$nm:'Comparison',$mt:'cls',$ps:[{t:String$}],$an:function(){return[shared(),abstract()]}};
 var Comparison$proto = Comparison.$$.prototype;
 defineAttr(Comparison$proto, 'string', function(){ return this.name; });
 
@@ -242,7 +247,7 @@ function NativeException(e) {
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-
+NativeException.$$metamodel$$={$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];}};
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.Object=Object$;
