@@ -69,13 +69,14 @@ function isOfType(obj, type) {
                     var cmptype = type.a[i];
                     var tmpobj = obj;
                     var iance = null;
-                    if (type.t.$$.$$metamodel$$ && type.t.$$.$$metamodel$$.$tp && type.t.$$.$$metamodel$$.$tp[i]) iance=type.t.$$.$$metamodel$$.$tp[i]['var'];
+                    if (type.t.$$metamodel$$ && type.t.$$metamodel$$.$tp && type.t.$$metamodel$$.$tp[i]) iance=type.t.$$metamodel$$.$tp[i]['var'];
                     if (iance === null) {
                         //Type parameter may be in the outer type
                         while (iance===null && tmpobj.$$outer !== undefined) {
                             tmpobj=tmpobj.$$outer;
-                            if (tmpobj.constructor && tmpobj.constructor.$$metamodel$$ && tmpobj.constructor.$$metamodel$$.$tp && tmpobj.constructor.$$metamodel$$.$tp[i]) {
-                                iance=tmpobj.constructor.$$metamodel$$.$tp[i]['var'];
+                            var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
+                            if (_tmpf.$$metamodel$$ && _tmpf.$$metamodel$$.$tp && _tmpf.$$metamodel$$.$tp[i]) {
+                                iance=_tmpf.$$metamodel$$.$tp[i]['var'];
                             }
                         }
                     }
@@ -235,10 +236,12 @@ function className(obj) {
     }
     return String$(tn);
 }
+className.$$metamodel$$={$nm:'className',$mt:'mthd',$an:function(){return[shared()];}};
 
 function identityHash(obj) {
     return obj.BasicID;
 }
+identityHash.$$metamodel$$={$nm:'identityHash',$mt:'mthd',$an:function(){return[shared()];}};
 
 function set_type_args(obj, targs) {
     if (obj.$$targs$$ === undefined) {
