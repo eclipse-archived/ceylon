@@ -1,3 +1,5 @@
+import ceylon.language.metamodel{type}
+
 shared annotation class AnnoTest1(text,count=1) {
   shared String text;
   shared Integer count;
@@ -16,6 +18,12 @@ shared class Example2() {
 
 annotest2{count=5;}
 shared void test() {
-  print(Example1());
-  print(Example2());
+  print(type(null));
+  print(type(Example1()));
+  print(type(Example2));
+  print(type(test));
+  print(type("hello"));
+  print(type("hello".initial));
+  print(type({1,2,4,5}));
+  print(type(1..2));
 }
