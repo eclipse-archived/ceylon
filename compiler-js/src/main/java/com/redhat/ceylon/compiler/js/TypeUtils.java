@@ -370,7 +370,7 @@ public class TypeUtils {
     }
 
     /** Output a metamodel map for runtime use. */
-    static void encodeForRuntime(Declaration d, GenerateJsVisitor gen) {
+    static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
         gen.out("{", MetamodelGenerator.KEY_NAME, ":'", d.getNameAsString(),
                 "',", MetamodelGenerator.KEY_METATYPE, ":'");
         List<TypeParameter> tparms = null;
@@ -449,7 +449,7 @@ public class TypeUtils {
             gen.out("}");
         }
         if (satisfies != null) {
-            gen.out(",'satisfies':[");
+            gen.out(",satisfies:[");
             boolean first = true;
             for (ProducedType st : satisfies) {
                 if (!first)gen.out(",");
@@ -457,6 +457,16 @@ public class TypeUtils {
                 metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
             }
             gen.out("]");
+        }
+        if (annotations != null && !annotations.getAnnotations().isEmpty()) {
+            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
+            boolean first = true;
+            for (Tree.Annotation a : annotations.getAnnotations()) {
+                //Filter out the obvious ones, FOR NOW
+                if (first) first=false; else gen.out(",");
+                gen.getInvoker().generateInvocation(a);
+            }
+            gen.out("];}");
         }
         gen.out("}");
     }

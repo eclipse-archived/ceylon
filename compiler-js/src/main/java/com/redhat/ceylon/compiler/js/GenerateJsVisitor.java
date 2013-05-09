@@ -153,6 +153,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     TypeUtils getTypeUtils() { return types; }
+    InvocationGenerator getInvoker() { return invoker; }
 
     /** Returns the helper component to handle naming. */
     JsIdentifierNames getNames() { return names; }
@@ -767,7 +768,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         };
-        typeInitialization(extendedType, satisfiedTypes, isInterface, decl, callback);
+        typeInitialization(extendedType, satisfiedTypes, isInterface, decl, type.getAnnotationList(), callback);
     }
 
     /** This is now the main method to generate the type initialization code.
@@ -778,7 +779,7 @@ public class GenerateJsVisitor extends Visitor
      * @param callback A callback to add something more to the type initializer in prototype style.
      */
     private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
-            final ClassOrInterface d, PrototypeInitCallback callback) {
+            final ClassOrInterface d, final AnnotationList annotations, PrototypeInitCallback callback) {
 
         //Let's always use initTypeProto to avoid #113
         String initFuncName = "initTypeProto";
@@ -848,7 +849,7 @@ public class GenerateJsVisitor extends Visitor
         endBlockNewLine();
         //Add reference to metamodel
         out(names.name(d), ".$$.$$metamodel$$=");
-        TypeUtils.encodeForRuntime(d, this);
+        TypeUtils.encodeForRuntime(d, annotations, this);
         endLine(true);
         out("return ", names.name(d), ";");
         endBlockNewLine();
@@ -1128,7 +1129,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.self(outer), ".");
             }
             out(names.name(m), ".$$metamodel$$=");
-            TypeUtils.encodeForRuntime(m, this);
+            TypeUtils.encodeForRuntime(m, that.getAnnotationList(), this);
             endLine(true);
             share(m);
         }
@@ -1164,7 +1165,7 @@ public class GenerateJsVisitor extends Visitor
             methodDefinition(that);
             //Add reference to metamodel
             out(names.name(d), ".$$metamodel$$=");
-            TypeUtils.encodeForRuntime(d, this);
+            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out(";//", names.name(d), ".$$targs$$=");
             Map<TypeParameter, ProducedType> _parms = new HashMap<>();
             for (TypeParameter ctp : types.callable.getTypeParameters()) {
@@ -1266,7 +1267,7 @@ public class GenerateJsVisitor extends Visitor
         methodDefinition(that);
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(d, this);
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         out(";");
     }
 
@@ -2232,7 +2233,7 @@ public class GenerateJsVisitor extends Visitor
         out("}");
         endLine();
 
-        typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
+        typeInitialization(xt, sts, false, c, null/*TODO check if an object arg can have annotations */, new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
                 addToPrototype(c, body.getStatements());
@@ -2661,22 +2662,17 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(AnnotationList that) {}
+    public void visit(AnnotationList that) {
+        out("/*anotaciones:");
+        for (Annotation ann : that.getAnnotations()) {
+            out(ann.getTypeModel().getProducedTypeQualifiedName(),",");
+        }
+        out("*/");
+    }
 
     void self(TypeDeclaration d) {
         out(names.self(d));
     }
-
-    /* * Output the name of a variable that receives the type parameter info, usually in the class constructor. * /
-    private void selfTypeParameters(TypeDeclaration d) {
-        out(selfTypeParametersString(d));
-    }
-    private String selfTypeParametersString(TypeDeclaration d) {
-        return "$$typeParms" + d.getName();
-    }*/
-    /*private void self() {
-        out("$$");
-    }*/
 
     private boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
