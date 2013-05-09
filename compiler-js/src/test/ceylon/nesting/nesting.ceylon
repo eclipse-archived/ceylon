@@ -71,7 +71,7 @@ shared class Unwrapper() {
 }
 
 Callable<Object,[]> producer() {
-    Object o = 123;
+    Integer o = 123;
     function produce() { return o; }
     return produce;
 }
