@@ -473,17 +473,17 @@ final class annotationClassIterableIterable_ {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.x),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation(b = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.x)})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
-                true,
-                false}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
-                true,
-                false}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
-                true,
-                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {}),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = true),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {})})
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
+                true,
+                false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation(b = {
+                true,
+                false})})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotations({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation(b = {
                 true,
@@ -496,10 +496,10 @@ final class annotationClassIterableIterable_ {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {
                 true,
                 false}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {}),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {
                 true,
                 false}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {}),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation(b = {
                 true,
                 false})})

@@ -212,8 +212,8 @@ final class annotationClassAnnotationClass_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor")),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class"))})
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class")),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation(param = @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor"))})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotations({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation(params = {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "constructor"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "class")})})

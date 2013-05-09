@@ -215,8 +215,8 @@ final class annotationClassMetamodelReference_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations({
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "ceylon.language::process"),
-        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "ceylon.language::Anything")})
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "ceylon.language::Anything"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation(mmr = "ceylon.language::process")})
 class AnnotationClassMetamodelReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     AnnotationClassMetamodelReference_callsite() {
