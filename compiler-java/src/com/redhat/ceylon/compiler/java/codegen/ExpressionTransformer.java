@@ -3966,7 +3966,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if ((gen().disableAnnotations & CeylonTransformer.DISABLE_USER_ANNOS) != 0) {
             return List.nil();
         }
-        LinkedHashMap<Class, List<JCAnnotation>> annotationSet = new LinkedHashMap<>();
+        LinkedHashMap<Class, ListBuffer<JCAnnotation>> annotationSet = new LinkedHashMap<>();
         if (annotationList != null) {
             if (annotationList.getAnonymousAnnotation() != null) {
                 transformAnonymousAnnotation(annotationList.getAnonymousAnnotation(), annotationSet);
@@ -3979,11 +3979,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         ListBuffer<JCAnnotation> result = ListBuffer.lb();
         for (Class annotationClass : annotationSet.keySet()) {
-            List<JCAnnotation> annotations = annotationSet.get(annotationClass);
+            ListBuffer<JCAnnotation> annotations = annotationSet.get(annotationClass);
             if (isSequencedAnnotation(annotationClass)) {
                 JCAnnotation wrapperAnnotation = make().Annotation(
                         makeJavaType(annotationClass.getType(), JT_ANNOTATIONS), 
-                        List.<JCExpression>of(make().NewArray(null,  null, (List)annotations)));
+                        List.<JCExpression>of(make().NewArray(null,  null, (List)annotations.toList())));
                 result.append(wrapperAnnotation);
             } else {
                 if (annotations.size() > 1) {
@@ -3996,7 +3996,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     void transformAnnotation(Tree.Annotation invocation, 
-            Map<Class, List<JCAnnotation>> annotationSet) {
+            Map<Class, ListBuffer<JCAnnotation>> annotationSet) {
         at(invocation);
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(this, invocation);
         JCAnnotation annotation = visitor.transformConstructor(invocation);
@@ -4006,17 +4006,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private void putAnnotation(
-            Map<Class, List<JCAnnotation>> annotationSet,
+            Map<Class, ListBuffer<JCAnnotation>> annotationSet,
             JCAnnotation annotation, Class annotationClass) {
-        List<JCAnnotation> list = annotationSet.get(annotationClass);
+        ListBuffer<JCAnnotation> list = annotationSet.get(annotationClass);
         if (list == null) {
-            list = List.nil();
+            list = ListBuffer.lb();
         }
-        annotationSet.put(annotationClass, list.prepend(annotation));
+        annotationSet.put(annotationClass, list.append(annotation));
     }
 
 
-    public void transformAnonymousAnnotation(Tree.AnonymousAnnotation annotation, Map<Class, List<JCAnnotation>> annos) {
+    public void transformAnonymousAnnotation(Tree.AnonymousAnnotation annotation, Map<Class, ListBuffer<JCAnnotation>> annos) {
         ProducedType docType = ((TypeDeclaration)typeFact().getLanguageModuleDeclaration("Doc")).getType();
         JCAnnotation docAnnotation = at(annotation).Annotation(
                 makeJavaType(docType,  JT_ANNOTATION), 
