@@ -54,6 +54,9 @@ public class JsonModule extends Module {
 
     @Override
     public com.redhat.ceylon.compiler.typechecker.model.Package getPackage(String name) {
+        if ("default".equals(name)) {
+            name = "";
+        }
         final com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
         if (p == null) {
             throw new CompilerErrorException("Package " + name + " not available");
