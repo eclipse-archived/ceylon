@@ -282,6 +282,12 @@ public class JsIdentifierNames {
                         decl.getName(), getUID(decl));
             }
         }
+        //Fix #204 - same top-level declarations in different packages
+        if (decl.isToplevel() && !decl.getUnit().getPackage().equals(decl.getUnit().getPackage().getModule().getRootPackage())) {
+            String rootName = decl.getUnit().getPackage().getModule().getRootPackage().getNameAsString();
+            String pkgName = decl.getUnit().getPackage().getNameAsString();
+            name += pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
+        }
         return name;
     }
     
