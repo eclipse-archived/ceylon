@@ -1,6 +1,6 @@
-function type(x) {
+function type$metamodel(x) {
     if (x === null) {
-        return getNothingType();
+        return getNothingType$metamodel();
     } else {
         //Search for metamodel
         var mm = x.$$metamodel$$;
@@ -25,5 +25,5 @@ function type(x) {
     }
     return null;
 }
-type.$$metamodel$$={$nm:'type',$mt:'mthd',$ps:[{t:Anything}],$an:function(){return[shared()];}};
-exports.type=type;
+type$metamodel.$$metamodel$$={$nm:'type',$mt:'mthd',$ps:[{t:Anything}],$an:function(){return[shared()];}};
+exports.type$metamodel=type$metamodel;

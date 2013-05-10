@@ -43,8 +43,10 @@ function noop() { return null; }
 //This is used for plain method references
 function JsCallable(o,f) {
     Callable(o);
-	return (o !== null) ? function() { return f.apply(o, arguments); }
-	                    : noop;
+    if (o === null) return noop;
+    var f2 = function() { return f.apply(o, arguments); };
+    f2.$$metamodel$$=Callable.$$metamodel$$;
+    return f2;
 }
 JsCallable.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];}};
 
