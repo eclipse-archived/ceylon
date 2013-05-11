@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,6 +32,7 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
+import org.jboss.modules.ModuleSpec.Builder;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
@@ -43,6 +45,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.spi.LogChecker;
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -79,7 +82,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         JANDEX = ModuleIdentifier.create("org.jboss.jandex");
-        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", "1.4.0.Final");
+        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager","main");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
@@ -242,6 +245,16 @@ public class CeylonModuleLoader extends ModuleLoader {
                         continue;
                     }
 
+                    //if (checkLogging(i)) { //TODO do we need this switch
+                        ServiceLoader<LogChecker> ldr = ServiceLoader.load(LogChecker.class);
+                        for (LogChecker checker : ldr) {
+                            if (checker.match(i)) {
+                                addLoggingModule(builder, deps);
+                                break;
+                            }
+                        }
+                    //}
+
                     if (i.importType() == ImportType.OPTIONAL) {
                         Node<ArtifactResult> current = root;
                         String[] tokens = name.split("\\.");
@@ -295,6 +308,18 @@ public class CeylonModuleLoader extends ModuleLoader {
         } catch (Exception e) {
             throw new ModuleLoadException(e);
         }
+    }
+
+    private void addLoggingModule(Builder builder, List<DependencySpec> deps) {
+        final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
+                PathFilters.acceptAll(),
+                PathFilters.rejectAll(),
+                this,
+                LOGMANAGER,
+                false
+        );
+        builder.addDependency(dependency);
+        deps.add(dependency);
     }
 
     protected void createModuleDependency(Graph.Vertex<ModuleIdentifier, Boolean> vertex, List<DependencySpec> deps, ModuleSpec.Builder builder, ModuleIdentifier mi, boolean optional) {

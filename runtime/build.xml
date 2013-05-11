@@ -138,6 +138,9 @@
         <copy file="${jboss-modules.lib}"
               tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
+        <copy file="${jboss-logmanager.lib}" tofile="${build.dist.repo}/${jboss-logmanager.dir}/main/${jboss-logmanager.module}"/>
+        <!--copy file="${dist.dir}/repo/${jboss-logmanager.dir}/main/module.xml"
+              tofile="${build.dist.repo}/${jboss-logmanager.dir}/main/module.xml"/-->
     </target>
 
 	<target name="dist-for-tests" description="Copy jars in the repo used by tests">
