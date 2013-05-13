@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
+import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -67,14 +68,19 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.declaration = function;
 
         // FIXME: delay method setup for when we actually use it?
-        // FIXME: methods not in ClassOrInterfaces?
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)function.declaration.getContainer());
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
         // FIXME: deal with Java classes and overloading
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         // FIXME: perhaps we should just store the damn method in the underlying JavaMethod?
         Method found = null;
-        JavaMethod modelDecl = (JavaMethod)function.declaration;
-        String name = modelDecl.getRealName();
+        String name;
+        // FIXME: introduce a damn interface for getRealName()
+        if(function.declaration instanceof JavaMethod)
+            name = ((JavaMethod)function.declaration).getRealName();
+        else if(function.declaration instanceof LazyMethod){
+            name = ((LazyMethod)function.declaration).getRealMethodName();
+        }else
+            throw new RuntimeException("Function declaration type not supported yet: "+function.declaration);
         for(Method method : javaClass.getDeclaredMethods()){
             if(method.isAnnotationPresent(Ignore.class))
                 continue;
@@ -96,7 +102,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             method = MethodHandleUtil.boxReturnValue(method, found.getReturnType());
             // we need to cast to Object because this is what comes out when calling it in $call
             java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
-            method = method.bindTo(instance);
+            if(instance != null)
+                method = method.bindTo(instance);
             method = method.asType(MethodType.methodType(Object.class, parameterTypes));
             int typeParametersCount = found.getTypeParameters().length;
             // insert any required type descriptors
