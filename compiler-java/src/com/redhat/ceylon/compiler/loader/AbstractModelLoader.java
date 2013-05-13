@@ -2042,6 +2042,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(meth == null || meth.getReturnType() == null)
                 throw new ModelResolutionException("Failed to find toplevel method "+method.getName());
 
+            // save the method name
+            method.setRealMethodName(meth.getName());
+            
             // type params first
             setTypeParameters(method, meth);
 
