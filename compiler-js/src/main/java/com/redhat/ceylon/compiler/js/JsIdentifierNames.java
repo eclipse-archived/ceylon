@@ -20,8 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
  */
 public class JsIdentifierNames {
 
-    private boolean prototypeStyle = false;
-
     private static long uniqueID = 0;
     private static long nextUID() {
         if (++uniqueID <= 0) {
@@ -107,10 +105,6 @@ public class JsIdentifierNames {
         substitutedMemberNames.add("ceylon.language::Iterable.every");
         substitutedMemberNames.add("ceylon.language::Iterable.map");
         substitutedMemberNames.add("ceylon.language::Iterable.sort");
-    }
-
-    public JsIdentifierNames(boolean prototypeStyle) {
-        this.prototypeStyle = prototypeStyle;
     }
 
     /**

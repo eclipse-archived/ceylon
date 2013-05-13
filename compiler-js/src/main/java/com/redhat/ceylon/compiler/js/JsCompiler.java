@@ -181,7 +181,7 @@ public class JsCompiler {
             }
 
             //Then generate the JS code
-            JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
+            JsIdentifierNames names = new JsIdentifierNames();
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
             	String pathFromVFS = pu.getUnitFile().getPath();
             	// VFS talks in terms of URLs while files are platform-dependent, so make it
