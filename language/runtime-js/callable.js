@@ -6,7 +6,7 @@ var exports;//IGNORE
 function Callable(wat) {
     return wat;
 }
-Callable.$$metamodel$$={$nm:'Callable',$mt:'ifc',$an:function(){return[shared()];}};
+Callable.$$metamodel$$={$nm:'Callable',$mt:'ifc',$an:function(){return[shared()];},$tp:{Arguments:{'var':'out'},Return:{'var':'out'}}};
 exports.Callable=Callable;
 function $init$Callable() {
     if (Callable.$$===undefined) {
@@ -20,18 +20,18 @@ $init$Callable();
 function $JsCallable(callable,parms,targs) {
     if (callable.getT$all === undefined) {
         callable.getT$all=Callable.getT$all;
-        var set_meta = callable.$$metamodel$$ === undefined;
-        if (set_meta) {
-            callable.$$metamodel$$={$mt:'mthd',$ps:[]};
-            if (parms !== undefined) {
-                callable.$$metamodel$$['$ps']=parms;
-            }
+    }
+    var set_meta = callable.$$metamodel$$ === undefined;
+    if (set_meta) {
+        callable.$$metamodel$$={$mt:'mthd',$ps:[]};
+        if (parms !== undefined) {
+            callable.$$metamodel$$['$ps']=parms;
         }
-        if (targs !== undefined) {
-            callable.$$targs$$=targs;
-            if (set_meta) {
-                callable.$$metamodel$$['$t']=targs['Return'];
-            }
+    }
+    if (targs !== undefined && callable.$$targs$$ === undefined) {
+        callable.$$targs$$=targs;
+        if (set_meta) {
+            callable.$$metamodel$$['$t']=targs['Return'];
         }
     }
     return callable;
@@ -45,7 +45,7 @@ function JsCallable(o,f) {
     Callable(o);
     if (o === null) return noop;
     var f2 = function() { return f.apply(o, arguments); };
-    f2.$$metamodel$$=Callable.$$metamodel$$;
+    f2.$$metamodel$$=f.$$metamodel$$===undefined?Callable.$$metamodel$$:f.$$metamodel$$;
     return f2;
 }
 JsCallable.$$metamodel$$={$nm:'Callable',$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];}};
