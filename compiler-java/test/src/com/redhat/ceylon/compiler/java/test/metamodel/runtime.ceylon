@@ -1,6 +1,7 @@
 import ceylon.language.metamodel { ... }
 import ceylon.language.metamodel.untyped {
     ValueDeclaration = Value,
+    FunctionDeclaration = Function,
     UntypedDeclaration = Declaration
 }
 
@@ -273,6 +274,52 @@ void checkToplevelAttributes(){
     assert(toplevelObject2 == 3);
 }
 
+void checkToplevelFunctions(){
+    value noParamsInstance = NoParams();
+    value noParamsAppliedType = type(noParamsInstance);
+    assert(is Class<String, []> stringType = type("foo"));
+    
+    assert(is Class<Anything,[]> noParamsAppliedType);
+    
+    value noParamsDecl = noParamsAppliedType.declaration;
+
+    value pkg = noParamsDecl.packageContainer;
+
+    assert(pkg.members<UntypedDeclaration>().find((UntypedDeclaration decl) => decl.name == "fixedParams") exists);
+
+    assert(exists f2 = pkg.getFunction("fixedParams"));
+    assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object]> f2a = f2.apply());
+    f2a("a", 1, 1.2, 'a', true, noParamsInstance);
+    
+    assert(exists f3 = pkg.getFunction("typeParams"));
+    assert(is Function<String, [String, Integer]> f3a = f3.apply(stringType));
+    assert(f3a("a", 1) == "a");
+
+    assert(exists f4 = pkg.getFunction("getString"));
+    assert(is Function<String, []> f4a = f4.apply());
+    assert(f4a() == "a");
+
+    assert(exists f5 = pkg.getFunction("getInteger"));
+    assert(is Function<Integer, []> f5a = f5.apply());
+    assert(f5a() == 1);
+
+    assert(exists f6 = pkg.getFunction("getFloat"));
+    assert(is Function<Float, []> f6a = f6.apply());
+    assert(f6a() == 1.2);
+
+    assert(exists f7 = pkg.getFunction("getCharacter"));
+    assert(is Function<Character, []> f7a = f7.apply());
+    assert(f7a() == 'a');
+
+    assert(exists f8 = pkg.getFunction("getBoolean"));
+    assert(is Function<Boolean, []> f8a = f8.apply());
+    assert(f8a() == true);
+    
+    assert(exists f9 = pkg.getFunction("getObject"));
+    assert(is Function<Object, []> f9a = f9.apply());
+    assert(f9a() == 2);
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -287,5 +334,7 @@ shared void runtime() {
     checkMemberAttributes();
 
     checkToplevelAttributes();
+
+    checkToplevelFunctions();
 }
 

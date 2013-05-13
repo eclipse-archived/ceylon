@@ -74,3 +74,31 @@ shared class TypeParams<T>(T s, Integer i)
     assert(s == "a");
     assert(i == 1);
 }
+
+shared void fixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
+    assert(s == "a");
+    assert(i == 1);
+    assert(f == 1.2);
+    assert(c == 'a');
+    assert(b == true);
+    assert(is NoParams o);
+}
+
+shared T typeParams<T>(T s, Integer i)
+    given T satisfies Object {
+    
+    assert(s == "a");
+    assert(i == 1);
+    
+    // check that our reified T got passed correctly
+    assert(is TypeParams<String> t = TypeParams<T>(s, i));
+    
+    return s;
+}
+
+shared String getString() => "a";
+shared Integer getInteger() => 1;
+shared Float getFloat() => 1.2;
+shared Character getCharacter() => 'a';
+shared Boolean getBoolean() => true;
+shared Object getObject() => 2;
