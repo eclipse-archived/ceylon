@@ -102,3 +102,7 @@ shared Float getFloat() => 1.2;
 shared Character getCharacter() => 'a';
 shared Boolean getBoolean() => true;
 shared Object getObject() => 2;
+
+shared class ContainerClass(){
+    shared class InnerClass(){}
+}

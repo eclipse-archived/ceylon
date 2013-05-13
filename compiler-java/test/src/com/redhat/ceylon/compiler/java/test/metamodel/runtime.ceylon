@@ -131,6 +131,16 @@ void checkMemberFunctions(){
     assert(f8(noParamsInstance)() == true);
 }
 
+void checkMemberTypes(){
+    value containerClassInstance = ContainerClass();
+    value containerClassType = type(containerClassInstance);
+    assert(is Class<ContainerClass, []> containerClassType);
+
+    assert(exists innerClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.InnerClass, []>>("InnerClass"));
+    Anything o1 = innerClassType(containerClassInstance)();
+    assert(is ContainerClass.InnerClass o1);
+}
+
 void checkHierarchy(){
     value noParamsAppliedType = type(NoParams());
     
@@ -332,6 +342,8 @@ shared void runtime() {
     checkMemberFunctions();
 
     checkMemberAttributes();
+
+    checkMemberTypes();
 
     checkToplevelAttributes();
 
