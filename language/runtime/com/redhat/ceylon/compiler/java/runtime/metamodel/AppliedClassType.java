@@ -4,13 +4,13 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Class$impl;
-import ceylon.language.metamodel.Class;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -34,9 +34,11 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     private TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
+    private Object instance;
     
-    public AppliedClassType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
+    public AppliedClassType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
         super(producedType);
+        this.instance = instance;
     }
 
     @Override
@@ -69,24 +71,49 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);
         // FIXME: deal with Java classes
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-        Constructor<?> found = null;
-        for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
-            if(constr.isAnnotationPresent(Ignore.class))
-                continue;
-            // FIXME: deal with private stuff?
-            if(found != null){
-                throw new RuntimeException("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
+        Object found = null;
+        if(!javaClass.isMemberClass()){
+            for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
+                if(constr.isAnnotationPresent(Ignore.class))
+                    continue;
+                // FIXME: deal with private stuff?
+                if(found != null){
+                    throw new RuntimeException("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
+                }
+                found = constr;
             }
-            found = constr;
+        }else{
+            String builderName = declaration.getName() + "$new";
+            java.lang.Class<?> outerJavaClass = javaClass.getEnclosingClass();
+            for(Method meth : outerJavaClass.getDeclaredMethods()){
+                // FIXME: we need a better way to look things up: they're all @Ignore...
+//                if(meth.isAnnotationPresent(Ignore.class))
+//                    continue;
+                if(!meth.getName().equals(builderName))
+                    continue;
+                // FIXME: deal with private stuff?
+                if(found != null){
+                    throw new RuntimeException("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
+                }
+                found = meth;
+            }
         }
         if(found != null){
+            java.lang.Class<?>[] parameterTypes;
             try {
-                constructor = MethodHandles.lookup().unreflectConstructor(found);
+                if(!javaClass.isMemberClass()){
+                    constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
+                    parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
+                }else{
+                    constructor = MethodHandles.lookup().unreflect((Method) found);
+                    parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
+                }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
             }
             // we need to cast to Object because this is what comes out when calling it in $call
-            java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
+            if(instance != null)
+                constructor = constructor.bindTo(instance);
             constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
             int typeParametersCount = javaClass.getTypeParameters().length;
             // insert any required type descriptors

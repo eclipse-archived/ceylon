@@ -14,6 +14,9 @@ shared interface ClassOrInterface<out Type>
     shared formal Class<Anything, Nothing>? superclass;
     
     shared formal Interface<Anything>[] interfaces;
+
+    shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, AppliedType* types)
+        given Kind satisfies ClassOrInterface<Anything>;
     
     shared formal Member<SubType, Kind>? getFunction<SubType, Kind>(String name, AppliedType* types)
         given Kind satisfies Function<Anything, Nothing>;

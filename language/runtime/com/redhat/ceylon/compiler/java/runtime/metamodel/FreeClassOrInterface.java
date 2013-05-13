@@ -37,6 +37,8 @@ public abstract class FreeClassOrInterface
     private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Function.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
     @Ignore
     private static final TypeDescriptor $ValueTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Value.class, Anything.$TypeDescriptor);
+    @Ignore
+    private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.untyped.ClassOrInterface.class, Anything.$TypeDescriptor);
     
     private volatile boolean initialised = false;
     private ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Class> superclass;
@@ -45,6 +47,7 @@ public abstract class FreeClassOrInterface
 
     private Sequential<ceylon.language.metamodel.untyped.Member<ceylon.language.metamodel.untyped.Function>> functions;
     private Sequential<ceylon.language.metamodel.untyped.Member<ceylon.language.metamodel.untyped.Value>> values;
+    private Sequential<ceylon.language.metamodel.untyped.Member<ceylon.language.metamodel.untyped.ClassOrInterface>> types;
 
     public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -91,11 +94,15 @@ public abstract class FreeClassOrInterface
         i=0;
         List<ceylon.language.metamodel.untyped.Member<FreeFunction>> functions = new LinkedList<ceylon.language.metamodel.untyped.Member<FreeFunction>>();
         List<ceylon.language.metamodel.untyped.Member<FreeValue>> values = new LinkedList<ceylon.language.metamodel.untyped.Member<FreeValue>>();
+        List<ceylon.language.metamodel.untyped.Member<FreeClassOrInterface>> types = new LinkedList<ceylon.language.metamodel.untyped.Member<FreeClassOrInterface>>();
+        // FIXME: this is just wrong for implementing members()
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof Method){
                 functions.add(new FreeMember(this, new FreeFunction((Method) memberModelDeclaration)));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
                 values.add(new FreeMember(this, new FreeValue((MethodOrValue) memberModelDeclaration)));
+            }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
+                types.add(new FreeMember(this, Metamodel.getOrCreateMetamodel(memberModelDeclaration)));
             }
         }
 
@@ -104,6 +111,9 @@ public abstract class FreeClassOrInterface
 
         TypeDescriptor valueMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Member.class, $ValueTypeDescriptor);
         this.values = (Sequential)Util.sequentialInstance(valueMemberTD, values.toArray(new ceylon.language.metamodel.untyped.Member[values.size()]));
+
+        TypeDescriptor typesMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Member.class, $ClassOrInterfaceTypeDescriptor);
+        this.types = (Sequential)Util.sequentialInstance(typesMemberTD, types.toArray(new ceylon.language.metamodel.untyped.Member[types.size()]));
 }
     
     protected final void checkInit(){
@@ -205,6 +215,20 @@ public abstract class FreeClassOrInterface
         while((it = iterator.next()) != finished_.getFinished$()){
             FreeMember member = (FreeMember) it;
             FreeValue f = (FreeValue) member.declaration;
+            if(f.getName().equals(name))
+                return f;
+        }
+        return null;
+    }
+
+
+    FreeClassOrInterface findType(String name) {
+        checkInit();
+        Iterator iterator = types.iterator();
+        Object it;
+        while((it = iterator.next()) != finished_.getFinished$()){
+            FreeMember member = (FreeMember) it;
+            FreeClassOrInterface f = (FreeClassOrInterface) member.declaration;
             if(f.getName().equals(name))
                 return f;
         }

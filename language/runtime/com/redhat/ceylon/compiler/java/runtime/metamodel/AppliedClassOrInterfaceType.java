@@ -200,6 +200,59 @@ public class AppliedClassOrInterfaceType<Type>
         };
     }
 
+    @Ignore
+    @Override
+    public Sequential<? extends ceylon.language.metamodel.AppliedType> getClassOrInterface$types(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                                                 @Ignore TypeDescriptor $reifiedKind, 
+                                                                                                 String name){
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public <SubType, Kind extends ceylon.language.metamodel.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.metamodel.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                            @Ignore TypeDescriptor $reifiedKind, 
+                                                                            String name){
+        
+        return getClassOrInterface($reifiedSubType, $reifiedKind, name, getClassOrInterface$types($reifiedSubType, $reifiedKind, name));
+    }
+
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything,ceylon.language::Nothing>")
+    })
+    @TypeInfo("ceylon.language.metamodel::Member<SubType,Kind>|ceylon.language::Null")
+    public <SubType, Kind extends ceylon.language.metamodel.ClassOrInterface<? extends java.lang.Object>>
+        ceylon.language.metamodel.Member<SubType, Kind> getClassOrInterface(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                            @Ignore TypeDescriptor $reifiedKind, 
+                                                                            String name, 
+                                                                            @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types) {
+        
+        checkInit();
+        final FreeClassOrInterface type = declaration.findType(name);
+        if(type == null)
+            return null;
+        Iterator iterator = types.iterator();
+        Object it;
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
+        while((it = iterator.next()) != finished_.getFinished$()){
+            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
+            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
+            producedTypes.add(modelPt);
+        }
+        final ProducedType appliedType = type.declaration.getProducedReference(null, producedTypes).getType();
+        return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind, (AppliedClassOrInterfaceType<SubType>) this){
+            @Override
+            protected Kind bindTo(Object instance) {
+                return (Kind) (type.declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface 
+                        ? new AppliedInterfaceType(appliedType)
+                        : new AppliedClassType(appliedType, instance));
+            }
+        };
+    }
+
     @Override
     @TypeParameters({
         @TypeParameter(value = "SubType"),

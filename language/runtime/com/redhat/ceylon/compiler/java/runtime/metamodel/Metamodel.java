@@ -176,7 +176,8 @@ public class Metamodel {
     public static ceylon.language.metamodel.AppliedType getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassType(pt);
+            // FIXME: this null is most likely just wrong
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassType(pt, null);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterfaceType(pt);
