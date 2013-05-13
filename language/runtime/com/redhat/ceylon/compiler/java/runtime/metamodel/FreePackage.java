@@ -98,6 +98,16 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package, R
     }
 
     @Override
+    @TypeInfo("ceylon.language.metamodel.untyped::Function|ceylon.language::Null")
+    public ceylon.language.metamodel.untyped.Function getFunction(String name) {
+        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
+            return null;
+        com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) toplevel;
+        return (FreeFunction) Metamodel.getOrCreateMetamodel(decl);
+    }
+
+    @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"), 

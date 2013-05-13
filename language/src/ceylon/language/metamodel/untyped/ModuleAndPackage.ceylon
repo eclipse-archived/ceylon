@@ -17,4 +17,5 @@ shared interface Package satisfies Identifiable {
             given Kind satisfies Declaration;
 
     shared formal Value? getAttribute(String name);
+    shared formal Function? getFunction(String name);
 }
