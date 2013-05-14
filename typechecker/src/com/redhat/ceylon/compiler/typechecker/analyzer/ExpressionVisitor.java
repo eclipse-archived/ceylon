@@ -3977,8 +3977,8 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            ProducedType ft = isAbstractType(t) ?
-                    unit.getAnythingDeclaration().getType() : //TODO: set the correct metatype
+            ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
+                    new UnknownType(unit).getType() : //TODO: set the correct metatype
                     t.getFullType(wrap(t, receivingType, that));
             that.setTypeModel(ft);
             that.setTarget(t);
@@ -3996,8 +3996,8 @@ public class ExpressionVisitor extends Visitor {
             type = t.getDeclaration();
 //        }
         if (acceptsTypeArguments(type, typeArgs, tal, that)) {
-            ProducedType ft = isAbstractType(t) ?
-                    unit.getAnythingDeclaration().getType() : //TODO: set the correct metatype
+            ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
+                    new UnknownType(unit).getType() : //TODO: set the correct metatype
                     t.getFullType();
             that.setTypeModel(ft);
             that.setTarget(t);
