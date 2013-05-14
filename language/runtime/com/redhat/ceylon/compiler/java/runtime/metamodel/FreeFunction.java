@@ -19,6 +19,8 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -33,6 +35,8 @@ public class FreeFunction
     
     private Type type;
 
+    private Sequential<? extends Sequential<? extends ceylon.language.metamodel.untyped.Parameter>> parameterLists;
+
     public FreeFunction(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
 
@@ -46,6 +50,20 @@ public class FreeFunction
         this.typeParameters = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.untyped.TypeParameter.$TypeDescriptor, typeParametersArray);
         
         this.type = Metamodel.getMetamodel(declaration.getType());
+        
+        List<ParameterList> parameterLists = declaration.getParameterLists();
+        ceylon.language.Sequential[] parameterListsArray = new ceylon.language.Sequential[parameterLists.size()];
+        int p=0;
+        for(ParameterList parameterList : parameterLists){
+            List<Parameter> modelParameters = parameterList.getParameters();
+            ceylon.language.metamodel.untyped.Parameter[] parameters = new ceylon.language.metamodel.untyped.Parameter[modelParameters.size()];
+            i=0;
+            for(Parameter modelParameter : modelParameters){
+                parameters[i++] = new FreeParameter(modelParameter);
+            }
+            parameterListsArray[p++] = Util.sequentialInstance(ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor, parameters);
+        }
+        this.parameterLists = (Sequential)Util.sequentialInstance(TypeDescriptor.klass(Sequential.class, ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor), parameterListsArray);
     }
 
     @Override
@@ -67,6 +85,18 @@ public class FreeFunction
     public Parameterised$impl $ceylon$language$metamodel$untyped$Parameterised$impl() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::Parameter>")
+    public Sequential<? extends ceylon.language.metamodel.untyped.Parameter> getParameters(){
+        return parameterLists.getFirst();
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Sequential<ceylon.language.metamodel.untyped::Parameter>>")
+    public Sequential<? extends Sequential<? extends ceylon.language.metamodel.untyped.Parameter>> getParameterLists(){
+        return parameterLists;
     }
 
     @Override

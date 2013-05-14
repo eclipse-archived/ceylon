@@ -5,5 +5,9 @@ shared interface Function
 
     shared formal Type type;
 
+    shared formal Parameter[] parameters;
+
+    shared formal Parameter[][] parameterLists;
+
     shared formal AppliedFunction<Anything, Nothing> apply(AppliedType* types);
 }

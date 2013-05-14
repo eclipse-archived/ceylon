@@ -114,7 +114,7 @@ public abstract class FreeClassOrInterface
 
         TypeDescriptor typesMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Member.class, $ClassOrInterfaceTypeDescriptor);
         this.types = (Sequential)Util.sequentialInstance(typesMemberTD, types.toArray(new ceylon.language.metamodel.untyped.Member[types.size()]));
-}
+    }
     
     protected final void checkInit(){
         if(!initialised){
