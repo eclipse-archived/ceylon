@@ -104,18 +104,36 @@ public class ReflectionMethod implements MethodMirror {
             return parameters;
         Type[] javaParameters;
         Annotation[][] annotations;
+        int parameterCount;
         if(method instanceof Method){
             javaParameters = ((Method)method).getGenericParameterTypes();
             annotations = ((Method)method).getParameterAnnotations();
+            // only getParameterTypes always reliably include synthetic parameters for constructors
+            parameterCount = ((Method)method).getParameterTypes().length;
         }else{
             javaParameters = ((Constructor<?>)method).getGenericParameterTypes();
             annotations = ((Constructor<?>)method).getParameterAnnotations();
+            // only getParameterTypes always reliably include synthetic parameters for constructors
+            parameterCount = ((Constructor<?>)method).getParameterTypes().length;
         }
-        parameters = new ArrayList<VariableMirror>(annotations.length);
-        int extraParameters = javaParameters.length - annotations.length;
-        int parametersCount = Math.min(javaParameters.length, annotations.length);
-        for(int i=0;i<parametersCount;i++)
-            parameters.add(new ReflectionVariable(javaParameters[i+extraParameters], annotations[i]));
+        parameters = new ArrayList<VariableMirror>(parameterCount);
+        // some compilers will only include non-synthetic parameters in getGenericParameterTypes(), so we need to know if
+        // we have less, we should substract synthetic parameters
+        int parametersOffset = javaParameters.length - parameterCount;
+        // if at least one parameter is annotated, java reflection will only include non-synthetic parameters in 
+        // getParameterAnnotations(), so we need to know if we have less, we should substract synthetic parameters
+        int annotationsOffset = annotations.length - parameterCount;
+        // inner classes will always add a synthetic parameter to the constructor
+        // FIXME: local classes may add more but we don't know how to find out
+        int start = (parametersOffset == 0
+                && method instanceof Constructor
+                && (method.getDeclaringClass().isMemberClass()
+                        || method.getDeclaringClass().isLocalClass())) ? 1 : 0;
+        // skip synthetic parameters
+        for(int i=start;i<parameterCount;i++){
+            // apply offsets for parameters and annotations if synthetic parameters are not included
+            parameters.add(new ReflectionVariable(javaParameters[i+parametersOffset], annotations[i+annotationsOffset]));
+        }
         return parameters;
     }
 
