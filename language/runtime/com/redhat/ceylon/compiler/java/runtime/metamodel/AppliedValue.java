@@ -88,13 +88,6 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>
 
     @Override
     @Ignore
-    public AppliedType$impl $ceylon$language$metamodel$AppliedType$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    @Ignore
     public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
         // TODO Auto-generated method stub
         return null;

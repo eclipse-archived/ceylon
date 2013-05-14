@@ -128,13 +128,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     
     @Override
     @Ignore
-    public AppliedType$impl $ceylon$language$metamodel$AppliedType$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    @Ignore
     public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;

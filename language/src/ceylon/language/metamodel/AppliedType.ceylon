@@ -1,4 +1,4 @@
-shared interface AppliedType /* of Declaration
+shared interface AppliedType /* of ClassOrInterface
                                  | UnionType
                                  | IntersectionType
                                  | nothingType */ {}

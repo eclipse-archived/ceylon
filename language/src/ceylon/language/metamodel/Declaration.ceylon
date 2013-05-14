@@ -4,8 +4,7 @@ import ceylon.language.metamodel.untyped {
 
 shared interface Declaration of ClassOrInterface<Anything>
                               | Function<Anything, Nothing> 
-                              | Value<Anything>
-    satisfies AppliedType {
+                              | Value<Anything> {
     
     shared formal UntypedDeclaration declaration;
 }
