@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
@@ -84,7 +85,9 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             }
         }else{
             String builderName = declaration.getName() + "$new";
-            java.lang.Class<?> outerJavaClass = javaClass.getEnclosingClass();
+            // FIXME: this probably doesn't work for local classes
+            // FIXME: perhaps store and access the container class literal from an extra param of @Container?
+            java.lang.Class<?> outerJavaClass = Metamodel.getJavaClass((Declaration) declaration.declaration.getContainer());
             for(Method meth : outerJavaClass.getDeclaredMethods()){
                 // FIXME: we need a better way to look things up: they're all @Ignore...
 //                if(meth.isAnnotationPresent(Ignore.class))
