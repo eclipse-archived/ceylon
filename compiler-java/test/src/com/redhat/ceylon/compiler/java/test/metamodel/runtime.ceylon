@@ -139,6 +139,14 @@ void checkMemberTypes(){
     assert(exists innerClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.InnerClass, []>>("InnerClass"));
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
+
+    value containerInterfaceImplInstance = ContainerInterfaceImpl();
+    value containerInterfaceType = typeLiteral<ContainerInterface>();
+    assert(is Interface<ContainerInterface> containerInterfaceType);
+
+    assert(exists innerInterfaceClassType = containerInterfaceType.getClassOrInterface<ContainerInterface, Class<ContainerInterface.InnerClass, []>>("InnerClass"));
+    Anything o2 = innerInterfaceClassType(containerInterfaceImplInstance)();
+    assert(is ContainerInterface.InnerClass o2);
 }
 
 void checkHierarchy(){

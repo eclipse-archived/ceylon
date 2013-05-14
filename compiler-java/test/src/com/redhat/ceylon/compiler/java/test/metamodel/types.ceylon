@@ -106,3 +106,9 @@ shared Object getObject() => 2;
 shared class ContainerClass(){
     shared class InnerClass(){}
 }
+
+shared interface ContainerInterface{
+    shared class InnerClass(){}
+}
+
+shared class ContainerInterfaceImpl() satisfies ContainerInterface {}
