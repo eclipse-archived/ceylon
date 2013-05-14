@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -12,18 +13,24 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 })
 public interface Callable<Return> {
     
+    @Ignore
     public Return $call();
     
+    @Ignore
     public Return $call(java.lang.Object arg0);
     
+    @Ignore
     public Return $call(java.lang.Object arg0, java.lang.Object arg1);
     
+    @Ignore
     public Return $call(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2);
     
+    @Ignore
     public Return $call(java.lang.Object... args);
 
     /**
      * @return the index of the variadic parameter if any, -1 otherwise.
      */
+    @Ignore
     public short $getVariadicParameterIndex();
 }
