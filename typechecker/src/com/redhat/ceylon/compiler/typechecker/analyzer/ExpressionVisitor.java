@@ -2248,7 +2248,9 @@ public class ExpressionVisitor extends Visitor {
             }
             checkAssignable(argType, pt, node,
                     "named argument must be assignable to parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit), 
+                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
+                    		(pr.getQualifyingType()==null ? "" : 
+                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
                             2100);
         }
     }
@@ -2288,7 +2290,9 @@ public class ExpressionVisitor extends Visitor {
                 !att.isUnknown() && !paramType.isUnknown()) {
             checkAssignable(att, paramType, sa, 
                     "iterable arguments must be assignable to iterable parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit));
+                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
+                    		(pr.getQualifyingType()==null ? "" : 
+                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)));
         }
     }
     
@@ -2553,12 +2557,18 @@ public class ExpressionVisitor extends Visitor {
                     at = spreadType(at, unit, true);
                     checkAssignable(at, paramType, a, 
                             "spread argument must be assignable to variadic parameter " + 
-                                    p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                                    p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
+                            		(pr.getQualifyingType()==null ? "" : 
+                            			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                            		2101);
                 }
                 else {
                     checkAssignable(at, set, a, 
                             "argument must be assignable to variadic parameter " + 
-                                    p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                                    p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
+                            		(pr.getQualifyingType()==null ? "" : 
+                            			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                            		2101);
                 }
             }
         }
@@ -2574,7 +2584,10 @@ public class ExpressionVisitor extends Visitor {
             ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter " + 
-                            p.getName()+ " of " + pr.getDeclaration().getName(unit), 2101);
+                            p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
+                    		(pr.getQualifyingType()==null ? "" : 
+                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                    		2101);
         }
     }
     
@@ -2597,7 +2610,9 @@ public class ExpressionVisitor extends Visitor {
                 !at.isUnknown() && !paramType.isUnknown()) {
             checkAssignable(at, paramType, a, 
                     "argument must be assignable to parameter " + 
-                            p.getName() + " of " + pr.getDeclaration().getName(unit), 
+                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
+                    		(pr.getQualifyingType()==null ? "" : 
+                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
                             2100);
         }
     }
