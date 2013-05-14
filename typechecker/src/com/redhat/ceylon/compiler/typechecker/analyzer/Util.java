@@ -33,7 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-class Util {
+public class Util {
     
     static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
             List<ProducedType> signature, boolean ellipsis) {
