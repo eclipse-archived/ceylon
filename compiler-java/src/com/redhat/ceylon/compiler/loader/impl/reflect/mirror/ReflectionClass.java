@@ -133,7 +133,8 @@ public class ReflectionClass implements ClassMirror {
         Field[] directFields = klass.getDeclaredFields();
         fields = new ArrayList<FieldMirror>(directFields.length);
         for(Field field : directFields)
-            fields.add(new ReflectionField(field));
+            if(!field.isSynthetic())
+                fields.add(new ReflectionField(field));
         return fields;
     }
 
