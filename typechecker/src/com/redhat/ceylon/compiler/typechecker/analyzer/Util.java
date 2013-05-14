@@ -131,7 +131,7 @@ class Util {
         return typeArguments;
     }*/
     
-    static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
+    public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
