@@ -238,6 +238,7 @@
                 <include name="ceylon/language/unflatten_.java"/>
                 <exclude name="ceylon/language/metamodel/metamodel.ceylon"/>
                 <include name="ceylon/language/metamodel/type_.java"/>
+                <include name="ceylon/language/metamodel/typeLiteral_.java"/>
             </files>
         </ceylon-compile>
     </target>
