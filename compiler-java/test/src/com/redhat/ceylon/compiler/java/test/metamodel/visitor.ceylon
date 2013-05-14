@@ -100,7 +100,18 @@ void visitClass(Class klass){
         output(",".join(klass.typeParameters.map(function (TypeParameter tp) => tp.name)));
         output(">");
     }
-    output("()");
+    output("(");
+    variable Boolean onceParameter = true;
+    for(param in klass.parameters){
+        if(onceParameter){
+            onceParameter = false;
+        }else{
+            output(", ");
+        }
+        visitProducedType(param.type);
+        output(" ``param.name``");
+    }
+    output(")");
     if(exists superType = klass.superclass){
         output("\n  extends ");
         visitProducedType(superType);
@@ -133,7 +144,22 @@ void visitClass(Class klass){
 void visitFunction(Function func) {
     output(" ");
     visitProducedType(func.type);
-    output(" ``func.name``();\n");
+    output(" ``func.name``");
+    for(paramList in func.parameterLists){
+        variable Boolean onceParameter = true;
+        output("(");
+        for(param in paramList){
+            if(onceParameter){
+                onceParameter = false;
+            }else{
+                output(", ");
+            }
+            visitProducedType(param.type);
+            output(" ``param.name``");
+        }
+        output(")");
+    }
+    output(";\n");
 }
 
 void visitValue(Value val) {
