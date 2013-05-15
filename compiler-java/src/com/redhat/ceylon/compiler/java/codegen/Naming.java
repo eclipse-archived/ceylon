@@ -125,7 +125,7 @@ public class Naming implements LocalId {
                 "clone"));
     }
     
-    private String getMethodName(TypedDeclaration decl) {
+    private static String getMethodName(TypedDeclaration decl) {
         if (decl.isClassOrInterfaceMember()) {
             String name = decl.getName();
             // ERASURE
@@ -138,7 +138,7 @@ public class Naming implements LocalId {
                 return "equals";
             } else if ("clone".equals(name)
                     && Decl.getClassOrInterfaceContainer(decl).getType().isSubtypeOf(
-                            ((TypeDeclaration)gen().typeFact().getLanguageModuleDeclaration("Cloneable")).getType())) {
+                            ((TypeDeclaration)decl.getUnit().getLanguageModuleDeclaration("Cloneable")).getType())) {
                 return "clone";    
             } 
             return getMethodNameInternal(decl);
@@ -147,7 +147,7 @@ public class Naming implements LocalId {
         }
     }
 
-    private String getMethodNameInternal(TypedDeclaration decl) {
+    private static String getMethodNameInternal(TypedDeclaration decl) {
         String name;
         if (decl.isClassOrInterfaceMember()
                 && decl instanceof Method) {
@@ -422,7 +422,7 @@ public class Naming implements LocalId {
         return makeDeclName(null, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
-    private String quoteMethodNameIfProperty(Method method) {
+    private static String quoteMethodNameIfProperty(Method method) {
         String name = method.getName();
         if (!method.isShared()) {
             name += "$priv";
@@ -444,17 +444,17 @@ public class Naming implements LocalId {
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
             && method.getParameterLists().get(0).getParameters().isEmpty()
-            && !gen().isAnything(method.getType()))
+            && !AbstractTransformer.isAnything(method.getType()))
             return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
            && method.getParameterLists().get(0).getParameters().size() == 1
-           && gen().isAnything(method.getType()))
+           && AbstractTransformer.isAnything(method.getType()))
             return quote(name);
         return name;
     }
 
-    private String quoteMethodName(Method decl){
+    private static String quoteMethodName(Method decl){
         // always use the refined decl
         Declaration refinedDecl = decl.getRefinedDeclaration();  
         return getMethodName((Method)refinedDecl);
@@ -963,7 +963,7 @@ public class Naming implements LocalId {
     String selector(TypedDeclaration decl) {
         return selector(decl, 0);
     }
-    String selector(TypedDeclaration decl, int namingOptions) {
+    public static String selector(TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 &&
                 (Decl.isGetter(decl) || Decl.isValueOrSharedParam(decl))) {
             if ((namingOptions & NA_SETTER) != 0) {
