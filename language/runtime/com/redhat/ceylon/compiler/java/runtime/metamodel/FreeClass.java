@@ -67,20 +67,38 @@ public class FreeClass
 
     @Ignore
     @Override
-    public AppliedClassType<? extends Object, ? super Sequential<? extends Object>> apply(){
+    public ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> apply(){
         return apply(apply$types());
     }
 
     @Override
-    public AppliedClassType<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
-        Iterator iterator = types.iterator();
-        Object it;
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        while((it = iterator.next()) != finished_.getFinished$()){
-            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
-            producedTypes.add(modelPt);
-        }
+    @TypeInfo("ceylon.language.metamodel::Class<ceylon.language::Anything,ceylon.language::Nothing>")
+    public ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> apply(
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") 
+            Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        return bindAndApply(null, types);
+    }
+
+    @Ignore
+    @Override
+    public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> bindAndApply(Object instance){
+        return bindAndApply(instance, bindAndApply$types(instance));
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::Class<ceylon.language::Anything,ceylon.language::Nothing>")
+    public ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> bindAndApply(
+            @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") 
+            Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
         return (AppliedClassType)Metamodel.getAppliedMetamodel(appliedClassType);
     }

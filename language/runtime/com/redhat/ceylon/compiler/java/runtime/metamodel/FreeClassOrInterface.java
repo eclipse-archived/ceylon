@@ -7,6 +7,7 @@ import ceylon.language.Anything;
 import ceylon.language.Empty;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.untyped.ClassOrInterface$impl;
 import ceylon.language.metamodel.untyped.Parameterised$impl;
@@ -15,6 +16,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -188,6 +190,57 @@ public abstract class FreeClassOrInterface
                 return tp;
         }
         return null;
+    }
+
+    @Ignore
+    @Override
+    public <Container, 
+            Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
+        Sequential<? extends ceylon.language.metamodel.AppliedType> memberApply$types(TypeDescriptor $reifiedContainer,
+                                                                                      TypeDescriptor $reifiedKind){
+        
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public <Container, 
+            Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
+        ceylon.language.metamodel.Member<Container, Kind> memberApply(TypeDescriptor $reifiedContainer,
+                                                                      TypeDescriptor $reifiedKind){
+        
+        return this.<Container, Kind>memberApply($reifiedContainer,
+                                                 $reifiedKind,
+                                                 this.<Container, Kind>memberApply$types($reifiedContainer, $reifiedKind));
+    }
+
+    @Override
+    public <Container, 
+            Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
+        ceylon.language.metamodel.Member<Container, Kind> memberApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedKind,
+                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        // FIXME: check this
+        AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
+        return getAppliedClassOrInterface($reifiedContainer, $reifiedKind, types, containerType);
+    }
+
+    <Type, Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
+    ceylon.language.metamodel.Member<Type, Kind> getAppliedClassOrInterface(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
+                                                                            Sequential<? extends ceylon.language.metamodel.AppliedType> types,
+                                                                            AppliedClassOrInterfaceType<Type> container){
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        // FIXME: this is wrong because it does not include the container type
+        final ProducedType appliedType = declaration.getProducedReference(null, producedTypes).getType();
+        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind, container){
+            @Override
+            protected Kind bindTo(Object instance) {
+                return (Kind) (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface 
+                        ? new AppliedInterfaceType(appliedType)
+                        : new AppliedClassType(appliedType, instance));
+            }
+        };
     }
 
     @Override

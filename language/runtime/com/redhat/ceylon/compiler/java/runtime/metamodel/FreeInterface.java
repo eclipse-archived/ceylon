@@ -1,14 +1,17 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.List;
+
+import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.untyped.Interface$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
@@ -43,10 +46,38 @@ public class FreeInterface
     }
 
     @Override
-    public ceylon.language.metamodel.Interface<? extends Object> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
-        return null;
+    @TypeInfo("ceylon.language.metamodel::Interface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.Interface<? extends Object> apply(
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") 
+            Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        return bindAndApply(null, types);
     }
     
+    @Ignore
+    @Override
+    public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public ceylon.language.metamodel.Interface<? extends Object> bindAndApply(Object instance){
+        return bindAndApply(instance, bindAndApply$types(instance));
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::Interface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.Interface<? extends Object> bindAndApply(
+            @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") 
+            Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        // FIXME: refactor with FreeClass.bindAndApply
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        // FIXME: this is wrong because it does not include the container type
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedInterfaceType = declaration.getProducedReference(null, producedTypes).getType();
+        return (AppliedInterfaceType)Metamodel.getAppliedMetamodel(appliedInterfaceType);
+    }
+
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

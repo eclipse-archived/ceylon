@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Iterator;
@@ -9,9 +8,9 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.AppliedType$impl;
+import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Declaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -26,7 +25,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
@@ -220,16 +218,7 @@ public class AppliedClassOrInterfaceType<Type>
         final FreeClassOrInterface type = declaration.findType(name);
         if(type == null)
             return null;
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        final ProducedType appliedType = type.declaration.getProducedReference(null, producedTypes).getType();
-        return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind, (AppliedClassOrInterfaceType<SubType>) this){
-            @Override
-            protected Kind bindTo(Object instance) {
-                return (Kind) (type.declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface 
-                        ? new AppliedInterfaceType(appliedType)
-                        : new AppliedClassType(appliedType, instance));
-            }
-        };
+        return type.getAppliedClassOrInterface($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterfaceType<SubType>)this);
     }
 
     @Override
