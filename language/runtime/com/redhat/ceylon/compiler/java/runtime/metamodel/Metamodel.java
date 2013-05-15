@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,11 +12,16 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
+import ceylon.language.metamodel.Annotated;
+import ceylon.language.metamodel.ClassOrInterface;
+import ceylon.language.metamodel.OptionalAnnotation;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -21,6 +29,7 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
+import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -210,6 +219,10 @@ public class Metamodel {
             ReflectionClass classMirror = (ReflectionClass) ((LazyMethod) declaration).classMirror;
             return classMirror.klass;
         }
+        if(declaration instanceof LazyValue){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyValue) declaration).classMirror;
+            return classMirror.klass;
+        }
         if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
             return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
         }
@@ -291,6 +304,7 @@ public class Metamodel {
         return (com.redhat.ceylon.compiler.typechecker.model.Package)scope;
     }
 
+
     public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.metamodel.AppliedType> types) {
         Iterator<?> iterator = types.iterator();
         Object it;
@@ -301,5 +315,220 @@ public class Metamodel {
             producedTypes.add(modelPt);
         }
         return producedTypes;
+    }
+    
+    private static interface AnnotationPredicate {
+
+        /** 
+         * Whether we should instantiate the given Java annotation into a 
+         * Ceylon annotation. If this returns true 
+         * {@link #accept(ceylon.language.metamodel.Annotation)} 
+         * will still be called to determine whether the Ceylon annotation 
+         * meets the acceptance criteria.
+         */
+        public boolean shouldInstantiate(Class<? extends java.lang.annotation.Annotation> jAnnotationType);
+        
+        /** 
+         * Whether the given Ceylon annotation should be 
+         * added to the results 
+         */
+        public <A extends ceylon.language.metamodel.Annotation<A>> boolean accept(A cAnnotation);
+    }
+    
+    public static <Value extends OptionalAnnotation<? extends Value, ? super ProgramElement>, ProgramElement extends Annotated>
+    AnnotationPredicate annotationPredicate(
+            ClassOrInterface<? extends OptionalAnnotation<? extends Value, ? super ProgramElement>> annotationType) {
+        final Class<?> refAnnotationClass = (Class<?>)getAnnotatedElement(annotationType);
+        final Class<?> refAnnotationType;
+        try {
+            refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation", false, refAnnotationClass.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Class<?> c;
+        try {
+            c = Class.forName(refAnnotationClass.getName()+"$annotations", false, refAnnotationClass.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            c = null;
+        }
+        final Class<?> refAnnotationWrapperType = c;
+        return new AnnotationPredicate() {
+
+            @Override
+            public boolean shouldInstantiate(
+                    Class<? extends java.lang.annotation.Annotation> jAnnotationType) {
+                return refAnnotationType.isAssignableFrom(jAnnotationType)
+                        || (refAnnotationWrapperType != null 
+                            && refAnnotationWrapperType.isAssignableFrom(jAnnotationType));
+            }
+
+            @Override
+            public <A extends ceylon.language.metamodel.Annotation<A>> boolean accept(
+                    A cAnnotation) {
+                return refAnnotationClass.isInstance(cAnnotation);
+            }
+        };
+    }
+    
+    public static List<ceylon.language.metamodel.Annotation> loadAnnotations(
+            Annotated annotated) {
+        java.lang.reflect.AnnotatedElement jAnnotatedElement = getAnnotatedElement(annotated);
+        if (jAnnotatedElement == null) {
+            throw new RuntimeException("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
+        }
+        java.lang.annotation.Annotation[] jAnnotations = jAnnotatedElement.getAnnotations();
+        List ceylonAnnotations = new ArrayList(jAnnotations.length);
+        for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
+            addAnnotation(ceylonAnnotations, jAnnotation, null);
+        }
+        return (List<ceylon.language.metamodel.Annotation>)ceylonAnnotations;
+    }
+
+    /**
+     * Gets the Java {@link java.lang.reflect.AnnotatedElement} for the given 
+     * Ceylon annotated element.
+     */
+    public static java.lang.reflect.AnnotatedElement getAnnotatedElement(
+            Annotated annotated) {
+        FreeDeclaration freeDeclaration = null;
+        if (annotated instanceof FreeDeclaration) {
+            freeDeclaration = (FreeDeclaration)annotated;
+        } else {
+            // Must be one of the applied ones
+            if (annotated instanceof AppliedClassOrInterfaceType) {
+                AppliedClassOrInterfaceType type = (AppliedClassOrInterfaceType)annotated;
+                freeDeclaration = type.declaration;    
+            } else if (annotated instanceof AppliedFunction) {
+                AppliedFunction function = (AppliedFunction)annotated;
+                freeDeclaration = function.declaration;
+            } else if (annotated instanceof AppliedValue) {
+                AppliedFunction value = (AppliedFunction)annotated;
+                freeDeclaration = value.declaration;
+            } else {
+                throw new RuntimeException("Unexpected annotated " + annotated.getClass());
+            }
+        }
+        
+        java.lang.reflect.AnnotatedElement jAnnotatedElement = null;
+        if (freeDeclaration instanceof FreeClassOrInterface) {
+            jAnnotatedElement = getJavaClass(freeDeclaration.declaration);
+        } else if (freeDeclaration instanceof FreeFunction) {
+            jAnnotatedElement = getFunctionAnnotatedElement((FreeFunction)freeDeclaration);
+        } else if (freeDeclaration instanceof FreeValue) {
+            jAnnotatedElement = getValueAnnotatedElement((FreeValue)freeDeclaration);
+        } else if (annotated instanceof FreeModule) {
+            Class<?> javaClass = getJavaClass(freeDeclaration.declaration);
+            jAnnotatedElement = javaClass;
+        } else if (annotated instanceof FreePackage) {
+            Class<?> javaClass = getJavaClass(freeDeclaration.declaration);
+            jAnnotatedElement = javaClass;
+        }
+        return jAnnotatedElement;
+    }
+
+    private static java.lang.reflect.AnnotatedElement getValueAnnotatedElement(
+            FreeValue freeValue) {
+        Class<?> javaClass = Metamodel.getJavaClass(freeValue.declaration);
+        try {
+            return javaClass.getMethod(Naming.getGetterName(freeValue.declaration));
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static java.lang.reflect.AnnotatedElement getFunctionAnnotatedElement(
+            FreeFunction freeValue) {
+        Class<?> javaClass = Metamodel.getJavaClass(freeValue.declaration);
+        try {
+            return javaClass.getMethod(Naming.getGetterName(freeValue.declaration));
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static <A extends ceylon.language.metamodel.Annotation<A>> void addAnnotation(
+            List<ceylon.language.metamodel.Annotation<A>> ceylonAnnotations,
+            java.lang.annotation.Annotation jAnnotation,
+            AnnotationPredicate pred) {
+        Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
+        if (pred != null && !pred.shouldInstantiate(jAnnotationType)) {
+            return;
+        }
+        if (jAnnotationType.getAnnotation(Ceylon.class) == null) {
+            // It's a Java annotation
+            addProxyCeylonAnnotation(ceylonAnnotations, jAnnotation);
+            return;
+        }
+        if (jAnnotationType.getName().endsWith("$annotations")) {
+            java.lang.annotation.Annotation[] jAnnotations;
+            try {
+                jAnnotations = (java.lang.annotation.Annotation[])jAnnotationType.getMethod("value").invoke(jAnnotation);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException("While unwrapping a sequenced annotation", e);
+            }
+            for (java.lang.annotation.Annotation wrapped : jAnnotations) {
+                addAnnotation(ceylonAnnotations, wrapped, pred);
+            }
+        } else {
+            // Find the annotation class
+            String annotationName = jAnnotationType.getName();
+            if (!annotationName.endsWith("$annotation")) {
+                throw new RuntimeException();
+            }
+            String className = annotationName.substring(0, annotationName.length() - "$annotation".length());
+            java.lang.Class<A> annotationClass;
+            try {
+                annotationClass = (java.lang.Class<A>)Class.forName(className, false, jAnnotationType.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Unable to find annotation class " + className + " for annotation type " + annotationName, e);
+            }
+            
+            // Invoke it with the jAnnotation as the only argument
+            try {
+                Constructor<A> constructor = annotationClass.getConstructor(jAnnotationType);
+                A cAnnotation = constructor.newInstance(jAnnotation);
+                if (pred.accept(cAnnotation)) {
+                    ceylonAnnotations.add(cAnnotation);
+                }
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException("While reflectively instantiating " + annotationClass, e);
+            } 
+        }
+    }
+    
+    private static void addProxyCeylonAnnotation(
+            List<? extends ceylon.language.metamodel.Annotation> ceylonAnnotations,
+            java.lang.annotation.Annotation jAnnotation) {
+        Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, java.lang.reflect.Method method,
+                    Object[] args) throws Throwable {
+                // TODO Auto-generated method stub
+                // 
+                return null;
+            }
+        };
+        java.lang.reflect.Proxy.newProxyInstance(jAnnotationType.getClassLoader(), 
+                new Class[]{jAnnotationType, ceylon.language.metamodel.Annotation.class}, 
+                handler);
+    }
+    
+    public static List<ceylon.language.metamodel.Annotation> annotations(
+            ClassOrInterface annotationType,
+            Annotated annotated) {
+        // TODO If the annotated is not a valid target for the annotationType
+        // return empty immediately
+        java.lang.reflect.AnnotatedElement jAnnotatedElement = getAnnotatedElement(annotated);
+        if (jAnnotatedElement == null) {
+            throw new RuntimeException("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
+        }
+        AnnotationPredicate predicate = annotationPredicate(annotationType);
+        java.lang.annotation.Annotation[] jAnnotations = jAnnotatedElement.getAnnotations();
+        List ceylonAnnotations = new ArrayList(jAnnotations.length);
+        for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
+            addAnnotation(ceylonAnnotations, jAnnotation, predicate);
+        }
+        return (List<ceylon.language.metamodel.Annotation>)ceylonAnnotations;
     }
 }
