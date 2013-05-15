@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Type;
 import ceylon.language.metamodel.untyped.Value$impl;
 

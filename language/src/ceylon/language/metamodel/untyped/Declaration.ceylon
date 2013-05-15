@@ -1,6 +1,9 @@
+import ceylon.language.metamodel{Annotated}
+
 shared interface Declaration of Value |
                                 Function |
-                                ClassOrInterface {
+                                ClassOrInterface 
+        satisfies Annotated {
     
     shared formal String name;
     

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.AppliedType$impl;
 import ceylon.language.metamodel.Declaration$impl;
@@ -44,7 +45,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private final TypeDescriptor $reifiedArguments;
     
     private AppliedType type;
-    private FreeFunction declaration;
+    protected FreeFunction declaration;
     private MethodHandle method;
 
     public AppliedFunction(ProducedReference appliedFunction, FreeFunction function, Object instance) {
@@ -133,6 +134,13 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return null;
     }
 
+    @Override
+    @Ignore
+    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
     @Override
     @Ignore
     public Function$impl<Type, Arguments> $ceylon$language$metamodel$Function$impl() {

@@ -1,11 +1,13 @@
-shared interface Module satisfies Identifiable {
+import ceylon.language.metamodel{Annotated}
+
+shared interface Module satisfies Identifiable & Annotated {
     shared formal String name;
     shared formal String version;
     
     shared formal Package[] members;
 }
 
-shared interface Package satisfies Identifiable {
+shared interface Package satisfies Identifiable & Annotated  {
     
     shared formal String name;
     

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Declaration;
 import ceylon.language.metamodel.untyped.Package$impl;
 import ceylon.language.metamodel.untyped.Value;
@@ -20,7 +21,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreePackage implements ceylon.language.metamodel.untyped.Package, ReifiedType{
+public class FreePackage implements ceylon.language.metamodel.untyped.Package, 
+        ceylon.language.metamodel.Annotated,
+        ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreePackage.class);
@@ -38,6 +41,13 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package, R
     @Override
     @Ignore
     public Package$impl $ceylon$language$metamodel$untyped$Package$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
     }

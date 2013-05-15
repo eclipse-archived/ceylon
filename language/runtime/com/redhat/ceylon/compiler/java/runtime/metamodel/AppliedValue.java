@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 
+import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.AppliedType$impl;
 import ceylon.language.metamodel.Declaration$impl;
@@ -96,6 +97,13 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
     }

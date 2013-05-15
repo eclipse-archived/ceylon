@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Declaration$impl;
 import ceylon.language.metamodel.untyped.Package;
 
@@ -32,6 +33,13 @@ public class FreeDeclaration
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$metamodel$untyped$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
     }

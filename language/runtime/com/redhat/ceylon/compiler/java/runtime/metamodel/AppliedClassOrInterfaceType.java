@@ -8,9 +8,10 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.metamodel.Annotated$impl;
+import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.AppliedType$impl;
-import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Declaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -59,6 +60,13 @@ public class AppliedClassOrInterfaceType<Type>
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
     }
