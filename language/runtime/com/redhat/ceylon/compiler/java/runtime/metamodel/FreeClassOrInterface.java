@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.ArrayList;
+import java.lang.reflect.AnnotatedElement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeClassOrInterface
     extends FreeDeclaration
-    implements ceylon.language.metamodel.untyped.ClassOrInterface {
+    implements ceylon.language.metamodel.untyped.ClassOrInterface, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterface.class);
@@ -275,5 +276,11 @@ public abstract class FreeClassOrInterface
                 return (T) decl;
         }
         return null;
+    }
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        return Metamodel.getJavaClass(declaration).getAnnotations();
     }
 }

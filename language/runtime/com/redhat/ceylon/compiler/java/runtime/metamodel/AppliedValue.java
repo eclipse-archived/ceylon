@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.Annotated$impl;
@@ -21,7 +22,8 @@ import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>, ReifiedType {
+public class AppliedValue<Type> 
+        implements ceylon.language.metamodel.Value<Type>, ReifiedType, AnnotationBearing {
 
     private AppliedType type;
     @Ignore
@@ -106,6 +108,12 @@ public class AppliedValue<Type> implements ceylon.language.metamodel.Value<Type>
     public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        return declaration.$getJavaAnnotations();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -37,7 +38,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 public class AppliedFunction<Type, Arguments extends Sequential<? extends Object>> 
-    implements ceylon.language.metamodel.Function<Type, Arguments>, ReifiedType {
+    implements ceylon.language.metamodel.Function<Type, Arguments>, ReifiedType,
+    AnnotationBearing {
 
     @Ignore
     private final TypeDescriptor $reifiedType;
@@ -139,6 +141,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        return declaration.$getJavaAnnotations();
     }
     
     @Override

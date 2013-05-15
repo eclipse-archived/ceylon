@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.List;
 
 import ceylon.language.Sequential;
@@ -14,7 +15,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public class FreeModule implements ceylon.language.metamodel.untyped.Module,
-        ceylon.language.metamodel.Annotated,
+        ceylon.language.metamodel.Annotated, AnnotationBearing,
         ReifiedType {
 
     @Ignore
@@ -37,6 +38,13 @@ public class FreeModule implements ceylon.language.metamodel.untyped.Module,
     @Ignore
     public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        // TODO get the java.lang.Class for the module descriptor
         return null;
     }
 

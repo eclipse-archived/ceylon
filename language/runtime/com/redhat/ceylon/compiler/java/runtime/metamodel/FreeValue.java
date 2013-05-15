@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.AnnotatedElement;
+
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Type;
 import ceylon.language.metamodel.untyped.Value$impl;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -14,7 +17,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeValue 
     extends FreeDeclaration
-    implements ceylon.language.metamodel.untyped.Value {
+    implements ceylon.language.metamodel.untyped.Value, AnnotationBearing {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeValue.class);
@@ -61,5 +64,16 @@ public class FreeValue
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
+    }
+
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        Class<?> javaClass = Metamodel.getJavaClass(declaration);
+        try {
+            return javaClass.getMethod(Naming.getGetterName(declaration)).getAnnotations();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

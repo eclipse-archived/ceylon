@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreePackage implements ceylon.language.metamodel.untyped.Package, 
-        ceylon.language.metamodel.Annotated,
+        ceylon.language.metamodel.Annotated, AnnotationBearing,
         ReifiedType {
 
     @Ignore
@@ -49,6 +50,13 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
     @Ignore
     public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        // TODO get the java.lang.Class for the module descriptor
         return null;
     }
 

@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Iterator;
@@ -13,6 +16,7 @@ import ceylon.language.metamodel.untyped.Parameterised$impl;
 import ceylon.language.metamodel.untyped.Type;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -22,12 +26,13 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeFunction 
     extends FreeDeclaration
-    implements ceylon.language.metamodel.untyped.Function {
+    implements ceylon.language.metamodel.untyped.Function, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeFunction.class);
@@ -55,12 +60,14 @@ public class FreeFunction
         List<ParameterList> parameterLists = declaration.getParameterLists();
         ceylon.language.Sequential[] parameterListsArray = new ceylon.language.Sequential[parameterLists.size()];
         int p=0;
+        Annotation[][] parameterAnnotations = findMethod(Metamodel.getJavaClass(declaration), getName()).getParameterAnnotations();
         for(ParameterList parameterList : parameterLists){
             List<Parameter> modelParameters = parameterList.getParameters();
             ceylon.language.metamodel.untyped.Parameter[] parameters = new ceylon.language.metamodel.untyped.Parameter[modelParameters.size()];
             i=0;
             for(Parameter modelParameter : modelParameters){
-                parameters[i++] = new FreeParameter(modelParameter);
+                parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
+                i++;
             }
             parameterListsArray[p++] = Util.sequentialInstance(ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor, parameters);
         }
@@ -215,5 +222,40 @@ public class FreeFunction
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
+    }
+
+    @Ignore
+    @Override
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        Class<?> javaClass = Metamodel.getJavaClass(declaration);
+        String name = Naming.selector((TypedDeclaration)declaration, 0);
+        java.lang.reflect.Method best = findMethod(javaClass, name);
+        return best.getAnnotations();
+    }
+
+    private static java.lang.reflect.Method findMethod(Class<?> javaClass, String methodName) {
+        // How to find the right Method, just go for the one with the longest parameter list?
+        // OR go via the Method in AppliedFunction?
+        java.lang.reflect.Method best = null;
+        int numBestParams = -1;
+        for (java.lang.reflect.Method meth : javaClass.getDeclaredMethods()) {
+            if (!meth.getName().equals(methodName)) {
+                continue;
+            }
+            if (meth.getAnnotation(Ignore.class) != null) {
+                continue;
+            }
+            Class<?>[] parameterTypes = meth.getParameterTypes();
+            if (parameterTypes.length > numBestParams) {
+                best = meth;
+                numBestParams = parameterTypes.length;
+            } else if (parameterTypes.length == numBestParams) {
+                throw new RuntimeException("Method arity ambiguity");
+            }
+        }
+        if (best == null) {
+            throw new RuntimeException("Couldn't find method " + methodName);
+        }
+        return best;
     }
 }

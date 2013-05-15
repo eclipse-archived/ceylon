@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -34,7 +35,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
 public class AppliedClassOrInterfaceType<Type> 
-    implements ceylon.language.metamodel.ClassOrInterface<Type>, ReifiedType {
+    implements ceylon.language.metamodel.ClassOrInterface<Type>, ReifiedType,
+    AnnotationBearing {
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
@@ -69,6 +71,12 @@ public class AppliedClassOrInterfaceType<Type>
     public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        return declaration.$getJavaAnnotations();
     }
 
     @Override
