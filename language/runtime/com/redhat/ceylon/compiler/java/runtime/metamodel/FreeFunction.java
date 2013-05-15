@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Iterator;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
@@ -35,7 +36,7 @@ public class FreeFunction
     
     private Type type;
 
-    private Sequential<? extends Sequential<? extends ceylon.language.metamodel.untyped.Parameter>> parameterLists;
+    private Sequence<? extends Sequential<? extends ceylon.language.metamodel.untyped.Parameter>> parameterLists;
 
     public FreeFunction(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
@@ -63,7 +64,7 @@ public class FreeFunction
             }
             parameterListsArray[p++] = Util.sequentialInstance(ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor, parameters);
         }
-        this.parameterLists = (Sequential)Util.sequentialInstance(TypeDescriptor.klass(Sequential.class, ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor), parameterListsArray);
+        this.parameterLists = (Sequence)Util.sequentialInstance(TypeDescriptor.klass(Sequential.class, ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor), parameterListsArray);
     }
 
     @Override
@@ -94,8 +95,8 @@ public class FreeFunction
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Sequential<ceylon.language.metamodel.untyped::Parameter>>")
-    public Sequential<? extends Sequential<? extends ceylon.language.metamodel.untyped.Parameter>> getParameterLists(){
+    @TypeInfo("ceylon.language::Sequence<ceylon.language::Sequential<ceylon.language.metamodel.untyped::Parameter>>")
+    public Sequence<? extends Sequential<? extends ceylon.language.metamodel.untyped.Parameter>> getParameterLists(){
         return parameterLists;
     }
 

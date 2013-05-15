@@ -7,7 +7,7 @@ shared interface Function
 
     shared formal Parameter[] parameters;
 
-    shared formal Parameter[][] parameterLists;
+    shared formal Sequence<Parameter[]> parameterLists;
 
     shared formal AppliedFunction<Anything, Nothing> apply(AppliedType* types);
 }
