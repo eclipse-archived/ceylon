@@ -149,6 +149,28 @@ void checkMemberTypes(){
     assert(is ContainerInterface.InnerClass o2);
 }
 
+void checkUntypedFunctionToAppliedFunction(){
+    value noParamsInstance = NoParams();
+    value noParamsType = type(noParamsInstance);
+    assert(is Class<NoParams, []> noParamsType);
+    
+    value stringType = typeLiteral<String>();
+        
+    assert(exists appliedFunctionMember1 = noParamsType.getFunction<NoParams, Function<NoParams, [String, Integer]>>("typeParams", stringType));
+    value appliedFunction1 = appliedFunctionMember1(noParamsInstance);
+    Anything o1 = appliedFunction1("a", 1);
+    assert(is NoParams o1);
+    
+    assert(is Function<NoParams, [String, Integer]> appliedFunction2 = appliedFunction1.declaration.bindAndApply(noParamsInstance, stringType));
+    Anything o2 = appliedFunction2("a", 1);
+    assert(is NoParams o2);
+    
+    value appliedFunctionMember3 = appliedFunction1.declaration.memberApply<NoParams, Function<NoParams, [String, Integer]>>(stringType);
+    value appliedFunction3 = appliedFunctionMember3(noParamsInstance);
+    Anything o3 = appliedFunction3("a", 1);
+    assert(is NoParams o3);
+}
+
 void checkHierarchy(){
     value noParamsAppliedType = type(NoParams());
     
@@ -356,5 +378,7 @@ shared void runtime() {
     checkToplevelAttributes();
 
     checkToplevelFunctions();
+
+    checkUntypedFunctionToAppliedFunction();
 }
 
