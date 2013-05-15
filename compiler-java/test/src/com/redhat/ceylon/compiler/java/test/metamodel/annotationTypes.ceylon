@@ -6,12 +6,12 @@ shared annotation Seq seq(String s) => Seq(s);
 
 
 "aToplevelValue"
-seq("aToplevelFunction")
-seq("aToplevelGetterSetter")
+seq("aToplevelValue 1")
+seq("aToplevelValue 2")
 shared String aToplevelValue = "";
 
 "aToplevelGetter"
-seq("aToplevelFunction")
+seq("aToplevelGetter 1")
 shared String aToplevelGetterSetter {
     return "";
 }
@@ -19,20 +19,21 @@ shared String aToplevelGetterSetter {
 assign aToplevelGetterSetter {
 }
 "aToplevelFunction"
-seq("aToplevelValue")
+seq("aToplevelFunction 1")
 shared void aToplevelFunction(
     "aToplevelFunction.parameter"
+    seq("aToplevelFunction.parameter 1")
     String parameter) {
     
 }
 "aToplevelObject"
-seq("aToplevelValue")
+seq("aToplevelObject 1")
 object aToplevelObject {
 }
 
 "AInterface"
-seq("Anything")
-seq("Object")
+seq("AInterface 1")
+seq("AInterface 2")
 shared interface AInterface {
     
     "AInterface.FormalInnerClass"
@@ -78,7 +79,8 @@ shared interface AInterface {
 }
 
 "AAbstractClass"
-seq("AInterface")
+seq("AAbstractClass 1")
+seq("AAbstractClass 2")
 shared abstract class AAbstractClass (
     "AAbstractClass.parameter"
     String parameter) satisfies AInterface {
@@ -120,10 +122,12 @@ shared abstract class AAbstractClass (
 }
 
 "AClass"
-seq("AAbstractClass")
-seq("AInterface")
+seq("AClass 1")
+seq("AClass 2")
 shared class AClass(
         "AClass.parameter"
+        seq("AClass.parameter 1")
+        seq("AClass.parameter 2")
         String parameter) 
     extends AAbstractClass(parameter) {
  
