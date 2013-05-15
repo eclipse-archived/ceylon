@@ -1,10 +1,14 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ceylon.language.Iterator;
 import ceylon.language.Null;
+import ceylon.language.Sequential;
+import ceylon.language.finished_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -24,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 public class Metamodel {
 
@@ -280,5 +283,17 @@ public class Metamodel {
         if(scope == null)
             throw new RuntimeException("Declaration with no package: "+declaration);
         return (com.redhat.ceylon.compiler.typechecker.model.Package)scope;
+    }
+
+    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.metamodel.AppliedType> types) {
+        Iterator<?> iterator = types.iterator();
+        Object it;
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
+        while((it = iterator.next()) != finished_.getFinished$()){
+            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
+            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
+            producedTypes.add(modelPt);
+        }
+        return producedTypes;
     }
 }

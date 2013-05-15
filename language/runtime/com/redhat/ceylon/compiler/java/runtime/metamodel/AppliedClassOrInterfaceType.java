@@ -183,21 +183,7 @@ public class AppliedClassOrInterfaceType<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        Iterator iterator = types.iterator();
-        Object it;
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        while((it = iterator.next()) != finished_.getFinished$()){
-            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
-            producedTypes.add(modelPt);
-        }
-        final ProducedReference appliedFunction = method.declaration.getProducedReference(null, producedTypes);
-        return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind, (AppliedClassOrInterfaceType<SubType>) this){
-            @Override
-            protected Kind bindTo(Object instance) {
-                return (Kind) new AppliedFunction(appliedFunction, method, instance);
-            }
-        };
+        return method.<SubType,Kind>getAppliedFunction($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterfaceType<SubType>)this);
     }
 
     @Ignore
@@ -234,14 +220,7 @@ public class AppliedClassOrInterfaceType<Type>
         final FreeClassOrInterface type = declaration.findType(name);
         if(type == null)
             return null;
-        Iterator iterator = types.iterator();
-        Object it;
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        while((it = iterator.next()) != finished_.getFinished$()){
-            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
-            producedTypes.add(modelPt);
-        }
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         final ProducedType appliedType = type.declaration.getProducedReference(null, producedTypes).getType();
         return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind, (AppliedClassOrInterfaceType<SubType>) this){
             @Override

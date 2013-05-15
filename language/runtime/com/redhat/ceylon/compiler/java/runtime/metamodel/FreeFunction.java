@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Iterator;
@@ -8,8 +7,8 @@ import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.untyped.Function$impl;
 import ceylon.language.metamodel.untyped.Declaration$impl;
+import ceylon.language.metamodel.untyped.Function$impl;
 import ceylon.language.metamodel.untyped.Parameterised$impl;
 import ceylon.language.metamodel.untyped.Type;
 
@@ -22,6 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -127,25 +127,85 @@ public class FreeFunction
 
     @Ignore
     @Override
-    public AppliedFunction<? extends Object, ? super Sequential<? extends Object>> apply(){
+    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> apply(){
         return apply(apply$types());
     }
 
     @Override
-    public AppliedFunction<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
-        Iterator iterator = types.iterator();
-        Object it;
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        while((it = iterator.next()) != finished_.getFinished$()){
-            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
-            producedTypes.add(modelPt);
-        }
-        com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        // FIXME: members?
-        return new AppliedFunction(appliedFunction, this, null);
+    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        return bindAndApply(null, types);
     }
 
+    @Ignore
+    @Override
+    public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> bindAndApply(Object instance){
+        return bindAndApply(instance, bindAndApply$types(instance));
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::Function<ceylon.language::Anything,ceylon.language::Nothing>")
+    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> bindAndApply(
+            @Name("instance") @TypeInfo("ceylon.language::Object") Object instance, 
+            @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
+        return new AppliedFunction(appliedFunction, this, instance);
+    }
+
+    @Ignore
+    @Override
+    public <Container, 
+            Kind extends ceylon.language.metamodel.Function>
+        Sequential<? extends ceylon.language.metamodel.AppliedType> memberApply$types(TypeDescriptor $reifiedContainer,
+                                                                                      TypeDescriptor $reifiedKind){
+        
+        return (Sequential) empty_.getEmpty$();
+    }
+
+    @Ignore
+    @Override
+    public <Container, 
+            Kind extends ceylon.language.metamodel.Function>
+        ceylon.language.metamodel.Member<Container, Kind> memberApply(TypeDescriptor $reifiedContainer,
+                                                                      TypeDescriptor $reifiedKind){
+        
+        return this.<Container, Kind>memberApply($reifiedContainer,
+                                                 $reifiedKind,
+                                                 this.<Container, Kind>memberApply$types($reifiedContainer, $reifiedKind));
+    }
+
+    @Override
+    public <Container, 
+            Kind extends ceylon.language.metamodel.Function>
+        ceylon.language.metamodel.Member<Container, Kind> memberApply(
+                @Ignore TypeDescriptor $reifiedContainer,
+                @Ignore TypeDescriptor $reifiedKind,
+                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+        // FIXME: check this
+        AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
+        return getAppliedFunction($reifiedContainer, $reifiedKind, types, containerType);
+    }
+
+    <Type, Kind extends ceylon.language.metamodel.Declaration>
+    ceylon.language.metamodel.Member<Type, Kind> getAppliedFunction(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
+                                                                    Sequential<? extends ceylon.language.metamodel.AppliedType> types,
+                                                                    AppliedClassOrInterfaceType<Type> container){
+        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
+        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind, container){
+            @Override
+            protected Kind bindTo(Object instance) {
+                return (Kind) new AppliedFunction(appliedFunction, FreeFunction.this, instance);
+            }
+        };
+    }
+    
     @Override
     @TypeInfo("ceylon.language.metamodel.untyped::Type")
     public Type getType() {
