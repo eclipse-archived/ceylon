@@ -2499,6 +2499,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private ProducedType getType(TypeMirror type, Scope scope, VarianceLocation variance) {
         Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
+        if(decl == null){
+            throw new RuntimeException("Failed to find declaration for "+type);
+        }
         TypeDeclaration declaration = (TypeDeclaration) decl;
         List<TypeMirror> javacTypeArguments = type.getTypeArguments();
         if(!javacTypeArguments.isEmpty()){
