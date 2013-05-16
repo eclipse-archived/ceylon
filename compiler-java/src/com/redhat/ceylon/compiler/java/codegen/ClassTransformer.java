@@ -239,7 +239,7 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder classBuilder) {
         Class klass = def.getDeclarationModel();
         MethodDefinitionBuilder annoCtor = classBuilder.addConstructor();
-        annoCtor.ignoreAnnotations();
+        annoCtor.ignoreModelAnnotations();
         annoCtor.modifiers(transformClassDeclFlags(klass));
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "anno");
         pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
@@ -285,7 +285,7 @@ public class ClassTransformer extends AbstractTransformer {
                     stmts.append(make().Return(make().Apply(null, naming.makeQualIdent(sb.makeIdent(), "getSequence"), List.<JCExpression>nil())));
                     classBuilder.method(
                             MethodDefinitionBuilder.systemMethod(this, wrapperMethod)
-                                .ignoreAnnotations()
+                                .ignoreModelAnnotations()
                                 .modifiers(PRIVATE | STATIC)
                                 .resultType(null, makeJavaType(typeFact().getSequentialType(iteratedType)))
                                 .parameter(ParameterDefinitionBuilder.instance(this, array.getName())
@@ -967,7 +967,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean typeErased) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
-        concreteWrapper.ignoreAnnotations();
+        concreteWrapper.ignoreModelAnnotations();
         concreteWrapper.isOverride(true);
         if(typeParameters != null)
             concreteWrapper.reifiedTypeParametersFromModel(typeParameters);
@@ -1128,7 +1128,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (forImplementor) {
             thisMethod.isOverride(true);
         } else {
-            thisMethod.ignoreAnnotations();
+            thisMethod.ignoreModelAnnotations();
         }
         thisMethod.modifiers(PUBLIC);
         if (forImplementor) {
@@ -2121,7 +2121,7 @@ public class ClassTransformer extends AbstractTransformer {
             final Declaration model, java.util.List<Parameter> parameters,
             final Parameter currentParam, TypeParameterList typeParameterList) {
         // need annotations for BC, but the method isn't really there
-        overloadBuilder.ignoreAnnotations();
+        overloadBuilder.ignoreModelAnnotations();
         
         final JCExpression methName;
         if (model instanceof Method) {
@@ -2144,7 +2144,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (model instanceof Class) {
             Class klass = (Class)model;
             if (Strategy.generateInstantiator(model)) {
-                overloadBuilder.ignoreAnnotations();
+                overloadBuilder.ignoreModelAnnotations();
                 if (!klass.isAlias() 
                         && Strategy.generateInstantiator(klass.getExtendedTypeDeclaration())
                         && klass.isActual()){
@@ -2348,7 +2348,7 @@ public class ClassTransformer extends AbstractTransformer {
         Parameter parameter = currentParam.getDeclarationModel();
         String name = Naming.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
-        methodBuilder.ignoreAnnotations();
+        methodBuilder.ignoreModelAnnotations();
         int modifiers = 0;
         if (noBody) {
             modifiers |= PUBLIC | ABSTRACT;
@@ -2541,7 +2541,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
                 .main(this)
-                .ignoreAnnotations();
+                .ignoreModelAnnotations();
         // Add call to process.setupArguments
         JCExpression argsId = makeUnquotedIdent("args");
         JCMethodInvocation processExpr = make().Apply(null, naming.makeLanguageValue("process"), List.<JCTree.JCExpression>nil());

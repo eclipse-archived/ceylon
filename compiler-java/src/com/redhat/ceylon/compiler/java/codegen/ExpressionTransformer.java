@@ -2526,7 +2526,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Generate a static super$arg$N() method on the class
                 MethodDefinitionBuilder argMethod = MethodDefinitionBuilder.systemMethod(this, argMethodName.getName());
                 argMethod.modifiers(PRIVATE | STATIC);
-                argMethod.ignoreAnnotations();
+                argMethod.ignoreModelAnnotations();
                 argMethod.reifiedTypeParametersFromModel(subclass.getTypeParameters());
                 for (TypeParameter typeParam : subclass.getTypeParameters()) {
                     argMethod.typeParameter(typeParam);
@@ -3618,7 +3618,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             List<JCStatement> ifs = ifComprehensionCondList.getResult();
             JCStatement loop = make().WhileLoop(makeBoolean(true), make().Block(0, ifs));
             MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
-                .ignoreAnnotations()
+                .ignoreModelAnnotations()
                 .modifiers(Flags.PRIVATE | Flags.FINAL)
                 .resultType(null, makeJavaType(typeFact().getBooleanDeclaration().getType()))
                 .body(loop)

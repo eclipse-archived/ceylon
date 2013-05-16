@@ -228,25 +228,24 @@ public class MethodDefinitionBuilder {
     }
 
     /** 
-     * The class will be generated with the {@code @Ignore} annotation only
+     * {@code @Ignore} and no model annotations.
      */
-    public MethodDefinitionBuilder ignoreAnnotations() {
+    public MethodDefinitionBuilder ignoreModelAnnotations() {
         this.annotationFlags = Annotations.ignore(annotationFlags);
         return this;
     }
     
-    /** No model annotations, but possibly still {@link @Ignore} and user annotations */
+    /** No model annotations, but possibly still {@link @Ignore} and user annotations. */
     public MethodDefinitionBuilder noModelAnnotations() {
         this.annotationFlags = Annotations.noModel(annotationFlags);
         return this;
     }
     
-    /** No annotations as all (including {@code @Ignore} */
+    /** No annotations at all (including {@code @Ignore}). */
     public MethodDefinitionBuilder noAnnotations() {
         this.annotationFlags = 0;
         return this;
     }
-    
     
     public MethodDefinitionBuilder modelAnnotations(List<JCTree.JCAnnotation> modelAnnotations) {
         this.modelAnnotations.appendList(modelAnnotations);
