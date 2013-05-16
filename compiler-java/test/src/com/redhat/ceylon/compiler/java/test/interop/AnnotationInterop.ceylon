@@ -46,8 +46,8 @@ javaAnnotationClass {
     classRaw=String;
     classWithBound=Exception;
     classExact=String;
-    classes={String, Object};
-    classesRaw={String, Object};
+    classes={String, Boolean};
+    classesRaw={String, Boolean};
     classesWithBound={Exception, AssertionException};
     classesExact={String};
 }

@@ -27,10 +27,10 @@ package com.redhat.ceylon.compiler.java.test.interop;
         classExact = .java.lang.String.class,
         classes = {
                 .java.lang.String.class,
-                .java.lang.Object.class},
+                boolean.class},
         classesRaw = {
                 .java.lang.String.class,
-                .java.lang.Object.class},
+                boolean.class},
         classesWithBound = {
                 .java.lang.Throwable.class,
                 .ceylon.language.AssertionException.class},
