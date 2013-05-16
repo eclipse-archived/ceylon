@@ -123,12 +123,17 @@ public class ReflectionMethod implements MethodMirror {
         // if at least one parameter is annotated, java reflection will only include non-synthetic parameters in 
         // getParameterAnnotations(), so we need to know if we have less, we should substract synthetic parameters
         int annotationsOffset = annotations.length - parameterCount;
-        // inner classes will always add a synthetic parameter to the constructor
-        // FIXME: local classes may add more but we don't know how to find out
-        int start = (parametersOffset == 0
-                && method instanceof Constructor
-                && (method.getDeclaringClass().isMemberClass()
-                        || method.getDeclaringClass().isLocalClass())) ? 1 : 0;
+        int start = 0;
+        if(method instanceof Constructor){
+            // inner classes will always add a synthetic parameter to the constructor
+            // FIXME: local classes may add more but we don't know how to find out
+            if(method.getDeclaringClass().isMemberClass()
+                    || method.getDeclaringClass().isLocalClass())
+                start = 1;
+            // enums will always add two synthetic parameters (string and int)
+            else if(method.getDeclaringClass().isEnum())
+                start = 2;
+        }
         // skip synthetic parameters
         for(int i=start;i<parameterCount;i++){
             // apply offsets for parameters and annotations if synthetic parameters are not included
