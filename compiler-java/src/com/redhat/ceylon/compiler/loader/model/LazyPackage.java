@@ -201,8 +201,22 @@ public class LazyPackage extends Package {
         annotationAnnotation.setName("annotation");
         klass.getAnnotations().add(annotationAnnotation);
         klass.getSatisfiedTypes().add(iface.getType());
+        klass.setUnit(iface.getUnit());
         ParameterList classpl = new ParameterList();
+        klass.addParameterList(classpl);
+        
+        Method ctor = new Method();
+        ctor.setContainer(this);
+        ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
+        ctor.setShared(iface.isShared());
+        Annotation annotationAnnotation2 = new Annotation();
+        annotationAnnotation2.setName("annotation");
+        ctor.getAnnotations().add(annotationAnnotation2);
+        ctor.setType(((TypeDeclaration)iface).getType());
+        ctor.setUnit(iface.getUnit());
+        
         ParameterList ctorpl = new ParameterList();
+        ctor.addParameterList(ctorpl);
         List<AnnotationArgument> annotationArgs = new ArrayList<>();
         for (Declaration member : iface.getMembers()) {
             if (member instanceof JavaMethod) {
@@ -211,6 +225,7 @@ public class LazyPackage extends Package {
                 
                 {
                     ValueParameter klassParam = new ValueParameter();
+                    klassParam.setDeclaration(klass);
                     klassParam.setContainer(klass);
                     klassParam.setName(member.getName());
                     klassParam.setType(annotationParameterType(iface.getUnit(), m));
@@ -221,6 +236,7 @@ public class LazyPackage extends Package {
                 }
                 {
                     ValueParameter ctorParam = new ValueParameter();
+                    ctorParam.setDeclaration(ctor);
                     ctorParam.setContainer(klass);
                     ctorParam.setDefaulted(m.isDefaultedAnnotation());
                     ctorParam.setName(member.getName());
@@ -233,21 +249,9 @@ public class LazyPackage extends Package {
                 annotationArgs.add(a);
             }
         }
-        klass.addParameterList(classpl);
-        klass.setUnit(iface.getUnit());
         
         compiledDeclarations.add(klass);
-        
-        Method ctor = new Method();
-        ctor.setContainer(this);
-        ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
-        ctor.setShared(iface.isShared());
-        Annotation annotationAnnotation2 = new Annotation();
-        annotationAnnotation2.setName("annotation");
-        ctor.getAnnotations().add(annotationAnnotation2);
-        ctor.addParameterList(ctorpl);
-        ctor.setType(((TypeDeclaration)iface).getType());
-        ctor.setUnit(iface.getUnit());
+
         AnnotationInstantiation annotationInstantiation = new AnnotationInstantiation();
         annotationInstantiation.setPrimary(klass);
         annotationInstantiation.setArguments(annotationArgs);
