@@ -46,9 +46,7 @@ public class ParameterDefinitionBuilder {
     
     private String aliasedName;
     
-    private boolean noAnnotations = false;
-    
-    private boolean ignored = false;
+    private int annotationFlags = Annotations.MODEL_AND_USER;
     
     private boolean built = false;
 
@@ -105,8 +103,12 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
-    public ParameterDefinitionBuilder ignored(boolean ignored) {
-        this.ignored = ignored;
+    /** 
+     * Adds the {@code @Ignore} model annotation instead of adding the 
+     * actual model annotations.
+     */
+    public ParameterDefinitionBuilder ignored() {
+        this.annotationFlags = Annotations.ignore(this.annotationFlags);
         return this;
     }
     
@@ -115,8 +117,12 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
-    public ParameterDefinitionBuilder noAnnotations() {
-        noAnnotations = true;
+    /**
+     * Prevents adding the user or model annotations. Does not affect 
+     * whether {@code @Ignore} is added.
+     */
+    public ParameterDefinitionBuilder noUserOrModelAnnotations() {
+        this.annotationFlags = Annotations.noUserOrModel(annotationFlags);
         return this;
     }
     
@@ -126,7 +132,7 @@ public class ParameterDefinitionBuilder {
         }
         built = true;
         ListBuffer<JCAnnotation> annots = ListBuffer.lb();
-        if (!noAnnotations && !ignored) {
+        if (Annotations.includeModel(annotationFlags)) {
             annots.appendList(gen.makeAtName(name));
             if (sequenced) {
                 annots.appendList(gen.makeAtSequenced());
@@ -137,13 +143,18 @@ public class ParameterDefinitionBuilder {
             if (typeAnnos != null) {
                 annots.appendList(typeAnnos);
             }
-            if (annotations != null) {
-                annots.appendList(annotations.toList());
-            }
+        }
+        if (Annotations.includeUser(annotationFlags)
+                && annotations != null) {
+            annots.appendList(annotations.toList());
+        }
+        if (Annotations.includeModel(annotationFlags)) {
             if (modelAnnotations != null) {
                 annots.appendList(modelAnnotations.toList());
             }
-        }else if(ignored){
+        }
+        
+        if(Annotations.includeIgnore(annotationFlags)){
             annots = annots.appendList(gen.makeAtIgnore());
         }
         Name name = gen.names().fromString(aliasedName != null ? aliasedName : this.name);

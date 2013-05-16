@@ -1369,7 +1369,7 @@ public class ClassTransformer extends AbstractTransformer {
             return null;
         }
         String name = decl.getIdentifier().getText();
-        expressionGen().transform(decl.getAnnotationList());
+        //expressionGen().transform(decl.getAnnotationList());
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));

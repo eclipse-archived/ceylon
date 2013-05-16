@@ -636,7 +636,7 @@ public class ClassDefinitionBuilder {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
         if(!isCompanion)
-            pdb.ignored(true);
+            pdb.ignored();
         return pdb;
     }
 

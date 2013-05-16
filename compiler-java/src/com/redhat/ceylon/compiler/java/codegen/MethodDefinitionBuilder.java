@@ -165,7 +165,7 @@ public class MethodDefinitionBuilder {
         ListBuffer<JCVariableDecl> params = ListBuffer.lb();
         for (ParameterDefinitionBuilder pdb : this.params) {
             if (noAnnotations || ignoreModelAnnotations) {
-                pdb.noAnnotations();
+                pdb.noUserOrModelAnnotations();
             }
             params.append(pdb.build());
         }
@@ -464,9 +464,9 @@ public class MethodDefinitionBuilder {
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
         pdb.modifiers(FINAL);
         if(noAnnotations)
-            pdb.noAnnotations();
+            pdb.noUserOrModelAnnotations();
         else
-            pdb.ignored(true);
+            pdb.ignored();
         parameter(pdb);
 
         return this;
