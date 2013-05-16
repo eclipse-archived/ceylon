@@ -1448,8 +1448,11 @@ public class String
     }
 
     private static final class Tokens implements Iterable<String,java.lang.Object>, ReifiedType {
+        @Ignore
         private final ceylon.language.Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$this;
+        @Ignore
         private final ceylon.language.Container$impl<String,java.lang.Object> $ceylon$language$Container$this;
+        @Ignore
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
@@ -1776,8 +1779,11 @@ public class String
     }
 
     private static final class Occurs implements Iterable<Integer,java.lang.Object>, ReifiedType {
+        @Ignore
         private final ceylon.language.Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$this;
+        @Ignore
         private final ceylon.language.Container$impl<Integer,java.lang.Object> $ceylon$language$Container$this;
+        @Ignore
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
