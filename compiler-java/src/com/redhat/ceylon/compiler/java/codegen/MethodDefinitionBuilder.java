@@ -69,7 +69,7 @@ public class MethodDefinitionBuilder {
     private JCExpression resultTypeExpr;
     private List<JCAnnotation> resultTypeAnnos;
     
-    private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
+    private final ListBuffer<JCAnnotation> userAnnotations = ListBuffer.lb();
     private final ListBuffer<JCAnnotation> modelAnnotations = ListBuffer.lb();
     
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
@@ -79,9 +79,7 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    private boolean ignoreModelAnnotations;
-    
-    private boolean noAnnotations = false;
+    private int annotationFlags = Annotations.MODEL_AND_USER;
     
     private boolean built = false;
 
@@ -119,40 +117,43 @@ public class MethodDefinitionBuilder {
     private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
         this.gen = gen;
         this.name = name;
-        this.ignoreModelAnnotations = ignoreAnnotations;
+        if (ignoreAnnotations) {
+            this.annotationFlags = Annotations.ignore(this.annotationFlags);
+        }
         resultTypeExpr = makeVoidType();
     }
     
     private ListBuffer<JCAnnotation> getAnnotations() {
         ListBuffer<JCAnnotation> result = ListBuffer.lb();
-        if (!noAnnotations) {
-            result.appendList(this.annotations);
-            if (!ignoreModelAnnotations) {
-                result.appendList(this.modelAnnotations);   
+        if (Annotations.includeUser(this.annotationFlags)) {
+            result.appendList(this.userAnnotations);
+        }
+        if (Annotations.includeModel(this.annotationFlags)) {
+            result.appendList(this.modelAnnotations);   
+        }
+        if (isOverride) {
+            result.appendList(gen.makeAtOverride());
+        }
+        if (Annotations.includeIgnore(this.annotationFlags)) {
+            result.appendList(gen.makeAtIgnore());
+        }
+        if (Annotations.includeModel(this.annotationFlags)) {
+            if (resultTypeAnnos != null) {
+                result.appendList(resultTypeAnnos);
             }
-            if (isOverride) {
-                result.appendList(gen.makeAtOverride());
+            if(!typeParamAnnotations.isEmpty()) {
+                result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
             }
-            if (ignoreModelAnnotations) {
-                result.appendList(gen.makeAtIgnore());
-            } else {
-                if (resultTypeAnnos != null) {
-                    result.appendList(resultTypeAnnos);
-                }
-                if(!typeParamAnnotations.isEmpty()) {
-                    result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
-                }
-            }
-        }else{
+        }/* else {
             // only those two are preserved
             if (isOverride) {
                 result.appendList(gen.makeAtOverride());
             }
-            result.appendList(this.annotations);
+            result.appendList(this.userAnnotations);
             if (ignoreModelAnnotations) {
                 result.appendList(gen.makeAtIgnore());
             }
-        }
+        }*/
         return result;
     }
     
@@ -164,7 +165,7 @@ public class MethodDefinitionBuilder {
         
         ListBuffer<JCVariableDecl> params = ListBuffer.lb();
         for (ParameterDefinitionBuilder pdb : this.params) {
-            if (noAnnotations || ignoreModelAnnotations) {
+            if (!Annotations.includeModel(this.annotationFlags)) {
                 pdb.noUserOrModelAnnotations();
             }
             params.append(pdb.build());
@@ -230,23 +231,22 @@ public class MethodDefinitionBuilder {
      * The class will be generated with the {@code @Ignore} annotation only
      */
     public MethodDefinitionBuilder ignoreAnnotations() {
-        ignoreModelAnnotations = true;
+        this.annotationFlags = Annotations.ignore(annotationFlags);
         return this;
     }
     
-    public MethodDefinitionBuilder ignoreAnnotations(boolean ignoreAnnotations) {
-        this.ignoreModelAnnotations = ignoreAnnotations;
+    /** No model annotations, but possibly still {@link @Ignore} and user annotations */
+    public MethodDefinitionBuilder noModelAnnotations() {
+        this.annotationFlags = Annotations.noModel(annotationFlags);
         return this;
     }
     
+    /** No annotations as all (including {@code @Ignore} */
     public MethodDefinitionBuilder noAnnotations() {
-        return noAnnotations(true);
-    }
-    
-    public MethodDefinitionBuilder noAnnotations(boolean noAnnotations) {
-        this.noAnnotations = noAnnotations;
+        this.annotationFlags = 0;
         return this;
     }
+    
     
     public MethodDefinitionBuilder modelAnnotations(List<JCTree.JCAnnotation> modelAnnotations) {
         this.modelAnnotations.appendList(modelAnnotations);
@@ -254,7 +254,7 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        this.annotations.appendList(annotations);
+        this.userAnnotations.appendList(annotations);
         return this;
     }
 
@@ -463,7 +463,7 @@ public class MethodDefinitionBuilder {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
         pdb.modifiers(FINAL);
-        if(noAnnotations)
+        if(!Annotations.includeModel(this.annotationFlags))
             pdb.noUserOrModelAnnotations();
         else
             pdb.ignored();

@@ -1116,7 +1116,7 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
         MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
                 this, getCompanionAccessorName(iface));
-        thisMethod.noAnnotations();
+        thisMethod.noModelAnnotations();
         if (!forImplementor && Decl.isAncestorLocal(iface)) {
             // For a local interface the return type cannot be a local
             // companion class, because that won't be visible at the 
@@ -1155,7 +1155,7 @@ public class ClassTransformer extends AbstractTransformer {
                 makeJavaType(thisType), 
                 null, false);
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
-        ctor.noAnnotations();
+        ctor.noModelAnnotations();
         if(typeParameterList != null)
             ctor.reifiedTypeParameters(typeParameterList.getTypeParameterDeclarations());
         ctor.modifiers(model.isShared() ? PUBLIC : 0);

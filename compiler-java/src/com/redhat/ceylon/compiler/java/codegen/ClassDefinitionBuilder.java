@@ -231,7 +231,7 @@ public class ClassDefinitionBuilder {
             }
             for (MethodDefinitionBuilder builder : constructors) {
                 if (noAnnotations || ignoreAnnotations) {
-                    builder.noAnnotations();
+                    builder.noModelAnnotations();
                 }
                 defs.append(builder.build());
             }
@@ -496,7 +496,7 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder method(MethodDefinitionBuilder mdb) {
         if (mdb != null) {
             if (isCompanion) {
-                mdb.noAnnotations();
+                mdb.noModelAnnotations();
             }
             defs(mdb.build());
         }
@@ -670,7 +670,6 @@ public class ClassDefinitionBuilder {
         MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
         method.modifiers(PUBLIC);
         method.noAnnotations();
-        method.ignoreAnnotations(false); // we don't want any @Ignore annotations on impl classes
 
         List<JCStatement> body = List.nil();
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){

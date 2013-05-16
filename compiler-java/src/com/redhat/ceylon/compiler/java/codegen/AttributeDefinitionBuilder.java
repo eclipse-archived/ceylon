@@ -175,7 +175,9 @@ public class AttributeDefinitionBuilder {
 
         if (readable) {
             getterBuilder.modifiers(getGetSetModifiers());
-            getterBuilder.noAnnotations(noAnnotations);
+            if (noAnnotations) {
+                getterBuilder.noModelAnnotations();
+            }
             if (this.annotations != null) {
                 getterBuilder.modelAnnotations(this.annotations.toList());
             }
@@ -184,7 +186,9 @@ public class AttributeDefinitionBuilder {
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
-            setterBuilder.noAnnotations(noAnnotations);
+            if (noAnnotations) {
+                setterBuilder.noModelAnnotations();
+            }
             if (this.annotations != null && !readable) {
                 setterBuilder.modelAnnotations(this.annotations.toList());
             }

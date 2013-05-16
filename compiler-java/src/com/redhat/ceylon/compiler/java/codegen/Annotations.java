@@ -30,9 +30,16 @@ public class Annotations {
     public static int ignore(int annotationFlags) {
         return (annotationFlags & ~MODEL) | IGNORE;
     }
-    /** Clears the {@link #MODEL} bit and sets the {@link #IGNORE} bit */
+    /** Clears the {@link #IGNORE} bit and sets the {@link #MODEL} bit */
+    public static int model(int annotationFlags) {
+        return (annotationFlags & ~IGNORE) | MODEL;
+    }
+    /** Clears the {@link #MODEL} and {@link #USER} bits */
     public static int noUserOrModel(int annotationFlags) {
         return (annotationFlags & ~(MODEL|USER));
     }
-    
+    /** Clears the {@link #MODEL} bit */
+    public static int noModel(int annotationFlags) {
+        return (annotationFlags & ~MODEL);
+    }
 }
