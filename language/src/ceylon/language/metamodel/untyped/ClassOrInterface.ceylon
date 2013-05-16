@@ -12,10 +12,10 @@ shared interface ClassOrInterface
     
     shared formal ParameterisedType<Interface>[] interfaces;
     
-    shared formal Member<Kind>[] members<Kind>() 
+    shared formal Kind[] members<Kind>() 
             given Kind satisfies Declaration;
     
-    shared formal Member<Kind>[] annotatedMembers<Kind, Annotation>() 
+    shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies Declaration;
     
     shared formal AppliedClassOrInterface<Anything> apply(AppliedType* types);

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.untyped.ClassOrInterface$impl;
+import ceylon.language.metamodel.untyped.Declaration;
 import ceylon.language.metamodel.untyped.Parameterised$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -18,6 +20,8 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -47,9 +51,7 @@ public abstract class FreeClassOrInterface
     private Sequential<ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Interface>> interfaces;
     private Sequential<ceylon.language.metamodel.untyped.TypeParameter> typeParameters;
 
-    private Sequential<ceylon.language.metamodel.untyped.Member<ceylon.language.metamodel.untyped.Function>> functions;
-    private Sequential<ceylon.language.metamodel.untyped.Member<ceylon.language.metamodel.untyped.Value>> values;
-    private Sequential<ceylon.language.metamodel.untyped.Member<ceylon.language.metamodel.untyped.ClassOrInterface>> types;
+    private List<ceylon.language.metamodel.untyped.Declaration> declarations;
 
     public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -94,28 +96,16 @@ public abstract class FreeClassOrInterface
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
-        List<ceylon.language.metamodel.untyped.Member<FreeFunction>> functions = new LinkedList<ceylon.language.metamodel.untyped.Member<FreeFunction>>();
-        List<ceylon.language.metamodel.untyped.Member<FreeValue>> values = new LinkedList<ceylon.language.metamodel.untyped.Member<FreeValue>>();
-        List<ceylon.language.metamodel.untyped.Member<FreeClassOrInterface>> types = new LinkedList<ceylon.language.metamodel.untyped.Member<FreeClassOrInterface>>();
-        // FIXME: this is just wrong for implementing members()
+        this.declarations = new LinkedList<ceylon.language.metamodel.untyped.Declaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof Method){
-                functions.add(new FreeMember(this, new FreeFunction((Method) memberModelDeclaration)));
+                declarations.add(new FreeFunction((Method) memberModelDeclaration));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                values.add(new FreeMember(this, new FreeValue((MethodOrValue) memberModelDeclaration)));
+                declarations.add(new FreeValue((MethodOrValue) memberModelDeclaration));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
-                types.add(new FreeMember(this, Metamodel.getOrCreateMetamodel(memberModelDeclaration)));
+                declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
             }
         }
-
-        TypeDescriptor functionMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Member.class, $FunctionTypeDescriptor);
-        this.functions = (Sequential)Util.sequentialInstance(functionMemberTD, functions.toArray(new ceylon.language.metamodel.untyped.Member[functions.size()]));
-
-        TypeDescriptor valueMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Member.class, $ValueTypeDescriptor);
-        this.values = (Sequential)Util.sequentialInstance(valueMemberTD, values.toArray(new ceylon.language.metamodel.untyped.Member[values.size()]));
-
-        TypeDescriptor typesMemberTD = TypeDescriptor.klass(ceylon.language.metamodel.untyped.Member.class, $ClassOrInterfaceTypeDescriptor);
-        this.types = (Sequential)Util.sequentialInstance(typesMemberTD, types.toArray(new ceylon.language.metamodel.untyped.Member[types.size()]));
     }
     
     protected final void checkInit(){
@@ -131,26 +121,43 @@ public abstract class FreeClassOrInterface
     }
     
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::Member<Kind>>")
-    public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends ceylon.language.metamodel.untyped.Member<Kind>> 
+    @TypeInfo("ceylon.language::Sequential<Kind>")
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"))
+    public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> 
         members(@Ignore TypeDescriptor $reifiedKind) {
         
         checkInit();
+        
         if($reifiedKind instanceof TypeDescriptor.Class){
-            TypeDescriptor.Class klass = (TypeDescriptor.Class) $reifiedKind;
-            if(klass.getKlass() == ceylon.language.metamodel.untyped.Function.class){
-                return (Sequential) functions;
+            List<Kind> members = new ArrayList<Kind>(declarations.size());
+            java.lang.Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
+            for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
+                if((declarationClass == ceylon.language.metamodel.untyped.Function.class
+                        && decl instanceof ceylon.language.metamodel.untyped.Function)
+                    || (declarationClass == ceylon.language.metamodel.untyped.Class.class
+                            && decl instanceof ceylon.language.metamodel.untyped.Class)
+                    || (declarationClass == ceylon.language.metamodel.untyped.Interface.class
+                            && decl instanceof ceylon.language.metamodel.untyped.Interface)
+                    || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class
+                            && decl instanceof ceylon.language.metamodel.untyped.ClassOrInterface)
+                    || (declarationClass == ceylon.language.metamodel.untyped.Value.class
+                            && decl instanceof ceylon.language.metamodel.untyped.Value)
+                    || declarationClass == ceylon.language.metamodel.untyped.Declaration.class){
+                    members.add((Kind) decl);
+                }
             }
-            if(klass.getKlass() == ceylon.language.metamodel.untyped.Value.class){
-                return (Sequential) values;
-            }
+            return (Sequential)Util.sequentialInstance($reifiedKind, members.toArray());
         }
         throw new RuntimeException("Not supported yet");
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::Member<Kind>>")
-    public <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation> Sequential<? extends ceylon.language.metamodel.untyped.Member<Kind>> 
+    @TypeInfo("ceylon.language::Sequential<Kind>")
+    @TypeParameters({
+            @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"),
+            @TypeParameter("Annotation")
+    })
+    public <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation> Sequential<? extends Kind> 
         annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         checkInit();
@@ -249,41 +256,25 @@ public abstract class FreeClassOrInterface
     }
 
     FreeFunction findMethod(String name) {
-        checkInit();
-        Iterator iterator = functions.iterator();
-        Object it;
-        while((it = iterator.next()) != finished_.getFinished$()){
-            FreeMember member = (FreeMember) it;
-            FreeFunction f = (FreeFunction) member.declaration;
-            if(f.getName().equals(name))
-                return f;
-        }
-        return null;
+        return this.<FreeFunction>findDeclaration(name);
     }
 
     FreeValue findValue(String name) {
-        checkInit();
-        Iterator iterator = values.iterator();
-        Object it;
-        while((it = iterator.next()) != finished_.getFinished$()){
-            FreeMember member = (FreeMember) it;
-            FreeValue f = (FreeValue) member.declaration;
-            if(f.getName().equals(name))
-                return f;
-        }
-        return null;
+        return this.<FreeValue>findDeclaration(name);
     }
 
 
     FreeClassOrInterface findType(String name) {
+        return this.<FreeClassOrInterface>findDeclaration(name);
+    }
+
+    <T extends FreeDeclaration> T findDeclaration(String name) {
         checkInit();
-        Iterator iterator = types.iterator();
-        Object it;
-        while((it = iterator.next()) != finished_.getFinished$()){
-            FreeMember member = (FreeMember) it;
-            FreeClassOrInterface f = (FreeClassOrInterface) member.declaration;
-            if(f.getName().equals(name))
-                return f;
+        for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
+            // in theory we can't have several members with the same name so no need to check the type
+            // FIXME: interop and overloading
+            if(decl.getName().equals(name))
+                return (T) decl;
         }
         return null;
     }

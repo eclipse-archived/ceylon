@@ -13,6 +13,7 @@ shared interface Package satisfies Identifiable {
     
     shared formal Kind[] members<Kind>() 
             given Kind satisfies Declaration;
+    
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies Declaration;
 
