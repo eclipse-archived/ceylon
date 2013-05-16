@@ -34,7 +34,9 @@ import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
-import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1000_1499;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
@@ -59,7 +61,9 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     ExpressionTest2.class,
     ExpressionTest3.class,
     InteropTest.class,
-    IssuesTest.class,
+    IssuesTest_0000_0499.class,
+    IssuesTest_0500_0999.class,
+    IssuesTest_1000_1499.class,
 	MiscTest.class,
     ModelLoaderTest.class,
     PackageIssuesTest.class,

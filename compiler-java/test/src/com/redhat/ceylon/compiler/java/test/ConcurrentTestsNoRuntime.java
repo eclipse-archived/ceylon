@@ -33,7 +33,9 @@ import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
-import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1000_1499;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
@@ -59,13 +61,16 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     StructureTest2.class,
     StructureTest3.class,
     CMRTestHTTP.class,
+    IssuesTest_0000_0499.class,
+    IssuesTest_0500_0999.class,
+    IssuesTest_1000_1499.class,
+    MiscTest.class,
+    CeylonDocToolTest.class,
     
     // those can run in any order
     NamingTest.class,
     AnnotationsTest.class,
     InteropTest.class,
-    IssuesTest.class,
-    MiscTest.class,
     ModelLoaderTest.class,
     PackageIssuesTest.class,
     RecoveryTest.class,
@@ -76,7 +81,6 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ExpressionTest3.class,
     CompilerToolsTests.class,
-    CeylonDocToolTest.class,
     AntToolTests.class
 })
 public class ConcurrentTestsNoRuntime {
