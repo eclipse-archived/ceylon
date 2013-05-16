@@ -132,15 +132,27 @@ void visitClass(Class klass){
         }
     }
     output(" {\n");
-    for(m in klass.members<Function>()){
-        visitFunction(m());
-    }
-    for(v in klass.members<Value>()){
-        visitValue(v());
-    }
+    visitMembers(klass);
     output("}\n");
 }
 
+void visitMembers(ClassOrInterface decl){
+    for(m in decl.members<Declaration>()){
+        switch(m)
+        case(is Function){
+            visitFunction(m);
+        }
+        case(is Value){
+            visitValue(m);
+        }
+        case(is Class){
+            visitClass(m);
+        }
+        case(is Interface){
+            visitInterface(m);
+        }
+    }
+}
 void visitFunction(Function func) {
     output(" ");
     visitProducedType(func.type);
@@ -189,12 +201,7 @@ void visitInterface(Interface klass){
         }
     }
     output(" {\n");
-    for(m in klass.members<Function>()){
-        visitFunction(m());
-    }
-    for(v in klass.members<Value>()){
-        visitValue(v());
-    }
+    visitMembers(klass);
     output("}\n");
 }
 
