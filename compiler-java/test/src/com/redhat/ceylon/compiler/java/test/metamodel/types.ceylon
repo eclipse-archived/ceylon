@@ -103,8 +103,14 @@ shared Character getCharacter() => 'a';
 shared Boolean getBoolean() => true;
 shared Object getObject() => 2;
 
+shared String toplevelWithMultipleParameterLists(Integer i)(String s) => s + i.string;
+
 shared class ContainerClass(){
     shared class InnerClass(){}
+}
+
+shared class ParameterisedContainerClass<Outer>(){
+    shared class InnerClass<Inner>(){}
 }
 
 shared interface ContainerInterface{

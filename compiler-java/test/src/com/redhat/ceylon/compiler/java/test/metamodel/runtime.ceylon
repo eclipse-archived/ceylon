@@ -365,6 +365,18 @@ void checkToplevelFunctions(){
     assert(exists f9 = pkg.getFunction("getObject"));
     assert(is Function<Object, []> f9a = f9.apply());
     assert(f9a() == 2);
+
+    assert(exists f10 = pkg.getFunction("toplevelWithMultipleParameterLists"));
+    assert(is Function<String(String),[Integer]> f10a = f10.apply());
+    assert(f10a(1)("a") == "a1");
+
+    // FIXME: MPL info is lost in the model loader
+    //toplevelWithMultipleParameterLists{i = 1;}{s = "a"; };
+    //assert(exists f10p1 = f10.parameters.first, "i" == f10p1.name);
+    //print(f10.parameterLists.size);
+    //assert(f10.parameterLists.size == 2);
+    //assert(exists f10p12 = f10.parameterLists.first[0], "i" == f10p12.name);
+    //assert(exists f10pl2 = f10.parameterLists[1], exists f10p2 = f10pl2.first, "s" == f10p2.name);
 }
 
 shared void runtime() {
