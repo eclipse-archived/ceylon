@@ -399,5 +399,8 @@ shared void runtime() {
     checkToplevelFunctions();
 
     checkUntypedFunctionToAppliedFunction();
+
+    // FIXME: test members() wrt filtering
+    // FIXME: test untyped class to applied class
 }
 
