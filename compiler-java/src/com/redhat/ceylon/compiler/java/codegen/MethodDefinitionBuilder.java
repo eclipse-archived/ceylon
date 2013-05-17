@@ -252,7 +252,7 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
+    public MethodDefinitionBuilder userAnnotations(List<JCTree.JCAnnotation> annotations) {
         this.userAnnotations.appendList(annotations);
         return this;
     }

@@ -130,7 +130,7 @@ public class AttributeDefinitionBuilder {
             .skipGetter();
     }
     
-    public AttributeDefinitionBuilder annotations(List<JCAnnotation> annotations) {
+    public AttributeDefinitionBuilder modelAnnotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.modelAnnotations == null) {
                 this.modelAnnotations = ListBuffer.lb();
@@ -193,7 +193,7 @@ public class AttributeDefinitionBuilder {
                 getterBuilder.modelAnnotations(this.modelAnnotations.toList());
             }
             if (this.userAnnotations != null) {
-                getterBuilder.annotations(this.userAnnotations.toList());
+                getterBuilder.userAnnotations(this.userAnnotations.toList());
             }
             defs.append(getterBuilder.build());
         }
@@ -207,7 +207,7 @@ public class AttributeDefinitionBuilder {
                 setterBuilder.modelAnnotations(this.modelAnnotations.toList());
             }
             if (this.userAnnotations != null && !readable) {
-                setterBuilder.annotations(this.userAnnotations.toList());
+                setterBuilder.userAnnotations(this.userAnnotations.toList());
             }
             defs.append(setterBuilder.build());
         }

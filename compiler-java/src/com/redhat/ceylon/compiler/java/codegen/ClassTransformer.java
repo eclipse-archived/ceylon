@@ -1835,7 +1835,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (transformMethod) {
             if (actualAndAnnotations || !model.isShared()) {
-                methodBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
+                methodBuilder.userAnnotations(expressionGen().transform(def.getAnnotationList()));
             }
             methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {
@@ -1854,7 +1854,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .modelAnnotations(model.getAnnotations());
             }
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
-                methodBuilder.annotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
+                methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
             }
             lb.append(methodBuilder);
         }
