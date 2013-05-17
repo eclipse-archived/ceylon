@@ -251,7 +251,7 @@ void visitProducedType(Type pt){
     }else if(pt == nothingType){
         output("Nothing");
     }else{
-        output("Unsupported type ATM: ``type``");
+        output("Unsupported type ATM: ``pt``");
     }
 }
 
@@ -299,6 +299,6 @@ void visitAppliedProducedType(AppliedType pt){
     }else if(pt == appliedNothingType){
         output("Nothing");
     }else{
-        output("Unsupported type ATM");
+        output("Unsupported type ATM: ``pt``");
     }
 }
