@@ -65,10 +65,24 @@ interface AnnotationTargetInterface {
     shared default void defaultMethod(annotationTarget String parameter) {}
     
     annotationTarget
-    shared void sharedMethod(annotationTarget String parameter) {}
+    shared void sharedMethod(annotationTarget String parameter) {
+        // Capture these
+        method(attribute);
+        method(getter);
+    }
     
     annotationTarget
     void method(annotationTarget String parameter) {}
+    
+    annotationTarget
+    String attribute => "";
+    
+    annotationTarget
+    String getter {
+        return "";
+    }
+    annotationTarget2
+    assign getter {}
     
     annotationTarget
     class InnerClass(annotationTarget String parameter) {

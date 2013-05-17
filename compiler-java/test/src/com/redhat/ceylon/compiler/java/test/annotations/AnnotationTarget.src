@@ -239,10 +239,27 @@ final class AnnotationTargetInterface$impl {
     }
     
     public void sharedMethod(final .java.lang.String parameter) {
+        method$priv(getAttribute$priv());
+        method$priv(getGetter$priv());
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    private void method$priv(final .java.lang.String parameter) {
+    private void method$priv(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    final .java.lang.String parameter) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    private final .java.lang.String getAttribute$priv() {
+        return "";
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    private final .java.lang.String getGetter$priv() {
+        return "";
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation
+    private final void setGetter$priv(final .java.lang.String getter) {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
