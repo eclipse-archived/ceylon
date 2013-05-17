@@ -221,12 +221,18 @@ public class Metamodel {
         if(declaration instanceof LazyClass){
             ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
             TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getTypeArgumentList());
-            return TypeDescriptor.klass(classMirror.klass, tdArgs);
+            TypeDescriptor ret = TypeDescriptor.klass(classMirror.klass, tdArgs);
+            if(type.getQualifyingType() != null)
+                return TypeDescriptor.member(getTypeDescriptorForProducedType(type.getQualifyingType()), ret);
+            return ret;
         }
         if(declaration instanceof LazyInterface){
             ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
             TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getTypeArgumentList());
-            return TypeDescriptor.klass(classMirror.klass, tdArgs);
+            TypeDescriptor ret = TypeDescriptor.klass(classMirror.klass, tdArgs);
+            if(type.getQualifyingType() != null)
+                return TypeDescriptor.member(getTypeDescriptorForProducedType(type.getQualifyingType()), ret);
+            return ret;
         }
         if(declaration instanceof NothingType){
             return TypeDescriptor.NothingType;

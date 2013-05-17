@@ -11,7 +11,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.untyped.ClassOrInterface$impl;
-import ceylon.language.metamodel.untyped.Declaration;
 import ceylon.language.metamodel.untyped.Parameterised$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -238,8 +237,7 @@ public abstract class FreeClassOrInterface
                                                                             Sequential<? extends ceylon.language.metamodel.AppliedType> types,
                                                                             AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        // FIXME: this is wrong because it does not include the container type
-        final ProducedType appliedType = declaration.getProducedReference(null, producedTypes).getType();
+        final ProducedType appliedType = declaration.getProducedReference(container.producedType, producedTypes).getType();
         return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind, container){
             @Override
             protected Kind bindTo(Object instance) {
