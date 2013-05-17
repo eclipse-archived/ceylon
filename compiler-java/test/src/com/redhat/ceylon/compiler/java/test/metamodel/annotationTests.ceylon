@@ -192,9 +192,10 @@ void checkAAbstractClass() {
 void checkAInterface() {
     assert(is Class<AClass,[String]> aClassDecl = type(AClass("")));
     assert(exists sup=aClassDecl.declaration.superclass);
-    assert(exists iface=sup.interfaces[0]);
-    value aInterfaceDecl=iface.declaration;
-    //shared
+    assert(exists iface0=sup.interfaces[0]);
+    value aInterfaceDecl=iface0.declaration;
+    assert(is Interface<AInterface> iface = aInterfaceDecl.apply());
+    /*//shared
     assert(annotations(sharedAnnotation, aInterfaceDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aInterfaceDecl) exists);
     //abstract
@@ -202,29 +203,62 @@ void checkAInterface() {
     assert(! optionalAnnotation(abstractAnnotation, aInterfaceDecl) exists);
     // doc
     assert(exists doc = annotations(docAnnotation, aInterfaceDecl), 
-        doc.description == "AInterface");
+            doc.description == "AInterface");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aInterfaceDecl), 
-        doc2.description == "AInterface");
+            doc2.description == "AInterface");
     // seq
     variable value seqs = annotations(seqAnnotation, aInterfaceDecl);
     assert(seqs.size == 2);
-    assert(exists seq = seqs[0], seq.seq == "AInterface 1");
-    assert(exists seq2 = seqs[1], seq2.seq == "AInterface 2");
+    assert(exists seq = seqs[0], 
+            seq.seq == "AInterface 1");
+    assert(exists seq2 = seqs[1], 
+            seq2.seq == "AInterface 2");
     assert(sequencedAnnotations(seqAnnotation, aInterfaceDecl).size == 2);
     
-    // TODO Members of interface
+    // Members of interface
+    // formalAttribute
+    assert(exists fam=iface.getAttribute<AInterface, Value<String>>("formalAttribute"));
+    value fa=fam(AClass(""));
+    assert(annotations(sharedAnnotation, fa) exists);
+    assert(exists fadoc = annotations(docAnnotation, fa),
+            fadoc.description == "AInterface.formalAttribute");
+    
+    // defaultGetterSetter
+    assert(exists dgsm=iface.getAttribute<AInterface, Value<String>>("defaultGetterSetter"));
+    value dgs=dgsm(AClass(""));
+    assert(annotations(sharedAnnotation, dgs) exists);
+    assert(exists dgsdoc = annotations(docAnnotation, dgs),
+            dgsdoc.description == "AInterface.defaultGetter");
+    // TODO Test the setter annotations
+    
+    // getterSetter
+    assert(exists gsm=iface.getAttribute<AInterface, Value<String>>("getterSetter"));
+    value gs=gsm(AClass(""));
+    assert(annotations(sharedAnnotation, gs) exists);
+    assert(exists gsdoc = annotations(docAnnotation, gs),
+            gsdoc.description == "AInterface.getter");
+    // TODO Test the setter annotations
+    */
+    print(iface);
+    // nonsharedGetterSetter
+    assert(exists ngsm=iface.getAttribute<AInterface, Value<String>>("nonsharedGetterSetter"));
+    value ngs=ngsm(AClass(""));
+    assert(annotations(sharedAnnotation, ngs) exists);
+    assert(exists ngsdoc = annotations(docAnnotation, ngs),
+            ngsdoc.description == "AInterface.nonsharedGetterSetter");
+    // TODO Test the setter annotations
 }
 
 void annotationTests() {
-    checkAToplevelValueAnnotations();
-    checkAToplevelGetterSetterAnnotations();
-    checkAToplevelFunctionAnnotations();
-    // TODO once we support objects
-    // checkAToplevelObjectAnnotations();
+    //checkAToplevelValueAnnotations();
+    //checkAToplevelGetterSetterAnnotations();
+    //checkAToplevelFunctionAnnotations();
+    //// TODO once we support objects
+    //// checkAToplevelObjectAnnotations();
     checkAInterface();
-    checkAAbstractClass();
-    checkAClass();
-    // TODO Local declarations
+    //checkAAbstractClass();
+    //checkAClass();
+    //// TODO Local declarations
     // TODO Module
     // TODO Package
     

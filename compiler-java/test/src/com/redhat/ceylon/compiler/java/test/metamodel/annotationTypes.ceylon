@@ -57,6 +57,30 @@ shared interface AInterface {
                 String parameter) {}
     }
     
+    "AInterface.formalAttribute"
+    shared formal String formalAttribute;
+    
+    "AInterface.defaultGetter"
+    shared default String defaultGetterSetter {
+        return "";
+    }
+    "AInterface.defaultSetter"
+    assign defaultGetterSetter {}
+    
+    "AInterface.getter"
+    shared String getterSetter {
+        return nonsharedGetterSetter;
+    }
+    "AInterface.setter"
+    assign getterSetter {}
+    
+    "AInterface.nonsharedGetter"
+    String nonsharedGetterSetter {
+        return "";
+    }
+    "AInterface.nonsharedSetter"
+    assign nonsharedGetterSetter {}
+    
     "AInterface.formalMethod"
     shared formal void formalMethod(
         "AInterface.formalMethod.parameter"
@@ -98,8 +122,15 @@ shared abstract class AAbstractClass (
             "AAbstractClass.DefaultInnerClass.parameter"
             String parameter)
             extends AInterface::DefaultInnerClass(parameter)  {
-        
-        
+    }
+    
+    "AAbstractClass.formalAttributeGetter"
+    shared actual String formalAttribute {
+        return "";
+    }
+    
+    "AAbstractClass.formalAttributeGetter"
+    assign formalAttribute {
     }
     
     "AAbstractClass.Inner"
