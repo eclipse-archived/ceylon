@@ -3,10 +3,15 @@ package ceylon.language.metamodel;
 import ceylon.language.Sequential;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @Method
@@ -14,10 +19,11 @@ public final class type_ {
     
     private type_() {}
     
-    @TypeInfo("ceylon.language.metamodel::Class<ceylon.language::Anything,ceylon.language::Nothing>")
-    public static ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> type(@Name("instance")
-        @TypeInfo("ceylon.language::Anything")
-        final Object instance) {
+    @TypeParameters(@TypeParameter(value = "Type", variance = Variance.OUT, satisfies = "ceylon.language::Anything"))
+    @TypeInfo("ceylon.language.metamodel::Class<Type,ceylon.language::Nothing>")
+    public static <Type> ceylon.language.metamodel.Class<? extends Type, ? super Sequential<? extends Object>> type(
+            @Ignore TypeDescriptor $reifiedType,
+            @Name("instance") @TypeInfo("Type") Type instance) {
         return (ceylon.language.metamodel.Class) Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
     }
 }
