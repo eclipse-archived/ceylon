@@ -199,8 +199,8 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
         value = new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_()};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::toplevelObject")
     public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ getToplevelObject$() {
         try {

@@ -62,11 +62,11 @@ public final class objectArgumentNamedInvocationChained_ {
                             }
                             private final .java.lang.String string;
                             
+                            @.ceylon.language.Shared$annotation
+                            @.ceylon.language.Actual$annotation
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
-                            @.ceylon.language.Shared$annotation
-                            @.ceylon.language.Actual$annotation
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                             public final .java.lang.String toString() {
@@ -87,11 +87,11 @@ public final class objectArgumentNamedInvocationChained_ {
                             }
                             private final int hash;
                             
+                            @.ceylon.language.Shared$annotation
+                            @.ceylon.language.Actual$annotation
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
-                            @.ceylon.language.Shared$annotation
-                            @.ceylon.language.Actual$annotation
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                             public final int hashCode() {
@@ -122,11 +122,11 @@ public final class objectArgumentNamedInvocationChained_ {
                     }
                     private final .java.lang.String string;
                     
+                    @.ceylon.language.Shared$annotation
+                    @.ceylon.language.Actual$annotation
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
-                    @.ceylon.language.Shared$annotation
-                    @.ceylon.language.Actual$annotation
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                     public final .java.lang.String toString() {
@@ -147,11 +147,11 @@ public final class objectArgumentNamedInvocationChained_ {
                     }
                     private final int hash;
                     
+                    @.ceylon.language.Shared$annotation
+                    @.ceylon.language.Actual$annotation
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
-                    @.ceylon.language.Shared$annotation
-                    @.ceylon.language.Actual$annotation
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final int hashCode() {

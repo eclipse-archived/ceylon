@@ -48,8 +48,8 @@ public final class Object implements .com.redhat.ceylon.compiler.java.runtime.mo
         value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object[]{new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object()};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
     public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object getObject$() {
         try {
