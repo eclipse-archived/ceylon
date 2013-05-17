@@ -35,6 +35,12 @@ public class SequenceBuilder<Element> implements ReifiedType {
         this.$reifiedElement = $reifiedElement;
     }
     
+    @Ignore
+    public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement, int initialCapacity) {
+        this($reifiedElement);
+        resize$priv(initialCapacity);
+    }
+    
     /** Ensures the array has at least the given capacity (it may allocate more) */
     @Ignore
     private void ensureCapacity$priv(long capacity) {
