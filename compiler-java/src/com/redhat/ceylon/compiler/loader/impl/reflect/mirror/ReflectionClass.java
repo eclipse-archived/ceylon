@@ -195,7 +195,7 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isInnerClass() {
-        return klass.isMemberClass();
+        return klass.isMemberClass() || klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Container"));
     }
 
     @Override
