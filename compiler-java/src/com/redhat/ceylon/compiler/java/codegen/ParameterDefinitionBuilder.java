@@ -50,7 +50,7 @@ public class ParameterDefinitionBuilder {
     
     private boolean built = false;
 
-    private ListBuffer<JCAnnotation> annotations;
+    private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> modelAnnotations;
 
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
@@ -67,12 +67,12 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
-    public ParameterDefinitionBuilder annotations(List<JCAnnotation> annos) {
+    public ParameterDefinitionBuilder userAnnotations(List<JCAnnotation> annos) {
         if (annos != null) {
-            if (this.annotations == null) {
-                this.annotations = ListBuffer.lb();
+            if (this.userAnnotations == null) {
+                this.userAnnotations = ListBuffer.lb();
             }
-            this.annotations.appendList(annos);
+            this.userAnnotations.appendList(annos);
         }
         return this;
     }
@@ -126,6 +126,11 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
+    public ParameterDefinitionBuilder noModelAnnotations() {
+        this.annotationFlags = Annotations.noModel(annotationFlags);
+        return this;
+    }
+    
     public JCVariableDecl build() {
         if (built) {
             throw new IllegalStateException();
@@ -145,8 +150,8 @@ public class ParameterDefinitionBuilder {
             }
         }
         if (Annotations.includeUser(annotationFlags)
-                && annotations != null) {
-            annots.appendList(annotations.toList());
+                && userAnnotations != null) {
+            annots.appendList(userAnnotations.toList());
         }
         if (Annotations.includeModel(annotationFlags)) {
             if (modelAnnotations != null) {

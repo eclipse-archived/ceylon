@@ -166,7 +166,7 @@ public class MethodDefinitionBuilder {
         ListBuffer<JCVariableDecl> params = ListBuffer.lb();
         for (ParameterDefinitionBuilder pdb : this.params) {
             if (!Annotations.includeModel(this.annotationFlags)) {
-                pdb.noUserOrModelAnnotations();
+                pdb.noModelAnnotations();
             }
             params.append(pdb.build());
         }
@@ -282,14 +282,14 @@ public class MethodDefinitionBuilder {
     }
     
     private MethodDefinitionBuilder parameter(long modifiers, 
-            java.util.List<Annotation> modelAnnotations, List<JCAnnotation> annotations,
+            java.util.List<Annotation> modelAnnotations, List<JCAnnotation> userAnnotations,
             String name, String aliasedName, 
             TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, 
             int flags, boolean canWiden) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
         pdb.modifiers(modifiers);
         pdb.modelAnnotations(modelAnnotations);
-        pdb.annotations(annotations);
+        pdb.userAnnotations(userAnnotations);
         pdb.aliasName(aliasedName);
         pdb.sequenced(decl instanceof Parameter && ((Parameter)decl).isSequenced());
         pdb.defaulted(decl instanceof Parameter && ((Parameter)decl).isDefaulted());
@@ -318,13 +318,7 @@ public class MethodDefinitionBuilder {
         return parameter(mods, paramDecl.getAnnotations(), name, paramDecl, paramDecl, paramType, flags, canWiden);
     }
     
-    public MethodDefinitionBuilder parameter(Tree.Parameter param, int flags, boolean canWiden) {
-        Parameter parameterModel = param.getDeclarationModel();
-        List<JCAnnotation> annotations = gen.expressionGen().transform(param.getAnnotationList());
-        return parameter(parameterModel, annotations, flags, canWiden);
-    }
-    
-    public MethodDefinitionBuilder parameter(Parameter param, List<JCAnnotation> annotations, int flags, boolean canWiden) {
+    public MethodDefinitionBuilder parameter(Parameter param, List<JCAnnotation> userAnnotations, int flags, boolean canWiden) {
         String paramName = param.getName();
         String aliasedName = paramName;
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
@@ -356,7 +350,7 @@ public class MethodDefinitionBuilder {
                     nonWideningType = gen.typeFact().getObjectDeclaration().getType();
             }
         }
-        return parameter(mods, param.getAnnotations(), annotations, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags, canWiden);
+        return parameter(mods, param.getAnnotations(), userAnnotations, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags, canWiden);
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {

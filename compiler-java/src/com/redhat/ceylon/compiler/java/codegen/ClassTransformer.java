@@ -1812,7 +1812,12 @@ public class ClassTransformer extends AbstractTransformer {
         Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             Parameter parameter = param.getDeclarationModel();
-            methodBuilder.parameter(param, needsRaw ? JT_RAW_TP_BOUND : 0, true);
+            List<JCAnnotation> annotations = null;
+            if (actualAndAnnotations || !model.isShared()) {
+                annotations = expressionGen().transform(param.getAnnotationList());
+            }
+            Parameter parameterModel = param.getDeclarationModel();
+            methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
             if (parameter.isDefaulted()
                     || parameter.isSequenced()) {
                 if (model.getRefinedDeclaration() == model) {
