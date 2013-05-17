@@ -36,7 +36,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -144,16 +143,7 @@ public class MethodDefinitionBuilder {
             if(!typeParamAnnotations.isEmpty()) {
                 result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
             }
-        }/* else {
-            // only those two are preserved
-            if (isOverride) {
-                result.appendList(gen.makeAtOverride());
-            }
-            result.appendList(this.userAnnotations);
-            if (ignoreModelAnnotations) {
-                result.appendList(gen.makeAtIgnore());
-            }
-        }*/
+        }
         return result;
     }
     
@@ -244,6 +234,11 @@ public class MethodDefinitionBuilder {
     /** No annotations at all (including {@code @Ignore}). */
     public MethodDefinitionBuilder noAnnotations() {
         this.annotationFlags = 0;
+        return this;
+    }
+    
+    public MethodDefinitionBuilder annotationFlags(int annotationFlags) {
+        this.annotationFlags = annotationFlags;
         return this;
     }
     

@@ -27,7 +27,6 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -62,7 +61,7 @@ public class AttributeDefinitionBuilder {
 
     private boolean toplevel = false;
     
-    private boolean noModelAnnotations = false;
+    private int annotationFlags = Annotations.MODEL_AND_USER;
     
     // do we need a constructor that takes the initial value? 
     private boolean valueConstructor;
@@ -186,9 +185,7 @@ public class AttributeDefinitionBuilder {
 
         if (readable) {
             getterBuilder.modifiers(getGetSetModifiers());
-            if (noModelAnnotations) {
-                getterBuilder.noModelAnnotations();
-            }
+            getterBuilder.annotationFlags(annotationFlags);
             if (this.modelAnnotations != null) {
                 getterBuilder.modelAnnotations(this.modelAnnotations.toList());
             }
@@ -200,9 +197,7 @@ public class AttributeDefinitionBuilder {
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
-            if (noModelAnnotations) {
-                setterBuilder.noModelAnnotations();
-            }
+            setterBuilder.annotationFlags(annotationFlags);    
             if (this.modelAnnotations != null && !readable) {
                 setterBuilder.modelAnnotations(this.modelAnnotations.toList());
             }
@@ -344,7 +339,12 @@ public class AttributeDefinitionBuilder {
     }
 
     public AttributeDefinitionBuilder noModelAnnotations() {
-        this.noModelAnnotations = true;
+        this.annotationFlags = Annotations.noModel(annotationFlags);
+        return this;
+    }
+    
+    public AttributeDefinitionBuilder noAnnotations() {
+        this.annotationFlags = 0;
         return this;
     }
 
@@ -435,4 +435,6 @@ public class AttributeDefinitionBuilder {
         valueConstructor = true;
         return this;
     }
+
+    
 }
