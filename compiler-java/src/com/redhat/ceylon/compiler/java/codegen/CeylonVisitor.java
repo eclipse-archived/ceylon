@@ -150,7 +150,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)){
             classBuilder.attribute(gen.classGen().transform(decl, false));
-            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(gen.classGen().transform(decl, true));
+            AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
+            if (decl.getDeclarationModel().isShared()) {
+                adb.noAnnotations();
+            }
+            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
         	if (!Decl.isNative(decl)) {
         		topattrBuilder.add(decl);
@@ -169,7 +173,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)){
             classBuilder.attribute(gen.classGen().transform(decl, false));
-            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(gen.classGen().transform(decl, true));
+            AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
+            if (decl.getDeclarationModel().isShared()) {
+                adb.noAnnotations();
+            }
+            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
         	if (!Decl.isNative(decl)) {
         		topattrBuilder.add(decl);
