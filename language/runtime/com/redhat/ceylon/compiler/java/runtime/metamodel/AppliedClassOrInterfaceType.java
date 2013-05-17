@@ -76,6 +76,7 @@ public class AppliedClassOrInterfaceType<Type>
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
+        checkInit();
         return declaration.$getJavaAnnotations();
     }
 
