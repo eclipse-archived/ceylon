@@ -147,6 +147,13 @@ void checkMemberTypes(){
     assert(exists innerInterfaceClassType = containerInterfaceType.getClassOrInterface<ContainerInterface, Class<ContainerInterface.InnerClass, []>>("InnerClass"));
     Anything o2 = innerInterfaceClassType(containerInterfaceImplInstance)();
     assert(is ContainerInterface.InnerClass o2);
+    
+    value parameterisedClassType = typeLiteral<ParameterisedContainerClass<Integer>>();
+    assert(is Class<ParameterisedContainerClass<Integer>,[]> parameterisedClassType);
+    value parameterisedInnerClassMember = parameterisedClassType.getClassOrInterface<ParameterisedContainerClass<Integer>, Class<ParameterisedContainerClass<Integer>.InnerClass<String>,[]>>("InnerClass", typeLiteral<String>());
+    assert(exists parameterisedInnerClassMember);
+    Anything parameterisedInnerClassType = parameterisedInnerClassMember(ParameterisedContainerClass<Integer>());
+    assert(is Class<ParameterisedContainerClass<Integer>.InnerClass<String>,[]> parameterisedInnerClassType);
 }
 
 void checkUntypedFunctionToAppliedFunction(){
