@@ -1,5 +1,7 @@
 package ceylon.language.metamodel;
 
+import ceylon.language.Sequential;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -12,10 +14,10 @@ public final class type_ {
     
     private type_() {}
     
-    @TypeInfo("ceylon.language.metamodel::AppliedType")
-    public static AppliedType type(@Name("instance")
+    @TypeInfo("ceylon.language.metamodel::Class<ceylon.language::Anything,ceylon.language::Nothing>")
+    public static ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> type(@Name("instance")
         @TypeInfo("ceylon.language::Anything")
         final Object instance) {
-        return Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
+        return (ceylon.language.metamodel.Class) Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
     }
 }
