@@ -62,7 +62,7 @@ public class AttributeDefinitionBuilder {
 
     private boolean toplevel = false;
     
-    private boolean noAnnotations = false;
+    private boolean noModelAnnotations = false;
     
     // do we need a constructor that takes the initial value? 
     private boolean valueConstructor;
@@ -175,7 +175,7 @@ public class AttributeDefinitionBuilder {
 
         if (readable) {
             getterBuilder.modifiers(getGetSetModifiers());
-            if (noAnnotations) {
+            if (noModelAnnotations) {
                 getterBuilder.noModelAnnotations();
             }
             if (this.annotations != null) {
@@ -186,7 +186,7 @@ public class AttributeDefinitionBuilder {
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
-            if (noAnnotations) {
+            if (noModelAnnotations) {
                 setterBuilder.noModelAnnotations();
             }
             if (this.annotations != null && !readable) {
@@ -326,8 +326,8 @@ public class AttributeDefinitionBuilder {
         return this;
     }
 
-    public AttributeDefinitionBuilder noAnnotations() {
-        this.noAnnotations = true;
+    public AttributeDefinitionBuilder noModelAnnotations() {
+        this.noModelAnnotations = true;
         return this;
     }
 
