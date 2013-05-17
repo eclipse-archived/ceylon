@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.misc;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.ProcessBuilder.Redirect;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.tools.JavaFileObject;
 
@@ -85,16 +88,27 @@ public class MiscTest extends CompilerTest {
         String javaSourcePath = "../ceylon.language/runtime";
         
         String[] ceylonPackages = {"ceylon.language", "ceylon.language.metamodel", "ceylon.language.metamodel.untyped"};
-        HashSet exceptions = new HashSet();
-        for (String ex : new String[] {
-                // Native files
-                "Array", "ArraySequence", "Boolean", "Callable", "Character", "className",
-                "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
-                "language", "process", "integerRangeByIterable",
-                "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten",
-                }) {
-            exceptions.add(ex);
-        }
+        // Native files
+        FileFilter exceptions = new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                String filename = pathname.getName();
+                filename = filename.substring(0,  filename.lastIndexOf('.'));
+                for (String s : new String[]{"Array", "ArraySequence", "Boolean", "Callable", "Character", "className",
+                        "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
+                        "language", "process", "integerRangeByIterable",
+                        "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten"}) {
+                    if (s.equals(filename)) {
+                        return true;
+                    }
+                } 
+                if (filename.equals("annotations")
+                        && pathname.getParentFile().getName().equals("metamodel")) {
+                    return true;
+                }
+                return false;
+            }   
+        };
         String[] extras = new String[]{
                 "array", "arrayOfSize", "false", "infinity",
                 "parseFloat", "parseInteger", "string", "true", "integerRangeByIterable"
@@ -108,7 +122,7 @@ public class MiscTest extends CompilerTest {
                 for(File src : files) {
                     if(src.isFile() && src.getName().toLowerCase().endsWith(".ceylon")) {
                         String baseName = src.getName().substring(0, src.getName().length() - 7);
-                        if (!exceptions.contains(baseName)) {
+                        if (!exceptions.accept(src)) {
                             sourceFiles.add(src);
                         } else {
                             addJavaSourceFile(baseName, sourceFiles, javaPkgDir);
