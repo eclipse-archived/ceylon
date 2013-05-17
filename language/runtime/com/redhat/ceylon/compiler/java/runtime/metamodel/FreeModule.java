@@ -44,8 +44,7 @@ public class FreeModule implements ceylon.language.metamodel.untyped.Module,
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
-        // TODO get the java.lang.Class for the module descriptor
-        return null;
+        return Metamodel.getJavaClass(declaration).getAnnotations();
     }
 
     @Override

@@ -27,14 +27,19 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionPackage;
+import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
+import com.redhat.ceylon.compiler.loader.model.LazyModule;
+import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -208,6 +213,20 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
+    public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Module module) {
+        
+        String className = module.getNameAsString() + ".module_";
+        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(className);
+        return classMirror.klass;
+        
+    }
+    
+    public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Package pkg) {
+        String className = ((LazyPackage) pkg).getNameAsString()+ ".package_";
+        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(className);
+        return classMirror != null ? classMirror.klass : null;
+    }
+    
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         if(declaration instanceof LazyClass){
             ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
