@@ -17,7 +17,6 @@ import ceylon.language.metamodel.untyped {
 
 Package aPackage {
     value aClassType = type(AClass(""));
-    assert(is Class<AClass,[String]> aClassType);
     value aClassDecl = aClassType.declaration;
     value pkg = aClassDecl.packageContainer;
     return pkg;
@@ -30,6 +29,9 @@ ClassOrInterface<T> annotationType<T>(T t) {
 
 ClassOrInterface<Shared> sharedAnnotation = annotationType(Shared());
 ClassOrInterface<Abstract> abstractAnnotation = annotationType(Abstract());
+ClassOrInterface<Formal> formalAnnotation = annotationType(Formal());
+ClassOrInterface<Default> defaultAnnotation = annotationType(Default());
+ClassOrInterface<Actual> actualAnnotation = annotationType(Actual());
 ClassOrInterface<Variable> variableAnnotation = annotationType(Variable());
 ClassOrInterface<Doc> docAnnotation = annotationType(Doc(""));
 ClassOrInterface<Seq> seqAnnotation = annotationType(Seq(""));
@@ -105,7 +107,7 @@ void checkAToplevelFunctionAnnotations() {
 }
 
 void checkAToplevelObjectAnnotations() {
-    assert(is Class<Anything,[]> aToplevelObjectDecl = type(aToplevelObject));
+    value aToplevelObjectDecl = type(aToplevelObject);
     //shared
     assert(annotations(sharedAnnotation, aToplevelObjectDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelObjectDecl) exists);
@@ -186,7 +188,61 @@ void checkAAbstractClass() {
     value pseqs = annotations(seqAnnotation, parameter);
     assert(pseqs.size == 0);
     
-    // TODO Members of the abstract class
+    // Members of abstract class
+    // formalAttribute
+    assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, Value<String>>("formalAttribute"));
+    value fa=fam(AClass(""));
+    assert(annotations(sharedAnnotation, fa) exists);
+    assert(annotations(actualAnnotation, fa) exists);
+    assert(exists fadoc = annotations(docAnnotation, fa),
+            fadoc.description == "AAbstractClass.formalAttributeGetter");
+    // TODO Setter
+    
+    // formalMethod
+    assert(exists fmm=aAbstractClassDecl.apply().getFunction<AAbstractClass, Function<Anything, [String]>>("formalMethod"));
+    value fm=fmm(AClass(""));
+    // shared
+    assert(annotations(sharedAnnotation, fm) exists);
+    // actual
+    assert(annotations(actualAnnotation, fm) exists);
+    // default
+    assert(annotations(defaultAnnotation, fm) exists);
+    // doc
+    assert(exists fmdoc = annotations(docAnnotation, fm),
+            fmdoc.description == "AAbstractClass.formalMethod");
+    // parameter
+    assert(exists fmp = fm.declaration.parameters[0]);
+    // parameter doc
+    assert(exists fmpdoc = annotations(docAnnotation, fmp),
+            fmpdoc.description == "AAbstractClass.formalMethod.parameter");
+    
+    // InnerClass
+    assert(exists icm=aAbstractClassDecl.apply().getClassOrInterface<AAbstractClass, Class<AAbstractClass.InnerClass, [String]>>("InnerClass"));
+    value ic=icm(AClass(""));
+    // shared
+    assert(annotations(sharedAnnotation, ic) exists);
+    // shared
+    assert(exists icdoc = annotations(docAnnotation, ic));
+    assert(icdoc.description == "AAbstractClass.InnerClass");
+    // InnerClass parameter
+    assert(exists icparameter = ic.declaration.parameters[0]);
+    // InnerClass parameter doc
+    assert(exists icpdoc = annotations(docAnnotation, icparameter),
+            icpdoc.description == "AAbstractClass.InnerClass.parameter");
+    // TODO inner classes methods
+    
+    // InnerInterface
+    assert(exists iim=aAbstractClassDecl.apply().getClassOrInterface<AAbstractClass, Interface<AAbstractClass.InnerInterface>>("InnerInterface"));
+    value ii=iim(AClass(""));
+    // shared
+    assert(annotations(sharedAnnotation, ii) exists);
+    // shared
+    assert(exists iidoc = annotations(docAnnotation, ii));
+    assert(iidoc.description == "AAbstractClass.InnerInterface");
+    // TODO inner interfaces methods
+    
+    
+    // TODO Object members
 }
 
 void checkAInterface() {
@@ -195,7 +251,7 @@ void checkAInterface() {
     assert(exists iface0=sup.interfaces[0]);
     value aInterfaceDecl=iface0.declaration;
     assert(is Interface<AInterface> iface = aInterfaceDecl.apply());
-    /*//shared
+    //shared
     assert(annotations(sharedAnnotation, aInterfaceDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aInterfaceDecl) exists);
     //abstract
@@ -227,6 +283,7 @@ void checkAInterface() {
     assert(exists dgsm=iface.getAttribute<AInterface, Value<String>>("defaultGetterSetter"));
     value dgs=dgsm(AClass(""));
     assert(annotations(sharedAnnotation, dgs) exists);
+    assert(annotations(defaultAnnotation, dgs) exists);
     assert(exists dgsdoc = annotations(docAnnotation, dgs),
             dgsdoc.description == "AInterface.defaultGetter");
     // TODO Test the setter annotations
@@ -238,28 +295,45 @@ void checkAInterface() {
     assert(exists gsdoc = annotations(docAnnotation, gs),
             gsdoc.description == "AInterface.getter");
     // TODO Test the setter annotations
-    */
+    
     print(iface);
-    // nonsharedGetterSetter
-    assert(exists ngsm=iface.getAttribute<AInterface, Value<String>>("nonsharedGetterSetter"));
-    value ngs=ngsm(AClass(""));
-    assert(annotations(sharedAnnotation, ngs) exists);
-    assert(exists ngsdoc = annotations(docAnnotation, ngs),
-            ngsdoc.description == "AInterface.nonsharedGetterSetter");
+    // TODO nonsharedGetterSetter
+    //assert(exists ngsm=iface.getAttribute<AInterface, Value<String>>("nonsharedGetterSetter"));
+    //value ngs=ngsm(AClass(""));
+    //assert(annotations(sharedAnnotation, ngs) exists);
+    //assert(exists ngsdoc = annotations(docAnnotation, ngs),
+    //        ngsdoc.description == "AInterface.nonsharedGetterSetter");
     // TODO Test the setter annotations
+    
+    // TODO Class & interface members
+    // TODO Object members
+}
+
+void checkModule() {
+    value m = aPackage.container;
+    assert(exists moddoc = annotations(docAnnotation, m));
+    assert(moddoc.description == "Some module doc");
+    
+    // TODO check annotations on module imports
+}
+
+void checkPackage() {
+    value p = aPackage;
+    assert(! annotations(sharedAnnotation, p) exists);
+    assert(! annotations(docAnnotation, p) exists);
 }
 
 void annotationTests() {
-    //checkAToplevelValueAnnotations();
-    //checkAToplevelGetterSetterAnnotations();
-    //checkAToplevelFunctionAnnotations();
-    //// TODO once we support objects
-    //// checkAToplevelObjectAnnotations();
+    checkAToplevelValueAnnotations();
+    checkAToplevelGetterSetterAnnotations();
+    checkAToplevelFunctionAnnotations();
+    // TODO once we support objects
+    // checkAToplevelObjectAnnotations();
     checkAInterface();
-    //checkAAbstractClass();
-    //checkAClass();
-    //// TODO Local declarations
-    // TODO Module
-    // TODO Package
+    checkAAbstractClass();
+    checkAClass();
+    // TODO Local declarations
+    checkModule();
+    checkPackage();
     
 }

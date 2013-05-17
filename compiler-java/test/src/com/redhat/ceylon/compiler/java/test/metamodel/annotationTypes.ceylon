@@ -133,22 +133,34 @@ shared abstract class AAbstractClass (
     assign formalAttribute {
     }
     
-    "AAbstractClass.Inner"
-    shared class Inner(
-            "AAbstractClass.Inner.parameter"
-            String parameter) {
-        
-        "AAbstractClass.Inner.method"
-        shared void method(
-            "AAbstractClass.Inner.method.parameter"
-            String parameter) {}
-    }
-    
     "AAbstractClass.formalMethod"
     shared actual default void formalMethod(
         "AAbstractClass.formalMethod.parameter"
         String parameter) {
         
+    }
+    
+    //"AAbstractClass.objectMember"
+    // TODO shared object objectMember {}
+    
+    "AAbstractClass.InnerClass"
+    shared class InnerClass(
+            "AAbstractClass.InnerClass.parameter"
+            String parameter) {
+        
+        "AAbstractClass.InnerClass.method"
+        shared void method(
+            "AAbstractClass.InnerClass.method.parameter"
+            String parameter) {}
+    }
+    
+    "AAbstractClass.InnerInterface"
+    shared interface InnerInterface {
+        
+        "AAbstractClass.InnerInterface.method"
+        shared void method(
+            "AAbstractClass.InnerInterface.method.parameter"
+            String parameter) {}
     }
 }
 

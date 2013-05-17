@@ -41,3 +41,4 @@ public class MetamodelTest extends CompilerTest {
     }
 
 }
+
