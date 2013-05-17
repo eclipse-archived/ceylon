@@ -1360,7 +1360,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        builder.annotations(expressionGen().transform(decl.getAnnotationList()));
+        builder.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
         return builder;
     }
 
@@ -1384,7 +1384,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        builder.annotations(expressionGen().transform(decl.getAnnotationList()));
+        builder.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
         return builder;    
     }
 
@@ -1546,7 +1546,7 @@ public class ClassTransformer extends AbstractTransformer {
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
             .getter(this, attrName, decl.getDeclarationModel());
-        getter.annotations(expressionGen().transform(decl.getAnnotationList()));
+        getter.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
         return makeGetterOrSetter(decl, forCompanion, lazy, getter, true);
     }
 
@@ -2458,7 +2458,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .is(PUBLIC, Decl.isShared(decl))
                     .is(STATIC, true);
             if (def instanceof Tree.ObjectDefinition) {
-                builder.annotations(expressionGen().transform(((Tree.ObjectDefinition) def).getAnnotationList()));
+                builder.userAnnotations(expressionGen().transform(((Tree.ObjectDefinition) def).getAnnotationList()));
             }            
             objectClassBuilder.defs(builder.build());
         }

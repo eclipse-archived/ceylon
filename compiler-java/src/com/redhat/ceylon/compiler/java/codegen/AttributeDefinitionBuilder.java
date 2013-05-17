@@ -69,7 +69,8 @@ public class AttributeDefinitionBuilder {
     
     private boolean late;
     private boolean variable;
-    private ListBuffer<JCAnnotation> annotations;
+    private ListBuffer<JCAnnotation> modelAnnotations;
+    private ListBuffer<JCAnnotation> userAnnotations;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -131,10 +132,20 @@ public class AttributeDefinitionBuilder {
     
     public AttributeDefinitionBuilder annotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
-            if (this.annotations == null) {
-                this.annotations = ListBuffer.lb();
+            if (this.modelAnnotations == null) {
+                this.modelAnnotations = ListBuffer.lb();
             }
-            this.annotations.appendList(annotations);
+            this.modelAnnotations.appendList(annotations);
+        }
+        return this;
+    }
+    
+    public AttributeDefinitionBuilder userAnnotations(List<JCAnnotation> annotations) {
+        if (annotations != null) {
+            if (this.userAnnotations == null) {
+                this.userAnnotations = ListBuffer.lb();
+            }
+            this.userAnnotations.appendList(annotations);
         }
         return this;
     }
@@ -178,8 +189,11 @@ public class AttributeDefinitionBuilder {
             if (noModelAnnotations) {
                 getterBuilder.noModelAnnotations();
             }
-            if (this.annotations != null) {
-                getterBuilder.modelAnnotations(this.annotations.toList());
+            if (this.modelAnnotations != null) {
+                getterBuilder.modelAnnotations(this.modelAnnotations.toList());
+            }
+            if (this.userAnnotations != null) {
+                getterBuilder.annotations(this.userAnnotations.toList());
             }
             defs.append(getterBuilder.build());
         }
@@ -189,8 +203,11 @@ public class AttributeDefinitionBuilder {
             if (noModelAnnotations) {
                 setterBuilder.noModelAnnotations();
             }
-            if (this.annotations != null && !readable) {
-                setterBuilder.modelAnnotations(this.annotations.toList());
+            if (this.modelAnnotations != null && !readable) {
+                setterBuilder.modelAnnotations(this.modelAnnotations.toList());
+            }
+            if (this.userAnnotations != null && !readable) {
+                setterBuilder.annotations(this.userAnnotations.toList());
             }
             defs.append(setterBuilder.build());
         }

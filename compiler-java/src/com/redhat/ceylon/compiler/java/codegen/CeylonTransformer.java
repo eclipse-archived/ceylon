@@ -359,7 +359,7 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-        builder.annotations(expressionGen().transform(annotations));
+        builder.userAnnotations(expressionGen().transform(annotations));
         
         if (Decl.isLocal(declarationModel)) {
             if(initialValue != null)
