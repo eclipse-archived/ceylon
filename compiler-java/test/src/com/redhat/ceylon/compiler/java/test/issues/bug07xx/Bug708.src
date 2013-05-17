@@ -197,8 +197,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> mapItems(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> mapping) {
+    public <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> mapItems(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> mapping) {
         return $ceylon$language$Map$this.mapItems($reifiedResult, mapping);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -250,8 +249,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
     
@@ -263,8 +261,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>Result fold(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
     
@@ -288,8 +285,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedResult, final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.collect($reifiedResult, collecting);
     }
     
@@ -349,23 +345,19 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> following(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other head) {
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> following(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other head) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.following($reifiedOther, head);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
+    public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)$ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

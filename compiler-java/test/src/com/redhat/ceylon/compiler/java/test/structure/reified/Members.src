@@ -34,8 +34,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOuter;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <Inner>.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<Outer>.InnerClass<Inner> InnerClass$new(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+    public <Inner>.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<Outer>.InnerClass<Inner> InnerClass$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
         return new InnerClass<Inner>($reifiedInner);
     }
     

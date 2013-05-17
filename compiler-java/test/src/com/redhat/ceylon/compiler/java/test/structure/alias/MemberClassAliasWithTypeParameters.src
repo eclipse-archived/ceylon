@@ -39,8 +39,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
     private final C c;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <T>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<T> Member$new(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    public <T>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<T> Member$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         return new Member<T>($reifiedT, t);
     }
     
@@ -75,8 +74,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$new(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
+    public <S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final S s) {
         return new Member<S>($reifiedS, s);
     }
     

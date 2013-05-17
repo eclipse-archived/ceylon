@@ -111,8 +111,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public <TTT>.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_.MemberMember<TTT> MemberMember$new(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT) {
+        public <TTT>.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_.MemberMember<TTT> MemberMember$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT) {
             return new MemberMember<TTT>($reifiedTTT);
         }
         
