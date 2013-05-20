@@ -495,9 +495,6 @@ public class ClassDefinitionBuilder {
      */
     public ClassDefinitionBuilder method(MethodDefinitionBuilder mdb) {
         if (mdb != null) {
-            if (isCompanion) {
-                mdb.noModelAnnotations();
-            }
             defs(mdb.build());
         }
         return this;

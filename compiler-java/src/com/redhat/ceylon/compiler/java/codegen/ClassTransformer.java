@@ -1849,6 +1849,8 @@ public class ClassTransformer extends AbstractTransformer {
             if (includeAnnotations) {
                 methodBuilder.userAnnotations(expressionGen().transform(def.getAnnotationList()));
                 methodBuilder.modelAnnotations(model.getAnnotations());
+            } else {
+                methodBuilder.noAnnotations();
             }
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
                 methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
