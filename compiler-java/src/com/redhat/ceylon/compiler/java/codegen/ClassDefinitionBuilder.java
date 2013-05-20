@@ -481,9 +481,6 @@ public class ClassDefinitionBuilder {
      */
     public ClassDefinitionBuilder attribute(AttributeDefinitionBuilder adb) {
         if (adb != null) {
-            if (isCompanion) {
-                adb.noModelAnnotations();
-            }
             defs(adb.build());
         }
         return this;
