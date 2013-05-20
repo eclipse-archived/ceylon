@@ -1736,7 +1736,9 @@ public class ClassTransformer extends AbstractTransformer {
                 throw new RuntimeException();
             }
             boolean transformMethod = specifier != null || block != null;
-            boolean actualAndAnnotations = def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null;
+            boolean actual = def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null;
+            boolean includeAnnotations = !model.isShared() || 
+                    (def instanceof MethodDeclaration  && ((MethodDeclaration)def).getSpecifierExpression() == null);
             List<JCStatement> cbody = specifier != null ? transformMplBody(def.getParameterLists(), model, body) 
                     : block != null ? transformMethodBlock(model, block) 
                     : null;
@@ -1748,7 +1750,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             List<MethodDefinitionBuilder> companionDefs = transformMethod(def, model,  
                         transformMethod,
-                        actualAndAnnotations,
+                        actual, includeAnnotations,
                         cbody,
                         transformOverloads,
                         overloadsDelegator,
@@ -1761,9 +1763,9 @@ public class ClassTransformer extends AbstractTransformer {
         if (!Strategy.onlyOnCompanion(model)) {
             // Transform it for the interface/class
             List<JCStatement> cbody = !model.isInterfaceMember() ? transformMplBody(def.getParameterLists(), model, body) : null;
-            result = transformMethod(def, model, true, true, 
+            result = transformMethod(def, model, true, true,true, 
                     cbody, 
-                    true,
+                    true, 
                     Decl.withinInterface(model) ? 0 : OL_BODY,
                     true,
                     !Strategy.defaultParameterMethodOnSelf(model));
@@ -1789,7 +1791,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private List<MethodDefinitionBuilder> transformMethod(Tree.AnyMethod def,
             final Method model, 
-            boolean transformMethod, boolean actualAndAnnotations, List<JCStatement> body, 
+            boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
             boolean transformOverloads, int overloadsFlags, 
             boolean transformDefaultValues, boolean defaultValuesBody) {
         
@@ -1813,7 +1815,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             Parameter parameter = param.getDeclarationModel();
             List<JCAnnotation> annotations = null;
-            if (actualAndAnnotations || !model.isShared()) {
+            if (includeAnnotations) {
                 annotations = expressionGen().transform(param.getAnnotationList());
             }
             Parameter parameterModel = param.getDeclarationModel();
@@ -1839,7 +1841,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (transformMethod) {
-            if (actualAndAnnotations || !model.isShared()) {
+            if (includeAnnotations) {
                 methodBuilder.userAnnotations(expressionGen().transform(def.getAnnotationList()));
             }
             methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
@@ -1854,9 +1856,11 @@ public class ClassTransformer extends AbstractTransformer {
             }
             methodBuilder
                 .modifiers(transformMethodDeclFlags(model));
-            if (actualAndAnnotations) {
-                methodBuilder.isOverride(model.isActual())
-                    .modelAnnotations(model.getAnnotations());
+            if (actual) {
+                methodBuilder.isOverride(model.isActual());
+            }
+            if (includeAnnotations) {
+                methodBuilder.modelAnnotations(model.getAnnotations());
             }
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
                 methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
