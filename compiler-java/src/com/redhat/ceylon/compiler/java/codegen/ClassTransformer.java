@@ -1841,8 +1841,17 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (transformMethod) {
+            methodBuilder
+                .modifiers(transformMethodDeclFlags(model));
+            if (actual) {
+                methodBuilder.isOverride(model.isActual());
+            }
             if (includeAnnotations) {
                 methodBuilder.userAnnotations(expressionGen().transform(def.getAnnotationList()));
+                methodBuilder.modelAnnotations(model.getAnnotations());
+            }
+            if (CodegenUtil.hasCompilerAnnotation(def, "test")){
+                methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
             }
             methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {
@@ -1854,17 +1863,7 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 methodBuilder.noBody();
             }
-            methodBuilder
-                .modifiers(transformMethodDeclFlags(model));
-            if (actual) {
-                methodBuilder.isOverride(model.isActual());
-            }
-            if (includeAnnotations) {
-                methodBuilder.modelAnnotations(model.getAnnotations());
-            }
-            if (CodegenUtil.hasCompilerAnnotation(def, "test")){
-                methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
-            }
+            
             lb.append(methodBuilder);
         }
         return lb.toList();
