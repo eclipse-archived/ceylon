@@ -9,10 +9,9 @@ import java.util.Map;
 
 import ceylon.language.Iterator;
 import ceylon.language.Null;
-import ceylon.language.Sequential;
-import ceylon.language.finished_;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
+import ceylon.language.finished_;
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ConstrainedAnnotation;
@@ -21,29 +20,23 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
-import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionPackage;
-import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class Metamodel {
 
@@ -403,49 +396,12 @@ public class Metamodel {
             ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType) {
         FreeClassOrInterface freeClass;
         if (annotationType instanceof AppliedClassOrInterfaceType) {
-            freeClass = ((AppliedClassOrInterfaceType)annotationType).declaration;
+            freeClass = (FreeClassOrInterface)(annotationType.getDeclaration());
         } else {
             freeClass = (FreeClassOrInterface)annotationType;
         }
         final Class<?> refAnnotationClass = getJavaClass(freeClass.declaration);
         return refAnnotationClass;
-    }
-
-    private static java.lang.reflect.AnnotatedElement getValueAnnotatedElement(
-            FreeValue freeValue) {
-        Class<?> javaClass = Metamodel.getJavaClass(freeValue.declaration);
-        try {
-            return javaClass.getMethod(Naming.getGetterName(freeValue.declaration));
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    private static java.lang.reflect.AnnotatedElement getFunctionAnnotatedElement(
-            FreeFunction freeFunction) {
-        Class<?> javaClass = Metamodel.getJavaClass(freeFunction.declaration);
-        // How to find the right Method, just go for the one with the longest parameter list?
-        // OR go via the Method in AppliedFunction?
-        
-        String name = Naming.selector((TypedDeclaration)freeFunction.declaration, 0);
-        java.lang.reflect.Method best = null;
-        int numBestParams = -1;
-        for (java.lang.reflect.Method m : javaClass.getDeclaredMethods()) {
-            if (!m.getName().equals(name)) {
-                continue;
-            }
-            Class<?>[] parameterTypes = m.getParameterTypes();
-            if (parameterTypes.length > numBestParams) {
-                best = m;
-                numBestParams = parameterTypes.length;
-            } else if (parameterTypes.length == numBestParams) {
-                throw new RuntimeException("Method arity ambiguity");
-            }
-        }
-        if (best == null) {
-            throw new RuntimeException("Couldn't find method " + name);
-        }
-        return best;
     }
     
     private static <A extends ceylon.language.metamodel.Annotation<A>> void addAnnotation(
