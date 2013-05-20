@@ -23,8 +23,7 @@ Package aPackage {
 }
 
 ClassOrInterface<T> annotationType<T>(T t) {
-    assert(is ClassOrInterface<T> annoType = type(t));
-    return annoType;
+    return type(t);
 }
 
 ClassOrInterface<Shared> sharedAnnotation = annotationType(Shared());
