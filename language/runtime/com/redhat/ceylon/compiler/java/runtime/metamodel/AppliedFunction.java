@@ -38,8 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 public class AppliedFunction<Type, Arguments extends Sequential<? extends Object>> 
-    implements ceylon.language.metamodel.Function<Type, Arguments>, ReifiedType,
-    AnnotationBearing {
+    implements ceylon.language.metamodel.Function<Type, Arguments>, ReifiedType {
 
     @Ignore
     private final TypeDescriptor $reifiedType;
@@ -134,19 +133,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
-        return declaration.$getJavaAnnotations();
     }
     
     @Override

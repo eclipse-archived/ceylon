@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedValue<Type> 
-        implements ceylon.language.metamodel.Value<Type>, ReifiedType, AnnotationBearing {
+        implements ceylon.language.metamodel.Value<Type>, ReifiedType {
 
     private AppliedType type;
     @Ignore
@@ -101,19 +101,6 @@ public class AppliedValue<Type>
     public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
-    }
-    
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
-        return declaration.$getJavaAnnotations();
     }
 
     @Override

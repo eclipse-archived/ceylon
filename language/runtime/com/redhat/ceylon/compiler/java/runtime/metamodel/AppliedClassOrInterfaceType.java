@@ -35,8 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
 public class AppliedClassOrInterfaceType<Type> 
-    implements ceylon.language.metamodel.ClassOrInterface<Type>, ReifiedType,
-    AnnotationBearing {
+    implements ceylon.language.metamodel.ClassOrInterface<Type>, ReifiedType {
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
@@ -66,20 +65,6 @@ public class AppliedClassOrInterfaceType<Type>
         return null;
     }
     
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public java.lang.annotation.Annotation[] $getJavaAnnotations() {
-        checkInit();
-        return declaration.$getJavaAnnotations();
-    }
-
     @Override
     @Ignore
     public ClassOrInterface$impl<Type> $ceylon$language$metamodel$ClassOrInterface$impl() {
