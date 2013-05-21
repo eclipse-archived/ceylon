@@ -4,7 +4,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -38,7 +37,9 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @Ignore
     public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement, int initialCapacity) {
         this($reifiedElement);
-        resize$priv(initialCapacity);
+        if (initialCapacity >= 0) {
+            resize$priv(initialCapacity);
+        }
     }
     
     /** Ensures the array has at least the given capacity (it may allocate more) */
