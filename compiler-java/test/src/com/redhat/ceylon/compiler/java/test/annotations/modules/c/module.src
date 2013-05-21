@@ -20,9 +20,9 @@ final class module_ {
     private module_() {
     }
     @.ceylon.language.Shared$annotation
-    public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$a = null;
+    public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$a = "0.1";
     @.ceylon.language.Doc$annotation(description = "Optionally depend on b")
     @.ceylon.language.Deprecation$annotation(description = "doesn\'t _do_ anything either")
     @.ceylon.language.Optional$annotation
-    public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$b = null;
+    public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$b = "0.1";
 }
