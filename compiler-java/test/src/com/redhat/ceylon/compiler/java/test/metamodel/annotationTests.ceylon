@@ -34,6 +34,8 @@ ClassOrInterface<Actual> actualAnnotation = annotationType(Actual());
 ClassOrInterface<Variable> variableAnnotation = annotationType(Variable());
 ClassOrInterface<Doc> docAnnotation = annotationType(Doc(""));
 ClassOrInterface<Seq> seqAnnotation = annotationType(Seq(""));
+ClassOrInterface<Deprecation> deprecatedAnnotation = annotationType(Deprecation(""));
+ClassOrInterface<Optional> optAnnotation = annotationType(Optional());
 
 void checkAToplevelValueAnnotations() {
 
@@ -289,13 +291,13 @@ void checkAInterface() {
     
     // getterSetter
     assert(exists gsm=iface.getAttribute<AInterface, Value<String>>("getterSetter"));
-    value gs=gsm(AClass(""));
+    value gs = gsm(AClass("")).declaration;
     assert(annotations(sharedAnnotation, gs) exists);
     assert(exists gsdoc = annotations(docAnnotation, gs),
             gsdoc.description == "AInterface.getter");
     // TODO Test the setter annotations
     
-    print(iface);
+    
     // TODO nonsharedGetterSetter
     //assert(exists ngsm=iface.getAttribute<AInterface, Value<String>>("nonsharedGetterSetter"));
     //value ngs=ngsm(AClass(""));
@@ -308,12 +310,22 @@ void checkAInterface() {
     // TODO Object members
 }
 
-void checkModule() {
+void checkModuleAndImports() {
     value m = aPackage.container;
     assert(exists moddoc = annotations(docAnnotation, m));
     assert(moddoc.description == "Some module doc");
     
-    // TODO check annotations on module imports
+    // module imports
+    value deps = m.dependencies;
+    assert(1 == deps.size);
+    assert(exists dep = deps[0]);
+    assert("java.base" == dep.name);
+    assert("7" == dep.version);
+    assert(exists depdoc = annotations(docAnnotation, dep));
+    assert(depdoc.description == "Not actually needed, but we want to test ModuleImports");
+    assert(annotations(optAnnotation, dep) exists);
+    assert(annotations(deprecatedAnnotation, dep) exists);
+    
 }
 
 void checkPackage() {
@@ -332,7 +344,7 @@ void annotationTests() {
     checkAAbstractClass();
     checkAClass();
     // TODO Local declarations
-    checkModule();
+    checkModuleAndImports();
     checkPackage();
     
 }
