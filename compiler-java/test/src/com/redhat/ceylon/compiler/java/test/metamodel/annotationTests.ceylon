@@ -108,7 +108,7 @@ void checkAToplevelFunctionAnnotations() {
 }
 
 void checkAToplevelObjectAnnotations() {
-    value aToplevelObjectDecl = type(aToplevelObject);
+    value aToplevelObjectDecl = type(aToplevelObject).declaration;
     //shared
     assert(annotations(sharedAnnotation, aToplevelObjectDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelObjectDecl) exists);
@@ -125,7 +125,7 @@ void checkAToplevelObjectAnnotations() {
 }
 
 void checkAClass() {
-    assert(is Class<AClass,[String]> aClassDecl = type(AClass("")));
+    value aClassDecl = type(AClass("")).declaration;
     //shared
     assert(annotations(sharedAnnotation, aClassDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aClassDecl) exists);
@@ -145,7 +145,7 @@ void checkAClass() {
     assert(sequencedAnnotations(seqAnnotation, aClassDecl).size == 2);
     
     // parameter
-    assert(exists parameter = aClassDecl.declaration.parameters[0]);
+    assert(exists parameter = aClassDecl.parameters[0]);
     // parameter doc
     assert(exists pdoc = annotations(docAnnotation, parameter),
             pdoc.description == "AClass.parameter");
@@ -159,8 +159,8 @@ void checkAClass() {
 }
 
 void checkAAbstractClass() {
-    assert(is Class<AClass,[String]> aClassDecl = type(AClass("")));
-    assert(exists sup=aClassDecl.declaration.superclass);
+    value aClassDecl = type(AClass("")).declaration;
+    assert(exists sup=aClassDecl.superclass);
     value aAbstractClassDecl=sup.declaration;
     //shared
     assert(annotations(sharedAnnotation, aAbstractClassDecl) exists);
@@ -192,7 +192,7 @@ void checkAAbstractClass() {
     // Members of abstract class
     // formalAttribute
     assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, Value<String>>("formalAttribute"));
-    value fa=fam(AClass(""));
+    value fa=fam(AClass("")).declaration;
     assert(annotations(sharedAnnotation, fa) exists);
     assert(annotations(actualAnnotation, fa) exists);
     assert(exists fadoc = annotations(docAnnotation, fa),
@@ -201,7 +201,7 @@ void checkAAbstractClass() {
     
     // formalMethod
     assert(exists fmm=aAbstractClassDecl.apply().getFunction<AAbstractClass, Function<Anything, [String]>>("formalMethod"));
-    value fm=fmm(AClass(""));
+    value fm=fmm(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, fm) exists);
     // actual
@@ -212,21 +212,21 @@ void checkAAbstractClass() {
     assert(exists fmdoc = annotations(docAnnotation, fm),
             fmdoc.description == "AAbstractClass.formalMethod");
     // parameter
-    assert(exists fmp = fm.declaration.parameters[0]);
+    assert(exists fmp = fm.parameters[0]);
     // parameter doc
     assert(exists fmpdoc = annotations(docAnnotation, fmp),
             fmpdoc.description == "AAbstractClass.formalMethod.parameter");
     
     // InnerClass
     assert(exists icm=aAbstractClassDecl.apply().getClassOrInterface<AAbstractClass, Class<AAbstractClass.InnerClass, [String]>>("InnerClass"));
-    value ic=icm(AClass(""));
+    value ic=icm(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, ic) exists);
     // shared
     assert(exists icdoc = annotations(docAnnotation, ic));
     assert(icdoc.description == "AAbstractClass.InnerClass");
     // InnerClass parameter
-    assert(exists icparameter = ic.declaration.parameters[0]);
+    assert(exists icparameter = ic.parameters[0]);
     // InnerClass parameter doc
     assert(exists icpdoc = annotations(docAnnotation, icparameter),
             icpdoc.description == "AAbstractClass.InnerClass.parameter");
@@ -234,7 +234,7 @@ void checkAAbstractClass() {
     
     // InnerInterface
     assert(exists iim=aAbstractClassDecl.apply().getClassOrInterface<AAbstractClass, Interface<AAbstractClass.InnerInterface>>("InnerInterface"));
-    value ii=iim(AClass(""));
+    value ii=iim(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, ii) exists);
     // shared
@@ -256,8 +256,8 @@ void checkAInterface() {
     assert(annotations(sharedAnnotation, aInterfaceDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aInterfaceDecl) exists);
     //abstract
-    assert(! annotations(abstractAnnotation, aInterfaceDecl) exists);
-    assert(! optionalAnnotation(abstractAnnotation, aInterfaceDecl) exists);
+    //assert(! annotations(abstractAnnotation, aInterfaceDecl.declaration) exists);
+    //assert(! optionalAnnotation(abstractAnnotation, aInterfaceDecl.declaration) exists);
     // doc
     assert(exists doc = annotations(docAnnotation, aInterfaceDecl), 
             doc.description == "AInterface");
@@ -275,14 +275,14 @@ void checkAInterface() {
     // Members of interface
     // formalAttribute
     assert(exists fam=iface.getAttribute<AInterface, Value<String>>("formalAttribute"));
-    value fa=fam(AClass(""));
+    value fa = fam(AClass("")).declaration;
     assert(annotations(sharedAnnotation, fa) exists);
     assert(exists fadoc = annotations(docAnnotation, fa),
             fadoc.description == "AInterface.formalAttribute");
     
     // defaultGetterSetter
     assert(exists dgsm=iface.getAttribute<AInterface, Value<String>>("defaultGetterSetter"));
-    value dgs=dgsm(AClass(""));
+    value dgs = dgsm(AClass("")).declaration;
     assert(annotations(sharedAnnotation, dgs) exists);
     assert(annotations(defaultAnnotation, dgs) exists);
     assert(exists dgsdoc = annotations(docAnnotation, dgs),
