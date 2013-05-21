@@ -902,7 +902,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.QuotedLiteral string) {
         at(string);
-        return ceylonLiteral(string.getText());
+        return ceylonLiteral(string.getText().substring(1, string.getText().length()-1));
     }
 
     public JCExpression transform(Tree.CharLiteral lit) {
