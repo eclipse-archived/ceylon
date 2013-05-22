@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
@@ -42,14 +43,8 @@ public class FreeSetter
     public Annotation[] $getJavaAnnotations() {
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(variable.declaration);
         String setterName = Naming.getSetterName(variable.declaration);
-        for (java.lang.reflect.Method method : javaClass.getMethods()) {
-            if (method.getName().equals(setterName)
-                    && method.getReturnType() == void.class
-                    && method.getParameterTypes().length == 1) {
-                return method.getDeclaredAnnotations();
-            }
-        }
-        return AnnotationBearing.NONE;
+        Method declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
+        return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
     @TypeInfo("ceylon.language.metamodel.untyped::Variable")
