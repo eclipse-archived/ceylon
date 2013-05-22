@@ -57,7 +57,7 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
-        return javaClass != null ? javaClass.getAnnotations() : new java.lang.annotation.Annotation[0];
+        return javaClass != null ? javaClass.getAnnotations() : AnnotationBearing.NONE;
     }
 
     @Override

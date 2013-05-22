@@ -47,7 +47,7 @@ public class FreeImport implements ceylon.language.metamodel.untyped.Import,
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         final Field field = getField();
-        return field != null ? field.getAnnotations() : new java.lang.annotation.Annotation[0];
+        return field != null ? field.getAnnotations() : AnnotationBearing.NONE;
     }
 
     private Field getField() {

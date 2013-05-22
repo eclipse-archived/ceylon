@@ -12,6 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
  */
 public interface AnnotationBearing extends Annotated {
 
+    static final java.lang.annotation.Annotation[] NONE = new java.lang.annotation.Annotation[0];
+    
     /**
      * @return the Java annotations for this Annotated
      */
