@@ -2,13 +2,15 @@
 import ceylon.language.metamodel{
     type, 
     annotations, optionalAnnotation, sequencedAnnotations,
-    OptionalAnnotation, SequencedAnnotation, Annotated, 
+    Annotation2 = Annotation, 
+    ConstrainedAnnotation, OptionalAnnotation, SequencedAnnotation, 
+    Annotated,
     ClassOrInterface, Class, Interface,
     Function, Value
 }
 import ceylon.language.metamodel.untyped {
     ValueDeclaration = Value,
-    VariableDeclaration=Variable,
+    VariableDeclaration = Variable,
     UntypedDeclaration = Declaration,
     FunctionDeclaration = Function,
     ClassDeclaration = Class,
@@ -44,18 +46,38 @@ void checkAToplevelValueAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelValueDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelValueDecl) exists);
+    assert(aToplevelValueDecl.annotations<Shared>().size == 1);
     // doc
     assert(exists doc = annotations(docAnnotation, aToplevelValueDecl), 
         doc.description == "aToplevelValue");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelValueDecl), 
         doc2.description == "aToplevelValue");
+    assert(nonempty doc3 = aToplevelValueDecl.annotations<Doc>(),
+        doc3.first.description == "aToplevelValue");
     // seq
     variable value seqs = annotations(seqAnnotation, aToplevelValueDecl);
     assert(seqs.size == 2);
     assert(exists seq = seqs[0], seq.seq == "aToplevelValue 1");
     assert(exists seq2 = seqs[1], seq2.seq == "aToplevelValue 2");
     assert(sequencedAnnotations(seqAnnotation, aToplevelValueDecl).size == 2);
-
+    assert(aToplevelValueDecl.annotations<Seq>().size == 2);
+    
+    // Using funky type arguments to Declaration.annotations<>()
+    assert(aToplevelValueDecl.annotations<Nothing>().empty);
+    assert(aToplevelValueDecl.annotations<ConstrainedAnnotation<Nothing, Anything, ValueDeclaration>>() empty);
+    assert(nonempty doc4 = aToplevelValueDecl.annotations<ConstrainedAnnotation<Doc, Anything, ValueDeclaration>>(),
+        is Doc doc4_1 = doc4.first,
+        doc4_1.description == "aToplevelValue");
+    assert(nonempty doc5 = aToplevelValueDecl.annotations<OptionalAnnotation<Doc, ValueDeclaration>>(),
+        is Doc doc5_1 = doc5.first,
+        doc5_1.description == "aToplevelValue");
+    // since Doc is not Sequenced, this returns empty:
+    assert(aToplevelValueDecl.annotations<SequencedAnnotation<Doc, ValueDeclaration>>().empty);
+    assert(nonempty shared6 = aToplevelValueDecl.annotations<OptionalAnnotation<Shared, ValueDeclaration>>(),
+        is Shared shared6_1 = shared6.first);
+    assert(nonempty seq7 = aToplevelValueDecl.annotations<SequencedAnnotation<Seq, ValueDeclaration>>(),
+        is Seq seq7_1 = seq7.first,
+        seq7_1.seq == "aToplevelValue 1");
 }
 
 void checkAToplevelGetterSetterAnnotations() {
@@ -64,16 +86,21 @@ void checkAToplevelGetterSetterAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelGetterSetterDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelGetterSetterDecl) exists);
+    assert(aToplevelGetterSetterDecl.annotations<Shared>() nonempty);
     // doc
     assert(exists doc = annotations(docAnnotation, aToplevelGetterSetterDecl), 
         doc.description == "aToplevelGetter");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelGetterSetterDecl), 
         doc2.description == "aToplevelGetter");
+    assert(nonempty doc3 = aToplevelGetterSetterDecl.annotations<Doc>(),
+        doc3.first.description == "aToplevelGetter");
     // seq
     variable value seqs = annotations(seqAnnotation, aToplevelGetterSetterDecl);
     assert(seqs.size == 1);
     assert(exists seq = seqs[0], seq.seq == "aToplevelGetter 1");
     assert(sequencedAnnotations(seqAnnotation, aToplevelGetterSetterDecl).size == 1);
+    assert(nonempty seq2 = aToplevelGetterSetterDecl.annotations<Seq>(),
+        seq2.first.seq == "aToplevelGetter 1");
     
     // setter
     assert(exists docsetter = optionalAnnotation(docAnnotation, aToplevelGetterSetterDecl.setter), 
@@ -85,17 +112,22 @@ void checkAToplevelFunctionAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelFunctionDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelFunctionDecl) exists);
+    assert(aToplevelFunctionDecl.annotations<Shared>() nonempty);
     // doc
     assert(exists doc = annotations(docAnnotation, aToplevelFunctionDecl), 
             doc.description == "aToplevelFunction");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelFunctionDecl), 
             doc2.description == "aToplevelFunction");
+    assert(nonempty doc3=aToplevelFunctionDecl.annotations<Doc>(),
+            doc3.first.description == "aToplevelFunction");
     // seq
     variable value seqs = annotations(seqAnnotation, aToplevelFunctionDecl);
     assert(seqs.size == 1);
     assert(exists seq = seqs[0], 
             seq.seq == "aToplevelFunction 1");
     assert(sequencedAnnotations(seqAnnotation, aToplevelFunctionDecl).size == 1);
+    assert(nonempty seq2=aToplevelFunctionDecl.annotations<Seq>(),
+            seq2.first.seq == "aToplevelFunction 1");
     
     // parameter
     assert(exists parameter = aToplevelFunctionDecl.parameters[0]);
@@ -114,16 +146,22 @@ void checkAToplevelObjectAnnotations() {
     //shared
     assert(annotations(sharedAnnotation, aToplevelObjectDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelObjectDecl) exists);
+    assert(aToplevelObjectDecl.annotations<Shared>() nonempty);
+    
     // doc
     assert(exists doc = annotations(docAnnotation, aToplevelObjectDecl), 
         doc.description == "aToplevelObject");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelObjectDecl), 
         doc2.description == "aToplevelObject");
+    assert(nonempty doc3 = aToplevelObjectDecl.annotations<Doc>(),
+        doc3.first.description == "aToplevelObject");
     // seq
     variable value seqs = annotations(seqAnnotation, aToplevelObjectDecl);
     assert(seqs.size == 1);
     assert(exists seq = seqs[0], seq.seq == "aToplevelObject 1");
     assert(sequencedAnnotations(seqAnnotation, aToplevelObjectDecl).size == 1);
+    assert(nonempty seq2 = aToplevelObjectDecl.annotations<Seq>(),
+        seq2.first.seq == "aToplevelObject 1");
 }
 
 void checkAClass() {
@@ -131,20 +169,27 @@ void checkAClass() {
     //shared
     assert(annotations(sharedAnnotation, aClassDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aClassDecl) exists);
+    assert(aClassDecl.annotations<Shared>() nonempty);
     //abstract
     assert(! annotations(abstractAnnotation, aClassDecl) exists);
     assert(! optionalAnnotation(abstractAnnotation, aClassDecl) exists);
+    assert(! aClassDecl.annotations<Abstract>() nonempty);
     // doc
     assert(exists doc = annotations(docAnnotation, aClassDecl), 
         doc.description == "AClass");
     assert(exists doc2 = optionalAnnotation(docAnnotation, aClassDecl), 
         doc2.description == "AClass");
+    assert(nonempty doc3 = aClassDecl.annotations<Doc>(),
+        doc3.first.description == "AClass");
     // seq
     variable value seqs = annotations(seqAnnotation, aClassDecl);
     assert(seqs.size == 2);
     assert(exists seq = seqs[0], seq.seq == "AClass 1");
     assert(exists seq2 = seqs[1], seq2.seq == "AClass 2");
     assert(sequencedAnnotations(seqAnnotation, aClassDecl).size == 2);
+    assert(nonempty seq3 = aClassDecl.annotations<Seq>(),
+        seq3.size == 2,
+        seq3.first.seq == "AClass 1");
     
     // parameter
     assert(exists parameter = aClassDecl.parameters[0]);
