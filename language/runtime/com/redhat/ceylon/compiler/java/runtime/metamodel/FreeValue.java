@@ -79,10 +79,6 @@ public class FreeValue
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
-        try {
-            return javaClass.getMethod(Naming.getGetterName(declaration)).getAnnotations();
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        return Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration)).getAnnotations();
     }
 }
