@@ -395,6 +395,57 @@ void checkPackage() {
     value p = aPackage;
     assert(! annotations(sharedAnnotation, p) exists);
     assert(! annotations(docAnnotation, p) exists);
+    
+    // TODO each of these with a toplevel object declaration
+    value sharedClasses = p.annotatedMembers<ClassDeclaration, Shared>();
+    assert(aClassDecl in sharedClasses);
+    assert(aAbstractClassDecl in sharedClasses);
+    assert(! aInterfaceDecl in sharedClasses); // because it's not a class
+    assert(! aToplevelValueDecl in sharedClasses);
+    assert(! aToplevelGetterSetterDecl in sharedClasses);
+    assert(! aToplevelFunctionDecl in sharedClasses);
+    
+    value sharedInterfaces = p.annotatedMembers<InterfaceDeclaration, Shared>();
+    assert(! aClassDecl in sharedInterfaces);
+    assert(! aAbstractClassDecl in sharedInterfaces);
+    assert(aInterfaceDecl in sharedInterfaces);
+    assert(! aToplevelValueDecl in sharedInterfaces);
+    assert(! aToplevelGetterSetterDecl in sharedInterfaces);
+    assert(! aToplevelFunctionDecl in sharedInterfaces);
+    
+    value sharedClassesAndInterfaces = p.annotatedMembers<ClassOrInterfaceDeclaration, Shared>();
+    assert(aClassDecl in sharedClassesAndInterfaces);
+    assert(aAbstractClassDecl in sharedClassesAndInterfaces);
+    assert(aInterfaceDecl in sharedClassesAndInterfaces);
+    assert(! aToplevelValueDecl in sharedClassesAndInterfaces);
+    assert(! aToplevelGetterSetterDecl in sharedClassesAndInterfaces);
+    assert(! aToplevelFunctionDecl in sharedClassesAndInterfaces);
+    
+    value sharedValues = p.annotatedMembers<ValueDeclaration, Shared>();
+    assert(! aClassDecl in sharedValues);
+    assert(! aAbstractClassDecl in sharedValues);
+    assert(! aInterfaceDecl in sharedValues);
+    assert(aToplevelValueDecl in sharedValues);
+    assert(aToplevelGetterSetterDecl in sharedValues);
+    assert(! aToplevelFunctionDecl in sharedValues);
+    
+    value sharedVariables = p.annotatedMembers<VariableDeclaration, Shared>();
+    assert(! aClassDecl in sharedVariables);
+    assert(! aAbstractClassDecl in sharedVariables);
+    assert(! aInterfaceDecl in sharedVariables);
+    assert(! aToplevelValueDecl in sharedVariables);
+    assert(aToplevelGetterSetterDecl in sharedVariables);
+    assert(! aToplevelFunctionDecl in sharedVariables);
+    
+    value sharedFunctions = p.annotatedMembers<FunctionDeclaration, Shared>();
+    assert(! aClassDecl in sharedFunctions);
+    assert(! aAbstractClassDecl in sharedFunctions);
+    assert(! aInterfaceDecl in sharedFunctions);
+    assert(! aToplevelValueDecl in sharedFunctions);
+    assert(! aToplevelGetterSetterDecl in sharedFunctions);
+    assert(aToplevelFunctionDecl in sharedFunctions);
+    
+    // TODO Test with a sequenced annotation
 }
 
 void annotationTests() {
