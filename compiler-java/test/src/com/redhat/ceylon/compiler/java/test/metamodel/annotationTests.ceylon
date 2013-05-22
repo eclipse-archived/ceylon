@@ -14,6 +14,7 @@ import ceylon.language.metamodel.untyped {
     UntypedDeclaration = Declaration,
     FunctionDeclaration = Function,
     ClassDeclaration = Class,
+    ClassOrInterfaceDeclaration = ClassOrInterface,
     InterfaceDeclaration = Interface,
     Package
 }
@@ -23,6 +24,30 @@ Package aPackage {
     value aClassDecl = aClassType.declaration;
     value pkg = aClassDecl.packageContainer;
     return pkg;
+}
+ValueDeclaration aToplevelValueDecl {
+    assert(is ValueDeclaration result = aPackage.getAttribute("aToplevelValue"));
+    return result;
+}
+VariableDeclaration aToplevelGetterSetterDecl {
+    assert(is VariableDeclaration result = aPackage.getAttribute("aToplevelGetterSetter"));
+    return result;
+}
+FunctionDeclaration aToplevelFunctionDecl {
+    assert(is FunctionDeclaration result = aPackage.getFunction("aToplevelFunction"));
+    return result;
+}
+ClassDeclaration aClassDecl {
+    return type(AClass("")).declaration;
+}
+ClassDeclaration aAbstractClassDecl {
+    assert(exists sup=aClassDecl.superclass);
+    return sup.declaration;
+}
+InterfaceDeclaration aInterfaceDecl {
+    assert(exists sup=aClassDecl.superclass);
+    assert(exists iface0=sup.interfaces[0]);
+    return iface0.declaration;
 }
 
 ClassOrInterface<T> annotationType<T>(T t) {
@@ -41,8 +66,6 @@ ClassOrInterface<Deprecation> deprecatedAnnotation = annotationType(Deprecation(
 ClassOrInterface<Optional> optAnnotation = annotationType(Optional());
 
 void checkAToplevelValueAnnotations() {
-
-    assert(is ValueDeclaration aToplevelValueDecl = aPackage.getAttribute("aToplevelValue"));
     //shared
     assert(annotations(sharedAnnotation, aToplevelValueDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelValueDecl) exists);
@@ -81,8 +104,6 @@ void checkAToplevelValueAnnotations() {
 }
 
 void checkAToplevelGetterSetterAnnotations() {
-
-    assert(is VariableDeclaration aToplevelGetterSetterDecl = aPackage.getAttribute("aToplevelGetterSetter"));
     //shared
     assert(annotations(sharedAnnotation, aToplevelGetterSetterDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelGetterSetterDecl) exists);
@@ -108,7 +129,6 @@ void checkAToplevelGetterSetterAnnotations() {
 }
 
 void checkAToplevelFunctionAnnotations() {
-    assert(is FunctionDeclaration aToplevelFunctionDecl = aPackage.getFunction("aToplevelFunction"));
     //shared
     assert(annotations(sharedAnnotation, aToplevelFunctionDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelFunctionDecl) exists);
@@ -141,6 +161,7 @@ void checkAToplevelFunctionAnnotations() {
             pseq.seq== "aToplevelFunction.parameter 1");
 }
 
+/*TODO test object declarations!
 void checkAToplevelObjectAnnotations() {
     value aToplevelObjectDecl = type(aToplevelObject).declaration;
     //shared
@@ -162,10 +183,9 @@ void checkAToplevelObjectAnnotations() {
     assert(sequencedAnnotations(seqAnnotation, aToplevelObjectDecl).size == 1);
     assert(nonempty seq2 = aToplevelObjectDecl.annotations<Seq>(),
         seq2.first.seq == "aToplevelObject 1");
-}
+}*/
 
 void checkAClass() {
-    value aClassDecl = type(AClass("")).declaration;
     //shared
     assert(annotations(sharedAnnotation, aClassDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aClassDecl) exists);
@@ -206,9 +226,6 @@ void checkAClass() {
 }
 
 void checkAAbstractClass() {
-    value aClassDecl = type(AClass("")).declaration;
-    assert(exists sup=aClassDecl.superclass);
-    value aAbstractClassDecl=sup.declaration;
     //shared
     assert(annotations(sharedAnnotation, aAbstractClassDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aAbstractClassDecl) exists);
@@ -295,10 +312,6 @@ void checkAAbstractClass() {
 }
 
 void checkAInterface() {
-    assert(is Class<AClass,[String]> aClassDecl = type(AClass("")));
-    assert(exists sup=aClassDecl.declaration.superclass);
-    assert(exists iface0=sup.interfaces[0]);
-    value aInterfaceDecl=iface0.declaration;
     assert(is Interface<AInterface> iface = aInterfaceDecl.apply());
     //shared
     assert(annotations(sharedAnnotation, aInterfaceDecl) exists);
