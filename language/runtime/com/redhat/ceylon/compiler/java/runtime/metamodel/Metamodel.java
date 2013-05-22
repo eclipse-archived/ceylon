@@ -351,27 +351,51 @@ public class Metamodel {
     
     public static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends Annotated>
     AnnotationPredicate annotationPredicate(
+            final TypeDescriptor $reifiedValues,
             ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, Values, ? super ProgramElement>> annotationType) {
         final Class<?> refAnnotationClass = getReflectedAnnotationClass(annotationType);
         final Class<?> refAnnotationType;
-        try {
-            refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation", false, refAnnotationClass.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        final Class<?> refAnnotationWrapperType;
+        if (ceylon.language.Annotation.class == refAnnotationClass
+                || ceylon.language.metamodel.ConstrainedAnnotation.class == refAnnotationClass
+                || ceylon.language.metamodel.OptionalAnnotation.class == refAnnotationClass
+                || ceylon.language.metamodel.SequencedAnnotation.class == refAnnotationClass) {
+            return new AnnotationPredicate() {
+
+                @Override
+                public boolean shouldInstantiate(
+                        Class<? extends java.lang.annotation.Annotation> jAnnotationType) {
+                    return true;
+                }
+
+                @Override
+                public <A extends ceylon.language.metamodel.Annotation<A>> boolean accept(
+                        A cAnnotation) {
+                    return isReified(cAnnotation, $reifiedValues);    
+                }
+            };
+        } else {
+            try {
+                refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation", 
+                        false, refAnnotationClass.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            Class<?> c;
+            try {
+                c = Class.forName(refAnnotationClass.getName()+"$annotations", 
+                        false, refAnnotationClass.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                c = null;
+            }
+            refAnnotationWrapperType = c;
         }
-        Class<?> c;
-        try {
-            c = Class.forName(refAnnotationClass.getName()+"$annotations", false, refAnnotationClass.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            c = null;
-        }
-        final Class<?> refAnnotationWrapperType = c;
         return new AnnotationPredicate() {
 
             @Override
             public boolean shouldInstantiate(
                     Class<? extends java.lang.annotation.Annotation> jAnnotationType) {
-                return refAnnotationType.isAssignableFrom(jAnnotationType)
+                return refAnnotationType == null || refAnnotationType.isAssignableFrom(jAnnotationType)
                         || (refAnnotationWrapperType != null 
                             && refAnnotationWrapperType.isAssignableFrom(jAnnotationType));
             }
@@ -472,9 +496,9 @@ public class Metamodel {
                 handler);
     }
     
-    public static Sequential<ceylon.language.metamodel.Annotation> annotations(
+    public static <A> Sequential<A> annotations(
             TypeDescriptor $reifiedValues,
-            ClassOrInterface annotationType,
+            ClassOrInterface<A> annotationType,
             Annotated annotated) {
         // TODO If the annotated is not a valid target for the annotationType
         // we can return empty immediately
@@ -482,7 +506,7 @@ public class Metamodel {
         if (jAnnotations == null) {
             throw new RuntimeException("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
         }
-        AnnotationPredicate predicate = annotationPredicate(annotationType);
+        AnnotationPredicate predicate = annotationPredicate($reifiedValues, (ClassOrInterface)annotationType);
         // TODO Fix initial size estimate when query for OptionalAnnotation
         SequenceBuilder ceylonAnnotations = new SequenceBuilder($reifiedValues, jAnnotations.length);
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {

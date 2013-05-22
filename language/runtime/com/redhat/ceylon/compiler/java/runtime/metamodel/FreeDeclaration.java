@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
+import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.ClassOrInterface;
+import ceylon.language.metamodel.nothingType_;
 import ceylon.language.metamodel.untyped.Declaration$impl;
 import ceylon.language.metamodel.untyped.Package;
 
@@ -68,8 +72,12 @@ public class FreeDeclaration
     @TypeInfo("ceylon.language::Sequential<Annotation>")
     @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Object"))
     public <Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
-        // TODO Auto-generated method stub
-        return null;
+        AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
+        if (at instanceof nothingType_) {
+            return (Sequential)empty_.getEmpty$();
+        }
+        // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation? 
+        return Metamodel.annotations($reifiedAnnotation, (ClassOrInterface)at, this);
     }
 
     @Override
