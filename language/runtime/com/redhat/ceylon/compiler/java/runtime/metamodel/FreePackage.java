@@ -1,14 +1,16 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
+import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.ClassOrInterface;
+import ceylon.language.metamodel.nothingType_;
 import ceylon.language.metamodel.untyped.Declaration;
 import ceylon.language.metamodel.untyped.Package$impl;
-import ceylon.language.metamodel.untyped.Value;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -18,7 +20,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -86,23 +87,30 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
             Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
             List<Kind> members = new ArrayList<Kind>(modelMembers.size());
             for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-                if((declarationClass == ceylon.language.metamodel.untyped.Value.class 
-                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value)
-                   || (declarationClass == ceylon.language.metamodel.untyped.Function.class 
-                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
-                   || (declarationClass == ceylon.language.metamodel.untyped.Class.class 
-                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
-                   || (declarationClass == ceylon.language.metamodel.untyped.Interface.class 
-                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Interface)
-                   || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class 
-                        && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
-                   || declarationClass == ceylon.language.metamodel.untyped.Declaration.class
-                        )
+                if(memberMatches(declarationClass, modelDecl))
                     members.add((Kind)Metamodel.getOrCreateMetamodel(modelDecl));
             }
             return (Sequential) Util.sequentialInstance($reifiedKind, members.toArray());
         }
         throw new UnsupportedOperationException("Kind not supported yet: "+$reifiedKind);
+    }
+    
+    private boolean memberMatches(Class<?> declarationClass,
+            com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl) {
+        return (declarationClass == ceylon.language.metamodel.untyped.Value.class 
+                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value)
+           || (declarationClass == ceylon.language.metamodel.untyped.Variable.class 
+                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value
+                && ((com.redhat.ceylon.compiler.typechecker.model.Value)modelDecl).isVariable())
+           || (declarationClass == ceylon.language.metamodel.untyped.Function.class 
+                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
+           || (declarationClass == ceylon.language.metamodel.untyped.Class.class 
+                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
+           || (declarationClass == ceylon.language.metamodel.untyped.Interface.class 
+                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Interface)
+           || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class 
+                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
+           || declarationClass == ceylon.language.metamodel.untyped.Declaration.class;
     }
 
     @Override
