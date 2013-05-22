@@ -1360,7 +1360,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        builder.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
+        builder.userAnnotationsSetter(expressionGen().transform(decl.getAnnotationList()));
         return builder;
     }
 

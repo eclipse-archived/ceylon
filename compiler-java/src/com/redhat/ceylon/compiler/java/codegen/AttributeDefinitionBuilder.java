@@ -70,6 +70,7 @@ public class AttributeDefinitionBuilder {
     private boolean variable;
     private ListBuffer<JCAnnotation> modelAnnotations;
     private ListBuffer<JCAnnotation> userAnnotations;
+    private ListBuffer<JCAnnotation> userAnnotationsSetter;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -149,6 +150,16 @@ public class AttributeDefinitionBuilder {
         return this;
     }
     
+    public AttributeDefinitionBuilder userAnnotationsSetter(List<JCAnnotation> annotations) {
+        if (annotations != null) {
+            if (this.userAnnotationsSetter == null) {
+                this.userAnnotationsSetter = ListBuffer.lb();
+            }
+            this.userAnnotationsSetter.appendList(annotations);
+        }
+        return this;
+    }
+    
     /**
      * Generates the class and returns the generated tree.
      * @return the generated class tree, to be added to the appropriate {@link JCTree.JCCompilationUnit}.
@@ -198,11 +209,8 @@ public class AttributeDefinitionBuilder {
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
             setterBuilder.annotationFlags(annotationFlags);    
-            if (this.modelAnnotations != null && !readable) {
-                setterBuilder.modelAnnotations(this.modelAnnotations.toList());
-            }
-            if (this.userAnnotations != null && !readable) {
-                setterBuilder.userAnnotations(this.userAnnotations.toList());
+            if (this.userAnnotationsSetter != null) {
+                setterBuilder.userAnnotations(this.userAnnotationsSetter.toList());
             }
             defs.append(setterBuilder.build());
         }

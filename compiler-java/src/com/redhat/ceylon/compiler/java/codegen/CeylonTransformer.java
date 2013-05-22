@@ -352,6 +352,7 @@ public class CeylonTransformer extends AbstractTransformer {
                         JCBlock setterBlock = makeSetterBlock(setterDecl.getDeclarationModel(),
                                 setterDecl.getBlock(), setterDecl.getSpecifierExpression());
                         builder.setterBlock(setterBlock);
+                        builder.userAnnotationsSetter(expressionGen().transform(setterDecl.getAnnotationList()));
                     } else {
                         builder.immutable();
                     }
