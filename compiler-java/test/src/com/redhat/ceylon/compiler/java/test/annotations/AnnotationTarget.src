@@ -337,3 +337,17 @@ final class annotationTargetValue_ {
         }
     }
 }
+final class annotationTargetGetterSetter_ {
+    
+    private annotationTargetGetterSetter_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    static boolean getAnnotationTargetGetterSetter$() {
+        return true;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation
+    static void setAnnotationTargetGetterSetter(final boolean annotationTargetGetterSetter) {
+    }
+}

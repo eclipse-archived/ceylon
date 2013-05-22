@@ -108,4 +108,12 @@ Boolean annotationTargetValue = true;
 
 @nomodel
 annotationTarget
+Boolean annotationTargetGetterSetter { 
+    return true; 
+}
+annotationTarget2
+assign annotationTargetGetterSetter {}
+
+@nomodel
+annotationTarget
 object annotationTargetObject {}
