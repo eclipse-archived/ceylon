@@ -140,8 +140,26 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
         @TypeParameter(value = "Annotation") 
     })
     public <Kind extends Declaration, Annotation> Sequential<? extends Kind> annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
-        // TODO Auto-generated method stub
-        return null;
+        if($reifiedKind instanceof TypeDescriptor.Class){
+            List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+            Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
+            List<Kind> members = new ArrayList<Kind>(modelMembers.size());
+            for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+                if(memberMatches(declarationClass, modelDecl)) {
+                    Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
+                    AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
+                    if (at instanceof nothingType_) {
+                        return (Sequential)empty_.getEmpty$();
+                    }
+                    Sequential<Annotation> annotations = Metamodel.<Annotation>annotations($reifiedAnnotation, (ClassOrInterface<Annotation>)at, member);
+                    if (!annotations.getEmpty()) {
+                        members.add(member);
+                    }
+                }
+            }
+            return (Sequential) Util.sequentialInstance($reifiedKind, members.toArray());
+        }
+        throw new UnsupportedOperationException("Kind not supported yet: "+$reifiedKind);
     }
 
     @Ignore
