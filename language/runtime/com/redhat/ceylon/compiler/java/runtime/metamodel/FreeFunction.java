@@ -238,23 +238,29 @@ public class FreeFunction
         // OR go via the Method in AppliedFunction?
         java.lang.reflect.Method best = null;
         int numBestParams = -1;
+        int numBest = 0;
         for (java.lang.reflect.Method meth : javaClass.getDeclaredMethods()) {
-            if (!meth.getName().equals(methodName)) {
+            if (!meth.getName().equals(methodName)
+                    || meth.isBridge() 
+                    || meth.isSynthetic()
+                    || meth.getAnnotation(Ignore.class) != null) {
                 continue;
             }
-            if (meth.getAnnotation(Ignore.class) != null) {
-                continue;
-            }
+            
             Class<?>[] parameterTypes = meth.getParameterTypes();
             if (parameterTypes.length > numBestParams) {
                 best = meth;
                 numBestParams = parameterTypes.length;
+                numBest = 1;
             } else if (parameterTypes.length == numBestParams) {
-                throw new RuntimeException("Method arity ambiguity");
+                numBest++;
             }
         }
         if (best == null) {
-            throw new RuntimeException("Couldn't find method " + methodName);
+            throw new RuntimeException("Couldn't find method " + javaClass + "." + methodName);
+        }
+        if (numBest > 1) {
+            throw new RuntimeException("Method arity ambiguity " + javaClass + "." + methodName);
         }
         return best;
     }

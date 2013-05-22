@@ -1,13 +1,10 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
-import java.util.LinkedList;
 import java.util.List;
 
-import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.finished_;
 import ceylon.language.metamodel.untyped.Class$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -39,20 +36,27 @@ public class FreeClass
         // OR go via the Method in AppliedFunction?
         java.lang.reflect.Constructor<?> best = null;
         int numBestParams = -1;
-        for (java.lang.reflect.Constructor<?> ctor : javaClass.getDeclaredConstructors()) {
-            if (ctor.getAnnotation(Ignore.class) != null) {
+        int numBest = 0;
+        for (java.lang.reflect.Constructor<?> meth : javaClass.getDeclaredConstructors()) {
+            if (meth.isSynthetic()
+                    || meth.getAnnotation(Ignore.class) != null) {
                 continue;
             }
-            Class<?>[] parameterTypes = ctor.getParameterTypes();
+            
+            Class<?>[] parameterTypes = meth.getParameterTypes();
             if (parameterTypes.length > numBestParams) {
-                best = ctor;
+                best = meth;
                 numBestParams = parameterTypes.length;
+                numBest = 1;
             } else if (parameterTypes.length == numBestParams) {
-                throw new RuntimeException("Method arity ambiguity");
+                numBest++;
             }
         }
         if (best == null) {
-            throw new RuntimeException("Couldn't find constructor for " + javaClass);
+            throw new RuntimeException("Couldn't find method " + javaClass);
+        }
+        if (numBest > 1) {
+            throw new RuntimeException("Method arity ambiguity " + javaClass);
         }
         return best;
     }
