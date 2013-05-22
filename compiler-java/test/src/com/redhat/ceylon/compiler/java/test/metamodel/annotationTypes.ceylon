@@ -129,7 +129,7 @@ shared abstract class AAbstractClass (
         return "";
     }
     
-    "AAbstractClass.formalAttributeGetter"
+    "AAbstractClass.formalAttributeSetter"
     assign formalAttribute {
     }
     

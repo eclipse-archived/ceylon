@@ -4,10 +4,11 @@ import ceylon.language.metamodel{
     annotations, optionalAnnotation, sequencedAnnotations,
     OptionalAnnotation, SequencedAnnotation, Annotated, 
     ClassOrInterface, Class, Interface,
-    Function, Value, VariableDeclaration=Variable
+    Function, Value
 }
 import ceylon.language.metamodel.untyped {
     ValueDeclaration = Value,
+    VariableDeclaration=Variable,
     UntypedDeclaration = Declaration,
     FunctionDeclaration = Function,
     ClassDeclaration = Class,
@@ -59,7 +60,7 @@ void checkAToplevelValueAnnotations() {
 
 void checkAToplevelGetterSetterAnnotations() {
 
-    assert(is ValueDeclaration aToplevelGetterSetterDecl = aPackage.getAttribute("aToplevelGetterSetter"));
+    assert(is VariableDeclaration aToplevelGetterSetterDecl = aPackage.getAttribute("aToplevelGetterSetter"));
     //shared
     assert(annotations(sharedAnnotation, aToplevelGetterSetterDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelGetterSetterDecl) exists);
@@ -74,8 +75,9 @@ void checkAToplevelGetterSetterAnnotations() {
     assert(exists seq = seqs[0], seq.seq == "aToplevelGetter 1");
     assert(sequencedAnnotations(seqAnnotation, aToplevelGetterSetterDecl).size == 1);
     
-    // TODO the annotations on the setter
-
+    // setter
+    assert(exists docsetter = optionalAnnotation(docAnnotation, aToplevelGetterSetterDecl.setter), 
+        docsetter.description == "aToplevelSetter");
 }
 
 void checkAToplevelFunctionAnnotations() {
@@ -192,12 +194,13 @@ void checkAAbstractClass() {
     // Members of abstract class
     // formalAttribute
     assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, Value<String>>("formalAttribute"));
-    value fa=fam(AClass("")).declaration;
+    assert(is VariableDeclaration fa=fam(AClass("")).declaration);
     assert(annotations(sharedAnnotation, fa) exists);
     assert(annotations(actualAnnotation, fa) exists);
     assert(exists fadoc = annotations(docAnnotation, fa),
             fadoc.description == "AAbstractClass.formalAttributeGetter");
-    // TODO Setter
+    assert(exists fasdoc = annotations(docAnnotation, fa.setter),
+            fasdoc.description == "AAbstractClass.formalAttributeSetter");
     
     // formalMethod
     assert(exists fmm=aAbstractClassDecl.apply().getFunction<AAbstractClass, Function<Anything, [String]>>("formalMethod"));
@@ -282,21 +285,23 @@ void checkAInterface() {
     
     // defaultGetterSetter
     assert(exists dgsm=iface.getAttribute<AInterface, Value<String>>("defaultGetterSetter"));
-    value dgs = dgsm(AClass("")).declaration;
+    assert(is VariableDeclaration dgs = dgsm(AClass("")).declaration);
     assert(annotations(sharedAnnotation, dgs) exists);
     assert(annotations(defaultAnnotation, dgs) exists);
-    assert(exists dgsdoc = annotations(docAnnotation, dgs),
-            dgsdoc.description == "AInterface.defaultGetter");
-    // TODO Test the setter annotations
+    assert(exists dgdoc = annotations(docAnnotation, dgs),
+            dgdoc.description == "AInterface.defaultGetter");
+    assert(exists dsdoc = annotations(docAnnotation, dgs.setter),
+            dsdoc.description == "AInterface.defaultSetter");
     
     // getterSetter
     assert(exists gsm=iface.getAttribute<AInterface, Value<String>>("getterSetter"));
-    value gs = gsm(AClass("")).declaration;
+    assert(is VariableDeclaration gs = gsm(AClass("")).declaration);
     assert(annotations(sharedAnnotation, gs) exists);
     assert(exists gsdoc = annotations(docAnnotation, gs),
             gsdoc.description == "AInterface.getter");
-    // TODO Test the setter annotations
-    
+    // setter annotations
+    assert(exists gssdoc = annotations(docAnnotation, gs.setter),
+            gssdoc.description == "AInterface.setter");
     
     // TODO nonsharedGetterSetter
     //assert(exists ngsm=iface.getAttribute<AInterface, Value<String>>("nonsharedGetterSetter"));
