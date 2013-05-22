@@ -1,8 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.reflect.AnnotatedElement;
-
-import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Type;
 import ceylon.language.metamodel.untyped.Value$impl;
 
@@ -24,10 +21,22 @@ public class FreeValue
     
     private Type type;
 
-    public FreeValue(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
+    protected FreeValue(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
 
         this.type = Metamodel.getMetamodel(declaration.getType());
+    }
+    
+    /** 
+     * Instantiates a {@code FreeVariable} if the given value is variable 
+     * otherwise a {@code FreeValue}.
+     */
+    public static FreeValue instance(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
+        if (declaration.isVariable()) {
+            return new FreeVariable(declaration);
+        } else {
+            return new FreeValue(declaration);
+        }
     }
 
     @Override

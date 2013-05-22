@@ -101,7 +101,7 @@ public abstract class FreeClassOrInterface
             if(memberModelDeclaration instanceof Method){
                 declarations.add(new FreeFunction((Method) memberModelDeclaration));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                declarations.add(new FreeValue((MethodOrValue) memberModelDeclaration));
+                declarations.add(FreeValue.instance((com.redhat.ceylon.compiler.typechecker.model.Value)memberModelDeclaration));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
                 declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
             }

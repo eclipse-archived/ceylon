@@ -132,7 +132,7 @@ public class Metamodel {
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction((com.redhat.ceylon.compiler.typechecker.model.Method)declaration);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeValue((com.redhat.ceylon.compiler.typechecker.model.Value)declaration);
+                    ret = FreeValue.instance((com.redhat.ceylon.compiler.typechecker.model.Value)declaration);
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }
