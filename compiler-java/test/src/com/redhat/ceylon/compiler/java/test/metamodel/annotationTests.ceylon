@@ -445,7 +445,55 @@ void checkPackage() {
     assert(! aToplevelGetterSetterDecl in sharedFunctions);
     assert(aToplevelFunctionDecl in sharedFunctions);
     
-    // TODO Test with a sequenced annotation
+    // With a sequenced annotation
+    value seqClasses = p.annotatedMembers<ClassDeclaration, Seq>();
+    assert(aClassDecl in seqClasses);
+    assert(aAbstractClassDecl in seqClasses);
+    assert(! aInterfaceDecl in seqClasses); // because it's not a class
+    assert(! aToplevelValueDecl in seqClasses);
+    assert(! aToplevelGetterSetterDecl in seqClasses);
+    assert(! aToplevelFunctionDecl in seqClasses);
+    
+    value seqInterfaces = p.annotatedMembers<InterfaceDeclaration, Seq>();
+    assert(! aClassDecl in seqInterfaces);
+    assert(! aAbstractClassDecl in seqInterfaces);
+    assert(aInterfaceDecl in seqInterfaces);
+    assert(! aToplevelValueDecl in seqInterfaces);
+    assert(! aToplevelGetterSetterDecl in seqInterfaces);
+    assert(! aToplevelFunctionDecl in seqInterfaces);
+    
+    value seqClassesAndInterfaces = p.annotatedMembers<ClassOrInterfaceDeclaration, Seq>();
+    assert(aClassDecl in seqClassesAndInterfaces);
+    assert(aAbstractClassDecl in seqClassesAndInterfaces);
+    assert(aInterfaceDecl in seqClassesAndInterfaces);
+    assert(! aToplevelValueDecl in seqClassesAndInterfaces);
+    assert(! aToplevelGetterSetterDecl in seqClassesAndInterfaces);
+    assert(! aToplevelFunctionDecl in seqClassesAndInterfaces);
+    
+    value seqValues = p.annotatedMembers<ValueDeclaration, Seq>();
+    assert(! aClassDecl in seqValues);
+    assert(! aAbstractClassDecl in seqValues);
+    assert(! aInterfaceDecl in seqValues);
+    assert(aToplevelValueDecl in seqValues);
+    assert(aToplevelGetterSetterDecl in seqValues);
+    assert(! aToplevelFunctionDecl in seqValues);
+    
+    value seqVariables = p.annotatedMembers<VariableDeclaration, Seq>();
+    assert(! aClassDecl in seqVariables);
+    assert(! aAbstractClassDecl in seqVariables);
+    assert(! aInterfaceDecl in seqVariables);
+    assert(! aToplevelValueDecl in seqVariables);
+    assert(aToplevelGetterSetterDecl in seqVariables);
+    assert(! aToplevelFunctionDecl in seqVariables);
+    
+    value seqFunctions = p.annotatedMembers<FunctionDeclaration, Seq>();
+    assert(! aClassDecl in seqFunctions);
+    assert(! aAbstractClassDecl in seqFunctions);
+    assert(! aInterfaceDecl in seqFunctions);
+    assert(! aToplevelValueDecl in seqFunctions);
+    assert(! aToplevelGetterSetterDecl in seqFunctions);
+    assert(aToplevelFunctionDecl in seqFunctions);
+
 }
 
 void annotationTests() {
