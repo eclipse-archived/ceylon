@@ -7,6 +7,7 @@ import java.util.List;
 import ceylon.language.Anything;
 import ceylon.language.Empty;
 import ceylon.language.Iterator;
+import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
@@ -122,21 +123,18 @@ public abstract class FreeClassOrInterface
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"))
     public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> 
-        members(@Ignore TypeDescriptor $reifiedKind) {
+    members(@Ignore TypeDescriptor $reifiedKind) {
         
         checkInit();
         
-        if($reifiedKind instanceof TypeDescriptor.Class){
-            List<Kind> members = new ArrayList<Kind>(declarations.size());
-            java.lang.Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
-            for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
-                if(Metamodel.isMemberOfKind(((FreeDeclaration)decl).declaration, declarationClass)){
-                    members.add((Kind) decl);
-                }
+        DeclarationPredicate.Predicate predicate = DeclarationPredicate.fromDeclarationKind($reifiedKind);
+        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
+        for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
+            if (predicate.accept(((FreeDeclaration)decl).declaration)) {
+                members.append((Kind) decl);
             }
-            return (Sequential)Util.sequentialInstance($reifiedKind, members.toArray());
         }
-        throw new RuntimeException("Not supported yet");
+        return members.getSequence();
     }
 
     @Override
@@ -146,23 +144,20 @@ public abstract class FreeClassOrInterface
             @TypeParameter("Annotation")
     })
     public <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation> Sequential<? extends Kind> 
-        annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
+    annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
+        
         checkInit();
         
-        if($reifiedKind instanceof TypeDescriptor.Class){
-            List<Kind> members = new ArrayList<Kind>(declarations.size());
-            java.lang.Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
-            for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
-                if(Metamodel.isMemberOfKind(((FreeDeclaration)decl).declaration, declarationClass)){
-                    Kind member = (Kind) decl;
-                    if (Metamodel.isAnnotated($reifiedAnnotation, member)) {
-                        members.add(member);
-                    }
-                }
+        DeclarationPredicate.Predicate predicate = DeclarationPredicate.and(
+                DeclarationPredicate.fromDeclarationKind($reifiedKind),
+                DeclarationPredicate.hasAnnotation($reifiedAnnotation, true));
+        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
+        for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
+            if (predicate.accept(((FreeDeclaration)decl).declaration)) {
+                members.append((Kind) decl);
             }
-            return (Sequential)Util.sequentialInstance($reifiedKind, members.toArray());
         }
-        throw new RuntimeException("Not supported yet");
+        return members.getSequence();
     }
 
     @Override

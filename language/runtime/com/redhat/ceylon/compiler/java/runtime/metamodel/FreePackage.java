@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Declaration;
@@ -76,19 +77,19 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"))
-    public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> members(@Ignore TypeDescriptor $reifiedKind) {
+    public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> 
+    members(@Ignore TypeDescriptor $reifiedKind) {
         
-        if($reifiedKind instanceof TypeDescriptor.Class){
-            List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-            java.lang.Class declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
-            List<Kind> members = new ArrayList<Kind>(modelMembers.size());
-            for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-                if(Metamodel.isMemberOfKind(modelDecl, declarationClass))
-                    members.add((Kind)Metamodel.getOrCreateMetamodel(modelDecl));
+        DeclarationPredicate.Predicate predicate = DeclarationPredicate.fromDeclarationKind($reifiedKind);
+        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, modelMembers.size());
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+            if (predicate.accept(modelDecl)) {
+                Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
+                members.append(member);
             }
-            return (Sequential) Util.sequentialInstance($reifiedKind, members.toArray());
         }
-        throw new UnsupportedOperationException("Kind not supported yet: "+$reifiedKind);
+        return members.getSequence();
     }
 
     @Override
@@ -117,22 +118,21 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"), 
         @TypeParameter(value = "Annotation") 
     })
-    public <Kind extends Declaration, Annotation> Sequential<? extends Kind> annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
-        if($reifiedKind instanceof TypeDescriptor.Class){
-            List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-            Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
-            List<Kind> members = new ArrayList<Kind>(modelMembers.size());
-            for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-                if(Metamodel.isMemberOfKind(modelDecl, declarationClass)) {
-                    Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
-                    if (Metamodel.isAnnotated($reifiedAnnotation, member)) {
-                        members.add(member);
-                    }
-                }
+    public <Kind extends Declaration, Annotation> Sequential<? extends Kind> 
+    annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
+        
+        DeclarationPredicate.Predicate predicate = DeclarationPredicate.and(
+                DeclarationPredicate.fromDeclarationKind($reifiedKind),
+                DeclarationPredicate.hasAnnotation($reifiedAnnotation, true));
+        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, modelMembers.size());
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+            if (predicate.accept(modelDecl)) {
+                Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
+                members.append(member);
             }
-            return (Sequential) Util.sequentialInstance($reifiedKind, members.toArray());
         }
-        throw new UnsupportedOperationException("Kind not supported yet: "+$reifiedKind);
+        return members.getSequence();
     }
 
     @Ignore
