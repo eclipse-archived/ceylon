@@ -147,9 +147,22 @@ public abstract class FreeClassOrInterface
     })
     public <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation> Sequential<? extends Kind> 
         annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
-        
         checkInit();
-        return null;
+        
+        if($reifiedKind instanceof TypeDescriptor.Class){
+            List<Kind> members = new ArrayList<Kind>(declarations.size());
+            java.lang.Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
+            for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
+                if(Metamodel.isMemberOfKind(((FreeDeclaration)decl).declaration, declarationClass)){
+                    Kind member = (Kind) decl;
+                    if (Metamodel.isAnnotated($reifiedAnnotation, member)) {
+                        members.add(member);
+                    }
+                }
+            }
+            return (Sequential)Util.sequentialInstance($reifiedKind, members.toArray());
+        }
+        throw new RuntimeException("Not supported yet");
     }
 
     @Override
