@@ -426,7 +426,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private final void unboxedIntegerComparison$priv() {
         long n1 = 0L;
         long n2 = 0L;
-        boolean sync;
+        boolean sync = false;
         sync = n1 == n2;
         sync = !(n1 == n2);
         final .ceylon.language.Comparison c = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2));
@@ -439,7 +439,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     @.java.lang.Override
     public final .java.lang.Object boxedIntegerComparison(final .ceylon.language.Integer n2) {
         long n1 = 0L;
-        boolean sync;
+        boolean sync = false;
         sync = .ceylon.language.Integer.instance(n1).equals(n2);
         sync = !.ceylon.language.Integer.instance(n1).equals(n2);
         final .ceylon.language.Comparison c = .ceylon.language.Integer.instance(n1).compare(n2);
@@ -453,7 +453,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private final void unboxedFloatComparison$priv() {
         double n1 = 0.0;
         double n2 = 0.0;
-        boolean sync;
+        boolean sync = false;
         sync = n1 == n2;
         sync = !(n1 == n2);
         final .ceylon.language.Comparison c = .ceylon.language.Float.instance(n1).compare(.ceylon.language.Float.instance(n2));
@@ -466,7 +466,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     @.java.lang.Override
     public final .java.lang.Object boxedFloatComparison(final .ceylon.language.Float n2) {
         double n1 = 0.0;
-        boolean sync;
+        boolean sync = false;
         sync = .ceylon.language.Float.instance(n1).equals(n2);
         sync = !.ceylon.language.Float.instance(n1).equals(n2);
         final .ceylon.language.Comparison c = .ceylon.language.Float.instance(n1).compare(n2);
@@ -480,7 +480,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private final void unboxedCharacterComparison$priv() {
         int n1 = 97;
         int n2 = 97;
-        boolean sync;
+        boolean sync = false;
         sync = n1 == n2;
         sync = !(n1 == n2);
         final .ceylon.language.Comparison c = .ceylon.language.Character.instance(n1).compare(.ceylon.language.Character.instance(n2));
@@ -493,7 +493,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     @.java.lang.Override
     public final .java.lang.Object boxedCharacterComparison(final .ceylon.language.Character n2) {
         int n1 = 97;
-        boolean sync;
+        boolean sync = false;
         sync = .ceylon.language.Character.instance(n1).equals(n2);
         sync = !.ceylon.language.Character.instance(n1).equals(n2);
         final .ceylon.language.Comparison c = .ceylon.language.Character.instance(n1).compare(n2);
@@ -507,7 +507,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private final void unboxedBooleanComparison$priv() {
         boolean b1 = false;
         boolean b2 = false;
-        boolean sync;
+        boolean sync = false;
         sync = b1 == b2;
         sync = b1 == b2;
         sync = !(b1 == b2);
@@ -516,7 +516,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     @.java.lang.Override
     public final .java.lang.Object boxedBooleanComparison(final .ceylon.language.Boolean b2) {
         boolean b1 = false;
-        boolean sync;
+        boolean sync = false;
         sync = .ceylon.language.Boolean.instance(b1) == b2;
         sync = .ceylon.language.Boolean.instance(b1).equals(b2);
         sync = !.ceylon.language.Boolean.instance(b1).equals(b2);
@@ -526,7 +526,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private final void unboxedStringComparison$priv() {
         .java.lang.String s1 = "";
         .java.lang.String s2 = "";
-        boolean sync;
+        boolean sync = false;
         sync = s1.equals(s2);
         sync = !s1.equals(s2);
         final .ceylon.language.Comparison c = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2));
@@ -539,7 +539,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     @.java.lang.Override
     public final .java.lang.Object boxedStringComparison(final .ceylon.language.String s2) {
         .java.lang.String s1 = "";
-        boolean sync;
+        boolean sync = false;
         sync = .ceylon.language.String.instance(s1).equals(s2);
         sync = !.ceylon.language.String.instance(s1).equals(s2);
         final .ceylon.language.Comparison c = .ceylon.language.String.instance(s1).compare(s2);
@@ -553,7 +553,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private final void nonOptimisableComparison$priv(final .java.lang.Object o) {
         .java.lang.String s1 = "";
         boolean b2 = false;
-        boolean sync;
+        boolean sync = false;
         sync = o == .ceylon.language.Boolean.instance(b2);
         sync = .ceylon.language.String.instance(s1).equals(.ceylon.language.Boolean.instance(b2));
         sync = !.ceylon.language.String.instance(s1).equals(.ceylon.language.Boolean.instance(b2));

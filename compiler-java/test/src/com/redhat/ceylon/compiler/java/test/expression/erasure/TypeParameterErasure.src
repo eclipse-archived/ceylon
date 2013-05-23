@@ -212,9 +212,9 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         final long i2 = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)).longValue();
         final long n = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)).longValue();
         final long n2 = <.ceylon.language.Integer>parameterized$priv(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.instance(2L)).longValue();
-        .java.lang.Object middle;
-        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left;
-        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight right;
+        .java.lang.Object middle = null;
+        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left = null;
+        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight right = null;
         middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)<.java.lang.Object>parameterized$priv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor), middle);
         right = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight)<.java.lang.Object>parameterized$priv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor), middle);
@@ -271,9 +271,9 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             returning <.ceylon.language.Integer>parameterized$priv($arg$6$reified$0, $arg$6$0);
         ).longValue();
-        .java.lang.Object middle;
-        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left;
-        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight right;
+        .java.lang.Object middle = null;
+        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft left = null;
+        .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight right = null;
         middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
         left = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)(
             let

@@ -7,7 +7,7 @@ final class overloadedSpecialFields_ {
     
     static void overloadedSpecialFields() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaOverloadedSpecialFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaOverloadedSpecialFields();
-        .java.lang.Object sync;
+        .java.lang.Object sync = null;
         sync = .ceylon.language.Integer.instance(java.hashCode());
         sync = .ceylon.language.Integer.instance(java.hashCode((int)0L));
         sync = .ceylon.language.Integer.instance(java.hashCode(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L)));

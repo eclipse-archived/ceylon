@@ -170,7 +170,7 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 return s;
             }
         });
-        .java.lang.Object v;
+        .java.lang.Object v = null;
         v = getValueAnything$priv();
         v = getGetterAnything$priv();
         v = (

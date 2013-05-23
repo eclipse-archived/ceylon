@@ -6,7 +6,7 @@ class MethodVariable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     private final void m$priv() {
-        .java.lang.String f;
+        .java.lang.String f = null;
     }
     
     public static void main(.java.lang.String[] args) {

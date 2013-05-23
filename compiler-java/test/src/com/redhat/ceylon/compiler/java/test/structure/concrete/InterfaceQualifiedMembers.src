@@ -72,7 +72,7 @@ final class InterfaceQualifiedIncrement$impl {
     }
     
     private void inside$priv(final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement ii) {
-        long x;
+        long x = 0L;
         x = ii.m1();
         x = ii.m2();
         x = ii.m3();
@@ -161,7 +161,7 @@ final class InterfaceQualifiedIncrement$impl {
         }
         
         private final void inside$priv(final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement ii) {
-            long x;
+            long x = 0L;
             x = ii.m1();
             x = ii.m2();
             x = ii.m3();
@@ -258,7 +258,7 @@ final class InterfaceQualifiedIncrement$impl {
         private final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement$InnerI $this;
         
         private void inside$priv(final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement ii) {
-            long x;
+            long x = 0L;
             x = ii.m1();
             x = ii.m2();
             x = ii.m3();
@@ -348,7 +348,7 @@ final class outsideInterfaceQualifiedIncrement_ {
     }
     
     static void outsideInterfaceQualifiedIncrement(final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement ii) {
-        long x;
+        long x = 0L;
         x = ii.m1();
         x = ii.m2();
         x = ii.m3();

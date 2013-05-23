@@ -6,7 +6,7 @@ final class staticMethods_ {
     }
     
     static void staticMethods() {
-        .java.io.File sync;
+        .java.io.File sync = null;
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
         final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());

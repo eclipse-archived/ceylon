@@ -293,7 +293,7 @@ final class operationsOnBytes_ {
             }
             returning $ceylontmpopV13;
         );
-        boolean sync;
+        boolean sync = false;
         sync = java.byte_attr == java.byte_attr;
         sync = !(java.byte_attr == java.byte_attr);
         sync = java.byte_attr < java.byte_attr;
@@ -370,7 +370,7 @@ final class operationsOnBytes2_ {
             }
             returning $ceylontmpopV25;
         ));
-        boolean sync;
+        boolean sync = false;
         sync = java.getByte() == java.getByte();
         sync = !(java.getByte() == java.getByte());
         sync = java.getByte() < java.getByte();
@@ -441,7 +441,7 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
             }
             returning $ceylontmpop31;
         );
-        boolean sync;
+        boolean sync = false;
         sync = byte_attr == byte_attr;
         sync = !(byte_attr == byte_attr);
         sync = byte_attr < byte_attr;
@@ -507,7 +507,7 @@ final class operationsOnMixedTypes_ {
             }
             returning $ceylontmpopV39;
         );
-        boolean sync;
+        boolean sync = false;
         sync = java.byte_attr == java.int_attr;
         sync = !(java.byte_attr == java.int_attr);
         sync = java.byte_attr < java.int_attr;

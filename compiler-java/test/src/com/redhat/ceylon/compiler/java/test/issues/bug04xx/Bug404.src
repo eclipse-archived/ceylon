@@ -6,7 +6,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     private final void test$priv() {
-        boolean sync;
+        boolean sync = false;
         sync = (
             let
             {

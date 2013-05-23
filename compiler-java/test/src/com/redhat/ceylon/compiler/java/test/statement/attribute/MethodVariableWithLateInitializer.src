@@ -6,7 +6,7 @@ class MethodVariableWithLateInitializer implements .com.redhat.ceylon.compiler.j
     }
     
     public final void m() {
-        .java.lang.String f;
+        .java.lang.String f = null;
         f = "";
     }
     

@@ -6,7 +6,7 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     private final void testSetOperatorsWithSameTypes$priv(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x;
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x = null;
         x = a.<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor, b);
         x = a.<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor, b);
         x = a.<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor, b);
@@ -113,7 +113,7 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         final .ceylon.language.Set<? extends .ceylon.language.Integer> s1 = a.<.java.lang.Object>union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, b);
         final .ceylon.language.Set<? extends .java.lang.Object> s2 = a.<.java.lang.Object>intersection(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, b);
         final .ceylon.language.Set<? extends .ceylon.language.Integer> s4 = a.<.java.lang.Object>complement(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, b);
-        .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
+        .ceylon.language.Set<? extends .ceylon.language.Integer> sync = null;
         sync = a.<.java.lang.Object>union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, b);
         sync = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)a.<.java.lang.Object>intersection(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, b);
         sync = a.<.java.lang.Object>complement(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, b);
@@ -148,7 +148,7 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         final .ceylon.language.Set<? extends T> s2 = a.<T>intersection($reifiedT, b);
         s2.contains(t);
         final .ceylon.language.Set<? extends .java.lang.Object> s4 = a.<T>complement($reifiedT, b);
-        .ceylon.language.Set<? extends .java.lang.Object> sync;
+        .ceylon.language.Set<? extends .java.lang.Object> sync = null;
         sync = a.<T>union($reifiedT, b);
         sync = a.<T>intersection($reifiedT, b);
         sync = a.<T>complement($reifiedT, b);

@@ -6,8 +6,8 @@ final class bug261_ {
     }
     
     static void bug261() {
-        long vk;
-        long vl;
+        long vk = 0L;
+        long vl = 0L;
         
         class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             

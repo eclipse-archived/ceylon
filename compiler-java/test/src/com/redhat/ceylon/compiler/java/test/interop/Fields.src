@@ -7,7 +7,7 @@ final class fields_ {
     
     static void fields() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaFields();
-        long sync;
+        long sync = 0L;
         sync = java.readOnlyField;
         sync = java.readWriteField;
         java.readWriteField = 2L;

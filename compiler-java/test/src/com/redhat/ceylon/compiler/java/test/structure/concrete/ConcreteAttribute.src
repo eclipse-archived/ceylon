@@ -49,7 +49,7 @@ final class concreteAttributeCallsite_ {
     }
     
     static void concreteAttributeCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute a) {
-        .java.lang.Object v;
+        .java.lang.Object v = null;
         v = a.getAShared();
         v = a.getAFormal();
         v = a.getAVariableFormal();
@@ -116,7 +116,7 @@ final class concreteAttributeGetterImplCallsite_ {
     }
     
     static void concreteAttributeGetterImplCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl a) {
-        .java.lang.Object v;
+        .java.lang.Object v = null;
         v = a.getAShared();
         v = a.getAFormal();
         v = a.getAVariableFormal();
@@ -194,7 +194,7 @@ final class concreteAttributeValueImplCallsite_ {
     }
     
     static void concreteAttributeValueImplCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl a) {
-        .java.lang.Object v;
+        .java.lang.Object v = null;
         v = a.getAShared();
         v = a.getAFormal();
         v = a.getAVariableFormal();

@@ -7,21 +7,21 @@ final class attributes_ {
     
     static void attributes() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaBean java = new .com.redhat.ceylon.compiler.java.test.interop.JavaBean();
-        boolean sync;
+        boolean sync = false;
         sync = java.getBooleanWithGet();
         java.setBooleanWithGet(false);
         sync = java.isBooleanWithIs();
         java.setBooleanWithIs(false);
         sync = java.oldStyle();
         java.setOldStyle(false);
-        .java.lang.String syncStr;
+        .java.lang.String syncStr = null;
         syncStr = .com.redhat.ceylon.compiler.java.Util.checkNull(java.getURL());
         java.setURL("");
         syncStr = .com.redhat.ceylon.compiler.java.Util.checkNull(java.getURLEncoderForHTML());
         java.setURLEncoderForHTML("");
         sync = java.getConfusedProperty();
         java.setConfusedProperty("");
-        long syncInt;
+        long syncInt = 0L;
         syncInt = java.getÉpardaud();
         java.setÉpardaud(0L);
     }
@@ -86,14 +86,14 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     private final void m$priv() {
-        boolean sync;
+        boolean sync = false;
         sync = getBooleanWithGet();
         setBooleanWithGet(false);
         sync = isBooleanWithIs();
         setBooleanWithIs(false);
         sync = oldStyle();
         setOldStyle(false);
-        .java.lang.String syncStr;
+        .java.lang.String syncStr = null;
         syncStr = getURL();
         setURL("");
         syncStr = getURLEncoderForHTML();
