@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.ArrayList;
-import java.lang.reflect.AnnotatedElement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +23,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
@@ -132,17 +130,7 @@ public abstract class FreeClassOrInterface
             List<Kind> members = new ArrayList<Kind>(declarations.size());
             java.lang.Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
             for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
-                if((declarationClass == ceylon.language.metamodel.untyped.Function.class
-                        && decl instanceof ceylon.language.metamodel.untyped.Function)
-                    || (declarationClass == ceylon.language.metamodel.untyped.Class.class
-                            && decl instanceof ceylon.language.metamodel.untyped.Class)
-                    || (declarationClass == ceylon.language.metamodel.untyped.Interface.class
-                            && decl instanceof ceylon.language.metamodel.untyped.Interface)
-                    || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class
-                            && decl instanceof ceylon.language.metamodel.untyped.ClassOrInterface)
-                    || (declarationClass == ceylon.language.metamodel.untyped.Value.class
-                            && decl instanceof ceylon.language.metamodel.untyped.Value)
-                    || declarationClass == ceylon.language.metamodel.untyped.Declaration.class){
+                if(Metamodel.isMemberOfKind(((FreeDeclaration)decl).declaration, declarationClass)){
                     members.add((Kind) decl);
                 }
             }
