@@ -13,8 +13,11 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.Annotated;
+import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ConstrainedAnnotation;
+import ceylon.language.metamodel.nothingType_;
+import ceylon.language.metamodel.untyped.Declaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -513,5 +516,42 @@ public class Metamodel {
             addAnnotation(ceylonAnnotations, jAnnotation, predicate);
         }
         return ceylonAnnotations.getSequence();
+    }
+    
+    /**
+     * Determines whether the given member declaration is of the 
+     * given declaration class.
+     */
+    public static boolean isMemberOfKind(
+            com.redhat.ceylon.compiler.typechecker.model.Declaration memberDecl,
+            java.lang.Class<?> declarationClass) {
+        return (declarationClass == ceylon.language.metamodel.untyped.Value.class 
+                && memberDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value)
+           || (declarationClass == ceylon.language.metamodel.untyped.Variable.class 
+                && memberDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value
+                && ((com.redhat.ceylon.compiler.typechecker.model.Value)memberDecl).isVariable())
+           || (declarationClass == ceylon.language.metamodel.untyped.Function.class 
+                && memberDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
+           || (declarationClass == ceylon.language.metamodel.untyped.Class.class 
+                && memberDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
+           || (declarationClass == ceylon.language.metamodel.untyped.Interface.class 
+                && memberDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Interface)
+           || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class 
+                && memberDecl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
+           || declarationClass == ceylon.language.metamodel.untyped.Declaration.class;
+    }
+    
+    /** 
+     * Determines whether the given member is annotated with the 
+     * annotation corresponding to the given type descriptor 
+     */
+    public static <Kind extends Declaration, Annotation> boolean isAnnotated (
+            TypeDescriptor $reifiedAnnotation, Kind member) {
+        AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
+        if (at instanceof nothingType_) {
+            return false;
+        }
+        Sequential<Annotation> annotations = Metamodel.<Annotation>annotations($reifiedAnnotation, (ClassOrInterface<Annotation>)at, member);
+        return !annotations.getEmpty();
     }
 }

@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.AppliedType;
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.nothingType_;
 import ceylon.language.metamodel.untyped.Declaration;
 import ceylon.language.metamodel.untyped.Package$impl;
 
@@ -84,33 +80,15 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
         
         if($reifiedKind instanceof TypeDescriptor.Class){
             List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-            Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
+            java.lang.Class declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
             List<Kind> members = new ArrayList<Kind>(modelMembers.size());
             for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-                if(memberMatches(declarationClass, modelDecl))
+                if(Metamodel.isMemberOfKind(modelDecl, declarationClass))
                     members.add((Kind)Metamodel.getOrCreateMetamodel(modelDecl));
             }
             return (Sequential) Util.sequentialInstance($reifiedKind, members.toArray());
         }
         throw new UnsupportedOperationException("Kind not supported yet: "+$reifiedKind);
-    }
-    
-    private boolean memberMatches(Class<?> declarationClass,
-            com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl) {
-        return (declarationClass == ceylon.language.metamodel.untyped.Value.class 
-                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value)
-           || (declarationClass == ceylon.language.metamodel.untyped.Variable.class 
-                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Value
-                && ((com.redhat.ceylon.compiler.typechecker.model.Value)modelDecl).isVariable())
-           || (declarationClass == ceylon.language.metamodel.untyped.Function.class 
-                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
-           || (declarationClass == ceylon.language.metamodel.untyped.Class.class 
-                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
-           || (declarationClass == ceylon.language.metamodel.untyped.Interface.class 
-                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Interface)
-           || (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class 
-                && modelDecl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
-           || declarationClass == ceylon.language.metamodel.untyped.Declaration.class;
     }
 
     @Override
@@ -145,14 +123,9 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
             Class<?> declarationClass = ((TypeDescriptor.Class) $reifiedKind).getKlass();
             List<Kind> members = new ArrayList<Kind>(modelMembers.size());
             for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-                if(memberMatches(declarationClass, modelDecl)) {
+                if(Metamodel.isMemberOfKind(modelDecl, declarationClass)) {
                     Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
-                    AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
-                    if (at instanceof nothingType_) {
-                        return (Sequential)empty_.getEmpty$();
-                    }
-                    Sequential<Annotation> annotations = Metamodel.<Annotation>annotations($reifiedAnnotation, (ClassOrInterface<Annotation>)at, member);
-                    if (!annotations.getEmpty()) {
+                    if (Metamodel.isAnnotated($reifiedAnnotation, member)) {
                         members.add(member);
                     }
                 }
