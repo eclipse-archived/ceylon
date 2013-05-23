@@ -57,6 +57,14 @@ shared interface AInterface {
                 String parameter) {}
     }
     
+    "AInterface.SharedInnerInterface"
+    shared interface SharedInnerInterface {
+        "AInterface.SharedInnerInterface.method"
+        shared void method(
+                "Interface.SharedInnerInterface.method.parameter"
+                String parameter) {}
+    }
+    
     "AInterface.formalAttribute"
     shared formal String formalAttribute;
     

@@ -49,6 +49,22 @@ InterfaceDeclaration aInterfaceDecl {
     assert(exists iface0=sup.interfaces[0]);
     return iface0.declaration;
 }
+ClassDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
+    for (ClassDeclaration cDecl in outerClass.members<ClassDeclaration>()) {
+        if (cDecl.name == memberName) {
+            return cDecl;
+        }
+    } 
+    throw;
+}
+InterfaceDeclaration memberInterfaceDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
+    for (InterfaceDeclaration iDecl in outerClass.members<InterfaceDeclaration>()) {
+        if (iDecl.name == memberName) {
+            return iDecl;
+        }
+    } 
+    throw;
+}
 
 ClassOrInterface<T> annotationType<T>(T t) {
     return type(t);
@@ -369,8 +385,125 @@ void checkAInterface() {
     //        ngsdoc.description == "AInterface.nonsharedGetterSetter");
     // TODO Test the setter annotations
     
+    // TODO formalMethod
+    assert(exists fm=iface.getFunction<AInterface, Function<Anything,[String]>>("formalMethod"));
+    value fmd = fm(AClass("")).declaration;
+    // TODO defaultMethod
+    assert(exists dm=iface.getFunction<AInterface, Function<Anything,[String]>>("defaultMethod"));
+    value dmd = dm(AClass("")).declaration;
+    // TODO method
+    assert(exists m=iface.getFunction<AInterface, Function<Anything,[String]>>("method"));
+    value md = m(AClass("")).declaration;
+    // TODO nonsharedMethod
+    //assert(exists nsm=iface.getFunction<AInterface, Function<Anything,[String]>>("nonsharedMethod"));
+    //value nsmd = nsm(AClass("")).declaration;
+    
     // TODO Class & interface members
+    variable ClassDeclaration ficd = memberClassDecl(aInterfaceDecl, "FormalInnerClass");
+    variable ClassDeclaration dicd = memberClassDecl(aInterfaceDecl, "DefaultInnerClass");
+    variable InterfaceDeclaration iid = memberInterfaceDecl(aInterfaceDecl, "SharedInnerInterface");
+    
     // TODO Object members
+    
+    // Tests for annotatedMembers()
+    value sharedClasses = aInterfaceDecl.annotatedMembers<ClassDeclaration, Shared>();
+    assert(ficd in sharedClasses);
+    assert(dicd in sharedClasses);
+    assert(! iid in sharedClasses);
+    assert(! fa in sharedClasses);
+    assert(! gs in sharedClasses);
+    // TODO assert(! ngs in sharedClasses);
+    assert(! fmd in sharedClasses);
+    assert(! dmd in sharedClasses);
+    assert(! fmd in sharedClasses);
+    assert(! md in sharedClasses);
+    // TODO assert(! nsmd in sharedClasses);
+    // TODO test with an object declaration
+    
+    value sharedInterfaces = aInterfaceDecl.annotatedMembers<InterfaceDeclaration, Shared>();
+    assert(!ficd in sharedInterfaces);
+    assert(!dicd in sharedInterfaces);
+    assert(iid in sharedInterfaces);
+    assert(! fa in sharedInterfaces);
+    assert(! gs in sharedInterfaces);
+    // TODO assert(! ngs in sharedInterfaces);
+    assert(! fmd in sharedInterfaces);
+    assert(! dmd in sharedInterfaces);
+    assert(! fmd in sharedInterfaces);
+    assert(! md in sharedInterfaces);
+    // TODO assert(! nsmd in sharedInterfaces);
+    // TODO test with an object declaration
+    
+    value sharedClassesAndInterfaces = aInterfaceDecl.annotatedMembers<ClassOrInterfaceDeclaration, Shared>();
+    assert(ficd in sharedClassesAndInterfaces);
+    assert(dicd in sharedClassesAndInterfaces);
+    assert(iid in sharedClassesAndInterfaces);
+    assert(! fa in sharedClassesAndInterfaces);
+    assert(! gs in sharedClassesAndInterfaces);
+    // TODO assert(! ngs in sharedClassesAndInterfaces);
+    assert(! fmd in sharedClassesAndInterfaces);
+    assert(! dmd in sharedClassesAndInterfaces);
+    assert(! fmd in sharedClassesAndInterfaces);
+    assert(! md in sharedClassesAndInterfaces);
+    // TODO assert(! nsmd in sharedInterfaces);
+    // TODO test with an object declaration
+    
+    value sharedValues = aInterfaceDecl.annotatedMembers<ValueDeclaration, Shared>();
+    assert(! ficd in sharedValues);
+    assert(! dicd in sharedValues);
+    assert(! iid in sharedValues);
+    assert(fa in sharedValues);
+    assert(gs in sharedValues);
+    // TODO assert(ngs in sharedValues);
+    assert(! fmd in sharedValues);
+    assert(! dmd in sharedValues);
+    assert(! fmd in sharedValues);
+    assert(! md in sharedValues);
+    // TODO assert(! nsmd in sharedValue);
+    // TODO test with an object declaration
+    
+    value sharedVariables = aInterfaceDecl.annotatedMembers<VariableDeclaration, Shared>();
+    assert(! ficd in sharedVariables);
+    assert(! dicd in sharedVariables);
+    assert(! iid in sharedVariables);
+    assert(! fa in sharedVariables);
+    assert(gs in sharedVariables);
+    // TODO assert(ngs in sharedVariables);
+    assert(! fmd in sharedVariables);
+    assert(! dmd in sharedVariables);
+    assert(! fmd in sharedVariables);
+    assert(! md in sharedVariables);
+    // TODO assert(! nsmd in sharedVariables);
+    // TODO test with an object declaration
+    
+    value sharedMethods = aInterfaceDecl.annotatedMembers<FunctionDeclaration, Shared>();
+    assert(! ficd in sharedMethods);
+    assert(! dicd in sharedMethods);
+    assert(! iid in sharedMethods);
+    assert(! fa in sharedMethods);
+    assert(! gs in sharedMethods);
+    // TODO assert(! ngs in sharedMethods);
+    assert(fmd in sharedMethods);
+    assert(dmd in sharedMethods);
+    assert(fmd in sharedMethods);
+    assert(md in sharedMethods);
+    // TODO assert(nsmd in sharedMethods);
+    // TODO test with an object declaration
+    
+    value sharedAndDocdMethodsAndValues = aInterfaceDecl.annotatedMembers<FunctionDeclaration|ValueDeclaration, Shared|Doc>();
+    assert(! ficd in sharedAndDocdMethodsAndValues);
+    assert(! dicd in sharedAndDocdMethodsAndValues);
+    assert(! iid in sharedAndDocdMethodsAndValues);
+    assert(fa in sharedAndDocdMethodsAndValues);
+    assert(gs in sharedAndDocdMethodsAndValues);
+    // TODO assert(! ngs in sharedAndDocdMethodsAndValues);
+    assert(fmd in sharedAndDocdMethodsAndValues);
+    assert(dmd in sharedAndDocdMethodsAndValues);
+    assert(fmd in sharedAndDocdMethodsAndValues);
+    assert(md in sharedAndDocdMethodsAndValues);
+    // TODO assert(nsmd in sharedMethods);
+    // TODO test with an object declaration
+    
 }
 
 void checkModuleAndImports() {
@@ -493,6 +626,30 @@ void checkPackage() {
     assert(! aToplevelValueDecl in seqFunctions);
     assert(! aToplevelGetterSetterDecl in seqFunctions);
     assert(aToplevelFunctionDecl in seqFunctions);
+    
+    value sharedOrDocdCallables = p.annotatedMembers<FunctionDeclaration|ClassDeclaration, Shared|Doc>();
+    assert(aClassDecl in sharedOrDocdCallables);
+    assert(aAbstractClassDecl in sharedOrDocdCallables);
+    assert(! aInterfaceDecl in sharedOrDocdCallables);
+    assert(! aToplevelValueDecl in sharedOrDocdCallables);
+    assert(! aToplevelGetterSetterDecl in sharedOrDocdCallables);
+    assert(aToplevelFunctionDecl in sharedOrDocdCallables);
+    
+    value abstractCallables = p.annotatedMembers<FunctionDeclaration|ClassDeclaration, Abstract>();
+    assert(! aClassDecl in abstractCallables);
+    assert(aAbstractClassDecl in abstractCallables);
+    assert(! aInterfaceDecl in abstractCallables);
+    assert(! aToplevelValueDecl in abstractCallables);
+    assert(! aToplevelGetterSetterDecl in abstractCallables);
+    assert(! aToplevelFunctionDecl in abstractCallables);
+    
+    value sharedDeclarations = p.annotatedMembers<UntypedDeclaration, Shared>();
+    assert(aClassDecl in sharedDeclarations);
+    assert(aAbstractClassDecl in sharedDeclarations);
+    assert(aInterfaceDecl in sharedDeclarations);
+    assert(aToplevelValueDecl in sharedDeclarations);
+    assert(aToplevelGetterSetterDecl in sharedDeclarations);
+    assert(aToplevelFunctionDecl in sharedDeclarations);
 
 }
 
