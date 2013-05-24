@@ -139,6 +139,11 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
+    public void testConstrained(){
+        compareWithJavaSource("Constrained");
+    }
+    
+    @Test
     public void testAnnotationModule(){
         // TODO Add a package.ceylon, so we can check that too.
         compareWithJavaSource("modules/a/module");
