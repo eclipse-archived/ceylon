@@ -103,7 +103,7 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
     private <Kind> Sequential<? extends Kind> filteredMembers(
             TypeDescriptor $reifiedKind,
             DeclarationPredicate.Predicate predicate) {
-        if (predicate == DeclarationPredicate.FALSE) {
+        if (predicate == DeclarationPredicate.false_()) {
             return (Sequential<? extends Kind>)empty_.getEmpty$();
         }
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();

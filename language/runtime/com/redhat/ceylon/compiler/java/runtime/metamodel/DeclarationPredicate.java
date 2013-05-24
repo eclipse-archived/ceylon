@@ -19,21 +19,21 @@ class DeclarationPredicate {
     private DeclarationPredicate() {}
 
     /**
-     * A predicate about a Declaration
+     * A predicate
      */
-    static interface Predicate {
-        /** Returns true if the predicate matches/accepts the given model */
-        boolean accept(Declaration declaration);
+    static interface Predicate<T> {
+        /** Returns true if the predicate matches/accepts the given thing */
+        boolean accept(T candidate);
     }
     
     /**
      * A predicate that {@linkplain Predicate#accept(Declaration) accepts} 
      * nothing, alway returning {@code false}.
      */
-    static final Predicate FALSE = new Predicate() {
+    private static final Predicate<?> FALSE = new Predicate<Object>() {
         /** Returns {@code false}, always. */
         @Override
-        public boolean accept(Declaration declaration) {
+        public boolean accept(Object candidate) {
             return false;
         }
         @Override
@@ -42,14 +42,19 @@ class DeclarationPredicate {
         }
     };
     
+    @SuppressWarnings("unchecked")
+    static <T> Predicate<T> false_() {
+        return (Predicate<T>)FALSE;
+    }
+    
     /**
      * A predicate that {@linkplain Predicate#accept(Declaration) accepts} 
      * everything, alway returning {@code true}.
      */
-    static final Predicate TRUE = new Predicate() {
+    static final Predicate<?> TRUE = new Predicate<Object>() {
         /** Returns {@code true}, always. */
         @Override
-        public boolean accept(Declaration declaration) {
+        public boolean accept(Object candidate) {
             return true;
         }
         @Override
@@ -58,23 +63,28 @@ class DeclarationPredicate {
         }
     };
     
+    @SuppressWarnings("unchecked")
+    static <T> Predicate<T> true_() {
+        return (Predicate<T>)TRUE;
+    }
+    
     /**
      * The logical conjunction of a number of other predicates.
      */
-    private static final class And implements Predicate {
-        private final Predicate[] others;
-        private And(Predicate[] others) {
+    private static final class And<T> implements Predicate<T> {
+        private final Predicate<T>[] others;
+        private And(Predicate<T>[] others) {
             this.others = others;
         }
         /** 
          * Returns {@code false} iff all the other predicates 
-         * {@linkplain Predicate#accept(Declaration) accept()} 
+         * {@linkplain Predicate#accept(Object) accept()} 
          * the given declaration.
          */
         @Override
-        public boolean accept(Declaration declaration) {
-            for (Predicate other : others) {
-                if (!other.accept(declaration)) {
+        public boolean accept(T candidate) {
+            for (Predicate<T> other : others) {
+                if (!other.accept(candidate)) {
                     return false;
                 }
             }
@@ -90,35 +100,36 @@ class DeclarationPredicate {
      * Returns a predicate that is the logical conjunction of a number of 
      * other predicates.
      */
-    public static Predicate and(Predicate... others) {
+    @SafeVarargs
+    public static <T> Predicate<T> and(Predicate<T>... others) {
         if (others.length == 1) {
             return others[0];
         }
-        for (Predicate pred : others) {
+        for (Predicate<T> pred : others) {
             if (pred == FALSE) {
-                return FALSE;
+                return false_();
             }
         }
-        return new And(others);
+        return new And<T>(others);
     }
     
     /**
      * The logical disjunction of a number of other predicates.
      */
-    private static final class Or implements Predicate {
-        private final Predicate[] others;
-        public Or(Predicate[] others) {
+    private static final class Or<T> implements Predicate<T> {
+        private final Predicate<T>[] others;
+        public Or(Predicate<T>[] others) {
             this.others = others;
         }
         /** 
          * Returns {@code false} iff at least one of the other predicates 
-         * {@linkplain Predicate#accept(Declaration) accept()}s 
+         * {@linkplain Predicate#accept(Object) accept()}s 
          * the given declaration.
          */
         @Override
-        public boolean accept(Declaration declaration) {
-            for (Predicate other : others) {
-                if (other.accept(declaration)) {
+        public boolean accept(T candidate) {
+            for (Predicate<T> other : others) {
+                if (other.accept(candidate)) {
                     return true;
                 }
             }
@@ -134,19 +145,20 @@ class DeclarationPredicate {
      * Returns a predicate that is the logical disjunction of a number of 
      * other predicates.
      */
-    public static Predicate or(Predicate... others) {
+    @SafeVarargs
+    public static <T> Predicate<T> or(Predicate<T>... others) {
         if (others.length == 1) {
             return others[0];
         }
-        for (Predicate pred : others) {
+        for (Predicate<T> pred : others) {
             if (pred == TRUE) {
-                return TRUE;
+                return true_();
             }
         }
-        return new Or(others);
+        return new Or<T>(others);
     } 
     
-    private static final Predicate VALUE = new Predicate() {  
+    private static final Predicate<Declaration> VALUE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -157,7 +169,7 @@ class DeclarationPredicate {
         }
     };
     
-    private static final Predicate VARIABLE = new Predicate() {  
+    private static final Predicate<Declaration> VARIABLE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
@@ -169,7 +181,7 @@ class DeclarationPredicate {
         }
     };
     
-    private static final Predicate FUNCTION = new Predicate() {  
+    private static final Predicate<Declaration> FUNCTION = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -180,7 +192,7 @@ class DeclarationPredicate {
         }
     };
     
-    private static final Predicate CLASS = new Predicate() {  
+    private static final Predicate<Declaration> CLASS = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -191,7 +203,7 @@ class DeclarationPredicate {
         }
     };
 
-    private static final Predicate INTERFACE = new Predicate() {  
+    private static final Predicate<Declaration> INTERFACE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -202,7 +214,7 @@ class DeclarationPredicate {
         }
     };
     
-    private static final Predicate CLASS_OR_INTERFACE = new Predicate() {  
+    private static final Predicate<Declaration> CLASS_OR_INTERFACE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -218,7 +230,7 @@ class DeclarationPredicate {
      * (Class, Interface, Function, Value etc)
      * @param kind A TypeDescriptor for the sought declaration kind.   
      */
-    public static Predicate fromDeclarationKind(TypeDescriptor kind) {
+    public static Predicate<Declaration> fromDeclarationKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
             Class<? extends ceylon.language.metamodel.untyped.Declaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.metamodel.untyped.Variable.class) {
@@ -234,12 +246,13 @@ class DeclarationPredicate {
             } else if (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class) {
                 return CLASS_OR_INTERFACE;
             } else if (declarationClass == ceylon.language.metamodel.untyped.Declaration.class) {
-                return TRUE;
+                return true_();
             }
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         } else if (kind instanceof TypeDescriptor.Union) {
             TypeDescriptor[] members = ((TypeDescriptor.Union)kind).getMembers();
-            Predicate[] preds = new Predicate[members.length];
+            @SuppressWarnings("unchecked")
+            Predicate<Declaration>[] preds = new Predicate[members.length];
             int ii = 0;
             for (TypeDescriptor member : members) {
                 preds[ii++] = fromDeclarationKind(member);
@@ -247,14 +260,15 @@ class DeclarationPredicate {
             return or(preds);
         } else if (kind instanceof TypeDescriptor.Intersection) {
             TypeDescriptor[] members = ((TypeDescriptor.Intersection)kind).getMembers();
-            Predicate[] preds = new Predicate[members.length];
+            @SuppressWarnings("unchecked")
+            Predicate<Declaration>[] preds = new Predicate[members.length];
             int ii = 0;
             for (TypeDescriptor member : members) {
                 preds[ii++] = fromDeclarationKind(member);
             }
             return and(preds);
         } else if (kind == TypeDescriptor.NothingType) {
-            return FALSE;
+            return false_();
         }
         throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
     }
@@ -263,7 +277,7 @@ class DeclarationPredicate {
      * A Predicate on the declarations having a given annotation 
      */
     private static class HavingAnnotation<Annotation> 
-            implements Predicate {
+            implements Predicate<Declaration> {
 
         private final TypeDescriptor annotation;
         private final AppliedClassOrInterfaceType<Annotation> at;
@@ -291,14 +305,14 @@ class DeclarationPredicate {
      * Returns a predicate for the declarations having the given annotation 
      */
     public static <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation>  
-            Predicate hasAnnotation(TypeDescriptor annotation) {
+            Predicate<Declaration> hasAnnotation(TypeDescriptor annotation) {
         AppliedType at = Metamodel.getAppliedMetamodel(annotation);
         return hasAnnotation(annotation, at);
     }
     
-    private static <Annotation> Predicate hasAnnotation(TypeDescriptor annotation, AppliedType at) {
+    private static <Annotation> Predicate<Declaration> hasAnnotation(TypeDescriptor annotation, AppliedType at) {
         if (at instanceof nothingType_) {
-            return FALSE;
+            return false_();
         } else if (at instanceof AppliedClassOrInterfaceType) {
             return new HavingAnnotation<AnnotationBearing>(annotation, (AppliedClassOrInterfaceType)at);
         } else if (at instanceof AppliedUnionType) {
@@ -312,9 +326,10 @@ class DeclarationPredicate {
         }
     }
     
-    private static Predicate[] hasAnnotationPredicates(TypeDescriptor annotation,
+    private static Predicate<Declaration>[] hasAnnotationPredicates(TypeDescriptor annotation,
             Sequential<? extends AppliedType> caseTypes) {
-        Predicate[] preds = new Predicate[(int)caseTypes.getSize()];
+        @SuppressWarnings("unchecked")
+        Predicate<Declaration>[] preds = new Predicate[(int)caseTypes.getSize()];
         int ii = 0;
         Iterator<? extends AppliedType> iterator = caseTypes.iterator();
         Object element = iterator.next();

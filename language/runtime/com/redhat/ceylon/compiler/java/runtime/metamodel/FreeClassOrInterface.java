@@ -148,7 +148,7 @@ public abstract class FreeClassOrInterface
     private <Kind> Sequential<? extends Kind> filteredMembers(
             TypeDescriptor $reifiedKind,
             DeclarationPredicate.Predicate predicate) {
-        if (predicate == DeclarationPredicate.FALSE) {
+        if (predicate == DeclarationPredicate.false_()) {
             return (Sequential<? extends Kind>)empty_.getEmpty$();
         }
         checkInit();
