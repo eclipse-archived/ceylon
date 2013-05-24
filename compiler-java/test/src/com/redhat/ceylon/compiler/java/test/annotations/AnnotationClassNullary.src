@@ -51,6 +51,7 @@ class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.class);
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
 @interface AnnotationClassNullarySequenced$annotation {
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)

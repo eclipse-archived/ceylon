@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
 @interface AnnotationClassBoolean$annotation {
     
     public abstract boolean b();
@@ -153,6 +154,7 @@ class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compiler.jav
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted.class);
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
 @interface AnnotationClassBooleanVariadic$annotation {
     
     public abstract boolean[] b();
@@ -273,6 +275,7 @@ final class annotationClassVariadicIterable_ {
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
 @interface AnnotationClassBooleanSequence$annotation {
     
     public abstract boolean[] b();
@@ -365,6 +368,7 @@ final class annotationClassSequenceSequence_ {
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
 @interface AnnotationClassBooleanIterable$annotation {
     
     public abstract boolean[] b();
