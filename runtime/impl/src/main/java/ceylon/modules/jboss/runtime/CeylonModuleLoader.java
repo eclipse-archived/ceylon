@@ -37,6 +37,8 @@ import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
 
+import ceylon.modules.DefaultLogChecker;
+import ceylon.modules.LogChecker;
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.jboss.repository.ResourceLoaderProvider;
 
@@ -45,7 +47,6 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.spi.LogChecker;
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -240,20 +241,26 @@ public class CeylonModuleLoader extends ModuleLoader {
                 for (ArtifactResult i : artifact.dependencies()) {
                     final String name = i.name();
 
+                    ServiceLoader<LogChecker> ldr = ServiceLoader.load(LogChecker.class);
+                    boolean logCheckerServicePresent = false;
+                    for (LogChecker checker : ldr) {
+                        logCheckerServicePresent = true;
+                        if (checker.match(i)) {
+                            addLoggingModule(builder, deps);
+                            break;
+                        }
+                    }
+                    if (!logCheckerServicePresent) {
+                        LogChecker checker = new DefaultLogChecker();
+                        if (checker.match(i)) {
+                            addLoggingModule(builder, deps);
+                        }
+                    }
+
                     // skip JDK modules
                     if (JDK_MODULE_NAMES.contains(name)) {
                         continue;
                     }
-
-                    //if (checkLogging(i)) { //TODO do we need this switch
-                        ServiceLoader<LogChecker> ldr = ServiceLoader.load(LogChecker.class);
-                        for (LogChecker checker : ldr) {
-                            if (checker.match(i)) {
-                                addLoggingModule(builder, deps);
-                                break;
-                            }
-                        }
-                    //}
 
                     if (i.importType() == ImportType.OPTIONAL) {
                         Node<ArtifactResult> current = root;
