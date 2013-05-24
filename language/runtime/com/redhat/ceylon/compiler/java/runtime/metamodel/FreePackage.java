@@ -1,15 +1,14 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.untyped.Declaration;
 import ceylon.language.metamodel.untyped.Package$impl;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -81,6 +80,32 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
     members(@Ignore TypeDescriptor $reifiedKind) {
         
         DeclarationPredicate.Predicate predicate = DeclarationPredicate.fromDeclarationKind($reifiedKind);
+        
+        return filteredMembers($reifiedKind, predicate);
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Kind>")
+    @TypeParameters({ 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"), 
+        @TypeParameter(value = "Annotation") 
+    })
+    public <Kind extends Declaration, Annotation> Sequential<? extends Kind> 
+    annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
+        
+        DeclarationPredicate.Predicate predicate = DeclarationPredicate.and(
+                DeclarationPredicate.fromDeclarationKind($reifiedKind),
+                DeclarationPredicate.hasAnnotation($reifiedAnnotation));
+        
+        return filteredMembers($reifiedKind, predicate);
+    }
+
+    private <Kind> Sequential<? extends Kind> filteredMembers(
+            TypeDescriptor $reifiedKind,
+            DeclarationPredicate.Predicate predicate) {
+        if (predicate == DeclarationPredicate.FALSE) {
+            return (Sequential<? extends Kind>)empty_.getEmpty$();
+        }
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, modelMembers.size());
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
@@ -110,29 +135,6 @@ public class FreePackage implements ceylon.language.metamodel.untyped.Package,
             return null;
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) toplevel;
         return (FreeFunction) Metamodel.getOrCreateMetamodel(decl);
-    }
-
-    @Override
-    @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters({ 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.untyped::Declaration"), 
-        @TypeParameter(value = "Annotation") 
-    })
-    public <Kind extends Declaration, Annotation> Sequential<? extends Kind> 
-    annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
-        
-        DeclarationPredicate.Predicate predicate = DeclarationPredicate.and(
-                DeclarationPredicate.fromDeclarationKind($reifiedKind),
-                DeclarationPredicate.hasAnnotation($reifiedAnnotation, true));
-        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
-        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, modelMembers.size());
-        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
-            if (predicate.accept(modelDecl)) {
-                Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
-                members.append(member);
-            }
-        }
-        return members.getSequence();
     }
 
     @Ignore

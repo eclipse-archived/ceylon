@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -125,16 +124,9 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
-        checkInit();
-        
         DeclarationPredicate.Predicate predicate = DeclarationPredicate.fromDeclarationKind($reifiedKind);
-        SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
-        for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
-            if (predicate.accept(((FreeDeclaration)decl).declaration)) {
-                members.append((Kind) decl);
-            }
-        }
-        return members.getSequence();
+        
+        return filteredMembers($reifiedKind, predicate);
     }
 
     @Override
@@ -146,11 +138,20 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
-        checkInit();
-        
         DeclarationPredicate.Predicate predicate = DeclarationPredicate.and(
                 DeclarationPredicate.fromDeclarationKind($reifiedKind),
-                DeclarationPredicate.hasAnnotation($reifiedAnnotation, true));
+                DeclarationPredicate.hasAnnotation($reifiedAnnotation));
+        
+        return filteredMembers($reifiedKind, predicate);
+    }
+
+    private <Kind> Sequential<? extends Kind> filteredMembers(
+            TypeDescriptor $reifiedKind,
+            DeclarationPredicate.Predicate predicate) {
+        if (predicate == DeclarationPredicate.FALSE) {
+            return (Sequential<? extends Kind>)empty_.getEmpty$();
+        }
+        checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
         for(ceylon.language.metamodel.untyped.Declaration decl : declarations){
             if (predicate.accept(((FreeDeclaration)decl).declaration)) {
@@ -159,7 +160,7 @@ public abstract class FreeClassOrInterface
         }
         return members.getSequence();
     }
-
+    
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::ParameterisedType<ceylon.language.metamodel.untyped::Interface>>")
     public Sequential<? extends ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Interface>> getInterfaces() {
