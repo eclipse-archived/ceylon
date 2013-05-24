@@ -110,6 +110,10 @@ void checkAToplevelValueAnnotations() {
     assert(nonempty doc5 = aToplevelValueDecl.annotations<OptionalAnnotation<Doc, ValueDeclaration>>(),
         is Doc doc5_1 = doc5.first,
         doc5_1.description == "aToplevelValue");
+    assert(aToplevelValueDecl.annotations<Shared|Doc|Seq>().size == 4);
+    assert(aToplevelValueDecl.annotations<Shared|Doc>().size == 2);
+    assert(aToplevelValueDecl.annotations<Doc|Seq>().size == 3);
+    
     // since Doc is not Sequenced, this returns empty:
     assert(aToplevelValueDecl.annotations<SequencedAnnotation<Doc, ValueDeclaration>>().empty);
     assert(nonempty shared6 = aToplevelValueDecl.annotations<OptionalAnnotation<Shared, ValueDeclaration>>(),
