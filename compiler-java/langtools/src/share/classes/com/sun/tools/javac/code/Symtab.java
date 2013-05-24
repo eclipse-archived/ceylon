@@ -161,6 +161,9 @@ public class Symtab {
     public final Type annotationTargetType;
     public final Type overrideType;
     public final Type retentionType;
+    public final Type retentionPolicyType;
+    public final Type targetType;
+    public final Type elementTypeType;
     public final Type deprecatedType;
     public final Type suppressWarningsType;
     public final Type inheritedType;
@@ -550,6 +553,9 @@ public class Symtab {
         annotationTargetType = enterClass("java.lang.annotation.Target");
         overrideType = enterClass("java.lang.Override");
         retentionType = enterClass("java.lang.annotation.Retention");
+        retentionPolicyType = enterClass("java.lang.annotation.RetentionPolicy");
+        targetType = enterClass("java.lang.annotation.Target");
+        elementTypeType = enterClass("java.lang.annotation.ElementType");
         deprecatedType = enterClass("java.lang.Deprecated");
         suppressWarningsType = enterClass("java.lang.SuppressWarnings");
         inheritedType = enterClass("java.lang.annotation.Inherited");
