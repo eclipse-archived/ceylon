@@ -147,7 +147,7 @@ public class TypeFactory extends Unit {
     }
 
     /**
-     * Search for a declaration in the language module metamodel package. 
+     * Search for a declaration in {@code ceylon.language.metamodel} 
      */
     public Declaration getLanguageModuleMetamodelDeclaration(String name) {
         //all elements in ceylon.language are auto-imported
@@ -155,6 +155,25 @@ public class TypeFactory extends Unit {
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             Package languageScope = languageModule.getPackage(AbstractModelLoader.CEYLON_LANGUAGE_METADATA);
+            if (languageScope != null) {
+                Declaration d = languageScope.getMember(name, null, false);
+                if (d != null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Search for a declaration in {@code ceylon.language.metamodel.untyped} 
+     */
+    public Declaration getLanguageModuleMetamodelUntypedDeclaration(String name) {
+        //all elements in ceylon.language are auto-imported
+        //traverse all default module packages provided they have not been traversed yet
+        Module languageModule = getPackage().getModule().getLanguageModule();
+        if ( languageModule != null && languageModule.isAvailable() ) {
+            Package languageScope = languageModule.getPackage(AbstractModelLoader.CEYLON_LANGUAGE_METADATA_UNTYPED);
             if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {

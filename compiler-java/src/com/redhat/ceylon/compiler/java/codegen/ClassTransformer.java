@@ -29,15 +29,14 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -77,7 +76,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -87,7 +85,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -341,34 +338,74 @@ public class ClassTransformer extends AbstractTransformer {
         String annotationName = klass.getName()+"$annotation";
         ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
         annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
-        annoBuilder.annotations(makeAtRetentionRuntime());
+        annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
+        
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getDeclarationModel();
             annoBuilder.method(makeAnnotationMethod(p));
         }
-        List<JCTree> result = annoBuilder.build();
+        List<JCTree> result;
         if (isSequencedAnnotation(klass)) {
+            result = annoBuilder.annotations(makeAtAnnotationTarget()).build();
             String wrapperName = klass.getName()+"$annotations";
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null);
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
-            sequencedBuilder.annotations(makeAtRetentionRuntime());
+            sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, "value");
             mdb.modifiers(PUBLIC | ABSTRACT);
             mdb.resultType(null, make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)));
             mdb.noBody();
             ClassDefinitionBuilder sequencedAnnotation = sequencedBuilder.method(mdb);
+            sequencedAnnotation.annotations(transformAnnotationConstraints(klass));
             result = result.appendList(sequencedAnnotation.build());
+            
+        } else {
+            result = annoBuilder.annotations(transformAnnotationConstraints(klass)).build();
         }
         
         return result;
     }
-
-    private List<JCAnnotation> makeAtRetentionRuntime() {
+    
+    private List<JCAnnotation> makeAtRetention(RetentionPolicy retentionPolicy) {
         return List.of(
                 make().Annotation(
                         make().Type(syms().retentionType), 
-                        List.of(naming.makeQuotedFQIdent("java.lang.annotation.RetentionPolicy.RUNTIME"))));
+                        List.of(naming.makeQuotedQualIdent(make().Type(syms().retentionPolicyType), retentionPolicy.name()))));
+    }
+    
+    /** 
+     * Makes {@code @java.lang.annotation.Target(types)} 
+     * where types are the given element types.
+     */
+    private List<JCAnnotation> makeAtAnnotationTarget(ElementType... types) {
+        List<JCExpression> typeExprs = List.<JCExpression>nil();
+        for (ElementType type : types) {
+            typeExprs = typeExprs.prepend(naming.makeQuotedQualIdent(make().Type(syms().elementTypeType), type.name()));
+        }
+        return List.of(
+                make().Annotation(
+                        make().Type(syms().targetType), 
+                        List.<JCExpression>of(make().NewArray(null, null, typeExprs))));
+    }
+    
+    private List<JCAnnotation> transformAnnotationConstraints(Class klass) {
+        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclaration("ConstrainedAnnotation");
+        ProducedType constrainedType = klass.getType().getSupertype(meta);
+        if (constrainedType != null) {
+            ProducedType programElement = constrainedType.getTypeArgumentList().get(2);
+            if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("ClassOrInterface")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Package")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Module")).getType())) {
+                return makeAtAnnotationTarget(ElementType.TYPE);
+            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Value")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Function")).getType())) {
+                return makeAtAnnotationTarget(ElementType.METHOD);
+            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Import")).getType())) {
+                return makeAtAnnotationTarget(ElementType.FIELD);
+            }
+        }
+        return List.<JCAnnotation>nil();
     }
 
     private JCExpression transformAnnotationParameterDefault(Tree.Parameter p) {
