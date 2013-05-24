@@ -101,7 +101,7 @@ public class Stitcher {
         for (String line : sources) {
             //Compile these files
             System.out.println("Compiling " + line);
-            final HashSet<String> includes = new HashSet<String>();
+            final List<String> includes = new ArrayList<String>();
             for (String filename : line.split(",")) {
                 final File src = new File(clSrcDir, String.format("%s.ceylon", filename.trim()));
                 if (src.exists() && src.isFile() && src.canRead()) {

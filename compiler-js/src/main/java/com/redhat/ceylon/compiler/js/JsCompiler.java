@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Writer;
@@ -47,7 +49,7 @@ public class JsCompiler {
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
-    protected Set<String> files;
+    protected List<String> files;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
@@ -104,7 +106,7 @@ public class JsCompiler {
 
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
-    public void setFiles(Set<String> files) {
+    public void setFiles(List<String> files) {
         this.files = files;
     }
 
@@ -182,27 +184,65 @@ public class JsCompiler {
 
             //Then generate the JS code
             JsIdentifierNames names = new JsIdentifierNames();
-            for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-            	String pathFromVFS = pu.getUnitFile().getPath();
-            	// VFS talks in terms of URLs while files are platform-dependent, so make it
-            	// platform-dependent too
-            	String path = pathFromVFS.replace('/', File.separatorChar);
-                if (files == null || files.contains(path)) {
-                    String name = pu.getUnitFile().getName();
-                    if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                        compileUnit(pu, names);
-                        if (stopOnError()) {
-                            System.err.println("Errors found. Compilation stopped.");
-                            break;
+            if (files == null) {
+                for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
+                    String pathFromVFS = pu.getUnitFile().getPath();
+                    // VFS talks in terms of URLs while files are platform-dependent, so make it
+                    // platform-dependent too
+                    String path = pathFromVFS.replace('/', File.separatorChar);
+                    if (files == null || files.contains(path)) {
+                        String name = pu.getUnitFile().getName();
+                        if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
+                            compileUnit(pu, names);
+                            if (stopOnError()) {
+                                System.err.println("Errors found. Compilation stopped.");
+                                break;
+                            }
+                        }
+                        getOutput(pu).addSource(pu.getUnit().getFullPath());
+                    } else {
+                        if (opts.isVerbose()) {
+                            System.err.println("Files does not contain "+path);
+                            for (String p : files) {
+                                System.err.println(" Files: "+p);
+                            }
                         }
                     }
-                    getOutput(pu).addSource(pu.getUnit().getFullPath());
-                } else {
-                    if (opts.isVerbose()) {
-                    	System.err.println("Files does not contain "+path);
-                    	for (String p : files) {
-                    		System.err.println(" Files: "+p);
-                    	}
+                }
+            } else {
+                final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
+                PhasedUnit lastUnit = units.get(0);
+                for (String path : files) {
+                    if (path.endsWith(".js")) {
+                        //Just output the file
+                        File f = new File(path);
+                        final JsOutput lastOut = getOutput(lastUnit);
+                        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+                            String line = null;
+                            while ((line = reader.readLine()) != null) {
+                                lastOut.getWriter().write(line);
+                                lastOut.getWriter().write('\n');
+                            }
+                        } finally {
+                            lastOut.addSource(path);
+                        }
+                    } else {
+                        //Find the corresponding compilation unit
+                        for (PhasedUnit pu : units) {
+                            String unitPath = pu.getUnitFile().getPath().replace('/', File.separatorChar);
+                            if (path.equals(unitPath)) {
+                                String name = pu.getUnitFile().getName();
+                                if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
+                                    compileUnit(pu, names);
+                                    if (stopOnError()) {
+                                        System.err.println("Errors found. Compilation stopped.");
+                                        break;
+                                    }
+                                }
+                                getOutput(pu).addSource(pu.getUnit().getFullPath());
+                                lastUnit = pu;
+                            }
+                        }
                     }
                 }
             }

@@ -212,14 +212,16 @@ public class CeylonCompileJsTool implements Tool {
         run(opts, files);
     }
 
-    private static void addFilesToCompilationSet(File dir, Set<String> onlyFiles, boolean verbose) {
+    private static void addFilesToCompilationSet(File dir, List<String> onlyFiles, boolean verbose) {
         for (File e : dir.listFiles()) {
             String n = e.getName().toLowerCase();
-            if (e.isFile() && n.endsWith(".ceylon") && !n.equals("module.ceylon")) {
+            if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js")) && !n.equals("module.ceylon")) {
                 if (verbose) {
                     System.out.println("Adding to compilation set: " + e.getPath());
                 }
-                onlyFiles.add(e.getPath());
+                if (!onlyFiles.contains(e.getPath())) {
+                    onlyFiles.add(e.getPath());
+                }
             } else if (e.isDirectory()) {
                 addFilesToCompilationSet(e, onlyFiles, verbose);
             }
@@ -237,7 +239,7 @@ public class CeylonCompileJsTool implements Tool {
                 .outRepo(opts.getOutDir())
                 .offline(opts.getOffline())
                 .buildManager();
-        final Set<String> onlyFiles = new HashSet<String>();
+        final List<String> onlyFiles = new ArrayList<String>();
         long t0, t1, t2, t3, t4;
         final TypeCheckerBuilder tcb;
         if (opts.isStdin()) {
