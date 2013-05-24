@@ -43,7 +43,7 @@ public final class annotations_ {
             @Name("programElement")
             @TypeInfo("ProgramElement")
             final ProgramElement programElement) {
-        Sequential<Annotation> annots = (Sequential)Metamodel.annotations($reifiedValues, annotationType, programElement);
+        Sequential<Annotation> annots = (Sequential)Metamodel.annotations($reifiedValue, programElement);
         final java.lang.Class<?> refAnnotationClass = (java.lang.Class<?>)Metamodel.getReflectedAnnotationClass(annotationType);
         if (OptionalAnnotation.class.isAssignableFrom(refAnnotationClass)) {
             if (annots.getSize() > 1L) {

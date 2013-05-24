@@ -4,7 +4,10 @@ import java.util.Arrays;
 
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.ClassOrInterface;
+import ceylon.language.metamodel.ConstrainedAnnotation;
 import ceylon.language.metamodel.nothingType_;
 
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
@@ -292,7 +295,7 @@ class DeclarationPredicate {
         @Override
         public boolean accept(Declaration memberModel) {
             FreeDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
-            Sequential<Annotation> annotations = Metamodel.annotations(annotation, at, member);
+            Sequential<Annotation> annotations = Metamodel.annotations(annotation, member);
             return !annotations.getEmpty();
         }
         @Override
@@ -338,5 +341,119 @@ class DeclarationPredicate {
             element = iterator.next();
         }
         return preds;
+    }
+    
+    public static Predicate<ceylon.language.metamodel.Annotation> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
+        AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
+        return isAnnotationOfType($reifiedAnnotation, at);
+    }
+
+    private static Predicate<ceylon.language.metamodel.Annotation> isAnnotationOfType(
+            TypeDescriptor $reifiedAnnotation, AppliedType at)
+            throws EnumeratedTypeError {
+        if (at instanceof nothingType_) {
+            return false_();
+        } else if (at instanceof AppliedUnionType) {
+            Sequential<? extends AppliedType> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            return or(isAnnotationOfTypes($reifiedAnnotation, caseTypes));
+        } else if (at instanceof AppliedIntersectionType) {
+            Sequential<? extends AppliedType> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            return and(isAnnotationOfTypes($reifiedAnnotation, satisfiedTypes));
+        } else if (at instanceof AppliedClassOrInterfaceType) {
+            // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation?
+            AnnotationPredicate predicate = annotationPredicate($reifiedAnnotation, (AppliedClassOrInterfaceType)at);
+            return predicate;
+        } else {
+            throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");            
+        }
+    }
+    
+    private static Predicate<ceylon.language.metamodel.Annotation>[] isAnnotationOfTypes(TypeDescriptor $reifiedAnnotation, 
+            Sequential<? extends AppliedType> caseTypes) {
+        @SuppressWarnings("unchecked")
+        Predicate<ceylon.language.metamodel.Annotation>[] preds = new Predicate[(int)caseTypes.getSize()];
+        int ii = 0;
+        Iterator<? extends AppliedType> iterator = caseTypes.iterator();
+        Object element = iterator.next();
+        while (element instanceof AppliedType) {
+            preds[ii++] = isAnnotationOfType($reifiedAnnotation, (AppliedType)element);
+            element = iterator.next();
+        }
+        return preds;
+    }
+
+    static interface AnnotationPredicate extends DeclarationPredicate.Predicate<ceylon.language.metamodel.Annotation> {
+        // TODO Is this a worthwhile optimization to make?
+        /** 
+         * Whether we should instantiate the given Java annotation into a 
+         * Ceylon annotation. If this returns true 
+         * {@link #accept(ceylon.language.metamodel.Annotation)} 
+         * will still be called to determine whether the Ceylon annotation 
+         * meets the acceptance criteria.
+         */
+        public boolean shouldInstantiate(Class<? extends java.lang.annotation.Annotation> jAnnotationType);
+        
+        /** 
+         * Whether the given Ceylon annotation should be 
+         * added to the results 
+         */
+        public boolean accept(ceylon.language.metamodel.Annotation cAnnotation);
+    }
+    
+    private static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends Annotated>
+    AnnotationPredicate annotationPredicate(
+            final TypeDescriptor $reifiedValues,
+            ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, Values, ? super ProgramElement>> annotationType) {
+        final Class<?> refAnnotationClass = Metamodel.getReflectedAnnotationClass(annotationType);
+        final Class<?> refAnnotationType;
+        final Class<?> refAnnotationWrapperType;
+        if (ceylon.language.Annotation.class == refAnnotationClass
+                || ceylon.language.metamodel.ConstrainedAnnotation.class == refAnnotationClass
+                || ceylon.language.metamodel.OptionalAnnotation.class == refAnnotationClass
+                || ceylon.language.metamodel.SequencedAnnotation.class == refAnnotationClass) {
+            return new AnnotationPredicate() {
+
+                @Override
+                public boolean shouldInstantiate(
+                        Class<? extends java.lang.annotation.Annotation> jAnnotationType) {
+                    return true;
+                }
+
+                @Override
+                public boolean accept(ceylon.language.metamodel.Annotation cAnnotation) {
+                    return Metamodel.isReified(cAnnotation, $reifiedValues);    
+                }
+            };
+        } else {
+            try {
+                refAnnotationType = Class.forName(refAnnotationClass.getName()+"$annotation", 
+                        false, refAnnotationClass.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            Class<?> c;
+            try {
+                c = Class.forName(refAnnotationClass.getName()+"$annotations", 
+                        false, refAnnotationClass.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                c = null;
+            }
+            refAnnotationWrapperType = c;
+        }
+        return new AnnotationPredicate() {
+
+            @Override
+            public boolean shouldInstantiate(
+                    Class<? extends java.lang.annotation.Annotation> jAnnotationType) {
+                return refAnnotationType == null || refAnnotationType.isAssignableFrom(jAnnotationType)
+                        || (refAnnotationWrapperType != null 
+                            && refAnnotationWrapperType.isAssignableFrom(jAnnotationType));
+            }
+
+            @Override
+            public boolean accept(ceylon.language.metamodel.Annotation cAnnotation) {
+                return refAnnotationClass.isInstance(cAnnotation);
+            }
+        };
     }
 }
