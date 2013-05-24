@@ -355,11 +355,11 @@ public class Metamodel {
     }
     
     private static <A extends ceylon.language.metamodel.Annotation<A>> void addAnnotation(
-            SequenceBuilder<ceylon.language.metamodel.Annotation<A>> ceylonAnnotations,
+            SequenceBuilder<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
-            DeclarationPredicate.Predicate<ceylon.language.metamodel.Annotation> pred) {
+            Predicates.Predicate<A> pred) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
-        if (pred != null && pred instanceof DeclarationPredicate.AnnotationPredicate && !((DeclarationPredicate.AnnotationPredicate)pred).shouldInstantiate(jAnnotationType)) {
+        if (pred != null && pred instanceof Predicates.AnnotationPredicate && !((Predicates.AnnotationPredicate<A>)pred).shouldInstantiate(jAnnotationType)) {
             return;
         }
         if (jAnnotationType.getAnnotation(Ceylon.class) == null) {
@@ -422,24 +422,24 @@ public class Metamodel {
                 handler);
     }
     
-    public static <A> Sequential<A> annotations(
+    public static <A extends ceylon.language.metamodel.Annotation<A>> Sequential<? extends A> annotations(
             TypeDescriptor $reifiedValues,
             Annotated annotated) {
         // TODO If the annotated is not a valid target for the annotationType
         // we can return empty immediately
-        DeclarationPredicate.Predicate<ceylon.language.metamodel.Annotation> predicate = DeclarationPredicate.isAnnotationOfType($reifiedValues);
+        Predicates.Predicate<A> predicate = Predicates.isAnnotationOfType($reifiedValues);
         return annotations($reifiedValues, annotated, predicate);
     }
 
-    public static <A> Sequential<A> annotations(TypeDescriptor $reifiedValues,
-            Annotated annotated, DeclarationPredicate.Predicate<ceylon.language.metamodel.Annotation> predicate) {
+    public static <A extends ceylon.language.metamodel.Annotation<A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
+            Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations();
         if (jAnnotations == null) {
             throw new RuntimeException("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
         }
         
         // TODO Fix initial size estimate when query for OptionalAnnotation
-        SequenceBuilder ceylonAnnotations = new SequenceBuilder($reifiedValues, jAnnotations.length);
+        SequenceBuilder<A> ceylonAnnotations = new SequenceBuilder<A>($reifiedValues, jAnnotations.length);
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
             addAnnotation(ceylonAnnotations, jAnnotation, predicate);
         }
@@ -473,13 +473,13 @@ public class Metamodel {
      * Determines whether the given member is annotated with the 
      * annotation corresponding to the given type descriptor 
      */
-    public static <Kind extends Declaration, Annotation> boolean isAnnotated (
+    public static <Kind extends Declaration, A extends ceylon.language.metamodel.Annotation<A>> boolean isAnnotated (
             TypeDescriptor $reifiedAnnotation, Kind member) {
         AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
         if (at instanceof nothingType_) {
             return false;
         }
-        Sequential<Annotation> annotations = Metamodel.<Annotation>annotations($reifiedAnnotation, member);
+        Sequential<? extends A> annotations = Metamodel.<A>annotations($reifiedAnnotation, member);
         return !annotations.getEmpty();
     }
 }

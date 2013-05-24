@@ -124,7 +124,7 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.metamodel.untyped.Declaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
-        DeclarationPredicate.Predicate predicate = DeclarationPredicate.fromDeclarationKind($reifiedKind);
+        Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
         
         return filteredMembers($reifiedKind, predicate);
     }
@@ -138,17 +138,17 @@ public abstract class FreeClassOrInterface
     public <Kind extends ceylon.language.metamodel.untyped.Declaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
-        DeclarationPredicate.Predicate predicate = DeclarationPredicate.and(
-                DeclarationPredicate.fromDeclarationKind($reifiedKind),
-                DeclarationPredicate.hasAnnotation($reifiedAnnotation));
+        Predicates.Predicate predicate = Predicates.and(
+                Predicates.isDeclarationOfKind($reifiedKind),
+                Predicates.isDeclarationAnnotatedWith($reifiedAnnotation));
         
         return filteredMembers($reifiedKind, predicate);
     }
 
     private <Kind> Sequential<? extends Kind> filteredMembers(
             TypeDescriptor $reifiedKind,
-            DeclarationPredicate.Predicate predicate) {
-        if (predicate == DeclarationPredicate.false_()) {
+            Predicates.Predicate predicate) {
+        if (predicate == Predicates.false_()) {
             return (Sequential<? extends Kind>)empty_.getEmpty$();
         }
         checkInit();
