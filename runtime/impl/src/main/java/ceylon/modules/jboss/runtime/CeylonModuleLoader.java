@@ -37,8 +37,7 @@ import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
 
-import ceylon.modules.DefaultLogChecker;
-import ceylon.modules.LogChecker;
+import ceylon.modules.api.runtime.LogChecker;
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.jboss.repository.ResourceLoaderProvider;
 

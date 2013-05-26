@@ -1,4 +1,4 @@
-package ceylon.modules;
+package ceylon.modules.api.runtime;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 

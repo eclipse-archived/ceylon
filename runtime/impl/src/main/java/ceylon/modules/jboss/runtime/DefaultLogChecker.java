@@ -1,7 +1,9 @@
-package ceylon.modules;
+package ceylon.modules.jboss.runtime;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import ceylon.modules.api.runtime.LogChecker;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 
