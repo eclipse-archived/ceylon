@@ -43,6 +43,8 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.tree.JCTree.JCModifiers;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -248,52 +250,6 @@ public class CeylonTransformer extends AbstractTransformer {
                 annotationList, block, expression, setterDecl);
     }
 
-    /** Creates a module class in the package, with the Module annotation required by the runtime. */
-    public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
-        at(module);
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder
-                .klass(this, "module_", null)
-                .modifiers(Flags.FINAL)
-                .constructorModifiers(Flags.PRIVATE)
-                .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
-        builder.annotations(expressionGen().transform(module.getAnnotationList()));
-        for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
-            String quotedName;
-            if (imported.getImportPath() != null) {
-                StringBuilder sb = new StringBuilder();
-                for (Tree.Identifier part : imported.getImportPath().getIdentifiers()) {
-                    sb.append(part.getText()).append('$');
-                }
-                quotedName = sb.substring(0, sb.length()-1);
-            } else if (imported.getQuotedLiteral() != null) {
-                quotedName = imported.getQuotedLiteral().getText();
-                quotedName = quotedName.substring(1, quotedName.length()-1);
-            } else {
-                throw Assert.fail();
-            }
-            if (quotedName.equals("ceylon$language")) {
-                continue;
-            }
-            List<JCAnnotation> importAnnotations = expressionGen().transform(imported.getAnnotationList());
-            JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
-            Name fieldName = names().fromString(quotedName);
-            JCExpression version = expressionGen().transform(imported.getVersion());
-            builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), version)));
-        }
-        return builder.build();
-    }
-
-    public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
-        at(pack);
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder
-                .klass(this, "package_", null)
-                .modifiers(Flags.FINAL)
-                .constructorModifiers(Flags.PRIVATE)
-                .annotations(makeAtPackage(pack.getUnit().getPackage()));
-        builder.annotations(expressionGen().transform(pack.getAnnotationList()));
-        return builder.build();
-    }
-
     public List<JCTree> transformAttribute(
             TypedDeclaration declarationModel,
             String attrName, String attrClassName,
@@ -423,5 +379,73 @@ public class CeylonTransformer extends AbstractTransformer {
                             makeJavaType(declarationModel.getType(), flags)));
         }
         return boxClass;
+    }
+
+    public JCExpression transformAttributeGetter(
+            TypedDeclaration declarationModel,
+            final JCExpression expression) {
+        
+        final String attrName = declarationModel.getName();
+        final String attrClassName = Naming.getAttrClassName(declarationModel, 0);
+        
+        JCBlock getterBlock = makeGetterBlock(expression);
+        
+        // For everything else generate a getter/setter method
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+            .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
+            .is(Flags.PUBLIC, declarationModel.isShared())
+            .getterBlock(getterBlock)
+            .immutable();
+        
+        List<JCTree> attr =  builder.build();
+        JCNewClass newExpr = makeNewClass(attrClassName, false, null);
+        JCExpression result = makeLetExpr(naming.temp(), List.<JCStatement>of((JCStatement)attr.get(0)), newExpr);
+        return result;
+    }
+    
+    /** Creates a module class in the package, with the Module annotation required by the runtime. */
+    public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
+        at(module);
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder
+                .klass(this, "module_", null)
+                .modifiers(Flags.FINAL)
+                .constructorModifiers(Flags.PRIVATE)
+                .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
+        builder.annotations(expressionGen().transform(module.getAnnotationList()));
+        for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
+            String quotedName;
+            if (imported.getImportPath() != null) {
+                StringBuilder sb = new StringBuilder();
+                for (Tree.Identifier part : imported.getImportPath().getIdentifiers()) {
+                    sb.append(part.getText()).append('$');
+                }
+                quotedName = sb.substring(0, sb.length()-1);
+            } else if (imported.getQuotedLiteral() != null) {
+                quotedName = imported.getQuotedLiteral().getText();
+                quotedName = quotedName.substring(1, quotedName.length()-1);
+            } else {
+                throw Assert.fail();
+            }
+            if (quotedName.equals("ceylon$language")) {
+                continue;
+            }
+            List<JCAnnotation> importAnnotations = expressionGen().transform(imported.getAnnotationList());
+            JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
+            Name fieldName = names().fromString(quotedName);
+            JCExpression version = expressionGen().transform(imported.getVersion());
+            builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), version)));
+        }
+        return builder.build();
+    }
+
+    public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
+        at(pack);
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder
+                .klass(this, "package_", null)
+                .modifiers(Flags.FINAL)
+                .constructorModifiers(Flags.PRIVATE)
+                .annotations(makeAtPackage(pack.getUnit().getPackage()));
+        builder.annotations(expressionGen().transform(pack.getAnnotationList()));
+        return builder.build();
     }
 }
