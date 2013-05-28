@@ -103,7 +103,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
-    private static final String JAVA_BASE_MODULE_NAME = "java.base";
+    public static final String JAVA_BASE_MODULE_NAME = "java.base";
     public static final String CEYLON_LANGUAGE = "ceylon.language";
     public static final String CEYLON_LANGUAGE_METADATA = "ceylon.language.metamodel";
     public static final String CEYLON_LANGUAGE_METADATA_UNTYPED = "ceylon.language.metamodel.untyped";
