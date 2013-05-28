@@ -209,14 +209,14 @@ public class Metamodel {
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Module module) {
         
         String className = module.getNameAsString() + ".module_";
-        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(className);
+        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(module, className);
         return classMirror.klass;
         
     }
     
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Package pkg) {
         String className = ((LazyPackage) pkg).getNameAsString()+ ".package_";
-        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(className);
+        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(pkg.getModule(), className);
         return classMirror != null ? classMirror.klass : null;
     }
     
