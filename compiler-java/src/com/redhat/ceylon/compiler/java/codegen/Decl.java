@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -446,6 +447,11 @@ public class Decl {
             scope = (Scope) scope.getContainer();
         }
         return (Package) scope;
+    }
+
+    public static Module getModuleContainer(Scope scope) {
+        Package pkg = Decl.getPackageContainer(scope);
+        return pkg != null ? pkg.getModule() : null;
     }
 
     public static boolean isValueTypeDecl(Tree.Term decl) {
