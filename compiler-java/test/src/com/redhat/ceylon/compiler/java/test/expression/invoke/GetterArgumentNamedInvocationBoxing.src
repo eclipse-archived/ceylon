@@ -11,16 +11,16 @@ final class getterArgumentNamedInvocationBoxing_ {
             {
                 .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("getterarg");
                 
-                final class $item$1 {
+                final class $item$1 implements .com.redhat.ceylon.compiler.java.language.GetterLong {
                     
                     private $item$1() {
                     }
                     
-                    long $get() {
+                    public long $get() {
                         return 1L;
                     }
                 }
-                final $item$1 $item$1 = new $item$1();
+                final .com.redhat.ceylon.compiler.java.language.GetterLong $item$1 = new $item$1();
                 final .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance($item$1.$get());
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor;
@@ -32,16 +32,16 @@ final class getterArgumentNamedInvocationBoxing_ {
             {
                 .ceylon.language.String $arg$2$0 = .ceylon.language.String.instance("getterarg");
                 
-                final class $item$3 {
+                final class $item$3 implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
                     
                     private $item$3() {
                     }
                     
-                    T $get() {
+                    public T $get() {
                         return t;
                     }
                 }
-                final $item$3 $item$3 = new $item$3();
+                final .com.redhat.ceylon.compiler.java.language.Getter<T> $item$3 = new $item$3();
                 final T $arg$2$1 = $item$3.$get();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.String.$TypeDescriptor;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$1 = $reifiedT;

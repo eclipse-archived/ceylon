@@ -32,27 +32,27 @@ final class bug605mth_ {
     
     static void bug605mth() {
         
-        final class hash$getter_ {
+        final class hash$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private hash$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return 1L;
             }
         }
-        final hash$getter_ hash$getter_ = new hash$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong hash$getter_ = new hash$getter_();
         
-        final class string$getter_ {
+        final class string$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
             private string$getter_() {
             }
             
-            .java.lang.String $get() {
+            public .java.lang.String $get() {
                 return "hello";
             }
         }
-        final string$getter_ string$getter_ = new string$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string$getter_ = new string$getter_();
         
         final class equals_ {
             
@@ -81,27 +81,27 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     private final void mth$priv() {
         
-        final class hash$getter_ {
+        final class hash$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private hash$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return 1L;
             }
         }
-        final hash$getter_ hash$getter_ = new hash$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong hash$getter_ = new hash$getter_();
         
-        final class string$getter_ {
+        final class string$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
             private string$getter_() {
             }
             
-            .java.lang.String $get() {
+            public .java.lang.String $get() {
                 return "hello";
             }
         }
-        final string$getter_ string$getter_ = new string$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string$getter_ = new string$getter_();
         
         final class equals_ {
             

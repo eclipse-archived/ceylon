@@ -8,32 +8,32 @@ class InnerAttributeGetter implements .com.redhat.ceylon.compiler.java.runtime.m
     private final void m$priv() {
         final long m = 2L;
         
-        final class innerGetter$getter_ {
+        final class innerGetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private innerGetter$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return m;
             }
         }
-        final innerGetter$getter_ innerGetter$getter_ = new innerGetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter_ = new innerGetter$getter_();
         final long n = innerGetter$getter_.$get();
     }
     
     private final void m2$priv() {
         final long m = 2L;
         
-        final class innerGetter$getter_ {
+        final class innerGetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private innerGetter$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return m;
             }
         }
-        final innerGetter$getter_ innerGetter$getter_ = new innerGetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter_ = new innerGetter$getter_();
         final long n = innerGetter$getter_.$get();
     }
     

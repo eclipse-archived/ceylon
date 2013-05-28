@@ -7,16 +7,16 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
     
     private final void m$priv() {
         
-        final class innerGetterSetter$getter_ {
+        final class innerGetterSetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private innerGetterSetter$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return 0L;
             }
         }
-        final innerGetterSetter$getter_ innerGetterSetter$getter_ = new innerGetterSetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter_ = new innerGetterSetter$getter_();
         
         final class innerGetterSetter$setter_ {
             
@@ -24,7 +24,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             private long value;
             
-            void $set(final long innerGetterSetter) {
+            public void $set(final long innerGetterSetter) {
             }
         }
         final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
@@ -35,16 +35,16 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
     private final void m2$priv() {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong m_ = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
         
-        final class innerGetterSetter$getter_ {
+        final class innerGetterSetter$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private innerGetterSetter$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return m_.ref;
             }
         }
-        final innerGetterSetter$getter_ innerGetterSetter$getter_ = new innerGetterSetter$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter_ = new innerGetterSetter$getter_();
         
         final class innerGetterSetter$setter_ {
             
@@ -52,7 +52,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             private long value;
             
-            void $set(final long innerGetterSetter) {
+            public void $set(final long innerGetterSetter) {
                 (
                     let
                     {

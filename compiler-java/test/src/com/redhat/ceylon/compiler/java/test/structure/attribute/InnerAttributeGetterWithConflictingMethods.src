@@ -7,16 +7,16 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
     
     private final void m$priv() {
         
-        final class x$getter_ {
+        final class x$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private x$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return 2L;
             }
         }
-        final x$getter_ x$getter_ = new x$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter_ = new x$getter_();
         
         final class getX_ {
             
@@ -34,16 +34,16 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
     
     private final void m2$priv() {
         
-        final class x$getter_ {
+        final class x$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private x$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return 2L;
             }
         }
-        final x$getter_ x$getter_ = new x$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter_ = new x$getter_();
         
         final class getX_ {
             

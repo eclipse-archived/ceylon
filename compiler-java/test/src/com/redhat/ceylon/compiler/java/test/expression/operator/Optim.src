@@ -277,16 +277,16 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     
     private final void nonOptimisableArithmetic$priv() {
         
-        final class localGetterInteger$getter_ {
+        final class localGetterInteger$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
             private localGetterInteger$getter_() {
             }
             
-            long $get() {
+            public long $get() {
                 return 0L;
             }
         }
-        final localGetterInteger$getter_ localGetterInteger$getter_ = new localGetterInteger$getter_();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong localGetterInteger$getter_ = new localGetterInteger$getter_();
         
         final class localGetterInteger$setter_ {
             
@@ -294,7 +294,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             private long value;
             
-            void $set(final long localGetterInteger) {
+            public void $set(final long localGetterInteger) {
             }
         }
         final localGetterInteger$setter_ localGetterInteger$setter_ = new localGetterInteger$setter_();

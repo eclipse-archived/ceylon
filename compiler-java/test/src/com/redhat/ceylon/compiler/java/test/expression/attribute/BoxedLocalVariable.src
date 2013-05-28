@@ -12,16 +12,16 @@ class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.
         t2_.ref = t;
         t2_.ref = t2_.ref;
         
-        final class t3$getter_ {
+        final class t3$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
             
             private t3$getter_() {
             }
             
-            T $get() {
+            public T $get() {
                 return t2_.ref;
             }
         }
-        final t3$getter_ t3$getter_ = new t3$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<T> t3$getter_ = new t3$getter_();
         return null;
     }
     
@@ -47,16 +47,16 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
         t2_.ref = t.toString();
         t2_.ref = t2_.ref;
         
-        final class t3$getter_ {
+        final class t3$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
             private t3$getter_() {
             }
             
-            .java.lang.String $get() {
+            public .java.lang.String $get() {
                 return t2_.ref;
             }
         }
-        final t3$getter_ t3$getter_ = new t3$getter_();
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> t3$getter_ = new t3$getter_();
         return null;
     }
     
