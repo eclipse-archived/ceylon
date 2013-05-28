@@ -11,8 +11,8 @@ function type$metamodel(x) {
                 mm = _x.$$metamodel$$;
             }
         }
-        if (mm && mm['$mt']) {
-            var metatype = mm['$mt'];
+        if (mm && mm.d['$mt']) {
+            var metatype = mm.d['$mt'];
             if (metatype === 'ifc') { //Interface
                 //
             } else if (metatype === 'cls') { //Class
@@ -23,7 +23,17 @@ function type$metamodel(x) {
             throw Exception(String$("No metamodel available for "+x));
         }
     }
-    return null;
+    return "UNIMPLEMENTED";
 }
-type$metamodel.$$metamodel$$={$nm:'type',$mt:'mthd',$ps:[{t:Anything}],$an:function(){return[shared()];}};
+type$metamodel.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language.metamodel']['type']};
 exports.type$metamodel=type$metamodel;
+
+function typeLiteral$metamodel($$targs$$) {
+    if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
+        throw Exception("JS Interop not supported");
+    }
+console.log("typeLiteral<" + className($$targs$$.Type) + ">");
+    throw Exception("typeLiteral UNIMPLEMENTED");
+}
+typeLiteral$metamodel.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language.metamodel']['typeLiteral']};
+exports.typeLiteral$metamodel=typeLiteral$metamodel;

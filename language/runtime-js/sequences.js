@@ -13,7 +13,7 @@ function Array$() {
     List(that);
     return that;
 }
-Array$.$$metamodel$$={$nm:'Array',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract(),native()];}};
+Array$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Array']};
 
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Cloneable, Ranged, $init$List());
@@ -151,7 +151,7 @@ exports.array=function(elems, $$$ptypes) {
     e.$$targs$$=$$$ptypes;
     return e;
 }
-exports.array.$$metamodel$$={$nm:'array',$mt:'mthd',$an:function(){return[shared()];}};
+exports.array.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['array']};
 
 exports.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
@@ -163,7 +163,7 @@ exports.arrayOfSize=function(size, elem, $$$mptypes) {
         return elems;
     } else return [];
 }
-exports.arrayOfSize.$$metamodel$$={$nm:'arrayOfSize',$mt:'mthd',$an:function(){return[shared()];}};
+exports.arrayOfSize.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['arrayOfSize']};
 
 function TypeCategory(seq, type) {
     var that = new TypeCategory.$$;
@@ -183,7 +183,7 @@ function SequenceBuilder($$targs$$) {
     that.$$targs$$=$$targs$$;
     return that;
 }
-SequenceBuilder.$$metamodel$$={$nm:'SequenceBuilder',$mt:'cls',$ps:[],$an:function(){return[shared()];}};
+SequenceBuilder.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['SequenceBuilder']};
 
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
@@ -207,7 +207,7 @@ function SequenceAppender(other, $$targs$$) {
     that.appendAll(other);
     return that;
 }
-SequenceAppender.$$metamodel$$={$nm:'SequenceAppender',$mt:'cls',$ps:[],$an:function(){return[shared()];}};
+SequenceAppender.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['SequenceAppender']};
 
 initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
 

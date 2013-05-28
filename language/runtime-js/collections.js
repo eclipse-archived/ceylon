@@ -18,7 +18,7 @@ function Comprehension(makeNextFunc, $$targs$$, compr) {
     compr.$$targs$$=$$targs$$;
     return compr;
 }
-Comprehension.$$metamodel$$={$nm:'Comprehension',$an:function(){return[shared()];},$mt:'cls'};
+Comprehension.$$metamodel$$={$nm:'Comprehension',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterable']};
 function $init$Comprehension() {
     if (Comprehension.$$===undefined) {
         initTypeProto(Comprehension, 'ceylon.language::Comprehension', $init$Basic(), $init$Iterable());
@@ -45,7 +45,7 @@ function ComprehensionIterator(nextFunc, $$targs$$, it) {
     it.next = nextFunc;
     return it;
 }
-ComprehensionIterator.$$metamodel$$={$nm:'ComprehensionIterator',$mt:'cls',$an:function(){return[shared()];}};
+ComprehensionIterator.$$metamodel$$={$nm:'ComprehensionIterator',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterator']};
 function $init$ComprehensionIterator() {
     if (ComprehensionIterator.$$===undefined) {
         initTypeProto(ComprehensionIterator, 'ceylon.language::ComprehensionIterator',

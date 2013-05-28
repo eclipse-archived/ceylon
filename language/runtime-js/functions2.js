@@ -11,7 +11,7 @@ function string(/*Iterable<Character>*/chars) {
     }
     return s.string;
 }
-string.$$metamodel$$={$nm:'string',$mt:'mthd',$an:function(){return[shared()];}};
+string.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['string']};
 
 function internalSort(comp, elems, $$$mptypes) {
     if (elems===undefined) {return getEmpty();}
@@ -26,7 +26,7 @@ function internalSort(comp, elems, $$$mptypes) {
     });
     return ArraySequence(arr, $$$mptypes);
 }
-string.$$metamodel$$={$nm:'internalSort',$mt:'mthd',$an:function(){return[shared()];}};
+internalSort.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['internalSort']};
 exports.string=string;
 
 function flatten(tf, $$$mptypes) {
@@ -66,7 +66,7 @@ function flatten(tf, $$$mptypes) {
     rf.$$targs$$=$$$mptypes;
     return rf;
 }
-flatten.$$metamodel$$={$nm:'flatten',$mt:'mthd',$an:function(){return[shared()];}};
+flatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['flatten']};
 
 function unflatten(ff, $$$mptypes) {
     if (ff.$$metamodel$$ && ff.$$metamodel$$['$ps']) {
@@ -100,7 +100,7 @@ function unflatten(ff, $$$mptypes) {
     ru.$$targs$$=$$$mptypes;
     return ru;
 }
-unflatten.$$metamodel$$={$nm:'unflatten',$mt:'mthd',$an:function(){return[shared()];}};
+unflatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['unflatten']};
 exports.flatten=flatten;
 exports.unflatten=unflatten;
 
@@ -130,5 +130,5 @@ function integerRangeByIterable(range, step, $$$mptypes) {
         }
     }, {Element:range.$$targs$$.Element, Absent:range.$$targs$$.Absent});
 }
-integerRangeByIterable.$$metamodel$$={$nm:'integerRangeByIterable',$mt:'mthd',$an:function(){return[shared()];}};
+integerRangeByIterable.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['integerRangeByIterable']};
 exports.integerRangeByIterable=integerRangeByIterable;

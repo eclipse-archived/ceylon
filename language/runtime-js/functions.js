@@ -35,7 +35,7 @@ function isOfType(obj, type) {
         if (obj.getT$all === undefined) {
             if (obj.$$metamodel$$) {
                 //We can navigate the metamodel
-                if (obj.$$metamodel$$['$mt'] === 'mthd') {
+                if (obj.$$metamodel$$.d['$mt'] === 'mthd') {
                     if (type.t === Callable) { //It's a callable reference
                         if (type.a && type.a.Return && obj.$$metamodel$$['$t']) {
                             //Check if return type matches
@@ -236,12 +236,12 @@ function className(obj) {
     }
     return String$(tn);
 }
-className.$$metamodel$$={$nm:'className',$mt:'mthd',$an:function(){return[shared()];}};
+className.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['className']};
 
 function identityHash(obj) {
     return obj.BasicID;
 }
-identityHash.$$metamodel$$={$nm:'identityHash',$mt:'mthd',$an:function(){return[shared()];}};
+identityHash.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['identityHash']};
 
 function set_type_args(obj, targs) {
     if (obj.$$targs$$ === undefined) {

@@ -12,7 +12,7 @@ function String$(value,size) {
     that.codePoints = size;
     return that;
 }
-String$.$$metamodel$$={$nm:'String',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract(),native()];}};
+String$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
         Ranged, Summable, Cloneable);
@@ -521,7 +521,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-StringIterator.$$metamodel$$={$nm:'StringIterator',$mt:'cls',$ps:[{t:String$}],$an:function(){return[shared()];}};
+StringIterator.$$metamodel$$={$nm:'StringIterator',$mt:'cls',$ps:[{t:String$}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterator']};
 
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
@@ -562,7 +562,7 @@ function Character(value) {
     that.value = value;
     return that;
 }
-Character.$$metamodel$$={$nm:'Character',$mt:'cls',$ps:[],$an:function(){return[shared(),abstract()];}};
+Character.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Character']};
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
@@ -668,7 +668,7 @@ function StringBuilder(/*String...*/comps) {
     }
     return that;
 }
-StringBuilder.$$metamodel$$={$nm:'StringBuilder',$mt:'cls',$ps:[],$an:function(){return[shared()];}};
+StringBuilder.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['StringBuilder']};
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
