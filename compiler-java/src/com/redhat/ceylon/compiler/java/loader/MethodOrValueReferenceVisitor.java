@@ -74,8 +74,12 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             }
             TypedDeclaration d = (TypedDeclaration) decl;
             if (d==declaration) {
-                if (Decl.isValue(d)) {
-                    ((Value) d).setCaptured(true);
+                if (Decl.isValue(d) || Decl.isGetter(decl)) {
+                    Value v = (Value) d;
+                    v.setCaptured(true);
+                    if (v.getSetter() != null) {
+                        v.getSetter().setCaptured(true);
+                    }
                 }
                 else if (Decl.isMethod(d)) {
                     ((Method) d).setCaptured(true);
