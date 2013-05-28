@@ -28,15 +28,20 @@ import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
 
 public class JavacUtil {
 
     public static Map<String, AnnotationMirror> getAnnotations(Symbol symbol) {
         HashMap<String, AnnotationMirror> result = new HashMap<String, AnnotationMirror>();
-        com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
-        for(Compound annotation : annotations){
-            result.put(annotation.type.tsym.getQualifiedName().toString(), new JavacAnnotation(annotation));
+        try{
+            com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
+            for(Compound annotation : annotations){
+                result.put(annotation.type.tsym.getQualifiedName().toString(), new JavacAnnotation(annotation));
+            }
+        }catch(CompletionFailure x){
+            // ignore, it will be logged somewhere else
         }
         return result;
     }

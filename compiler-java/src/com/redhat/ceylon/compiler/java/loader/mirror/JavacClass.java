@@ -59,7 +59,7 @@ public class JavacClass implements ClassMirror {
     private List<FieldMirror> fields;
 
     private LinkedList<ClassMirror> innerClasses;
-    
+
     public JavacClass(ClassSymbol classSymbol){
         this.classSymbol = classSymbol;
     }
