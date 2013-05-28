@@ -163,7 +163,7 @@ public class Naming implements LocalId {
         }
     }
 
-    public static String getErasedGetterName(Declaration decl) {
+    private static String getErasedGetterName(Declaration decl) {
         String property = decl.getName();
         // ERASURE
         if ("hash".equals(property)) {
@@ -474,9 +474,9 @@ public class Naming implements LocalId {
         } else {
             String getterName = getGetterName(decl.getName());
             if (decl.isToplevel()) {
-                getterName = getterName + "$";
+                return getterName + "$";
             }
-            return getterName;
+            return "$get";
         }
     }
 
@@ -494,14 +494,21 @@ public class Naming implements LocalId {
         }
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getSetterName();
+        } else if (Decl.withinClassOrInterface(decl)) {
+            String setterName = getSetterName(decl.getName());
+            if (decl.isMember() && !decl.isShared()) {
+                setterName += "$priv";
+            }
+            return setterName;
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
-        } 
-        String setterName = getSetterName(decl.getName());
-        if (decl.isMember() && !decl.isShared()) {
-            setterName += "$priv";
+        }  else {
+            String setterName = getSetterName(decl.getName());
+            if (decl.isToplevel()) {
+                return setterName + "$";
+            }
+            return "$set";
         }
-        return setterName;
     }
 
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
@@ -1006,7 +1013,7 @@ public class Naming implements LocalId {
         String name = decl.getName();
         if (Decl.isLocal(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
-            		|| (namingOptions & NA_GETTER) != 0){
+                    || (namingOptions & NA_GETTER) != 0){
                 name = name + "$getter";
             } else if ((decl instanceof Setter && (namingOptions & NA_GETTER) == 0)
                     || (namingOptions & NA_SETTER) != 0) {
