@@ -178,8 +178,8 @@ public class JsModuleManager extends ModuleManager {
             reader = new BufferedReader(new FileReader(jsFile));
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("//!!!METAMODEL:")) && line.endsWith("}")) {
-                    line = line.substring(line.indexOf("{"));
+                if ((line.startsWith("var $$METAMODEL$$=")) && line.endsWith("};")) {
+                    line = line.substring(line.indexOf("{"), line.length()-1);
                     return (Map<String,Object>)JSONValue.parse(line);
                 }
             }
