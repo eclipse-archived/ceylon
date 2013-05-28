@@ -27,7 +27,6 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -43,12 +42,12 @@ public class CeylonClassWriter extends ClassWriter {
     }
 
     private CeyloncFileManager fileManager;
-    private AbstractModelLoader ceylonModelLoader;
+    private CeylonModelLoader ceylonModelLoader;
 
     public CeylonClassWriter(Context context) {
         super(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-        ceylonModelLoader = CeylonModelLoader.instance(context);
+        ceylonModelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context);
     }
 
     @Override
