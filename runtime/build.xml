@@ -155,6 +155,11 @@
     <target name="publish" depends="dist,init.repo,publish-internal">
     </target>
 
+    <target name="publish-libs">
+        <copy file="${jboss-modules.lib}"
+            tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.module}"/>
+    </target>
+
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.runtime.repo}" overwrite="true">
             <fileset dir="${ceylon.runtime.dist}"/>
