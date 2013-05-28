@@ -282,7 +282,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             private localGetterInteger$getter_() {
             }
             
-            long getLocalGetterInteger() {
+            long $get() {
                 return 0L;
             }
         }
@@ -294,7 +294,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             private long value;
             
-            void setLocalGetterInteger(final long localGetterInteger) {
+            void $set(final long localGetterInteger) {
             }
         }
         final localGetterInteger$setter_ localGetterInteger$setter_ = new localGetterInteger$setter_();
@@ -323,19 +323,19 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop11;
         ));
-        localGetterInteger$setter_.setLocalGetterInteger((
+        localGetterInteger$setter_.$set((
             let
             {
-                long $ceylontmpop12 = localGetterInteger$getter_.getLocalGetterInteger();
-                localGetterInteger$setter_.setLocalGetterInteger($ceylontmpop12 + 1);
+                long $ceylontmpop12 = localGetterInteger$getter_.$get();
+                localGetterInteger$setter_.$set($ceylontmpop12 + 1);
             }
             returning $ceylontmpop12;
         ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$((
             let
             {
                 long $ceylontmpop13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger($ceylontmpop13 + 1);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$($ceylontmpop13 + 1);
             }
             returning $ceylontmpop13;
         ));
@@ -364,19 +364,19 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop17;
         ));
-        localGetterInteger$setter_.setLocalGetterInteger((
+        localGetterInteger$setter_.$set((
             let
             {
-                long $ceylontmpop18 = localGetterInteger$getter_.getLocalGetterInteger() + 1;
-                localGetterInteger$setter_.setLocalGetterInteger($ceylontmpop18);
+                long $ceylontmpop18 = localGetterInteger$getter_.$get() + 1;
+                localGetterInteger$setter_.$set($ceylontmpop18);
             }
             returning $ceylontmpop18;
         ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$((
             let
             {
                 long $ceylontmpop19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$() + 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger($ceylontmpop19);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$($ceylontmpop19);
             }
             returning $ceylontmpop19;
         ));
@@ -405,19 +405,19 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop23;
         ));
-        localGetterInteger$setter_.setLocalGetterInteger((
+        localGetterInteger$setter_.$set((
             let
             {
-                long $ceylontmpop24 = localGetterInteger$getter_.getLocalGetterInteger() + localGetterInteger$getter_.getLocalGetterInteger();
-                localGetterInteger$setter_.setLocalGetterInteger($ceylontmpop24);
+                long $ceylontmpop24 = localGetterInteger$getter_.$get() + localGetterInteger$getter_.$get();
+                localGetterInteger$setter_.$set($ceylontmpop24);
             }
             returning $ceylontmpop24;
         ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$((
             let
             {
                 long $ceylontmpop25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger($ceylontmpop25);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$($ceylontmpop25);
             }
             returning $ceylontmpop25;
         ));
@@ -587,7 +587,7 @@ final class optimToplevelInteger_ {
         }
     }
     
-    static void setOptimToplevelInteger(final long optimToplevelInteger) {
+    static void setOptimToplevelInteger$(final long optimToplevelInteger) {
         value[0] = optimToplevelInteger;
     }
 }

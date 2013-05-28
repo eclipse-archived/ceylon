@@ -42,7 +42,7 @@ final class attr2_ {
         }
     }
     
-    static void setAttr2(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
+    static void setAttr2$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr2) {
         value[0] = attr2;
@@ -72,7 +72,7 @@ final class attr4_ {
         return 1L;
     }
     
-    static void setAttr4(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
+    static void setAttr4$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr4) {
     }

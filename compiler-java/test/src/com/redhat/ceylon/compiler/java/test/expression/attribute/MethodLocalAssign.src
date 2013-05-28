@@ -16,7 +16,7 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
             private b2$getter_() {
             }
             
-            boolean getB2() {
+            boolean $get() {
                 return b1_.ref;
             }
         }
@@ -28,12 +28,12 @@ class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             private boolean value;
             
-            void setB2(final boolean b2) {
+            void $set(final boolean b2) {
                 b1_.ref = b2;
             }
         }
         final b2$setter_ b2$setter_ = new b2$setter_();
-        b2$setter_.setB2(true);
+        b2$setter_.$set(true);
     }
     
     public static void main(.java.lang.String[] args) {

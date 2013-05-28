@@ -252,7 +252,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             private getterN1$getter_() {
             }
             
-            long getGetterN1() {
+            long $get() {
                 return n1_.ref;
             }
         }
@@ -264,7 +264,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             private long value;
             
-            void setGetterN1(final long getterN1) {
+            void $set(final long getterN1) {
                 n1_.ref = getterN1;
             }
         }
@@ -275,7 +275,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             private getterN2$getter_() {
             }
             
-            long getGetterN2() {
+            long $get() {
                 return n2_.ref;
             }
         }
@@ -287,7 +287,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             private long value;
             
-            void setGetterN2(final long getterN2) {
+            void $set(final long getterN2) {
                 n2_.ref = getterN2;
             }
         }
@@ -298,7 +298,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             private getterI1$getter_() {
             }
             
-            long getGetterI1() {
+            long $get() {
                 return i1_.ref;
             }
         }
@@ -310,18 +310,18 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             private long value;
             
-            void setGetterI1(final long getterI1) {
+            void $set(final long getterI1) {
                 i1_.ref = getterI1;
             }
         }
         final getterI1$setter_ getterI1$setter_ = new getterI1$setter_();
-        getterI1$setter_.setGetterI1(~getterN1$getter_.getGetterN1());
-        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() & getterN2$getter_.getGetterN2());
-        getterI1$setter_.setGetterI1(getterN1$getter_.getGetterN1() | getterN2$getter_.getGetterN2());
-        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() ^ getterN2$getter_.getGetterN2());
-        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() << getterN2$getter_.getGetterN2());
-        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() >>> getterN2$getter_.getGetterN2());
-        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() >> getterN2$getter_.getGetterN2());
+        getterI1$setter_.$set(~getterN1$getter_.$get());
+        getterN1$setter_.$set(getterN1$getter_.$get() & getterN2$getter_.$get());
+        getterI1$setter_.$set(getterN1$getter_.$get() | getterN2$getter_.$get());
+        getterN1$setter_.$set(getterN1$getter_.$get() ^ getterN2$getter_.$get());
+        getterN1$setter_.$set(getterN1$getter_.$get() << getterN2$getter_.$get());
+        getterN1$setter_.$set(getterN1$getter_.$get() >>> getterN2$getter_.$get());
+        getterN1$setter_.$set(getterN1$getter_.$get() >> getterN2$getter_.$get());
     }
     
     private final void boxedLocals$priv() {
@@ -338,23 +338,23 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     private final void unboxedToplevel$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1$(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$());
     }
     
     private final void unboxedToplevelGetter$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1$(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1$() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2$());
     }
     
     @.java.lang.Override
@@ -428,7 +428,7 @@ final class bwToplevelN1_ {
         }
     }
     
-    static void setBwToplevelN1(final long bwToplevelN1) {
+    static void setBwToplevelN1$(final long bwToplevelN1) {
         value[0] = bwToplevelN1;
     }
 }
@@ -449,7 +449,7 @@ final class bwToplevelN2_ {
         }
     }
     
-    static void setBwToplevelN2(final long bwToplevelN2) {
+    static void setBwToplevelN2$(final long bwToplevelN2) {
         value[0] = bwToplevelN2;
     }
 }
@@ -470,7 +470,7 @@ final class bwToplevelI1_ {
         }
     }
     
-    static void setBwToplevelI1(final long bwToplevelI1) {
+    static void setBwToplevelI1$(final long bwToplevelI1) {
         value[0] = bwToplevelI1;
     }
 }
@@ -483,8 +483,8 @@ final class bwToplevelGetterN1_ {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1$();
     }
     
-    static void setBwToplevelGetterN1(final long bwToplevelGetterN1) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(bwToplevelGetterN1);
+    static void setBwToplevelGetterN1$(final long bwToplevelGetterN1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1$(bwToplevelGetterN1);
     }
 }
 final class bwToplevelGetterN2_ {
@@ -496,8 +496,8 @@ final class bwToplevelGetterN2_ {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2$();
     }
     
-    static void setBwToplevelGetterN2(final long bwToplevelGetterN2) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.setBwToplevelN2(bwToplevelGetterN2);
+    static void setBwToplevelGetterN2$(final long bwToplevelGetterN2) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.setBwToplevelN2$(bwToplevelGetterN2);
     }
 }
 final class bwToplevelGetterI1_ {
@@ -509,7 +509,7 @@ final class bwToplevelGetterI1_ {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.getBwToplevelI1$();
     }
     
-    static void setBwToplevelGetterI1(final long bwToplevelGetterI1) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(bwToplevelGetterI1);
+    static void setBwToplevelGetterI1$(final long bwToplevelGetterI1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1$(bwToplevelGetterI1);
     }
 }

@@ -12,7 +12,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             private innerGetterSetter$getter_() {
             }
             
-            long getInnerGetterSetter() {
+            long $get() {
                 return 0L;
             }
         }
@@ -24,12 +24,12 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             private long value;
             
-            void setInnerGetterSetter(final long innerGetterSetter) {
+            void $set(final long innerGetterSetter) {
             }
         }
         final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
-        final long n = innerGetterSetter$getter_.getInnerGetterSetter();
-        innerGetterSetter$setter_.setInnerGetterSetter(1L);
+        final long n = innerGetterSetter$getter_.$get();
+        innerGetterSetter$setter_.$set(1L);
     }
     
     private final void m2$priv() {
@@ -40,7 +40,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             private innerGetterSetter$getter_() {
             }
             
-            long getInnerGetterSetter() {
+            long $get() {
                 return m_.ref;
             }
         }
@@ -52,7 +52,7 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
             private long value;
             
-            void setInnerGetterSetter(final long innerGetterSetter) {
+            void $set(final long innerGetterSetter) {
                 (
                     let
                     {
@@ -64,8 +64,8 @@ class InnerAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.run
             }
         }
         final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
-        final long n = innerGetterSetter$getter_.getInnerGetterSetter();
-        innerGetterSetter$setter_.setInnerGetterSetter(1L);
+        final long n = innerGetterSetter$getter_.$get();
+        innerGetterSetter$setter_.$set(1L);
     }
     
     public static void main(.java.lang.String[] args) {

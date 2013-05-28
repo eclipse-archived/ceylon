@@ -10,7 +10,7 @@ final class bug247_ {
             let
             {
                 long $ceylontmpop0 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.getBug247_toplevel$() + 1L;
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.setBug247_toplevel($ceylontmpop0);
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.setBug247_toplevel$($ceylontmpop0);
             }
             returning $ceylontmpop0;
         );
@@ -38,7 +38,7 @@ final class bug247_toplevel_ {
         }
     }
     
-    static void setBug247_toplevel(final long bug247_toplevel) {
+    static void setBug247_toplevel$(final long bug247_toplevel) {
         value[0] = bug247_toplevel;
     }
 }

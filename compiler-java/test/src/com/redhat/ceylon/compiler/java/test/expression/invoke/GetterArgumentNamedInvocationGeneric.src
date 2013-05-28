@@ -26,12 +26,12 @@ final class getterArgumentNamedInvocationGeneric_ {
                     private $i$1() {
                     }
                     
-                    T getI() {
+                    T $get() {
                         return t;
                     }
                 }
                 final $i$1 $i$1 = new $i$1();
-                final T $arg$0$0 = $i$1.getI();
+                final T $arg$0$0 = $i$1.$get();
                 callFunction.callFunction($arg$0$0);
             }
             returning null;

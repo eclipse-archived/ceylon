@@ -17,7 +17,7 @@ class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.
             private t3$getter_() {
             }
             
-            T getT3() {
+            T $get() {
                 return t2_.ref;
             }
         }
@@ -52,7 +52,7 @@ class BoxedLocalVariable_sub extends .com.redhat.ceylon.compiler.java.test.expre
             private t3$getter_() {
             }
             
-            .java.lang.String getT3() {
+            .java.lang.String $get() {
                 return t2_.ref;
             }
         }

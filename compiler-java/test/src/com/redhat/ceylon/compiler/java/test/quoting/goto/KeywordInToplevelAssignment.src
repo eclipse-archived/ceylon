@@ -6,7 +6,7 @@ final class keywordInToplevelAssignment_ {
     }
     
     static void keywordInToplevelAssignment() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.setGoto(1L);
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.setGoto$(1L);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -31,7 +31,7 @@ final class goto_ {
         }
     }
     
-    static void setGoto(final long goto) {
+    static void setGoto$(final long goto) {
         value[0] = goto;
     }
 }

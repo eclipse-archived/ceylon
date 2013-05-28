@@ -6,8 +6,8 @@ final class toplevelAttributeLateInit_ {
     }
     
     static void toplevelAttributeLateInit() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.setToplevelAttributeLate(0L);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.setToplevelAttributeLateVariable(0L);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.setToplevelAttributeLate$(0L);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.setToplevelAttributeLateVariable$(0L);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -29,7 +29,7 @@ final class toplevelAttributeLate_ {
         }
     }
     
-    static void setToplevelAttributeLate(final long toplevelAttributeLate) {
+    static void setToplevelAttributeLate$(final long toplevelAttributeLate) {
         if (value != null) throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Re-initialization of \'late\' attribute"));
         value = new long[1];
         value[0] = toplevelAttributeLate;
@@ -49,7 +49,7 @@ final class toplevelAttributeLateVariable_ {
         }
     }
     
-    static void setToplevelAttributeLateVariable(final long toplevelAttributeLateVariable) {
+    static void setToplevelAttributeLateVariable$(final long toplevelAttributeLateVariable) {
         if (value == null) value = new long[1];
         value[0] = toplevelAttributeLateVariable;
     }

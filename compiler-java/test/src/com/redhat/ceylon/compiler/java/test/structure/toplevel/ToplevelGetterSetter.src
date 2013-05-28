@@ -17,7 +17,7 @@ final class topLevelGetterSetterX_ {
         }
     }
     
-    static void setTopLevelGetterSetterX(final long topLevelGetterSetterX) {
+    static void setTopLevelGetterSetterX$(final long topLevelGetterSetterX) {
         value[0] = topLevelGetterSetterX;
     }
 }
@@ -30,8 +30,8 @@ final class topLevelGetterSetter_ {
         return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
     }
     
-    static void setTopLevelGetterSetter(final long topLevelGetterSetter) {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX(topLevelGetterSetter);
+    static void setTopLevelGetterSetter$(final long topLevelGetterSetter) {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX$(topLevelGetterSetter);
     }
 }
 public final class topLevelGetterSetterShared_ {
@@ -43,8 +43,8 @@ public final class topLevelGetterSetterShared_ {
         return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
     }
     
-    public static void setTopLevelGetterSetterShared(final long topLevelGetterSetterShared) {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX(topLevelGetterSetterShared);
+    public static void setTopLevelGetterSetterShared$(final long topLevelGetterSetterShared) {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX$(topLevelGetterSetterShared);
     }
 }
 final class topLevelGetterSetter2_ {
@@ -56,12 +56,12 @@ final class topLevelGetterSetter2_ {
         return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
     }
     
-    static void setTopLevelGetterSetter2(final long topLevelGetterSetter2) {
+    static void setTopLevelGetterSetter2$(final long topLevelGetterSetter2) {
         (
             let
             {
                 long $ceylontmpop0 = topLevelGetterSetter2;
-                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX($ceylontmpop0);
+                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX$($ceylontmpop0);
             }
             returning $ceylontmpop0;
         );
@@ -76,12 +76,12 @@ public final class topLevelGetterSetterShared2_ {
         return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.getTopLevelGetterSetterX$();
     }
     
-    public static void setTopLevelGetterSetterShared2(final long topLevelGetterSetterShared2) {
+    public static void setTopLevelGetterSetterShared2$(final long topLevelGetterSetterShared2) {
         (
             let
             {
                 long $ceylontmpop1 = topLevelGetterSetterShared2;
-                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX($ceylontmpop1);
+                .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelGetterSetterX_.setTopLevelGetterSetterX$($ceylontmpop1);
             }
             returning $ceylontmpop1;
         );

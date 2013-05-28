@@ -25,7 +25,7 @@ public final class Zero {
         }
     }
     
-    public static void setZero(@.com.redhat.ceylon.compiler.java.metadata.Name("Zero")
+    public static void setZero$(@.com.redhat.ceylon.compiler.java.metadata.Name("Zero")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long Zero) {
         value[0] = Zero;
@@ -45,7 +45,7 @@ public final class One {
         return 1L;
     }
     
-    public static void setOne(@.com.redhat.ceylon.compiler.java.metadata.Name("One")
+    public static void setOne$(@.com.redhat.ceylon.compiler.java.metadata.Name("One")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long One) {
     }

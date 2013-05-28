@@ -9,6 +9,6 @@ public final class strictfp_ {
         return 0L;
     }
     
-    public static void setStrictfp(final long strictfp) {
+    public static void setStrictfp$(final long strictfp) {
     }
 }

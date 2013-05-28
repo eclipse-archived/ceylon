@@ -90,12 +90,12 @@ final class testbug955_ {
                     private $att$4() {
                     }
                     
-                    .java.lang.String getAtt() {
+                    .java.lang.String $get() {
                         return "";
                     }
                 }
                 final $att$4 $att$4 = new $att$4();
-                final .java.lang.String $arg$3$1 = $att$4.getAtt();
+                final .java.lang.String $arg$3$1 = $att$4.$get();
             }
             returning new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595($arg$3$0, $arg$3$1);
         );
@@ -115,12 +115,12 @@ final class testbug955_ {
                     private $att$6() {
                     }
                     
-                    .java.lang.String getAtt() {
+                    .java.lang.String $get() {
                         return "";
                     }
                 }
                 final $att$6 $att$6 = new $att$6();
-                final .java.lang.String $arg$5$1 = $att$6.getAtt();
+                final .java.lang.String $arg$5$1 = $att$6.$get();
             }
             returning new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595($arg$5$0, $arg$5$1);
         );
@@ -140,12 +140,12 @@ final class testbug955_ {
                     private $att$8() {
                     }
                     
-                    .java.lang.String getAtt() {
+                    .java.lang.String $get() {
                         return "";
                     }
                 }
                 final $att$8 $att$8 = new $att$8();
-                final .java.lang.String $arg$7$1 = $att$8.getAtt();
+                final .java.lang.String $arg$7$1 = $att$8.$get();
             }
             returning new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595($arg$7$0, $arg$7$1);
         );

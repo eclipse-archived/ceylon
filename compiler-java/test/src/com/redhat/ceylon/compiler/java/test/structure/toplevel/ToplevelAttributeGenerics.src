@@ -51,7 +51,7 @@ final class topLevelVariableGenerics_ {
         }
     }
     
-    static void setTopLevelVariableGenerics(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
+    static void setTopLevelVariableGenerics$(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
         value[0] = topLevelVariableGenerics;
     }
 }
@@ -72,7 +72,7 @@ public final class topLevelVariableGenericsShared_ {
         }
     }
     
-    public static void setTopLevelVariableGenericsShared(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
+    public static void setTopLevelVariableGenericsShared$(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
         value[0] = topLevelVariableGenericsShared;
     }
 }

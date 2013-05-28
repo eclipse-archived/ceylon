@@ -583,7 +583,7 @@ final class topLevelLeftAttribute_ {
         }
     }
     
-    static void setTopLevelLeftAttribute(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
+    static void setTopLevelLeftAttribute$(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
         value[0] = topLevelLeftAttribute;
     }
 }
