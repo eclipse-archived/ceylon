@@ -62,5 +62,26 @@ public class ReflectionUtils {
         }
     }
 
+    public static String getPackageName(Class<?> klass) {
+        if(klass.isPrimitive() || klass.isArray()){
+            // primitives and arrays don't have a package, so we pretend they come from java.lang
+            return "java.lang";
+        }else if(klass.getPackage() != null){
+            // short road
+            return klass.getPackage().getName();
+        }else{
+            // long road
+            while(klass.getEnclosingClass() != null){
+                klass = klass.getEnclosingClass();
+            }
+            String name = klass.getName();
+            int lastDot = name.lastIndexOf('.');
+            if(lastDot == -1)
+                return "";//empty package
+            else
+                return name.substring(0, lastDot);
+        }
+    }
+
 
 }
