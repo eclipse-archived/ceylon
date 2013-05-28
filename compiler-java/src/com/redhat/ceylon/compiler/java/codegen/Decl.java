@@ -261,6 +261,14 @@ public class Decl {
         return decl.getDeclarationModel().isTransient();
     }
 
+    public static boolean isTransient(Declaration decl) {
+        if (decl instanceof MethodOrValue) {
+            return ((MethodOrValue)decl).isTransient();
+        } else {
+            return false;
+        }
+    }
+
     public static boolean isVariable(Tree.AttributeDeclaration decl) {
         return decl.getDeclarationModel().isVariable() && !hasSetter(decl);
     }
