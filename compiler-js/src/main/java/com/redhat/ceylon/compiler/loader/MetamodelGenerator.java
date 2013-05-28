@@ -386,13 +386,11 @@ public class MetamodelGenerator {
         }
         Map<String, Object> parent = findParent(d);
         if (parent != null) {
-            if (d.isToplevel() || d.isMember()) {
-                if (!d.isToplevel()) {
-                    if (!parent.containsKey(KEY_CLASSES)) {
-                        parent.put(KEY_CLASSES, new HashMap<String,Object>());
-                    }
-                    parent = (Map<String,Object>)parent.get(KEY_CLASSES);
+            if (!d.isToplevel() || d.isMember()) {
+                if (!parent.containsKey(KEY_CLASSES)) {
+                    parent.put(KEY_CLASSES, new HashMap<String,Object>());
                 }
+                parent = (Map<String,Object>)parent.get(KEY_CLASSES);
             }
             parent.put(d.getName(), m);
         }
@@ -425,13 +423,11 @@ public class MetamodelGenerator {
         }
         Map<String, Object> parent = findParent(d);
         if (parent != null) {
-            if (d.isToplevel() || d.isMember()) {
-                if (!d.isToplevel()) {
-                    if (!parent.containsKey(KEY_INTERFACES)) {
-                        parent.put(KEY_INTERFACES, new HashMap<String,Object>());
-                    }
-                    parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
+            if (!d.isToplevel() || d.isMember()) {
+                if (!parent.containsKey(KEY_INTERFACES)) {
+                    parent.put(KEY_INTERFACES, new HashMap<String,Object>());
                 }
+                parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
             }
             parent.put(d.getName(), m);
         }
@@ -441,14 +437,12 @@ public class MetamodelGenerator {
     @SuppressWarnings("unchecked")
     public void encodeObject(Value d) {
         Map<String, Object> parent = findParent(d);
-        if (d.isToplevel() || d.isMember()) {
-            if (!d.isToplevel()) {
-                if (!parent.containsKey(KEY_OBJECTS)) {
-                    parent.put(KEY_OBJECTS, new HashMap<String, Object>());
-                }
-                parent = (Map<String,Object>)parent.get(KEY_OBJECTS);
+        if (d.isMember()) {
+            if (!parent.containsKey(KEY_OBJECTS)) {
+                parent.put(KEY_OBJECTS, new HashMap<String, Object>());
             }
-        } else {
+            parent = (Map<String,Object>)parent.get(KEY_OBJECTS);
+        } else if (!d.isToplevel()) {
             return;
         }
         Map<String, Object> m = new HashMap<String, Object>();
