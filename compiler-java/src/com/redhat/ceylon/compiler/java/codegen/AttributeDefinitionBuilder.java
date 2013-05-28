@@ -42,6 +42,7 @@ public class AttributeDefinitionBuilder {
     private boolean hasField = true;
     private final String fieldName;
 
+    private final TypedDeclaration attrTypedDecl;
     private final JCTree.JCExpression attrType;
     private final JCTree.JCExpression attrTypeRaw;
     private final String attrName;
@@ -82,6 +83,7 @@ public class AttributeDefinitionBuilder {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
+        this.attrTypedDecl = attrType;
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
         this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;
@@ -174,6 +176,7 @@ public class AttributeDefinitionBuilder {
                     .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                     .constructorModifiers(Flags.PRIVATE)
                     .annotations(owner.makeAtAttribute())
+                    .satisfies(getSatisfies())
                     .defs(defs.toList());
             if(valueConstructor && hasField)
                 generateValueConstructor(classBuilder.addConstructor());
@@ -216,6 +219,14 @@ public class AttributeDefinitionBuilder {
         }
     }
 
+    private List<ProducedType> getSatisfies() {
+        List<ProducedType> types = List.<ProducedType>nil();
+        if (javaClassName != null && readable && !toplevel) {
+            types = types.append(owner.getGetterInterfaceType(attrTypedDecl));
+        }
+        return types;
+    }
+    
     private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
         ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.instance(owner, fieldName).type(attrType, null);
         JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.makeUnquotedIdent("this"), fieldName), owner.makeUnquotedIdent(fieldName));
@@ -223,7 +234,11 @@ public class AttributeDefinitionBuilder {
     }
 
     private long getGetSetModifiers() {
-        return modifiers & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
+        long mods = modifiers;
+        if (javaClassName != null && !toplevel) {
+            mods |= Flags.PUBLIC;
+        }
+        return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
     }
 
     private JCTree generateField() {

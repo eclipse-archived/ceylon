@@ -198,6 +198,11 @@ public class Symtab {
     public  Type ceylonVariableBoxIntType;
     public  Type ceylonVariableBoxDoubleType;
     public  Type ceylonVariableBoxBooleanType;
+    public  Type ceylonGetterType;
+    public  Type ceylonGetterLongType;
+    public  Type ceylonGetterIntType;
+    public  Type ceylonGetterDoubleType;
+    public  Type ceylonGetterBooleanType;
     
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtModuleType;
@@ -833,5 +838,10 @@ public class Symtab {
         ceylonVariableBoxIntType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxInt");
         ceylonVariableBoxDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxDouble");
         ceylonVariableBoxBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxBoolean");
+        ceylonGetterType = enterClass("com.redhat.ceylon.compiler.java.language.Getter");
+        ceylonGetterLongType = enterClass("com.redhat.ceylon.compiler.java.language.GetterLong");
+        ceylonGetterIntType = enterClass("com.redhat.ceylon.compiler.java.language.GetterInt");
+        ceylonGetterDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.GetterDouble");
+        ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
     }
 }

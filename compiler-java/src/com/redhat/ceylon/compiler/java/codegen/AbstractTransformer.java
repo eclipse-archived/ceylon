@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
@@ -3041,5 +3042,31 @@ public abstract class AbstractTransformer implements Transformation {
 
     private Module getLanguageModule() {
         return loader.getLanguageModule();
+    }
+
+    ProducedType getGetterInterfaceType(TypedDeclaration attrTypedDecl) {
+        ProducedTypedReference typedRef = getTypedReference(attrTypedDecl);
+        ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+        ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+        
+        ProducedType type;
+        boolean unboxed = CodegenUtil.isUnBoxed(attrTypedDecl);
+        if (unboxed && isCeylonBoolean(nonWideningType)) {
+            type = javacCeylonTypeToProducedType(syms().ceylonGetterBooleanType);
+        } else if (unboxed && isCeylonInteger(nonWideningType)) {
+            type = javacCeylonTypeToProducedType(syms().ceylonGetterLongType);
+        } else if (unboxed && isCeylonFloat(nonWideningType)) {
+            type = javacCeylonTypeToProducedType(syms().ceylonGetterDoubleType);
+        } else if (unboxed && isCeylonCharacter(nonWideningType)) {
+            type = javacCeylonTypeToProducedType(syms().ceylonGetterIntType);
+        } else {
+            type = javacCeylonTypeToProducedType(syms().ceylonGetterType);
+            ProducedType typeArg = nonWideningType;
+            if (unboxed && isCeylonString(typeArg)) {
+                typeArg = javacCeylonTypeToProducedType(syms().stringType);
+            }
+            type = producedType(type.getDeclaration(), typeArg);
+        }
+        return type;
     }
 }
