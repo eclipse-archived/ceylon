@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
-import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -440,11 +439,11 @@ public abstract class AbstractTransformer implements Transformation {
      */
 
     boolean isBooleanTrue(Declaration decl) {
-        return decl == loader().getDeclaration("ceylon.language.true", DeclarationType.VALUE);
+        return decl == typeFact.getBooleanTrueDeclaration();
     }
     
     boolean isBooleanFalse(Declaration decl) {
-        return decl == loader().getDeclaration("ceylon.language.false", DeclarationType.VALUE);
+        return decl == typeFact.getBooleanFalseDeclaration();
     }
     
     /**
@@ -669,7 +668,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public boolean isWidening(ProducedType declType, ProducedType refinedDeclType) {
-        return !sameType(syms().ceylonObjectType, declType)
+        return !sameTypeForCeylonTypes(syms().ceylonObjectType, declType)
                 && willEraseToObject(declType)
                 && !willEraseToObject(refinedDeclType);
     }
@@ -782,12 +781,12 @@ public abstract class AbstractTransformer implements Transformation {
         return pr.getType();
     }
 
-    private ProducedType toPType(com.sun.tools.javac.code.Type t) {
-        return loader().getType(t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
+    private ProducedType javacCeylonTypeToProducedType(com.sun.tools.javac.code.Type t) {
+        return loader().getType(getLanguageModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
     
-    private boolean sameType(Type t1, ProducedType t2) {
-        return t2 != null && toPType(t1).isExactly(t2);
+    private boolean sameTypeForCeylonTypes(Type ceylonType, ProducedType otherType) {
+        return otherType != null && javacCeylonTypeToProducedType(ceylonType).isExactly(otherType);
     }
     
     /**
@@ -822,7 +821,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     boolean willEraseToException(ProducedType type) {
         type = simplifyType(type);
-        return (sameType(syms().ceylonExceptionType, type));
+        return (sameTypeForCeylonTypes(syms().ceylonExceptionType, type));
     }
     
     boolean willEraseToSequential(ProducedType type) {
@@ -971,29 +970,29 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isCeylonString(ProducedType type) {
-        return (sameType(syms().ceylonStringType, type));
+        return (sameTypeForCeylonTypes(syms().ceylonStringType, type));
     }
     
     boolean isCeylonBoolean(ProducedType type) {
         TypeDeclaration declaration = type.getDeclaration();
         return declaration != null
-                && (sameType(syms().ceylonBooleanType, type)
+                && (sameTypeForCeylonTypes(syms().ceylonBooleanType, type)
                         || isBooleanTrue(declaration)
-                        || declaration == loader().getDeclaration("ceylon.language.true", DeclarationType.TYPE)
+                        || declaration == typeFact.getBooleanTrueClassDeclaration()
                         || isBooleanFalse(declaration)
-                        || declaration == loader().getDeclaration("ceylon.language.false", DeclarationType.TYPE));
+                        || declaration == typeFact.getBooleanFalseClassDeclaration());
     }
     
     boolean isCeylonInteger(ProducedType type) {
-        return (sameType(syms().ceylonIntegerType, type));
+        return (sameTypeForCeylonTypes(syms().ceylonIntegerType, type));
     }
     
     boolean isCeylonFloat(ProducedType type) {
-        return (sameType(syms().ceylonFloatType, type));
+        return (sameTypeForCeylonTypes(syms().ceylonFloatType, type));
     }
     
     boolean isCeylonCharacter(ProducedType type) {
-        return (sameType(syms().ceylonCharacterType, type));
+        return (sameTypeForCeylonTypes(syms().ceylonCharacterType, type));
     }
 
     boolean isCeylonArray(ProducedType type) {
@@ -1001,7 +1000,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonObject(ProducedType type) {
-        return sameType(syms().ceylonObjectType, type);
+        return sameTypeForCeylonTypes(syms().ceylonObjectType, type);
     }
     
     boolean isCeylonBasicType(ProducedType type) {
@@ -1413,7 +1412,7 @@ public abstract class AbstractTransformer implements Transformation {
             } 
             JCExpression jta;
             
-            if (sameType(syms().ceylonAnythingType, ta)) {
+            if (sameTypeForCeylonTypes(syms().ceylonAnythingType, ta)) {
                 // For the root type Void:
                 if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
                     // - The Ceylon type Foo<Void> appearing in an extends or satisfies
@@ -3038,5 +3037,9 @@ public abstract class AbstractTransformer implements Transformation {
                 meta.getProducedType(null, 
                 Arrays.asList(typeFact().getAnythingDeclaration().getType(),
                 typeFact().getNothingDeclaration().getType())));
+    }
+
+    private Module getLanguageModule() {
+        return loader.getLanguageModule();
     }
 }

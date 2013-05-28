@@ -29,16 +29,17 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.util.List;
 
 public class TypeFactory extends Unit {
@@ -182,5 +183,23 @@ public class TypeFactory extends Unit {
             }
         }
         return null;
+    }
+
+    public Declaration getBooleanTrueDeclaration() {
+        return getLanguageModuleDeclaration("true");
+    }
+
+    public Declaration getBooleanFalseDeclaration() {
+        return getLanguageModuleDeclaration("false");
+    }
+
+    public TypeDeclaration getBooleanTrueClassDeclaration() {
+        Declaration trueDecl = getBooleanTrueDeclaration();
+        return trueDecl instanceof TypedDeclaration ? ((TypedDeclaration)trueDecl).getTypeDeclaration() : null;
+    }
+
+    public TypeDeclaration getBooleanFalseClassDeclaration() {
+        Declaration trueDecl = getBooleanFalseDeclaration();
+        return trueDecl instanceof TypedDeclaration ? ((TypedDeclaration)trueDecl).getTypeDeclaration() : null;
     }
 }
