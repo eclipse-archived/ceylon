@@ -305,20 +305,19 @@ public abstract class AbstractTransformer implements Transformation {
 
     // Creates a "foo foo = new foo();"
     JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared) {
-        return makeLocalIdentityInstance(varName, className, isShared, null);
+        JCExpression typeExpr = makeQuotedIdent(className);
+        return makeLocalIdentityInstance(typeExpr, varName, className, isShared, null);
     }
     
     // Creates a "foo foo = new foo(parameter);"
-    JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, String className, boolean isShared, JCTree.JCExpression parameter) {
-        JCExpression name = makeQuotedIdent(className);
-        
+    JCTree.JCVariableDecl makeLocalIdentityInstance(JCExpression typeExpr, String varName, String className, boolean isShared, JCTree.JCExpression parameter) {
         JCExpression initValue = makeNewClass(className, false, parameter);
 
         int modifiers = isShared ? 0 : FINAL;
         JCTree.JCVariableDecl var = make().VarDef(
                 make().Modifiers(modifiers), 
                 names().fromString(varName), 
-                name, 
+                typeExpr, 
                 initValue);
         
         return var;

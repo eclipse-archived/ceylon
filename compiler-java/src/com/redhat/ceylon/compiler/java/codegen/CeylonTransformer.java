@@ -365,7 +365,15 @@ public class CeylonTransformer extends AbstractTransformer {
         if (Decl.isLocal(declarationModel)) {
             if(initialValue != null)
                 builder.valueConstructor();
-            return builder.build().append(makeLocalIdentityInstance(attrClassName, 
+            JCExpression typeExpr;
+            if (declarationModel instanceof Setter || declarationModel instanceof Parameter) {
+                typeExpr = makeQuotedIdent(attrClassName);
+            } else {
+                typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
+            }
+            return builder.build().append(makeLocalIdentityInstance(
+                    typeExpr,
+                    attrClassName, 
                     attrClassName, declarationModel.isShared(), initialValue));
         } else {
             if(initialValue != null)
