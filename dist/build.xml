@@ -192,7 +192,7 @@ Used with another target such as 'package'">
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-jvm-compiler-libraries,
                      copy-js-compiler-libraries, copy-cmr-libraries, copy-licenses,
-                     install-language, install-runtime"
+                     install-runtime-libs, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -345,6 +345,17 @@ Used with another target such as 'package'">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
+    </target>
+
+    <target name="install-runtime-libs">
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish-libs" dir="${ceylon-runtime.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+        <copy todir="${ceylon.dist.dir}">
+            <fileset dir="${ceylon-runtime.dir}/build/dist">
+            </fileset>
+        </copy>
     </target>
 
     <target name="install-runtime" depends="install-cmr">
