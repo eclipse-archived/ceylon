@@ -255,14 +255,16 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         } else if (files.length > 1) {
             throw new RuntimeException("Unexpectedly more than one car file in " + moduleDir);
         }
-        final String version = files[0];
+        String version = files[0];
         final File carFile;
         if (version.equals("default.car")) {
             carFile = new File(moduleDir, version);
+            version = "unversioned";
         } else {
             carFile = new File(moduleDir, 
                     version + File.separator + moduleName + "-" + version+ ".car");
         }
+        final String moduleVersion = version;
         if (!carFile.exists()) {
             throw new RuntimeException(carFile + " doesn't exist");
         }
@@ -276,7 +278,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 // set up the runtime module system
                 Metamodel.resetModuleManager();
                 Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
-                Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
+                Metamodel.loadModule(moduleName, moduleVersion, CompilerTest.makeArtifactResult(carFile), cl);
             }
         };
         return cl;
