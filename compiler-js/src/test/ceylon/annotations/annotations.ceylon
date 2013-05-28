@@ -18,12 +18,12 @@ shared class Example2() {
 
 annotest2{count=5;}
 shared void test() {
-  print(type(null));
-  print(type(Example1()));
-  print(type(Example2));
-  print(type(test));
-  print(type("hello"));
-  print(type("hello".initial));
-  print(type({1,2,4,5}));
-  print(type(1..2));
+  print("type(null):``type(null)``");
+  print("type(Example1()):``type(Example1())``");
+  print("type(Example2):``type(Example2)``");
+  print("type(test):``type(test)``");
+  print("type('hello'):``type("hello")``");
+  print("type('hello'.initial):``type("hello".initial)``");
+  print("type({1,2,4,5}):``type({1,2,4,5})``");
+  print("type(1..2):``type(1..2)``");
 }
