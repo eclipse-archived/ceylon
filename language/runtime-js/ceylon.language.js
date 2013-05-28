@@ -231,8 +231,6 @@ defineAttr(Comparison$proto, 'string', function(){ return this.name; });
 //#include sequences.js
 //#include process.js
 
-//#include annotations.js
-
 function NativeException(e) {
     var that = new NativeException.$$;
     var msg;
