@@ -20,17 +20,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 
