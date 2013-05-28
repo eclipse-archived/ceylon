@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -80,9 +81,10 @@ public class LazyPackage extends Package {
         synchronized(modelLoader){
 
             String pkgName = getQualifiedNameString();
-
+            Module module = getModule();
+            
             // we need its package ready first
-            modelLoader.loadPackage(pkgName, false);
+            modelLoader.loadPackage(module, pkgName, false);
 
             // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
             // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
@@ -92,12 +94,12 @@ public class LazyPackage extends Package {
             }
 
             String className = getQualifiedName(pkgName, name);
-            ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
+            ClassMirror classSymbol = modelLoader.lookupClassMirror(module, className);
 
             // only get it from the classpath if we're not compiling it, unless
             // it happens to be a java source
             if(classSymbol != null && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {
-                d = modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
+                d = modelLoader.convertToDeclaration(module, className, DeclarationType.VALUE);
                 if (d instanceof Class) {
                     if ( ((Class) d).isAbstraction()) {
                         // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
@@ -156,7 +158,7 @@ public class LazyPackage extends Package {
     public List<Declaration> getMembers() {
         synchronized(modelLoader){
             // make sure the package is loaded
-            modelLoader.loadPackage(getQualifiedNameString(), true);
+            modelLoader.loadPackage(getModule(), getQualifiedNameString(), true);
             List<Declaration> sourceDeclarations = super.getMembers();
             LinkedList<Declaration> ret = new LinkedList<Declaration>();
             ret.addAll(sourceDeclarations);

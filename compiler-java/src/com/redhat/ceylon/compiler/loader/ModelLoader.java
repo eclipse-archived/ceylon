@@ -51,20 +51,24 @@ public interface ModelLoader {
 
     /**
      * Loads a declaration by name and type
+     * 
+     * @param module the module to load it from
      * @param typeName the fully-qualified declaration name
      * @param declarationType the declaration type
      * @return the declaration, if found, or null.
      */
-    public Declaration getDeclaration(String typeName, DeclarationType declarationType);
+    public Declaration getDeclaration(Module module, String typeName, DeclarationType declarationType);
     
     /**
      * Returns the ProducedType of a name in a given scope
+
+     * @param module the module to load it from
      * @param pkg the package name
      * @param name the fully-qualified name of the type
      * @param scope the scope in which to find it
      * @return the ProducedType found
      */
-    public ProducedType getType(String pkg, String name, Scope scope);
+    public ProducedType getType(Module module, String pkg, String name, Scope scope);
 
     /**
      * Returns a loaded module by name

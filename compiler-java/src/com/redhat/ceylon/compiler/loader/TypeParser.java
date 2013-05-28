@@ -25,6 +25,8 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -41,6 +43,7 @@ public class TypeParser {
     private Unit unit;
     private TypeLexer lexer = new TypeLexer();
     private Scope scope;
+    private Module moduleScope;
 
     public TypeParser(ModelLoader loader, Unit unit){
         this.loader = loader;
@@ -50,16 +53,18 @@ public class TypeParser {
     /*
      * type: unionType EOT
      */
-    public ProducedType decodeType(String type, Scope scope){
+    public ProducedType decodeType(String type, Scope scope, Module moduleScope){
         // save the previous state (this method is reentrant)
         char[] oldType = lexer.type;
         int oldIndex = lexer.index;
         int oldMark = lexer.mark;
         Scope oldScope = this.scope;
+        Module oldModuleScope = this.moduleScope;
         try{
             // setup the new state
             lexer.setup(type);
             this.scope = scope;
+            this.moduleScope = moduleScope;
             // do the parsing
             ProducedType ret = parseType();
             if(!lexer.lookingAt(TypeLexer.EOT))
@@ -71,6 +76,7 @@ public class TypeParser {
             lexer.index = oldIndex;
             lexer.mark = oldMark;
             this.scope = oldScope;
+            this.moduleScope = oldModuleScope;
         }
     }
 
@@ -162,9 +168,18 @@ public class TypeParser {
         // try to find a qualified type
         try{
             ProducedType newType;
-            if(qualifyingType == null)
-                newType = loader.getType(pkg, fullName, scope);
-            else{
+            if(qualifyingType == null){
+                // FIXME: this only works for packages not contained in multiple modules
+                Package foundPackage = moduleScope.getPackage(pkg);
+                if(foundPackage != null)
+                    newType = loader.getType(foundPackage.getModule(), pkg, fullName, scope);
+                else if(scope != null){
+                    // if we did not find any package and the scope is null, chances are we're after a type variable
+                    // or a relative type, so use the module scope
+                    newType = loader.getType(moduleScope, pkg, fullName, scope);
+                }else
+                    newType = null;
+            }else{
                 // look it up via its qualifying type
                 TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
                 Declaration member = getDirectMember(qualifyingDeclaration, part.name);

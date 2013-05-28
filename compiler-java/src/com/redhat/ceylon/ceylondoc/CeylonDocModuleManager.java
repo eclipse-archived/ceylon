@@ -72,13 +72,13 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
             }
             
             @Override
-            public ClassMirror lookupNewClassMirror(String name) {
+            public ClassMirror lookupNewClassMirror(Module module, String name) {
                 // don't load it from class if we are compiling it
                 if(tool.getCompiledClasses().contains(name)){
                     logVerbose("Not loading "+name+" from class because we are typechecking them");
                     return null;
                 }
-                return super.lookupNewClassMirror(name);
+                return super.lookupNewClassMirror(module, name);
             }
             @Override
             protected void logError(String message) {

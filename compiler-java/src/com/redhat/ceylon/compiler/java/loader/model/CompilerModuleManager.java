@@ -24,7 +24,6 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -33,7 +32,7 @@ public class CompilerModuleManager extends LazyModuleManager {
 
     private com.sun.tools.javac.util.Context context;
     private CeylonEnter ceylonEnter;
-    private AbstractModelLoader modelLoader;
+    private CeylonModelLoader modelLoader;
 
     public CompilerModuleManager(Context ceylonContext, com.sun.tools.javac.util.Context context) {
         super(ceylonContext);
@@ -56,9 +55,9 @@ public class CompilerModuleManager extends LazyModuleManager {
         return ceylonEnter;
     }
 
-    protected AbstractModelLoader getModelLoader() {
+    protected CeylonModelLoader getModelLoader() {
         if (modelLoader == null) {
-            modelLoader = CeylonModelLoader.instance(context);
+            modelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context);
         }
         return modelLoader;
     }

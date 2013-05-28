@@ -33,15 +33,21 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class SimpleReflType implements TypeMirror {
+ 
+    public enum Module {
+        CEYLON, JDK;
+    }
 
     private String name;
     private TypeKind kind;
     private TypeMirror[] typeParameters;
+    private Module module;
 
-    public SimpleReflType(String name, TypeKind kind, TypeMirror... typeParameters) {
+    public SimpleReflType(String name, Module module, TypeKind kind, TypeMirror... typeParameters) {
         this.name = name;
         this.kind = kind;
         this.typeParameters = typeParameters;
+        this.module = module;
     }
     
     public String toString() {
@@ -94,4 +100,7 @@ public class SimpleReflType implements TypeMirror {
         return null;
     }
 
+    public Module getModule() {
+        return module;
+    }
 }

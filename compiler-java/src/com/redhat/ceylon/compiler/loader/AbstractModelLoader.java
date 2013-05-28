@@ -103,6 +103,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
+    private static final String JAVA_BASE_MODULE_NAME = "java.base";
     public static final String CEYLON_LANGUAGE = "ceylon.language";
     public static final String CEYLON_LANGUAGE_METADATA = "ceylon.language.metamodel";
     public static final String CEYLON_LANGUAGE_METADATA_UNTYPED = "ceylon.language.metamodel.untyped";
@@ -133,41 +134,41 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
     private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
 
-    private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
-    private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
-    private static final TypeMirror CEYLON_BASIC_TYPE = simpleObjectType("ceylon.language.Basic");
-    private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleObjectType("ceylon.language.Exception");
-    private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
+    private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
+    private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
+    private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
+    private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
+    private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
     
-    private static final TypeMirror STRING_TYPE = simpleObjectType("java.lang.String");
-    private static final TypeMirror CEYLON_STRING_TYPE = simpleObjectType("ceylon.language.String");
+    private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
+    private static final TypeMirror CEYLON_STRING_TYPE = simpleCeylonObjectType("ceylon.language.String");
     
-    private static final TypeMirror PRIM_BOOLEAN_TYPE = simpleObjectType("boolean", TypeKind.BOOLEAN);
-    private static final TypeMirror BOOLEAN_TYPE = simpleObjectType("java.lang.Boolean");
-    private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleObjectType("ceylon.language.Boolean");
+    private static final TypeMirror PRIM_BOOLEAN_TYPE = simpleJDKObjectType("boolean");
+    private static final TypeMirror BOOLEAN_TYPE = simpleJDKObjectType("java.lang.Boolean");
+    private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleCeylonObjectType("ceylon.language.Boolean");
     
-    private static final TypeMirror PRIM_BYTE_TYPE = simpleObjectType("byte", TypeKind.BYTE);
-    private static final TypeMirror BYTE_TYPE = simpleObjectType("java.lang.Byte");
-    private static final TypeMirror PRIM_SHORT_TYPE = simpleObjectType("short", TypeKind.SHORT);
-    private static final TypeMirror SHORT_TYPE = simpleObjectType("java.lang.Short");
+    private static final TypeMirror PRIM_BYTE_TYPE = simpleJDKObjectType("byte");
+    private static final TypeMirror BYTE_TYPE = simpleJDKObjectType("java.lang.Byte");
+    private static final TypeMirror PRIM_SHORT_TYPE = simpleJDKObjectType("short");
+    private static final TypeMirror SHORT_TYPE = simpleJDKObjectType("java.lang.Short");
 
-    private static final TypeMirror PRIM_INT_TYPE = simpleObjectType("int", TypeKind.INT);
-    private static final TypeMirror INTEGER_TYPE = simpleObjectType("java.lang.Integer");
-    private static final TypeMirror PRIM_LONG_TYPE = simpleObjectType("long", TypeKind.LONG);
-    private static final TypeMirror LONG_TYPE = simpleObjectType("java.lang.Long");
-    private static final TypeMirror CEYLON_INTEGER_TYPE = simpleObjectType("ceylon.language.Integer");
+    private static final TypeMirror PRIM_INT_TYPE = simpleJDKObjectType("int");
+    private static final TypeMirror INTEGER_TYPE = simpleJDKObjectType("java.lang.Integer");
+    private static final TypeMirror PRIM_LONG_TYPE = simpleJDKObjectType("long");
+    private static final TypeMirror LONG_TYPE = simpleJDKObjectType("java.lang.Long");
+    private static final TypeMirror CEYLON_INTEGER_TYPE = simpleCeylonObjectType("ceylon.language.Integer");
     
-    private static final TypeMirror PRIM_FLOAT_TYPE = simpleObjectType("float", TypeKind.FLOAT);
-    private static final TypeMirror FLOAT_TYPE = simpleObjectType("java.lang.Float");
-    private static final TypeMirror PRIM_DOUBLE_TYPE = simpleObjectType("double", TypeKind.DOUBLE);
-    private static final TypeMirror DOUBLE_TYPE = simpleObjectType("java.lang.Double");
-    private static final TypeMirror CEYLON_FLOAT_TYPE = simpleObjectType("ceylon.language.Float");
+    private static final TypeMirror PRIM_FLOAT_TYPE = simpleJDKObjectType("float");
+    private static final TypeMirror FLOAT_TYPE = simpleJDKObjectType("java.lang.Float");
+    private static final TypeMirror PRIM_DOUBLE_TYPE = simpleJDKObjectType("double");
+    private static final TypeMirror DOUBLE_TYPE = simpleJDKObjectType("java.lang.Double");
+    private static final TypeMirror CEYLON_FLOAT_TYPE = simpleCeylonObjectType("ceylon.language.Float");
 
-    private static final TypeMirror PRIM_CHAR_TYPE = simpleObjectType("char", TypeKind.CHAR);
-    private static final TypeMirror CHARACTER_TYPE = simpleObjectType("java.lang.Character");
-    private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
+    private static final TypeMirror PRIM_CHAR_TYPE = simpleJDKObjectType("char");
+    private static final TypeMirror CHARACTER_TYPE = simpleJDKObjectType("java.lang.Character");
+    private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleCeylonObjectType("ceylon.language.Character");
     
-    private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
+    private static final TypeMirror CEYLON_ARRAY_TYPE = simpleCeylonObjectType("ceylon.language.Array");
 
     // this one has no "_" postfix because that's how we look it up
     protected static final String JAVA_LANG_ARRAYS = "java.lang.arrays";
@@ -193,22 +194,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_BOOLEAN_ARRAY = "com.redhat.ceylon.compiler.java.language.BooleanArray";
     private static final String CEYLON_OBJECT_ARRAY = "com.redhat.ceylon.compiler.java.language.ObjectArray";
 
-    private static final TypeMirror JAVA_BYTE_ARRAY_TYPE = simpleObjectType("java.lang.ByteArray");
-    private static final TypeMirror JAVA_SHORT_ARRAY_TYPE = simpleObjectType("java.lang.ShortArray");
-    private static final TypeMirror JAVA_INT_ARRAY_TYPE = simpleObjectType("java.lang.IntArray");
-    private static final TypeMirror JAVA_LONG_ARRAY_TYPE = simpleObjectType("java.lang.LongArray");
-    private static final TypeMirror JAVA_FLOAT_ARRAY_TYPE = simpleObjectType("java.lang.FloatArray");
-    private static final TypeMirror JAVA_DOUBLE_ARRAY_TYPE = simpleObjectType("java.lang.DoubleArray");
-    private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleObjectType("java.lang.CharArray");
-    private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleObjectType("java.lang.BooleanArray");
-    private static final TypeMirror JAVA_OBJECT_ARRAY_TYPE = simpleObjectType("java.lang.ObjectArray");
+    private static final TypeMirror JAVA_BYTE_ARRAY_TYPE = simpleJDKObjectType("java.lang.ByteArray");
+    private static final TypeMirror JAVA_SHORT_ARRAY_TYPE = simpleJDKObjectType("java.lang.ShortArray");
+    private static final TypeMirror JAVA_INT_ARRAY_TYPE = simpleJDKObjectType("java.lang.IntArray");
+    private static final TypeMirror JAVA_LONG_ARRAY_TYPE = simpleJDKObjectType("java.lang.LongArray");
+    private static final TypeMirror JAVA_FLOAT_ARRAY_TYPE = simpleJDKObjectType("java.lang.FloatArray");
+    private static final TypeMirror JAVA_DOUBLE_ARRAY_TYPE = simpleJDKObjectType("java.lang.DoubleArray");
+    private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleJDKObjectType("java.lang.CharArray");
+    private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
+    private static final TypeMirror JAVA_OBJECT_ARRAY_TYPE = simpleJDKObjectType("java.lang.ObjectArray");
 
-    private static TypeMirror simpleObjectType(String name) {
-        return new SimpleReflType(name, TypeKind.DECLARED);
+    private static TypeMirror simpleJDKObjectType(String name) {
+        return new SimpleReflType(name, SimpleReflType.Module.JDK, TypeKind.DECLARED);
     }
-
-    private static TypeMirror simpleObjectType(String name, TypeKind kind) {
-        return new SimpleReflType(name, TypeKind.DECLARED);
+    private static TypeMirror simpleCeylonObjectType(String name) {
+        return new SimpleReflType(name, SimpleReflType.Module.CEYLON, TypeKind.DECLARED);
     }
 
     protected Map<String, Declaration> declarationsByName = new HashMap<String, Declaration>();
@@ -228,20 +228,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
      * 
+     * @param the module to load the package from
      * @param packageName the package name to load
      * @param loadDeclarations true to load all the declarations in this package.
      * @return 
      */
-    public abstract boolean loadPackage(String packageName, boolean loadDeclarations);
+    public abstract boolean loadPackage(Module module, String packageName, boolean loadDeclarations);
     
     /**
      * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror
      * on cache misses.
      * 
+     * @param module the module in which we should find the class
      * @param name the name of the Class to load
      * @return a ClassMirror for the specified class, or null if not found.
      */
-    public synchronized final ClassMirror lookupClassMirror(String name){
+    public synchronized final ClassMirror lookupClassMirror(Module module, String name){
         timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             // Java array classes are not where we expect them
@@ -258,16 +260,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // turn them into their real class location (get rid of the "java.lang" prefix)
                 name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
             }
+            String cacheKey = cacheKeyByModule(module, name);
             // we use containsKey to be able to cache null results
-            if(classMirrorCache.containsKey(name))
-                return classMirrorCache.get(name);
-            ClassMirror mirror = lookupNewClassMirror(name);
+            if(classMirrorCache.containsKey(cacheKey))
+                return classMirrorCache.get(cacheKey);
+            ClassMirror mirror = lookupNewClassMirror(module, name);
             // we even cache null results
-            classMirrorCache.put(name, mirror);
+            classMirrorCache.put(cacheKey, mirror);
             return mirror;
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
+    }
+
+    protected String cacheKeyByModule(Module module, String name) {
+        // '/' is allowed in module version but not in module or class name, so we're good
+        if(module.isDefault())
+            return module.getNameAsString() + '/' + name; // no version
+        return module.getNameAsString() + '/' + module.getVersion() + '/' + name;
     }
 
     protected boolean lastPartHasLowerInitial(String name) {
@@ -285,10 +295,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     /**
      * Looks up a ClassMirror by name. Called by lookupClassMirror on cache misses.
      * 
+     * @param module the module in which we should find the given class
      * @param name the name of the Class to load
      * @return a ClassMirror for the specified class, or null if not found.
      */
-    protected abstract ClassMirror lookupNewClassMirror(String name);
+    protected abstract ClassMirror lookupNewClassMirror(Module module, String name);
 
     /**
      * Adds the given module to the set of modules from which we can load classes.
@@ -330,20 +341,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             findOrCreateModule(jdkModule);
         for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
             findOrCreateModule(jdkOracleModule);
+        Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME);
         
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
          */
-        loadPackage("java.lang", false);
-        loadPackage("com.redhat.ceylon.compiler.java.metadata", false);
+        loadPackage(jdkModule, "java.lang", false);
+        loadPackage(languageModule, "com.redhat.ceylon.compiler.java.metadata", false);
 
         /*
          * We do not load the ceylon.language module from class files if we're bootstrapping it
          */
         if(!isBootstrap){
-            loadPackage(CEYLON_LANGUAGE, true);
-            loadPackage(CEYLON_LANGUAGE_METADATA, true);
-            loadPackage(CEYLON_LANGUAGE_METADATA_UNTYPED, true);
+            loadPackage(languageModule, CEYLON_LANGUAGE, true);
+            loadPackage(languageModule, CEYLON_LANGUAGE_METADATA, true);
+            loadPackage(languageModule, CEYLON_LANGUAGE_METADATA_UNTYPED, true);
         }
     }
 
@@ -364,45 +376,56 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
     }
     
-    private ClassMirror loadClass(String pkgName, String className) {
+    private ClassMirror loadClass(Module module, String pkgName, String className) {
         ClassMirror moduleClass = null;
         try{
-            loadPackage(pkgName, false);
-            moduleClass = lookupClassMirror(className);
+            loadPackage(module, pkgName, false);
+            moduleClass = lookupClassMirror(module, className);
         }catch(Exception x){
             logVerbose("[Failed to complete class "+className+"]");
         }
         return moduleClass;
     }
 
-    private Declaration convertToDeclaration(TypeMirror type, Scope scope, DeclarationType declarationType) {
-        String typeName;
+    private Declaration convertNonPrimitiveTypeToDeclaration(TypeMirror type, Scope scope, DeclarationType declarationType) {
         switch(type.getKind()){
-        case VOID:    typeName = "ceylon.language.Anything"; break;
-        case BOOLEAN: typeName = "java.lang.Boolean"; break;
-        case BYTE:    typeName = "java.lang.Byte"; break;
-        case CHAR:    typeName = "java.lang.Character"; break;
-        case SHORT:   typeName = "java.lang.Short"; break;
-        case INT:     typeName = "java.lang.Integer"; break;
-        case LONG:    typeName = "java.lang.Long"; break;
-        case FLOAT:   typeName = "java.lang.Float"; break;
-        case DOUBLE:  typeName = "java.lang.Double"; break;
+        case VOID:    return typeFactory.getAnythingDeclaration();
+        // those can't happen
+        case BOOLEAN:
+        case BYTE:
+        case CHAR:
+        case SHORT:
+        case INT:
+        case LONG:
+        case FLOAT:
+        case DOUBLE:
+            // all the autoboxing should already have been done
+            throw new RuntimeException("Expected non-primitive type: "+type);
         case ARRAY:
-            return ((Class)convertToDeclaration(JAVA_LANG_OBJECT_ARRAY, DeclarationType.TYPE));
+            return ((Class)convertToDeclaration(getLanguageModule(), JAVA_LANG_OBJECT_ARRAY, DeclarationType.TYPE));
         case DECLARED:
-            typeName = type.getQualifiedName();
-            break;
+            // SimpleReflType does not do declared class so we make an exception for it
+            String typeName = type.getQualifiedName();
+            if(type instanceof SimpleReflType){
+                Module module = null;
+                switch(((SimpleReflType) type).getModule()){
+                case CEYLON: module = getLanguageModule(); break;
+                case JDK : module = getJDKBaseModule(); break;
+                }
+                return convertToDeclaration(module, typeName, declarationType);
+            }
+            ClassMirror classMirror = type.getDeclaredClass();
+            Module module = findModuleForClassMirror(classMirror);
+            return convertToDeclaration(module, typeName, declarationType);
         case TYPEVAR:
             return safeLookupTypeParameter(scope, type.getQualifiedName());
         case WILDCARD:
             // FIXME: we shouldn't even get there, because if something contains a wildcard (Foo<?>) we erase it to
             // IdentifiableObject, so this shouldn't be reachable.
-            typeName = "ceylon.language.Nothing";
-            break;
+            return typeFactory.getNothingDeclaration();
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
-        return convertToDeclaration(typeName, declarationType);
     }
 
     protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
@@ -415,33 +438,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         
         List<Declaration> decls = new ArrayList<Declaration>();
+        Module module = findModuleForClassMirror(classMirror);
         boolean[] alreadyExists = new boolean[1];
-        Declaration decl = getOrCreateDeclaration(classMirror, declarationType,
+        Declaration decl = getOrCreateDeclaration(module, classMirror, declarationType,
                 decls, alreadyExists);
         
         if (alreadyExists[0]) {
             return decl;
         }
         
-        // find its module
-        String pkgName;
-        String qualifiedName = classMirror.getQualifiedName();
-        // Java array classes we pretend come from java.lang
-        if(qualifiedName.equals(CEYLON_OBJECT_ARRAY)
-                || qualifiedName.equals(CEYLON_BOOLEAN_ARRAY)
-                || qualifiedName.equals(CEYLON_BYTE_ARRAY)
-                || qualifiedName.equals(CEYLON_SHORT_ARRAY)
-                || qualifiedName.equals(CEYLON_INT_ARRAY)
-                || qualifiedName.equals(CEYLON_LONG_ARRAY)
-                || qualifiedName.equals(CEYLON_FLOAT_ARRAY)
-                || qualifiedName.equals(CEYLON_DOUBLE_ARRAY)
-                || qualifiedName.equals(CEYLON_CHAR_ARRAY)
-                || qualifiedName.equals(CEYLON_ARRAYS)
-                )
-            pkgName = "java.lang";
-        else
-            pkgName = classMirror.getPackage().getQualifiedName();
-        Module module = findModuleForPackage(pkgName);
+        // find its package
+        String pkgName = getPackageNameForQualifiedClassName(classMirror);
+        
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         // find/make its Unit
@@ -461,6 +469,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return decl;
     }
 
+    protected String getPackageNameForQualifiedClassName(ClassMirror classMirror) {
+        String qualifiedName = classMirror.getQualifiedName();
+        // Java array classes we pretend come from java.lang
+        if(qualifiedName.equals(CEYLON_OBJECT_ARRAY)
+                || qualifiedName.equals(CEYLON_BOOLEAN_ARRAY)
+                || qualifiedName.equals(CEYLON_BYTE_ARRAY)
+                || qualifiedName.equals(CEYLON_SHORT_ARRAY)
+                || qualifiedName.equals(CEYLON_INT_ARRAY)
+                || qualifiedName.equals(CEYLON_LONG_ARRAY)
+                || qualifiedName.equals(CEYLON_FLOAT_ARRAY)
+                || qualifiedName.equals(CEYLON_DOUBLE_ARRAY)
+                || qualifiedName.equals(CEYLON_CHAR_ARRAY)
+                || qualifiedName.equals(CEYLON_ARRAYS)
+                )
+            return "java.lang";
+        else
+            return classMirror.getPackage().getQualifiedName();
+    }
+    
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
         // add it to its package if it's not an inner class
         if(!classMirror.isInnerClass()){
@@ -470,7 +497,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // do overloads later, since their container is their abstract superclass's container and
             // we have to set that one first
             if(d instanceof Class == false || !((Class)d).isOverloaded()){
-                ClassOrInterface container = getContainer(classMirror);
+                ClassOrInterface container = getContainer(pkg.getModule(), classMirror);
                 d.setContainer(container);
                 // let's not trigger lazy-loading
                 ((LazyContainer)container).addMember(d);
@@ -486,14 +513,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private ClassOrInterface getContainer(ClassMirror classMirror) {
+    private ClassOrInterface getContainer(Module module, ClassMirror classMirror) {
         AnnotationMirror containerAnnotation = classMirror.getAnnotation(CEYLON_CONTAINER_ANNOTATION);
         if(containerAnnotation != null){
             String name = (String) containerAnnotation.getValue("name");
             String javaClass = (String) containerAnnotation.getValue("javaClass");
             String packageName = (String) containerAnnotation.getValue("packageName");
             String javaClassName = assembleJavaClass(javaClass, packageName);
-            Declaration containerDecl = convertToDeclaration(javaClassName, DeclarationType.TYPE);
+            Declaration containerDecl = convertToDeclaration(module, javaClassName, DeclarationType.TYPE);
             if(containerDecl == null)
                 throw new ModelResolutionException("Failed to load outer type " + name 
                         + " for inner type " + classMirror.getQualifiedName().toString()
@@ -504,7 +531,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    protected Declaration getOrCreateDeclaration(ClassMirror classMirror,
+    protected Declaration getOrCreateDeclaration(Module module, ClassMirror classMirror,
             DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
         alreadyExists[0] = false;
         Declaration decl = null;
@@ -528,7 +555,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             type = ClassType.CLASS;
             prefix = "C";
         }
-        String key = prefix + className;
+        String key = cacheKeyByModule(module, prefix + className);
         // see if we already have it
         if(declarationsByName.containsKey(key)){
             alreadyExists[0] = true;
@@ -548,11 +575,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case OBJECT:
             // we first make a class
             Declaration objectClassDecl = makeLazyClass(classMirror, null, null, true);
-            declarationsByName.put("C"+className, objectClassDecl);
+            declarationsByName.put(cacheKeyByModule(module, "C"+className), objectClassDecl);
             decls.add(objectClassDecl);
             // then we make a value for it
             Declaration objectDecl = makeToplevelAttribute(classMirror);
-            declarationsByName.put("V"+className, objectDecl);
+            declarationsByName.put(cacheKeyByModule(module, "V"+className), objectDecl);
             decls.add(objectDecl);
             // which one did we want?
             decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
@@ -707,7 +734,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return iface;
     }
 
-    public synchronized Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+    public synchronized Declaration convertToDeclaration(Module module, String typeName, DeclarationType declarationType) {
         // FIXME: this needs to move to the type parser and report warnings
         //This should be done where the TypeInfo annotation is parsed
         //to avoid retarded errors because of a space after a comma
@@ -717,9 +744,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if ("ceylon.language.Nothing".equals(typeName)) {
                 return new NothingType(typeFactory);
             } else if ("java.lang.Throwable".equals(typeName)) {
-                return convertToDeclaration("ceylon.language.Exception", declarationType);
+                // FIXME: this being here is highly dubious
+                return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
             }
-            ClassMirror classMirror = lookupClassMirror(typeName);
+            ClassMirror classMirror = lookupClassMirror(module, typeName);
             if (classMirror == null) {
                 String simpleName = typeName.substring(typeName.lastIndexOf(".")+1);
                 Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(simpleName);
@@ -780,11 +808,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Packages
     
-    public synchronized Package findPackage(String pkgName) {
-        pkgName = Util.quoteJavaKeywords(pkgName);
-        return packagesByName.get(pkgName);
-    }
-
     public synchronized LazyPackage findExistingPackage(Module module, String pkgName){
         String quotedPkgName = Util.quoteJavaKeywords(pkgName);
         LazyPackage pkg = findCachedPackage(module, quotedPkgName);
@@ -799,14 +822,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         }
         // only create it if it exists
-        if(loadPackage(pkgName, false)){
+        if(loadPackage(module, pkgName, false)){
             return findOrCreatePackage(module, pkgName);
         }
         return null;
     }
     
     private LazyPackage findCachedPackage(Module module, String quotedPkgName) {
-        LazyPackage pkg = packagesByName.get(quotedPkgName);
+        LazyPackage pkg = packagesByName.get(cacheKeyByModule(module, quotedPkgName));
         if(pkg != null){
             // only return it if it matches the module we're looking for, because if it doesn't we have an issue already logged
             // for a direct dependency on same module different versions logged, so no need to confuse this further
@@ -834,7 +857,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // FIXME: some refactoring needed
             pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
         }
-        packagesByName.put(quotedPkgName, pkg);
+        packagesByName.put(cacheKeyByModule(module, quotedPkgName), pkg);
 
         // only bind it if we already have a module
         if(isNew && module != null){
@@ -877,7 +900,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: not sure the toplevel package can have a package declaration
         String className = quotedQualifiedName.isEmpty() ? "package" : quotedQualifiedName + ".package";
         logVerbose("[Trying to look up package from "+className+"]");
-        ClassMirror packageClass = loadClass(quotedQualifiedName, className);
+        Module module = pkg.getModule();
+        if(module == null)
+            throw new RuntimeException("Assertion failed: module is null for package "+pkg.getNameAsString());
+        ClassMirror packageClass = loadClass(module, quotedQualifiedName, className);
         if(packageClass == null){
             logVerbose("[Failed to complete "+className+"]");
             // missing: leave it private
@@ -909,6 +935,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Module lookupModuleInternal(String packageName) {
+        // FIXME: this does not work for multiple modules with same name
         for(Module module : modules.getListOfModules()){
             // don't try the default module because it will always say yes
             if(module.isDefault())
@@ -935,6 +962,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * or ceylon.language modules.
      */
     public synchronized Module findOrCreateModule(String moduleName) {
+        // FIXME: we don't have any version??? If not this should be private
         boolean isJava = false;
         boolean defaultModule = false;
 
@@ -969,47 +997,42 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return module;
     }
 
-    private Module findModuleForPackage(String pkgName) {
-        Module module = lookupModuleInternal(pkgName);
-        if (module != null) {
-            return module;
-        }
-        throw new ModelResolutionException("Failed to find module for package "+pkgName);
-    }
-
-    public synchronized Module loadCompiledModule(String pkgName) {
+    public synchronized boolean loadCompiledModule(Module module) {
+        if(module.isDefault())
+            return false;
+        String pkgName = module.getNameAsString();
         if(pkgName.isEmpty())
-            return null;
+            return false;
         String moduleClassName = pkgName + ".module";
         logVerbose("[Trying to look up module from "+moduleClassName+"]");
-        ClassMirror moduleClass = loadClass(pkgName, moduleClassName);
+        ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
         if(moduleClass != null){
             // load its module annotation
-            Module module = loadCompiledModule(moduleClass, moduleClassName);
-            if(module != null)
-                return module;
+            return loadCompiledModule(module, moduleClass, moduleClassName);
         }
-        // keep looking up
-        int lastDot = pkgName.lastIndexOf(".");
-        if(lastDot == -1)
-            return null;
-        String parentPackageName = pkgName.substring(0, lastDot);
-        return loadCompiledModule(parentPackageName);
+        // give up
+        return false;
     }
 
-    private Module loadCompiledModule(ClassMirror moduleClass, String moduleClassName) {
+    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName) {
         String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
         String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
-        // FIXME: validate the name?
         if(name == null || name.isEmpty()){
             logWarning("Module class "+moduleClassName+" contains no name, ignoring it");
-            return null;
+            return false;
+        }
+        if(!name.equals(module.getNameAsString())){
+            logWarning("Module class "+moduleClassName+" declares an invalid name: "+name+". It should be: "+module.getNameAsString());
+            return false;
         }
         if(version == null || version.isEmpty()){
             logWarning("Module class "+moduleClassName+" contains no version, ignoring it");
-            return null;
+            return false;
         }
-        Module module = moduleManager.getOrCreateModule(Arrays.asList(name.split("\\.")), version);
+        if(!version.equals(module.getVersion())){
+            logWarning("Module class "+moduleClassName+" declares an invalid version: "+version+". It should be: "+module.getVersion());
+            return false;
+        }
         int major = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "major", 0);
         int minor = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "minor", 0);
         module.setMajor(major);
@@ -1052,7 +1075,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         
-        return module;
+        return true;
     }  
     
     //
@@ -1215,7 +1238,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         AnnotationMirror aliasAnnotation = mirror.getAnnotation(aliasAnnotationName);
         String extendedTypeString = (String) aliasAnnotation.getValue();
         
-        ProducedType extendedType = decodeType(extendedTypeString, alias);
+        ProducedType extendedType = decodeType(extendedTypeString, alias, Decl.getModuleContainer(alias));
         alias.setExtendedType(extendedType);
     }
 
@@ -1351,7 +1374,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 Value value = (Value)decl;
                 VariableMirror setterParam = setter.getParameters().get(0);
                 try{
-                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, VarianceLocation.INVARIANT);
+                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT);
                     // only add the setter if it has exactly the same type as the getter
                     if(paramType.isExactly(value.getType())){
                         foundGetter = true;
@@ -1442,7 +1465,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String javaClass = (String) member.getValue("javaClass");
             String packageName = (String) member.getValue("packageName");
             String javaClassName = assembleJavaClass(javaClass, packageName);
-            Declaration innerDecl = convertToDeclaration(javaClassName, DeclarationType.TYPE);
+            Declaration innerDecl = convertToDeclaration(Decl.getModuleContainer(klass), javaClassName, DeclarationType.TYPE);
             if(innerDecl == null)
                 throw new ModelResolutionException("Failed to load inner type " + name 
                         + " for outer type " + klass.getQualifiedNameString() 
@@ -1496,11 +1519,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // and its return type
         try{
-            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method, VarianceLocation.COVARIANT);
+            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT);
             method.setType(type);
             method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
             method.setDeclaredAnything(methodMirror.isDeclaredVoid());
-            type.setRaw(isRaw(methodMirror.getReturnType()));
+            type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
         }catch(ModelResolutionException x){
             logModelResolutionException(x, klass, "Failed to resolve method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName());
             method.setType(new UnknownType(typeFactory).getType());
@@ -1603,7 +1626,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         parameter.setUnit(decl.getUnit());
         parameter.setContainer((Scope) decl);
         parameter.setName("that");
-        parameter.setType(getType(CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
+        parameter.setType(getNonPrimitiveType(CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
         parameter.setDeclaration((Declaration) decl);
         parameters.getParameters().add(parameter);
     }
@@ -1654,10 +1677,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: for the same reason, can it be an overriding field? (actual)
         value.setVariable(!fieldMirror.isFinal());
         try{
-            ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, VarianceLocation.INVARIANT);
+            ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
-            type.setRaw(isRaw(fieldMirror.getType()));
+            type.setRaw(isRaw(Decl.getModuleContainer(klass), fieldMirror.getType()));
         }catch(ModelResolutionException x){
             logModelResolutionException(x, klass, "Failed to resolve field type of "+klass.getQualifiedNameString()+"."+value.getName());
             value.setType(new UnknownType(typeFactory).getType());
@@ -1670,7 +1693,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.getMembers().add(value);
     }
     
-    private boolean isRaw(TypeMirror type) {
+    private boolean isRaw(Module module, TypeMirror type) {
         // dirty hack to get rid of bug where calling type.isRaw() on a ceylon type we are going to compile would complete() it, which
         // would try to parse its file. For ceylon types we don't need the class file info we can query it
         // See https://github.com/ceylon/ceylon-compiler/issues/1085
@@ -1707,13 +1730,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             if(path.size() > 1){
                 // find the proper class mirror for the container
-                klass = loadClass(pkgName, path.get(0));
+                klass = loadClass(module, pkgName, path.get(0));
                 if(klass == null)
                     return false;
             }
             if(!path.isEmpty() && klass.isLoadedFromSource()){
                 // we need to find its model
-                Scope scope = packagesByName.get(pkgName);
+                Scope scope = packagesByName.get(cacheKeyByModule(module, pkgName));
                 if(scope == null)
                     return false;
                 for(String name : path){
@@ -1745,10 +1768,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodMirror, value);
         try{
-            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, VarianceLocation.INVARIANT);
+            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
-            type.setRaw(isRaw(methodMirror.getReturnType()));
+            type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
         }catch(ModelResolutionException x){
             logModelResolutionException(x, klass, "Failed to resolve getter return type of "+klass.getQualifiedNameString()+"."+methodName);
             value.setType(new UnknownType(typeFactory).getType());
@@ -1823,9 +1846,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
             if(superClass == null || superClass.getKind() == TypeKind.NONE)
-                extendedType = getType(CEYLON_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
+                extendedType = getNonPrimitiveType(CEYLON_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
             else
-                extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
+                extendedType = getNonPrimitiveType(superClass, klass, VarianceLocation.INVARIANT);
         }else{
             String className = classMirror.getQualifiedName();
             String superClassName = superClass == null ? null : superClass.getQualifiedName();
@@ -1835,13 +1858,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
-                extendedType = getType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
+                extendedType = getNonPrimitiveType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
             }else{
                 // read it from annotation first
                 String annotationSuperClassName = getAnnotationStringValue(classMirror, CEYLON_CLASS_ANNOTATION, "extendsType");
                 if(annotationSuperClassName != null && !annotationSuperClassName.isEmpty()){
                     try{
-                        extendedType = decodeType(annotationSuperClassName, klass);
+                        extendedType = decodeType(annotationSuperClassName, klass, Decl.getModuleContainer(klass));
                     }catch(ModelResolutionException x){
                         logModelResolutionException(x, klass, "Failed to resolve extended type of "+klass.getQualifiedNameString());
                         extendedType = new UnknownType(typeFactory).getType();
@@ -1853,14 +1876,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // read it from the Java super type
                     // now deal with type erasure, avoid having Object as superclass
                     if("java.lang.Object".equals(superClassName)){
-                        extendedType = getType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
-                    }else{
+                        extendedType = getNonPrimitiveType(CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
+                    }else if(superClass != null){
                         try{
-                            extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
+                            extendedType = getNonPrimitiveType(superClass, klass, VarianceLocation.INVARIANT);
                         }catch(ModelResolutionException x){
                             logModelResolutionException(x, klass, "Failed to resolve extended type of "+klass.getQualifiedNameString());
                             extendedType = new UnknownType(typeFactory).getType();
                         }
+                    }else{
+                        // FIXME: should this be UnknownType?
+                        extendedType = null;
                     }
                 }
             }
@@ -1913,7 +1939,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // turn it into a Sequential<T>
                     type = typeFactory.getSequentialType(type);
                 }else{
-                    type = obtainType(typeMirror, paramMirror, (Scope) decl, VarianceLocation.CONTRAVARIANT);
+                    type = obtainType(typeMirror, paramMirror, (Scope) decl, Decl.getModuleContainer((Scope) decl), VarianceLocation.CONTRAVARIANT);
                     // variadic params may technically be null in Java, but it Ceylon sequenced params may not
                     // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
                     // in the java side so let's not allow this
@@ -2008,7 +2034,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 throw new ModelResolutionException("Failed to find toplevel attribute "+value.getName());
 
             try{
-                value.setType(obtainType(meth.getReturnType(), meth, null, VarianceLocation.INVARIANT));
+                value.setType(obtainType(meth.getReturnType(), meth, null, Decl.getModuleContainer(value.getContainer()), VarianceLocation.INVARIANT));
             }catch(ModelResolutionException x){
                 logModelResolutionException(x, value.getContainer(), "Failed to resolve toplevel attribute type of "+value.getQualifiedNameString());
                 value.setType(new UnknownType(typeFactory).getType());
@@ -2051,7 +2077,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // now its parameters
             setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
             try{
-                method.setType(obtainType(meth.getReturnType(), meth, method, VarianceLocation.COVARIANT));
+                method.setType(obtainType(meth.getReturnType(), meth, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT));
                 method.setDeclaredAnything(meth.isDeclaredVoid());
             }catch(ModelResolutionException x){
                 logModelResolutionException(x, method.getContainer(), "Failed to resolve toplevel method type of "+method.getQualifiedNameString());
@@ -2110,7 +2136,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<String> satisfiedTypes = getSatisfiedTypesFromAnnotations(classMirror);
         if(satisfiedTypes != null){
             try{
-                klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass));
+                klass.getSatisfiedTypes().addAll(getTypesList(satisfiedTypes, klass, Decl.getModuleContainer(klass)));
             }catch(ModelResolutionException x){
                 logModelResolutionException(x, klass, "Failed to resolve satisfied types of "+klass.getQualifiedNameString());
             }catch(TypeParserException x){
@@ -2123,7 +2149,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE))
                     continue;
                 try{
-                    klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
+                    klass.getSatisfiedTypes().add(getNonPrimitiveType(iface, klass, VarianceLocation.INVARIANT));
                 }catch(ModelResolutionException x){
                     PackageMirror classPackage = classMirror.getPackage();
                     if(JDKUtils.isJDKAnyPackage(classPackage.getQualifiedName())){
@@ -2156,9 +2182,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
         String selfType = getSelfTypeFromAnnotations(classMirror);
+        Module moduleScope = Decl.getModuleContainer(klass);
         if(selfType != null && !selfType.isEmpty()){
             try{
-                ProducedType type = decodeType(selfType, klass);
+                ProducedType type = decodeType(selfType, klass, moduleScope);
                 if(!(type.getDeclaration() instanceof TypeParameter)){
                     logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
                 }else{
@@ -2177,7 +2204,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
             if(caseTypes != null && !caseTypes.isEmpty()){
                 try{
-                    klass.setCaseTypes(getTypesList(caseTypes, klass));
+                    klass.setCaseTypes(getTypesList(caseTypes, klass, moduleScope));
                 }catch(ModelResolutionException x){
                     logModelResolutionException(x, klass, "Failed to resolve case types of "+klass.getQualifiedNameString());
                 }catch(TypeParserException x){
@@ -2188,10 +2215,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private List<ProducedType> getTypesList(List<String> caseTypes, Scope scope) {
+    private List<ProducedType> getTypesList(List<String> caseTypes, Scope scope, Module moduleScope) {
         List<ProducedType> producedTypes = new LinkedList<ProducedType>();
         for(String type : caseTypes){
-            producedTypes.add(decodeType(type, scope));
+            producedTypes.add(decodeType(type, scope, moduleScope));
         }
         return producedTypes;
     }
@@ -2238,7 +2265,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             params.add(param);
         }
-        
+
+        Module moduleScope = Decl.getModuleContainer(scope);
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
         for(AnnotationMirror typeParam : typeParameters){
@@ -2246,21 +2274,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             @SuppressWarnings("unchecked")
             List<String> satisfiesAttribute = (List<String>)typeParam.getValue("satisfies");
-            setListOfTypes(param.getSatisfiedTypes(), satisfiesAttribute, scope,
+            setListOfTypes(param.getSatisfiedTypes(), satisfiesAttribute, scope, moduleScope, 
                     "Invalid type signature for satisfies of type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": ");
 
             @SuppressWarnings("unchecked")
             List<String> caseTypesAttribute = (List<String>)typeParam.getValue("caseTypes");
             if(caseTypesAttribute != null && !caseTypesAttribute.isEmpty())
                 param.setCaseTypes(new LinkedList<ProducedType>());
-            setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope,
+            setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope, moduleScope,
                     "Invalid type signature for case types of type parameter "+param.getName()+" of "+scope.getQualifiedNameString()+": ");
 
             @SuppressWarnings("unchecked")
             String defaultValueAttribute = (String)typeParam.getValue("defaultValue");
             if(defaultValueAttribute != null && !defaultValueAttribute.isEmpty()){
                 try{
-                    ProducedType decodedType = decodeType(defaultValueAttribute, scope);
+                    ProducedType decodedType = decodeType(defaultValueAttribute, scope, moduleScope);
                     param.setDefaultTypeArgument(decodedType);
                     param.setDefaulted(true);
                 }catch(ModelResolutionException x){
@@ -2273,11 +2301,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private void setListOfTypes(List<ProducedType> destinationTypeList, List<String> serialisedTypes, Scope scope, String errorPrefix) {
+    private void setListOfTypes(List<ProducedType> destinationTypeList, List<String> serialisedTypes, Scope scope, Module moduleScope, String errorPrefix) {
         if(serialisedTypes != null){
             for (String serialisedType : serialisedTypes) {
                 try{
-                    ProducedType decodedType = decodeType(serialisedType, scope);
+                    ProducedType decodedType = decodeType(serialisedType, scope, moduleScope);
                     destinationTypeList.add(decodedType);
                 }catch(ModelResolutionException x){
                     logModelResolutionException(x, scope, "Failed to resolve type");
@@ -2320,9 +2348,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // avoid adding java's default upper bound if it's just there with no meaning
                     if(bounds.size() == 1)
                         break;
-                    boundType = getType(CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
+                    boundType = getNonPrimitiveType(CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
                 }else
-                    boundType = getType(bound, scope, VarianceLocation.INVARIANT);
+                    boundType = getNonPrimitiveType(bound, scope, VarianceLocation.INVARIANT);
                 param.getSatisfiedTypes().add(boundType);
             }
         }
@@ -2355,9 +2383,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // TypeParsing and ModelLoader
 
-    private ProducedType decodeType(String value, Scope scope) {
+    private ProducedType decodeType(String value, Scope scope, Module moduleScope) {
         try{
-            return typeParser.decodeType(value, scope);
+            return typeParser.decodeType(value, scope, moduleScope);
         }catch(TypeParserException x){
             logError(x.getMessage());
         }catch(ModelResolutionException x){
@@ -2367,10 +2395,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     /** Warning: only valid for toplevel types, not for type parameters */
-    private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, VarianceLocation variance) {
+    private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, Module moduleScope, VarianceLocation variance) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
-            ProducedType ret = decodeType(typeName, scope);
+            ProducedType ret = decodeType(typeName, scope, moduleScope);
             // even decoded types need to fit with the reality of the underlying type
             ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TOPLEVEL));
             return ret;
@@ -2468,11 +2496,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = JAVA_CHAR_ARRAY_TYPE;
             } else {
                 // object array
-                type = new SimpleReflType(JAVA_LANG_OBJECT_ARRAY, TypeKind.DECLARED, ct);
+                type = new SimpleReflType(JAVA_LANG_OBJECT_ARRAY, SimpleReflType.Module.JDK, TypeKind.DECLARED, ct);
             }
         }
         
-        ProducedType ret = getType(type, scope, variance);
+        ProducedType ret = getNonPrimitiveType(type, scope, variance);
         if (ret.getUnderlyingType() == null) {
             ret.setUnderlyingType(getUnderlyingType(originalType, location));
         }
@@ -2493,12 +2521,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     @Override
-    public Declaration getDeclaration(String typeName, DeclarationType declarationType) {
-        return convertToDeclaration(typeName, declarationType);
+    public Declaration getDeclaration(Module module, String typeName, DeclarationType declarationType) {
+        return convertToDeclaration(module, typeName, declarationType);
     }
 
-    private ProducedType getType(TypeMirror type, Scope scope, VarianceLocation variance) {
-        Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
+    private ProducedType getNonPrimitiveType(TypeMirror type, Scope scope, VarianceLocation variance) {
+        Declaration decl = convertNonPrimitiveTypeToDeclaration(type, scope, DeclarationType.TYPE);
         if(decl == null){
             throw new RuntimeException("Failed to find declaration for "+type);
         }
@@ -2542,7 +2570,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public synchronized ProducedType getType(String pkgName, String name, Scope scope) {
+    public synchronized ProducedType getType(Module module, String pkgName, String name, Scope scope) {
         if(scope != null){
             TypeParameter typeParameter = lookupTypeParameter(scope, name);
             if(typeParameter != null)
@@ -2575,7 +2603,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         return null;
                 }
             }
-            Declaration declaration = convertToDeclaration(name, DeclarationType.TYPE);
+            Declaration declaration = convertToDeclaration(module, name, DeclarationType.TYPE);
             if(declaration instanceof TypeDeclaration)
                 return ((TypeDeclaration)declaration).getType();
             // we're looking for type declarations, so anything else doesn't work for us
@@ -2607,21 +2635,34 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public synchronized void removeDeclarations(List<Declaration> declarations) {
         List<String> keysToRemove = new ArrayList<String>();
-        for (String name : declarationsByName.keySet()) {
-            String nameWithoutPrefix = name.substring(1);
-            for (Declaration decl : declarations) {
-                if (nameWithoutPrefix.equals(decl.getQualifiedNameString())) {
-                    keysToRemove.add(name);
-                }
+        // keep in sync with getOrCreateDeclaration
+        for (Declaration decl : declarations) {
+            String prefix = null, otherPrefix = null;
+            String fqn = decl.getQualifiedNameString();
+            Module module = Decl.getModuleContainer(decl.getContainer());
+            if(Decl.isToplevel(decl)){
+                if(Decl.isValue(decl)){
+                    prefix = "V";
+                    if(((Value)decl).getTypeDeclaration().isAnonymous())
+                        otherPrefix = "C";
+                }else if(Decl.isMethod(decl))
+                    prefix = "V";
             }
-        }
-        for (String keyToRemove : keysToRemove) {
-            declarationsByName.remove(keyToRemove);
+            if(decl instanceof ClassOrInterface){
+                prefix = "C";
+            }
+            // ignore declarations which we do not cache, like member method/attributes
+            if(prefix != null){
+                declarationsByName.remove(cacheKeyByModule(module, prefix + fqn));
+                if(otherPrefix != null)
+                    declarationsByName.remove(cacheKeyByModule(module, otherPrefix + fqn));
+            }
         }
         
         for (Declaration decl : declarations) {
             if (decl instanceof LazyClass || decl instanceof LazyInterface) {
-                classMirrorCache.remove(decl.getQualifiedNameString());
+                Module module = Decl.getModuleContainer(decl.getContainer());
+                classMirrorCache.remove(cacheKeyByModule(module, decl.getQualifiedNameString()));
             }
         }
     }
@@ -2678,10 +2719,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     @Override
     public Module getLoadedModule(String moduleName) {
+        // FIXME: version?
         for(Module mod : modules.getListOfModules()){
             if(mod.getNameAsString().equals(moduleName))
                 return mod;
         }
         return null;
     }
+
+    public Module getLanguageModule() {
+        return modules.getLanguageModule();
+    }
+
+    public Module findModule(String name, String version){
+        if(name.equals(Module.DEFAULT_MODULE_NAME))
+            return modules.getDefaultModule();
+        for(Module module : modules.getListOfModules()){
+            if(module.getNameAsString().equals(name)
+                    && (version == null || module.getVersion() == null || version.equals(module.getVersion())))
+                return module;
+        }
+        return null;
+    }
+    
+    public Module getJDKBaseModule() {
+        return findModule(JAVA_BASE_MODULE_NAME, JDK_MODULE_VERSION);
+    }
+
+    protected abstract Module findModuleForClassMirror(ClassMirror classMirror);
 }

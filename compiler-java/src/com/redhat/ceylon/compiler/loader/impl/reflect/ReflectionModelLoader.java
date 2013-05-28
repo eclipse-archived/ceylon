@@ -53,9 +53,9 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
         this.log = log;
     }
 
-    protected abstract List<String> getPackageList(String packageName);
-    protected abstract boolean packageExists(String packageName);
-    protected abstract Class<?> loadClass(String name);
+    protected abstract List<String> getPackageList(Module module, String packageName);
+    protected abstract boolean packageExists(Module module, String packageName);
+    protected abstract Class<?> loadClass(Module module, String name);
 
     @Override
     public void loadStandardModules() {
@@ -68,18 +68,18 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public boolean loadPackage(String packageName, boolean loadDeclarations) {
+    public boolean loadPackage(Module module, String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
         // to load the declarations, because merely calling complete() on the package
         // is OK
         packageName = Util.quoteJavaKeywords(packageName);
-        if(loadDeclarations && !loadedPackages.add(packageName)){
+        if(loadDeclarations && !loadedPackages.add(cacheKeyByModule(module, packageName))){
             return true;
         }
-        if(!packageExists(packageName))
+        if(!packageExists(module, packageName))
             return false;
         if(loadDeclarations){
-            for(String file : getPackageList(packageName)){
+            for(String file : getPackageList(module, packageName)){
                 // ignore anything with $ in it because those are local/member/anonymous/impl ones
                 // FIXME: doesn't that remove quoted names too? need to check
                 if(file.indexOf('$') != -1)
@@ -93,7 +93,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
                 // the logic for lower-cased names should be abstracted somewhere sane
                 if(!isLoadedFromSource(className) 
                         && (!className.endsWith("_") || !isLoadedFromSource(className.substring(0, className.length()-1))))
-                    convertToDeclaration(className, DeclarationType.TYPE);
+                    convertToDeclaration(module, className, DeclarationType.TYPE);
             }
         }
         return true;
@@ -104,12 +104,12 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    public ClassMirror lookupNewClassMirror(String name) {
+    public ClassMirror lookupNewClassMirror(Module module, String name) {
         Class<?> klass = null;
         // first try with the same name, for Java interop with classes with lowercase name
-        klass = loadClass(name);
+        klass = loadClass(module, name);
         if (klass == null && lastPartHasLowerInitial(name) && !name.endsWith("_")) {
-            klass = loadClass(name+"_");
+            klass = loadClass(module, name+"_");
         }
         return klass != null ? new ReflectionClass(klass) : null;
     }

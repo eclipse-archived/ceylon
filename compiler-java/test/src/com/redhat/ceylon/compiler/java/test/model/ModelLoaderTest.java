@@ -56,11 +56,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -139,10 +139,12 @@ public class ModelLoaderTest extends CompilerTest {
             public void finished(TaskEvent e) {
                 if(e.getKind() == Kind.ENTER){
                     AbstractModelLoader modelLoader = CeylonModelLoader.instance(context2);
+                    Modules modules = LanguageCompiler.getCeylonContextInstance(context2).getModules();
+                    Module defaultModule = modules.getDefaultModule();
                     // now see if we can find our declarations
                     for(Entry<String, Declaration> entry : decls.entrySet()){
                         String quotedQualifiedName = entry.getKey().substring(1);
-                        Declaration modelDeclaration = modelLoader.getDeclaration(quotedQualifiedName, 
+                        Declaration modelDeclaration = modelLoader.getDeclaration(defaultModule, quotedQualifiedName, 
                                 Decl.isValue(entry.getValue()) ? DeclarationType.VALUE : DeclarationType.TYPE);
                         Assert.assertNotNull(modelDeclaration);
                         // make sure we loaded them exactly the same

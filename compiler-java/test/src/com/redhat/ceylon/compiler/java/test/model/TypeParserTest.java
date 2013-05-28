@@ -71,7 +71,7 @@ public class TypeParserTest {
 
         
         @Override
-        public ProducedType getType(String pkg, String name, Scope scope) {
+        public ProducedType getType(Module module, String pkg, String name, Scope scope) {
             Class klass = classes.get(name);
             if(klass == null)
                 throw new ModelResolutionException("Unknown type: "+name);
@@ -114,7 +114,7 @@ public class TypeParserTest {
         }
 
         @Override
-        public Declaration getDeclaration(String typeName, DeclarationType declarationType) {
+        public Declaration getDeclaration(Module module, String typeName, DeclarationType declarationType) {
             throw new RuntimeException("Not yet implemented");
         }
 
@@ -127,10 +127,20 @@ public class TypeParserTest {
     }
     
     private Unit mockUnit = new Unit();
+    private Module mockModule = new Module(){
+        private Package mockPackage = new Package(){
+            public Module getModule() {
+                return mockModule;
+            }
+        };
+        public Package getPackage(String name) {
+            return mockPackage;
+        }
+    };
     
     @Test
     public void testUnion(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a|b|c", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a|b|c", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -148,7 +158,7 @@ public class TypeParserTest {
 
     @Test
     public void testIntersection(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a&b&c", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a&b&c", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -166,7 +176,7 @@ public class TypeParserTest {
 
     @Test
     public void testIntersectionAndUnion(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a&b|c", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a&b|c", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -191,7 +201,7 @@ public class TypeParserTest {
 
     @Test
     public void testParams(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<b,c>", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<b,c>", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -206,7 +216,7 @@ public class TypeParserTest {
 
     @Test
     public void testUnionParams(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a|t2<b|c,t2<d,e|f>>", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a|t2<b|c,t2<d,e|f>>", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -274,7 +284,7 @@ public class TypeParserTest {
 
     @Test
     public void testQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.b", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.b", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -291,7 +301,7 @@ public class TypeParserTest {
 
     @Test
     public void testQualifiedAndParameterised(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<a,b>.t2<c,d>", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<a,b>.t2<c,d>", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -330,7 +340,7 @@ public class TypeParserTest {
 
     @Test
     public void testPackageQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("pkg::b", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("pkg::b", null, mockModule);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -342,16 +352,16 @@ public class TypeParserTest {
 
     @Test(expected = ModelResolutionException.class)
     public void testParameterisedPackage(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("unknown<a>.b", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("unknown<a>.b", null, mockModule);
     }
 
     @Test(expected = ModelResolutionException.class)
     public void testUnknownMember(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.unknown", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a.unknown", null, mockModule);
     }
 
     @Test(expected = TypeParserException.class)
     public void testInvalidType(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<a,b", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<a,b", null, mockModule);
     }
 }

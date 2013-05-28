@@ -20,6 +20,12 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject.Kind;
 
@@ -40,14 +46,12 @@ import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -60,10 +64,8 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
-import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
@@ -75,10 +77,10 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private Names names;
     private ClassReader reader;
     private PhasedUnits phasedUnits;
-    private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private Log log;
     private Types types;
     private Options options;
+    private Map<String,LazyPackage> modulelessPackages = new HashMap<String,LazyPackage>();
     
     public static AbstractModelLoader instance(Context context) {
         AbstractModelLoader instance = context.get(AbstractModelLoader.class);
@@ -97,7 +99,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     private CeylonModelLoader(Context context) {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
-        ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
+        com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         symtab = Symtab.instance(context);
         names = Names.instance(context);
         reader = CeylonClassReader.instance(context);
@@ -136,7 +138,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         // this happens when we have already registered a source file for this decl, so let's
                         // print out a helpful message
                         // see https://github.com/ceylon/ceylon-compiler/issues/250
-                        ClassMirror previousClass = lookupClassMirror(fqn);
+                        // we can pass null here since it's ignored
+                        ClassMirror previousClass = lookupNewClassMirror(null, fqn);
                         log.error("ceylon", "Duplicate declaration error: "+fqn+" is declared twice: once in "
                                 +tree.getSourceFile()+" and again in: "+
                                 (previousClass != null ? ((JavacClass)previousClass).classSymbol.classfile : "another file"));
@@ -150,12 +153,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public synchronized boolean loadPackage(String packageName, boolean loadDeclarations) {
+    public synchronized boolean loadPackage(Module module, String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
         // to load the declarations, because merely calling complete() on the package
         // is OK
         packageName = Util.quoteJavaKeywords(packageName);
-        if(loadDeclarations && !loadedPackages.add(packageName)){
+        if(loadDeclarations && !loadedPackages.add(cacheKeyByModule(module, packageName))){
             return true;
         }
         PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
@@ -178,13 +181,23 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     // avoid member classes
                     if(((ClassSymbol)m).getNestingKind() != NestingKind.TOP_LEVEL)
                         continue;
-                    convertToDeclaration(lookupClassMirror(m.getQualifiedName().toString()), DeclarationType.VALUE);
+                    convertToDeclaration(lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
                 }
             }
         }
         // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
         // might be too late
         return ceylonPkg.members().getElements().iterator().hasNext();
+    }
+
+    public synchronized Package findPackage(String quotedPkgName) {
+        String pkgName = quotedPkgName.replace("$", "");
+        // in theory we only have one package with the same name per module in javac
+        for(Package pkg : packagesByName.values()){
+            if(pkg.getNameAsString().equals(pkgName))
+                return pkg;
+        }
+        return null;
     }
 
     private boolean isAnonymousOrLocal(ClassSymbol m) {
@@ -213,7 +226,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public synchronized ClassMirror lookupNewClassMirror(String name) {
+    // FIXME: this still works on a flat classpath
+    public synchronized ClassMirror lookupNewClassMirror(Module module, String name) {
         ClassSymbol classSymbol = null;
 
         String outerName = name;
@@ -372,5 +386,45 @@ public class CeylonModelLoader extends AbstractModelLoader {
             }
         }
         return getOverriddenMethod(method, types) != null;
+    }
+
+    @Override
+    protected Module findModuleForClassMirror(ClassMirror classMirror) {
+        String pkgName = getPackageNameForQualifiedClassName(classMirror);
+        return lookupModuleInternal(pkgName);
+    }
+
+    public synchronized LazyPackage findOrCreateModulelessPackage(String pkgName) {
+        LazyPackage pkg = modulelessPackages.get(pkgName);
+        if(pkg != null)
+            return pkg;
+        pkg = new LazyPackage(this);
+        // FIXME: some refactoring needed
+        pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
+        modulelessPackages.put(pkgName, pkg);
+        return pkg;
+    }
+    
+    public synchronized void cacheModulelessPackages(){
+        for(LazyPackage pkg : modulelessPackages.values()){
+            String quotedPkgName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
+            packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+        }
+        modulelessPackages.clear();
+    }
+
+    public synchronized void fixDefaultPackage() {
+        Module defaultModule = modules.getDefaultModule();
+        Package defaultPackage = defaultModule.getDirectPackage("");
+        if(defaultPackage instanceof LazyPackage == false){
+            LazyPackage newPkg = findOrCreateModulelessPackage("");
+            List<Package> defaultModulePackages = defaultModule.getPackages();
+            if(defaultModulePackages.size() != 1)
+                throw new RuntimeException("Assertion failed: default module has more than the default package: "+defaultModulePackages.size());
+            defaultModulePackages.clear();
+            defaultModulePackages.add(newPkg);
+            newPkg.setModule(defaultModule);
+            defaultPackage.setModule(null);
+        }
     }
 }

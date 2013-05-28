@@ -28,6 +28,8 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
+import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionUtils;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -38,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
+// FIXME: we're still using a flat classpath here
 public class CeylonDocModelLoader extends ReflectionModelLoader {
 
     ModulesClassLoader classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader());
@@ -48,7 +51,7 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     }
 
     @Override
-    protected Class<?> loadClass(String name) {
+    protected Class<?> loadClass(Module module, String name) {
         Class<?> klass = null;
         try {
             klass = classLoader.loadClass(name);
@@ -74,12 +77,18 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     }
 
     @Override
-    protected List<String> getPackageList(String packageName) {
+    protected List<String> getPackageList(Module module, String packageName) {
         return classLoader.getPackageList(packageName);
     }
 
     @Override
-    protected boolean packageExists(String packageName) {
+    protected boolean packageExists(Module module, String packageName) {
         return classLoader.packageExists(packageName);
+    }
+
+    @Override
+    protected Module findModuleForClassMirror(ClassMirror classMirror) {
+        String pkgName = classMirror.getPackage().getQualifiedName();
+        return lookupModuleInternal(pkgName);
     }
 }

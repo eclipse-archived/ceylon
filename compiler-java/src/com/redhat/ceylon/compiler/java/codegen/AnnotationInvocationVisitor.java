@@ -30,6 +30,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -297,7 +299,9 @@ class AnnotationInvocationVisitor extends Visitor {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
         } else if (Decl.isInteropAnnotationClass(annotationClass)) {
             ProducedType type = term.getTypeModel();
-            TypeDeclaration enumDecl = (TypeDeclaration)exprGen.loader().findPackage("java.lang").getDirectMember("Enum", null, false);
+            Module jdkBaseModule = exprGen.loader().getJDKBaseModule();
+            Package javaLang = jdkBaseModule.getPackage("java.lang");
+            TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
             if (type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)))) {
                 // A Java enum
                 append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, null));
