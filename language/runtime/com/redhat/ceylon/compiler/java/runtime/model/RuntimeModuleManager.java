@@ -61,10 +61,10 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         modelLoader.addModuleToClassPath(module, artifact);
         modelLoader.addModuleClassLoader(module, classLoader);
         module.setAvailable(true);
+        
         if(!module.isDefault()){
-            Module compiledModule = modelLoader.loadCompiledModule(name);
             // FIXME: dependencies of Ceylon modules?
-            if(compiledModule == null){
+            if(!modelLoader.loadCompiledModule(module)){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
 
@@ -85,5 +85,9 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     @Override
     public RuntimeModelLoader getModelLoader() {
         return (RuntimeModelLoader) super.getModelLoader();
+    }
+    
+    public Module findModuleForClass(java.lang.Class<?> klass){
+        return getModelLoader().findModuleForClass(klass);
     }
 }

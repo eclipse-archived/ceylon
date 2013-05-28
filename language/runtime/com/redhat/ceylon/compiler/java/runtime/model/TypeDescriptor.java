@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -79,7 +80,8 @@ public abstract class TypeDescriptor {
         
         public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager){
             String typeName = klass.getName();
-            TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(typeName, DeclarationType.TYPE);
+            Module module = moduleManager.findModuleForClass(klass);
+            TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
             List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(typeArg.toProducedType(moduleManager));
