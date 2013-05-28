@@ -371,12 +371,11 @@ public class TypeUtils {
 
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        gen.out("{", MetamodelGenerator.KEY_NAME, ":'", d.getNameAsString(),
-                "',", MetamodelGenerator.KEY_METATYPE, ":'");
+        gen.out("{", MetamodelGenerator.KEY_METATYPE, ":'");
         List<TypeParameter> tparms = null;
         List<ProducedType> satisfies = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            gen.out(MetamodelGenerator.METATYPE_CLASS, "'");
+            gen.out(d.isAnonymous() ? MetamodelGenerator.METATYPE_OBJECT : MetamodelGenerator.METATYPE_CLASS, "'");
             tparms = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getTypeParameters();
             if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
                 gen.out(",'super':");
@@ -467,6 +466,39 @@ public class TypeUtils {
                 gen.getInvoker().generateInvocation(a);
             }
             gen.out("];}");
+        }
+
+        gen.out(",mod:$$METAMODEL$$,pkg:'", d.getUnit().getPackage().getNameAsString(), "',d:$$METAMODEL$$['");
+        gen.out(d.getUnit().getPackage().getNameAsString(), "']");
+        if (d.isToplevel()) {
+            gen.out("['", d.getName(), "']");
+        } else {
+            ArrayList<String> path = new ArrayList<>();
+            Declaration p = d;
+            while (p instanceof Declaration) {
+                path.add(0, p.getName());
+                //Build the path in reverse
+                if (!p.isToplevel()) {
+                    if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                        path.add(0, p.isAnonymous() ? "$o" : "$c");
+                    } else if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+                        path.add(0, "$i");
+                    } else if (p instanceof Method) {
+                        path.add(0, "$m");
+                    } else {
+                        path.add(0, "$at");
+                    }
+                }
+                Scope s = p.getContainer();
+                while (s != null && s instanceof Declaration == false) {
+                    s = s.getContainer();
+                }
+                p = (Declaration)s;
+            }
+            //Output path
+            for (String part : path) {
+                gen.out("['", part, "']");
+            }
         }
         gen.out("}");
     }
