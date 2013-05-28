@@ -371,11 +371,10 @@ public class TypeUtils {
 
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        gen.out("{", MetamodelGenerator.KEY_METATYPE, ":'");
+        gen.out("{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = null;
         List<ProducedType> satisfies = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            gen.out(d.isAnonymous() ? MetamodelGenerator.METATYPE_OBJECT : MetamodelGenerator.METATYPE_CLASS, "'");
             tparms = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getTypeParameters();
             if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
                 gen.out(",'super':");
@@ -386,13 +385,12 @@ public class TypeUtils {
 
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
 
-            gen.out(MetamodelGenerator.METATYPE_INTERFACE, "'");
             tparms = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getTypeParameters();
             satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getSatisfiedTypes();
 
         } else if (d instanceof Method) {
-            
-            gen.out(MetamodelGenerator.METATYPE_METHOD, "',", MetamodelGenerator.KEY_TYPE, ":");
+
+            gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
             metamodelTypeNameOrList(d.getUnit().getPackage(), ((Method)d).getType(), gen);
             gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
@@ -400,10 +398,6 @@ public class TypeUtils {
             encodeParameterListForRuntime(((Method)d).getParameterLists().get(0), gen);
             tparms = ((Method) d).getTypeParameters();
 
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Value) {
-
-            gen.out(((com.redhat.ceylon.compiler.typechecker.model.Value) d).isTransient() ?
-                    MetamodelGenerator.METATYPE_GETTER : MetamodelGenerator.METATYPE_ATTRIBUTE, "'");
         }
         if (tparms != null && !tparms.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
@@ -468,7 +462,7 @@ public class TypeUtils {
             gen.out("];}");
         }
 
-        gen.out(",mod:$$METAMODEL$$,pkg:'", d.getUnit().getPackage().getNameAsString(), "',d:$$METAMODEL$$['");
+        gen.out(",pkg:'", d.getUnit().getPackage().getNameAsString(), "',d:$$METAMODEL$$['");
         gen.out(d.getUnit().getPackage().getNameAsString(), "']");
         if (d.isToplevel()) {
             gen.out("['", d.getName(), "']");
