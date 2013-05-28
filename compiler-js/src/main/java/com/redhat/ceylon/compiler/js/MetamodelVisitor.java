@@ -38,6 +38,7 @@ public class MetamodelVisitor extends Visitor {
     @Override public void visit(Tree.MethodDefinition that) {
         if (errorFree(that)) {
             gen.encodeMethod(that.getDeclarationModel());
+            super.visit(that);
         }
     }
 
@@ -74,9 +75,18 @@ public class MetamodelVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.ObjectArgument that) {
+        if (errorFree(that)) {
+            gen.encodeObject(that.getDeclarationModel());
+            super.visit(that);
+        }
+    }
+
+    @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         if (errorFree(that)) {
             gen.encodeAttribute(that.getDeclarationModel());
+            super.visit(that);
         }
     }
 

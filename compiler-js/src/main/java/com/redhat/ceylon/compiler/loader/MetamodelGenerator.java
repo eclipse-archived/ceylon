@@ -101,8 +101,8 @@ public class MetamodelGenerator {
         ArrayList<String> names = new ArrayList<String>();
         Scope sc = d.getContainer();
         while (sc.getContainer() != null) {
-            if (sc instanceof TypeDeclaration) {
-                names.add(0, ((TypeDeclaration) sc).getName());
+            if (sc instanceof Declaration) {
+                names.add(0, ((Declaration) sc).getName());
             }
             sc = sc.getContainer();
         }
@@ -253,10 +253,13 @@ public class MetamodelGenerator {
                 if (parm.isDefaulted()) {
                     pm.put(KEY_DEFAULT, "1");
                 }
-                if (parm.getTypeDeclaration().getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
+                if (parm.getTypeDeclaration() != null && parm.getTypeDeclaration().getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parm.getTypeDeclaration().getName());
-                } else {
+                } else if (parm.getType() != null) {
                     pm.put(KEY_TYPE, typeMap(parm.getType()));
+                } else {
+                    //Most likely a dynamic type, set it to Anything
+                    pm.put(KEY_TYPE, typeMap(((TypeDeclaration)module.getLanguageModule().getDirectPackage("ceylon.language").getDirectMember("Anything", null, false)).getType()));
                 }
                 if (parm instanceof ValueParameter) {
                     pm.put("$pt", "v");
@@ -316,19 +319,16 @@ public class MetamodelGenerator {
 
         //Annotations
         encodeAnnotations(d, m);
-        Map<String, Object> parent;
-        if (d.isToplevel() || d.isMember()) {
-            parent = findParent(d);
+        Map<String, Object> parent= findParent(d);
+        if (parent != null) {
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_METHODS)) {
+                    parent.put(KEY_METHODS, new HashMap<String,Object>());
+                }
+                parent = (Map<String, Object>)parent.get(KEY_METHODS);
+            }
             if (parent != null) {
-                if (!d.isToplevel()) {
-                    if (!parent.containsKey(KEY_METHODS)) {
-                        parent.put(KEY_METHODS, new HashMap<String,Object>());
-                    }
-                    parent = (Map<String, Object>)parent.get(KEY_METHODS);
-                }
-                if (parent != null) {
-                    parent.put(d.getName(), m);
-                }
+                parent.put(d.getName(), m);
             }
         }
         return m;
@@ -437,13 +437,11 @@ public class MetamodelGenerator {
     @SuppressWarnings("unchecked")
     public void encodeObject(Value d) {
         Map<String, Object> parent = findParent(d);
-        if (d.isMember()) {
+        if (!d.isToplevel()) {
             if (!parent.containsKey(KEY_OBJECTS)) {
                 parent.put(KEY_OBJECTS, new HashMap<String, Object>());
             }
             parent = (Map<String,Object>)parent.get(KEY_OBJECTS);
-        } else if (!d.isToplevel()) {
-            return;
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_OBJECT);
