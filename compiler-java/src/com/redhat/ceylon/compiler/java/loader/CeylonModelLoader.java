@@ -394,6 +394,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
         return lookupModuleInternal(pkgName);
     }
 
+    /**
+     * See explanation in cacheModulelessPackages() below. This is called by LanguageCompiler during loadCompiledModules().
+     */
     public synchronized LazyPackage findOrCreateModulelessPackage(String pkgName) {
         LazyPackage pkg = modulelessPackages.get(pkgName);
         if(pkg != null)
@@ -405,6 +408,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
         return pkg;
     }
     
+    /**
+     * Stef: this sucks balls, but the typechecker wants Packages created before we have any Module set up, including for parsing a module
+     * file, and because the model loader looks up packages and caches them using their modules, we can't really have packages before we
+     * have modules. Rather than rewrite the typechecker, we create moduleless packages during parsing, which means they are not cached with
+     * their modules, and after the loadCompiledModules step above, we fix the package modules. Remains to be done is to move the packages
+     * created from their cache to the right per-module cache.
+     */
     public synchronized void cacheModulelessPackages(){
         for(LazyPackage pkg : modulelessPackages.values()){
             String quotedPkgName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
@@ -413,6 +423,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
         modulelessPackages.clear();
     }
 
+    /**
+     * Stef: after a lot of attempting, I failed to make the CompilerModuleManager produce a LazyPackage when the ModuleManager.initCoreModules
+     * is called for the default package. Because it is called by the PhasedUnits constructor, which is called by the ModelLoader constructor,
+     * which means the model loader is not yet in the context, so the CompilerModuleManager can't obtain it to pass it to the LazyPackage
+     * constructor. A rewrite of the logic of the typechecker scanning would fix this, but at this point it's just faster to let it create
+     * the wrong default package and fix it before we start parsing anything.
+     */
     public synchronized void fixDefaultPackage() {
         Module defaultModule = modules.getDefaultModule();
         Package defaultPackage = defaultModule.getDirectPackage("");

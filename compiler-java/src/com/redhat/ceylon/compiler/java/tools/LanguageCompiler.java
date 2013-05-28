@@ -53,7 +53,6 @@ import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -108,7 +107,7 @@ public class LanguageCompiler extends JavaCompiler {
     private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private final VFS vfs;
 
-	private AbstractModelLoader modelLoader;
+	private CeylonModelLoader modelLoader;
 
     private CeylonEnter ceylonEnter;
 
@@ -116,6 +115,7 @@ public class LanguageCompiler extends JavaCompiler {
     
     private Timer timer;
     private boolean isBootstrap;
+    private boolean addedDefaultModuleToClassPath;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -210,7 +210,7 @@ public class LanguageCompiler extends JavaCompiler {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        modelLoader = CeylonModelLoader.instance(context);
+        modelLoader = (CeylonModelLoader) CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
         options = Options.instance(context);
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
@@ -313,7 +313,10 @@ public class LanguageCompiler extends JavaCompiler {
                     // FIXME: this is bad in many ways
                     String pkgName = getPackage(filename);
                     // make a Package with no module yet, we will resolve them later
-                    com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(null, pkgName == null ? "" : pkgName);
+                    /*
+                     * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
+                     */
+                    com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
                     phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, ceylonContext, filename, map);
                     phasedUnits.addPhasedUnit(file, phasedUnit);
                     gen.setMap(map);
@@ -335,13 +338,22 @@ public class LanguageCompiler extends JavaCompiler {
     @Override
     public List<JCCompilationUnit> parseFiles(Iterable<JavaFileObject> fileObjects) {
         timer.startTask("parse");
+        /*
+         * Stef: see javadoc for fixDefaultPackage() for why this is here.
+         */
+        modelLoader.fixDefaultPackage();
         List<JCCompilationUnit> trees = super.parseFiles(fileObjects);
         timer.startTask("loadCompiledModules");
         LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
+        // now load modules and associate their moduleless packages with the corresponding modules
         loadCompiledModules(trees, moduleTrees);
         for (JCCompilationUnit moduleTree : moduleTrees) {
             trees = trees.append(moduleTree);
         }
+        /*
+         * Stef: see javadoc for cacheModulelessPackages() for why this is here.
+         */
+        modelLoader.cacheModulelessPackages();
         timer.endTask();
         return trees;
     }
@@ -362,15 +374,24 @@ public class LanguageCompiler extends JavaCompiler {
             String packageName = ""; 
             if(cu.pid != null)
                 packageName = TreeInfo.fullName(cu.pid).toString();
-            Package pkg = modelLoader.findOrCreatePackage(null, packageName);
+            /*
+             * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
+             */
+            Package pkg = modelLoader.findOrCreateModulelessPackage(packageName);
             loadModuleFromSource(pkg, modules, moduleTrees, trees);
         }
     }
 
     private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees, List<JCCompilationUnit> parsedTrees) {
         // skip it if we already resolved the package
-        if(pkg.getModule() != null)
+        if(pkg.getModule() != null){
+            // make sure the default module is always added to the classpath, it will be the only one to have a module
+            if(!addedDefaultModuleToClassPath && pkg.getModule().isDefault()){
+                addedDefaultModuleToClassPath = true;
+                ceylonEnter.addOutputModuleToClassPath(pkg.getModule());
+            }
             return;
+        }
         String pkgName = pkg.getQualifiedNameString();
         Module module = null;
         // do we have a module for this package?
