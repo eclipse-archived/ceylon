@@ -35,7 +35,7 @@ public abstract class FreeClassOrInterface
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClassOrInterface.class);
     
     @Ignore
-    static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.ParameterisedType.class, ceylon.language.metamodel.declaration.InterfaceDeclaration.$TypeDescriptor);
+    static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.OpenParameterisedType.class, ceylon.language.metamodel.declaration.InterfaceDeclaration.$TypeDescriptor);
 
     @Ignore
     private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
@@ -45,8 +45,8 @@ public abstract class FreeClassOrInterface
     private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor);
     
     private volatile boolean initialised = false;
-    private ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> superclass;
-    private Sequential<ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> interfaces;
+    private ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> superclass;
+    private Sequential<ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> interfaces;
     private Sequential<ceylon.language.metamodel.declaration.TypeParameter> typeParameters;
 
     private List<ceylon.language.metamodel.declaration.Declaration> declarations;
@@ -74,13 +74,13 @@ public abstract class FreeClassOrInterface
         
         ProducedType superType = declaration.getExtendedType();
         if(superType != null)
-            this.superclass = (ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration>) Metamodel.getMetamodel(superType);
+            this.superclass = (ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration>) Metamodel.getMetamodel(superType);
         
         List<ProducedType> satisfiedTypes = declaration.getSatisfiedTypes();
-        ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>[] interfaces = new ceylon.language.metamodel.declaration.ParameterisedType[satisfiedTypes.size()];
+        ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>[] interfaces = new ceylon.language.metamodel.declaration.OpenParameterisedType[satisfiedTypes.size()];
         int i=0;
         for(ProducedType pt : satisfiedTypes){
-            interfaces[i++] = (ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>) Metamodel.getMetamodel(pt);
+            interfaces[i++] = (ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>) Metamodel.getMetamodel(pt);
         }
         this.interfaces = (Sequential)Util.sequentialInstance($InterfacesTypeDescriptor, interfaces);
         
@@ -162,15 +162,15 @@ public abstract class FreeClassOrInterface
     }
     
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterisedType<ceylon.language.metamodel.declaration::InterfaceDeclaration>>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> getInterfaces() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::OpenParameterisedType<ceylon.language.metamodel.declaration::InterfaceDeclaration>>")
+    public Sequential<? extends ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> getInterfaces() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ParameterisedType<ceylon.language.metamodel.declaration::ClassDeclaration>|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> getSuperclass() {
+    @TypeInfo("ceylon.language.metamodel.declaration::OpenParameterisedType<ceylon.language.metamodel.declaration::ClassDeclaration>|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> getSuperclass() {
         checkInit();
         return superclass;
     }

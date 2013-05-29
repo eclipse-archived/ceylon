@@ -8,9 +8,9 @@ shared interface ClassOrInterfaceDeclaration
         of ClassDeclaration | InterfaceDeclaration 
         satisfies Declaration & Parameterised {
     
-    shared formal ParameterisedType<ClassDeclaration>? superclass;
+    shared formal OpenParameterisedType<ClassDeclaration>? superclass;
     
-    shared formal ParameterisedType<InterfaceDeclaration>[] interfaces;
+    shared formal OpenParameterisedType<InterfaceDeclaration>[] interfaces;
     
     shared formal Kind[] members<Kind>() 
             given Kind satisfies Declaration;
