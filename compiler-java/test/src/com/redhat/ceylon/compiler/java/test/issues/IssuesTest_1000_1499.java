@@ -165,6 +165,11 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
+    public void testBug1114() {
+        compareWithJavaSource("bug11xx/Bug1114");
+    }
+
+    @Test
     public void testBug1116() {
         compareWithJavaSource("bug11xx/Bug1116");
     }
