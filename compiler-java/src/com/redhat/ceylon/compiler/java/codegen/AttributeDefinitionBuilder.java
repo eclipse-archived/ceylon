@@ -235,7 +235,7 @@ public class AttributeDefinitionBuilder {
 
     private long getGetSetModifiers() {
         long mods = modifiers;
-        if (javaClassName != null && !toplevel) {
+        if (javaClassName != null) {
             mods |= Flags.PUBLIC;
         }
         return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);

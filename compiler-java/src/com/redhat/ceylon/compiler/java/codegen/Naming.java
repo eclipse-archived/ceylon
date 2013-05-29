@@ -472,10 +472,6 @@ public class Naming implements LocalId {
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
         } else {
-            String getterName = getGetterName(decl.getName());
-            if (decl.isToplevel()) {
-                return getterName + "$";
-            }
             return "$get";
         }
     }
@@ -503,10 +499,6 @@ public class Naming implements LocalId {
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
         }  else {
-            String setterName = getSetterName(decl.getName());
-            if (decl.isToplevel()) {
-                return setterName + "$";
-            }
             return "$set";
         }
     }
