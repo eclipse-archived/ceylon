@@ -76,7 +76,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     
     @Override
     public boolean getEmpty() {
-        return iterator().next() == finished_.getFinished$();
+        return iterator().next() == finished_.$get();
     }
 
     @Override
@@ -84,7 +84,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     public Sequential<? extends Element> getSequence() {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>($reifiedElement);
         java.lang.Object next = null;
-        for (Iterator<? extends Element> iter = iterator(); (next = iter.next()) != finished_.getFinished$();) {
+        for (Iterator<? extends Element> iter = iterator(); (next = iter.next()) != finished_.$get();) {
             sb.append((Element) next);
         }
         return sb.getSequence();

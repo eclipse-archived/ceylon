@@ -209,7 +209,7 @@ public class Util {
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.iterator();
             Object o; 
-            while((o = iterator.next()) != finished_.getFinished$()){
+            while((o = iterator.next()) != finished_.$get()){
                 list.add((T)o);
             }
         }
@@ -564,7 +564,7 @@ public class Util {
      */
     public static <T> Sequential<T> sequentialInstance(TypeDescriptor $reifiedT, T[] elements) {
         if (elements.length == 0) {
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
         }
         // Annoyingly this implies an extra copy
         return ArraySequence.<T>instance($reifiedT, elements);
@@ -572,7 +572,7 @@ public class Util {
 
     public static Sequential<? extends ceylon.language.String> sequentialInstanceBoxed(java.lang.String[] elements) {
         if (elements.length == 0){
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
 
         }
         int total = elements.length;
@@ -587,7 +587,7 @@ public class Util {
 
     public static Sequential<? extends ceylon.language.Integer> sequentialInstanceBoxed(long[] elements) {
         if (elements.length == 0){
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
 
         }
         int total = elements.length;
@@ -602,7 +602,7 @@ public class Util {
 
     public static Sequential<? extends ceylon.language.Character> sequentialInstanceBoxed(int[] elements) {
         if (elements.length == 0){
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
 
         }
         int total = elements.length;
@@ -617,7 +617,7 @@ public class Util {
 
     public static Sequential<? extends ceylon.language.Boolean> sequentialInstanceBoxed(boolean[] elements) {
         if (elements.length == 0){
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
 
         }
         int total = elements.length;
@@ -632,7 +632,7 @@ public class Util {
 
     public static Sequential<? extends ceylon.language.Float> sequentialInstanceBoxed(double[] elements) {
         if (elements.length == 0){
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
 
         }
         int total = elements.length;
@@ -657,7 +657,7 @@ public class Util {
     public static <T> Sequential<? extends T> sequentialInstance(TypeDescriptor $reifiedT, Sequential<? extends T> rest, T... elements) {
         if (elements.length == 0){
             if(rest.getEmpty()) {
-                return (Sequential)empty_.getEmpty$();
+                return (Sequential)empty_.$get();
             }
             return rest;
         }
@@ -670,7 +670,7 @@ public class Util {
         System.arraycopy(elements, 0, newArray, 0, elements.length);
         Iterator<? extends T> iterator = rest.iterator();
         int i = elements.length;
-        for(Object elem; (elem = iterator.next()) != finished_.getFinished$(); i++){
+        for(Object elem; (elem = iterator.next()) != finished_.$get(); i++){
             newArray[i] = elem;
         }
         return ArraySequence.<T>instance($reifiedT, newArray);
@@ -685,7 +685,7 @@ public class Util {
      */
     public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> spreadOp(TypeDescriptor $reifiedT, T start, long length) {
         if (length <= 0) {
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
         }
         if (start instanceof ceylon.language.Integer) {
             ceylon.language.Integer startInt = (ceylon.language.Integer)start;

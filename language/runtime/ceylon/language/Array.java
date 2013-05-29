@@ -306,7 +306,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
     @Override
     public Array<? extends Element> spanTo(@Name("to") Integer to) {
-        return (Array<? extends Element>) (to.value < 0 ? empty_.getEmpty$() : span(Integer.instance(0), to));
+        return (Array<? extends Element>) (to.value < 0 ? empty_.$get() : span(Integer.instance(0), to));
     }
 
     @Override
@@ -421,7 +421,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                     return unsafeItem(idx++);
                 }
                 else {
-                    return finished_.getFinished$();
+                    return finished_.$get();
                 }
             }
 

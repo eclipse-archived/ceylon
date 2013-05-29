@@ -149,7 +149,7 @@ public abstract class FreeClassOrInterface
             TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
         if (predicate == Predicates.false_()) {
-            return (Sequential<? extends Kind>)empty_.getEmpty$();
+            return (Sequential<? extends Kind>)empty_.$get();
         }
         checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
@@ -188,7 +188,7 @@ public abstract class FreeClassOrInterface
         checkInit();
         Iterator<? extends ceylon.language.metamodel.untyped.TypeParameter> iterator = typeParameters.iterator();
         Object it;
-        while((it = iterator.next()) != finished_.getFinished$()){
+        while((it = iterator.next()) != finished_.$get()){
             ceylon.language.metamodel.untyped.TypeParameter tp = (ceylon.language.metamodel.untyped.TypeParameter) it;
             if(tp.getName().equals(name))
                 return tp;
@@ -203,7 +203,7 @@ public abstract class FreeClassOrInterface
         Sequential<? extends ceylon.language.metamodel.AppliedType> memberApply$types(TypeDescriptor $reifiedContainer,
                                                                                       TypeDescriptor $reifiedKind){
         
-        return (Sequential) empty_.getEmpty$();
+        return (Sequential) empty_.$get();
     }
 
     @Ignore

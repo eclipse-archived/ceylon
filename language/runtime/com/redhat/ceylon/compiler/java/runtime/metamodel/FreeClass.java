@@ -92,7 +92,7 @@ public class FreeClass
     @Ignore
     @Override
     public Sequential<? extends ceylon.language.metamodel.AppliedType> apply$types(){
-        return (Sequential) empty_.getEmpty$();
+        return (Sequential) empty_.$get();
     }
 
     @Ignore
@@ -112,7 +112,7 @@ public class FreeClass
     @Ignore
     @Override
     public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
-        return (Sequential) empty_.getEmpty$();
+        return (Sequential) empty_.$get();
     }
 
     @Ignore

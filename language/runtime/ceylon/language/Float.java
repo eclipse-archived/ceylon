@@ -299,16 +299,16 @@ public final class Float
     public Comparison compare(@Name("other") Float other) {
         double x = value;
         double y = other.value;
-        return (x < y) ? smaller_.getSmaller$() :
-            ((x == y) ? equal_.getEqual$() : larger_.getLarger$());
+        return (x < y) ? smaller_.$get() :
+            ((x == y) ? equal_.$get() : larger_.$get());
     }
     
     @Ignore
     public static Comparison compare(double value, double otherValue) {
         double x = value;
         double y = otherValue;
-        return (x < y) ? smaller_.getSmaller$() :
-            ((x == y) ? equal_.getEqual$() : larger_.getLarger$());
+        return (x < y) ? smaller_.$get() :
+            ((x == y) ? equal_.$get() : larger_.$get());
     }
     
     @Override

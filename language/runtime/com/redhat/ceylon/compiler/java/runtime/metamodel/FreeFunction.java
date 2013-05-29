@@ -118,7 +118,7 @@ public class FreeFunction
     public ceylon.language.metamodel.untyped.TypeParameter getTypeParameter(@Name("name") String name) {
         Iterator<? extends ceylon.language.metamodel.untyped.TypeParameter> iterator = typeParameters.iterator();
         Object it;
-        while((it = iterator.next()) != finished_.getFinished$()){
+        while((it = iterator.next()) != finished_.$get()){
             ceylon.language.metamodel.untyped.TypeParameter tp = (ceylon.language.metamodel.untyped.TypeParameter) it;
             if(tp.getName().equals(name))
                 return tp;
@@ -129,7 +129,7 @@ public class FreeFunction
     @Ignore
     @Override
     public Sequential<? extends ceylon.language.metamodel.AppliedType> apply$types(){
-        return (Sequential) empty_.getEmpty$();
+        return (Sequential) empty_.$get();
     }
 
     @Ignore
@@ -146,7 +146,7 @@ public class FreeFunction
     @Ignore
     @Override
     public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
-        return (Sequential) empty_.getEmpty$();
+        return (Sequential) empty_.$get();
     }
 
     @Ignore
@@ -172,7 +172,7 @@ public class FreeFunction
         Sequential<? extends ceylon.language.metamodel.AppliedType> memberApply$types(TypeDescriptor $reifiedContainer,
                                                                                       TypeDescriptor $reifiedKind){
         
-        return (Sequential) empty_.getEmpty$();
+        return (Sequential) empty_.$get();
     }
 
     @Ignore

@@ -35,7 +35,7 @@ public final class flatten_ {
 			@Override
 			public Return $call(java.lang.Object arg0) {
 			    // FIXME: implement reified
-				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, arg0, empty_.getEmpty$()));
+				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, arg0, empty_.$get()));
 			}
 
 			@Override
@@ -43,7 +43,7 @@ public final class flatten_ {
                 // FIXME: implement reified
 				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
 				                           arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                                           arg1, empty_.getEmpty$())));
+				                                           arg1, empty_.$get())));
 			}
 
 			@Override
@@ -52,12 +52,12 @@ public final class flatten_ {
 				return tupleFunction.$call(new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
 				                           arg0, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
 				                                           arg1, new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, 
-				                                                           arg2, empty_.getEmpty$()))));
+				                                                           arg2, empty_.$get()))));
 			}
 
 			@Override
 			public Return $call(java.lang.Object... args) {
-				Sequential t = empty_.getEmpty$();
+				Sequential t = empty_.$get();
 				for (int i=args.length-1;i>=0;i--) {
 				    // FIXME: implement reified
 					t = new Tuple(TypeDescriptor.NothingType, TypeDescriptor.NothingType, TypeDescriptor.NothingType, args[i], t);

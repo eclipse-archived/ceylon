@@ -180,7 +180,7 @@ public class Metamodel {
             return new FreeIntersectionType(declaration.getSatisfiedTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.metamodel.untyped.nothingType_.getNothingType$();
+            return ceylon.language.metamodel.untyped.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
@@ -201,7 +201,7 @@ public class Metamodel {
             return new AppliedIntersectionType(declaration.getSatisfiedTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.metamodel.nothingType_.getNothingType$();
+            return ceylon.language.metamodel.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
@@ -323,7 +323,7 @@ public class Metamodel {
         Iterator<?> iterator = types.iterator();
         Object it;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        while((it = iterator.next()) != finished_.getFinished$()){
+        while((it = iterator.next()) != finished_.$get()){
             ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);

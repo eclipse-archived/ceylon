@@ -214,15 +214,15 @@ public class String
     @Override
     public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
-        return (c < 0) ? smaller_.getSmaller$() :
-            ((c == 0) ? equal_.getEqual$() : larger_.getLarger$());
+        return (c < 0) ? smaller_.$get() :
+            ((c == 0) ? equal_.$get() : larger_.$get());
     }
 
     @Ignore
     public static Comparison compare(java.lang.String value, java.lang.String otherValue) {
         int c = value.compareTo(otherValue);
-        return (c < 0) ? smaller_.getSmaller$() :
-            ((c == 0) ? equal_.getEqual$() : larger_.getLarger$());
+        return (c < 0) ? smaller_.$get() :
+            ((c == 0) ? equal_.$get() : larger_.$get());
     }
 
     /*@Override
@@ -367,7 +367,7 @@ public class String
     @Ignore
     public static boolean definesEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).definesEvery((Sequential)empty_.getEmpty$());
+        return instance(value).definesEvery((Sequential)empty_.$get());
     }
 
 //    @Override
@@ -403,7 +403,7 @@ public class String
     @Ignore
     public static boolean definesAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).definesAny((Sequential)empty_.getEmpty$());
+        return instance(value).definesAny((Sequential)empty_.$get());
     }
 
 //    @Override
@@ -429,13 +429,13 @@ public class String
 //    @Override
 //    @Ignore
 //    public Sequential<? extends Character> items() {
-//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.getEmpty$());
+//        return $ceylon$language$Correspondence$this.items((Sequential)empty_.$get());
 //    }
 
     @Ignore
     public static Sequential<? extends Character> items(java.lang.String value) {
         // TODO We're still boxing here!
-        return instance(value).items((Sequential)empty_.getEmpty$());
+        return instance(value).items((Sequential)empty_.$get());
     }
 
 //    @Override
@@ -468,7 +468,7 @@ public class String
                     result = Character.instance(codePoint);
                     offset += java.lang.Character.charCount(codePoint);
                 } else {
-                    result = finished_.getFinished$();
+                    result = finished_.$get();
                 }
                 return result;
             }
@@ -492,7 +492,7 @@ public class String
     public static Sequential<? extends Character> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
         }
         java.lang.Object[] chars = new java.lang.Object[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
@@ -818,7 +818,7 @@ public class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.iterator();
         java.lang.Object elem = it.next();
-        if (elem != finished_.getFinished$()) {
+        if (elem != finished_.$get()) {
             result.append(elem);
             for (;!((elem = it.next()) instanceof Finished);) {
                 result.append(value).append(elem);
@@ -829,12 +829,12 @@ public class String
 
     @Ignore
     public java.lang.String join() {
-        return join((Sequential)empty_.getEmpty$());
+        return join((Sequential)empty_.$get());
     }
 
     @Ignore
     public static java.lang.String join(java.lang.String value) {
-        return join(value, (Sequential)empty_.getEmpty$());
+        return join(value, (Sequential)empty_.$get());
     }
 
     @Override
@@ -1255,7 +1255,7 @@ public class String
     @Ignore
     public static Sequential<? extends Character> sort(java.lang.String value, Callable<? extends Comparison> f) {
         if (value.isEmpty()) {
-            return (Sequential)empty_.getEmpty$();
+            return (Sequential)empty_.$get();
         } else {
             return instance(value).sort(f);
         }
@@ -1542,7 +1542,7 @@ public class String
                         lastTokenWasSeparator = false;
                         return String.instance("");
                     } else {
-                        return finished_.getFinished$();
+                        return finished_.$get();
                     }
                 }
 
@@ -1628,7 +1628,7 @@ public class String
 
         @Override
         public boolean getEmpty() {
-            return iterator().next() == finished_.getFinished$();
+            return iterator().next() == finished_.$get();
         }
 
         @Override
@@ -1831,7 +1831,7 @@ public class String
                         pos = idx+oc.length();
                         return Integer.instance(idx);
                     }
-                    return finished_.getFinished$();
+                    return finished_.$get();
                 }
 
                 @Override
@@ -1851,7 +1851,7 @@ public class String
 
         @Override
         public boolean getEmpty() {
-            return iterator().next() == finished_.getFinished$();
+            return iterator().next() == finished_.$get();
         }
 
         @Override
