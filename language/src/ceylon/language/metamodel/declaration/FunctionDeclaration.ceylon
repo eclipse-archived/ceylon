@@ -1,6 +1,6 @@
 import ceylon.language.metamodel { 
     AppliedFunction = Function,
-    AppliedType,
+    Type,
     AppliedMember = Member,
     AppliedClassOrInterface = ClassOrInterface
 }
@@ -14,10 +14,10 @@ shared interface FunctionDeclaration
 
     shared formal Sequence<Parameter[]> parameterLists;
 
-    shared formal AppliedFunction<Anything, Nothing> apply(AppliedType* types);
+    shared formal AppliedFunction<Anything, Nothing> apply(Type* types);
 
-    shared formal AppliedFunction<Anything, Nothing> bindAndApply(Object instance, AppliedType* types);
+    shared formal AppliedFunction<Anything, Nothing> bindAndApply(Object instance, Type* types);
 
-    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(AppliedType* types)
+    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(Type* types)
         given Kind satisfies AppliedFunction<Anything, Nothing>;
 }

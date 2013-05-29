@@ -5,7 +5,7 @@ import java.util.Arrays;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Annotated;
-import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.Type;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ConstrainedAnnotation;
 import ceylon.language.metamodel.nothingType_;
@@ -315,21 +315,21 @@ class Predicates {
      */
     public static <Kind extends ceylon.language.metamodel.declaration.Declaration, A extends ceylon.language.metamodel.Annotation<A>>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
-        AppliedType at = Metamodel.getAppliedMetamodel(annotation);
+        Type at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
     }
     
     private static <A extends ceylon.language.metamodel.Annotation<A>> Predicate<Declaration> 
-    isDeclarationAnnotatedWith(TypeDescriptor annotation, AppliedType at) {
+    isDeclarationAnnotatedWith(TypeDescriptor annotation, Type at) {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof AppliedClassOrInterfaceType) {
             return new AnnotatedWith<A>(annotation, (AppliedClassOrInterfaceType)at);
         } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends AppliedType> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            Sequential<? extends Type> caseTypes = ((AppliedUnionType)at).getCaseTypes();
             return or(mapTypesToDeclarationAnnotatedWith(annotation, caseTypes));
         } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends AppliedType> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            Sequential<? extends Type> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
             return and(mapTypesToDeclarationAnnotatedWith(annotation, satisfiedTypes));
         } else {
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
@@ -337,14 +337,14 @@ class Predicates {
     }
     
     private static Predicate<Declaration>[] mapTypesToDeclarationAnnotatedWith(TypeDescriptor annotation,
-            Sequential<? extends AppliedType> caseTypes) {
+            Sequential<? extends Type> caseTypes) {
         @SuppressWarnings("unchecked")
         Predicate<Declaration>[] preds = new Predicate[(int)caseTypes.getSize()];
         int ii = 0;
-        Iterator<? extends AppliedType> iterator = caseTypes.iterator();
+        Iterator<? extends Type> iterator = caseTypes.iterator();
         Object element = iterator.next();
-        while (element instanceof AppliedType) {
-            preds[ii++] = isDeclarationAnnotatedWith(annotation, (AppliedType)element);
+        while (element instanceof Type) {
+            preds[ii++] = isDeclarationAnnotatedWith(annotation, (Type)element);
             element = iterator.next();
         }
         return preds;
@@ -356,20 +356,20 @@ class Predicates {
      * @return
      */
     public static <A extends ceylon.language.metamodel.Annotation<A>> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
-        AppliedType at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
+        Type at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
         return isAnnotationOfType($reifiedAnnotation, at);
     }
 
     private static <A extends ceylon.language.metamodel.Annotation<A>> Predicate<A> isAnnotationOfType(
-            TypeDescriptor $reifiedAnnotation, AppliedType at)
+            TypeDescriptor $reifiedAnnotation, Type at)
             throws EnumeratedTypeError {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends AppliedType> caseTypes = ((AppliedUnionType)at).getCaseTypes();
+            Sequential<? extends Type> caseTypes = ((AppliedUnionType)at).getCaseTypes();
             return or(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, caseTypes));
         } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends AppliedType> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
+            Sequential<? extends Type> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
             return and(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, satisfiedTypes));
         } else if (at instanceof AppliedClassOrInterfaceType) {
             // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation?
@@ -381,14 +381,14 @@ class Predicates {
     }
     
     private static <A extends ceylon.language.metamodel.Annotation<A>> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
-            Sequential<? extends AppliedType> caseTypes) {
+            Sequential<? extends Type> caseTypes) {
         @SuppressWarnings("unchecked")
         Predicate<A>[] preds = new Predicate[(int)caseTypes.getSize()];
         int ii = 0;
-        Iterator<? extends AppliedType> iterator = caseTypes.iterator();
+        Iterator<? extends Type> iterator = caseTypes.iterator();
         Object element = iterator.next();
-        while (element instanceof AppliedType) {
-            preds[ii++] = isAnnotationOfType($reifiedAnnotation, (AppliedType)element);
+        while (element instanceof Type) {
+            preds[ii++] = isAnnotationOfType($reifiedAnnotation, (Type)element);
             element = iterator.next();
         }
         return preds;

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.AppliedType;
+import ceylon.language.metamodel.Type;
 import ceylon.language.metamodel.nothingType_;
 import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.Package;

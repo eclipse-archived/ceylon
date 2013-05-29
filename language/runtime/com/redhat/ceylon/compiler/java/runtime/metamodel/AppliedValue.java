@@ -7,8 +7,6 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.AppliedType;
-import ceylon.language.metamodel.AppliedType$impl;
 import ceylon.language.metamodel.Declaration$impl;
 import ceylon.language.metamodel.Value$impl;
 
@@ -25,7 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 public class AppliedValue<Type> 
         implements ceylon.language.metamodel.Value<Type>, ReifiedType {
 
-    private AppliedType type;
+    private ceylon.language.metamodel.Type type;
     @Ignore
     protected TypeDescriptor $reifiedType;
     protected FreeAttribute declaration;
@@ -119,8 +117,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::AppliedType")
-    public AppliedType getType() {
+    @TypeInfo("ceylon.language.metamodel::Type")
+    public ceylon.language.metamodel.Type getType() {
         return type;
     }
 

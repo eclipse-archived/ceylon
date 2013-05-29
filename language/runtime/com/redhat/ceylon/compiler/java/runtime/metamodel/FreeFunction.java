@@ -126,7 +126,7 @@ public class FreeFunction
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.metamodel.AppliedType> apply$types(){
+    public Sequential<? extends ceylon.language.metamodel.Type> apply$types(){
         return (Sequential) empty_.$get();
     }
 
@@ -137,13 +137,13 @@ public class FreeFunction
     }
 
     @Override
-    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         return bindAndApply(null, types);
     }
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
+    public Sequential<? extends ceylon.language.metamodel.Type> bindAndApply$types(Object instance){
         return (Sequential) empty_.$get();
     }
 
@@ -157,7 +157,7 @@ public class FreeFunction
     @TypeInfo("ceylon.language.metamodel::Function<ceylon.language::Anything,ceylon.language::Nothing>")
     public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> bindAndApply(
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance, 
-            @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+            @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
         return new AppliedFunction(appliedFunction, this, instance);
@@ -167,7 +167,7 @@ public class FreeFunction
     @Override
     public <Container, 
             Kind extends ceylon.language.metamodel.Function>
-        Sequential<? extends ceylon.language.metamodel.AppliedType> memberApply$types(TypeDescriptor $reifiedContainer,
+        Sequential<? extends ceylon.language.metamodel.Type> memberApply$types(TypeDescriptor $reifiedContainer,
                                                                                       TypeDescriptor $reifiedKind){
         
         return (Sequential) empty_.$get();
@@ -191,7 +191,7 @@ public class FreeFunction
         ceylon.language.metamodel.Member<Container, Kind> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedKind,
-                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: check this
         AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
         return getAppliedFunction($reifiedContainer, $reifiedKind, types, containerType);
@@ -199,7 +199,7 @@ public class FreeFunction
 
     <Type, Kind extends ceylon.language.metamodel.Declaration>
     ceylon.language.metamodel.Member<Type, Kind> getAppliedFunction(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
-                                                                    Sequential<? extends ceylon.language.metamodel.AppliedType> types,
+                                                                    Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                     AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);

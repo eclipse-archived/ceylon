@@ -1,6 +1,9 @@
 import ceylon.language.metamodel.declaration {
     FunctionDeclaration
 }
+import ceylon.language.metamodel {
+    ClosedType = Type
+}
 
 shared interface Function<out Type, in Arguments>
         satisfies Callable<Type, Arguments> & Declaration 
@@ -8,5 +11,5 @@ shared interface Function<out Type, in Arguments>
     
     shared formal actual FunctionDeclaration declaration;
 
-    shared formal AppliedType type;
+    shared formal ClosedType type;
 }

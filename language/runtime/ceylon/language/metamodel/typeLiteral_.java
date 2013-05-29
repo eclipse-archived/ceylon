@@ -16,9 +16,9 @@ public final class typeLiteral_ {
     
     private typeLiteral_() {}
     
-    @TypeInfo("ceylon.language.metamodel::AppliedType")
+    @TypeInfo("ceylon.language.metamodel::Type")
     @TypeParameters(@TypeParameter(value = "Type", variance = Variance.OUT, satisfies = "ceylon.language::Anything"))
-    public static <Type> AppliedType typeLiteral(@Ignore TypeDescriptor $reifiedType) {
+    public static <Type> ceylon.language.metamodel.Type typeLiteral(@Ignore TypeDescriptor $reifiedType) {
         return Metamodel.getAppliedMetamodel($reifiedType);
     }
 }

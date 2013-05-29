@@ -1,1 +1,1 @@
-shared object nothingType satisfies AppliedType {}
+shared object nothingType satisfies Type {}

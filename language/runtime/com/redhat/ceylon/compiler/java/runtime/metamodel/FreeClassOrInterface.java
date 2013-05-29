@@ -200,7 +200,7 @@ public abstract class FreeClassOrInterface
     @Override
     public <Container, 
             Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
-        Sequential<? extends ceylon.language.metamodel.AppliedType> memberApply$types(TypeDescriptor $reifiedContainer,
+        Sequential<? extends ceylon.language.metamodel.Type> memberApply$types(TypeDescriptor $reifiedContainer,
                                                                                       TypeDescriptor $reifiedKind){
         
         return (Sequential) empty_.$get();
@@ -224,7 +224,7 @@ public abstract class FreeClassOrInterface
         ceylon.language.metamodel.Member<Container, Kind> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedKind,
-                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: check this
         AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
         return getAppliedClassOrInterface($reifiedContainer, $reifiedKind, types, containerType);
@@ -232,7 +232,7 @@ public abstract class FreeClassOrInterface
 
     <Type, Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
     ceylon.language.metamodel.Member<Type, Kind> getAppliedClassOrInterface(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
-                                                                            Sequential<? extends ceylon.language.metamodel.AppliedType> types,
+                                                                            Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                             AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         final ProducedType appliedType = declaration.getProducedReference(container.producedType, producedTypes).getType();

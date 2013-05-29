@@ -1,7 +1,7 @@
 import ceylon.language.metamodel {
     AppliedClassOrInterface = ClassOrInterface,
     AppliedMember = Member,
-    AppliedType
+    Type
 }
 
 shared interface ClassOrInterfaceDeclaration 
@@ -18,11 +18,11 @@ shared interface ClassOrInterfaceDeclaration
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies Declaration;
     
-    shared formal AppliedClassOrInterface<Anything> apply(AppliedType* types);
+    shared formal AppliedClassOrInterface<Anything> apply(Type* types);
     
-    shared formal AppliedClassOrInterface<Anything> bindAndApply(Object instance, AppliedType* types);
+    shared formal AppliedClassOrInterface<Anything> bindAndApply(Object instance, Type* types);
 
-    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(AppliedType* types)
+    shared formal AppliedMember<Container, Kind> memberApply<Container, Kind>(Type* types)
         given Kind satisfies AppliedClassOrInterface<Anything>;
 
 }

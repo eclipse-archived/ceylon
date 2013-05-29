@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.AppliedType$impl;
+import ceylon.language.metamodel.Type$impl;
 import ceylon.language.metamodel.IntersectionType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -21,20 +21,20 @@ public class AppliedIntersectionType
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(AppliedIntersectionType.class);
     
-    protected Sequential<ceylon.language.metamodel.AppliedType> satisfiedTypes;
+    protected Sequential<ceylon.language.metamodel.Type> satisfiedTypes;
     
     AppliedIntersectionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
-        ceylon.language.metamodel.AppliedType[] types = new ceylon.language.metamodel.AppliedType[satisfiedTypes.size()];
+        ceylon.language.metamodel.Type[] types = new ceylon.language.metamodel.Type[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.satisfiedTypes = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.AppliedType.$TypeDescriptor, types);
+        this.satisfiedTypes = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.Type.$TypeDescriptor, types);
     }
 
     @Override
     @Ignore
-    public AppliedType$impl $ceylon$language$metamodel$AppliedType$impl() {
+    public Type$impl $ceylon$language$metamodel$Type$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -47,8 +47,8 @@ public class AppliedIntersectionType
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.metamodel::AppliedType>")
-    public ceylon.language.Sequential<? extends ceylon.language.metamodel.AppliedType> getSatisfiedTypes() {
+    @TypeInfo("ceylon.language.Sequential<ceylon.language.metamodel::Type>")
+    public ceylon.language.Sequential<? extends ceylon.language.metamodel.Type> getSatisfiedTypes() {
         return satisfiedTypes;
     }
 

@@ -114,7 +114,7 @@ public class Metamodel {
         return instanceType.toProducedType(moduleManager);
     }
 
-    public static ceylon.language.metamodel.AppliedType getAppliedMetamodel(TypeDescriptor typeDescriptor) {
+    public static ceylon.language.metamodel.Type getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw new RuntimeException("Metamodel not yet supported for Java types");
         ProducedType pt = typeDescriptor.toProducedType(moduleManager);
@@ -185,7 +185,7 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
-    public static ceylon.language.metamodel.AppliedType getAppliedMetamodel(ProducedType pt) {
+    public static ceylon.language.metamodel.Type getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // FIXME: this null is most likely just wrong
@@ -303,7 +303,7 @@ public class Metamodel {
         throw new RuntimeException("Unsupported produced type: " + pt);
     }
 
-    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.AppliedType pt) {
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.Type pt) {
         if(pt instanceof AppliedClassOrInterfaceType)
             return ((AppliedClassOrInterfaceType)pt).producedType;
         throw new RuntimeException("Unsupported applied produced type: " + pt);
@@ -319,12 +319,12 @@ public class Metamodel {
     }
 
 
-    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.metamodel.AppliedType> types) {
+    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.metamodel.Type> types) {
         Iterator<?> iterator = types.iterator();
         Object it;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
         while((it = iterator.next()) != finished_.$get()){
-            ceylon.language.metamodel.AppliedType pt = (ceylon.language.metamodel.AppliedType) it;
+            ceylon.language.metamodel.Type pt = (ceylon.language.metamodel.Type) it;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
         }

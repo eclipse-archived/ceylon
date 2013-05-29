@@ -1,4 +1,4 @@
-shared interface UnionType satisfies AppliedType {
+shared interface UnionType satisfies Type {
     
-    shared formal List<AppliedType> caseTypes;
+    shared formal List<Type> caseTypes;
 }

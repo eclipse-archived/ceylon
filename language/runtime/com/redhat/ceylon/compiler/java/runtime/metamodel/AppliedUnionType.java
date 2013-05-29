@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.AppliedType$impl;
+import ceylon.language.metamodel.Type$impl;
 import ceylon.language.metamodel.UnionType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -21,20 +21,20 @@ public class AppliedUnionType
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(AppliedUnionType.class);
     
-    protected Sequential<ceylon.language.metamodel.AppliedType> caseTypes;
+    protected Sequential<ceylon.language.metamodel.Type> caseTypes;
     
     AppliedUnionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes){
-        ceylon.language.metamodel.AppliedType[] types = new ceylon.language.metamodel.AppliedType[caseTypes.size()];
+        ceylon.language.metamodel.Type[] types = new ceylon.language.metamodel.Type[caseTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
-        this.caseTypes = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.AppliedType.$TypeDescriptor, types);
+        this.caseTypes = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.Type.$TypeDescriptor, types);
     }
 
     @Override
     @Ignore
-    public AppliedType$impl $ceylon$language$metamodel$AppliedType$impl() {
+    public Type$impl $ceylon$language$metamodel$Type$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -47,8 +47,8 @@ public class AppliedUnionType
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.metamodel::AppliedType>")
-    public ceylon.language.Sequential<? extends ceylon.language.metamodel.AppliedType> getCaseTypes() {
+    @TypeInfo("ceylon.language.Sequential<ceylon.language.metamodel::Type>")
+    public ceylon.language.Sequential<? extends ceylon.language.metamodel.Type> getCaseTypes() {
         return caseTypes;
     }
 

@@ -35,7 +35,7 @@ public class FreeInterface
     }
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.metamodel.AppliedType> apply$types(){
+    public Sequential<? extends ceylon.language.metamodel.Type> apply$types(){
         return (Sequential) empty_.$get();
     }
 
@@ -48,14 +48,14 @@ public class FreeInterface
     @Override
     @TypeInfo("ceylon.language.metamodel::Interface<ceylon.language::Anything>")
     public ceylon.language.metamodel.Interface<? extends Object> apply(
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") 
-            Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") 
+            Sequential<? extends ceylon.language.metamodel.Type> types){
         return bindAndApply(null, types);
     }
     
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.metamodel.AppliedType> bindAndApply$types(Object instance){
+    public Sequential<? extends ceylon.language.metamodel.Type> bindAndApply$types(Object instance){
         return (Sequential) empty_.$get();
     }
 
@@ -69,8 +69,8 @@ public class FreeInterface
     @TypeInfo("ceylon.language.metamodel::Interface<ceylon.language::Anything>")
     public ceylon.language.metamodel.Interface<? extends Object> bindAndApply(
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance,
-            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::AppliedType>") 
-            Sequential<? extends ceylon.language.metamodel.AppliedType> types){
+            @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") 
+            Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: refactor with FreeClass.bindAndApply
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: this is wrong because it does not include the container type

@@ -1,12 +1,12 @@
 import ceylon.language.metamodel {
     AppliedInterface = Interface,
-    AppliedType
+    Type
 }
 
 shared interface InterfaceDeclaration
         satisfies ClassOrInterfaceDeclaration {
     
-    shared formal actual AppliedInterface<Anything> apply(AppliedType* types);
+    shared formal actual AppliedInterface<Anything> apply(Type* types);
     
-    shared formal actual AppliedInterface<Anything> bindAndApply(Object instance, AppliedType* types);
+    shared formal actual AppliedInterface<Anything> bindAndApply(Object instance, Type* types);
 }

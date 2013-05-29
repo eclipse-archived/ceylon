@@ -12,8 +12,6 @@ import java.util.Map;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.AppliedType;
-import ceylon.language.metamodel.AppliedType$impl;
 import ceylon.language.metamodel.Declaration$impl;
 import ceylon.language.metamodel.Function$impl;
 
@@ -45,7 +43,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     private final TypeDescriptor $reifiedArguments;
     
-    private AppliedType type;
+    private ceylon.language.metamodel.Type type;
     protected FreeFunction declaration;
     private MethodHandle method;
 
@@ -205,8 +203,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::AppliedType")
-    public AppliedType getType() {
+    @TypeInfo("ceylon.language.metamodel::Type")
+    public ceylon.language.metamodel.Type getType() {
         return type;
     }
 

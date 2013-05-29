@@ -3,22 +3,27 @@ import ceylon.language.metamodel.declaration {
     TypeParameter
 }
 
+import ceylon.language.metamodel {
+    ClosedType = Type
+}
+
 shared interface ClassOrInterface<out Type> 
     of Class<Type, Nothing> | Interface<Type>
-    satisfies Declaration & AppliedType {
+    satisfies Declaration & ClosedType {
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
     
-    shared formal Map<TypeParameter, AppliedType> typeArguments;
+    // FIXME: turn that into an interface and add to Function too
+    shared formal Map<TypeParameter, ClosedType> typeArguments;
     
     shared formal Class<Anything, Nothing>? superclass;
     
     shared formal Interface<Anything>[] interfaces;
 
-    shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, AppliedType* types)
+    shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
         given Kind satisfies ClassOrInterface<Anything>;
     
-    shared formal Member<SubType, Kind>? getFunction<SubType, Kind>(String name, AppliedType* types)
+    shared formal Member<SubType, Kind>? getFunction<SubType, Kind>(String name, ClosedType* types)
         given Kind satisfies Function<Anything, Nothing>;
     
     shared formal Member<SubType, Kind>? getAttribute<SubType, Kind>(String name)

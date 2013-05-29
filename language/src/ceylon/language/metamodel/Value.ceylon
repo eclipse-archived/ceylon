@@ -1,6 +1,9 @@
 import ceylon.language.metamodel.declaration {
     AttributeDeclaration
 }
+import ceylon.language.metamodel {
+    ClosedType = Type
+}
 
 shared interface Value<out Type>
         satisfies Declaration {
@@ -9,5 +12,5 @@ shared interface Value<out Type>
     
     shared formal Type get();
     
-    shared formal AppliedType type;
+    shared formal ClosedType type;
 }
