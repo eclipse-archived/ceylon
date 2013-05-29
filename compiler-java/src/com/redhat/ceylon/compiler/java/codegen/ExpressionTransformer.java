@@ -2975,6 +2975,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // Only want to quote the method name 
                     // e.g. enum.$enum()
                     flags |= Naming.NA_WRAPPER_UNQUOTED;
+                }else if(!isReferenceInSameScope(expr)){
+                    // always qualify it with this
+                    flags |= Naming.NA_WRAPPER | Naming.NA_WRAPPER_WITH_THIS;
                 }
                 qualExpr = naming.makeName((Method)decl, flags);
                 selector = null;
@@ -3823,10 +3826,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean isRecursiveReference(Tree.StaticMemberOrTypeExpression expr) {
         Declaration decl = expr.getDeclaration();
         Scope s = expr.getScope();
-        while (!(s instanceof Declaration) && (s.getContainer() != s)) {
+        // do we have decl as our container anywhere in the scope?
+        while (s != null && s != decl) {
             s = s.getContainer();
         }
-        return (s instanceof Declaration) && (s == decl);
+        return s == decl;
+    }
+
+    private boolean isReferenceInSameScope(Tree.StaticMemberOrTypeExpression expr) {
+        Declaration decl = expr.getDeclaration();
+        Scope s = expr.getScope();
+        // are we in the same Declaration container?
+        while (s != null && s instanceof Declaration == false) {
+            s = s.getContainer();
+        }
+        return s == decl;
     }
 
     boolean isWithinInvocation() {

@@ -894,6 +894,9 @@ public class Naming implements LocalId {
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
             expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         }
+        if((namingOptions & NA_WRAPPER_WITH_THIS) != 0){
+            expr = makeQualIdent(expr, "this");
+        }
         return expr;
     }
 
@@ -954,6 +957,8 @@ public class Naming implements LocalId {
     /** A shared parameter on an annotation class produces an annotation type 
      * method foo, not getFoo() */
     static final int NA_ANNOTATION_MEMBER = 1<<9;
+    /** Add a ".this" selector to the wrapper class */
+    static final int NA_WRAPPER_WITH_THIS = 1<<10;
 
     /**
      * Returns the name of the Java method/field for the given declaration 
