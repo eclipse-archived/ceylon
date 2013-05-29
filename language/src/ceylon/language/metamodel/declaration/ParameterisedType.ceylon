@@ -1,5 +1,5 @@
 shared interface ParameterisedType<out DeclarationType>
-    satisfies Type
+    satisfies OpenType
     given DeclarationType satisfies ClassOrInterfaceDeclaration {
     
     shared formal DeclarationType declaration;
@@ -8,5 +8,5 @@ shared interface ParameterisedType<out DeclarationType>
     
     shared formal ParameterisedType<InterfaceDeclaration>[] interfaces;
 
-    shared formal Map<TypeParameter, Type> typeArguments;
+    shared formal Map<TypeParameter, OpenType> typeArguments;
 }

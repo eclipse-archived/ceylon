@@ -5,5 +5,5 @@ shared interface AttributeDeclaration
     
     shared formal AppliedValue<Anything> apply(Anything instance = null);
     
-    shared formal Type type;
+    shared formal OpenType type;
 }

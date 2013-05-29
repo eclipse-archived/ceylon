@@ -164,7 +164,7 @@ public class Metamodel {
         }
     }
 
-    public static ceylon.language.metamodel.declaration.Type getMetamodel(ProducedType pt) {
+    public static ceylon.language.metamodel.declaration.OpenType getMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeParameterisedType(pt);
@@ -297,7 +297,7 @@ public class Metamodel {
         throw new RuntimeException("Unsupported method container for "+method.getName()+": "+container);
     }
 
-    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.declaration.Type pt) {
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.declaration.OpenType pt) {
         if(pt instanceof FreeParameterisedType)
             return ((FreeParameterisedType)pt).producedType;
         throw new RuntimeException("Unsupported produced type: " + pt);

@@ -1,4 +1,4 @@
-shared interface TypeParameterType satisfies Type {
+shared interface TypeParameterType satisfies OpenType {
     
     shared formal TypeParameter declaration;
 }

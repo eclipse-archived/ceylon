@@ -1,1 +1,1 @@
-shared object nothingType satisfies Type {}
+shared object nothingType satisfies OpenType {}

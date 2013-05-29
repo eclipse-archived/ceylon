@@ -11,7 +11,7 @@ import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration$impl;
 import ceylon.language.metamodel.declaration.Parameterised$impl;
-import ceylon.language.metamodel.declaration.Type;
+import ceylon.language.metamodel.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -37,7 +37,7 @@ public class FreeFunction
     
     private Sequential<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters;
     
-    private Type type;
+    private OpenType type;
 
     private Sequence<? extends Sequential<? extends ceylon.language.metamodel.declaration.Parameter>> parameterLists;
 
@@ -212,8 +212,8 @@ public class FreeFunction
     }
     
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Type")
-    public Type getType() {
+    @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
+    public OpenType getType() {
         return type;
     }
 

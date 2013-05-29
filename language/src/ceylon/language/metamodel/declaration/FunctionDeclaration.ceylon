@@ -8,7 +8,7 @@ import ceylon.language.metamodel {
 shared interface FunctionDeclaration
         satisfies Declaration & Parameterised {
 
-    shared formal Type type;
+    shared formal OpenType type;
 
     shared formal Parameter[] parameters;
 

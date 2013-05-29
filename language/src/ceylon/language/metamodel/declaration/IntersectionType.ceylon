@@ -1,4 +1,4 @@
-shared interface IntersectionType satisfies Type {
+shared interface IntersectionType satisfies OpenType {
     
-    shared formal List<Type> satisfiedTypes;
+    shared formal List<OpenType> satisfiedTypes;
 }

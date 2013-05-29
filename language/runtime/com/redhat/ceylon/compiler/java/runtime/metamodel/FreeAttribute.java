@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.declaration.Type;
+import ceylon.language.metamodel.declaration.OpenType;
 import ceylon.language.metamodel.declaration.AttributeDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -19,7 +19,7 @@ public class FreeAttribute
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAttribute.class);
     
-    private Type type;
+    private OpenType type;
 
     protected FreeAttribute(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
@@ -65,8 +65,8 @@ public class FreeAttribute
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Type")
-    public Type getType() {
+    @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
+    public OpenType getType() {
         return type;
     }
 

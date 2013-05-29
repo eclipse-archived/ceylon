@@ -7,7 +7,7 @@ import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.declaration.Parameter;
 import ceylon.language.metamodel.declaration.Parameter$impl;
-import ceylon.language.metamodel.declaration.Type;
+import ceylon.language.metamodel.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -22,7 +22,7 @@ public class FreeParameter implements Parameter, ReifiedType, Annotated, Annotat
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeParameter.class);
     private com.redhat.ceylon.compiler.typechecker.model.Parameter declaration;
-    private Type type;
+    private OpenType type;
     private Annotation[] annotations;
     
     FreeParameter(com.redhat.ceylon.compiler.typechecker.model.Parameter declaration,
@@ -59,8 +59,8 @@ public class FreeParameter implements Parameter, ReifiedType, Annotated, Annotat
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Type")
-    public Type getType() {
+    @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
+    public OpenType getType() {
         return type;
     }
 
