@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.untyped.TypeParameter$impl;
+import ceylon.language.metamodel.declaration.TypeParameter$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameter
     extends FreeDeclaration
-    implements ceylon.language.metamodel.untyped.TypeParameter {
+    implements ceylon.language.metamodel.declaration.TypeParameter {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameter.class);
@@ -21,7 +21,7 @@ public class FreeTypeParameter
 
     @Override
     @Ignore
-    public TypeParameter$impl $ceylon$language$metamodel$untyped$TypeParameter$impl() {
+    public TypeParameter$impl $ceylon$language$metamodel$declaration$TypeParameter$impl() {
         // TODO Auto-generated method stub
         return null;
     }

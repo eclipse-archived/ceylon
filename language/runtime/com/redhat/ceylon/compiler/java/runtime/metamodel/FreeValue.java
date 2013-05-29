@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.untyped.Type;
-import ceylon.language.metamodel.untyped.Value$impl;
+import ceylon.language.metamodel.declaration.Type;
+import ceylon.language.metamodel.declaration.Value$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeValue 
     extends FreeDeclaration
-    implements ceylon.language.metamodel.untyped.Value, AnnotationBearing {
+    implements ceylon.language.metamodel.declaration.Value, AnnotationBearing {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeValue.class);
@@ -41,7 +41,7 @@ public class FreeValue
 
     @Override
     @Ignore
-    public Value$impl $ceylon$language$metamodel$untyped$Value$impl() {
+    public Value$impl $ceylon$language$metamodel$declaration$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -65,7 +65,7 @@ public class FreeValue
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.untyped::Type")
+    @TypeInfo("ceylon.language.metamodel.declaration::Type")
     public Type getType() {
         return type;
     }

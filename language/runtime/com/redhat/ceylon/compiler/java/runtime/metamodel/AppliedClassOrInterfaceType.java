@@ -40,7 +40,7 @@ public class AppliedClassOrInterfaceType<Type>
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
-    protected ceylon.language.Map<? extends ceylon.language.metamodel.untyped.TypeParameter, ? extends ceylon.language.metamodel.AppliedType> typeArguments;
+    protected ceylon.language.Map<? extends ceylon.language.metamodel.declaration.TypeParameter, ? extends ceylon.language.metamodel.AppliedType> typeArguments;
     protected ceylon.language.metamodel.Class<? extends Object, ? super Sequential<? extends Object>> superclass;
     protected Sequential<ceylon.language.metamodel.Interface<? extends Object>> interfaces;
     @Ignore
@@ -87,9 +87,9 @@ public class AppliedClassOrInterfaceType<Type>
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
-        java.util.Map<ceylon.language.metamodel.untyped.TypeParameter, ceylon.language.metamodel.AppliedType> typeArguments 
-            = new LinkedHashMap<ceylon.language.metamodel.untyped.TypeParameter, ceylon.language.metamodel.AppliedType>();
-        Iterator<? extends ceylon.language.metamodel.untyped.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
+        java.util.Map<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.AppliedType> typeArguments 
+            = new LinkedHashMap<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.AppliedType>();
+        Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
             = producedType.getTypeArguments();
@@ -100,8 +100,8 @@ public class AppliedClassOrInterfaceType<Type>
             AppliedType ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
-        this.typeArguments = new InternalMap<ceylon.language.metamodel.untyped.TypeParameter, 
-                                             ceylon.language.metamodel.AppliedType>(ceylon.language.metamodel.untyped.TypeParameter.$TypeDescriptor, 
+        this.typeArguments = new InternalMap<ceylon.language.metamodel.declaration.TypeParameter, 
+                                             ceylon.language.metamodel.AppliedType>(ceylon.language.metamodel.declaration.TypeParameter.$TypeDescriptor, 
                                                                                     ceylon.language.metamodel.AppliedType.$TypeDescriptor, 
                                                                                     typeArguments);
         
@@ -123,14 +123,14 @@ public class AppliedClassOrInterfaceType<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel.untyped::TypeParameter,ceylon.language.metamodel::AppliedType>")
-    public Map<? extends ceylon.language.metamodel.untyped.TypeParameter, ? extends AppliedType> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel.declaration::TypeParameter,ceylon.language.metamodel::AppliedType>")
+    public Map<? extends ceylon.language.metamodel.declaration.TypeParameter, ? extends AppliedType> getTypeArguments() {
         return typeArguments;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.untyped::ClassOrInterface")
-    public ceylon.language.metamodel.untyped.ClassOrInterface getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::ClassOrInterface")
+    public ceylon.language.metamodel.declaration.ClassOrInterface getDeclaration() {
         checkInit();
         return declaration;
     }

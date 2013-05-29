@@ -5,9 +5,9 @@ import java.lang.reflect.AnnotatedElement;
 
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.untyped.Parameter;
-import ceylon.language.metamodel.untyped.Parameter$impl;
-import ceylon.language.metamodel.untyped.Type;
+import ceylon.language.metamodel.declaration.Parameter;
+import ceylon.language.metamodel.declaration.Parameter$impl;
+import ceylon.language.metamodel.declaration.Type;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -34,7 +34,7 @@ public class FreeParameter implements Parameter, ReifiedType, Annotated, Annotat
     
     @Override
     @Ignore
-    public Parameter$impl $ceylon$language$metamodel$untyped$Parameter$impl() {
+    public Parameter$impl $ceylon$language$metamodel$declaration$Parameter$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -59,7 +59,7 @@ public class FreeParameter implements Parameter, ReifiedType, Annotated, Annotat
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.untyped::Type")
+    @TypeInfo("ceylon.language.metamodel.declaration::Type")
     public Type getType() {
         return type;
     }

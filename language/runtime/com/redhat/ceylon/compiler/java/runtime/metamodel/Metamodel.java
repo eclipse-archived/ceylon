@@ -164,7 +164,7 @@ public class Metamodel {
         }
     }
 
-    public static ceylon.language.metamodel.untyped.Type getMetamodel(ProducedType pt) {
+    public static ceylon.language.metamodel.declaration.Type getMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeParameterisedType(pt);
@@ -180,7 +180,7 @@ public class Metamodel {
             return new FreeIntersectionType(declaration.getSatisfiedTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.metamodel.untyped.nothingType_.$get();
+            return ceylon.language.metamodel.declaration.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
@@ -297,7 +297,7 @@ public class Metamodel {
         throw new RuntimeException("Unsupported method container for "+method.getName()+": "+container);
     }
 
-    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.untyped.Type pt) {
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.declaration.Type pt) {
         if(pt instanceof FreeParameterisedType)
             return ((FreeParameterisedType)pt).producedType;
         throw new RuntimeException("Unsupported produced type: " + pt);

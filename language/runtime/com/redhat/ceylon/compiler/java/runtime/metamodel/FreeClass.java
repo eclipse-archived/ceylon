@@ -5,7 +5,7 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.metamodel.untyped.Class$impl;
+import ceylon.language.metamodel.declaration.Class$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -21,11 +21,11 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeClass 
     extends FreeClassOrInterface
-    implements ceylon.language.metamodel.untyped.Class {
+    implements ceylon.language.metamodel.declaration.Class {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClass.class);
-    private Sequential<? extends ceylon.language.metamodel.untyped.Parameter> parameters;
+    private Sequential<? extends ceylon.language.metamodel.declaration.Parameter> parameters;
     
     public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
         super(declaration);
@@ -66,26 +66,26 @@ public class FreeClass
         super.init();
         ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
         List<Parameter> modelParameters = parameterList.getParameters();
-        ceylon.language.metamodel.untyped.Parameter[] parameters = new ceylon.language.metamodel.untyped.Parameter[modelParameters.size()];
+        ceylon.language.metamodel.declaration.Parameter[] parameters = new ceylon.language.metamodel.declaration.Parameter[modelParameters.size()];
         Annotation[][] parameterAnnotations = findConstructor(Metamodel.getJavaClass(declaration)).getParameterAnnotations();
         int i=0;
         for(Parameter modelParameter : modelParameters){
             parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
             i++;
         }
-        this.parameters = Util.sequentialInstance(ceylon.language.metamodel.untyped.Parameter.$TypeDescriptor, parameters);
+        this.parameters = Util.sequentialInstance(ceylon.language.metamodel.declaration.Parameter.$TypeDescriptor, parameters);
     }
     
     @Override
     @Ignore
-    public Class$impl $ceylon$language$metamodel$untyped$Class$impl() {
+    public Class$impl $ceylon$language$metamodel$declaration$Class$impl() {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::Parameter>")
-    public Sequential<? extends ceylon.language.metamodel.untyped.Parameter> getParameters(){
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Parameter>")
+    public Sequential<? extends ceylon.language.metamodel.declaration.Parameter> getParameters(){
         return parameters;
     }
 

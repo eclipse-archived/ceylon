@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Field;
 
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.untyped.Import$impl;
+import ceylon.language.metamodel.declaration.Import$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeImport implements ceylon.language.metamodel.untyped.Import,
+public class FreeImport implements ceylon.language.metamodel.declaration.Import,
         ceylon.language.metamodel.Annotated, AnnotationBearing,
         ReifiedType {
     @Ignore
@@ -31,7 +31,7 @@ public class FreeImport implements ceylon.language.metamodel.untyped.Import,
 
     @Override
     @Ignore
-    public Import$impl $ceylon$language$metamodel$untyped$Import$impl() {
+    public Import$impl $ceylon$language$metamodel$declaration$Import$impl() {
         // TODO Auto-generated method stub
         return null;
     }

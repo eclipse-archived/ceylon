@@ -104,8 +104,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.untyped::Value")
-    public ceylon.language.metamodel.untyped.Value getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::Value")
+    public ceylon.language.metamodel.declaration.Value getDeclaration() {
         return declaration;
     }
 

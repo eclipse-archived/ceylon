@@ -7,9 +7,9 @@ import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.untyped.ParameterisedType$impl;
-import ceylon.language.metamodel.untyped.Type;
-import ceylon.language.metamodel.untyped.Type$impl;
+import ceylon.language.metamodel.declaration.ParameterisedType$impl;
+import ceylon.language.metamodel.declaration.Type;
+import ceylon.language.metamodel.declaration.Type$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -25,17 +25,17 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
-    @TypeParameter(value = "DeclarationType", variance = Variance.OUT, satisfies = "ceylon.language.metamodel.untyped::ClassOrInterface"),
+    @TypeParameter(value = "DeclarationType", variance = Variance.OUT, satisfies = "ceylon.language.metamodel.declaration::ClassOrInterface"),
     })
-public class FreeParameterisedType<DeclarationType extends ceylon.language.metamodel.untyped.ClassOrInterface>
-    implements ceylon.language.metamodel.untyped.ParameterisedType<DeclarationType>, ReifiedType {
+public class FreeParameterisedType<DeclarationType extends ceylon.language.metamodel.declaration.ClassOrInterface>
+    implements ceylon.language.metamodel.declaration.ParameterisedType<DeclarationType>, ReifiedType {
 
     private volatile boolean initialised;
     final com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
-    protected ceylon.language.Map<? extends ceylon.language.metamodel.untyped.TypeParameter, ? extends ceylon.language.metamodel.untyped.Type> typeArguments;
-    protected ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Class> superclass;
-    protected Sequential<ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Interface>> interfaces;
+    protected ceylon.language.Map<? extends ceylon.language.metamodel.declaration.TypeParameter, ? extends ceylon.language.metamodel.declaration.Type> typeArguments;
+    protected ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Class> superclass;
+    protected Sequential<ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Interface>> interfaces;
     
     FreeParameterisedType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
@@ -43,14 +43,14 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
 
     @Override
     @Ignore
-    public Type$impl $ceylon$language$metamodel$untyped$Type$impl() {
+    public Type$impl $ceylon$language$metamodel$declaration$Type$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public ParameterisedType$impl $ceylon$language$metamodel$untyped$ParameterisedType$impl() {
+    public ParameterisedType$impl $ceylon$language$metamodel$declaration$ParameterisedType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -70,9 +70,9 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
     protected void init() {
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
-        java.util.Map<ceylon.language.metamodel.untyped.TypeParameter, ceylon.language.metamodel.untyped.Type> typeArguments 
-            = new LinkedHashMap<ceylon.language.metamodel.untyped.TypeParameter, ceylon.language.metamodel.untyped.Type>();
-        Iterator<? extends ceylon.language.metamodel.untyped.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
+        java.util.Map<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.declaration.Type> typeArguments 
+            = new LinkedHashMap<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.declaration.Type>();
+        Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
             = producedType.getTypeArguments();
@@ -83,32 +83,32 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
             Type ptArgWrapped = Metamodel.getMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
-        this.typeArguments = new InternalMap<ceylon.language.metamodel.untyped.TypeParameter, 
-                                             ceylon.language.metamodel.untyped.Type>(ceylon.language.metamodel.untyped.TypeParameter.$TypeDescriptor, 
-                                                                                     ceylon.language.metamodel.untyped.Type.$TypeDescriptor, 
+        this.typeArguments = new InternalMap<ceylon.language.metamodel.declaration.TypeParameter, 
+                                             ceylon.language.metamodel.declaration.Type>(ceylon.language.metamodel.declaration.TypeParameter.$TypeDescriptor, 
+                                                                                     ceylon.language.metamodel.declaration.Type.$TypeDescriptor, 
                                                                                      typeArguments);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType superType = decl.getExtendedType();
         if(superType != null){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType.getTypeArguments());
-            this.superclass = (ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Class>) Metamodel.getMetamodel(superTypeResolved);
+            this.superclass = (ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Class>) Metamodel.getMetamodel(superTypeResolved);
         }
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Interface>[] interfaces 
-            = new ceylon.language.metamodel.untyped.ParameterisedType[satisfiedTypes.size()];
+        ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Interface>[] interfaces 
+            = new ceylon.language.metamodel.declaration.ParameterisedType[satisfiedTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : satisfiedTypes){
             com.redhat.ceylon.compiler.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType.getTypeArguments());
-            interfaces[i++] = (ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Interface>) 
+            interfaces[i++] = (ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Interface>) 
                     Metamodel.getMetamodel(resolvedPt);
         }
         this.interfaces = (Sequential)Util.sequentialInstance(FreeClassOrInterface.$InterfacesTypeDescriptor, interfaces);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel.untyped::TypeParameter,ceylon.language.metamodel.untyped::Type>")
-    public Map<? extends ceylon.language.metamodel.untyped.TypeParameter, ? extends Type> getTypeArguments() {
+    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel.declaration::TypeParameter,ceylon.language.metamodel.declaration::Type>")
+    public Map<? extends ceylon.language.metamodel.declaration.TypeParameter, ? extends Type> getTypeArguments() {
         return typeArguments;
     }
 
@@ -120,15 +120,15 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::ParameterisedType<ceylon.language.metamodel.untyped::Interface>>")
-    public Sequential<? extends ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Interface>> getInterfaces() {
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterisedType<ceylon.language.metamodel.declaration::Interface>>")
+    public Sequential<? extends ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Interface>> getInterfaces() {
         checkInit();
         return interfaces;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.untyped::ParameterisedType<ceylon.language.metamodel.untyped::Class>|ceylon.language::Null")
-    public ceylon.language.metamodel.untyped.ParameterisedType<ceylon.language.metamodel.untyped.Class> getSuperclass() {
+    @TypeInfo("ceylon.language.metamodel.declaration::ParameterisedType<ceylon.language.metamodel.declaration::Class>|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.ParameterisedType<ceylon.language.metamodel.declaration.Class> getSuperclass() {
         checkInit();
         return superclass;
     }

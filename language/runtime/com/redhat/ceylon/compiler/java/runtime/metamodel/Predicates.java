@@ -241,20 +241,20 @@ class Predicates {
      */
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
-            Class<? extends ceylon.language.metamodel.untyped.Declaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
-            if (declarationClass == ceylon.language.metamodel.untyped.Variable.class) {
+            Class<? extends ceylon.language.metamodel.declaration.Declaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
+            if (declarationClass == ceylon.language.metamodel.declaration.Variable.class) {
                 return DECLARATION_IS_VARIABLE;
-            } else if (declarationClass == ceylon.language.metamodel.untyped.Value.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.Value.class) {
                 return DECLARATION_IS_VALUE;
-            } else if (declarationClass == ceylon.language.metamodel.untyped.Function.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.Function.class) {
                 return DECLARATION_IS_FUNCTION;
-            } else if (declarationClass == ceylon.language.metamodel.untyped.Class.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.Class.class) {
                 return DECLARATION_IS_CLASS;
-            } else if (declarationClass == ceylon.language.metamodel.untyped.Interface.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.Interface.class) {
                 return DECLARATION_IS_INTERFACE;
-            } else if (declarationClass == ceylon.language.metamodel.untyped.ClassOrInterface.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.ClassOrInterface.class) {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
-            } else if (declarationClass == ceylon.language.metamodel.untyped.Declaration.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.Declaration.class) {
                 return true_();
             }
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
@@ -313,7 +313,7 @@ class Predicates {
     /**
      * Returns a predicate for Declarations having the given annotation 
      */
-    public static <Kind extends ceylon.language.metamodel.untyped.Declaration, A extends ceylon.language.metamodel.Annotation<A>>  
+    public static <Kind extends ceylon.language.metamodel.declaration.Declaration, A extends ceylon.language.metamodel.Annotation<A>>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
         AppliedType at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);

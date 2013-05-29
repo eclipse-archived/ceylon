@@ -50,9 +50,9 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.untyped::Class")
-    public ceylon.language.metamodel.untyped.Class getDeclaration() {
-        return (ceylon.language.metamodel.untyped.Class) super.getDeclaration();
+    @TypeInfo("ceylon.language.metamodel.declaration::Class")
+    public ceylon.language.metamodel.declaration.Class getDeclaration() {
+        return (ceylon.language.metamodel.declaration.Class) super.getDeclaration();
     }
 
     @Override

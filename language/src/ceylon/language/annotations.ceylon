@@ -1,7 +1,7 @@
 import ceylon.language.metamodel{
     SequencedAnnotation, OptionalAnnotation, 
     Type, Annotated, Value}
-import ceylon.language.metamodel.untyped{
+import ceylon.language.metamodel.declaration{
     Module, Package, Import,
     ClassDeclaration=Class,
     ClassOrInterfaceDeclaration=ClassOrInterface,

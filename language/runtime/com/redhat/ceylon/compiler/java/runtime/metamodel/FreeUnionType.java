@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.untyped.Type$impl;
-import ceylon.language.metamodel.untyped.UnionType$impl;
+import ceylon.language.metamodel.declaration.Type$impl;
+import ceylon.language.metamodel.declaration.UnionType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -16,39 +16,39 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeUnionType 
-    implements ceylon.language.metamodel.untyped.UnionType, ReifiedType {
+    implements ceylon.language.metamodel.declaration.UnionType, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeUnionType.class);
     
-    protected Sequential<ceylon.language.metamodel.untyped.Type> caseTypes;
+    protected Sequential<ceylon.language.metamodel.declaration.Type> caseTypes;
     
     FreeUnionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> caseTypes){
-        ceylon.language.metamodel.untyped.Type[] types = new ceylon.language.metamodel.untyped.Type[caseTypes.size()];
+        ceylon.language.metamodel.declaration.Type[] types = new ceylon.language.metamodel.declaration.Type[caseTypes.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.ProducedType pt : caseTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
-        this.caseTypes = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.untyped.Type.$TypeDescriptor, types);
+        this.caseTypes = (Sequential)Util.sequentialInstance(ceylon.language.metamodel.declaration.Type.$TypeDescriptor, types);
     }
 
     @Override
     @Ignore
-    public Type$impl $ceylon$language$metamodel$untyped$Type$impl() {
+    public Type$impl $ceylon$language$metamodel$declaration$Type$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public UnionType$impl $ceylon$language$metamodel$untyped$UnionType$impl() {
+    public UnionType$impl $ceylon$language$metamodel$declaration$UnionType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.metamodel.untyped::Type>")
-    public ceylon.language.Sequential<? extends ceylon.language.metamodel.untyped.Type> getCaseTypes() {
+    @TypeInfo("ceylon.language.Sequential<ceylon.language.metamodel.declaration::Type>")
+    public ceylon.language.Sequential<? extends ceylon.language.metamodel.declaration.Type> getCaseTypes() {
         return caseTypes;
     }
 

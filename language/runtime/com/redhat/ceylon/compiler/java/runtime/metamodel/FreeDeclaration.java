@@ -5,8 +5,8 @@ import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.AppliedType;
 import ceylon.language.metamodel.nothingType_;
-import ceylon.language.metamodel.untyped.Declaration$impl;
-import ceylon.language.metamodel.untyped.Package;
+import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeDeclaration 
-    implements ceylon.language.metamodel.untyped.Declaration, ReifiedType {
+    implements ceylon.language.metamodel.declaration.Declaration, ReifiedType {
     
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeDeclaration.class);
@@ -36,7 +36,7 @@ public class FreeDeclaration
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$untyped$Declaration$impl() {
+    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

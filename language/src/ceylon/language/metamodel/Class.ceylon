@@ -1,4 +1,4 @@
-import ceylon.language.metamodel.untyped {
+import ceylon.language.metamodel.declaration {
     UntypedClass = Class
 }
 

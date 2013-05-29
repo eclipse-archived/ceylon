@@ -5,7 +5,7 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.untyped.Module$impl;
+import ceylon.language.metamodel.declaration.Module$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
-public class FreeModule implements ceylon.language.metamodel.untyped.Module,
+public class FreeModule implements ceylon.language.metamodel.declaration.Module,
         ceylon.language.metamodel.Annotated, AnnotationBearing,
         ReifiedType {
 
@@ -30,7 +30,7 @@ public class FreeModule implements ceylon.language.metamodel.untyped.Module,
 
     @Override
     @Ignore
-    public Module$impl $ceylon$language$metamodel$untyped$Module$impl() {
+    public Module$impl $ceylon$language$metamodel$declaration$Module$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -49,7 +49,7 @@ public class FreeModule implements ceylon.language.metamodel.untyped.Module,
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::Package>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Package>")
     public Sequential<? extends FreePackage> getMembers() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.packages == null){
@@ -64,7 +64,7 @@ public class FreeModule implements ceylon.language.metamodel.untyped.Module,
     }
     
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.untyped::Import>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Import>")
     public Sequential<? extends FreeImport> getDependencies() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.dependencies == null){
