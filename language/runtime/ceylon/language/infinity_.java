@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 @Ceylon(major = 5) @Attribute
 public class infinity_ {
     
-    public static double getInfinity$(){
+    public static double $get(){
         return Double.POSITIVE_INFINITY;
     }
 }

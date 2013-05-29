@@ -188,7 +188,7 @@ public final class process_ {
     }*/
 
     @SuppressWarnings("unchecked")
-    private Sequential<? extends String> args = (Sequential)empty_.getEmpty$();
+    private Sequential<? extends String> args = (Sequential)empty_.$get();
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     public Sequential<? extends String> getArguments() {
@@ -368,7 +368,7 @@ public final class process_ {
     private process_() {}
     private static final process_ value = new process_();
     
-    public static process_ getProcess$() {
+    public static process_ $get() {
         return value;
     }
 }
