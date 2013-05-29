@@ -3,14 +3,91 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1114(final boolean test) {
-        .com.redhat.ceylon.compiler.java.language.GetterDouble g$getter_;
-        g$getter_ = (
+        this.test = test;
+        .com.redhat.ceylon.compiler.java.language.GetterLong j$getter_;
+        if (test) {
+            j$getter_ = (
+                let
+                {
+                    
+                    final class j$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                        
+                        private j$getter_() {
+                        }
+                        
+                        public long $get() {
+                            return 1L;
+                        }
+                    }
+                }
+                returning new j$getter_();
+            );
+        } else {
+            j$getter_ = (
+                let
+                {
+                    
+                    final class j$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                        
+                        private j$getter_() {
+                        }
+                        
+                        public long $get() {
+                            return 2L;
+                        }
+                    }
+                }
+                returning new j$getter_();
+            );
+        }
+    }
+    private final boolean test;
+    
+    private final void foo$priv() {
+        .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_;
+        if (test) {
+            i$getter_ = (
+                let
+                {
+                    
+                    final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                        
+                        private i$getter_() {
+                        }
+                        
+                        public long $get() {
+                            return 1L;
+                        }
+                    }
+                }
+                returning new i$getter_();
+            );
+        } else {
+            i$getter_ = (
+                let
+                {
+                    
+                    final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                        
+                        private i$getter_() {
+                        }
+                        
+                        public long $get() {
+                            return 2L;
+                        }
+                    }
+                }
+                returning new i$getter_();
+            );
+        }
+        .com.redhat.ceylon.compiler.java.language.GetterDouble f$getter_;
+        f$getter_ = (
             let
             {
                 
-                final class g$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
+                final class f$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
                     
-                    private g$getter_() {
+                    private f$getter_() {
                     }
                     
                     public double $get() {
@@ -18,7 +95,58 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                 }
             }
-            returning new g$getter_();
+            returning new f$getter_();
+        );
+        .com.redhat.ceylon.compiler.java.language.GetterInt c$getter_;
+        c$getter_ = (
+            let
+            {
+                
+                final class c$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterInt {
+                    
+                    private c$getter_() {
+                    }
+                    
+                    public int $get() {
+                        return 99;
+                    }
+                }
+            }
+            returning new c$getter_();
+        );
+        .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter_;
+        s$getter_ = (
+            let
+            {
+                
+                final class s$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private s$getter_() {
+                    }
+                    
+                    public .java.lang.String $get() {
+                        return "d";
+                    }
+                }
+            }
+            returning new s$getter_();
+        );
+        .com.redhat.ceylon.compiler.java.language.Getter<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114> bug$getter_;
+        bug$getter_ = (
+            let
+            {
+                
+                final class bug$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114> {
+                    
+                    private bug$getter_() {
+                    }
+                    
+                    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114 $get() {
+                        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114(test);
+                    }
+                }
+            }
+            returning new bug$getter_();
         );
     }
     

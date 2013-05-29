@@ -19,28 +19,26 @@
  */
 @nomodel
 class Bug1114(Boolean test) {
-    //Integer j;
-    //if (test) {
-    //    j => 1;
-    //} else {
-    //    j => 2;
-    //}
-    Float g;
-    g => 2.0;
-    //void foo() {
-    //    Integer i;
-    //    if (test) {
-    //        i => 1;
-    //    } else {
-    //        i => 2;
-    //    }
-    //    Float f;
-    //    f => 2.0;
-    //    Character c;
-    //    c => 'c';
-    //    String s;
-    //    s => "d";
-    //    Bug1114 bug;
-    //    bug => Bug1114(test);
-    //}
+    Integer j;
+    if (test) {
+        j => 1;
+    } else {
+        j => 2;
+    }
+    void foo() {
+        Integer i;
+        if (test) {
+            i => 1;
+        } else {
+            i => 2;
+        }
+        Float f;
+        f => 2.0;
+        Character c;
+        c => 'c';
+        String s;
+        s => "d";
+        Bug1114 bug;
+        bug => Bug1114(test);
+    }
 }
