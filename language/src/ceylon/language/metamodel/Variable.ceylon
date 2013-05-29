@@ -1,5 +1,5 @@
 shared interface Variable<Type> 
-        satisfies Value<Type> {
+        satisfies Attribute<Type> {
     
     shared formal void set(Type newValue);
 }

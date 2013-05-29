@@ -1,6 +1,6 @@
 import ceylon.language.metamodel{
     SequencedAnnotation, OptionalAnnotation, 
-    Annotated, Value}
+    Annotated }
 import ceylon.language.metamodel.declaration{
     Module, Package, Import,
     ClassDeclaration,

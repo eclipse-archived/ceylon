@@ -6,7 +6,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.DeclarationType$impl;
-import ceylon.language.metamodel.Value$impl;
+import ceylon.language.metamodel.Attribute$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedValue<Type> 
-        implements ceylon.language.metamodel.Value<Type>, ReifiedType {
+        implements ceylon.language.metamodel.Attribute<Type>, ReifiedType {
 
     private ceylon.language.metamodel.Type type;
     @Ignore
@@ -87,7 +87,7 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
+    public Attribute$impl<Type> $ceylon$language$metamodel$Attribute$impl() {
         // TODO Auto-generated method stub
         return null;
     }

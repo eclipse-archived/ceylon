@@ -4,7 +4,7 @@ import ceylon.language.metamodel.declaration {
 
 shared interface DeclarationType of ClassOrInterface<Anything>
                                   | Function<Anything, Nothing> 
-                                  | Value<Anything> {
+                                  | Attribute<Anything> {
     
     shared formal UntypedDeclaration declaration;
 }

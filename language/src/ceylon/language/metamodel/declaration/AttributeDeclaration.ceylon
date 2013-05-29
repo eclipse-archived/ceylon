@@ -1,9 +1,9 @@
-import ceylon.language.metamodel { AppliedValue = Value }
+import ceylon.language.metamodel { Attribute }
 
 shared interface AttributeDeclaration
         satisfies Declaration {
     
-    shared formal AppliedValue<Anything> apply(Anything instance = null);
+    shared formal Attribute<Anything> apply(Anything instance = null);
     
     shared formal OpenType type;
 }
