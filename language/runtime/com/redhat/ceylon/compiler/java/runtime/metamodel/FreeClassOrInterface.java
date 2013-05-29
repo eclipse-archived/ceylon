@@ -11,7 +11,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration$impl;
-import ceylon.language.metamodel.declaration.Parameterised$impl;
+import ceylon.language.metamodel.declaration.GenericDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -64,7 +64,7 @@ public abstract class FreeClassOrInterface
 
     @Override
     @Ignore
-    public Parameterised$impl $ceylon$language$metamodel$declaration$Parameterised$impl() {
+    public GenericDeclaration$impl $ceylon$language$metamodel$declaration$GenericDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

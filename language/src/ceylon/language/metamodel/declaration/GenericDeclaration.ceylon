@@ -1,4 +1,4 @@
-shared interface Parameterised {
+shared interface GenericDeclaration {
     
     shared formal TypeParameter[] typeParameters;
     

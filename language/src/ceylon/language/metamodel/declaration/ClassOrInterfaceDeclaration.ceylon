@@ -6,7 +6,7 @@ import ceylon.language.metamodel {
 
 shared interface ClassOrInterfaceDeclaration 
         of ClassDeclaration | InterfaceDeclaration 
-        satisfies Declaration & Parameterised {
+        satisfies Declaration & GenericDeclaration {
     
     shared formal OpenParameterisedType<ClassDeclaration>? superclass;
     

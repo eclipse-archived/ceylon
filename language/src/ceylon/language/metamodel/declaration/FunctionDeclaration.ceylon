@@ -6,7 +6,7 @@ import ceylon.language.metamodel {
 }
 
 shared interface FunctionDeclaration
-        satisfies Declaration & Parameterised {
+        satisfies Declaration & GenericDeclaration {
 
     shared formal OpenType type;
 

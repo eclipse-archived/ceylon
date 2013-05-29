@@ -10,7 +10,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration$impl;
-import ceylon.language.metamodel.declaration.Parameterised$impl;
+import ceylon.language.metamodel.declaration.GenericDeclaration$impl;
 import ceylon.language.metamodel.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -88,7 +88,7 @@ public class FreeFunction
 
     @Override
     @Ignore
-    public Parameterised$impl $ceylon$language$metamodel$declaration$Parameterised$impl() {
+    public GenericDeclaration$impl $ceylon$language$metamodel$declaration$GenericDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
