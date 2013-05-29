@@ -7,7 +7,7 @@ import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.declaration.Setter;
 import ceylon.language.metamodel.declaration.Setter$impl;
-import ceylon.language.metamodel.declaration.Variable;
+import ceylon.language.metamodel.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -47,9 +47,9 @@ public class FreeSetter
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
-    @TypeInfo("ceylon.language.metamodel.declaration::Variable")
+    @TypeInfo("ceylon.language.metamodel.declaration::VariableDeclaration")
     @Override
-    public Variable getVariable() {
+    public VariableDeclaration getVariable() {
         return variable;
     }
 

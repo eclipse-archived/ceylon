@@ -118,13 +118,13 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Value|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.Value getAttribute(String name) {
+    @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.AttributeDeclaration getAttribute(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
             return null;
         com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) toplevel;
-        return (FreeValue) Metamodel.getOrCreateMetamodel(decl);
+        return (FreeAttribute) Metamodel.getOrCreateMetamodel(decl);
     }
 
     @Override

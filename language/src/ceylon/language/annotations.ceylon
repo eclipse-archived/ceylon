@@ -8,7 +8,7 @@ import ceylon.language.metamodel.declaration{
     InterfaceDeclaration,
     FunctionDeclaration,
     
-    ValueDeclaration=Value} 
+    AttributeDeclaration} 
 
 "The annotation class for [[annotation]]."
 shared annotation class Annotation()
@@ -20,7 +20,7 @@ shared annotation Annotation annotation() => Annotation();
 
 "The annotation class for [[shared]]."
 shared annotation class Shared()
-        satisfies OptionalAnnotation<Shared, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
+        satisfies OptionalAnnotation<Shared, AttributeDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration|Package|Import> {}
 
 "Annotation to mark a type or member as shared. A `shared` 
  member is visible outside the block of code in which it
@@ -29,7 +29,7 @@ shared annotation Shared shared() => Shared();
 
 "The annotation class for [[variable]]."
 shared annotation class Variable()
-        satisfies OptionalAnnotation<Variable, ValueDeclaration> {}
+        satisfies OptionalAnnotation<Variable, AttributeDeclaration> {}
 
 "Annotation to mark an value as variable. A `variable` 
  value must be assigned multiple times." 
@@ -54,7 +54,7 @@ shared annotation Final final() => Final();
 
 "The annotation class for [[actual]]."
 shared annotation class Actual()
-        satisfies OptionalAnnotation<Actual, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
+        satisfies OptionalAnnotation<Actual, AttributeDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member of a type as refining a 
  member of a supertype."
@@ -62,7 +62,7 @@ shared annotation Actual actual() => Actual();
 
 "The annotation class for [[formal]]."
 shared annotation class Formal()
-        satisfies OptionalAnnotation<Formal, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
+        satisfies OptionalAnnotation<Formal, AttributeDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation must 
  be provided by subtypes."  
@@ -70,7 +70,7 @@ shared annotation Formal formal() => Formal();
 
 "The annotation class for [[default]]."
 shared annotation class Default()
-        satisfies OptionalAnnotation<Default, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
+        satisfies OptionalAnnotation<Default, AttributeDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation may be 
  refined by subtypes. Non-`default` declarations may not 
@@ -79,7 +79,7 @@ shared annotation Default default() => Default();
 
 "The annotation class for [[late]]."
 shared annotation class Late()
-        satisfies OptionalAnnotation<Late, ValueDeclaration> {}
+        satisfies OptionalAnnotation<Late, AttributeDeclaration> {}
 
 "Annotation to disable definite initialization analysis
  for a reference."  
@@ -115,7 +115,7 @@ shared annotation class Authors(shared String* authors)
 shared annotation Authors by(String* authors) => Authors(*authors);
 
 shared annotation class ThrownException(shared Anything type, shared String when) 
-        satisfies SequencedAnnotation<ThrownException, ValueDeclaration|FunctionDeclaration|ClassDeclaration> {}
+        satisfies SequencedAnnotation<ThrownException, AttributeDeclaration|FunctionDeclaration|ClassDeclaration> {}
 
 "Annotation to mark a program element that throws an 
  exception."

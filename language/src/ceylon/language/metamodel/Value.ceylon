@@ -1,11 +1,11 @@
 import ceylon.language.metamodel.declaration {
-    UntypedValue = Value
+    AttributeDeclaration
 }
 
 shared interface Value<out Type>
         satisfies Declaration {
 
-    shared formal actual UntypedValue declaration;
+    shared formal actual AttributeDeclaration declaration;
     
     shared formal Type get();
     

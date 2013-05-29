@@ -20,7 +20,7 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
 
     private MethodHandle setter;
 
-    public AppliedVariable(FreeValue value, ProducedType valueType, Object instance) {
+    public AppliedVariable(FreeAttribute value, ProducedType valueType, Object instance) {
         super(value, valueType, instance);
     }
 

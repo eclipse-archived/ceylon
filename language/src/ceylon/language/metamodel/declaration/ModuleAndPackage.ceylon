@@ -50,7 +50,7 @@ shared interface Package
             given Kind satisfies Declaration;
 
     "The attribute with the given name."
-    shared formal Value? getAttribute(String name);
+    shared formal AttributeDeclaration? getAttribute(String name);
 
     "The function with the given name."
     shared formal FunctionDeclaration? getFunction(String name);

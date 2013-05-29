@@ -235,7 +235,7 @@ public class AppliedClassOrInterfaceType<Type>
                                                                      String name) {
         
         checkInit();
-        final FreeValue value = declaration.findValue(name);
+        final FreeAttribute value = declaration.findValue(name);
         if(value == null)
             return null;
         final com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;

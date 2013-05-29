@@ -1,6 +1,6 @@
 "Model of a value that is `variable` or has an `assign` block."
-shared interface Variable
-        satisfies Value {
+shared interface VariableDeclaration
+        satisfies AttributeDeclaration {
     
     "Returns a model of the setter of this variable.
      

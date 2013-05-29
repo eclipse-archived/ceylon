@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.metamodel.declaration.Type;
-import ceylon.language.metamodel.declaration.Value$impl;
+import ceylon.language.metamodel.declaration.AttributeDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -12,16 +12,16 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeValue 
+public class FreeAttribute 
     extends FreeDeclaration
-    implements ceylon.language.metamodel.declaration.Value, AnnotationBearing {
+    implements ceylon.language.metamodel.declaration.AttributeDeclaration, AnnotationBearing {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeValue.class);
+    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAttribute.class);
     
     private Type type;
 
-    protected FreeValue(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
+    protected FreeAttribute(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
 
         this.type = Metamodel.getMetamodel(declaration.getType());
@@ -31,17 +31,17 @@ public class FreeValue
      * Instantiates a {@code FreeVariable} if the given value is variable 
      * otherwise a {@code FreeValue}.
      */
-    public static FreeValue instance(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
+    public static FreeAttribute instance(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
         if (declaration.isVariable()) {
             return new FreeVariable(declaration);
         } else {
-            return new FreeValue(declaration);
+            return new FreeAttribute(declaration);
         }
     }
 
     @Override
     @Ignore
-    public Value$impl $ceylon$language$metamodel$declaration$Value$impl() {
+    public AttributeDeclaration$impl $ceylon$language$metamodel$declaration$AttributeDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

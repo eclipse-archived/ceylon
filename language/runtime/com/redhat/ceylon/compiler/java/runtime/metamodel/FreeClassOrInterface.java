@@ -40,7 +40,7 @@ public abstract class FreeClassOrInterface
     @Ignore
     private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
     @Ignore
-    private static final TypeDescriptor $ValueTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.Value.class, Anything.$TypeDescriptor);
+    private static final TypeDescriptor $AttributeTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.AttributeDeclaration.class, Anything.$TypeDescriptor);
     @Ignore
     private static final TypeDescriptor $ClassOrInterfaceTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration.class, Anything.$TypeDescriptor);
     
@@ -99,7 +99,7 @@ public abstract class FreeClassOrInterface
             if(memberModelDeclaration instanceof Method){
                 declarations.add(new FreeFunction((Method) memberModelDeclaration));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                declarations.add(FreeValue.instance((com.redhat.ceylon.compiler.typechecker.model.Value)memberModelDeclaration));
+                declarations.add(FreeAttribute.instance((com.redhat.ceylon.compiler.typechecker.model.Value)memberModelDeclaration));
             }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
                 declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
             }
@@ -255,8 +255,8 @@ public abstract class FreeClassOrInterface
         return this.<FreeFunction>findDeclaration(name);
     }
 
-    FreeValue findValue(String name) {
-        return this.<FreeValue>findDeclaration(name);
+    FreeAttribute findValue(String name) {
+        return this.<FreeAttribute>findDeclaration(name);
     }
 
 

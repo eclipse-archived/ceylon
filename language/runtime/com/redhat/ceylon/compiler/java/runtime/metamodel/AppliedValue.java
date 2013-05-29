@@ -28,10 +28,10 @@ public class AppliedValue<Type>
     private AppliedType type;
     @Ignore
     protected TypeDescriptor $reifiedType;
-    protected FreeValue declaration;
+    protected FreeAttribute declaration;
     private MethodHandle getter;
 
-    public AppliedValue(FreeValue value, ProducedType valueType, Object instance) {
+    public AppliedValue(FreeAttribute value, ProducedType valueType, Object instance) {
         this.type = Metamodel.getAppliedMetamodel(valueType);
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(valueType);
         this.declaration = value;
@@ -104,8 +104,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Value")
-    public ceylon.language.metamodel.declaration.Value getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration")
+    public ceylon.language.metamodel.declaration.AttributeDeclaration getDeclaration() {
         return declaration;
     }
 

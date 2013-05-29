@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.declaration.Setter;
-import ceylon.language.metamodel.declaration.Variable;
-import ceylon.language.metamodel.declaration.Variable$impl;
+import ceylon.language.metamodel.declaration.VariableDeclaration;
+import ceylon.language.metamodel.declaration.VariableDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -19,8 +19,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 @Class
 @SatisfiedTypes("ceylon.language.metamodel.declaration::Variable")
 public class FreeVariable
-        extends FreeValue
-        implements Variable {
+        extends FreeAttribute
+        implements VariableDeclaration {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeVariable.class);
@@ -35,7 +35,7 @@ public class FreeVariable
     }
     
     @Override
-    public Variable$impl $ceylon$language$metamodel$declaration$Variable$impl() {
+    public VariableDeclaration$impl $ceylon$language$metamodel$declaration$VariableDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
