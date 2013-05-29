@@ -24,7 +24,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -2914,8 +2913,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 qualExpr = naming.makeName((Value)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
-            } else if (decl.isClassMember()
-                        || decl.isInterfaceMember()) {
+            } else if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
                 selector = naming.selector((Value)decl);
             } else {
                 // method local attr
@@ -3332,9 +3330,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             // must use top level setter
             lhs = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER);
         } else if (Decl.isGetter(decl)) {
-            // must use the setter
-            if (Decl.isLocal(decl)) {
-                lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
+            if (Decl.isTransient(decl) && !decl.isVariable()) {
+                JCExpression attr = gen().transformAttributeGetter(decl, rhs);
+                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER), attr);
+            } else {
+                // must use the setter
+                if (Decl.isLocal(decl)) {
+                    lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
+                }
             }
         } else if (decl instanceof Method
                 && !Decl.withinClassOrInterface(decl)) {

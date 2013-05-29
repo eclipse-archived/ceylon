@@ -240,7 +240,7 @@ public class CeylonTransformer extends AbstractTransformer {
             Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             block = sdef.getBlock();
             expression = sdef.getSpecifierExpression();
-            if (Decl.isLocal(decl)) {
+            if (Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) {
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
         } else {
@@ -274,6 +274,14 @@ public class CeylonTransformer extends AbstractTransformer {
                     newBox);
             return List.<JCTree>of(var);
         }
+        
+        // For late-bound getters we only generate a declaration
+        if (block == null && expression == null && !Decl.isToplevel(declarationModel)) {
+            JCExpression typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
+            JCTree.JCVariableDecl var = makeVar(attrClassName, typeExpr, null);
+            return List.<JCTree>of(var);
+        }
+        
         // For everything else generate a getter/setter method
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
@@ -296,7 +304,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
                 builder.getterBlock(getterBlock);
                 
-                if (Decl.isLocal(declarationModel)) {
+                if (Decl.isLocal(declarationModel) || Decl.isLocalToInitializer(declarationModel)) {
                     // For local getters
                     builder.immutable();
                 } else {
@@ -315,7 +323,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         builder.userAnnotations(expressionGen().transform(annotations));
         
-        if (Decl.isLocal(declarationModel)) {
+        if (Decl.isLocal(declarationModel) || Decl.isLocalToInitializer(declarationModel)) {
             if(initialValue != null)
                 builder.valueConstructor();
             JCExpression typeExpr;

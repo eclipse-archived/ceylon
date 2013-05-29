@@ -122,14 +122,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinClassOrInterface(decl)) {
+        if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
         } else if (Decl.isToplevel(decl)) {
         	if (!Decl.isNative(decl)) {
         		topattrBuilder.add(decl);
         	}
-        } else if (Decl.isLocal(decl) 
+        } else if ((Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) 
                 && ((Decl.isCaptured(decl) && Decl.isVariable(decl))
                         || Decl.isTransient(decl)
                         || Decl.hasSetter(decl))) {
@@ -146,9 +146,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinClass(decl)) {
+        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
-        } else if (Decl.withinInterface(decl)){
+        } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
             if (decl.getDeclarationModel().isShared()) {
@@ -169,9 +169,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinClass(decl)) {
+        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
-        } else if (Decl.withinInterface(decl)){
+        } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
             if (decl.getDeclarationModel().isShared()) {

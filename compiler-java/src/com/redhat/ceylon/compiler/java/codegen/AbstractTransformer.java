@@ -2083,7 +2083,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (reqdecl instanceof TypeDeclaration) {
             return true;
         } else { // TypedDeclaration
-            return !Decl.isLocal(reqdecl);
+            return !Decl.isLocal(reqdecl) && !Decl.isLocalToInitializer(reqdecl);
         }
     }
 

@@ -467,7 +467,7 @@ public class Naming implements LocalId {
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getGetterName();
         }
-        if (Decl.withinClassOrInterface(decl)) {
+        if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
@@ -494,7 +494,7 @@ public class Naming implements LocalId {
         }
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getSetterName();
-        } else if (Decl.withinClassOrInterface(decl)) {
+        } else if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {
                 setterName += "$priv";
@@ -1011,7 +1011,7 @@ public class Naming implements LocalId {
         Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER | NA_WRAPPER_UNQUOTED)) == 0, 
                 "Unsupported namingOption");
         String name = decl.getName();
-        if (Decl.isLocal(decl)) {
+        if (Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) {
             if ((Decl.isGetter(decl) && (namingOptions & NA_SETTER) == 0)
                     || (namingOptions & NA_GETTER) != 0){
                 name = name + "$getter";
