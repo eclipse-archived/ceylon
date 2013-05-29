@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.metamodel.declaration.OpenType$impl;
-import ceylon.language.metamodel.declaration.TypeParameterType$impl;
+import ceylon.language.metamodel.declaration.OpenTypeVariable$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameterType 
-    implements ceylon.language.metamodel.declaration.TypeParameterType, ReifiedType {
+    implements ceylon.language.metamodel.declaration.OpenTypeVariable, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameterType.class);
@@ -38,7 +38,7 @@ public class FreeTypeParameterType
 
     @Override
     @Ignore
-    public TypeParameterType$impl $ceylon$language$metamodel$declaration$TypeParameterType$impl() {
+    public OpenTypeVariable$impl $ceylon$language$metamodel$declaration$OpenTypeVariable$impl() {
         // TODO Auto-generated method stub
         return null;
     }
