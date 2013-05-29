@@ -23,7 +23,7 @@ final class bug1043_ {
         final class Consumer$impl<T> {
             
             private final .ceylon.language.Sequential<? extends Delegate<? super T>> $init$dels(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
         }
         
@@ -54,7 +54,7 @@ final class bug1043_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1043_.bug1043();
     }
 }

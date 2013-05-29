@@ -10,7 +10,7 @@ final class callableReturnReturningInteger_foo_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_foo_.callableReturnReturningInteger_foo();
     }
 }
@@ -30,7 +30,7 @@ final class callableReturnReturningInteger_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_bar_.callableReturnReturningInteger_bar();
     }
 }

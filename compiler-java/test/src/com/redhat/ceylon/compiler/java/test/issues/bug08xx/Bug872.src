@@ -78,7 +78,7 @@ public final class Visitable$impl {
     }
     
     public final .ceylon.language.Sequential visitAroundTags$tags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
@@ -170,7 +170,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html();
     }
     
@@ -244,7 +244,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head();
     }
     
@@ -299,7 +299,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType;
     
     public static <TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag>.ceylon.language.Sequential $init$initialTags(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType, final .java.lang.String name) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this;
     
@@ -367,7 +367,7 @@ public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.C
     }
     
     public static .ceylon.language.Sequential $init$initialTags() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.java.lang.Override
@@ -395,7 +395,7 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
     }
     
     public static .ceylon.language.Sequential $init$initialTags(final .java.lang.String name) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this;
     
@@ -428,7 +428,7 @@ public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bloc
     }
     
     public static .ceylon.language.Sequential $init$tags() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.java.lang.Override
@@ -457,7 +457,7 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
     }
     
     public static .ceylon.language.Sequential $init$initialTags(final .java.lang.String name) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this;
     
@@ -496,7 +496,7 @@ public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inli
     }
     
     public static .ceylon.language.Sequential $init$tags() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.java.lang.Override

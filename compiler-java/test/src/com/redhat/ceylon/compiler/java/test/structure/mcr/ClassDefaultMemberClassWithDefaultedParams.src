@@ -46,7 +46,7 @@ class ClassDefaultMemberClassWithDefaultedParams implements .com.redhat.ceylon.c
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams();
     }
     
@@ -102,7 +102,7 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub();
     }
     

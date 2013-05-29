@@ -13,7 +13,7 @@ final class UpperMethod {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.quoting.lettercase.UpperMethod.UpperMethod();
     }
 }
@@ -44,7 +44,7 @@ class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.UpperMethodC();
     }
     

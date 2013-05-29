@@ -67,7 +67,7 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
         value = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ getInterfaceWithinObject$() {
+    static .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

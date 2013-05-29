@@ -3,20 +3,20 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 class BottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     BottomClass(final .java.lang.Object argObject, final long argInteger) {
-        final .java.lang.Object attrObject = .ceylon.language.nothing_.getNothing$();
-        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
+        final .java.lang.Object attrObject = .ceylon.language.nothing_.$get();
+        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
     }
     
     private final .java.lang.Object methodObject$priv(final .java.lang.Object o) {
-        return .ceylon.language.nothing_.getNothing$();
+        return .ceylon.language.nothing_.$get();
     }
     
     private final long methodInteger$priv(final long i) {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue();
     }
     
     private final void f$priv() {
-        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.getNothing$(), ((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue());
+        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.$get(), ((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue());
     }
     
     @.java.lang.Override
@@ -31,10 +31,10 @@ final class toplevelObject_ {
     }
     private static final .java.lang.Object[] value;
     static {
-        value = new .java.lang.Object[]{.ceylon.language.nothing_.getNothing$()};
+        value = new .java.lang.Object[]{.ceylon.language.nothing_.$get()};
     }
     
-    static .java.lang.Object getToplevelObject$() {
+    public static .java.lang.Object $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -48,10 +48,10 @@ final class toplevelInteger_ {
     }
     private static final long[] value;
     static {
-        value = new long[]{((.ceylon.language.Integer).ceylon.language.nothing_.getNothing$()).longValue()};
+        value = new long[]{((.ceylon.language.Integer).ceylon.language.nothing_.$get()).longValue()};
     }
     
-    static long getToplevelInteger$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -69,7 +69,7 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl();
     }
     

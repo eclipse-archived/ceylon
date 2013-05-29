@@ -9,7 +9,7 @@ public final class goto_ {
         value = new long[]{0L};
     }
     
-    public static long getGoto$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

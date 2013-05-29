@@ -7,7 +7,7 @@ public class MyException extends .ceylon.language.Exception {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.MyException();
     }
     
@@ -75,7 +75,7 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
             final .java.lang.Throwable $x$18 = $x$17;
             return $x$18;
         } else {
-            return (.java.lang.Throwable).ceylon.language.nothing_.getNothing$();
+            return (.java.lang.Throwable).ceylon.language.nothing_.$get();
         }
     }
     
@@ -86,7 +86,7 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
             final .java.lang.Error $x$21 = $x$20;
             return $x$21;
         } else {
-            return (.java.lang.Error).ceylon.language.nothing_.getNothing$();
+            return (.java.lang.Error).ceylon.language.nothing_.$get();
         }
     }
     
@@ -97,7 +97,7 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
             final .java.lang.Exception $x$24 = $x$23;
             return $x$24;
         } else {
-            return (.java.lang.Exception).ceylon.language.nothing_.getNothing$();
+            return (.java.lang.Exception).ceylon.language.nothing_.$get();
         }
     }
     
@@ -108,12 +108,12 @@ public class ExceptionsAndThrowableRefinement extends .com.redhat.ceylon.compile
             final .java.lang.RuntimeException $x$27 = $x$26;
             return $x$27;
         } else {
-            return (.java.lang.RuntimeException).ceylon.language.nothing_.getNothing$();
+            return (.java.lang.RuntimeException).ceylon.language.nothing_.$get();
         }
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.ExceptionsAndThrowableRefinement();
     }
     

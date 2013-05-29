@@ -19,7 +19,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -45,7 +45,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
                             return $x$2.getFirst();
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -66,7 +66,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -92,7 +92,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                         if (this.next1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
                             return $s$5.getFirst();
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -100,7 +100,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfNonEmptySequence();
     }
     

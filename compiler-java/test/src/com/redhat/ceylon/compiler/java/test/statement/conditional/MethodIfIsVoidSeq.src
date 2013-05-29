@@ -6,7 +6,7 @@ final class methodIfIsAnythingSeq_ {
     }
     
     static void methodIfIsAnythingSeq() {
-        final .java.lang.Object args = .ceylon.language.process_.getProcess$().getArguments();
+        final .java.lang.Object args = .ceylon.language.process_.$get().getArguments();
         .java.lang.Object $args$1;
         if (($args$1 = args) instanceof .ceylon.language.Sequential) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> $args$2 = (.ceylon.language.Sequential)$args$1;
@@ -18,7 +18,7 @@ final class methodIfIsAnythingSeq_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfIsAnythingSeq_.methodIfIsAnythingSeq();
     }
 }

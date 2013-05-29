@@ -21,7 +21,7 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ getBug327_foo$() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -44,7 +44,7 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ getBug327_bar$() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -63,19 +63,19 @@ final class bug327_test_ {
     }
     
     static void bug327_test() {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug327 fb = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.getBug327_foo$();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug327 fb = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.$get();
         {
             .java.lang.Object $sel$0 = fb;
-            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.getBug327_foo$()) {
+            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.$get()) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
-            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.getBug327_bar$()) {
+            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.$get()) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("bar"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_test_.bug327_test();
     }
 }

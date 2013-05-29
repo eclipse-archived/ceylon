@@ -19,7 +19,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -42,7 +42,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                     private final boolean z() {
                         while (this.iter$1()) {
                             final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                            z$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                            z$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
                             if (z$exhausted) {
                                 iter$1 = null;
                             } else {
@@ -75,7 +75,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                             final .java.lang.Object x = this.x;
                             final .ceylon.language.Integer z = this.z;
                             return .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance($x$3).equals(z));
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -96,7 +96,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem4 = iter$0.next();
-                        x$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem4 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -119,7 +119,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                     private final boolean z() {
                         while (this.iter$1()) {
                             final .java.lang.Object $ceylontmpitem5 = iter$1.next();
-                            z$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.getFinished$();
+                            z$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.$get();
                             if (z$exhausted) {
                                 iter$1 = null;
                             } else {
@@ -152,7 +152,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                             final .java.lang.Object x = this.x;
                             final .ceylon.language.Integer z = this.z;
                             return .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance($y$7).equals(z));
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -160,7 +160,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListBoolBoolIs();
     }
     

@@ -40,7 +40,7 @@ class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
     }
     
@@ -96,7 +96,7 @@ class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.jav
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced();
     }
     
@@ -120,7 +120,7 @@ final class annotationClassNullary_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullary_.annotationClassNullary();
     }
 }
@@ -138,7 +138,7 @@ final class annotationClassNullarySequenced_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassNullarySequenced_.annotationClassNullarySequenced();
     }
 }
@@ -150,7 +150,7 @@ class AnnotationClassNullary_callsite implements .com.redhat.ceylon.compiler.jav
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary_callsite();
     }
     

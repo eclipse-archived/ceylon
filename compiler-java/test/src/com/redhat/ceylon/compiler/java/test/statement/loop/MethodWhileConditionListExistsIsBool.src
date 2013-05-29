@@ -23,7 +23,7 @@ class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compile
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListExistsIsBool();
     }
     

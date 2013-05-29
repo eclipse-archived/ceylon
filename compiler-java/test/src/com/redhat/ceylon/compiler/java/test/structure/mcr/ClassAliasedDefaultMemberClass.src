@@ -28,7 +28,7 @@ class ClassAliasedDefaultMemberClass implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass();
     }
     
@@ -83,7 +83,7 @@ class ClassAliasedDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.jav
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass_sub();
     }
     

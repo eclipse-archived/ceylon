@@ -18,7 +18,7 @@ final class callableArgumentReturningInteger_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_bar_.callableArgumentReturningInteger_bar();
     }
 }
@@ -38,7 +38,7 @@ final class callableArgumentReturningInteger_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_m_.callableArgumentReturningInteger_m();
     }
 }

@@ -9,7 +9,7 @@ final class topLevelAttribute_ {
         value = new long[]{0L};
     }
     
-    static long getTopLevelAttribute$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -45,7 +45,7 @@ class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

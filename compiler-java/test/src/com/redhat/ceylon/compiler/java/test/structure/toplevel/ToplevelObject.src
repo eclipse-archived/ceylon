@@ -12,7 +12,7 @@ final class topLevelObject_ implements .com.redhat.ceylon.compiler.java.runtime.
         value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ getTopLevelObject$() {
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -31,11 +31,11 @@ final class accessTopLevelObject_ {
     }
     
     static void accessTopLevelObject() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.getTopLevelObject$().y();
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$get().y();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObject_.accessTopLevelObject();
     }
 }

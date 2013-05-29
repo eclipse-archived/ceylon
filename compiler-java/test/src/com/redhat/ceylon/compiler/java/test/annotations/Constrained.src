@@ -54,7 +54,7 @@ class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClass();
     }
     
@@ -127,7 +127,7 @@ class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq();
     }
     
@@ -193,7 +193,7 @@ class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.runtime
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterface();
     }
     
@@ -266,7 +266,7 @@ class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq();
     }
     
@@ -332,7 +332,7 @@ class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunction();
     }
     
@@ -405,7 +405,7 @@ class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq();
     }
     
@@ -471,7 +471,7 @@ class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValue();
     }
     
@@ -544,7 +544,7 @@ class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq();
     }
     
@@ -610,7 +610,7 @@ class ConstrainedToVariable implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariable();
     }
     
@@ -683,7 +683,7 @@ class ConstrainedToVariableSeq implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToVariableSeq();
     }
     
@@ -749,7 +749,7 @@ class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackage();
     }
     
@@ -822,7 +822,7 @@ class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.runtim
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq();
     }
     
@@ -888,7 +888,7 @@ class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModule();
     }
     
@@ -961,7 +961,7 @@ class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.runtime
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq();
     }
     
@@ -1027,7 +1027,7 @@ class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImport();
     }
     
@@ -1100,7 +1100,7 @@ class ConstrainedToImportSeq implements .com.redhat.ceylon.compiler.java.runtime
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq();
     }
     

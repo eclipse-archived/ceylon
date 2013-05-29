@@ -19,7 +19,7 @@ final class forIfIf_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -52,14 +52,14 @@ final class forIfIf_ {
                         if (this.next2()) {
                             final .ceylon.language.Integer x = this.x;
                             return x;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
         }.getSequence()};
     }
     
-    static .ceylon.language.Sequential<? extends .ceylon.language.Integer> getForIfIf$() {
+    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

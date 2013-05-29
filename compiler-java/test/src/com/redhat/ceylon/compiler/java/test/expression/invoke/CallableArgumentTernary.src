@@ -41,7 +41,7 @@ final class callableArgumentTernary_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_m_.callableArgumentTernary_m();
     }
 }

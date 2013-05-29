@@ -75,7 +75,7 @@ final class Concrete$impl<A> {
     }
     
     private final .ceylon.language.Sequential<? extends A> mNonShared$aseq(final A a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private void mNonShared$priv(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
@@ -109,7 +109,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Sequential<? extends A> mShared$aseq(final A a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
@@ -142,7 +142,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Sequential<? extends A> mFormal$aseq(final A a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public final .java.lang.Object mDefault() {
@@ -171,7 +171,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Sequential<? extends A> mDefault$aseq(final A a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public .java.lang.Object mDefault(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
@@ -420,7 +420,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -671,7 +671,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -1087,7 +1087,7 @@ class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.con
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -1508,7 +1508,7 @@ class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

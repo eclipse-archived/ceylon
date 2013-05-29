@@ -88,7 +88,7 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo();
     }
     
@@ -110,7 +110,7 @@ final class memberClassAliasWithParametersMethod_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasWithParametersMethod_.memberClassAliasWithParametersMethod();
     }
 }

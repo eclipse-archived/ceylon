@@ -6,7 +6,7 @@ public final class bug1133_ {
     }
     
     public static <Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>void bug1133(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedArgs) {
-        final .ceylon.language.Callable<? extends .java.lang.Object> o = (.ceylon.language.Callable).ceylon.language.nothing_.getNothing$();
+        final .ceylon.language.Callable<? extends .java.lang.Object> o = (.ceylon.language.Callable).ceylon.language.nothing_.$get();
         if (.com.redhat.ceylon.compiler.java.Util.isReified(o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.metamodel.Function.class, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor))) {
             final .ceylon.language.metamodel.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty> other = (.ceylon.language.metamodel.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.metamodel.Function)o;
         }
@@ -24,7 +24,7 @@ public final class bug1133_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1133_.bug1133(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

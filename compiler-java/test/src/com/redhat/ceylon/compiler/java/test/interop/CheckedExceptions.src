@@ -11,7 +11,7 @@ final class checkedExceptionsInMethod_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.checkedExceptionsInMethod_.checkedExceptionsInMethod();
     }
 }
@@ -26,7 +26,7 @@ class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.Ja
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.CheckedExceptions();
     }
     

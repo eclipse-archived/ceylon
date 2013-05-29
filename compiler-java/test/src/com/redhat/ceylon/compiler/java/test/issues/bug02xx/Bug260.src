@@ -70,7 +70,7 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
     
@@ -86,7 +86,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl(this);
         this.attr = null;
-        this.attr2 = (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.nothing_.getNothing$();
+        this.attr2 = (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.nothing_.$get();
         this.attr3 = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this;
@@ -126,7 +126,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.nothing_.getNothing$();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.nothing_.$get();
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 attr3;
     
@@ -141,7 +141,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260();
     }
     

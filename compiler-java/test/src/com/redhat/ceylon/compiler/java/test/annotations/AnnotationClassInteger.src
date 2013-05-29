@@ -145,7 +145,7 @@ final class annotationClassIntegerStatic_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIntegerStatic_.annotationClassIntegerStatic();
     }
 }
@@ -166,7 +166,7 @@ class AnnotationClassInteger_callsite implements .com.redhat.ceylon.compiler.jav
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite();
     }
     

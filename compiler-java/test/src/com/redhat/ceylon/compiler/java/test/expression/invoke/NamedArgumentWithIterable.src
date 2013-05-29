@@ -37,7 +37,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long $arg$2$0 = 1L;
-                .ceylon.language.Iterable $arg$2$1 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Iterable $arg$2$1 = (.ceylon.language.Iterable).ceylon.language.empty_.$get();
                 m$priv($arg$2$0, $arg$2$1);
             }
             returning null;
@@ -58,7 +58,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long $arg$4$0 = 1L;
-                .ceylon.language.Iterable $arg$4$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Iterable $arg$4$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(5L), .ceylon.language.empty_.$get()));
                 m$priv($arg$4$0, $arg$4$1);
             }
             returning null;
@@ -78,7 +78,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long $arg$6$0 = 1L;
-                .ceylon.language.Iterable $arg$6$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(5L), .ceylon.language.empty_.getEmpty$())), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$6$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(4L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(5L), .ceylon.language.empty_.$get())), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 m$priv($arg$6$0, $arg$6$1);
             }
             returning null;
@@ -111,7 +111,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             
                             private final boolean i() {
                                 final .java.lang.Object $ceylontmpitem9 = iter$0.next();
-                                i$exhausted = $ceylontmpitem9 == .ceylon.language.finished_.getFinished$();
+                                i$exhausted = $ceylontmpitem9 == .ceylon.language.finished_.$get();
                                 if (i$exhausted) {
                                     return false;
                                 } else {
@@ -124,7 +124,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                 if (this.i()) {
                                     final .ceylon.language.Integer i = this.i;
                                     return i;
-                                } else return .ceylon.language.finished_.getFinished$();
+                                } else return .ceylon.language.finished_.$get();
                             }
                         };
                     }
@@ -150,7 +150,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             
                             private final boolean i() {
                                 final .java.lang.Object $ceylontmpitem11 = iter$0.next();
-                                i$exhausted = $ceylontmpitem11 == .ceylon.language.finished_.getFinished$();
+                                i$exhausted = $ceylontmpitem11 == .ceylon.language.finished_.$get();
                                 if (i$exhausted) {
                                     return false;
                                 } else {
@@ -163,7 +163,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                 if (this.i()) {
                                     final .ceylon.language.Integer i = this.i;
                                     return i;
-                                } else return .ceylon.language.finished_.getFinished$();
+                                } else return .ceylon.language.finished_.$get();
                             }
                         };
                     }
@@ -210,7 +210,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable();
     }
     

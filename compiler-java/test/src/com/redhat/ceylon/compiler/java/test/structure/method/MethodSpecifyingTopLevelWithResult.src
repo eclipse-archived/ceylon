@@ -10,7 +10,7 @@ final class methodSpecifyingToplevelWithResult_f_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f_.methodSpecifyingToplevelWithResult_f();
     }
 }
@@ -24,7 +24,7 @@ class MethodSpecifyingToplevelWithResult implements .com.redhat.ceylon.compiler.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult();
     }
     

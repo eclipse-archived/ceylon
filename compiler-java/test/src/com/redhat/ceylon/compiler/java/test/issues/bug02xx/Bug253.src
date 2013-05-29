@@ -70,7 +70,7 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer();
     }
     
@@ -101,7 +101,7 @@ final class bug253_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug253_.bug253();
     }
 }

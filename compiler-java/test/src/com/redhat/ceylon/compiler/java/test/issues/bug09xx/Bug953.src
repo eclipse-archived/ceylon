@@ -6,12 +6,12 @@ final class bug953_ {
     }
     
     static void bug953() {
-        .ceylon.language.sort_.sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
-        final .java.lang.Object i = .ceylon.language.min_.min(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
+        .ceylon.language.sort_.sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Iterable).ceylon.language.empty_.$get());
+        final .java.lang.Object i = .ceylon.language.min_.min(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable).ceylon.language.empty_.$get());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug953_.bug953();
     }
 }

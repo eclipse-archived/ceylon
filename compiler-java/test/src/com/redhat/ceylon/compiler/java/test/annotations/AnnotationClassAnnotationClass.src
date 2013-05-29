@@ -190,7 +190,7 @@ class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.comp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted();
     }
     
@@ -225,7 +225,7 @@ class AnnotationClassAnnotationClass_callsite implements .com.redhat.ceylon.comp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass_callsite();
     }
     

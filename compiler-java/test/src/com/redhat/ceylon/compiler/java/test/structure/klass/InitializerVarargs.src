@@ -21,7 +21,7 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.String> $init$fs(final .java.lang.String f) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.java.lang.Override

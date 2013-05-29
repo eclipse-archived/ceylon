@@ -10,7 +10,7 @@ public class Top implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.Top();
     }
     
@@ -34,7 +34,7 @@ public class Bottom extends .com.redhat.ceylon.compiler.java.test.structure.reif
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.Bottom();
     }
     
@@ -140,7 +140,7 @@ public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.Class1();
     }
     
@@ -175,7 +175,7 @@ public class Class2 extends .com.redhat.ceylon.compiler.java.test.structure.reif
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.Class2();
     }
     

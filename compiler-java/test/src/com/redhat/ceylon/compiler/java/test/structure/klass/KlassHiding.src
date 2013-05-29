@@ -26,7 +26,7 @@ class KlassHiding implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHiding();
     }
     
@@ -59,7 +59,7 @@ class KlassHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.kla
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassHidingSub();
     }
     

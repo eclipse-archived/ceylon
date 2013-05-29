@@ -4,12 +4,12 @@ public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.run
     
     public Bug844_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
-        this.firstAttribute = (Element).ceylon.language.nothing_.getNothing$();
+        this.firstAttribute = (Element).ceylon.language.nothing_.$get();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     
     public Element first() {
-        return (Element).ceylon.language.nothing_.getNothing$();
+        return (Element).ceylon.language.nothing_.$get();
     }
     private final Element firstAttribute;
     
@@ -18,7 +18,7 @@ public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.run
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -40,7 +40,7 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
     
     @.java.lang.Override
     public final First first() {
-        return (First).ceylon.language.nothing_.getNothing$();
+        return (First).ceylon.language.nothing_.$get();
     }
     private final First firstAttribute;
     
@@ -341,11 +341,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public final Element get(final .ceylon.language.Integer index) {
         {
             .java.lang.Object $sel$2 = index.compare(.ceylon.language.Integer.instance(0L));
-            if ($sel$2 == .ceylon.language.smaller_.getSmaller$()) {
+            if ($sel$2 == .ceylon.language.smaller_.$get()) {
                 return null;
-            } else if ($sel$2 == .ceylon.language.equal_.getEqual$()) {
+            } else if ($sel$2 == .ceylon.language.equal_.$get()) {
                 return getFirst();
-            } else if ($sel$2 == .ceylon.language.larger_.getLarger$()) {
+            } else if ($sel$2 == .ceylon.language.larger_.$get()) {
                 return ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).get(index.minus(.ceylon.language.Integer.instance(1L)));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -391,12 +391,12 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.$get();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential).ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.$get();
     }
     
     @.java.lang.Override

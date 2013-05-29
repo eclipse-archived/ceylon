@@ -59,7 +59,7 @@ final class reifiedInstantiateFromModelLoader_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiateFromModelLoader_.reifiedInstantiateFromModelLoader();
     }
 }
@@ -85,7 +85,7 @@ final class reifiedMethodsFromModelLoader_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedMethodsFromModelLoader_.reifiedMethodsFromModelLoader();
     }
 }

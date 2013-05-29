@@ -8,7 +8,7 @@ class MemberOverriding_Foo implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo();
     }
     
@@ -30,7 +30,7 @@ class MemberOverriding_Bar extends .com.redhat.ceylon.compiler.java.test.structu
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar();
     }
     
@@ -76,7 +76,7 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super();
     }
     
@@ -124,7 +124,7 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1();
     }
     
@@ -172,7 +172,7 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2();
     }
     
@@ -228,7 +228,7 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3();
     }
     
@@ -283,7 +283,7 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4();
     }
     
@@ -338,7 +338,7 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5();
     }
     

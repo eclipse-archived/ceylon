@@ -19,7 +19,7 @@ final class forForIfBooleanConditions_ {
                     
                     private final boolean y() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        y$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        y$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (y$exhausted) {
                             return false;
                         } else {
@@ -42,7 +42,7 @@ final class forForIfBooleanConditions_ {
                     private final boolean x() {
                         while (this.iter$1()) {
                             final .java.lang.Object $ceylontmpitem1 = iter$1.next();
-                            x$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                            x$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
                             if (x$exhausted) {
                                 iter$1 = null;
                             } else {
@@ -70,14 +70,14 @@ final class forForIfBooleanConditions_ {
                             final .ceylon.language.Integer y = this.y;
                             final .ceylon.language.Integer x = this.x;
                             return x.times(y);
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
         }.getSequence()};
     }
     
-    static .ceylon.language.Sequential<? extends .ceylon.language.Integer> getForForIfBooleanConditions$() {
+    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

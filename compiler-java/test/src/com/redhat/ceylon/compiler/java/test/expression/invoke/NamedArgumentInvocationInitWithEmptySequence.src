@@ -24,7 +24,7 @@ class NamedArgumentInvocationInitWithEmptySequence implements .com.redhat.ceylon
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$b() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     @.java.lang.Override

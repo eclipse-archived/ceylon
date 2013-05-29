@@ -17,7 +17,7 @@ class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compile
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$args(final long a) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public final void m() {

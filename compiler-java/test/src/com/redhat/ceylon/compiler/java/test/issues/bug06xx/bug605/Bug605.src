@@ -15,13 +15,13 @@ final class bug605test_ {
     }
     
     static void bug605test() {
-        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.hash_.getHash$();
-        final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.string_.getString$();
+        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.hash_.$get();
+        final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.string_.$get();
         final .java.lang.String q = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.equals_.$equals(.ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605test_.bug605test();
     }
 }
@@ -70,7 +70,7 @@ final class bug605mth_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.bug605mth_.bug605mth();
     }
 }
@@ -119,7 +119,7 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls();
     }
     
@@ -134,7 +134,7 @@ final class hash_ {
     private hash_() {
     }
     
-    static long getHash$() {
+    public static long $get() {
         return 1L;
     }
 }
@@ -143,7 +143,7 @@ final class string_ {
     private string_() {
     }
     
-    static .java.lang.String getString$() {
+    public static .java.lang.String $get() {
         return "hello";
     }
 }

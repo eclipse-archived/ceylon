@@ -8,7 +8,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -23,7 +23,7 @@ class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.A();
     }
     
@@ -42,7 +42,7 @@ final class test_ {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A.$TypeDescriptor)};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A> getTest$() {
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A> $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -6,7 +6,7 @@ class Extends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Extends();
     }
     
@@ -23,7 +23,7 @@ class ExtendsB extends .com.redhat.ceylon.compiler.java.test.structure.klass.Ext
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsB();
     }
     

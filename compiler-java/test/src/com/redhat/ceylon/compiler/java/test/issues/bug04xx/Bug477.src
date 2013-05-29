@@ -12,8 +12,8 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedT), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor, $reifiedT, this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedT), this);
-        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.getNothing$();
-        this.string = ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
+        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.$get();
+        this.string = ((.ceylon.language.String).ceylon.language.nothing_.$get()).toString();
         this.hash = (int)1L;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -261,7 +261,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.$get()).booleanValue();
     }
     
     @.java.lang.Override
@@ -281,8 +281,8 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, $reifiedT), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor, $reifiedT, this);
         this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reifiedT), this);
-        this.clone = (.ceylon.language.List).ceylon.language.nothing_.getNothing$();
-        this.string = ((.ceylon.language.String).ceylon.language.nothing_.getNothing$()).toString();
+        this.clone = (.ceylon.language.List).ceylon.language.nothing_.$get();
+        this.string = ((.ceylon.language.String).ceylon.language.nothing_.$get()).toString();
         this.hash = (int)1L;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -530,7 +530,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.getNothing$()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.$get()).booleanValue();
     }
     
     @.java.lang.Override

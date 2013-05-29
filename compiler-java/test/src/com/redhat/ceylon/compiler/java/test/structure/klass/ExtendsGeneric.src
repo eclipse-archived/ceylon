@@ -59,7 +59,7 @@ class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -76,7 +76,7 @@ class ExtendsGeneric2<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -92,7 +92,7 @@ class ExtendsGeneric_FooSub extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_FooSub();
     }
     
@@ -109,7 +109,7 @@ class ExtendsGeneric_BarSub extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BarSub();
     }
     
@@ -126,7 +126,7 @@ class ExtendsGeneric_BazSub extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BazSub();
     }
     

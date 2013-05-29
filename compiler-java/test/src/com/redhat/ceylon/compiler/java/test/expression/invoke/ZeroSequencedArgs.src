@@ -24,7 +24,7 @@ final class zeroSequencedArgs_ {
             }
             
             private final <Element>.ceylon.language.Sequential<? extends Element> m$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             
             <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
@@ -35,7 +35,7 @@ final class zeroSequencedArgs_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.zeroSequencedArgs_.zeroSequencedArgs();
     }
 }

@@ -47,7 +47,7 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
         value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_ getTopLevelObjectWithSuperTypes$() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

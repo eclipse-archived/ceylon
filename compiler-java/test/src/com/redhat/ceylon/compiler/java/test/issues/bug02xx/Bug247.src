@@ -9,15 +9,15 @@ final class bug247_ {
         (
             let
             {
-                long $ceylontmpop0 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.getBug247_toplevel$() + 1L;
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.setBug247_toplevel$($ceylontmpop0);
+                long $ceylontmpop0 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$get() + 1L;
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$set($ceylontmpop0);
             }
             returning $ceylontmpop0;
         );
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_.bug247();
     }
 }
@@ -30,7 +30,7 @@ final class bug247_toplevel_ {
         value = new long[]{0L};
     }
     
-    static long getBug247_toplevel$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -38,7 +38,7 @@ final class bug247_toplevel_ {
         }
     }
     
-    static void setBug247_toplevel$(final long bug247_toplevel) {
+    public static void $set(final long bug247_toplevel) {
         value[0] = bug247_toplevel;
     }
 }

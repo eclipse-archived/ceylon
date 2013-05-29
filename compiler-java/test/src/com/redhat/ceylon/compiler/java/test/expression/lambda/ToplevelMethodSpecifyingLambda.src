@@ -16,7 +16,7 @@ final class toplevel_ {
         }};
     }
     
-    static .ceylon.language.Callable<? extends .ceylon.language.String> getToplevel$() {
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

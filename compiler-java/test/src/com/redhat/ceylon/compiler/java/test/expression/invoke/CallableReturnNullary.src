@@ -9,7 +9,7 @@ final class callableReturnNullary_foo_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo_.callableReturnNullary_foo();
     }
 }
@@ -35,7 +35,7 @@ final class callableReturnNullary_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_bar_.callableReturnNullary_bar();
     }
 }

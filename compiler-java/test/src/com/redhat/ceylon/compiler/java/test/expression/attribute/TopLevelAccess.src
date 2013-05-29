@@ -6,14 +6,14 @@ class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     private final void m$priv() {
-        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.getB1$();
-        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.getB2$();
-        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.getB3$();
-        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.getB4$();
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.$get();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.$get();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.$get();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.$get();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
     }
     
@@ -32,7 +32,7 @@ final class b1_ {
         value = new boolean[]{true};
     }
     
-    static boolean getB1$() {
+    public static boolean $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -49,7 +49,7 @@ public final class b2_ {
         value = new boolean[]{true};
     }
     
-    public static boolean getB2$() {
+    public static boolean $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -62,7 +62,7 @@ final class b3_ {
     private b3_() {
     }
     
-    static boolean getB3$() {
+    public static boolean $get() {
         return true;
     }
 }
@@ -71,7 +71,7 @@ public final class b4_ {
     private b4_() {
     }
     
-    public static boolean getB4$() {
+    public static boolean $get() {
         return true;
     }
 }

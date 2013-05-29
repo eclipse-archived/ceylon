@@ -10,7 +10,7 @@ final class f_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .bug148.f_.f();
     }
 }
@@ -24,7 +24,7 @@ public final class bug148_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .bug148.bug148_.bug148();
     }
 }

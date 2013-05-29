@@ -21,7 +21,7 @@ final class emptiness_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -34,7 +34,7 @@ final class emptiness_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -52,7 +52,7 @@ final class emptiness_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -65,7 +65,7 @@ final class emptiness_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -83,7 +83,7 @@ final class emptiness_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -96,7 +96,7 @@ final class emptiness_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -114,7 +114,7 @@ final class emptiness_ {
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -127,7 +127,7 @@ final class emptiness_ {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -148,7 +148,7 @@ final class emptiness_ {
                             
                             private final boolean i() {
                                 final .java.lang.Object $ceylontmpitem5 = iter$0.next();
-                                i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.getFinished$();
+                                i$exhausted = $ceylontmpitem5 == .ceylon.language.finished_.$get();
                                 if (i$exhausted) {
                                     return false;
                                 } else {
@@ -161,7 +161,7 @@ final class emptiness_ {
                                 if (this.i()) {
                                     final .ceylon.language.Integer i = this.i;
                                     return i;
-                                } else return .ceylon.language.finished_.getFinished$();
+                                } else return .ceylon.language.finished_.$get();
                             }
                         };
                     }
@@ -186,7 +186,7 @@ final class emptiness_ {
                             
                             private final boolean i() {
                                 final .java.lang.Object $ceylontmpitem7 = iter$0.next();
-                                i$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.getFinished$();
+                                i$exhausted = $ceylontmpitem7 == .ceylon.language.finished_.$get();
                                 if (i$exhausted) {
                                     return false;
                                 } else {
@@ -199,7 +199,7 @@ final class emptiness_ {
                                 if (this.i()) {
                                     final .ceylon.language.Integer i = this.i;
                                     return i;
-                                } else return .ceylon.language.finished_.getFinished$();
+                                } else return .ceylon.language.finished_.$get();
                             }
                         };
                     }
@@ -211,7 +211,7 @@ final class emptiness_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.comprehensions.emptiness_.emptiness();
     }
 }
@@ -250,7 +250,7 @@ final class emptinessParameterised_ {
                     
                     private final boolean e() {
                         final .java.lang.Object $ceylontmpitem8 = iter$0.next();
-                        e$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.getFinished$();
+                        e$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.$get();
                         if (e$exhausted) {
                             return false;
                         } else {
@@ -263,7 +263,7 @@ final class emptinessParameterised_ {
                         if (this.e()) {
                             final Element e = this.e;
                             return e;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -281,7 +281,7 @@ final class emptinessParameterised_ {
                     
                     private final boolean e() {
                         final .java.lang.Object $ceylontmpitem9 = iter$0.next();
-                        e$exhausted = $ceylontmpitem9 == .ceylon.language.finished_.getFinished$();
+                        e$exhausted = $ceylontmpitem9 == .ceylon.language.finished_.$get();
                         if (e$exhausted) {
                             return false;
                         } else {
@@ -304,7 +304,7 @@ final class emptinessParameterised_ {
                     private final boolean f() {
                         while (this.iter$1()) {
                             final .java.lang.Object $ceylontmpitem10 = iter$1.next();
-                            f$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.getFinished$();
+                            f$exhausted = $ceylontmpitem10 == .ceylon.language.finished_.$get();
                             if (f$exhausted) {
                                 iter$1 = null;
                             } else {
@@ -319,8 +319,8 @@ final class emptinessParameterised_ {
                         if (this.f()) {
                             final Element e = this.e;
                             final Element f = this.f;
-                            return new .ceylon.language.Tuple<Element, Element, .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>($reifiedElement, $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor), e, new .ceylon.language.Tuple<Element, Element, .ceylon.language.Empty>($reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor, f, .ceylon.language.empty_.getEmpty$()));
-                        } else return .ceylon.language.finished_.getFinished$();
+                            return new .ceylon.language.Tuple<Element, Element, .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Empty>>($reifiedElement, $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor), e, new .ceylon.language.Tuple<Element, Element, .ceylon.language.Empty>($reifiedElement, $reifiedElement, .ceylon.language.Empty.$TypeDescriptor, f, .ceylon.language.empty_.$get()));
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -338,7 +338,7 @@ final class emptinessParameterised_ {
                     
                     private final boolean e() {
                         final .java.lang.Object $ceylontmpitem11 = iter$0.next();
-                        e$exhausted = $ceylontmpitem11 == .ceylon.language.finished_.getFinished$();
+                        e$exhausted = $ceylontmpitem11 == .ceylon.language.finished_.$get();
                         if (e$exhausted) {
                             return false;
                         } else {
@@ -364,7 +364,7 @@ final class emptinessParameterised_ {
                         if (this.next1()) {
                             final Element e = this.e;
                             return $e$13;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -382,7 +382,7 @@ final class emptinessParameterised_ {
                     
                     private final boolean e() {
                         final .java.lang.Object $ceylontmpitem14 = iter$0.next();
-                        e$exhausted = $ceylontmpitem14 == .ceylon.language.finished_.getFinished$();
+                        e$exhausted = $ceylontmpitem14 == .ceylon.language.finished_.$get();
                         if (e$exhausted) {
                             return false;
                         } else {
@@ -395,7 +395,7 @@ final class emptinessParameterised_ {
                         if (this.e()) {
                             final Element e = this.e;
                             return e;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }

@@ -26,12 +26,12 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final void whileNonEmpty() {
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.getEmpty$());
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(1L), .ceylon.language.empty_.$get());
         while (true) {
             .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$2;
             if (($s$2 = seq) instanceof .ceylon.language.Sequence) {
                 final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $s$3 = $s$2;
-                seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
             } else break;
         }
     }
@@ -48,7 +48,7 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile();
     }
     

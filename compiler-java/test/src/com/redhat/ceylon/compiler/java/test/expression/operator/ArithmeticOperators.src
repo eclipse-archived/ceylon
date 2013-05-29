@@ -806,72 +806,72 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                long $ceylontmpop80 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop80 + 1);
+                long $ceylontmpop80 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop80 + 1);
             }
             returning $ceylontmpop80;
         );
         (
             let
             {
-                long $ceylontmpop81 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() + 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop81);
+                long $ceylontmpop81 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() + 1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop81);
             }
             returning $ceylontmpop81;
         );
         (
             let
             {
-                long $ceylontmpop82 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop82 - 1);
+                long $ceylontmpop82 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop82 - 1);
             }
             returning $ceylontmpop82;
         );
         (
             let
             {
-                long $ceylontmpop83 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() - 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop83);
+                long $ceylontmpop83 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() - 1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop83);
             }
             returning $ceylontmpop83;
         );
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.setToplevelI1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.setToplevelI1$(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.setToplevelI1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$())).longValue());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$set(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get())).longValue());
         (
             let
             {
-                long $ceylontmpop84 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop84);
+                long $ceylontmpop84 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop84);
             }
             returning $ceylontmpop84;
         );
         (
             let
             {
-                long $ceylontmpop85 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop85);
+                long $ceylontmpop85 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop85);
             }
             returning $ceylontmpop85;
         );
         (
             let
             {
-                long $ceylontmpop86 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop86);
+                long $ceylontmpop86 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop86);
             }
             returning $ceylontmpop86;
         );
         (
             let
             {
-                long $ceylontmpop87 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$($ceylontmpop87);
+                long $ceylontmpop87 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set($ceylontmpop87);
             }
             returning $ceylontmpop87;
         );
@@ -881,72 +881,72 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         (
             let
             {
-                long $ceylontmpop88 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop88 + 1);
+                long $ceylontmpop88 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop88 + 1);
             }
             returning $ceylontmpop88;
         );
         (
             let
             {
-                long $ceylontmpop89 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() + 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop89);
+                long $ceylontmpop89 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() + 1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop89);
             }
             returning $ceylontmpop89;
         );
         (
             let
             {
-                long $ceylontmpop90 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop90 - 1);
+                long $ceylontmpop90 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop90 - 1);
             }
             returning $ceylontmpop90;
         );
         (
             let
             {
-                long $ceylontmpop91 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() - 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop91);
+                long $ceylontmpop91 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() - 1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop91);
             }
             returning $ceylontmpop91;
         );
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1_.setToplevelGetterI1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1_.setToplevelGetterI1$(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1_.setToplevelGetterI1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$());
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$())).longValue());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1_.$set(-.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterI1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() - .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get()).power(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get())).longValue());
         (
             let
             {
-                long $ceylontmpop92 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop92);
+                long $ceylontmpop92 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() + .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop92);
             }
             returning $ceylontmpop92;
         );
         (
             let
             {
-                long $ceylontmpop93 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop93);
+                long $ceylontmpop93 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() * .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop93);
             }
             returning $ceylontmpop93;
         );
         (
             let
             {
-                long $ceylontmpop94 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop94);
+                long $ceylontmpop94 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() / .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop94);
             }
             returning $ceylontmpop94;
         );
         (
             let
             {
-                long $ceylontmpop95 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.getToplevelGetterN1$() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.getToplevelGetterN2$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.setToplevelGetterN1$($ceylontmpop95);
+                long $ceylontmpop95 = .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$get() % .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN2_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelGetterN1_.$set($ceylontmpop95);
             }
             returning $ceylontmpop95;
         );
@@ -1133,7 +1133,7 @@ final class toplevelN1_ {
         value = new long[]{0L};
     }
     
-    static long getToplevelN1$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -1141,7 +1141,7 @@ final class toplevelN1_ {
         }
     }
     
-    static void setToplevelN1$(final long toplevelN1) {
+    public static void $set(final long toplevelN1) {
         value[0] = toplevelN1;
     }
 }
@@ -1154,7 +1154,7 @@ final class toplevelN2_ {
         value = new long[]{0L};
     }
     
-    static long getToplevelN2$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -1162,7 +1162,7 @@ final class toplevelN2_ {
         }
     }
     
-    static void setToplevelN2$(final long toplevelN2) {
+    public static void $set(final long toplevelN2) {
         value[0] = toplevelN2;
     }
 }
@@ -1175,7 +1175,7 @@ final class toplevelI1_ {
         value = new long[]{0L};
     }
     
-    static long getToplevelI1$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -1183,7 +1183,7 @@ final class toplevelI1_ {
         }
     }
     
-    static void setToplevelI1$(final long toplevelI1) {
+    public static void $set(final long toplevelI1) {
         value[0] = toplevelI1;
     }
 }
@@ -1192,12 +1192,12 @@ final class toplevelGetterN1_ {
     private toplevelGetterN1_() {
     }
     
-    static long getToplevelGetterN1$() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1$();
+    public static long $get() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$get();
     }
     
-    static void setToplevelGetterN1$(final long toplevelGetterN1) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1$(toplevelGetterN1);
+    public static void $set(final long toplevelGetterN1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$set(toplevelGetterN1);
     }
 }
 final class toplevelGetterN2_ {
@@ -1205,12 +1205,12 @@ final class toplevelGetterN2_ {
     private toplevelGetterN2_() {
     }
     
-    static long getToplevelGetterN2$() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2$();
+    public static long $get() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$get();
     }
     
-    static void setToplevelGetterN2$(final long toplevelGetterN2) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.setToplevelN2$(toplevelGetterN2);
+    public static void $set(final long toplevelGetterN2) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$set(toplevelGetterN2);
     }
 }
 final class toplevelGetterI1_ {
@@ -1218,11 +1218,11 @@ final class toplevelGetterI1_ {
     private toplevelGetterI1_() {
     }
     
-    static long getToplevelGetterI1$() {
-        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.getToplevelI1$();
+    public static long $get() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$get();
     }
     
-    static void setToplevelGetterI1$(final long toplevelGetterI1) {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.setToplevelI1$(toplevelGetterI1);
+    public static void $set(final long toplevelGetterI1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$set(toplevelGetterI1);
     }
 }

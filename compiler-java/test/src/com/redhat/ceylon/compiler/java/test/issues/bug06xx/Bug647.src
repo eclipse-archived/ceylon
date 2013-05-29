@@ -24,11 +24,11 @@ final class arrayOfSome_ {
     }
     
     static final <Element>.ceylon.language.Sequential<? extends Element> arrayOfSome$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     static <Element>.ceylon.language.Array<Element> arrayOfSome(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .ceylon.language.Sequential<? extends Element> elements) {
-        return (.ceylon.language.Array).ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.Array).ceylon.language.nothing_.$get();
     }
 }
 final class bug647test_ {
@@ -64,7 +64,7 @@ final class bug647test_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647test_.bug647test();
     }
 }

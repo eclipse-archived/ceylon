@@ -33,7 +33,7 @@ final class run_ {
         }
         final holaMundo_ holaMundo = new holaMundo_();
         .ceylon.language.String $arg$3;
-        if (($arg$3 = .ceylon.language.process_.getProcess$().getArguments().getFirst()) != null) {
+        if (($arg$3 = .ceylon.language.process_.$get().getArguments().getFirst()) != null) {
             final .java.lang.String $arg$4 = $arg$3.toString();
             holaMundo.holaMundo($arg$4);
         } else {
@@ -42,7 +42,7 @@ final class run_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug02xx.run_.run();
     }
 }

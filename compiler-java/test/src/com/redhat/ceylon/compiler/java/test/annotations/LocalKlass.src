@@ -71,7 +71,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public final .ceylon.language.Sequential<? extends T> m2$t(final long arg1) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             
             @.ceylon.language.Shared$annotation
@@ -95,7 +95,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             public final Local<T> plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>")
             final Local<T> other) {
-                return (Local).ceylon.language.nothing_.getNothing$();
+                return (Local).ceylon.language.nothing_.$get();
             }
             
             @.java.lang.Override
@@ -108,7 +108,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.LocalKlass();
     }
     

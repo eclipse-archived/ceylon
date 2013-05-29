@@ -6,11 +6,11 @@ final class keywordInToplevelAssignment_ {
     }
     
     static void keywordInToplevelAssignment() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.setGoto$(1L);
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.$set(1L);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.keywordInToplevelAssignment_.keywordInToplevelAssignment();
     }
 }
@@ -23,7 +23,7 @@ final class goto_ {
         value = new long[]{0L};
     }
     
-    static long getGoto$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -31,7 +31,7 @@ final class goto_ {
         }
     }
     
-    static void setGoto$(final long goto) {
+    public static void $set(final long goto) {
         value[0] = goto;
     }
 }

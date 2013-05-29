@@ -21,7 +21,7 @@ final class interfaceWithinFunction_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction_.interfaceWithinFunction();
     }
 }

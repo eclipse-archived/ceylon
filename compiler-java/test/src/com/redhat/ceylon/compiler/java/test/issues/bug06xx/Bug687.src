@@ -20,7 +20,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public final <T extends .ceylon.language.Number>.ceylon.language.Sequential<? extends T> sort$elements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public final <T extends .ceylon.language.Number>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends T> elements) {
@@ -41,37 +41,37 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public final .ceylon.language.Sequential sort2$elements() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public final void sort2(final .ceylon.language.Sequential elements) {
     }
     
     private final void foo$priv(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
-        sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.$get());
         (
             let
             {
-                .ceylon.language.Sequential $arg$4$0 = (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential $arg$4$0 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$4$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                 sort($arg$4$reified$0, $arg$4$0);
             }
             returning null;
         );
-        sort2(.ceylon.language.empty_.getEmpty$());
+        sort2(.ceylon.language.empty_.$get());
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $arg$5$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $arg$5$0 = .ceylon.language.empty_.$get();
                 sort2($arg$5$0);
             }
             returning null;
         );
-        p.$call(.ceylon.language.empty_.getEmpty$());
+        p.$call(.ceylon.language.empty_.$get());
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $arg$6$0 = .ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Sequential<? extends .java.lang.Object> $arg$6$0 = .ceylon.language.empty_.$get();
             }
             returning p.$call($arg$6$0);
         );
@@ -89,11 +89,11 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 );
             }
         };
-        f.$call(.ceylon.language.empty_.getEmpty$());
+        f.$call(.ceylon.language.empty_.$get());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687();
     }
     

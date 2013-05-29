@@ -331,11 +331,11 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop12;
         ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$set((
             let
             {
-                long $ceylontmpop13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$($ceylontmpop13 + 1);
+                long $ceylontmpop13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$set($ceylontmpop13 + 1);
             }
             returning $ceylontmpop13;
         ));
@@ -372,11 +372,11 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop18;
         ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$set((
             let
             {
-                long $ceylontmpop19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$() + 1;
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$($ceylontmpop19);
+                long $ceylontmpop19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$get() + 1;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$set($ceylontmpop19);
             }
             returning $ceylontmpop19;
         ));
@@ -413,11 +413,11 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop24;
         ));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$set((
             let
             {
-                long $ceylontmpop25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$();
-                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger$($ceylontmpop25);
+                long $ceylontmpop25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$get() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$get();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$set($ceylontmpop25);
             }
             returning $ceylontmpop25;
         ));
@@ -560,7 +560,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.Optim();
     }
     
@@ -579,7 +579,7 @@ final class optimToplevelInteger_ {
         value = new long[]{0L};
     }
     
-    static long getOptimToplevelInteger$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -587,7 +587,7 @@ final class optimToplevelInteger_ {
         }
     }
     
-    static void setOptimToplevelInteger$(final long optimToplevelInteger) {
+    public static void $set(final long optimToplevelInteger) {
         value[0] = optimToplevelInteger;
     }
 }

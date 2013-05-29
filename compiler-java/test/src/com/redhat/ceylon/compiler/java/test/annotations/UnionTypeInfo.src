@@ -10,7 +10,7 @@ public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
@@ -32,7 +32,7 @@ public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
     
@@ -216,7 +216,7 @@ final class toplevelAttribute_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
-    static .java.lang.Object getToplevelAttribute$() {
+    public static .java.lang.Object $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -240,7 +240,7 @@ public final class sharedToplevelAttribute_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
-    public static .java.lang.Object getSharedToplevelAttribute$() {
+    public static .java.lang.Object $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -258,11 +258,11 @@ final class toplevelGetter_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
-    static .java.lang.Object getToplevelGetter$() {
+    public static .java.lang.Object $get() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
-    static void setToplevelGetter$(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelGetter")
+    public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelGetter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
@@ -281,11 +281,11 @@ public final class toplevelSharedGetter_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
-    public static .java.lang.Object getToplevelSharedGetter$() {
+    public static .java.lang.Object $get() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
-    public static void setToplevelSharedGetter$(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelSharedGetter")
+    public static void $set(@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelSharedGetter")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)

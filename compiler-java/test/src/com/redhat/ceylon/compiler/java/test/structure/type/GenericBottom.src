@@ -5,8 +5,8 @@ class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.mo
     GenericBottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .java.lang.Object argObject) {
         this.$reifiedT = $reifiedT;
         this.$reifiedU = $reifiedU;
-        this.attrTp = (T).ceylon.language.nothing_.getNothing$();
-        this.attrIntersection = .ceylon.language.nothing_.getNothing$();
+        this.attrTp = (T).ceylon.language.nothing_.$get();
+        this.attrIntersection = .ceylon.language.nothing_.$get();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
@@ -22,27 +22,27 @@ class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     private final T methodTp$priv(final T o) {
-        return (T).ceylon.language.nothing_.getNothing$();
+        return (T).ceylon.language.nothing_.$get();
     }
     
     private final .java.lang.Object methodIntersection$priv(final .java.lang.Object o) {
-        return .ceylon.language.nothing_.getNothing$();
+        return .ceylon.language.nothing_.$get();
     }
     
     private final T getGetterTp$priv() {
-        return (T).ceylon.language.nothing_.getNothing$();
+        return (T).ceylon.language.nothing_.$get();
     }
     
     private final .java.lang.Object getGetterIntersection$priv() {
-        return .ceylon.language.nothing_.getNothing$();
+        return .ceylon.language.nothing_.$get();
     }
     
     private final void f$priv() {
-        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>($reifiedT, $reifiedU, .ceylon.language.nothing_.getNothing$());
+        final .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U> g = new .com.redhat.ceylon.compiler.java.test.structure.type.GenericBottom<T, U>($reifiedT, $reifiedU, .ceylon.language.nothing_.$get());
         T t = g.getAttrTp$priv();
         t = (T)g.getAttrIntersection$priv();
-        t = g.methodTp$priv((T).ceylon.language.nothing_.getNothing$());
-        t = (T)g.methodIntersection$priv(.ceylon.language.nothing_.getNothing$());
+        t = g.methodTp$priv((T).ceylon.language.nothing_.$get());
+        t = (T)g.methodIntersection$priv(.ceylon.language.nothing_.$get());
         t = g.getGetterTp$priv();
         t = (T)g.getGetterIntersection$priv();
     }

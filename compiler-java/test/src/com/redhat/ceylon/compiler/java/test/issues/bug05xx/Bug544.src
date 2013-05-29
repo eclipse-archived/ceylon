@@ -62,11 +62,11 @@ class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.b
 class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Toplevel() {
-        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.getS$());
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$get());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel();
     }
     
@@ -112,7 +112,7 @@ class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass();
     }
     
@@ -157,7 +157,7 @@ final class s_ {
         value = new .java.lang.String[]{""};
     }
     
-    static .java.lang.String getS$() {
+    public static .java.lang.String $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

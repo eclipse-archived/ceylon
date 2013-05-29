@@ -46,7 +46,7 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ getBug1119Addition$() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -65,11 +65,11 @@ public final class bug1119Test_ {
     }
     
     public static void bug1119Test() {
-        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Should consider \'+\' as addition operator but returns ").append(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.getBug1119Addition$().isOperator("+")).toString()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Should consider \'+\' as addition operator but returns ").append(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$get().isOperator("+")).toString()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Test_.bug1119Test();
     }
 }

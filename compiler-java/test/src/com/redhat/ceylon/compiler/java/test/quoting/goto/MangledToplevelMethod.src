@@ -6,11 +6,11 @@ public final class mangledToplevelMethod_ {
     }
     
     public static void mangledToplevelMethod() {
-        final .ceylon.language.Array<.java.lang.Object> arr = .ceylon.language.array_.<.java.lang.Object>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .java.lang.Object.class, .ceylon.language.empty_.getEmpty$());
+        final .ceylon.language.Array<.java.lang.Object> arr = .ceylon.language.array_.<.java.lang.Object>array(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .java.lang.Object.class, .ceylon.language.empty_.$get());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.mangledToplevelMethod_.mangledToplevelMethod();
     }
 }

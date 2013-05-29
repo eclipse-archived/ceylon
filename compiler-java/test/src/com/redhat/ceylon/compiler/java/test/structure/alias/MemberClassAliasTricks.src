@@ -200,7 +200,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo();
     }
     
@@ -223,7 +223,7 @@ final class memberClassAliasTricksMethod_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasTricksMethod_.memberClassAliasTricksMethod();
     }
 }

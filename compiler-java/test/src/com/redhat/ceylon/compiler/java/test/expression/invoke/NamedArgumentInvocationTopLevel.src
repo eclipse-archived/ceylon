@@ -33,7 +33,7 @@ final class namedArgumentInvocationTopLevelX_ {
         )};
     }
     
-    static long getNamedArgumentInvocationTopLevelX$() {
+    public static long $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -64,7 +64,7 @@ final class namedArgumentInvocationTopLevelY_ {
         )};
     }
     
-    static .java.lang.Object getNamedArgumentInvocationTopLevelY$() {
+    public static .java.lang.Object $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -6,7 +6,7 @@ final class bug586_ {
     }
     
     static void bug586() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.$get();
         final .ceylon.language.String s = (
             let
             {
@@ -23,7 +23,7 @@ final class bug586_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug586_.bug586();
     }
 }

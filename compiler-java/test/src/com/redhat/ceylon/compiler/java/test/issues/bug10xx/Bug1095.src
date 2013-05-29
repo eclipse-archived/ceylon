@@ -16,11 +16,11 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public final <Value extends .ceylon.language.Summable<Value>>.ceylon.language.Sequential<? extends Value> variadicSum$values(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public final <Value extends .ceylon.language.Summable<Value>>Value variadicSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Sequential<? extends Value> values) {
-        return (Value).ceylon.language.nothing_.getNothing$();
+        return (Value).ceylon.language.nothing_.$get();
     }
     
     public final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
@@ -34,11 +34,11 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public final <Value extends .ceylon.language.Summable<Value>>.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> defaultedSum$dummy(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
-        return (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.$get();
     }
     
     public final <Value extends .ceylon.language.Summable<Value>>Value defaultedSum(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> dummy) {
-        return (Value).ceylon.language.nothing_.getNothing$();
+        return (Value).ceylon.language.nothing_.$get();
     }
     
     private final <Summand extends .ceylon.language.Summable<Summand>>void constrainedTypeParameter$priv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSummand, final .ceylon.language.Iterable<? extends Summand, ? extends .java.lang.Object> values) {
@@ -72,7 +72,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095();
     }
     

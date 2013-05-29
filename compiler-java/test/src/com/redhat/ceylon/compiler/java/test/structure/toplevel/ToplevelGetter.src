@@ -5,7 +5,7 @@ final class topLevelGetter_ {
     private topLevelGetter_() {
     }
     
-    static long getTopLevelGetter$() {
+    public static long $get() {
         return 0L;
     }
 }
@@ -14,7 +14,7 @@ public final class topLevelGetterShared_ {
     private topLevelGetterShared_() {
     }
     
-    public static long getTopLevelGetterShared$() {
+    public static long $get() {
         return 0L;
     }
 }
@@ -23,7 +23,7 @@ final class topLevelGetter2_ {
     private topLevelGetter2_() {
     }
     
-    static long getTopLevelGetter2$() {
+    public static long $get() {
         return 0L;
     }
 }
@@ -32,7 +32,7 @@ public final class topLevelGetterShared2_ {
     private topLevelGetterShared2_() {
     }
     
-    public static long getTopLevelGetterShared2$() {
+    public static long $get() {
         return 0L;
     }
 }

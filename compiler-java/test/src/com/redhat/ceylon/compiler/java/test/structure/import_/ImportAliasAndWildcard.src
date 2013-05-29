@@ -8,14 +8,14 @@ class ImportAliasAndWildcard implements .com.redhat.ceylon.compiler.java.runtime
     private final void m$priv() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C2();
-        boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.getF1$();
-        b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f2_.getF2$();
+        boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.$get();
+        b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f2_.$get();
         .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m1_.m1();
         .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m2_.m2();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.import_.ImportAliasAndWildcard();
     }
     

@@ -295,11 +295,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends X> getRest() {
-        return (.ceylon.language.List).ceylon.language.nothing_.getNothing$();
+        return (.ceylon.language.List).ceylon.language.nothing_.$get();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

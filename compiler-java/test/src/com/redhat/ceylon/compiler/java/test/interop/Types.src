@@ -27,7 +27,7 @@ final class booleanTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.booleanTypes_.booleanTypes();
     }
 }
@@ -48,7 +48,7 @@ final class byteTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.byteTypes_.byteTypes();
     }
 }
@@ -69,7 +69,7 @@ final class shortTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.shortTypes_.shortTypes();
     }
 }
@@ -90,7 +90,7 @@ final class integerTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.integerTypes_.integerTypes();
     }
 }
@@ -111,7 +111,7 @@ final class longTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.longTypes_.longTypes();
     }
 }
@@ -132,7 +132,7 @@ final class floatTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.floatTypes_.floatTypes();
     }
 }
@@ -153,7 +153,7 @@ final class doubleTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.doubleTypes_.doubleTypes();
     }
 }
@@ -174,7 +174,7 @@ final class characterTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.characterTypes_.characterTypes();
     }
 }
@@ -205,7 +205,7 @@ final class stringTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.stringTypes_.stringTypes();
     }
 }
@@ -223,7 +223,7 @@ final class objectTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.objectTypes_.objectTypes();
     }
 }
@@ -300,7 +300,7 @@ final class operationsOnBytes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.operationsOnBytes_.operationsOnBytes();
     }
 }
@@ -377,7 +377,7 @@ final class operationsOnBytes2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.operationsOnBytes2_.operationsOnBytes2();
     }
 }
@@ -448,7 +448,7 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.OperationsOnBytes();
     }
     
@@ -514,7 +514,7 @@ final class operationsOnMixedTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.operationsOnMixedTypes_.operationsOnMixedTypes();
     }
 }
@@ -534,7 +534,7 @@ final class typeParameters_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.typeParameters_.typeParameters();
     }
 }
@@ -556,7 +556,7 @@ final class optionalTypes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.optionalTypes_.optionalTypes();
     }
 }

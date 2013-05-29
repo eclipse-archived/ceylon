@@ -6,11 +6,11 @@ public final class mangledToplevelAttribute_ {
     }
     
     public static void mangledToplevelAttribute() {
-        final .ceylon.language.Empty leeg = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Empty leeg = .ceylon.language.empty_.$get();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.mangledToplevelAttribute_.mangledToplevelAttribute();
     }
 }

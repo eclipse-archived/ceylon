@@ -22,7 +22,7 @@ public final class multipleParameterLists_call_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_call_.multipleParameterLists_call();
     }
 }

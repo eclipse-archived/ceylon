@@ -6,11 +6,11 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     public final void m() {
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequence = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("b"), .ceylon.language.empty_.getEmpty$()));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequence = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("b"), .ceylon.language.empty_.$get()));
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("b")});
-        final .ceylon.language.Empty empty = .ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.Empty empty = .ceylon.language.empty_.$get();
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterableComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
@@ -24,7 +24,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        s$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        s$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -37,7 +37,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -55,7 +55,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                        s$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -68,7 +68,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -86,7 +86,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem2 = iter$0.next();
-                        s$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.getFinished$();
+                        s$exhausted = $ceylontmpitem2 == .ceylon.language.finished_.$get();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -99,7 +99,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -117,7 +117,7 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     
                     private final boolean s() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        s$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
+                        s$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
                         if (s$exhausted) {
                             return false;
                         } else {
@@ -130,18 +130,18 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if (this.s()) {
                             final .ceylon.language.String s = this.s;
                             return s;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
         }.getSequence());
-        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> triplet = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.String.instance("hello"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("world"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("goodbye"), .ceylon.language.empty_.getEmpty$())));
+        final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>> triplet = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.String.instance("hello"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.String.instance("world"), new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Empty>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.String.instance("goodbye"), .ceylon.language.empty_.$get())));
         final .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> spreadSequence = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor), .ceylon.language.String.instance("hello"), sequence);
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spreadIterable = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, iterable, .ceylon.language.String.instance("hello"));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.literal.SequenceLiteral();
     }
     

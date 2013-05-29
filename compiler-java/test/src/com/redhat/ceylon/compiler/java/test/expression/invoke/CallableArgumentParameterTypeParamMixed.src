@@ -91,7 +91,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterTypeParamMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

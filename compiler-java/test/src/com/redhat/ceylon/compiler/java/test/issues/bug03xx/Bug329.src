@@ -37,7 +37,7 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ getBug329_se$() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -71,7 +71,7 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.mode
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_ getBug329_se2$() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

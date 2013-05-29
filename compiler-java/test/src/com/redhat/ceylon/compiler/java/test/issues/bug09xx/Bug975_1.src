@@ -17,7 +17,7 @@ final class bug975_1_test_ {
         (
             let
             {
-                .ceylon.language.Iterable $arg$0$0 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+                .ceylon.language.Iterable $arg$0$0 = (.ceylon.language.Iterable).ceylon.language.empty_.$get();
                 .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_1_accept_.bug975_1_accept($arg$0$0);
             }
             returning null;
@@ -25,7 +25,7 @@ final class bug975_1_test_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_1_test_.bug975_1_test();
     }
 }

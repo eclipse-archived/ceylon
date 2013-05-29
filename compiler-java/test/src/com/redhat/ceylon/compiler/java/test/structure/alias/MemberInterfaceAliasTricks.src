@@ -181,7 +181,7 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl();
     }
     
@@ -268,7 +268,7 @@ public class AImpl implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.AImpl();
     }
     

@@ -21,7 +21,7 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
         value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ getSwitchMatch_foo$() {
+    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -44,7 +44,7 @@ final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.state
         value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ getSwitchMatch_bar$() {
+    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -63,12 +63,12 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     private final void onObject$priv() {
-        final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.getSwitchMatch_foo$();
+        final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.$get();
         {
             .java.lang.Object $sel$0 = fb;
-            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.getSwitchMatch_foo$()) {
+            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.$get()) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
-            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.getSwitchMatch_bar$()) {
+            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.$get()) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("bar"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -117,7 +117,7 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch();
     }
     

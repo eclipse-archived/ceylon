@@ -79,7 +79,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> oneSequencedParam$i() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
@@ -96,7 +96,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$7$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.getEmpty$()));
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$7$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get()));
             }
             returning oneSequencedParam$priv($arg$7$0);
         );
@@ -116,7 +116,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem8 = iter$0.next();
-                        i$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem8 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -129,7 +129,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -137,7 +137,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod();
     }
     

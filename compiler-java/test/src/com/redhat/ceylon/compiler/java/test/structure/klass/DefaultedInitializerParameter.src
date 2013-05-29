@@ -21,7 +21,7 @@ public class DefaultedInitializerParameter implements .com.redhat.ceylon.compile
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter();
     }
     
@@ -94,7 +94,7 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3();
     }
     
@@ -141,7 +141,7 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4();
     }
     
@@ -184,11 +184,11 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
     }
     
     static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $init$seq(final long n) {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter5();
     }
     

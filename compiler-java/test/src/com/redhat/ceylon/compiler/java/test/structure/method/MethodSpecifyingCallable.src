@@ -10,7 +10,7 @@ final class methodSpecifyingCallable_f_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f();
     }
 }
@@ -21,7 +21,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             
             @.java.lang.Override
             public .java.lang.Object $call() {
-                return .ceylon.language.nothing_.getNothing$();
+                return .ceylon.language.nothing_.$get();
             }
         };
         this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Nothing(Integer)", (short)-1){
@@ -29,13 +29,13 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.nothing_.getNothing$();
+                return .ceylon.language.nothing_.$get();
             }
         };
         this.oneSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor), "Nothing(Integer*)", (short)0){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$i() {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             
             @.java.lang.Override
@@ -51,13 +51,13 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             }
             
             private .java.lang.Object $call$typed(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-                return .ceylon.language.nothing_.getNothing$();
+                return .ceylon.language.nothing_.$get();
             }
         };
         this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor)), "Nothing(Integer, Integer*)", (short)1){
             
             private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $$i(final long a) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
             }
             
             @.java.lang.Override
@@ -75,7 +75,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             }
             
             private .java.lang.Object $call$typed(long a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-                return .ceylon.language.nothing_.getNothing$();
+                return .ceylon.language.nothing_.$get();
             }
         };
     }
@@ -135,7 +135,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -148,7 +148,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -156,7 +156,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object oneSequencedParam4$priv() {
-        return getOneSequencedParam$priv().$call((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        return getOneSequencedParam$priv().$call((.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get());
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> secondSequencedParam;
     
@@ -192,7 +192,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                     
                     private final boolean i() {
                         final .java.lang.Object $ceylontmpitem1 = iter$0.next();
-                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.getFinished$();
+                        i$exhausted = $ceylontmpitem1 == .ceylon.language.finished_.$get();
                         if (i$exhausted) {
                             return false;
                         } else {
@@ -205,7 +205,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
                             return i;
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -213,11 +213,11 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final .java.lang.Object secondSequencedParam4$priv() {
-        return getSecondSequencedParam$priv().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$());
+        return getSecondSequencedParam$priv().$call(.ceylon.language.Integer.instance(1L), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.$get());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingCallable();
     }
     

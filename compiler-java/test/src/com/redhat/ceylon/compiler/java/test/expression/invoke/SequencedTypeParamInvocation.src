@@ -19,14 +19,14 @@ class SequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.jav
     }
     
     public final .ceylon.language.Sequential<? extends T> algo$strings() {
-        return (.ceylon.language.Sequential).ceylon.language.empty_.getEmpty$();
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
     }
     
     public final void algo(final .ceylon.language.Sequential<? extends T> strings) {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -47,7 +47,7 @@ final class sequencedTypeParamInvocationMethod_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocationMethod_.sequencedTypeParamInvocationMethod();
     }
 }

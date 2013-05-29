@@ -17,7 +17,7 @@ final class callableArgumentNullary_bar_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_bar_.callableArgumentNullary_bar();
     }
 }
@@ -43,7 +43,7 @@ final class callableArgumentNullary_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentNullary_m_.callableArgumentNullary_m();
     }
 }

@@ -135,7 +135,7 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -166,7 +166,7 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.SubClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -202,7 +202,7 @@ public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.r
     @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::toplevelObject")
-    public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ getToplevelObject$() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -275,7 +275,7 @@ final class reifiedInstantiate_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiate_.reifiedInstantiate();
     }
 }

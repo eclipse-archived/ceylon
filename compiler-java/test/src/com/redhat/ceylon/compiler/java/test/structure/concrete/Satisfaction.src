@@ -71,7 +71,7 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.CI1();
     }
     
@@ -229,7 +229,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.CI3();
     }
     
@@ -345,7 +345,7 @@ class CA7 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.A7 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.CA7();
     }
     

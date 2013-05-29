@@ -124,7 +124,7 @@ class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.j
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted();
     }
     
@@ -163,7 +163,7 @@ final class annotationClassCharacter_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter();
     }
 }
@@ -174,7 +174,7 @@ class AnnotationClassCharacter_callsite implements .com.redhat.ceylon.compiler.j
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite();
     }
     

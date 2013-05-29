@@ -69,7 +69,7 @@ class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam();
     }
     
@@ -85,7 +85,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         this.arg = arg;
         this.$com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl(this);
         this.f9$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
-        this.f10$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.getMethodRefinementWithSpecifiers_attributeMethod$();
+        this.f10$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.$get();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
     protected final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
@@ -257,7 +257,7 @@ final class arg2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.method.arg2_.arg2();
     }
 }
@@ -425,7 +425,7 @@ final class methodRefinementWithSpecifiers_attributeMethod_ {
         value = new .ceylon.language.Callable[]{.com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod()};
     }
     
-    static .ceylon.language.Callable<? extends .java.lang.Object> getMethodRefinementWithSpecifiers_attributeMethod$() {
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

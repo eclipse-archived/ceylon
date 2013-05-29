@@ -19,7 +19,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -47,7 +47,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2));
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -68,7 +68,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem3 = iter$0.next();
-                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.getFinished$();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.finished_.$get();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -96,7 +96,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                         if (this.next1()) {
                             final .java.lang.Object x = this.x;
                             return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5));
-                        } else return .ceylon.language.finished_.getFinished$();
+                        } else return .ceylon.language.finished_.$get();
                     }
                 };
             }
@@ -104,7 +104,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListIsBool();
     }
     

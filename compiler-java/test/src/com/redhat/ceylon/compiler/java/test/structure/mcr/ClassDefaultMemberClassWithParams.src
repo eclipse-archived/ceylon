@@ -32,7 +32,7 @@ class ClassDefaultMemberClassWithParams implements .com.redhat.ceylon.compiler.j
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithParams();
     }
     
@@ -77,7 +77,7 @@ class ClassDefaultMemberClassWithParams_sub extends .com.redhat.ceylon.compiler.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithParams_sub();
     }
     
