@@ -364,15 +364,8 @@ public abstract class AbstractTransformer implements Transformation {
         return getterBlock;
     }
 
-    JCBlock makeGetterBlock(JCExpression expr) {
-        List<JCStatement> stats = List.<JCStatement>of(make().Return(expr));
-        JCBlock getterBlock = make().Block(0, stats);
-        return getterBlock;
-    }
-
     JCBlock makeGetterBlock(final JCExpression expression) {
-        List<JCStatement> stats;
-        stats = List.<JCStatement>of(make().Return(expression));
+        List<JCStatement> stats = List.<JCStatement>of(make().Return(expression));
         JCBlock getterBlock = make().Block(0, stats);
         return getterBlock;
     }
