@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1152_ {
+    
+    private bug1152_() {
+    }
+    
+    static void bug1152() {
+        
+        final class enum_ {
+            
+            private enum_() {
+            }
+            
+            void $enum() {
+                
+                final class g_ {
+                    
+                    private g_() {
+                    }
+                    
+                    void g() {
+                        enum_.this.$enum();
+                    }
+                }
+                final g_ g = new g_();
+                $enum();
+            }
+        }
+        final enum_ enum = new enum_();
+        enum.$enum();
+        
+        final class getter$getter_ {
+            
+            private getter$getter_() {
+            }
+            
+            long getGetter() {
+                
+                final class g$getter_ {
+                    
+                    private g$getter_() {
+                    }
+                    
+                    long getG() {
+                        return getGetter() + getG();
+                    }
+                }
+                final g$getter_ g$getter_ = new g$getter_();
+                return getGetter() + g$getter_.getG();
+            }
+        }
+        final getter$getter_ getter$getter_ = new getter$getter_();
+        final long g = getter$getter_.getGetter();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1152_.bug1152();
+    }
+}
