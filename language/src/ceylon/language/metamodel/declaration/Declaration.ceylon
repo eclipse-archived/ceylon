@@ -1,7 +1,7 @@
 import ceylon.language.metamodel{Annotated}
 
 shared interface Declaration of Value |
-                                Function |
+                                FunctionDeclaration |
                                 ClassOrInterfaceDeclaration
         satisfies Annotated {
     

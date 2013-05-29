@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Iterator;
@@ -11,7 +9,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.Declaration$impl;
-import ceylon.language.metamodel.declaration.Function$impl;
+import ceylon.language.metamodel.declaration.FunctionDeclaration$impl;
 import ceylon.language.metamodel.declaration.Parameterised$impl;
 import ceylon.language.metamodel.declaration.Type;
 
@@ -32,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeFunction 
     extends FreeDeclaration
-    implements ceylon.language.metamodel.declaration.Function, AnnotationBearing {
+    implements ceylon.language.metamodel.declaration.FunctionDeclaration, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeFunction.class);
@@ -76,7 +74,7 @@ public class FreeFunction
 
     @Override
     @Ignore
-    public Function$impl $ceylon$language$metamodel$declaration$Function$impl() {
+    public FunctionDeclaration$impl $ceylon$language$metamodel$declaration$FunctionDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

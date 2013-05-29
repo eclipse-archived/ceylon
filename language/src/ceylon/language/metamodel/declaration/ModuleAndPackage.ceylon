@@ -53,6 +53,6 @@ shared interface Package
     shared formal Value? getAttribute(String name);
 
     "The function with the given name."
-    shared formal Function? getFunction(String name);
+    shared formal FunctionDeclaration? getFunction(String name);
 }
 

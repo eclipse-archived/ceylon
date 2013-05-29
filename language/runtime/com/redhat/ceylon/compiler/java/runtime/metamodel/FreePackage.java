@@ -128,8 +128,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Function|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.Function getFunction(String name) {
+    @TypeInfo("ceylon.language.metamodel.declaration::FunctionDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.FunctionDeclaration getFunction(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
             return null;

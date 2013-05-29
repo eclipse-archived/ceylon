@@ -246,13 +246,13 @@ class Predicates {
                 return DECLARATION_IS_VARIABLE;
             } else if (declarationClass == ceylon.language.metamodel.declaration.Value.class) {
                 return DECLARATION_IS_VALUE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.Function.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.Class.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.ClassDeclaration.class) {
                 return DECLARATION_IS_CLASS;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.Interface.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.InterfaceDeclaration.class) {
                 return DECLARATION_IS_INTERFACE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.ClassOrInterface.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration.class) {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
             } else if (declarationClass == ceylon.language.metamodel.declaration.Declaration.class) {
                 return true_();

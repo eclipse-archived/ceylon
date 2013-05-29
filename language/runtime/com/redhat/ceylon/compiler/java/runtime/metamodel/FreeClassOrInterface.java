@@ -38,7 +38,7 @@ public abstract class FreeClassOrInterface
     static final TypeDescriptor $InterfacesTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.ParameterisedType.class, ceylon.language.metamodel.declaration.InterfaceDeclaration.$TypeDescriptor);
 
     @Ignore
-    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.Function.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
+    private static final TypeDescriptor $FunctionTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.FunctionDeclaration.class, Anything.$TypeDescriptor, Empty.$TypeDescriptor);
     @Ignore
     private static final TypeDescriptor $ValueTypeDescriptor = TypeDescriptor.klass(ceylon.language.metamodel.declaration.Value.class, Anything.$TypeDescriptor);
     @Ignore

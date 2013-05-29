@@ -5,7 +5,7 @@ import ceylon.language.metamodel {
     AppliedClassOrInterface = ClassOrInterface
 }
 
-shared interface Function 
+shared interface FunctionDeclaration
         satisfies Declaration & Parameterised {
 
     shared formal Type type;

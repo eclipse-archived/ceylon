@@ -6,7 +6,7 @@ import ceylon.language.metamodel.declaration{
     ClassDeclaration,
     ClassOrInterfaceDeclaration,
     InterfaceDeclaration,
-    FunctionDeclaration=Function,
+    FunctionDeclaration,
     
     ValueDeclaration=Value} 
 
