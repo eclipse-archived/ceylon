@@ -4,7 +4,7 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.declaration.OpenType$impl;
-import ceylon.language.metamodel.declaration.IntersectionType$impl;
+import ceylon.language.metamodel.declaration.OpenIntersection$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeIntersectionType 
-    implements ceylon.language.metamodel.declaration.IntersectionType, ReifiedType {
+    implements ceylon.language.metamodel.declaration.OpenIntersection, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeIntersectionType.class);
@@ -41,7 +41,7 @@ public class FreeIntersectionType
 
     @Override
     @Ignore
-    public IntersectionType$impl $ceylon$language$metamodel$declaration$IntersectionType$impl() {
+    public OpenIntersection$impl $ceylon$language$metamodel$declaration$OpenIntersection$impl() {
         // TODO Auto-generated method stub
         return null;
     }

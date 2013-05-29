@@ -1,5 +1,5 @@
 shared interface OpenType of ParameterisedType<ClassOrInterfaceDeclaration>
                        | TypeParameterType
-                       | UnionType
-                       | IntersectionType
+                       | OpenUnion
+                       | OpenIntersection
                        | nothingType {}

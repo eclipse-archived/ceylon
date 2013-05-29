@@ -4,7 +4,7 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.declaration.OpenType$impl;
-import ceylon.language.metamodel.declaration.UnionType$impl;
+import ceylon.language.metamodel.declaration.OpenUnion$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeUnionType 
-    implements ceylon.language.metamodel.declaration.UnionType, ReifiedType {
+    implements ceylon.language.metamodel.declaration.OpenUnion, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeUnionType.class);
@@ -41,7 +41,7 @@ public class FreeUnionType
 
     @Override
     @Ignore
-    public UnionType$impl $ceylon$language$metamodel$declaration$UnionType$impl() {
+    public OpenUnion$impl $ceylon$language$metamodel$declaration$OpenUnion$impl() {
         // TODO Auto-generated method stub
         return null;
     }
