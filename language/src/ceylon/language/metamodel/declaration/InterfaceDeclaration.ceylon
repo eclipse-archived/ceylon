@@ -3,8 +3,8 @@ import ceylon.language.metamodel {
     AppliedType
 }
 
-shared interface Interface
-        satisfies ClassOrInterface {
+shared interface InterfaceDeclaration
+        satisfies ClassOrInterfaceDeclaration {
     
     shared formal actual AppliedInterface<Anything> apply(AppliedType* types);
     

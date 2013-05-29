@@ -4,13 +4,13 @@ import ceylon.language.metamodel {
     AppliedType
 }
 
-shared interface ClassOrInterface 
-        of Class | Interface 
+shared interface ClassOrInterfaceDeclaration 
+        of ClassDeclaration | InterfaceDeclaration 
         satisfies Declaration & Parameterised {
     
-    shared formal ParameterisedType<Class>? superclass;
+    shared formal ParameterisedType<ClassDeclaration>? superclass;
     
-    shared formal ParameterisedType<Interface>[] interfaces;
+    shared formal ParameterisedType<InterfaceDeclaration>[] interfaces;
     
     shared formal Kind[] members<Kind>() 
             given Kind satisfies Declaration;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.metamodel.declaration.Class$impl;
+import ceylon.language.metamodel.declaration.ClassDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeClass 
     extends FreeClassOrInterface
-    implements ceylon.language.metamodel.declaration.Class {
+    implements ceylon.language.metamodel.declaration.ClassDeclaration {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClass.class);
@@ -78,7 +78,7 @@ public class FreeClass
     
     @Override
     @Ignore
-    public Class$impl $ceylon$language$metamodel$declaration$Class$impl() {
+    public ClassDeclaration$impl $ceylon$language$metamodel$declaration$ClassDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

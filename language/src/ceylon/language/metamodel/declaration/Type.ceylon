@@ -1,4 +1,4 @@
-shared interface Type of ParameterisedType<ClassOrInterface>
+shared interface Type of ParameterisedType<ClassOrInterfaceDeclaration>
                        | TypeParameterType
                        | UnionType
                        | IntersectionType

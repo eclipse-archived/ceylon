@@ -1,9 +1,9 @@
 import ceylon.language.metamodel.declaration {
-    UntypedInterface = Interface
+    InterfaceDeclaration
 }
 
 shared interface Interface<out Type>
     satisfies ClassOrInterface<Type> {
     
-    shared formal actual UntypedInterface declaration;
+    shared formal actual InterfaceDeclaration declaration;
 }

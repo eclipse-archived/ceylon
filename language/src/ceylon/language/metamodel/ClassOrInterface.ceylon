@@ -1,5 +1,5 @@
 import ceylon.language.metamodel.declaration {
-    UntypedClassOrInterface = ClassOrInterface,
+    ClassOrInterfaceDeclaration,
     TypeParameter
 }
 
@@ -7,7 +7,7 @@ shared interface ClassOrInterface<out Type>
     of Class<Type, Nothing> | Interface<Type>
     satisfies Declaration & AppliedType {
     
-    shared formal actual UntypedClassOrInterface declaration;
+    shared formal actual ClassOrInterfaceDeclaration declaration;
     
     shared formal Map<TypeParameter, AppliedType> typeArguments;
     

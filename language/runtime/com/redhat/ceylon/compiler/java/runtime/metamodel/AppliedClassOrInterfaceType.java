@@ -129,8 +129,8 @@ public class AppliedClassOrInterfaceType<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ClassOrInterface")
-    public ceylon.language.metamodel.declaration.ClassOrInterface getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::ClassOrInterfaceDeclaration")
+    public ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration getDeclaration() {
         checkInit();
         return declaration;
     }

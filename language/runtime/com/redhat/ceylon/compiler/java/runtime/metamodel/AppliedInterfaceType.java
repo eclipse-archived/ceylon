@@ -31,8 +31,8 @@ public class AppliedInterfaceType<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Interface")
-    public ceylon.language.metamodel.declaration.Interface getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::InterfaceDeclaration")
+    public ceylon.language.metamodel.declaration.InterfaceDeclaration getDeclaration() {
         return (FreeInterface) super.getDeclaration();
     }
 

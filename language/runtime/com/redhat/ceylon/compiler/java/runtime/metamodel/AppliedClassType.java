@@ -50,9 +50,9 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::Class")
-    public ceylon.language.metamodel.declaration.Class getDeclaration() {
-        return (ceylon.language.metamodel.declaration.Class) super.getDeclaration();
+    @TypeInfo("ceylon.language.metamodel.declaration::ClassDeclaration")
+    public ceylon.language.metamodel.declaration.ClassDeclaration getDeclaration() {
+        return (ceylon.language.metamodel.declaration.ClassDeclaration) super.getDeclaration();
     }
 
     @Override

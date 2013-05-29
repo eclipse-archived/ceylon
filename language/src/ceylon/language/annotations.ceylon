@@ -3,9 +3,9 @@ import ceylon.language.metamodel{
     Type, Annotated, Value}
 import ceylon.language.metamodel.declaration{
     Module, Package, Import,
-    ClassDeclaration=Class,
-    ClassOrInterfaceDeclaration=ClassOrInterface,
-    InterfaceDeclaration=Interface,
+    ClassDeclaration,
+    ClassOrInterfaceDeclaration,
+    InterfaceDeclaration,
     FunctionDeclaration=Function,
     
     ValueDeclaration=Value} 

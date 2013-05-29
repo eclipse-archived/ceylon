@@ -5,7 +5,7 @@ import java.util.List;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.metamodel.declaration.Interface$impl;
+import ceylon.language.metamodel.declaration.InterfaceDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeInterface 
     extends FreeClassOrInterface
-    implements ceylon.language.metamodel.declaration.Interface {
+    implements ceylon.language.metamodel.declaration.InterfaceDeclaration {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeInterface.class);
@@ -29,7 +29,7 @@ public class FreeInterface
 
     @Override
     @Ignore
-    public Interface$impl $ceylon$language$metamodel$declaration$Interface$impl() {
+    public InterfaceDeclaration$impl $ceylon$language$metamodel$declaration$InterfaceDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
