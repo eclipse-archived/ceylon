@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.Setter;
+import ceylon.language.metamodel.declaration.SetterDeclaration;
 import ceylon.language.metamodel.declaration.VariableDeclaration;
 import ceylon.language.metamodel.declaration.VariableDeclaration$impl;
 
@@ -40,9 +40,9 @@ public class FreeVariable
         return null;
     }
     
-    @TypeInfo("ceylon.language.metamodel.declaration::Setter")
+    @TypeInfo("ceylon.language.metamodel.declaration::SetterDeclaration")
     @Override
-    public Setter getSetter() {
+    public SetterDeclaration getSetter() {
         return new FreeSetter(this);
     }
     

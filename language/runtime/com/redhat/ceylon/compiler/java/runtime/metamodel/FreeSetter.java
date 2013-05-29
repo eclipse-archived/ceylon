@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.Setter;
-import ceylon.language.metamodel.declaration.Setter$impl;
+import ceylon.language.metamodel.declaration.SetterDeclaration;
+import ceylon.language.metamodel.declaration.SetterDeclaration$impl;
 import ceylon.language.metamodel.declaration.VariableDeclaration;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -17,9 +17,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 5)
 @Class
-@SatisfiedTypes({"ceylon.language.metamodel::Annotated", "ceylon.language.metamodel.declaration::Setter"})
+@SatisfiedTypes({"ceylon.language.metamodel::Annotated", "ceylon.language.metamodel.declaration::SetterDeclaration"})
 public class FreeSetter 
-        implements Setter, Annotated, AnnotationBearing {
+        implements SetterDeclaration, Annotated, AnnotationBearing {
 
     private FreeVariable variable;
 
@@ -34,7 +34,7 @@ public class FreeSetter
     }
     
     @Override
-    public Setter$impl $ceylon$language$metamodel$declaration$Setter$impl() {
+    public SetterDeclaration$impl $ceylon$language$metamodel$declaration$SetterDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
