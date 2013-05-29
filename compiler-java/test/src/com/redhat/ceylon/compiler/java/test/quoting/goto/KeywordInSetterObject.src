@@ -3,26 +3,41 @@ package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInSetterObject() {
-    }
-    
-    private final long getI$priv() {
-        return 0L;
-    }
-    
-    private final void setI$priv(final long i) {
         
-        final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private goto_() {
+            private i$getter_() {
             }
             
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
+            public long $get() {
+                return 0L;
             }
         }
-        final goto_ goto = new goto_();
-        final .java.lang.String s = goto.toString();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_ = new i$getter_();
+        
+        final class i$setter_ {
+            
+            private i$setter_() {
+            }
+            private long value;
+            
+            public void $set(final long i) {
+                
+                final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private goto_() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
+                    }
+                }
+                final goto_ goto = new goto_();
+                final .java.lang.String s = goto.toString();
+            }
+        }
+        final i$setter_ i$setter_ = new i$setter_();
     }
     
     public static void main(.java.lang.String[] args) {

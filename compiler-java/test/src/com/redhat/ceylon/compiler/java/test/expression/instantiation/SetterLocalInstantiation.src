@@ -3,25 +3,40 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SetterLocalInstantiation() {
-    }
-    
-    private final long getI$priv() {
-        return 0L;
-    }
-    
-    private final void setI$priv(final long i) {
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            LocalClass() {
+            private i$getter_() {
             }
             
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
+            public long $get() {
+                return 0L;
             }
         }
-        final LocalClass l = new LocalClass();
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_ = new i$getter_();
+        
+        final class i$setter_ {
+            
+            private i$setter_() {
+            }
+            private long value;
+            
+            public void $set(final long i) {
+                
+                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    LocalClass() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
+                    }
+                }
+                final LocalClass l = new LocalClass();
+            }
+        }
+        final i$setter_ i$setter_ = new i$setter_();
     }
     
     public static void main(.java.lang.String[] args) {

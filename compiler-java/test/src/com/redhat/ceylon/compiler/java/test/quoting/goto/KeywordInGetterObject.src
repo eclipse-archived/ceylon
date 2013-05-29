@@ -3,23 +3,30 @@ package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 class KeywordInGetterObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInGetterObject() {
-    }
-    
-    private final long getI$priv() {
         
-        final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            private goto_() {
+            private i$getter_() {
             }
             
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
+            public long $get() {
+                
+                final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private goto_() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
+                    }
+                }
+                final goto_ goto = new goto_();
+                final .java.lang.String s = goto.toString();
+                return 0L;
             }
         }
-        final goto_ goto = new goto_();
-        final .java.lang.String s = goto.toString();
-        return 0L;
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_ = new i$getter_();
     }
     
     public static void main(.java.lang.String[] args) {

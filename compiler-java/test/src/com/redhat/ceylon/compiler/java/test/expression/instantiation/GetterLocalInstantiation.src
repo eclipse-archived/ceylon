@@ -3,22 +3,29 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     GetterLocalInstantiation() {
-    }
-    
-    private final long getI$priv() {
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class i$getter_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
             
-            LocalClass() {
+            private i$getter_() {
             }
             
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
+            public long $get() {
+                
+                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    LocalClass() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
+                    }
+                }
+                final LocalClass l = new LocalClass();
+                return 0L;
             }
         }
-        final LocalClass l = new LocalClass();
-        return 0L;
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_ = new i$getter_();
     }
     
     public static void main(.java.lang.String[] args) {

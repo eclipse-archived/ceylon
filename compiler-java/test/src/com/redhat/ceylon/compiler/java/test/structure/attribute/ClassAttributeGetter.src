@@ -3,10 +3,28 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassAttributeGetter() {
-    }
-    
-    private final .java.lang.String getF$priv() {
-        return "";
+        
+        final class f$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f$getter_ = new f$getter_();
+        
+        final class f4$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f4$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f4$getter_ = new f4$getter_();
     }
     
     public final .java.lang.String getF2() {
@@ -14,10 +32,6 @@ abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.
     }
     
     public .java.lang.String getF3() {
-        return "";
-    }
-    
-    private final .java.lang.String getF4$priv() {
         return "";
     }
     

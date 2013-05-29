@@ -3,15 +3,60 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassAttributeGetterSetter() {
+        
+        final class f$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f$getter_ = new f$getter_();
+        
+        final class f$setter_ {
+            
+            private f$setter_() {
+            }
+            private .java.lang.String value;
+            
+            public void $set(final .java.lang.String f) {
+            }
+        }
+        final f$setter_ f$setter_ = new f$setter_();
         this.f5 = "";
+        
+        final class f6$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f6$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f6$getter_ = new f6$getter_();
+        
+        final class f6$setter_ {
+            
+            private f6$setter_() {
+            }
+            private .java.lang.String value;
+            
+            public void $set(final .java.lang.String f6) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmpop0 = f6;
+                        setF2($ceylontmpop0);
+                    }
+                    returning $ceylontmpop0;
+                );
+            }
+        }
+        final f6$setter_ f6$setter_ = new f6$setter_();
         this.f10 = "";
-    }
-    
-    private final .java.lang.String getF$priv() {
-        return "";
-    }
-    
-    private final void setF$priv(final .java.lang.String f) {
     }
     
     public final .java.lang.String getF2() {
@@ -35,21 +80,6 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
     
     public .java.lang.String getF5() {
         return f5;
-    }
-    
-    private final .java.lang.String getF6$priv() {
-        return "";
-    }
-    
-    private final void setF6$priv(final .java.lang.String f6) {
-        (
-            let
-            {
-                .java.lang.String $ceylontmpop0 = f6;
-                setF2($ceylontmpop0);
-            }
-            returning $ceylontmpop0;
-        );
     }
     
     public final .java.lang.String getF7() {

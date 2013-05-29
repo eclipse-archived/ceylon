@@ -3,32 +3,47 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 class KlassInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassInSetter() {
-    }
-    
-    private final .java.lang.String getFoo$priv() {
-        return "";
-    }
-    
-    private final void setFoo$priv(final .java.lang.String foo) {
-        if (true) {
-            final long i = 1L;
+        
+        final class foo$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-                
-                Bar() {
-                }
-                
-                public final .java.lang.String bar() {
-                    return .ceylon.language.Integer.toString(i);
-                }
-                
-                @.java.lang.Override
-                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class);
+            private foo$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter_ = new foo$getter_();
+        
+        final class foo$setter_ {
+            
+            private foo$setter_() {
+            }
+            private .java.lang.String value;
+            
+            public void $set(final .java.lang.String foo) {
+                if (true) {
+                    final long i = 1L;
+                    
+                    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        Bar() {
+                        }
+                        
+                        public final .java.lang.String bar() {
+                            return .ceylon.language.Integer.toString(i);
+                        }
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class);
+                        }
+                    }
+                    new Bar().bar();
                 }
             }
-            new Bar().bar();
         }
+        final foo$setter_ foo$setter_ = new foo$setter_();
     }
     
     public static void main(.java.lang.String[] args) {

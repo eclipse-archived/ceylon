@@ -3,29 +3,36 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 class KlassInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassInGetter() {
-    }
-    
-    private final .java.lang.String getFoo$priv() {
-        if (true) {
-            final long i = 1L;
+        
+        final class foo$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-                
-                Bar() {
-                }
-                
-                public final .java.lang.String bar() {
-                    return .ceylon.language.Integer.toString(i);
-                }
-                
-                @.java.lang.Override
-                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class);
-                }
+            private foo$getter_() {
             }
-            return new Bar().bar();
+            
+            public .java.lang.String $get() {
+                if (true) {
+                    final long i = 1L;
+                    
+                    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        Bar() {
+                        }
+                        
+                        public final .java.lang.String bar() {
+                            return .ceylon.language.Integer.toString(i);
+                        }
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class);
+                        }
+                    }
+                    return new Bar().bar();
+                }
+                return "";
+            }
         }
-        return "";
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter_ = new foo$getter_();
     }
     
     public static void main(.java.lang.String[] args) {

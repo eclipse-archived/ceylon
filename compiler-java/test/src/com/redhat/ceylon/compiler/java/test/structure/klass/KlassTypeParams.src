@@ -7,6 +7,40 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
         this.$reifiedV = $reifiedV;
         this.attr = uu;
         this.var = vv;
+        
+        final class getter$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<U> {
+            
+            private getter$getter_() {
+            }
+            
+            public U $get() {
+                return getAttr$priv();
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<U> getter$getter_ = new getter$getter_();
+        
+        final class getset$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<V> {
+            
+            private getset$getter_() {
+            }
+            
+            public V $get() {
+                return getVar$priv();
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<V> getset$getter_ = new getset$getter_();
+        
+        final class getset$setter_ {
+            
+            private getset$setter_() {
+            }
+            private V value;
+            
+            public void $set(final V getset) {
+                setVar$priv(getset);
+            }
+        }
+        final getset$setter_ getset$setter_ = new getset$setter_();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV;
@@ -27,18 +61,6 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void setVar$priv(final V var) {
         this.var = var;
-    }
-    
-    private final U getGetter$priv() {
-        return getAttr$priv();
-    }
-    
-    private final V getGetset$priv() {
-        return getVar$priv();
-    }
-    
-    private final void setGetset$priv(final V getset) {
-        setVar$priv(getset);
     }
     
     @.java.lang.Override

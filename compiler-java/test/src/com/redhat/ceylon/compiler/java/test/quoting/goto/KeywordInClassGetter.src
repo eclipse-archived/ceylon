@@ -3,13 +3,28 @@ package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInClassGetter() {
-    }
-    
-    private final .java.lang.String getGoto$priv() {
-        return "";
-    }
-    
-    private final void setGoto$priv(final .java.lang.String goto) {
+        
+        final class goto$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private goto$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> goto$getter_ = new goto$getter_();
+        
+        final class goto$setter_ {
+            
+            private goto$setter_() {
+            }
+            private .java.lang.String value;
+            
+            public void $set(final .java.lang.String goto) {
+            }
+        }
+        final goto$setter_ goto$setter_ = new goto$setter_();
     }
     
     public static void main(.java.lang.String[] args) {

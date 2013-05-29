@@ -19,7 +19,7 @@ class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues
     }
     private final .java.lang.String s;
     
-    public final .java.lang.String getS$priv() {
+    public final .java.lang.String $get() {
         return s;
     }
     
@@ -79,7 +79,7 @@ class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
 class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Qualified(final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
-        super(b.getS$priv());
+        super(b.$get());
     }
     
     @.java.lang.Override

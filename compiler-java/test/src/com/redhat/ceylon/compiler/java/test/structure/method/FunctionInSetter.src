@@ -3,28 +3,43 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 class FunctionInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     FunctionInSetter() {
-    }
-    
-    private final .java.lang.String getFoo$priv() {
-        return "";
-    }
-    
-    private final void setFoo$priv(final .java.lang.String foo) {
-        if (true) {
-            final long i = 1L;
+        
+        final class foo$getter_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
-            final class bar_ {
-                
-                private bar_() {
-                }
-                
-                .java.lang.String bar() {
-                    return .ceylon.language.Integer.toString(i);
+            private foo$getter_() {
+            }
+            
+            public .java.lang.String $get() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter_ = new foo$getter_();
+        
+        final class foo$setter_ {
+            
+            private foo$setter_() {
+            }
+            private .java.lang.String value;
+            
+            public void $set(final .java.lang.String foo) {
+                if (true) {
+                    final long i = 1L;
+                    
+                    final class bar_ {
+                        
+                        private bar_() {
+                        }
+                        
+                        .java.lang.String bar() {
+                            return .ceylon.language.Integer.toString(i);
+                        }
+                    }
+                    final bar_ bar = new bar_();
+                    bar.bar();
                 }
             }
-            final bar_ bar = new bar_();
-            bar.bar();
         }
+        final foo$setter_ foo$setter_ = new foo$setter_();
     }
     
     public static void main(.java.lang.String[] args) {
