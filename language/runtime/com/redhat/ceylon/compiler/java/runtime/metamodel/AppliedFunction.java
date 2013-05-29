@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,8 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.Declaration$impl;
+import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.Function$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -128,7 +126,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
+    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
         // TODO Auto-generated method stub
         return null;
     }

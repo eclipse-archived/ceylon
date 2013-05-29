@@ -9,7 +9,7 @@ import ceylon.language.metamodel {
 
 shared interface ClassOrInterface<out Type> 
     of Class<Type, Nothing> | Interface<Type>
-    satisfies Declaration & ClosedType {
+    satisfies DeclarationType & ClosedType {
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
     

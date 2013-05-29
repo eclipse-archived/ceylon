@@ -6,7 +6,7 @@ import ceylon.language.metamodel {
 }
 
 shared interface Function<out Type, in Arguments>
-        satisfies Callable<Type, Arguments> & Declaration 
+        satisfies Callable<Type, Arguments> & DeclarationType
         given Arguments satisfies Anything[] {
     
     shared formal actual FunctionDeclaration declaration;

@@ -3,11 +3,9 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
-import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.Declaration$impl;
+import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.Value$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -96,7 +94,7 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
+    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -11,7 +11,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.ClassOrInterface$impl;
-import ceylon.language.metamodel.Declaration$impl;
+import ceylon.language.metamodel.DeclarationType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -58,7 +58,7 @@ public class AppliedClassOrInterfaceType<Type>
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$Declaration$impl() {
+    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
         // TODO Auto-generated method stub
         return null;
     }

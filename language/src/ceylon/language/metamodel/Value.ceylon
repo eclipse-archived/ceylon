@@ -6,7 +6,7 @@ import ceylon.language.metamodel {
 }
 
 shared interface Value<out Type>
-        satisfies Declaration {
+        satisfies DeclarationType {
 
     shared formal actual AttributeDeclaration declaration;
     

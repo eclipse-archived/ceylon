@@ -197,7 +197,7 @@ public class FreeFunction
         return getAppliedFunction($reifiedContainer, $reifiedKind, types, containerType);
     }
 
-    <Type, Kind extends ceylon.language.metamodel.Declaration>
+    <Type, Kind extends ceylon.language.metamodel.Function>
     ceylon.language.metamodel.Member<Type, Kind> getAppliedFunction(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
                                                                     Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                     AppliedClassOrInterfaceType<Type> container){
