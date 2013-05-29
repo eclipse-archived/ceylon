@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 class InitializerIfElseIf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     InitializerIfElseIf() {
-        boolean b;
+        boolean b = false;
         if (true) {
             b = true;
         } else {

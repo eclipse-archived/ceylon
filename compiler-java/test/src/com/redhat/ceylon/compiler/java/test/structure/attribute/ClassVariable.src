@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 abstract class ClassVariable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ClassVariable() {
-        .java.lang.String uncapturedvar;
+        .java.lang.String uncapturedvar = null;
         setPublicvar("");
         uncapturedvar = "";
         setCapturedvar$priv("");

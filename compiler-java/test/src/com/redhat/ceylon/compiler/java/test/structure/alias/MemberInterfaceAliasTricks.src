@@ -101,15 +101,12 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
             }
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
         private void test$priv() {
             final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass m1 = $this.MemberClassAliasToEnclosingMemberClass$new();
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private void test$priv(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo.MemberInterface")
     final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface x) {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass m1 = x.MemberClassAliasToEnclosingMemberClass$new();
     }
