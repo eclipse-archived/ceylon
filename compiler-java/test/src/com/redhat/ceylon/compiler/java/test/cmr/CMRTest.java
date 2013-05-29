@@ -647,7 +647,7 @@ public class CMRTest extends CompilerTest {
         new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve setter type of org.apache.camel.component.jetty::JettyHttpComponent.setThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
         new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve type of parameter arg0 of method org.apache.camel.component.jetty::JettyHttpComponent.setThreadPool:\n   Failed to resolve org.eclipse.jetty.util.thread.ThreadPool"),
         new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Failed to resolve extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n   Failed to resolve org.apache.camel.component.http.HttpComponent"),
-        new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent: JettyHttpComponent is not assignable to Component?"),
+        new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent in DefaultCamelContext: JettyHttpComponent is not assignable to Component?"),
         };
 
         ErrorCollector collector = new ErrorCollector();
