@@ -1,13 +1,14 @@
-import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
+import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation}
+import ceylon.language.metamodel.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassBoolean(Boolean b) satisfies SequencedAnnotation<AnnotationClassBoolean, Type<Anything>>{}
+annotation class AnnotationClassBoolean(Boolean b) satisfies SequencedAnnotation<AnnotationClassBoolean, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassBoolean annotationClassBoolean(Boolean x = true) => AnnotationClassBoolean(x);
 @nomodel
-annotation class AnnotationClassBooleanDefaulted(Boolean b=true) satisfies OptionalAnnotation<AnnotationClassBooleanDefaulted, Type<Anything>>{}
+annotation class AnnotationClassBooleanDefaulted(Boolean b=true) satisfies OptionalAnnotation<AnnotationClassBooleanDefaulted, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassBooleanVariadic(Boolean* b) satisfies SequencedAnnotation<AnnotationClassBooleanVariadic, Type<Anything>>{}
+annotation class AnnotationClassBooleanVariadic(Boolean* b) satisfies SequencedAnnotation<AnnotationClassBooleanVariadic, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassBooleanVariadic annotationClassVariadicVariadic(Boolean* b) => AnnotationClassBooleanVariadic(*b);
 @nomodel
@@ -16,7 +17,7 @@ annotation AnnotationClassBooleanVariadic annotationClassVariadicSequence(Boolea
 annotation AnnotationClassBooleanVariadic annotationClassVariadicIterable({Boolean*} b) => AnnotationClassBooleanVariadic(*b);
 
 @nomodel
-annotation class AnnotationClassBooleanSequence(Boolean[] b) satisfies SequencedAnnotation<AnnotationClassBooleanSequence, Type<Anything>>{}
+annotation class AnnotationClassBooleanSequence(Boolean[] b) satisfies SequencedAnnotation<AnnotationClassBooleanSequence, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassBooleanSequence annotationClassSequenceVariadic(Boolean* b) => AnnotationClassBooleanSequence(b);
 @nomodel
@@ -25,7 +26,7 @@ annotation AnnotationClassBooleanSequence annotationClassSequenceSequence(Boolea
 //annotation AnnotationClassBooleanSequence annotationClassSequenceIterable({Boolean*} b) => AnnotationClassBooleanSequence(b.sequence);
 
 @nomodel
-annotation class AnnotationClassBooleanIterable({Boolean*} b) satisfies SequencedAnnotation<AnnotationClassBooleanIterable, Type<Anything>>{}
+annotation class AnnotationClassBooleanIterable({Boolean*} b) satisfies SequencedAnnotation<AnnotationClassBooleanIterable, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassBooleanIterable annotationClassIterableVariadic(Boolean* b) => AnnotationClassBooleanIterable(b);
 @nomodel

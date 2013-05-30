@@ -1,9 +1,10 @@
-import ceylon.language.metamodel{SequencedAnnotation, Type}
+import ceylon.language.metamodel{SequencedAnnotation}
+import ceylon.language.metamodel.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassString(String s) satisfies SequencedAnnotation<AnnotationClassString, Type<Anything>>{}
+annotation class AnnotationClassString(String s) satisfies SequencedAnnotation<AnnotationClassString, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassString, Type<Anything>>{}
+annotation class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassString, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation class AnnotationClassStringSequence(String[] s) {}
 @nomodel

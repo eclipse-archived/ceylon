@@ -1,8 +1,8 @@
 import ceylon.language.metamodel { ... }
-import ceylon.language.metamodel.untyped {
-    ValueDeclaration = Value,
-    FunctionDeclaration = Function,
-    UntypedDeclaration = Declaration
+import ceylon.language.metamodel.declaration {
+    AttributeDeclaration,
+    FunctionDeclaration,
+    Declaration
 }
 
 void checkConstructors(){
@@ -40,22 +40,22 @@ void checkMemberAttributes(){
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
     
-    assert(exists string = noParamsType.getAttribute<NoParams, Value<String>>("str"));
+    assert(exists string = noParamsType.getAttribute<NoParams, Attribute<String>>("str"));
     assert(string(noParamsInstance).get() == "a");
     
-    assert(exists integer = noParamsType.getAttribute<NoParams, Value<Integer>>("integer"));
+    assert(exists integer = noParamsType.getAttribute<NoParams, Attribute<Integer>>("integer"));
     assert(integer(noParamsInstance).get() == 1);
     
-    assert(exists float = noParamsType.getAttribute<NoParams, Value<Float>>("float"));
+    assert(exists float = noParamsType.getAttribute<NoParams, Attribute<Float>>("float"));
     assert(float(noParamsInstance).get() == 1.2);
     
-    assert(exists character = noParamsType.getAttribute<NoParams, Value<Character>>("character"));
+    assert(exists character = noParamsType.getAttribute<NoParams, Attribute<Character>>("character"));
     assert(character(noParamsInstance).get() == 'a');
     
-    assert(exists boolean = noParamsType.getAttribute<NoParams, Value<Boolean>>("boolean"));
+    assert(exists boolean = noParamsType.getAttribute<NoParams, Attribute<Boolean>>("boolean"));
     assert(boolean(noParamsInstance).get() == true);
     
-    assert(exists obj = noParamsType.getAttribute<NoParams, Value<NoParams>>("obj"));
+    assert(exists obj = noParamsType.getAttribute<NoParams, Attribute<NoParams>>("obj"));
     assert(obj(noParamsInstance).get() === noParamsInstance);
 
     assert(exists string2 = noParamsType.getAttribute<NoParams, Variable<String>>("str2"));
@@ -105,7 +105,7 @@ void checkMemberFunctions(){
     value noParamsInstance = NoParams();
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
-    assert(is Class<String, []> stringType = type("foo"));
+    assert(is Class<String, [String]> stringType = type("foo"));
     
     assert(exists f1 = noParamsType.getFunction<NoParams, Function<NoParams, []>>("noParams"));
     Anything o1 = f1(noParamsInstance)();
@@ -222,9 +222,9 @@ void checkPackageAndModule(){
 
     assert(pkg.name == "com.redhat.ceylon.compiler.java.test.metamodel");
 
-    print(pkg.members<UntypedDeclaration>().size);
-    assert(pkg.members<UntypedDeclaration>().size > 0);
-    for(decl in pkg.members<UntypedDeclaration>()){
+    print(pkg.members<Declaration>().size);
+    assert(pkg.members<Declaration>().size > 0);
+    for(decl in pkg.members<Declaration>()){
         print("decl: ``decl.name``");
     }
 
@@ -249,71 +249,71 @@ void checkToplevelAttributes(){
 
     value pkg = noParamsDecl.packageContainer;
 
-    assert(pkg.members<UntypedDeclaration>().find((UntypedDeclaration decl) => decl.name == "toplevelInteger") exists);
+    assert(pkg.members<Declaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
-    assert(is ValueDeclaration toplevelIntegerDecl = pkg.getAttribute("toplevelInteger"));
-    assert(is Value<Integer> toplevelIntegerValue = toplevelIntegerDecl.apply());
-    assert(toplevelIntegerValue.get() == 1);
+    assert(is AttributeDeclaration toplevelIntegerDecl = pkg.getAttribute("toplevelInteger"));
+    assert(is Attribute<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply());
+    assert(toplevelIntegerAttribute.get() == 1);
 
-    assert(is ValueDeclaration toplevelStringDecl = pkg.getAttribute("toplevelString"));
-    assert(is Value<String> toplevelStringValue = toplevelStringDecl.apply());
-    assert(toplevelStringValue.get() == "a");
+    assert(is AttributeDeclaration toplevelStringDecl = pkg.getAttribute("toplevelString"));
+    assert(is Attribute<String> toplevelStringAttribute = toplevelStringDecl.apply());
+    assert(toplevelStringAttribute.get() == "a");
 
-    assert(is ValueDeclaration toplevelFloatDecl = pkg.getAttribute("toplevelFloat"));
-    assert(is Value<Float> toplevelFloatValue = toplevelFloatDecl.apply());
-    assert(toplevelFloatValue.get() == 1.2);
+    assert(is AttributeDeclaration toplevelFloatDecl = pkg.getAttribute("toplevelFloat"));
+    assert(is Attribute<Float> toplevelFloatAttribute = toplevelFloatDecl.apply());
+    assert(toplevelFloatAttribute.get() == 1.2);
 
-    assert(is ValueDeclaration toplevelCharacterDecl = pkg.getAttribute("toplevelCharacter"));
-    assert(is Value<Character> toplevelCharacterValue = toplevelCharacterDecl.apply());
-    assert(toplevelCharacterValue.get() == 'a');
+    assert(is AttributeDeclaration toplevelCharacterDecl = pkg.getAttribute("toplevelCharacter"));
+    assert(is Attribute<Character> toplevelCharacterAttribute = toplevelCharacterDecl.apply());
+    assert(toplevelCharacterAttribute.get() == 'a');
 
-    assert(is ValueDeclaration toplevelBooleanDecl = pkg.getAttribute("toplevelBoolean"));
-    assert(is Value<Boolean> toplevelBooleanValue = toplevelBooleanDecl.apply());
-    assert(toplevelBooleanValue.get() == true);
+    assert(is AttributeDeclaration toplevelBooleanDecl = pkg.getAttribute("toplevelBoolean"));
+    assert(is Attribute<Boolean> toplevelBooleanAttribute = toplevelBooleanDecl.apply());
+    assert(toplevelBooleanAttribute.get() == true);
 
-    assert(is ValueDeclaration toplevelObjectDecl = pkg.getAttribute("toplevelObject"));
-    assert(is Value<Object> toplevelObjectValue = toplevelObjectDecl.apply());
-    assert(toplevelObjectValue.get() == 2);
+    assert(is AttributeDeclaration toplevelObjectDecl = pkg.getAttribute("toplevelObject"));
+    assert(is Attribute<Object> toplevelObjectAttribute = toplevelObjectDecl.apply());
+    assert(toplevelObjectAttribute.get() == 2);
 
     //
     // variables
 
-    assert(is ValueDeclaration toplevelIntegerVariableDecl = pkg.getAttribute("toplevelInteger2"));
+    assert(is AttributeDeclaration toplevelIntegerVariableDecl = pkg.getAttribute("toplevelInteger2"));
     assert(is Variable<Integer> toplevelIntegerVariable = toplevelIntegerVariableDecl.apply());
     assert(toplevelIntegerVariable.get() == 1);
     toplevelIntegerVariable.set(2);
     assert(toplevelIntegerVariable.get() == 2);
     assert(toplevelInteger2 == 2);
 
-    assert(is ValueDeclaration toplevelStringVariableDecl = pkg.getAttribute("toplevelString2"));
+    assert(is AttributeDeclaration toplevelStringVariableDecl = pkg.getAttribute("toplevelString2"));
     assert(is Variable<String> toplevelStringVariable = toplevelStringVariableDecl.apply());
     assert(toplevelStringVariable.get() == "a");
     toplevelStringVariable.set("b");
     assert(toplevelStringVariable.get() == "b");
     assert(toplevelString2 == "b");
 
-    assert(is ValueDeclaration toplevelFloatVariableDecl = pkg.getAttribute("toplevelFloat2"));
+    assert(is AttributeDeclaration toplevelFloatVariableDecl = pkg.getAttribute("toplevelFloat2"));
     assert(is Variable<Float> toplevelFloatVariable = toplevelFloatVariableDecl.apply());
     assert(toplevelFloatVariable.get() == 1.2);
     toplevelFloatVariable.set(2.0);
     assert(toplevelFloatVariable.get() == 2.0);
     assert(toplevelFloat2 == 2.0);
 
-    assert(is ValueDeclaration toplevelCharacterVariableDecl = pkg.getAttribute("toplevelCharacter2"));
+    assert(is AttributeDeclaration toplevelCharacterVariableDecl = pkg.getAttribute("toplevelCharacter2"));
     assert(is Variable<Character> toplevelCharacterVariable = toplevelCharacterVariableDecl.apply());
     assert(toplevelCharacterVariable.get() == 'a');
     toplevelCharacterVariable.set('b');
     assert(toplevelCharacterVariable.get() == 'b');
     assert(toplevelCharacter2 == 'b');
 
-    assert(is ValueDeclaration toplevelBooleanVariableDecl = pkg.getAttribute("toplevelBoolean2"));
+    assert(is AttributeDeclaration toplevelBooleanVariableDecl = pkg.getAttribute("toplevelBoolean2"));
     assert(is Variable<Boolean> toplevelBooleanVariable = toplevelBooleanVariableDecl.apply());
     assert(toplevelBooleanVariable.get() == true);
     toplevelBooleanVariable.set(false);
     assert(toplevelBooleanVariable.get() == false);
     assert(toplevelBoolean2 == false);
 
-    assert(is ValueDeclaration toplevelObjectVariableDecl = pkg.getAttribute("toplevelObject2"));
+    assert(is AttributeDeclaration toplevelObjectVariableDecl = pkg.getAttribute("toplevelObject2"));
     assert(is Variable<Object> toplevelObjectVariable = toplevelObjectVariableDecl.apply());
     assert(toplevelObjectVariable.get() == 2);
     toplevelObjectVariable.set(3);
@@ -324,7 +324,7 @@ void checkToplevelAttributes(){
 void checkToplevelFunctions(){
     value noParamsInstance = NoParams();
     value noParamsAppliedType = type(noParamsInstance);
-    assert(is Class<String, []> stringType = type("foo"));
+    assert(is Class<String, [String]> stringType = type("foo"));
     
     assert(is Class<Anything,[]> noParamsAppliedType);
     
@@ -332,7 +332,7 @@ void checkToplevelFunctions(){
 
     value pkg = noParamsDecl.packageContainer;
 
-    assert(pkg.members<UntypedDeclaration>().find((UntypedDeclaration decl) => decl.name == "fixedParams") exists);
+    assert(pkg.members<Declaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
 
     assert(exists f2 = pkg.getFunction("fixedParams"));
     assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object]> f2a = f2.apply());

@@ -7,14 +7,14 @@ import ceylon.language.metamodel{
     //ClassOrInterface, Class, Interface,
     //Function, Value
 }
-import ceylon.language.metamodel.untyped {
-    ValueDeclaration = Value,
-    VariableDeclaration = Variable,
-    UntypedDeclaration = Declaration,
-    FunctionDeclaration = Function,
-    ClassDeclaration = Class,
-    ClassOrInterfaceDeclaration = ClassOrInterface,
-    InterfaceDeclaration = Interface,
+import ceylon.language.metamodel.declaration {
+    AttributeDeclaration,
+    VariableDeclaration,
+    Declaration,
+    FunctionDeclaration,
+    ClassDeclaration,
+    ClassOrInterfaceDeclaration,
+    InterfaceDeclaration,
     Package, Module, Import
 }
 
@@ -37,10 +37,10 @@ annotation class ConstrainedToFunction() satisfies OptionalAnnotation<Constraine
 annotation class ConstrainedToFunctionSeq() satisfies SequencedAnnotation<ConstrainedToFunction, FunctionDeclaration> {
 }
 
-annotation class ConstrainedToValue() satisfies OptionalAnnotation<ConstrainedToValue, ValueDeclaration> {
+annotation class ConstrainedToValue() satisfies OptionalAnnotation<ConstrainedToValue, AttributeDeclaration> {
 }
 
-annotation class ConstrainedToValueSeq() satisfies SequencedAnnotation<ConstrainedToValue, ValueDeclaration> {
+annotation class ConstrainedToValueSeq() satisfies SequencedAnnotation<ConstrainedToValue, AttributeDeclaration> {
 }
 
 annotation class ConstrainedToVariable() satisfies OptionalAnnotation<ConstrainedToVariable, VariableDeclaration> {

@@ -1,12 +1,14 @@
-import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
+import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation}
+import ceylon.language.metamodel.declaration { ClassOrInterfaceDeclaration }
+
 @nomodel
 annotation class AnnotationClassParam(String name) {}
 @nomodel
 annotation AnnotationClassParam annotationClassParam(String name) => AnnotationClassParam(name);
 @nomodel
-annotation class AnnotationClassAnnotationClass(AnnotationClassParam param) satisfies SequencedAnnotation<AnnotationClassAnnotationClass, Type<Anything>>{}
+annotation class AnnotationClassAnnotationClass(AnnotationClassParam param) satisfies SequencedAnnotation<AnnotationClassAnnotationClass, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassAnnotationClassSequence(AnnotationClassParam[] params) satisfies SequencedAnnotation<AnnotationClassAnnotationClassSequence, Type<Anything>>{}
+annotation class AnnotationClassAnnotationClassSequence(AnnotationClassParam[] params) satisfies SequencedAnnotation<AnnotationClassAnnotationClassSequence, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassAnnotationClassSequence annotationClassAnnotationClassSequence(AnnotationClassParam[] params) => AnnotationClassAnnotationClassSequence(params);
 @nomodel

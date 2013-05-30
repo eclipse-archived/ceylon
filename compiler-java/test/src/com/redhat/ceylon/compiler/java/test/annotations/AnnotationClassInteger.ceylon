@@ -1,7 +1,8 @@
-import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation, Type}
+import ceylon.language.metamodel{SequencedAnnotation, OptionalAnnotation}
+import ceylon.language.metamodel.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassInteger(Integer i, Integer j=1) satisfies SequencedAnnotation<AnnotationClassInteger, Type<Anything>>{}
+annotation class AnnotationClassInteger(Integer i, Integer j=1) satisfies SequencedAnnotation<AnnotationClassInteger, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassInteger annotationClassIntegerDefault(Integer i) 
     => AnnotationClassInteger(i);

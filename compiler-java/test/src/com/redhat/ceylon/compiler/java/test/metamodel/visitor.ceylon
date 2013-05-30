@@ -1,14 +1,14 @@
 import ceylon.language.metamodel { 
     type,
-    AppliedType,
-    AppliedClass = Class,
-    AppliedInterface = Interface,
-    AppliedClassOrInterface = ClassOrInterface,
-    AppliedUnionType = UnionType,
-    AppliedIntersectionType = IntersectionType,
+    Type,
+    Class,
+    Interface,
+    ClassOrInterface,
+    UnionType,
+    IntersectionType,
     appliedNothingType = nothingType
 }
-import ceylon.language.metamodel.untyped { ... }
+import ceylon.language.metamodel.declaration { ... }
 
 void visitStringHierarchy(){
     value classType = type("falbala");
@@ -35,7 +35,7 @@ void visitStringHierarchy(){
     visitInheritedTypes(classType);
 }
 
-void visitInheritedTypes(AppliedClassOrInterface<Anything> type){
+void visitInheritedTypes(ClassOrInterface<Anything> type){
     output("Types extended by ``type.declaration.name``:\n");
     if(exists xt = type.superclass){
         visitExtendedTypes(xt);
@@ -46,23 +46,23 @@ void visitInheritedTypes(AppliedClassOrInterface<Anything> type){
     }
 }
 
-void visitExtendedTypes(AppliedClass<Anything, Nothing> type){
-    visitAppliedProducedType(type);
+void visitExtendedTypes(Class<Anything, Nothing> type){
+    visitType(type);
     output("\n");
     if(exists xt = type.superclass){
         visitExtendedTypes(xt);
     }
 }
 
-void visitSatisfiedTypes(AppliedInterface<Anything> type){
-    visitAppliedProducedType(type);
+void visitSatisfiedTypes(Interface<Anything> type){
+    visitType(type);
     output("\n");
     for(sat in type.interfaces){
         visitSatisfiedTypes(sat);
     }
 }
 
-variable ClassOrInterface[] queue = {};
+variable ClassOrInterfaceDeclaration[] queue = {};
 
 void emptyQueue(){
     while(nonempty q = queue){
@@ -71,7 +71,7 @@ void emptyQueue(){
     }
 }
 
-void queueDeclaration(ClassOrInterface decl){
+void queueDeclaration(ClassOrInterfaceDeclaration decl){
     queue = queue.withTrailing(decl);
 }
 
@@ -84,16 +84,16 @@ void output(Anything obj){
 }
 
 void visitDeclaration(Declaration decl){
-    if(is Class decl){
+    if(is ClassDeclaration decl){
         visitClass(decl);
-    }else if(is Interface decl){
+    }else if(is InterfaceDeclaration decl){
         visitInterface(decl);
     }else{
         output("Unknown declaration");
     }
 }
 
-void visitClass(Class klass){
+void visitClass(ClassDeclaration klass){
     output("class ``klass.name``");
     if(klass.typeParameters nonempty){
         output("<");
@@ -108,13 +108,13 @@ void visitClass(Class klass){
         }else{
             output(", ");
         }
-        visitProducedType(param.type);
+        visitOpenType(param.type);
         output(" ``param.name``");
     }
     output(")");
     if(exists superType = klass.superclass){
         output("\n  extends ");
-        visitProducedType(superType);
+        visitOpenType(superType);
         output("()");
         queueDeclaration(superType.declaration);
     }
@@ -127,7 +127,7 @@ void visitClass(Class klass){
             }else{
                 output("\n   & ");
             }
-            visitProducedType(interf);
+            visitOpenType(interf);
             queueDeclaration(interf.declaration);
         }
     }
@@ -136,26 +136,26 @@ void visitClass(Class klass){
     output("}\n");
 }
 
-void visitMembers(ClassOrInterface decl){
+void visitMembers(ClassOrInterfaceDeclaration decl){
     for(m in decl.members<Declaration>()){
         switch(m)
-        case(is Function){
+        case(is FunctionDeclaration){
             visitFunction(m);
         }
-        case(is Value){
+        case(is AttributeDeclaration){
             visitValue(m);
         }
-        case(is Class){
+        case(is ClassDeclaration){
             visitClass(m);
         }
-        case(is Interface){
+        case(is InterfaceDeclaration){
             visitInterface(m);
         }
     }
 }
-void visitFunction(Function func) {
+void visitFunction(FunctionDeclaration func) {
     output(" ");
-    visitProducedType(func.type);
+    visitOpenType(func.type);
     output(" ``func.name``");
     for(paramList in func.parameterLists){
         variable Boolean onceParameter = true;
@@ -166,7 +166,7 @@ void visitFunction(Function func) {
             }else{
                 output(", ");
             }
-            visitProducedType(param.type);
+            visitOpenType(param.type);
             output(" ``param.name``");
         }
         output(")");
@@ -174,13 +174,13 @@ void visitFunction(Function func) {
     output(";\n");
 }
 
-void visitValue(Value val) {
+void visitValue(AttributeDeclaration val) {
     output(" ");
-    visitProducedType(val.type);
+    visitOpenType(val.type);
     output(" ``val.name``;\n");
 }
 
-void visitInterface(Interface klass){
+void visitInterface(InterfaceDeclaration klass){
     output("interface ``klass.name``");
     if(klass.typeParameters nonempty){
         output("<");
@@ -196,7 +196,7 @@ void visitInterface(Interface klass){
             }else{
                 output("\n   & ");
             }
-            visitProducedType(interf);
+            visitOpenType(interf);
             queueDeclaration(interf.declaration);
         }
     }
@@ -205,8 +205,58 @@ void visitInterface(Interface klass){
     output("}\n");
 }
 
-void visitProducedType(Type pt){
-    if(is ParameterisedType<ClassOrInterface> pt){
+void visitOpenType(OpenType pt){
+    if(is OpenParameterisedType<ClassOrInterfaceDeclaration> pt){
+        output(pt.declaration.name);
+        variable Boolean once = true;
+        if(pt.declaration.typeParameters nonempty){
+            output("<");
+            for(TypeParameter tp in pt.declaration.typeParameters){
+                if(once){
+                    once = false;
+                }else{
+                    output(", ");
+                }
+                OpenType? arg = pt.typeArguments.get(tp);
+                if(exists arg){
+                    visitOpenType(arg);
+                }else{
+                    output("Unknown Type Argument");
+                }
+            }
+            output(">");
+        }
+    }else if(is OpenTypeVariable pt){
+        output(pt.declaration.name);
+    }else if(is OpenUnion pt){
+        variable Boolean once = true;
+        for(OpenType type in pt.caseTypes){
+            if(once){
+                once = false;
+            }else{
+                output(" | ");
+            }
+            visitOpenType(type);
+        }
+    }else if(is OpenIntersection pt){
+        variable Boolean once = true;
+        for(OpenType type in pt.satisfiedTypes){
+            if(once){
+                once = false;
+            }else{
+                output(" & ");
+            }
+            visitOpenType(type);
+        }
+    }else if(pt == nothingType){
+        output("Nothing");
+    }else{
+        output("Unsupported type ATM: ``pt``");
+    }
+}
+
+void visitType(Type pt){
+    if(is ClassOrInterface<Anything> pt){
         output(pt.declaration.name);
         variable Boolean once = true;
         if(pt.declaration.typeParameters nonempty){
@@ -219,15 +269,13 @@ void visitProducedType(Type pt){
                 }
                 Type? arg = pt.typeArguments.get(tp);
                 if(exists arg){
-                    visitProducedType(arg);
+                    visitType(arg);
                 }else{
                     output("Unknown Type Argument");
                 }
             }
             output(">");
         }
-    }else if(is TypeParameterType pt){
-        output(pt.declaration.name);
     }else if(is UnionType pt){
         variable Boolean once = true;
         for(Type type in pt.caseTypes){
@@ -236,7 +284,7 @@ void visitProducedType(Type pt){
             }else{
                 output(" | ");
             }
-            visitProducedType(type);
+            visitType(type);
         }
     }else if(is IntersectionType pt){
         variable Boolean once = true;
@@ -246,55 +294,7 @@ void visitProducedType(Type pt){
             }else{
                 output(" & ");
             }
-            visitProducedType(type);
-        }
-    }else if(pt == nothingType){
-        output("Nothing");
-    }else{
-        output("Unsupported type ATM: ``pt``");
-    }
-}
-
-void visitAppliedProducedType(AppliedType pt){
-    if(is AppliedClassOrInterface<Anything> pt){
-        output(pt.declaration.name);
-        variable Boolean once = true;
-        if(pt.declaration.typeParameters nonempty){
-            output("<");
-            for(TypeParameter tp in pt.declaration.typeParameters){
-                if(once){
-                    once = false;
-                }else{
-                    output(", ");
-                }
-                AppliedType? arg = pt.typeArguments.get(tp);
-                if(exists arg){
-                    visitAppliedProducedType(arg);
-                }else{
-                    output("Unknown Type Argument");
-                }
-            }
-            output(">");
-        }
-    }else if(is AppliedUnionType pt){
-        variable Boolean once = true;
-        for(AppliedType type in pt.caseTypes){
-            if(once){
-                once = false;
-            }else{
-                output(" | ");
-            }
-            visitAppliedProducedType(type);
-        }
-    }else if(is AppliedIntersectionType pt){
-        variable Boolean once = true;
-        for(AppliedType type in pt.satisfiedTypes){
-            if(once){
-                once = false;
-            }else{
-                output(" & ");
-            }
-            visitAppliedProducedType(type);
+            visitType(type);
         }
     }else if(pt == appliedNothingType){
         output("Nothing");
