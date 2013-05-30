@@ -71,14 +71,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         // FIXME: perhaps we should just store the damn method in the underlying JavaMethod?
         Method found = null;
-        String name;
-        // FIXME: introduce a damn interface for getRealName()
-        if(function.declaration instanceof JavaMethod)
-            name = ((JavaMethod)function.declaration).getRealName();
-        else if(function.declaration instanceof LazyMethod){
-            name = ((LazyMethod)function.declaration).getRealMethodName();
-        }else
-            throw new RuntimeException("Function declaration type not supported yet: "+function.declaration);
+        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
         for(Method method : javaClass.getDeclaredMethods()){
             if(method.isAnnotationPresent(Ignore.class))
                 continue;

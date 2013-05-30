@@ -58,7 +58,8 @@ public class FreeFunction
         List<ParameterList> parameterLists = declaration.getParameterLists();
         ceylon.language.Sequential[] parameterListsArray = new ceylon.language.Sequential[parameterLists.size()];
         int p=0;
-        Annotation[][] parameterAnnotations = findMethod(Metamodel.getJavaClass(declaration), getName()).getParameterAnnotations();
+        String methodName = Metamodel.getJavaMethodName(declaration);
+        Annotation[][] parameterAnnotations = findMethod(Metamodel.getJavaClass(declaration), methodName).getParameterAnnotations();
         for(ParameterList parameterList : parameterLists){
             List<Parameter> modelParameters = parameterList.getParameters();
             ceylon.language.metamodel.declaration.Parameter[] parameters = new ceylon.language.metamodel.declaration.Parameter[modelParameters.size()];

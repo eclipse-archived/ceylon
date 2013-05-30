@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
@@ -32,6 +33,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -441,5 +443,15 @@ public class Metamodel {
             addAnnotation(ceylonAnnotations, jAnnotation, predicate);
         }
         return ceylonAnnotations.getSequence();
+    }
+
+    public static String getJavaMethodName(Method method) {
+        // FIXME: introduce a damn interface for getRealName()
+        if(method instanceof JavaMethod)
+            return ((JavaMethod)method).getRealName();
+        else if(method instanceof LazyMethod){
+            return ((LazyMethod)method).getRealMethodName();
+        }else
+            throw new RuntimeException("Function declaration type not supported yet: "+method);
     }
 }
