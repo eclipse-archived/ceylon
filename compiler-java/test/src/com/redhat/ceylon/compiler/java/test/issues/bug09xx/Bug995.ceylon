@@ -17,10 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+ 
+@noanno
+abstract class AbstractClass(){}
+
 @noanno
 void bug995() {
-    abstract class S() => String();
+    abstract class S() => AbstractClass();
 }
 
 @noanno
-abstract class S() => String();
+abstract class S() => AbstractClass();

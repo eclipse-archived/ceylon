@@ -1,5 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
+abstract class AbstractClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AbstractClass() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.AbstractClass.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.AbstractClass.class);
+}
 final class bug995_ {
     
     private bug995_() {

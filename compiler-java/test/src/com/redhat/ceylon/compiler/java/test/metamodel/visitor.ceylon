@@ -13,8 +13,8 @@ import ceylon.language.metamodel.declaration { ... }
 void visitStringHierarchy(){
     value classType = type("falbala");
     
-    doc "metamodel is AppliedClass"
-    assert(is AppliedClass<Anything,[]> classType);
+    doc "metamodel is Class"
+    assert(is Class<Anything,[String]> classType);
     
     value klass = classType.declaration;
     
