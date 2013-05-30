@@ -13,7 +13,7 @@ doc "An IEEE 754 64-bit [floating point number][]. A `Float`
      value, not even to itself.
      
      [floating point number]: http://www.validlab.com/goldberg/paper.pdf"
-shared abstract class Float()
+shared native final class Float(Float float)
         extends Object()
         satisfies Scalar<Float> & 
                   Exponentiable<Float,Float> {
@@ -44,27 +44,27 @@ shared abstract class Float()
          number or `infinity`. Produces `-1` for a negative
          number or `-infinity`. Produces `0` for `+0`, `-0`, 
          or undefined."
-    shared actual formal Integer sign;
+    shared actual native Integer sign;
     
     doc "Determines if this value is a positive number or
          `infinity`. Produces `false` for a negative number, 
          `+0`, `-0`, or undefined."
-    shared actual formal Boolean positive;
+    shared actual native Boolean positive;
     
     doc "Determines if this value is a negative number or
          `-infinity`. Produces `false` for a positive number, 
          `+0`, `-0`, or undefined."
-    shared actual formal Boolean negative;
+    shared actual native Boolean negative;
     
     doc "Determines if this value is a positive number, `+0`, 
          or `infinity`. Produces `false` for a negative 
          number, `-0`, or undefined."
-    shared formal Boolean strictlyPositive;
+    shared native Boolean strictlyPositive;
     
     doc "Determines if this value is a negative number, `-0`, 
          or `-infinity`. Produces `false` for a positive 
          number, `+0`, or undefined."
-    shared formal Boolean strictlyNegative;
+    shared native Boolean strictlyNegative;
     
 }
 

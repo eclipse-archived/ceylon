@@ -24,9 +24,8 @@ public final class Character
     @Ignore
     public final int codePoint;
 
-    @Ignore
-    private Character(int codePoint) {
-        this.codePoint = codePoint;
+    public Character(@Name("character") int character) {
+        this.codePoint = character;
     }
 
     @Ignore

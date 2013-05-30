@@ -27,9 +27,8 @@ public final class Float
     @Ignore
     final double value;
     
-    @Ignore
-    private Float(double d) {
-        value = d;
+    public Float(@Name("float") double f) {
+        value = f;
     }
     
     @Ignore

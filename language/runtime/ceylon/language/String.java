@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
                  "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
                  "ceylon.language::Cloneable<ceylon.language::String>"})
 @ValueType
-public class String
+public final class String
     implements Comparable<String>, List<Character>,
                Summable<String>, ReifiedType {
     
@@ -54,8 +54,7 @@ public class String
     @Ignore
     public final java.lang.String value;
 
-    @Ignore
-    protected String(java.lang.String s) {
+    public String(@Name("val") java.lang.String val) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
@@ -66,7 +65,7 @@ public class String
         this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor, String.$TypeDescriptor,(Ranged)this);
         this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor, this);
-        value = s;
+        value = val;
     }
 
     @Ignore

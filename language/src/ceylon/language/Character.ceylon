@@ -1,40 +1,40 @@
 doc "A 32-bit Unicode character."
 see (String)
 by "Gavin"
-shared abstract class Character()
+shared final native class Character(Character character)
         extends Object()
         satisfies Comparable<Character> & 
                   Enumerable<Character> {
 
     doc "A string containg just this character."
-    shared actual formal String string;
+    shared actual native String string;
 
     doc "The lowercase representation of this character."
-    shared formal Character lowercased;
+    shared native Character lowercased;
 
     doc "The uppercase representation of this character."
-    shared formal Character uppercased;
+    shared native Character uppercased;
 
     doc "The title case representation of this character."
-    shared formal Character titlecased;
+    shared native Character titlecased;
 
     doc "Determine if this is a lowercase representation of
          the character."
-    shared formal Boolean lowercase;
+    shared native Boolean lowercase;
     
     doc "Determine if this is an uppercase representation of
          the character."
-    shared formal Boolean uppercase;
+    shared native Boolean uppercase;
     
     doc "Determine if this is a title case representation of
          the character."
-    shared formal Boolean titlecase;
+    shared native Boolean titlecase;
 
     doc "Determine if this character is a numeric digit."
-    shared formal Boolean digit;
+    shared native Boolean digit;
 
     doc "Determine if this character is a letter."
-    shared formal Boolean letter;
+    shared native Boolean letter;
 
     doc "Determine if this character is a whitespace 
          character. A whitespace character is:
@@ -51,19 +51,19 @@ shared abstract class Character()
            *Zl* (line separator) or *Zp* (paragraph separator)
            that is not also a non-breaking space.
          "
-    shared formal Boolean whitespace;
+    shared native Boolean whitespace;
     
     doc "Determine if this character is an ISO control 
          character."
-    shared formal Boolean control;
+    shared native Boolean control;
 
     /*doc "The general category of the character"
-    shared formal CharacterCategory category;*/
+    shared native CharacterCategory category;*/
 
     /*doc "The directionality of the character."
-    shared formal CharacterDirectionality directionality;*/
+    shared native CharacterDirectionality directionality;*/
     
     doc "The code point of the character."
-    shared formal Integer integer;
+    shared native Integer integer;
 
 }

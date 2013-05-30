@@ -32,9 +32,8 @@ public final class Integer
     @Ignore
     final long value;
 
-    @Ignore
-    private Integer(long l) {
-        value = l;
+    public Integer(@Name("integer") long integer) {
+        value = integer;
     }
 
     @Ignore

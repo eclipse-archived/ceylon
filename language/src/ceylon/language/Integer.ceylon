@@ -10,7 +10,7 @@ doc "A 64-bit integer, or the closest approximation to a
      
      Overflow or loss of precision occurs silently (with
      no exception raised)."
-shared abstract class Integer()
+shared native final class Integer(Integer integer)
         extends Object()
         satisfies Scalar<Integer> & 
                   Integral<Integer> &
@@ -18,7 +18,7 @@ shared abstract class Integer()
                   Exponentiable<Integer,Integer> {
     
     doc "The UTF-32 character with this UCS code point."
-    shared formal Character character;
+    shared native Character character;
 }
 
 doc "The `Integer` value of the given string representation 
