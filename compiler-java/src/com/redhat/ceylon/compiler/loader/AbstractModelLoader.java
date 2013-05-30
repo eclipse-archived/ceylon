@@ -943,8 +943,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(module instanceof LazyModule){
                 if(((LazyModule)module).containsPackage(packageName))
                     return module;
-            }else if(isSubPackage(module.getNameAsString(), packageName))
+            }else if(isSubPackage(module.getNameAsString(), packageName)){
                 return module;
+            }
+        }
+        if(packageName.startsWith("com.redhat.ceylon.compiler.java.runtime")
+                || packageName.startsWith("com.redhat.ceylon.compiler.java.language")){
+            return getLanguageModule();
         }
         return modules.getDefaultModule();
     }
