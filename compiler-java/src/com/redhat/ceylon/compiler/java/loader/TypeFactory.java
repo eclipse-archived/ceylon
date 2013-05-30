@@ -169,7 +169,7 @@ public class TypeFactory extends Unit {
     /**
      * Search for a declaration in {@code ceylon.language.metamodel.declaration} 
      */
-    public Declaration getLanguageModuleMetamodelUntypedDeclaration(String name) {
+    public Declaration getLanguageModuleMetamodelDeclarationDeclaration(String name) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         Module languageModule = getPackage().getModule().getLanguageModule();

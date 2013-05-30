@@ -394,14 +394,14 @@ public class ClassTransformer extends AbstractTransformer {
         ProducedType constrainedType = klass.getType().getSupertype(meta);
         if (constrainedType != null) {
             ProducedType programElement = constrainedType.getTypeArgumentList().get(2);
-            if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("ClassOrInterface")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Package")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Module")).getType())) {
+            if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("Package")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("Module")).getType())) {
                 return makeAtAnnotationTarget(ElementType.TYPE);
-            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Value")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Function")).getType())) {
+            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("AttributeDeclaration")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("FunctionDeclaration")).getType())) {
                 return makeAtAnnotationTarget(ElementType.METHOD);
-            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelUntypedDeclaration("Import")).getType())) {
+            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("Import")).getType())) {
                 return makeAtAnnotationTarget(ElementType.FIELD);
             }
         }
