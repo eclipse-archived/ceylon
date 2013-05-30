@@ -79,7 +79,7 @@ public class TypeHierarchyVisitor extends Visitor {
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
         final ClassOrInterface classOrInterface = that.getDeclarationModel();
-        boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal();
+        boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal() && !classOrInterface.isNative();
         List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
         if (concrete) {
             checkForFormalsNotImplemented(that, orderedTypes);
