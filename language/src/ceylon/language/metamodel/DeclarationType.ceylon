@@ -1,10 +1,11 @@
 import ceylon.language.metamodel.declaration {
-    UntypedDeclaration = Declaration
+    Declaration
 }
 
+// FIXME: change to DeclaredType?
 shared interface DeclarationType of ClassOrInterface<Anything>
                                   | Function<Anything, Nothing> 
                                   | Attribute<Anything> {
     
-    shared formal UntypedDeclaration declaration;
+    shared formal Declaration declaration;
 }
