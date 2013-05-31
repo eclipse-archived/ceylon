@@ -26,7 +26,7 @@ public class FreeClass
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeClass.class);
-    private Sequential<? extends ceylon.language.metamodel.declaration.Parameter> parameters;
+    private Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> parameters;
     
     public FreeClass(com.redhat.ceylon.compiler.typechecker.model.Class declaration) {
         super(declaration);
@@ -67,14 +67,14 @@ public class FreeClass
         super.init();
         ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
         List<Parameter> modelParameters = parameterList.getParameters();
-        ceylon.language.metamodel.declaration.Parameter[] parameters = new ceylon.language.metamodel.declaration.Parameter[modelParameters.size()];
+        ceylon.language.metamodel.declaration.ParameterDeclaration[] parameters = new ceylon.language.metamodel.declaration.ParameterDeclaration[modelParameters.size()];
         Annotation[][] parameterAnnotations = findConstructor(Metamodel.getJavaClass(declaration)).getParameterAnnotations();
         int i=0;
         for(Parameter modelParameter : modelParameters){
             parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
             i++;
         }
-        this.parameters = Util.sequentialInstance(ceylon.language.metamodel.declaration.Parameter.$TypeDescriptor, parameters);
+        this.parameters = Util.sequentialInstance(ceylon.language.metamodel.declaration.ParameterDeclaration.$TypeDescriptor, parameters);
     }
     
     @Override
@@ -92,8 +92,8 @@ public class FreeClass
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Parameter>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.Parameter> getParameters(){
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
+    public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameters(){
         return parameters;
     }
 

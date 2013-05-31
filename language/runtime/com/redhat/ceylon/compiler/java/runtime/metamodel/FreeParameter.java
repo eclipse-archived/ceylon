@@ -7,8 +7,8 @@ import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.metamodel.declaration.Parameter;
-import ceylon.language.metamodel.declaration.Parameter$impl;
+import ceylon.language.metamodel.declaration.ParameterDeclaration;
+import ceylon.language.metamodel.declaration.ParameterDeclaration$impl;
 import ceylon.language.metamodel.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeParameter implements Parameter, ReifiedType, Annotated, AnnotationBearing {
+public class FreeParameter implements ParameterDeclaration, ReifiedType, Annotated, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeParameter.class);
@@ -50,7 +50,7 @@ public class FreeParameter implements Parameter, ReifiedType, Annotated, Annotat
 
     @Override
     @Ignore
-    public Parameter$impl $ceylon$language$metamodel$declaration$Parameter$impl() {
+    public ParameterDeclaration$impl $ceylon$language$metamodel$declaration$ParameterDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

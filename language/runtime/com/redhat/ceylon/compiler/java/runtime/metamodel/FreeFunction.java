@@ -40,7 +40,7 @@ public class FreeFunction
     
     private OpenType type;
 
-    private Sequential<? extends ceylon.language.metamodel.declaration.Parameter> parameterList;
+    private Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> parameterList;
 
     public FreeFunction(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
@@ -61,13 +61,13 @@ public class FreeFunction
         Annotation[][] parameterAnnotations = findMethod(Metamodel.getJavaClass(declaration), methodName).getParameterAnnotations();
         ParameterList parameterList = parameterLists.get(0);
         List<Parameter> modelParameters = parameterList.getParameters();
-        ceylon.language.metamodel.declaration.Parameter[] parameters = new ceylon.language.metamodel.declaration.Parameter[modelParameters.size()];
+        ceylon.language.metamodel.declaration.ParameterDeclaration[] parameters = new ceylon.language.metamodel.declaration.ParameterDeclaration[modelParameters.size()];
         i=0;
         for(Parameter modelParameter : modelParameters){
             parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
             i++;
         }
-        this.parameterList = Util.sequentialInstance(ceylon.language.metamodel.declaration.Parameter.$TypeDescriptor, parameters);
+        this.parameterList = Util.sequentialInstance(ceylon.language.metamodel.declaration.ParameterDeclaration.$TypeDescriptor, parameters);
     }
 
     @Override
@@ -92,8 +92,8 @@ public class FreeFunction
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Parameter>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.Parameter> getParameters(){
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
+    public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameters(){
         return parameterList;
     }
 

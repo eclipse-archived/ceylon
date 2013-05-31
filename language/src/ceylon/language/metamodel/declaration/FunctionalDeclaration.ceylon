@@ -1,3 +1,3 @@
 shared interface FunctionalDeclaration {
-    shared formal Parameter[] parameters;
+    shared formal ParameterDeclaration[] parameters;
 }

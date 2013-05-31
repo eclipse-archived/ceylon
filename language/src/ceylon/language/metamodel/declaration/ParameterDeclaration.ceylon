@@ -1,6 +1,6 @@
 import ceylon.language.metamodel{Annotated}
 
-shared interface Parameter 
+shared interface ParameterDeclaration
         satisfies Annotated & AnnotatedDeclaration {
     
     shared formal OpenType type;

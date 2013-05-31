@@ -1,7 +1,7 @@
 import ceylon.language.metamodel{Annotated}
 
 shared interface AnnotatedDeclaration of TopLevelOrMemberDeclaration
-                                       | Parameter
+                                       | ParameterDeclaration
                                        | Module
                                        | Package
     satisfies Declaration {
