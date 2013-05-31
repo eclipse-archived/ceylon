@@ -6,7 +6,6 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.Declaration;
 import ceylon.language.metamodel.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -75,8 +74,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::Declaration"))
-    public <Kind extends ceylon.language.metamodel.declaration.Declaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
+    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -87,10 +86,10 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::Declaration"), 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"), 
         @TypeParameter(value = "Annotation") 
     })
-    public <Kind extends Declaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate predicate = Predicates.and(

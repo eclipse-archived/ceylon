@@ -49,7 +49,7 @@ public abstract class FreeClassOrInterface
     private Sequential<ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> interfaces;
     private Sequential<ceylon.language.metamodel.declaration.TypeParameter> typeParameters;
 
-    private List<ceylon.language.metamodel.declaration.Declaration> declarations;
+    private List<ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> declarations;
 
     public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
@@ -94,7 +94,7 @@ public abstract class FreeClassOrInterface
         
         List<com.redhat.ceylon.compiler.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         i=0;
-        this.declarations = new LinkedList<ceylon.language.metamodel.declaration.Declaration>();
+        this.declarations = new LinkedList<ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof Method){
                 declarations.add(new FreeFunction((Method) memberModelDeclaration));
@@ -120,8 +120,8 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::Declaration"))
-    public <Kind extends ceylon.language.metamodel.declaration.Declaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
+    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -132,10 +132,10 @@ public abstract class FreeClassOrInterface
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({
-            @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::Declaration"),
+            @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"),
             @TypeParameter("Annotation")
     })
-    public <Kind extends ceylon.language.metamodel.declaration.Declaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate predicate = Predicates.and(
@@ -153,7 +153,7 @@ public abstract class FreeClassOrInterface
         }
         checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
-        for(ceylon.language.metamodel.declaration.Declaration decl : declarations){
+        for(ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration decl : declarations){
             if (predicate.accept(((FreeDeclaration)decl).declaration)) {
                 members.append((Kind) decl);
             }
@@ -266,7 +266,7 @@ public abstract class FreeClassOrInterface
 
     <T extends FreeDeclaration> T findDeclaration(String name) {
         checkInit();
-        for(ceylon.language.metamodel.declaration.Declaration decl : declarations){
+        for(ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration decl : declarations){
             // in theory we can't have several members with the same name so no need to check the type
             // FIXME: interop and overloading
             if(decl.getName().equals(name))

@@ -43,11 +43,11 @@ shared interface Package
     
     "The members of this package."
     shared formal Kind[] members<Kind>() 
-            given Kind satisfies Declaration;
+            given Kind satisfies TopLevelOrMemberDeclaration;
     
     "The members of this package having a particular annotation."
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
-            given Kind satisfies Declaration;
+            given Kind satisfies TopLevelOrMemberDeclaration;
 
     "The attribute with the given name."
     shared formal AttributeDeclaration? getAttribute(String name);

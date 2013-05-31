@@ -8,7 +8,7 @@ import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration$impl;
 import ceylon.language.metamodel.declaration.FunctionalDeclaration$impl;
 import ceylon.language.metamodel.declaration.GenericDeclaration$impl;
@@ -80,13 +80,6 @@ public class FreeFunction
     @Override
     @Ignore
     public FunctionalDeclaration$impl $ceylon$language$metamodel$declaration$FunctionalDeclaration$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

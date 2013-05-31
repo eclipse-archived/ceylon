@@ -241,7 +241,7 @@ class Predicates {
      */
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
-            Class<? extends ceylon.language.metamodel.declaration.Declaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
+            Class<? extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.metamodel.declaration.VariableDeclaration.class) {
                 return DECLARATION_IS_VARIABLE;
             } else if (declarationClass == ceylon.language.metamodel.declaration.AttributeDeclaration.class) {
@@ -254,7 +254,7 @@ class Predicates {
                 return DECLARATION_IS_INTERFACE;
             } else if (declarationClass == ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration.class) {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.Declaration.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration.class) {
                 return true_();
             }
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
