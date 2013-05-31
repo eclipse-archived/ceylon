@@ -1,3 +1,2 @@
-shared interface TypeParameter {
-    shared formal String name;
+shared interface TypeParameter satisfies Declaration {
 }

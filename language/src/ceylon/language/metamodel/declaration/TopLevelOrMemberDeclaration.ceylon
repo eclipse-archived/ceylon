@@ -3,9 +3,7 @@ import ceylon.language.metamodel{Annotated}
 shared interface TopLevelOrMemberDeclaration of AttributeDeclaration |
                                                 FunctionDeclaration |
                                                 ClassOrInterfaceDeclaration
-        satisfies Annotated {
-    
-    shared formal String name;
+        satisfies Annotated & AnnotatedDeclaration {
     
     shared formal Annotation[] annotations<Annotation>()
             given Annotation satisfies Object;

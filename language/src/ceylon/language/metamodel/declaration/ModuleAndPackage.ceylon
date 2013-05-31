@@ -3,10 +3,7 @@ import ceylon.language.metamodel{Annotated}
 "Model of a `module` declaration
  from a `module.ceylon` compilation unit"
 shared interface Module 
-        satisfies Identifiable & Annotated {
-    
-    "The name of the module."
-    shared formal String name;
+        satisfies Identifiable & Annotated & AnnotatedDeclaration {
     
     "The version of the module."
     shared formal String version;
@@ -33,10 +30,7 @@ shared interface Import
 "Model of a `package` declaration 
  from a `package.ceylon` compilation unit"
 shared interface Package 
-        satisfies Identifiable & Annotated {
-    
-    "The name of the package."
-    shared formal String name;
+        satisfies Identifiable & Annotated & AnnotatedDeclaration {
     
     "The module this package belongs to."
     shared formal Module container;

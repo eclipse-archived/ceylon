@@ -5,6 +5,8 @@ import java.lang.reflect.AnnotatedElement;
 
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.Annotated$impl;
+import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.metamodel.declaration.Parameter;
 import ceylon.language.metamodel.declaration.Parameter$impl;
 import ceylon.language.metamodel.declaration.OpenType;
@@ -32,6 +34,20 @@ public class FreeParameter implements Parameter, ReifiedType, Annotated, Annotat
         this.annotations = annotations;
     }
     
+    @Override
+    @Ignore
+    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public AnnotatedDeclaration$impl $ceylon$language$metamodel$declaration$AnnotatedDeclaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @Override
     @Ignore
     public Parameter$impl $ceylon$language$metamodel$declaration$Parameter$impl() {

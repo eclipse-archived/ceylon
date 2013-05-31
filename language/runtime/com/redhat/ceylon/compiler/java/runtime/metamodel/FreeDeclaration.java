@@ -1,14 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.Type;
-import ceylon.language.metamodel.nothingType_;
-import ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration$impl;
 import ceylon.language.metamodel.declaration.Package;
+import ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration$impl;
+import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
 
-import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -40,7 +38,21 @@ public class FreeDeclaration
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    @Ignore
+    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public AnnotatedDeclaration$impl $ceylon$language$metamodel$declaration$AnnotatedDeclaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @Override
     @Ignore
     public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.TypeParameter$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -17,6 +18,13 @@ public class FreeTypeParameter
     
     public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
         super(declaration);
+    }
+
+    @Override
+    @Ignore
+    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override

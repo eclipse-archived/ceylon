@@ -6,6 +6,8 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
+import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.metamodel.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -35,6 +37,20 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
         this.declaration = declaration;
     }
     
+    @Override
+    @Ignore
+    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public AnnotatedDeclaration$impl $ceylon$language$metamodel$declaration$AnnotatedDeclaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @Override
     @Ignore
     public Package$impl $ceylon$language$metamodel$declaration$Package$impl() {
