@@ -12,18 +12,26 @@ JSNumber.$$metamodel$$={$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()]
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, Object$, Scalar, $init$Integral(), Exponentiable);
 
-function Integer(value) { return Number(value); }
+function Integer(value) {
+    if (value && value.getT$name && value.getT$name() === 'ceylon.language::Integer') {
+        return value;
+    }
+    return Number(value);
+}
 initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
         $init$Integral(), Exponentiable, Binary);
-Integer.$$metamodel$$={$an:function(){return[shared(),abstract()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Integer']};
+Integer.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Integer']};
 
 function Float(value) {
+    if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
+        return value;
+    }
     var that = new Number(value);
     that.float$ = true;
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
-Float.$$metamodel$$={$an:function(){return[shared(),abstract()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']};
+Float.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Float']};
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {

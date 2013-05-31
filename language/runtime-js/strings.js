@@ -8,11 +8,14 @@ var Object$,List,Comparable,Ranged,Summable,Cloneable,smaller,larger,equal;//IGN
 var Iterator,exports;//IGNORE
 
 function String$(value,size) {
+    if (value && value.getT$name && value.getT$name() == 'ceylon.language::String') {
+        return value;
+    }
     var that = new String(value);
     that.codePoints = size;
     return that;
 }
-String$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']};
+String$.$$metamodel$$={$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
         Ranged, Summable, Cloneable);
@@ -558,11 +561,14 @@ function codepointFromString(str, index) {
 exports.codepointFromString=codepointFromString;
 
 function Character(value) {
+    if (value && value.getT$name && value.getT$name() === 'ceylon.language::Character') {
+        return value;
+    }
     var that = new Character.$$;
     that.value = value;
     return that;
 }
-Character.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Character']};
+Character.$$metamodel$$={$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Character']};
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
