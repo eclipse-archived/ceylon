@@ -6,6 +6,7 @@ import java.util.List;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.metamodel.declaration.ClassDeclaration$impl;
+import ceylon.language.metamodel.declaration.FunctionalDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -82,7 +83,14 @@ public class FreeClass
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    @Ignore
+    public FunctionalDeclaration$impl $ceylon$language$metamodel$declaration$FunctionalDeclaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Parameter>")
     public Sequential<? extends ceylon.language.metamodel.declaration.Parameter> getParameters(){

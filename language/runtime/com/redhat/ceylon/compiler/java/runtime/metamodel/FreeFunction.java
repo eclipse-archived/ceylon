@@ -10,6 +10,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration$impl;
+import ceylon.language.metamodel.declaration.FunctionalDeclaration$impl;
 import ceylon.language.metamodel.declaration.GenericDeclaration$impl;
 import ceylon.language.metamodel.declaration.OpenType;
 
@@ -39,7 +40,7 @@ public class FreeFunction
     
     private OpenType type;
 
-    private Sequence<? extends Sequential<? extends ceylon.language.metamodel.declaration.Parameter>> parameterLists;
+    private Sequential<? extends ceylon.language.metamodel.declaration.Parameter> parameterList;
 
     public FreeFunction(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
@@ -56,26 +57,29 @@ public class FreeFunction
         this.type = Metamodel.getMetamodel(declaration.getType());
         
         List<ParameterList> parameterLists = declaration.getParameterLists();
-        ceylon.language.Sequential[] parameterListsArray = new ceylon.language.Sequential[parameterLists.size()];
-        int p=0;
         String methodName = Metamodel.getJavaMethodName(declaration);
         Annotation[][] parameterAnnotations = findMethod(Metamodel.getJavaClass(declaration), methodName).getParameterAnnotations();
-        for(ParameterList parameterList : parameterLists){
-            List<Parameter> modelParameters = parameterList.getParameters();
-            ceylon.language.metamodel.declaration.Parameter[] parameters = new ceylon.language.metamodel.declaration.Parameter[modelParameters.size()];
-            i=0;
-            for(Parameter modelParameter : modelParameters){
-                parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
-                i++;
-            }
-            parameterListsArray[p++] = Util.sequentialInstance(ceylon.language.metamodel.declaration.Parameter.$TypeDescriptor, parameters);
+        ParameterList parameterList = parameterLists.get(0);
+        List<Parameter> modelParameters = parameterList.getParameters();
+        ceylon.language.metamodel.declaration.Parameter[] parameters = new ceylon.language.metamodel.declaration.Parameter[modelParameters.size()];
+        i=0;
+        for(Parameter modelParameter : modelParameters){
+            parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
+            i++;
         }
-        this.parameterLists = (Sequence)Util.sequentialInstance(TypeDescriptor.klass(Sequential.class, ceylon.language.metamodel.declaration.Parameter.$TypeDescriptor), parameterListsArray);
+        this.parameterList = Util.sequentialInstance(ceylon.language.metamodel.declaration.Parameter.$TypeDescriptor, parameters);
     }
 
     @Override
     @Ignore
     public FunctionDeclaration$impl $ceylon$language$metamodel$declaration$FunctionDeclaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public FunctionalDeclaration$impl $ceylon$language$metamodel$declaration$FunctionalDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -97,13 +101,7 @@ public class FreeFunction
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Parameter>")
     public Sequential<? extends ceylon.language.metamodel.declaration.Parameter> getParameters(){
-        return parameterLists.getFirst();
-    }
-
-    @Override
-    @TypeInfo("ceylon.language::Sequence<ceylon.language::Sequential<ceylon.language.metamodel.declaration::Parameter>>")
-    public Sequence<? extends Sequential<? extends ceylon.language.metamodel.declaration.Parameter>> getParameterLists(){
-        return parameterLists;
+        return parameterList;
     }
 
     @Override

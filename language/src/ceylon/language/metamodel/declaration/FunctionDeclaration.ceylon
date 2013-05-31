@@ -6,13 +6,9 @@ import ceylon.language.metamodel {
 }
 
 shared interface FunctionDeclaration
-        satisfies Declaration & GenericDeclaration {
+        satisfies Declaration & GenericDeclaration & FunctionalDeclaration {
 
     shared formal OpenType type;
-
-    shared formal Parameter[] parameters;
-
-    shared formal Sequence<Parameter[]> parameterLists;
 
     shared formal AppliedFunction<Anything, Nothing> apply(Type* types);
 

@@ -4,10 +4,8 @@ import ceylon.language.metamodel {
 }
 
 shared interface ClassDeclaration
-        satisfies ClassOrInterfaceDeclaration {
+        satisfies ClassOrInterfaceDeclaration & FunctionalDeclaration {
     shared formal actual AppliedClass<Anything, Nothing> apply(Type* types);
 
     shared formal actual AppliedClass<Anything, Nothing> bindAndApply(Object instance, Type* types);
-    
-    shared formal Parameter[] parameters;
 }
