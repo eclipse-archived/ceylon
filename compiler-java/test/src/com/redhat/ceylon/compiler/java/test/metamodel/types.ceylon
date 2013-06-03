@@ -102,7 +102,7 @@ shared class TypeParams<T>(T s, Integer i)
     assert(i == 1);
 }
 
-shared void fixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o){
+shared void fixedParams(String s, Integer i, Float f, Character c, Boolean b, Object o, NoParams oTyped){
     assert(s == "a");
     assert(i == 1);
     assert(f == 1.2);
@@ -138,6 +138,13 @@ shared void defaultedParams2(Boolean set, Integer a = 1, Integer b = 2, Integer 
     }
 }
 
+shared void variadicParams(Integer count = 0, String* strings){
+    assert(count == strings.size);
+    for(s in strings){
+        assert(s == "a");
+    }
+}
+
 shared T typeParams<T>(T s, Integer i)
     given T satisfies Object {
     
@@ -156,6 +163,8 @@ shared Float getFloat() => 1.2;
 shared Character getCharacter() => 'a';
 shared Boolean getBoolean() => true;
 shared Object getObject() => 2;
+
+shared NoParams getAndTakeNoParams(NoParams o) => o;
 
 shared String toplevelWithMultipleParameterLists(Integer i)(String s) => s + i.string;
 

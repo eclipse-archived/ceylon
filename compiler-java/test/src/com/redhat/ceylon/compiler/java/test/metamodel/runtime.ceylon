@@ -359,9 +359,9 @@ void checkToplevelFunctions(){
     assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
 
     assert(exists f2 = pkg.getFunction("fixedParams"));
-    assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object]> f2a = f2.apply());
-    f2a("a", 1, 1.2, 'a', true, noParamsInstance);
-    
+    assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object, NoParams]> f2a = f2.apply());
+    f2a("a", 1, 1.2, 'a', true, noParamsInstance, noParamsInstance);
+
     assert(exists f3 = pkg.getFunction("typeParams"));
     assert(is Function<String, [String, Integer]> f3a = f3.apply(stringType));
     assert(f3a("a", 1) == "a");
@@ -421,6 +421,21 @@ void checkToplevelFunctions(){
     assert(exists f12p2 = f12.parameters[2], f12p2.name == "b", f12p2.defaulted == true);
     assert(exists f12p3 = f12.parameters[3], f12p3.name == "c", f12p3.defaulted == true);
     assert(exists f12p4 = f12.parameters[4], f12p4.name == "d", f12p4.defaulted == true);
+
+    assert(exists f13 = pkg.getFunction("variadicParams"));
+    assert(is Function<Anything,[Integer=, String*]> f13a = f13.apply());
+    f13a();
+    f13a(0);
+    f13a(1, "a");
+    f13a(2, "a", "a");
+    // check its parameters metamodel
+    assert(f13.parameters.size == 2);
+    assert(exists f13p0 = f13.parameters[0], f13p0.name == "count", f13p0.defaulted == true, f13p0.variadic == false);
+    assert(exists f13p1 = f13.parameters[1], f13p1.name == "strings", f13p1.defaulted == false, f13p1.variadic == true);
+
+    assert(exists f14 = pkg.getFunction("getAndTakeNoParams"));
+    assert(is Function<NoParams, [NoParams]> f14a = f14.apply());
+    assert(f14a(noParamsInstance) == noParamsInstance);
 }
 
 shared void runtime() {
