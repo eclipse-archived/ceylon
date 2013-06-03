@@ -1,25 +1,26 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 
-import ceylon.language.metamodel.Annotated;
+import ceylon.language.Sequential;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.OpenType;
 import ceylon.language.metamodel.declaration.ParameterDeclaration;
 import ceylon.language.metamodel.declaration.ParameterDeclaration$impl;
-import ceylon.language.metamodel.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeParameter implements ParameterDeclaration, ReifiedType, Annotated, AnnotationBearing {
+public class FreeParameter implements ParameterDeclaration, ReifiedType, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeParameter.class);
@@ -66,6 +67,13 @@ public class FreeParameter implements ParameterDeclaration, ReifiedType, Annotat
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         return annotations;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Annotation>")
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Object"))
+    public <Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+        return Metamodel.annotations($reifiedAnnotation, this);
     }
 
     @Override

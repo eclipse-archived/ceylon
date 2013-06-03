@@ -5,19 +5,20 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.Module$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 public class FreeModule implements ceylon.language.metamodel.declaration.Module,
-        ceylon.language.metamodel.Annotated, AnnotationBearing,
+        AnnotationBearing,
         ReifiedType {
 
     @Ignore
@@ -62,6 +63,13 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         return Metamodel.getJavaClass(declaration).getAnnotations();
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Annotation>")
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Object"))
+    public <Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+        return Metamodel.annotations($reifiedAnnotation, this);
     }
 
     @Override

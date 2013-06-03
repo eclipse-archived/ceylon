@@ -6,8 +6,8 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreePackage implements ceylon.language.metamodel.declaration.Package, 
-        ceylon.language.metamodel.Annotated, AnnotationBearing,
+        AnnotationBearing,
         ReifiedType {
 
     @Ignore
@@ -70,6 +70,13 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
         return javaClass != null ? javaClass.getAnnotations() : AnnotationBearing.NONE;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Annotation>")
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Object"))
+    public <Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+        return Metamodel.annotations($reifiedAnnotation, this);
     }
 
     @Override
