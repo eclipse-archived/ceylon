@@ -49,6 +49,10 @@ public class MethodHandleUtil {
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Boolean.class, "booleanValue", 
                                                                              MethodType.methodType(boolean.class));
                     filters[i] = unbox.asType(MethodType.methodType(boolean.class, java.lang.Object.class));
+                }else if(paramType != java.lang.Object.class){
+                    // just cast from Object to type
+                    MethodHandle unbox = MethodHandles.identity(java.lang.Object.class);
+                    filters[i] = unbox.asType(MethodType.methodType(paramType, java.lang.Object.class));
                 }
             }
         } catch (NoSuchMethodException e) {
