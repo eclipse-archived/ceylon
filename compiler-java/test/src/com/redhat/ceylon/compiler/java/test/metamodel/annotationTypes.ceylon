@@ -5,10 +5,10 @@ shared annotation class Seq(shared String seq)
 shared annotation Seq seq(String s) => Seq(s); 
 
 
-"aToplevelValue"
-seq("aToplevelValue 1")
-seq("aToplevelValue 2")
-shared String aToplevelValue = "";
+"aToplevelAttribute"
+seq("aToplevelAttribute 1")
+seq("aToplevelAttribute 2")
+shared String aToplevelAttribute = "";
 
 "aToplevelGetter"
 seq("aToplevelGetter 1")

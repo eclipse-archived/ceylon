@@ -6,16 +6,16 @@ import ceylon.language.metamodel{
     ConstrainedAnnotation, OptionalAnnotation, SequencedAnnotation, 
     Annotated,
     ClassOrInterface, Class, Interface,
-    Function, Value
+    Function, Attribute
 }
-import ceylon.language.metamodel.untyped {
-    ValueDeclaration = Value,
-    VariableDeclaration = Variable,
-    UntypedDeclaration = Declaration,
-    FunctionDeclaration = Function,
-    ClassDeclaration = Class,
-    ClassOrInterfaceDeclaration = ClassOrInterface,
-    InterfaceDeclaration = Interface,
+import ceylon.language.metamodel.declaration {
+    AttributeDeclaration,
+    VariableDeclaration,
+    TopLevelOrMemberDeclaration,
+    FunctionDeclaration,
+    ClassDeclaration,
+    ClassOrInterfaceDeclaration,
+    InterfaceDeclaration,
     Package
 }
 
@@ -25,8 +25,8 @@ Package aPackage {
     value pkg = aClassDecl.packageContainer;
     return pkg;
 }
-ValueDeclaration aToplevelValueDecl {
-    assert(is ValueDeclaration result = aPackage.getAttribute("aToplevelValue"));
+AttributeDeclaration aToplevelAttributeDecl {
+    assert(is AttributeDeclaration result = aPackage.getAttribute("aToplevelAttribute"));
     return result;
 }
 VariableDeclaration aToplevelGetterSetterDecl {
@@ -81,46 +81,46 @@ ClassOrInterface<Seq> seqAnnotation = annotationType(Seq(""));
 ClassOrInterface<Deprecation> deprecatedAnnotation = annotationType(Deprecation(""));
 ClassOrInterface<Optional> optAnnotation = annotationType(Optional());
 
-void checkAToplevelValueAnnotations() {
+void checkAToplevelAttributeAnnotations() {
     //shared
-    assert(annotations(sharedAnnotation, aToplevelValueDecl) exists);
-    assert(optionalAnnotation(sharedAnnotation, aToplevelValueDecl) exists);
-    assert(aToplevelValueDecl.annotations<Shared>().size == 1);
+    assert(annotations(sharedAnnotation, aToplevelAttributeDecl) exists);
+    assert(optionalAnnotation(sharedAnnotation, aToplevelAttributeDecl) exists);
+    assert(aToplevelAttributeDecl.annotations<Shared>().size == 1);
     // doc
-    assert(exists doc = annotations(docAnnotation, aToplevelValueDecl), 
-        doc.description == "aToplevelValue");
-    assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelValueDecl), 
-        doc2.description == "aToplevelValue");
-    assert(nonempty doc3 = aToplevelValueDecl.annotations<Doc>(),
-        doc3.first.description == "aToplevelValue");
+    assert(exists doc = annotations(docAnnotation, aToplevelAttributeDecl), 
+        doc.description == "aToplevelAttribute");
+    assert(exists doc2 = optionalAnnotation(docAnnotation, aToplevelAttributeDecl), 
+        doc2.description == "aToplevelAttribute");
+    assert(nonempty doc3 = aToplevelAttributeDecl.annotations<Doc>(),
+        doc3.first.description == "aToplevelAttribute");
     // seq
-    variable value seqs = annotations(seqAnnotation, aToplevelValueDecl);
+    variable value seqs = annotations(seqAnnotation, aToplevelAttributeDecl);
     assert(seqs.size == 2);
-    assert(exists seq = seqs[0], seq.seq == "aToplevelValue 1");
-    assert(exists seq2 = seqs[1], seq2.seq == "aToplevelValue 2");
-    assert(sequencedAnnotations(seqAnnotation, aToplevelValueDecl).size == 2);
-    assert(aToplevelValueDecl.annotations<Seq>().size == 2);
+    assert(exists seq = seqs[0], seq.seq == "aToplevelAttribute 1");
+    assert(exists seq2 = seqs[1], seq2.seq == "aToplevelAttribute 2");
+    assert(sequencedAnnotations(seqAnnotation, aToplevelAttributeDecl).size == 2);
+    assert(aToplevelAttributeDecl.annotations<Seq>().size == 2);
     
     // Using funky type arguments to Declaration.annotations<>()
-    assert(aToplevelValueDecl.annotations<Nothing>().empty);
-    assert(aToplevelValueDecl.annotations<ConstrainedAnnotation<Nothing, Anything, ValueDeclaration>>() empty);
-    assert(nonempty doc4 = aToplevelValueDecl.annotations<ConstrainedAnnotation<Doc, Anything, ValueDeclaration>>(),
+    assert(aToplevelAttributeDecl.annotations<Nothing>().empty);
+    assert(aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Nothing, Anything, AttributeDeclaration>>() empty);
+    assert(nonempty doc4 = aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Doc, Anything, AttributeDeclaration>>(),
         is Doc doc4_1 = doc4.first,
-        doc4_1.description == "aToplevelValue");
-    assert(nonempty doc5 = aToplevelValueDecl.annotations<OptionalAnnotation<Doc, ValueDeclaration>>(),
+        doc4_1.description == "aToplevelAttribute");
+    assert(nonempty doc5 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Doc, AttributeDeclaration>>(),
         is Doc doc5_1 = doc5.first,
-        doc5_1.description == "aToplevelValue");
-    assert(aToplevelValueDecl.annotations<Shared|Doc|Seq>().size == 4);
-    assert(aToplevelValueDecl.annotations<Shared|Doc>().size == 2);
-    assert(aToplevelValueDecl.annotations<Doc|Seq>().size == 3);
+        doc5_1.description == "aToplevelAttribute");
+    assert(aToplevelAttributeDecl.annotations<Shared|Doc|Seq>().size == 4);
+    assert(aToplevelAttributeDecl.annotations<Shared|Doc>().size == 2);
+    assert(aToplevelAttributeDecl.annotations<Doc|Seq>().size == 3);
     
     // since Doc is not Sequenced, this returns empty:
-    assert(aToplevelValueDecl.annotations<SequencedAnnotation<Doc, ValueDeclaration>>().empty);
-    assert(nonempty shared6 = aToplevelValueDecl.annotations<OptionalAnnotation<Shared, ValueDeclaration>>(),
+    assert(aToplevelAttributeDecl.annotations<SequencedAnnotation<Doc, AttributeDeclaration>>().empty);
+    assert(nonempty shared6 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Shared, AttributeDeclaration>>(),
         is Shared shared6_1 = shared6.first);
-    assert(nonempty seq7 = aToplevelValueDecl.annotations<SequencedAnnotation<Seq, ValueDeclaration>>(),
+    assert(nonempty seq7 = aToplevelAttributeDecl.annotations<SequencedAnnotation<Seq, AttributeDeclaration>>(),
         is Seq seq7_1 = seq7.first,
-        seq7_1.seq == "aToplevelValue 1");
+        seq7_1.seq == "aToplevelAttribute 1");
 }
 
 void checkAToplevelGetterSetterAnnotations() {
@@ -275,7 +275,7 @@ void checkAAbstractClass() {
     
     // Members of abstract class
     // formalAttribute
-    assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, Value<String>>("formalAttribute"));
+    assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, Attribute<String>>("formalAttribute"));
     assert(is VariableDeclaration fa=fam(AClass("")).declaration);
     assert(annotations(sharedAnnotation, fa) exists);
     assert(annotations(actualAnnotation, fa) exists);
@@ -355,14 +355,14 @@ void checkAInterface() {
     
     // Members of interface
     // formalAttribute
-    assert(exists fam=iface.getAttribute<AInterface, Value<String>>("formalAttribute"));
+    assert(exists fam=iface.getAttribute<AInterface, Attribute<String>>("formalAttribute"));
     value fa = fam(AClass("")).declaration;
     assert(annotations(sharedAnnotation, fa) exists);
     assert(exists fadoc = annotations(docAnnotation, fa),
             fadoc.description == "AInterface.formalAttribute");
     
     // defaultGetterSetter
-    assert(exists dgsm=iface.getAttribute<AInterface, Value<String>>("defaultGetterSetter"));
+    assert(exists dgsm=iface.getAttribute<AInterface, Attribute<String>>("defaultGetterSetter"));
     assert(is VariableDeclaration dgs = dgsm(AClass("")).declaration);
     assert(annotations(sharedAnnotation, dgs) exists);
     assert(annotations(defaultAnnotation, dgs) exists);
@@ -372,7 +372,7 @@ void checkAInterface() {
             dsdoc.description == "AInterface.defaultSetter");
     
     // getterSetter
-    assert(exists gsm=iface.getAttribute<AInterface, Value<String>>("getterSetter"));
+    assert(exists gsm=iface.getAttribute<AInterface, Attribute<String>>("getterSetter"));
     assert(is VariableDeclaration gs = gsm(AClass("")).declaration);
     assert(annotations(sharedAnnotation, gs) exists);
     assert(exists gsdoc = annotations(docAnnotation, gs),
@@ -382,7 +382,7 @@ void checkAInterface() {
             gssdoc.description == "AInterface.setter");
     
     // TODO nonsharedGetterSetter
-    //assert(exists ngsm=iface.getAttribute<AInterface, Value<String>>("nonsharedGetterSetter"));
+    //assert(exists ngsm=iface.getAttribute<AInterface, Attribute<String>>("nonsharedGetterSetter"));
     //value ngs=ngsm(AClass(""));
     //assert(annotations(sharedAnnotation, ngs) exists);
     //assert(exists ngsdoc = annotations(docAnnotation, ngs),
@@ -452,18 +452,18 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedInterfaces);
     // TODO test with an object declaration
     
-    value sharedValues = aInterfaceDecl.annotatedMembers<ValueDeclaration, Shared>();
-    assert(! ficd in sharedValues);
-    assert(! dicd in sharedValues);
-    assert(! iid in sharedValues);
-    assert(fa in sharedValues);
-    assert(gs in sharedValues);
-    // TODO assert(ngs in sharedValues);
-    assert(! fmd in sharedValues);
-    assert(! dmd in sharedValues);
-    assert(! fmd in sharedValues);
-    assert(! md in sharedValues);
-    // TODO assert(! nsmd in sharedValue);
+    value sharedAttributes = aInterfaceDecl.annotatedMembers<AttributeDeclaration, Shared>();
+    assert(! ficd in sharedAttributes);
+    assert(! dicd in sharedAttributes);
+    assert(! iid in sharedAttributes);
+    assert(fa in sharedAttributes);
+    assert(gs in sharedAttributes);
+    // TODO assert(ngs in sharedAttributes);
+    assert(! fmd in sharedAttributes);
+    assert(! dmd in sharedAttributes);
+    assert(! fmd in sharedAttributes);
+    assert(! md in sharedAttributes);
+    // TODO assert(! nsmd in sharedAttribute);
     // TODO test with an object declaration
     
     value sharedVariables = aInterfaceDecl.annotatedMembers<VariableDeclaration, Shared>();
@@ -494,17 +494,17 @@ void checkAInterface() {
     // TODO assert(nsmd in sharedMethods);
     // TODO test with an object declaration
     
-    value sharedAndDocdMethodsAndValues = aInterfaceDecl.annotatedMembers<FunctionDeclaration|ValueDeclaration, Shared|Doc>();
-    assert(! ficd in sharedAndDocdMethodsAndValues);
-    assert(! dicd in sharedAndDocdMethodsAndValues);
-    assert(! iid in sharedAndDocdMethodsAndValues);
-    assert(fa in sharedAndDocdMethodsAndValues);
-    assert(gs in sharedAndDocdMethodsAndValues);
-    // TODO assert(! ngs in sharedAndDocdMethodsAndValues);
-    assert(fmd in sharedAndDocdMethodsAndValues);
-    assert(dmd in sharedAndDocdMethodsAndValues);
-    assert(fmd in sharedAndDocdMethodsAndValues);
-    assert(md in sharedAndDocdMethodsAndValues);
+    value sharedAndDocdMethodsAndAttributes = aInterfaceDecl.annotatedMembers<FunctionDeclaration|AttributeDeclaration, Shared|Doc>();
+    assert(! ficd in sharedAndDocdMethodsAndAttributes);
+    assert(! dicd in sharedAndDocdMethodsAndAttributes);
+    assert(! iid in sharedAndDocdMethodsAndAttributes);
+    assert(fa in sharedAndDocdMethodsAndAttributes);
+    assert(gs in sharedAndDocdMethodsAndAttributes);
+    // TODO assert(! ngs in sharedAndDocdMethodsAndAttributes);
+    assert(fmd in sharedAndDocdMethodsAndAttributes);
+    assert(dmd in sharedAndDocdMethodsAndAttributes);
+    assert(fmd in sharedAndDocdMethodsAndAttributes);
+    assert(md in sharedAndDocdMethodsAndAttributes);
     // TODO assert(nsmd in sharedMethods);
     // TODO test with an object declaration
     
@@ -538,7 +538,7 @@ void checkPackage() {
     assert(aClassDecl in sharedClasses);
     assert(aAbstractClassDecl in sharedClasses);
     assert(! aInterfaceDecl in sharedClasses); // because it's not a class
-    assert(! aToplevelValueDecl in sharedClasses);
+    assert(! aToplevelAttributeDecl in sharedClasses);
     assert(! aToplevelGetterSetterDecl in sharedClasses);
     assert(! aToplevelFunctionDecl in sharedClasses);
     
@@ -546,7 +546,7 @@ void checkPackage() {
     assert(! aClassDecl in sharedInterfaces);
     assert(! aAbstractClassDecl in sharedInterfaces);
     assert(aInterfaceDecl in sharedInterfaces);
-    assert(! aToplevelValueDecl in sharedInterfaces);
+    assert(! aToplevelAttributeDecl in sharedInterfaces);
     assert(! aToplevelGetterSetterDecl in sharedInterfaces);
     assert(! aToplevelFunctionDecl in sharedInterfaces);
     
@@ -554,23 +554,23 @@ void checkPackage() {
     assert(aClassDecl in sharedClassesAndInterfaces);
     assert(aAbstractClassDecl in sharedClassesAndInterfaces);
     assert(aInterfaceDecl in sharedClassesAndInterfaces);
-    assert(! aToplevelValueDecl in sharedClassesAndInterfaces);
+    assert(! aToplevelAttributeDecl in sharedClassesAndInterfaces);
     assert(! aToplevelGetterSetterDecl in sharedClassesAndInterfaces);
     assert(! aToplevelFunctionDecl in sharedClassesAndInterfaces);
     
-    value sharedValues = p.annotatedMembers<ValueDeclaration, Shared>();
-    assert(! aClassDecl in sharedValues);
-    assert(! aAbstractClassDecl in sharedValues);
-    assert(! aInterfaceDecl in sharedValues);
-    assert(aToplevelValueDecl in sharedValues);
-    assert(aToplevelGetterSetterDecl in sharedValues);
-    assert(! aToplevelFunctionDecl in sharedValues);
+    value sharedAttributes = p.annotatedMembers<AttributeDeclaration, Shared>();
+    assert(! aClassDecl in sharedAttributes);
+    assert(! aAbstractClassDecl in sharedAttributes);
+    assert(! aInterfaceDecl in sharedAttributes);
+    assert(aToplevelAttributeDecl in sharedAttributes);
+    assert(aToplevelGetterSetterDecl in sharedAttributes);
+    assert(! aToplevelFunctionDecl in sharedAttributes);
     
     value sharedVariables = p.annotatedMembers<VariableDeclaration, Shared>();
     assert(! aClassDecl in sharedVariables);
     assert(! aAbstractClassDecl in sharedVariables);
     assert(! aInterfaceDecl in sharedVariables);
-    assert(! aToplevelValueDecl in sharedVariables);
+    assert(! aToplevelAttributeDecl in sharedVariables);
     assert(aToplevelGetterSetterDecl in sharedVariables);
     assert(! aToplevelFunctionDecl in sharedVariables);
     
@@ -578,7 +578,7 @@ void checkPackage() {
     assert(! aClassDecl in sharedFunctions);
     assert(! aAbstractClassDecl in sharedFunctions);
     assert(! aInterfaceDecl in sharedFunctions);
-    assert(! aToplevelValueDecl in sharedFunctions);
+    assert(! aToplevelAttributeDecl in sharedFunctions);
     assert(! aToplevelGetterSetterDecl in sharedFunctions);
     assert(aToplevelFunctionDecl in sharedFunctions);
     
@@ -587,7 +587,7 @@ void checkPackage() {
     assert(aClassDecl in seqClasses);
     assert(aAbstractClassDecl in seqClasses);
     assert(! aInterfaceDecl in seqClasses); // because it's not a class
-    assert(! aToplevelValueDecl in seqClasses);
+    assert(! aToplevelAttributeDecl in seqClasses);
     assert(! aToplevelGetterSetterDecl in seqClasses);
     assert(! aToplevelFunctionDecl in seqClasses);
     
@@ -595,7 +595,7 @@ void checkPackage() {
     assert(! aClassDecl in seqInterfaces);
     assert(! aAbstractClassDecl in seqInterfaces);
     assert(aInterfaceDecl in seqInterfaces);
-    assert(! aToplevelValueDecl in seqInterfaces);
+    assert(! aToplevelAttributeDecl in seqInterfaces);
     assert(! aToplevelGetterSetterDecl in seqInterfaces);
     assert(! aToplevelFunctionDecl in seqInterfaces);
     
@@ -603,23 +603,23 @@ void checkPackage() {
     assert(aClassDecl in seqClassesAndInterfaces);
     assert(aAbstractClassDecl in seqClassesAndInterfaces);
     assert(aInterfaceDecl in seqClassesAndInterfaces);
-    assert(! aToplevelValueDecl in seqClassesAndInterfaces);
+    assert(! aToplevelAttributeDecl in seqClassesAndInterfaces);
     assert(! aToplevelGetterSetterDecl in seqClassesAndInterfaces);
     assert(! aToplevelFunctionDecl in seqClassesAndInterfaces);
     
-    value seqValues = p.annotatedMembers<ValueDeclaration, Seq>();
-    assert(! aClassDecl in seqValues);
-    assert(! aAbstractClassDecl in seqValues);
-    assert(! aInterfaceDecl in seqValues);
-    assert(aToplevelValueDecl in seqValues);
-    assert(aToplevelGetterSetterDecl in seqValues);
-    assert(! aToplevelFunctionDecl in seqValues);
+    value seqAttributes = p.annotatedMembers<AttributeDeclaration, Seq>();
+    assert(! aClassDecl in seqAttributes);
+    assert(! aAbstractClassDecl in seqAttributes);
+    assert(! aInterfaceDecl in seqAttributes);
+    assert(aToplevelAttributeDecl in seqAttributes);
+    assert(aToplevelGetterSetterDecl in seqAttributes);
+    assert(! aToplevelFunctionDecl in seqAttributes);
     
     value seqVariables = p.annotatedMembers<VariableDeclaration, Seq>();
     assert(! aClassDecl in seqVariables);
     assert(! aAbstractClassDecl in seqVariables);
     assert(! aInterfaceDecl in seqVariables);
-    assert(! aToplevelValueDecl in seqVariables);
+    assert(! aToplevelAttributeDecl in seqVariables);
     assert(aToplevelGetterSetterDecl in seqVariables);
     assert(! aToplevelFunctionDecl in seqVariables);
     
@@ -627,7 +627,7 @@ void checkPackage() {
     assert(! aClassDecl in seqFunctions);
     assert(! aAbstractClassDecl in seqFunctions);
     assert(! aInterfaceDecl in seqFunctions);
-    assert(! aToplevelValueDecl in seqFunctions);
+    assert(! aToplevelAttributeDecl in seqFunctions);
     assert(! aToplevelGetterSetterDecl in seqFunctions);
     assert(aToplevelFunctionDecl in seqFunctions);
     
@@ -635,7 +635,7 @@ void checkPackage() {
     assert(aClassDecl in sharedOrDocdCallables);
     assert(aAbstractClassDecl in sharedOrDocdCallables);
     assert(! aInterfaceDecl in sharedOrDocdCallables);
-    assert(! aToplevelValueDecl in sharedOrDocdCallables);
+    assert(! aToplevelAttributeDecl in sharedOrDocdCallables);
     assert(! aToplevelGetterSetterDecl in sharedOrDocdCallables);
     assert(aToplevelFunctionDecl in sharedOrDocdCallables);
     
@@ -643,22 +643,22 @@ void checkPackage() {
     assert(! aClassDecl in abstractCallables);
     assert(aAbstractClassDecl in abstractCallables);
     assert(! aInterfaceDecl in abstractCallables);
-    assert(! aToplevelValueDecl in abstractCallables);
+    assert(! aToplevelAttributeDecl in abstractCallables);
     assert(! aToplevelGetterSetterDecl in abstractCallables);
     assert(! aToplevelFunctionDecl in abstractCallables);
     
-    value sharedDeclarations = p.annotatedMembers<UntypedDeclaration, Shared>();
+    value sharedDeclarations = p.annotatedMembers<TopLevelOrMemberDeclaration, Shared>();
     assert(aClassDecl in sharedDeclarations);
     assert(aAbstractClassDecl in sharedDeclarations);
     assert(aInterfaceDecl in sharedDeclarations);
-    assert(aToplevelValueDecl in sharedDeclarations);
+    assert(aToplevelAttributeDecl in sharedDeclarations);
     assert(aToplevelGetterSetterDecl in sharedDeclarations);
     assert(aToplevelFunctionDecl in sharedDeclarations);
 
 }
 
 void annotationTests() {
-    checkAToplevelValueAnnotations();
+    checkAToplevelAttributeAnnotations();
     checkAToplevelGetterSetterAnnotations();
     checkAToplevelFunctionAnnotations();
     // TODO once we support objects

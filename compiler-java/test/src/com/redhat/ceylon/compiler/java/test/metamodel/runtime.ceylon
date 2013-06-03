@@ -2,7 +2,8 @@ import ceylon.language.metamodel { ... }
 import ceylon.language.metamodel.declaration {
     AttributeDeclaration,
     FunctionDeclaration,
-    Declaration
+    Declaration,
+    TopLevelOrMemberDeclaration
 }
 
 void checkConstructors(){
@@ -222,9 +223,9 @@ void checkPackageAndModule(){
 
     assert(pkg.name == "com.redhat.ceylon.compiler.java.test.metamodel");
 
-    print(pkg.members<Declaration>().size);
-    assert(pkg.members<Declaration>().size > 0);
-    for(decl in pkg.members<Declaration>()){
+    print(pkg.members<TopLevelOrMemberDeclaration>().size);
+    assert(pkg.members<TopLevelOrMemberDeclaration>().size > 0);
+    for(decl in pkg.members<TopLevelOrMemberDeclaration>()){
         print("decl: ``decl.name``");
     }
 
@@ -249,7 +250,7 @@ void checkToplevelAttributes(){
 
     value pkg = noParamsDecl.packageContainer;
 
-    assert(pkg.members<Declaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
+    assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
     assert(is AttributeDeclaration toplevelIntegerDecl = pkg.getAttribute("toplevelInteger"));
     assert(is Attribute<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply());
@@ -332,7 +333,7 @@ void checkToplevelFunctions(){
 
     value pkg = noParamsDecl.packageContainer;
 
-    assert(pkg.members<Declaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
+    assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "fixedParams") exists);
 
     assert(exists f2 = pkg.getFunction("fixedParams"));
     assert(is Function<Anything,[String, Integer, Float, Character, Boolean, Object]> f2a = f2.apply());

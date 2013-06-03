@@ -137,7 +137,7 @@ void visitClass(ClassDeclaration klass){
 }
 
 void visitMembers(ClassOrInterfaceDeclaration decl){
-    for(m in decl.members<Declaration>()){
+    for(m in decl.members<TopLevelOrMemberDeclaration>()){
         switch(m)
         case(is FunctionDeclaration){
             visitFunction(m);
@@ -156,22 +156,19 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
 void visitFunction(FunctionDeclaration func) {
     output(" ");
     visitOpenType(func.type);
-    output(" ``func.name``");
-    for(paramList in func.parameterLists){
-        variable Boolean onceParameter = true;
-        output("(");
-        for(param in paramList){
-            if(onceParameter){
-                onceParameter = false;
-            }else{
-                output(", ");
-            }
-            visitOpenType(param.type);
-            output(" ``param.name``");
+    output(" ``func.name``(");
+    variable Boolean onceParameter = true;
+    output("(");
+    for(param in func.parameters){
+        if(onceParameter){
+            onceParameter = false;
+        }else{
+            output(", ");
         }
-        output(")");
+        visitOpenType(param.type);
+        output(" ``param.name``");
     }
-    output(";\n");
+    output(");\n");
 }
 
 void visitValue(AttributeDeclaration val) {
