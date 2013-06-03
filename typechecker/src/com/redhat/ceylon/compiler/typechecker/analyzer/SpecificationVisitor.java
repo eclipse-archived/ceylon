@@ -311,11 +311,6 @@ public class SpecificationVisitor extends Visitor {
 	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression) m, null, false);
 	        if (member==declaration) {
                 boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
-	            if (lazy && declaration.isShared() && 
-	                    (declaration instanceof Value) &&
-	                    that.getScope().getContainer() instanceof ControlBlock) {
-	                that.addWarning("lazy conditional specification of shared declarations not yet supported");
-	            }
             	if (declaration instanceof Value && 
             	        !((Value)declaration).isVariable() && 
             	        lazy!=((Value)declaration).isTransient()) {
