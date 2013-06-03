@@ -5,7 +5,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Callable;
@@ -36,6 +35,8 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     private TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
     private Object instance;
+    private int firstDefaulted;
+    private MethodHandle[] dispatch;
     
     public AppliedClassType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
         super(producedType);
@@ -59,14 +60,22 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     protected void init() {
         super.init();
         com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> elemTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        for(Parameter param : decl.getParameterList().getParameters()){
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType paramType = param.getType().substitute(producedType.getTypeArguments());
-            elemTypes.add(paramType);
-        }
-        // FIXME: last three params
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType = decl.getUnit().getTupleType(elemTypes, false, false, -1);
+        
+        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
+            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(decl.getUnit(), parameters, producedType);
         this.$reifiedArguments = Metamodel.getTypeDescriptorForProducedType(tupleType);
+        
+        this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
+
+        Object[] defaultedMethods = null;
+        if(firstDefaulted != -1){
+            // if we have 2 params and first is defaulted we need 2 + 1 - 0 = 3 methods:
+            // f(), f(a) and f(a, b)
+            this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
+            defaultedMethods = new Object[dispatch.length];
+        }
+
         // FIXME: delay constructor setup for when we actually use it?
         // FIXME: finding the right MethodHandle for the constructor could actually be done in the Class declaration
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);
@@ -75,8 +84,15 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         Object found = null;
         if(!javaClass.isMemberClass()){
             for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
-                if(constr.isAnnotationPresent(Ignore.class))
+                if(constr.isAnnotationPresent(Ignore.class)){
+                    // it's likely an overloaded constructor
+                    // FIXME: proper checks
+                    if(firstDefaulted != -1){
+                        int params = constr.getParameterTypes().length;
+                        defaultedMethods[params - firstDefaulted] = constr;
+                    }
                     continue;
+                }
                 // FIXME: deal with private stuff?
                 if(found != null){
                     throw new RuntimeException("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
@@ -94,6 +110,15 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 //                    continue;
                 if(!meth.getName().equals(builderName))
                     continue;
+                // FIXME: proper checks
+                if(firstDefaulted != -1){
+                    int params = meth.getParameterTypes().length;
+                    if(params != parameters.size()){
+                        defaultedMethods[params - firstDefaulted] = meth;
+                        continue;
+                    }
+                }
+
                 // FIXME: deal with private stuff?
                 if(found != null){
                     throw new RuntimeException("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
@@ -102,33 +127,49 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             }
         }
         if(found != null){
-            java.lang.Class<?>[] parameterTypes;
-            try {
-                if(!javaClass.isMemberClass()){
-                    constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
-                    parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
-                }else{
-                    constructor = MethodHandles.lookup().unreflect((Method) found);
-                    parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
+            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType);
+            if(defaultedMethods != null){
+                // this won't find the last one, but it's method
+                int i=0;
+                for(;i<defaultedMethods.length-1;i++){
+                    // FIXME: proper checks
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType);
                 }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
+                dispatch[i] = constructor;
             }
-            // we need to cast to Object because this is what comes out when calling it in $call
-            if(instance != null)
-                constructor = constructor.bindTo(instance);
-            constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
-            int typeParametersCount = javaClass.getTypeParameters().length;
-            // insert any required type descriptors
-            // FIXME: only if it's expecting them!
-            if(typeParametersCount != 0){
-                List<ProducedType> typeArguments = producedType.getTypeArgumentList();
-                constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
-            }
-            // now convert all arguments (we may need to unbox)
-            constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes);
         }
         
+    }
+
+    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, ProducedType producedType) {
+        MethodHandle constructor = null;
+        java.lang.Class<?>[] parameterTypes;
+        try {
+            if(!javaClass.isMemberClass()){
+                constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
+                parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
+            }else{
+                constructor = MethodHandles.lookup().unreflect((Method) found);
+                parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
+        }
+        // we need to cast to Object because this is what comes out when calling it in $call
+        if(instance != null)
+            constructor = constructor.bindTo(instance);
+        constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
+        int typeParametersCount = javaClass.getTypeParameters().length;
+        // insert any required type descriptors
+        // FIXME: only if it's expecting them!
+        if(typeParametersCount != 0){
+            List<ProducedType> typeArguments = producedType.getTypeArgumentList();
+            constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
+        }
+        // now convert all arguments (we may need to unbox)
+        constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes);
+        
+        return constructor;
     }
 
     @Override
@@ -137,7 +178,10 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
-            return (Type)constructor.invokeExact();
+            if(firstDefaulted == -1)
+                return (Type)constructor.invokeExact();
+            // FIXME: proper checks
+            return (Type)dispatch[0].invokeExact();
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
         }
@@ -149,7 +193,10 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
-            return (Type)constructor.invokeExact(arg0);
+            if(firstDefaulted == -1)
+                return (Type)constructor.invokeExact(arg0);
+            // FIXME: proper checks
+            return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
         }
@@ -161,7 +208,10 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
-            return (Type)constructor.invokeExact(arg0, arg1);
+            if(firstDefaulted == -1)
+                return (Type)constructor.invokeExact(arg0, arg1);
+            // FIXME: proper checks
+            return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
         }
@@ -173,7 +223,10 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
-            return (Type)constructor.invokeExact(arg0, arg1, arg2);
+            if(firstDefaulted == -1)
+                return (Type)constructor.invokeExact(arg0, arg1, arg2);
+            // FIXME: proper checks
+            return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
         }
@@ -185,8 +238,11 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         if(constructor == null)
             throw new RuntimeException("No constructor found for: "+declaration.getName());
         try {
-            // FIXME: this does not do invokeExact and does boxing/widening
-            return (Type)constructor.invokeWithArguments(args);
+            if(firstDefaulted == -1)
+                // FIXME: this does not do invokeExact and does boxing/widening
+                return (Type)constructor.invokeWithArguments(args);
+            // FIXME: proper checks
+            return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke constructor for "+declaration.getName(), e);
         }

@@ -5,7 +5,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.loader.model.JavaMethod;
-import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -44,6 +41,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private ceylon.language.metamodel.Type type;
     protected FreeFunction declaration;
     private MethodHandle method;
+    private MethodHandle[] dispatch;
+    private int firstDefaulted = -1;
 
     public AppliedFunction(ProducedReference appliedFunction, FreeFunction function, Object instance) {
         ProducedType appliedType = appliedFunction.getType();
@@ -52,13 +51,19 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
 
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> elemTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
-        for(Parameter param : decl.getParameterLists().get(0).getParameters()){
-            com.redhat.ceylon.compiler.typechecker.model.ProducedType paramType = param.getType().substitute(appliedFunction.getTypeArguments());
-            elemTypes.add(paramType);
+        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
+            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(decl.getUnit(), parameters, appliedFunction);
+        
+        this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
+
+        Method[] defaultedMethods = null;
+        if(firstDefaulted != -1){
+            // if we have 2 params and first is defaulted we need 2 + 1 - 0 = 3 methods:
+            // f(), f(a) and f(a, b)
+            this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
+            defaultedMethods = new Method[dispatch.length];
         }
-        // FIXME: last three params, copy/share from ExpressionVisitor.getParameterTypesAsTupleType()
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType = decl.getUnit().getTupleType(elemTypes, false, false, -1);
         this.$reifiedArguments = Metamodel.getTypeDescriptorForProducedType(tupleType);
 
         this.type = Metamodel.getAppliedMetamodel(appliedType);
@@ -73,10 +78,17 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         Method found = null;
         String name = Metamodel.getJavaMethodName((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
         for(Method method : javaClass.getDeclaredMethods()){
-            if(method.isAnnotationPresent(Ignore.class))
-                continue;
             if(!method.getName().equals(name))
                 continue;
+            if(method.isAnnotationPresent(Ignore.class)){
+                // save method for later
+                // FIXME: proper checks
+                if(firstDefaulted != -1){
+                    int params = method.getParameterTypes().length;
+                    defaultedMethods[params - firstDefaulted] = method;
+                }
+                continue;
+            }
             // FIXME: deal with private stuff?
             if(found != null){
                 throw new RuntimeException("More than one method found for: "+javaClass+", 1st: "+found+", 2nd: "+method);
@@ -84,32 +96,47 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             found = method;
         }
         if(found != null){
-            try {
-                method = MethodHandles.lookup().unreflect(found);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
-            }
-            // box the return type
-            method = MethodHandleUtil.boxReturnValue(method, found.getReturnType());
-            // we need to cast to Object because this is what comes out when calling it in $call
-            java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
-            if(instance != null)
-                method = method.bindTo(instance);
-            method = method.asType(MethodType.methodType(Object.class, parameterTypes));
-            int typeParametersCount = found.getTypeParameters().length;
-            // insert any required type descriptors
-            // FIXME: only if it's expecting them!
-            if(typeParametersCount != 0){
-                List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-                Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
-                for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
-                    typeArguments.add(typeArgumentMap.get(tp));
+            method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction);
+            if(defaultedMethods != null){
+                // this won't find the last one, but it's method
+                int i=0;
+                for(;i<defaultedMethods.length-1;i++){
+                    // FIXME: proper checks
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction);
                 }
-                method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
+                dispatch[i] = method;
             }
-            // now convert all arguments (we may need to unbox)
-            method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes);
         }
+    }
+
+    private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, ProducedReference appliedFunction) {
+        MethodHandle method;
+        try {
+            method = MethodHandles.lookup().unreflect(found);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
+        }
+        // box the return type
+        method = MethodHandleUtil.boxReturnValue(method, found.getReturnType());
+        // we need to cast to Object because this is what comes out when calling it in $call
+        java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
+        if(instance != null)
+            method = method.bindTo(instance);
+        method = method.asType(MethodType.methodType(Object.class, parameterTypes));
+        int typeParametersCount = found.getTypeParameters().length;
+        // insert any required type descriptors
+        // FIXME: only if it's expecting them!
+        if(typeParametersCount != 0){
+            List<ProducedType> typeArguments = new ArrayList<ProducedType>();
+            Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
+            for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
+                typeArguments.add(typeArgumentMap.get(tp));
+            }
+            method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
+        }
+        // now convert all arguments (we may need to unbox)
+        method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes);
+        return method;
     }
 
     @Override
@@ -136,7 +163,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
-            return (Type)method.invokeExact();
+            if(firstDefaulted == -1)
+                return (Type)method.invokeExact();
+            // FIXME: proper checks
+            return (Type)dispatch[0].invokeExact();
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
         }
@@ -147,7 +177,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
-            return (Type)method.invokeExact(arg0);
+            if(firstDefaulted == -1)
+                return (Type)method.invokeExact(arg0);
+            // FIXME: proper checks
+            return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
         }
@@ -158,7 +191,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
-            return (Type)method.invokeExact(arg0, arg1);
+            if(firstDefaulted == -1)
+                return (Type)method.invokeExact(arg0, arg1);
+            // FIXME: proper checks
+            return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
         }
@@ -169,7 +205,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         if(method == null)
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
-            return (Type)method.invokeExact(arg0, arg1, arg2);
+            if(firstDefaulted == -1)
+                return (Type)method.invokeExact(arg0, arg1, arg2);
+            // FIXME: proper checks
+            return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
         }
@@ -181,7 +220,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             throw new RuntimeException("No method found for: "+declaration.getName());
         try {
             // FIXME: this does not do invokeExact and does boxing/widening
-            return (Type)method.invokeWithArguments(args);
+            if(firstDefaulted == -1)
+                return (Type)method.invokeWithArguments(args);
+            // FIXME: proper checks
+            return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
         } catch (Throwable e) {
             throw new RuntimeException("Failed to invoke method for "+declaration.getName(), e);
         }

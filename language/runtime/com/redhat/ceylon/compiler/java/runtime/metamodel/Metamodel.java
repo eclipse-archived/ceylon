@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -453,5 +454,16 @@ public class Metamodel {
             return ((LazyMethod)method).getRealMethodName();
         }else
             throw new RuntimeException("Function declaration type not supported yet: "+method);
+    }
+
+    public static int getFirstDefaultedParameter(List<Parameter> parameters) {
+        int i = 0;
+        for(Parameter param : parameters){
+            if(param.isDefaulted()){
+                return i;
+            }
+            i++;
+        }
+        return -1;
     }
 }
