@@ -68,6 +68,33 @@ shared class FixedParams(String s, Integer i, Float f, Character c, Boolean b, O
     assert(is NoParams o);
 }
 
+shared class DefaultedParams(Integer lastGiven = 0, String s = "a", Boolean b = true){
+    if(lastGiven == 0){
+        assert(s == "a");
+        assert(b == true);
+    }else if(lastGiven == 1){
+        assert(s == "b");
+        assert(b == true);
+    }else if(lastGiven == 2){
+        assert(s == "b");
+        assert(b == false);
+    }
+}
+
+shared class DefaultedParams2(Boolean set, Integer a = 1, Integer b = 2, Integer c = 3, Integer d = 4){
+    if(set){
+        assert(a == -1);
+        assert(b == -2);
+        assert(c == -3);
+        assert(d == -4);
+    }else{
+        assert(a == 1);
+        assert(b == 2);
+        assert(c == 3);
+        assert(d == 4);
+    }
+}
+
 shared class TypeParams<T>(T s, Integer i)
     given T satisfies Object {
     
@@ -82,6 +109,33 @@ shared void fixedParams(String s, Integer i, Float f, Character c, Boolean b, Ob
     assert(c == 'a');
     assert(b == true);
     assert(is NoParams o);
+}
+
+shared void defaultedParams(Integer lastGiven = 0, String s = "a", Boolean b = true){
+    if(lastGiven == 0){
+        assert(s == "a");
+        assert(b == true);
+    }else if(lastGiven == 1){
+        assert(s == "b");
+        assert(b == true);
+    }else if(lastGiven == 2){
+        assert(s == "b");
+        assert(b == false);
+    }
+}
+
+shared void defaultedParams2(Boolean set, Integer a = 1, Integer b = 2, Integer c = 3, Integer d = 4){
+    if(set){
+        assert(a == -1);
+        assert(b == -2);
+        assert(c == -3);
+        assert(d == -4);
+    }else{
+        assert(a == 1);
+        assert(b == 2);
+        assert(c == 3);
+        assert(d == 4);
+    }
 }
 
 shared T typeParams<T>(T s, Integer i)
@@ -107,6 +161,9 @@ shared String toplevelWithMultipleParameterLists(Integer i)(String s) => s + i.s
 
 shared class ContainerClass(){
     shared class InnerClass(){}
+    shared class DefaultedParams(Integer expected, Integer toCheck = 0){
+        assert(expected == toCheck);
+    }
 }
 
 shared class ParameterisedContainerClass<Outer>(){

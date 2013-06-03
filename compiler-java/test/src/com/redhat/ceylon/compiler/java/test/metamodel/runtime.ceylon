@@ -34,6 +34,23 @@ void checkConstructors(){
     Anything typeParams = typeParamsType("a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams);
+
+    // defaulted parameters
+    value defaultedParamsType = typeLiteral<DefaultedParams>();
+    assert(is Class<DefaultedParams, [Integer=, String=, Boolean=]> defaultedParamsType);
+    Anything defaultedParams1 = defaultedParamsType();
+    assert(is DefaultedParams defaultedParams1);
+    Anything defaultedParams2 = defaultedParamsType(0);
+    assert(is DefaultedParams defaultedParams2);
+    Anything defaultedParams3 = defaultedParamsType(1, "b");
+    assert(is DefaultedParams defaultedParams3);
+    Anything defaultedParams4 = defaultedParamsType(2, "b", false);
+    assert(is DefaultedParams defaultedParams4);
+
+    value defaultedParams2Type = typeLiteral<DefaultedParams2>();
+    assert(is Class<DefaultedParams2, [Boolean, Integer=, Integer=, Integer=, Integer=]> defaultedParams2Type);
+    defaultedParams2Type(false);
+    defaultedParams2Type(true, -1, -2, -3, -4);
 }
 
 void checkMemberAttributes(){
@@ -140,6 +157,12 @@ void checkMemberTypes(){
     assert(exists innerClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.InnerClass, []>>("InnerClass"));
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
+
+    assert(exists innerDefaultedClassType = containerClassType.getClassOrInterface<ContainerClass, Class<ContainerClass.DefaultedParams, [Integer, Integer=]>>("DefaultedParams"));
+    Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
+    assert(is ContainerClass.DefaultedParams o1_2);
+    Anything o1_3 = innerDefaultedClassType(containerClassInstance)(2, 2);
+    assert(is ContainerClass.DefaultedParams o1_3);
 
     value containerInterfaceImplInstance = ContainerInterfaceImpl();
     value containerInterfaceType = typeLiteral<ContainerInterface>();
@@ -378,6 +401,18 @@ void checkToplevelFunctions(){
     //assert(f10.parameterLists.size == 2);
     //assert(exists f10p12 = f10.parameterLists.first[0], "i" == f10p12.name);
     //assert(exists f10pl2 = f10.parameterLists[1], exists f10p2 = f10pl2.first, "s" == f10p2.name);
+
+    assert(exists f11 = pkg.getFunction("defaultedParams"));
+    assert(is Function<Anything,[Integer=, String=, Boolean=]> f11a = f11.apply());
+    f11a();
+    f11a(0);
+    f11a(1, "b");
+    f11a(2, "b", false);
+
+    assert(exists f12 = pkg.getFunction("defaultedParams2"));
+    assert(is Function<Anything,[Boolean, Integer=, Integer=, Integer=, Integer=]> f12a = f12.apply());
+    f12a(false);
+    f12a(true, -1, -2, -3, -4);
 }
 
 shared void runtime() {
