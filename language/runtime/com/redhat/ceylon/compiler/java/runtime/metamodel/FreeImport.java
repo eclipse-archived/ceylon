@@ -72,13 +72,7 @@ public class FreeImport implements ceylon.language.metamodel.declaration.Import,
     @Override
     @TypeInfo("ceylon.language::String")
     public String getVersion() {
-        try {
-            return (String)getField().get(null);
-        } catch (ReflectiveOperationException  e) {
-            throw new RuntimeException(e);
-            // TODO Auto-generated catch block
-        }
-        //return moduleImport.getModule().getVersion();
+        return moduleImport.getModule().getVersion();
     }
  
     @Ignore
