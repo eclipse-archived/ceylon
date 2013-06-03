@@ -83,6 +83,11 @@ public class FreeParameter implements ParameterDeclaration, ReifiedType, Annotat
     }
 
     @Override
+    public boolean getDefaulted(){
+        return declaration.isDefaulted();
+    }
+    
+    @Override
     @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
     public OpenType getType() {
         return type;
