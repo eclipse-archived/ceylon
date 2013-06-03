@@ -400,8 +400,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For everything else generate a getter/setter method
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
-            .is(Flags.PUBLIC, declarationModel.isShared())
+            .indirect(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .getterBlock(getterBlock)
             .immutable();
         
