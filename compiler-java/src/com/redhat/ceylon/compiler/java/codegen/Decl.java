@@ -285,6 +285,10 @@ public class Decl {
         return model.isLate();
     }
     
+    public static boolean isIndirect(Tree.AttributeDeclaration decl) {
+        return decl.getDeclarationModel().isTransient() && decl.getSpecifierOrInitializerExpression() == null;
+    }
+
     public static boolean isToplevel(Tree.Declaration decl) {
         return isToplevel(decl.getDeclarationModel());
     }

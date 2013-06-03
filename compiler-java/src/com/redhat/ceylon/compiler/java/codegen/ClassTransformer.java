@@ -93,6 +93,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -1318,6 +1319,11 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
             
+            if (Decl.isIndirect(decl)) {
+                attrName = Naming.getAttrClassName(model, 0);
+                nonWideningType = getGetterInterfaceType(model);
+            }
+            
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Value declarationModel = model;
@@ -1582,9 +1588,25 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-            .getter(this, attrName, decl.getDeclarationModel());
-        getter.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
+            .getter(this, attrName, decl.getDeclarationModel())
+            .userAnnotations(expressionGen()
+            .transform(decl.getAnnotationList()));
+        
+        if (Decl.isIndirect(decl)) {
+            getter.getterBlock(generateIndirectGetterBlock(decl.getDeclarationModel()));
+        }
+        
         return makeGetterOrSetter(decl, forCompanion, lazy, getter, true);
+    }
+
+    private JCTree.JCBlock generateIndirectGetterBlock(Value v) {
+        JCTree.JCExpression returnExpr;
+        returnExpr = naming.makeQualIdent(naming.makeName(v, Naming.NA_WRAPPER), "$get");
+        returnExpr = make().Apply(null, returnExpr, List.<JCExpression>nil());
+        JCReturn returnValue = make().Return(returnExpr);
+        List<JCStatement> stmts = List.<JCTree.JCStatement>of(returnValue);   
+        JCTree.JCBlock block = make().Block(0L, stmts);
+        return block;
     }
 
     private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
