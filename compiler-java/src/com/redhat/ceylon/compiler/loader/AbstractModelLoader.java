@@ -988,12 +988,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                  && modules.getLanguageModule() == null){
              modules.setLanguageModule(module);
         }
-         
-        // TRICKY We do this only when isJava is true to prevent resetting
-        // the value to false by mistake. LazyModule get's created with
-        // this attribute to false by default, so it should work
-        if (isJava && module instanceof LazyModule) {
-            ((LazyModule)module).setJava(true);
+
+        if (isJava) {
+            module.setVersion(JDK_MODULE_VERSION);
+            if (module instanceof LazyModule) {
+                // TRICKY We do this only when isJava is true to prevent resetting
+                // the value to false by mistake. LazyModule get's created with
+                // this attribute to false by default, so it should work
+                ((LazyModule)module).setJava(true);
+            }
         }
         
         // FIXME: this can't be that easy.
