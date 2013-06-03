@@ -22,9 +22,14 @@ public class FreeSetter
         implements SetterDeclaration, Annotated, AnnotationBearing {
 
     private FreeVariable variable;
+    
+    private Method declaredSetter;
 
     public FreeSetter(FreeVariable freeVariable) {
         this.variable = freeVariable;
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass(variable.declaration);
+        String setterName = Naming.getSetterName(variable.declaration);
+        this.declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
     }
 
     @Override
@@ -41,9 +46,6 @@ public class FreeSetter
 
     @Override
     public Annotation[] $getJavaAnnotations() {
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass(variable.declaration);
-        String setterName = Naming.getSetterName(variable.declaration);
-        Method declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
