@@ -40,8 +40,49 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 returning new j$getter_();
             );
         }
+        if (test) {
+            g_ = (
+                let
+                {
+                    
+                    final class g_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
+                        
+                        private g_() {
+                        }
+                        
+                        public double $get() {
+                            return 1.0;
+                        }
+                    }
+                }
+                returning new g_();
+            );
+        } else {
+            g_ = (
+                let
+                {
+                    
+                    final class g_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
+                        
+                        private g_() {
+                        }
+                        
+                        public double $get() {
+                            return 2.0;
+                        }
+                    }
+                }
+                returning new g_();
+            );
+        }
     }
     private final boolean test;
+    private final .com.redhat.ceylon.compiler.java.language.GetterDouble g_;
+    
+    @.ceylon.language.Shared$annotation
+    public final double getG() {
+        return g_.$get();
+    }
     
     private final void foo$priv() {
         .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_;

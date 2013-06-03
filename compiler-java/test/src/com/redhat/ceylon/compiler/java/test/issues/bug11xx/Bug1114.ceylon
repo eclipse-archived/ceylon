@@ -25,6 +25,12 @@ class Bug1114(Boolean test) {
     } else {
         j => 2;
     }
+    shared Float g;
+    if (test) {
+        g => 1.0;
+    } else {
+        g => 2.0;
+    }
     void foo() {
         Integer i;
         if (test) {
