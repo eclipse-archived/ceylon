@@ -413,6 +413,14 @@ void checkToplevelFunctions(){
     assert(is Function<Anything,[Boolean, Integer=, Integer=, Integer=, Integer=]> f12a = f12.apply());
     f12a(false);
     f12a(true, -1, -2, -3, -4);
+    
+    // check its parameters metamodel
+    assert(f12.parameters.size == 5);
+    assert(exists f12p0 = f12.parameters[0], f12p0.name == "set", f12p0.defaulted == false);
+    assert(exists f12p1 = f12.parameters[1], f12p1.name == "a", f12p1.defaulted == true);
+    assert(exists f12p2 = f12.parameters[2], f12p2.name == "b", f12p2.defaulted == true);
+    assert(exists f12p3 = f12.parameters[3], f12p3.name == "c", f12p3.defaulted == true);
+    assert(exists f12p4 = f12.parameters[4], f12p4.name == "d", f12p4.defaulted == true);
 }
 
 shared void runtime() {
