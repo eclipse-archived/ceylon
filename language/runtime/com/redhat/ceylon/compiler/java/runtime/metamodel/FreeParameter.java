@@ -88,6 +88,11 @@ public class FreeParameter implements ParameterDeclaration, ReifiedType, Annotat
     }
     
     @Override
+    public boolean getVariadic(){
+        return declaration.isSequenced();
+    }
+
+    @Override
     @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
     public OpenType getType() {
         return type;

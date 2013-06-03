@@ -6,4 +6,6 @@ shared interface ParameterDeclaration
     shared formal OpenType type;
     
     shared formal Boolean defaulted;
+    
+    shared formal Boolean variadic;
 }
