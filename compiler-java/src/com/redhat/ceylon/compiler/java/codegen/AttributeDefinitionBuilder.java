@@ -46,8 +46,11 @@ public class AttributeDefinitionBuilder {
     private final JCTree.JCExpression attrType;
     private final JCTree.JCExpression attrTypeRaw;
     private final String attrName;
-    private String javaClassName;
-
+    private final String javaClassName;
+    private final boolean toplevel;
+    private final boolean late;
+    private final boolean variable;
+    
     private long modifiers;
 
     private boolean readable = true;
@@ -60,21 +63,17 @@ public class AttributeDefinitionBuilder {
     
     private AbstractTransformer owner;
 
-    private boolean toplevel = false;
-    
     private int annotationFlags = Annotations.MODEL_AND_USER;
     
     // do we need a constructor that takes the initial value? 
     private boolean valueConstructor;
     
-    private boolean late;
-    private boolean variable;
     private ListBuffer<JCAnnotation> modelAnnotations;
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> userAnnotationsSetter;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
-            String javaClassName, String attrName, String fieldName, boolean toplevel) {
+            String javaClassName, String attrName, String fieldName, boolean toplevel, boolean indirect) {
         int typeFlags = 0;
         ProducedTypedReference typedRef = owner.getTypedReference(attrType);
         ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
@@ -97,7 +96,7 @@ public class AttributeDefinitionBuilder {
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
         getterBuilder = MethodDefinitionBuilder
-            .method2(owner, Naming.getGetterName(attrType))
+            .method2(owner, Naming.getGetterName(attrType, indirect))
             .block(generateDefaultGetterBlock())
             .isOverride(attrType.isActual())
             .modelAnnotations(attrType.getAnnotations())
@@ -113,13 +112,19 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
             String javaClassName, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, attrName, "value", toplevel);
+        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, attrName, "value", toplevel, false);
+    }
+    
+    public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
+            String javaClassName, String attrName, TypedDeclaration attrType, 
+            boolean toplevel) {
+        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, attrName, "value", toplevel, true);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType) {
         return new AttributeDefinitionBuilder(owner, attrType, null, 
-                attrAndFieldName, attrAndFieldName, false)
+                attrAndFieldName, attrAndFieldName, false, false)
             .skipField()
             .immutable();
     }
@@ -127,7 +132,7 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType) {
         return new AttributeDefinitionBuilder(owner, attrType, null, 
-                attrAndFieldName, attrAndFieldName, false)
+                attrAndFieldName, attrAndFieldName, false, false)
             .skipField()
             .skipGetter();
     }
@@ -458,6 +463,4 @@ public class AttributeDefinitionBuilder {
         valueConstructor = true;
         return this;
     }
-
-    
 }

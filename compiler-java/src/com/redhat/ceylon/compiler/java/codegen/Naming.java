@@ -462,12 +462,16 @@ public class Naming implements LocalId {
     }
 
     public static String getGetterName(Declaration decl) {
+        return getGetterName(decl, false);
+    }
+
+    public static String getGetterName(Declaration decl, boolean indirect) {
         // always use the refined decl
         decl = decl.getRefinedDeclaration();
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getGetterName();
         }
-        if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
+        if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl) && !indirect) {
             return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && Decl.isBoxedVariable((TypedDeclaration)decl)) {
             return "ref";
