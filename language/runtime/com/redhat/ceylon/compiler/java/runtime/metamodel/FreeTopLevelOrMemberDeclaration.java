@@ -17,18 +17,18 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeDeclaration 
+public class FreeTopLevelOrMemberDeclaration 
     implements ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration, ReifiedType {
     
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeDeclaration.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTopLevelOrMemberDeclaration.class);
 
     @Ignore
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
     
     private Package pkg;
 
-    public FreeDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
+    public FreeTopLevelOrMemberDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
     }
 

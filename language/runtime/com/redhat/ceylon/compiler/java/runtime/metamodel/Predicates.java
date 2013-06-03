@@ -300,7 +300,7 @@ class Predicates {
         /** Acceps the Declaration if the required annotation is present */
         @Override
         public boolean accept(Declaration memberModel) {
-            FreeDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
+            FreeTopLevelOrMemberDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
             Sequential<? extends A> annotations = Metamodel.<A>annotations(annotation, member);
             return !annotations.getEmpty();
         }

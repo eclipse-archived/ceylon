@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public abstract class FreeClassOrInterface
-    extends FreeDeclaration
+    extends FreeTopLevelOrMemberDeclaration
     implements ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration, AnnotationBearing {
 
     @Ignore
@@ -154,7 +154,7 @@ public abstract class FreeClassOrInterface
         checkInit();
         SequenceBuilder<Kind> members = new SequenceBuilder<Kind>($reifiedKind, declarations.size());
         for(ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration decl : declarations){
-            if (predicate.accept(((FreeDeclaration)decl).declaration)) {
+            if (predicate.accept(((FreeTopLevelOrMemberDeclaration)decl).declaration)) {
                 members.append((Kind) decl);
             }
         }
@@ -264,7 +264,7 @@ public abstract class FreeClassOrInterface
         return this.<FreeClassOrInterface>findDeclaration(name);
     }
 
-    <T extends FreeDeclaration> T findDeclaration(String name) {
+    <T extends FreeTopLevelOrMemberDeclaration> T findDeclaration(String name) {
         checkInit();
         for(ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration decl : declarations){
             // in theory we can't have several members with the same name so no need to check the type

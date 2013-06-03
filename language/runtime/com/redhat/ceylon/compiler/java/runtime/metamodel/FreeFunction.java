@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeFunction 
-    extends FreeDeclaration
+    extends FreeTopLevelOrMemberDeclaration
     implements ceylon.language.metamodel.declaration.FunctionDeclaration, AnnotationBearing {
 
     @Ignore

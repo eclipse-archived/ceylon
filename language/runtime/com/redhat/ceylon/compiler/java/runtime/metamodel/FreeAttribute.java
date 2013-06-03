@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeAttribute 
-    extends FreeDeclaration
+    extends FreeTopLevelOrMemberDeclaration
     implements ceylon.language.metamodel.declaration.AttributeDeclaration, AnnotationBearing {
 
     @Ignore

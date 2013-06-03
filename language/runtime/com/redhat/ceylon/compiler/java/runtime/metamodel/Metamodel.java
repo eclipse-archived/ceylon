@@ -49,8 +49,8 @@ public class Metamodel {
     }
 
     // FIXME: this will need better thinking in terms of memory usage
-    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeDeclaration> typeCheckModelToRuntimeModel
-        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeDeclaration>();
+    private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration> typeCheckModelToRuntimeModel
+        = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration>();
 
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage> typeCheckPackagesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Package, com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage>();
@@ -123,9 +123,9 @@ public class Metamodel {
         return getAppliedMetamodel(pt);
     }
     
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration){
         synchronized(typeCheckModelToRuntimeModel){
-            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
+            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClass((com.redhat.ceylon.compiler.typechecker.model.Class)declaration); 
