@@ -11,6 +11,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -458,5 +460,29 @@ public class Util {
         }
         return sb;
     }
-    
+
+    public static ProducedType getParameterTypesAsTupleType(Unit unit, List<Parameter> params,
+            ProducedReference pr) {
+        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
+        int max = params.size()-1;
+        int firstDefaulted = -1;
+        boolean sequenced = false;
+        for (int i=0; i<=max; i++) {
+            Parameter p = params.get(i);
+            ProducedType ft = pr.getTypedParameter(p).getFullType();
+            if (firstDefaulted<0 && p.isDefaulted()) {
+                firstDefaulted = i;
+            }
+            if (i==max && p.isSequenced()) {
+                sequenced = true;
+                if (ft!=null) {
+                    ft = unit.getIteratedType(ft);
+                }
+            }
+            paramTypes.add(ft);
+        }
+        return unit.getTupleType(paramTypes, sequenced, false, 
+                firstDefaulted);
+    }
+
 }

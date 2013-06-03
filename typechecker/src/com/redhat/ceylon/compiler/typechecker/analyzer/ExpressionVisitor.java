@@ -1790,7 +1790,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType at = a.getTypeModel();
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
-                    ProducedType ptt = getParameterTypesAsTupleType(params.subList(i, params.size()), pr);
+                    ProducedType ptt = Util.getParameterTypesAsTupleType(unit, params.subList(i, params.size()), pr);
                     addToUnionOrIntersection(tp, inferredTypes, inferTypeArg(tp, ptt, at, 
                             new ArrayList<TypeParameter>()));
                 }
@@ -2108,30 +2108,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private ProducedType getParameterTypesAsTupleType(List<Parameter> params,
-            ProducedReference pr) {
-        List<ProducedType> paramTypes = new ArrayList<ProducedType>();
-        int max = params.size()-1;
-        int firstDefaulted = -1;
-        boolean sequenced = false;
-        for (int i=0; i<=max; i++) {
-            Parameter p = params.get(i);
-            ProducedType ft = pr.getTypedParameter(p).getFullType();
-            if (firstDefaulted<0 && p.isDefaulted()) {
-                firstDefaulted = i;
-            }
-            if (i==max && p.isSequenced()) {
-                sequenced = true;
-                if (ft!=null) {
-                    ft = unit.getIteratedType(ft);
-                }
-            }
-            paramTypes.add(ft);
-        }
-        return unit.getTupleType(paramTypes, sequenced, false, 
-                firstDefaulted);
-    }
-    
     /*private void checkSpreadArgumentSequential(Tree.SpreadArgument arg,
             ProducedType argTuple) {
         if (!unit.isSequentialType(argTuple)) {
@@ -2399,7 +2375,7 @@ public class ExpressionVisitor extends Visitor {
         a.setParameter(p);
         ProducedType at = spreadType(arg.getTypeModel(), unit, true);
         //checkSpreadArgumentSequential(arg, at);
-        ProducedType ptt = getParameterTypesAsTupleType(psl, pr);
+        ProducedType ptt = Util.getParameterTypesAsTupleType(unit, psl, pr);
         if (at!=null && ptt!=null && 
                 !at.isUnknown() && !ptt.isUnknown()) {
             checkAssignable(at, ptt, arg, 
