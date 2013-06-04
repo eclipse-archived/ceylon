@@ -65,16 +65,21 @@ public class FreeClass
     @Override
     protected void init() {
         super.init();
-        ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
-        List<Parameter> modelParameters = parameterList.getParameters();
-        ceylon.language.metamodel.declaration.ParameterDeclaration[] parameters = new ceylon.language.metamodel.declaration.ParameterDeclaration[modelParameters.size()];
-        Annotation[][] parameterAnnotations = findConstructor(Metamodel.getJavaClass(declaration)).getParameterAnnotations();
-        int i=0;
-        for(Parameter modelParameter : modelParameters){
-            parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
-            i++;
+        // anonymous classes don't have parameter lists
+        if(!declaration.isAnonymous()){
+            ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
+            List<Parameter> modelParameters = parameterList.getParameters();
+            ceylon.language.metamodel.declaration.ParameterDeclaration[] parameters = new ceylon.language.metamodel.declaration.ParameterDeclaration[modelParameters.size()];
+            Annotation[][] parameterAnnotations = findConstructor(Metamodel.getJavaClass(declaration)).getParameterAnnotations();
+            int i=0;
+            for(Parameter modelParameter : modelParameters){
+                parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
+                i++;
+            }
+            this.parameters = Util.sequentialInstance(ceylon.language.metamodel.declaration.ParameterDeclaration.$TypeDescriptor, parameters);
+        }else{
+            this.parameters = (Sequential) empty_.$get();
         }
-        this.parameters = Util.sequentialInstance(ceylon.language.metamodel.declaration.ParameterDeclaration.$TypeDescriptor, parameters);
     }
     
     @Override
@@ -91,6 +96,11 @@ public class FreeClass
         return null;
     }
 
+    @Override
+    public boolean getAnonymous(){
+        return declaration.isAnonymous();
+    }
+    
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
     public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameters(){

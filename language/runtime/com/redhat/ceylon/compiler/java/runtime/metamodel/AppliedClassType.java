@@ -9,6 +9,7 @@ import java.util.List;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
+import ceylon.language.nothing_;
 import ceylon.language.metamodel.Class$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -60,7 +61,16 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     protected void init() {
         super.init();
         com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
-        
+
+        // anonymous classes don't have parameter lists
+        if(!decl.isAnonymous()){
+            initParameters(decl);
+        }else{
+            this.$reifiedArguments = TypeDescriptor.NothingType;
+        }
+    }
+
+    private void initParameters(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
             = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(decl.getUnit(), parameters, producedType);
@@ -138,7 +148,6 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
                 dispatch[i] = constructor;
             }
         }
-        
     }
 
     private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, ProducedType producedType) {
