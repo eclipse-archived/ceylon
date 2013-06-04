@@ -70,6 +70,31 @@ class Predicates {
     static <T> Predicate<T> true_() {
         return (Predicate<T>)TRUE;
     }
+
+    /**
+     * A predicate to look things up by name
+     */
+    private static final class NamePredicate implements Predicate<Declaration> {
+
+        private String name;
+
+        NamePredicate(String name){
+            this.name = name;
+        }
+        
+        @Override
+        public boolean accept(Declaration candidate) {
+            return candidate.getName().equals(name);
+        }
+        
+    }
+
+    /**
+     * Returns a new name predicate
+     */
+    static NamePredicate isDeclarationNamed(String name){
+        return new NamePredicate(name);
+    }
     
     /**
      * The logical conjunction of a number of other predicates.
