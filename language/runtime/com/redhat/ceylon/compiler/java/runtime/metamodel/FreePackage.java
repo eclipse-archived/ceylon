@@ -12,6 +12,7 @@ import ceylon.language.metamodel.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -105,7 +106,21 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
         
         return filteredMembers($reifiedKind, predicate);
     }
-    
+
+    @Override
+    @TypeInfo("Kind")
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
+    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Kind 
+    getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
+        
+        Predicates.Predicate predicate = Predicates.and(
+                Predicates.isDeclarationNamed(name),
+                Predicates.isDeclarationOfKind($reifiedKind)
+        );
+        
+        return filteredMember($reifiedKind, predicate);
+    }
+
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
@@ -137,6 +152,21 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
             }
         }
         return members.getSequence();
+    }
+
+    private <Kind> Kind filteredMember(
+            TypeDescriptor $reifiedKind,
+            Predicates.Predicate predicate) {
+        if (predicate == Predicates.false_()) {
+            return null;
+        }
+        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+            if (predicate.accept(modelDecl)) {
+                return (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
+            }
+        }
+        return null;
     }
 
     @Override
