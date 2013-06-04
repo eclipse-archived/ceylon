@@ -46,6 +46,9 @@ shared interface Package
     "The attribute with the given name."
     shared formal AttributeDeclaration? getAttribute(String name);
 
+    "The class or interface with the given name."
+    shared formal ClassOrInterfaceDeclaration? getClassOrInterface(String name);
+
     "The function with the given name."
     shared formal FunctionDeclaration? getFunction(String name);
 }

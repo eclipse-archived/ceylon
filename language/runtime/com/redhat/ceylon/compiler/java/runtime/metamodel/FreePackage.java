@@ -159,6 +159,16 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
         return (FreeFunction) Metamodel.getOrCreateMetamodel(decl);
     }
 
+    @Override
+    @TypeInfo("ceylon.language.metamodel.declaration::ClassOrInterfaceDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration getClassOrInterface(String name) {
+        com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
+        if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface == false)
+            return null;
+        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) toplevel;
+        return (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
+    }
+
     @Ignore
     @Override
     public TypeDescriptor $getType() {
