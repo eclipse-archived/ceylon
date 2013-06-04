@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ceylon.language.Iterator;
 import ceylon.language.Null;
@@ -15,11 +16,13 @@ import ceylon.language.finished_;
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ConstrainedAnnotation;
+import ceylon.language.metamodel.declaration.Module;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
@@ -465,5 +468,22 @@ public class Metamodel {
             i++;
         }
         return -1;
+    }
+
+    public static Sequential<? extends ceylon.language.metamodel.declaration.Module> getModuleList() {
+        // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
+        Set<com.redhat.ceylon.compiler.typechecker.model.Module> modules = moduleManager.getContext().getModules().getListOfModules();
+        ceylon.language.metamodel.declaration.Module[] array = new ceylon.language.metamodel.declaration.Module[modules.size()];
+        int i=0;
+        for(com.redhat.ceylon.compiler.typechecker.model.Module module : modules){
+            array[i++] = getOrCreateMetamodel(module);
+        }
+        return Util.sequentialInstance(Module.$TypeDescriptor, array);
+    }
+
+    public static ceylon.language.metamodel.declaration.Module findLoadedModule(String name, String version) {
+        // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
+        com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
+        return module != null ? getOrCreateMetamodel(module) : null;
     }
 }

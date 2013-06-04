@@ -241,6 +241,8 @@
                 <include name="ceylon/language/metamodel/typeLiteral_.java"/>
             	<exclude name="ceylon/language/metamodel/annotations.ceylon"/>
             	<include name="ceylon/language/metamodel/annotations_.java"/>
+                <exclude name="ceylon/language/metamodel/modules.ceylon"/>
+                <include name="ceylon/language/metamodel/modules_.java"/>
             </files>
         </ceylon-compile>
     </target>
