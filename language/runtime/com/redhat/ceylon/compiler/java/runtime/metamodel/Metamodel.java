@@ -357,7 +357,7 @@ public class Metamodel {
         return refAnnotationClass;
     }
     
-    private static <A extends ceylon.language.metamodel.Annotation<A>> void addAnnotation(
+    private static <A extends ceylon.language.metamodel.Annotation<? extends A>> void addAnnotation(
             SequenceBuilder<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
             Predicates.Predicate<A> pred) {
@@ -425,7 +425,7 @@ public class Metamodel {
                 handler);
     }
     
-    public static <A extends ceylon.language.metamodel.Annotation<A>> Sequential<? extends A> annotations(
+    public static <A extends ceylon.language.metamodel.Annotation<? extends A>> Sequential<? extends A> annotations(
             TypeDescriptor $reifiedValues,
             Annotated annotated) {
         // TODO If the annotated is not a valid target for the annotationType
@@ -434,7 +434,7 @@ public class Metamodel {
         return annotations($reifiedValues, annotated, predicate);
     }
 
-    public static <A extends ceylon.language.metamodel.Annotation<A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
+    public static <A extends ceylon.language.metamodel.Annotation<? extends A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
             Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations();
         if (jAnnotations == null) {

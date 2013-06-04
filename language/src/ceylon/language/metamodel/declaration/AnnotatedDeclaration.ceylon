@@ -1,4 +1,5 @@
 import ceylon.language.metamodel{Annotated}
+import ceylon.language.metamodel{MetamodelAnnotation = Annotation}
 
 shared interface AnnotatedDeclaration of TopLevelOrMemberDeclaration
                                        | ParameterDeclaration
@@ -6,7 +7,8 @@ shared interface AnnotatedDeclaration of TopLevelOrMemberDeclaration
                                        | Package
     satisfies Declaration & Annotated {
 
-    // FIXME: why is the bound not c.l.m.Annotation?
-    shared formal Annotation[] annotations<Annotation>()
-        given Annotation satisfies Object;
+    "The annotation instances of the given 
+     annotation type on this declaration."
+    shared formal Annotation[] annotations<out Annotation>()
+        given Annotation satisfies MetamodelAnnotation<Annotation>;
 }
