@@ -115,7 +115,6 @@ void checkAToplevelAttributeAnnotations() {
     assert(aToplevelAttributeDecl.annotations<Doc|Seq>().size == 3);
     
     // since Doc is not Sequenced, this returns empty:
-    assert(aToplevelAttributeDecl.annotations<SequencedAnnotation<Doc, AttributeDeclaration>>().empty);
     assert(nonempty shared6 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Shared, AttributeDeclaration>>(),
         is Shared shared6_1 = shared6.first);
     assert(nonempty seq7 = aToplevelAttributeDecl.annotations<SequencedAnnotation<Seq, AttributeDeclaration>>(),
