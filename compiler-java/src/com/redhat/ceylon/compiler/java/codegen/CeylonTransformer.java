@@ -439,8 +439,7 @@ public class CeylonTransformer extends AbstractTransformer {
             List<JCAnnotation> importAnnotations = expressionGen().transform(imported.getAnnotationList());
             JCModifiers mods = make().Modifiers(Flags.PUBLIC | Flags.STATIC | Flags.FINAL, importAnnotations);
             Name fieldName = names().fromString(quotedName);
-            JCExpression version = expressionGen().transform(imported.getVersion());
-            builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), version)));
+            builder.defs(List.<JCTree>of(make().VarDef(mods, fieldName, make().Type(syms().stringType), makeNull())));
         }
         return builder.build();
     }
