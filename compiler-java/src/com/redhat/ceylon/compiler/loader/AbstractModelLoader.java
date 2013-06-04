@@ -331,17 +331,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     public void loadStandardModules(){
         // set up the type factory
-        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE);
+        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
         addModuleToClassPath(languageModule, null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
         
         // make sure the jdk modules are loaded
         for(String jdkModule : JDKUtils.getJDKModuleNames())
-            findOrCreateModule(jdkModule);
+            findOrCreateModule(jdkModule, JDK_MODULE_VERSION);
         for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
-            findOrCreateModule(jdkOracleModule);
-        Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME);
+            findOrCreateModule(jdkOracleModule, JDK_MODULE_VERSION);
+        Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, JDK_MODULE_VERSION);
         
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
@@ -966,7 +966,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * Finds or creates a new module. This is mostly useful to force creation of modules such as jdk
      * or ceylon.language modules.
      */
-    public synchronized Module findOrCreateModule(String moduleName) {
+    protected synchronized Module findOrCreateModule(String moduleName, String version) {
         // FIXME: we don't have any version??? If not this should be private
         boolean isJava = false;
         boolean defaultModule = false;
@@ -981,7 +981,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         java.util.List<String> moduleNameList = Arrays.asList(moduleName.split("\\."));
-        module = moduleManager.getOrCreateModule(moduleNameList, null);
+        module = moduleManager.getOrCreateModule(moduleNameList, version);
         // make sure that when we load the ceylon language module we set it to where
         // the typechecker will look for it
         if(moduleName.equals(CEYLON_LANGUAGE)
@@ -989,14 +989,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
              modules.setLanguageModule(module);
         }
 
-        if (isJava) {
-            module.setVersion(JDK_MODULE_VERSION);
-            if (module instanceof LazyModule) {
-                // TRICKY We do this only when isJava is true to prevent resetting
-                // the value to false by mistake. LazyModule get's created with
-                // this attribute to false by default, so it should work
-                ((LazyModule)module).setJava(true);
-            }
+        // TRICKY We do this only when isJava is true to prevent resetting
+        // the value to false by mistake. LazyModule get's created with
+        // this attribute to false by default, so it should work
+        if (isJava && module instanceof LazyModule) {
+            ((LazyModule)module).setJava(true);
         }
         
         // FIXME: this can't be that easy.
