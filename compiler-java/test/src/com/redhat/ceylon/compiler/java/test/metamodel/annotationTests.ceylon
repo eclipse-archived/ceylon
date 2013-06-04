@@ -103,7 +103,7 @@ void checkAToplevelAttributeAnnotations() {
     
     // Using funky type arguments to Declaration.annotations<>()
     assert(aToplevelAttributeDecl.annotations<Nothing>().empty);
-    assert(aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Nothing, Anything, AttributeDeclaration>>() empty);
+    // TODO Depends on fix for #1157 assert(aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Nothing, Anything, AttributeDeclaration>>() empty);
     assert(nonempty doc4 = aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Doc, Anything, AttributeDeclaration>>(),
         is Doc doc4_1 = doc4.first,
         doc4_1.description == "aToplevelAttribute");
