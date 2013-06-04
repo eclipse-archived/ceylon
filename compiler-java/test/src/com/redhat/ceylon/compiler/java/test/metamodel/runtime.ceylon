@@ -438,6 +438,21 @@ void checkToplevelFunctions(){
     assert(f14a(noParamsInstance) == noParamsInstance);
 }
 
+void checkModules(){
+    print("Loaded modules:");
+    for(mod in modules.list){
+        print(" Module: ``mod.name``/``mod.version``");
+    }
+    assert(modules.list.size >= 2);
+    assert(exists languageModule = modules.find("ceylon.language", language.version));
+    assert(languageModule.name == "ceylon.language", languageModule.version == language.version);
+    assert(exists thisModule = modules.find("com.redhat.ceylon.compiler.java.test.metamodel", "123"));
+    assert(thisModule.name == "com.redhat.ceylon.compiler.java.test.metamodel", thisModule.version == "123");
+    assert(!modules.find("nonexistant", "123") exists);
+    assert(!modules.find("ceylon.language", "0.1.1235") exists);
+    assert(!modules.find("com.redhat.ceylon.compiler.java.test.metamodel", "54321") exists);
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -459,6 +474,7 @@ shared void runtime() {
 
     checkUntypedFunctionToAppliedFunction();
 
+    checkModules();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }
