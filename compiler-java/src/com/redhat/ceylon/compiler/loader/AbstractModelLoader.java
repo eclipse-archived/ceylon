@@ -2540,8 +2540,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(!javacTypeArguments.isEmpty()){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
             for(TypeMirror typeArgument : javacTypeArguments){
-                // if a single type argument is a wildcard, we erase to Object
+                // if a single type argument is a wildcard and we are in a covariant location, we erase to Object
                 if(typeArgument.getKind() == TypeKind.WILDCARD){
+                    // if contravariant or if it's a ceylon type we use its bound
                     if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
                         TypeMirror bound = typeArgument.getUpperBound();
                         if(bound == null)
@@ -2562,6 +2563,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance));
             }
             return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+        }else if(!declaration.getTypeParameters().isEmpty()){
+            // we have a raw type
+            if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
+                // pretend each type arg is Object
+                // FIXME: use type parameter bounds?
+                int count = declaration.getTypeParameters().size();
+                List<ProducedType> typeArguments = new ArrayList<ProducedType>(count);
+                for(int i=0;i<count;i++){
+                    typeArguments.add(typeFactory.getObjectDeclaration().getType());
+                }
+                return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+            }
+            // covariant raw erases to Object
+            ProducedType result = typeFactory.getObjectDeclaration().getType();
+            result.setUnderlyingType(type.getQualifiedName());
+            return result;
         }
         return declaration.getType();
     }
