@@ -72,7 +72,7 @@ public class LinkRenderer {
             if (declaration instanceof ClassOrInterface) {
                 ClassOrInterface clazz = (ClassOrInterface) declaration;
                 String clazzUrl = getUrl(clazz, null);
-                result = clazzUrl != null ? buildLinkElement(clazzUrl, clazz.getName()) : clazz.getName();
+                result = clazzUrl != null ? buildLinkElement(clazzUrl, clazz.getName(), "Go to " + clazz.getQualifiedNameString()) : clazz.getName();
             } else if (declaration instanceof TypeParameter) {
                 result = "<span class='type-parameter'>" + declaration.getName(unit) + "</span>";
             } else if (declaration instanceof TypedDeclaration) {
@@ -212,12 +212,12 @@ public class LinkRenderer {
 
     private String processModule(Module module) {
         String moduleUrl = getUrl(module, anchor);
-        return buildLinkElement(moduleUrl, module.getNameAsString());
+        return buildLinkElement(moduleUrl, module.getNameAsString(), "Go to module");
     }
     
     private String processPackage(Package pkg) {
         String pkgUrl = getUrl(pkg, anchor);
-        return buildLinkElement(pkgUrl, pkg.getNameAsString());
+        return buildLinkElement(pkgUrl, pkg.getNameAsString(), "Go to package");
     }
 
     private String processProducedType(ProducedType producedType) {
@@ -231,7 +231,7 @@ public class LinkRenderer {
         
         String url = getUrl(declContainer, decl);
         if( url != null ) {
-            return buildLinkElement(url, declName);
+            return buildLinkElement(url, declName, "Go to " + decl.getQualifiedNameString());
         } else {
             return declName;
         }
@@ -446,10 +446,14 @@ public class LinkRenderer {
         }
         return null;
     }
-    
-    private String buildLinkElement(String url, String text) {
+  
+    private String buildLinkElement(String url, String text, String toolTip) {
         StringBuilder linkBuilder = new StringBuilder();
-        linkBuilder.append("<a class='link' href='").append(url).append("'>");
+        linkBuilder.append("<a class='link' href='").append(url).append("'");
+        if (toolTip != null) {
+        	linkBuilder.append(" title='").append(toolTip).append("'");
+        }
+        linkBuilder.append(">");
         if( customText != null ) {
             linkBuilder.append(customText);
         } else {
