@@ -172,17 +172,25 @@ public class ReflectionType implements TypeMirror {
     public TypeMirror getUpperBound() {
         if(upperBoundSet)
             return upperBound;
-        // so the JavaDoc for WildcardType says that the upper bound can still be set to Object
-        // even if we have a lower bound set. In order to detect this, we check the lower bound.
-        // if there is no lower bound we will get null so all works out
-        if(getLowerBound() == null){
-            Type[] ct = ((WildcardType)type).getUpperBounds();
-            // I don't see how there can possibly be more than one bound here according to the spec and grammar, for a wildcard type
+        if(type instanceof WildcardType){
+            // so the JavaDoc for WildcardType says that the upper bound can still be set to Object
+            // even if we have a lower bound set. In order to detect this, we check the lower bound.
+            // if there is no lower bound we will get null so all works out
+            if(getLowerBound() == null){
+                Type[] ct = ((WildcardType)type).getUpperBounds();
+                // I don't see how there can possibly be more than one bound here according to the spec and grammar, for a wildcard type
+                if(ct.length != 1)
+                    throw new RuntimeException("Not one upper bound in wildcard type: "+ct.length);
+                upperBound = new ReflectionType(ct[0]);
+            }else
+                upperBound = null;
+        }else if(type instanceof TypeVariable){
+            Type[] ct = ((TypeVariable) type).getBounds();
+            // FIXME: we can have more than one
             if(ct.length != 1)
                 throw new RuntimeException("Not one upper bound in wildcard type: "+ct.length);
             upperBound = new ReflectionType(ct[0]);
-        }else
-            upperBound = null;
+        }
         upperBoundSet = true;
         return upperBound;
     }

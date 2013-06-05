@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ArrayType;
+import com.sun.tools.javac.code.Type.TypeVar;
 import com.sun.tools.javac.code.Type.WildcardType;
 
 public class JavacType implements TypeMirror {
@@ -95,11 +96,19 @@ public class JavacType implements TypeMirror {
 
     @Override
     public TypeMirror getUpperBound() {
-        if (!upperBoundSet
-                && type instanceof WildcardType) {
-            Type bound = ((WildcardType)type).getExtendsBound();
-            if (bound != null) {
-                upperBound = new JavacType(bound);
+        if (!upperBoundSet){
+            if(type instanceof WildcardType) {
+                Type bound = ((WildcardType)type).getExtendsBound();
+                if (bound != null) {
+                    upperBound = new JavacType(bound);
+                }
+            }else if(type instanceof TypeVar){
+                Type bound = ((TypeVar)type).getUpperBound();
+                // FIXME: the javadoc says that this can be a fake compound class whose real union bounds
+                // are in its implemented interfaces
+                if (bound != null) {
+                    upperBound = new JavacType(bound);
+                }
             }
             upperBoundSet = true;
         }
