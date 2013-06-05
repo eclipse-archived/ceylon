@@ -389,7 +389,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private Declaration convertNonPrimitiveTypeToDeclaration(TypeMirror type, Scope scope, DeclarationType declarationType) {
         switch(type.getKind()){
-        case VOID:    return typeFactory.getAnythingDeclaration();
+        case VOID:
+            return typeFactory.getAnythingDeclaration();
+        case ARRAY:
+            return ((Class)convertToDeclaration(getLanguageModule(), JAVA_LANG_OBJECT_ARRAY, DeclarationType.TYPE));
+        case DECLARED:
+            return convertDeclaredTypeToDeclaration(type, declarationType);
+        case TYPEVAR:
+            return safeLookupTypeParameter(scope, type.getQualifiedName());
+        case WILDCARD:
+            return typeFactory.getNothingDeclaration();
         // those can't happen
         case BOOLEAN:
         case BYTE:
@@ -401,33 +410,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case DOUBLE:
             // all the autoboxing should already have been done
             throw new RuntimeException("Expected non-primitive type: "+type);
-        case ARRAY:
-            return ((Class)convertToDeclaration(getLanguageModule(), JAVA_LANG_OBJECT_ARRAY, DeclarationType.TYPE));
-        case DECLARED:
-            // SimpleReflType does not do declared class so we make an exception for it
-            String typeName = type.getQualifiedName();
-            if(type instanceof SimpleReflType){
-                Module module = null;
-                switch(((SimpleReflType) type).getModule()){
-                case CEYLON: module = getLanguageModule(); break;
-                case JDK : module = getJDKBaseModule(); break;
-                }
-                return convertToDeclaration(module, typeName, declarationType);
-            }
-            ClassMirror classMirror = type.getDeclaredClass();
-            Module module = findModuleForClassMirror(classMirror);
-            return convertToDeclaration(module, typeName, declarationType);
-        case TYPEVAR:
-            return safeLookupTypeParameter(scope, type.getQualifiedName());
-        case WILDCARD:
-            // FIXME: we shouldn't even get there, because if something contains a wildcard (Foo<?>) we erase it to
-            // IdentifiableObject, so this shouldn't be reachable.
-            return typeFactory.getNothingDeclaration();
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
     }
 
+    private Declaration convertDeclaredTypeToDeclaration(TypeMirror type, DeclarationType declarationType) {
+        // SimpleReflType does not do declared class so we make an exception for it
+        String typeName = type.getQualifiedName();
+        if(type instanceof SimpleReflType){
+            Module module = null;
+            switch(((SimpleReflType) type).getModule()){
+            case CEYLON: module = getLanguageModule(); break;
+            case JDK : module = getJDKBaseModule(); break;
+            }
+            return convertToDeclaration(module, typeName, declarationType);
+        }
+        ClassMirror classMirror = type.getDeclaredClass();
+        Module module = findModuleForClassMirror(classMirror);
+        return convertToDeclaration(module, typeName, declarationType);
+    }
     protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
         // avoid ignored classes
         if(classMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
@@ -2447,69 +2449,73 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ProducedType obtainType(TypeMirror type, Scope scope, TypeLocation location, VarianceLocation variance) {
         TypeMirror originalType = type;
         // ERASURE
-        
-        // don't erase to c.l.String if in a type param location
-        if (sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM) {
-            type = CEYLON_STRING_TYPE;
-            
-        } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
-            type = CEYLON_BOOLEAN_TYPE;
-            
-        } else if (sameType(type, PRIM_BYTE_TYPE)) {
-            type = CEYLON_INTEGER_TYPE;
-            
-        } else if (sameType(type, PRIM_SHORT_TYPE)) {
-            type = CEYLON_INTEGER_TYPE;
-            
-        } else if (sameType(type, PRIM_INT_TYPE)) {
-            type = CEYLON_INTEGER_TYPE;
-            
-        } else if (sameType(type, PRIM_LONG_TYPE)) {
-            type = CEYLON_INTEGER_TYPE;
-            
-        } else if (sameType(type, PRIM_FLOAT_TYPE)) {
-            type = CEYLON_FLOAT_TYPE;
-            
-        } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
-            type = CEYLON_FLOAT_TYPE;
-            
-        } else if (sameType(type, PRIM_CHAR_TYPE)) {
-            type = CEYLON_CHARACTER_TYPE;
-            
-        } else if (sameType(type, OBJECT_TYPE)) {
-            type = CEYLON_OBJECT_TYPE;
-            
-        } else if (type.getKind() == TypeKind.ARRAY) {
-
-            TypeMirror ct = type.getComponentType();
-            
-            if (sameType(ct, PRIM_BOOLEAN_TYPE)) {
-                type = JAVA_BOOLEAN_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_BYTE_TYPE)) {
-                type = JAVA_BYTE_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_SHORT_TYPE)) {
-                type = JAVA_SHORT_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_INT_TYPE)) { 
-                type = JAVA_INT_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_LONG_TYPE)) { 
-                type = JAVA_LONG_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_FLOAT_TYPE)) {
-                type = JAVA_FLOAT_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_DOUBLE_TYPE)) {
-                type = JAVA_DOUBLE_ARRAY_TYPE;
-            } else if (sameType(ct, PRIM_CHAR_TYPE)) {
-                type = JAVA_CHAR_ARRAY_TYPE;
-            } else {
-                // object array
-                type = new SimpleReflType(JAVA_LANG_OBJECT_ARRAY, SimpleReflType.Module.JDK, TypeKind.DECLARED, ct);
-            }
-        }
+        type = applyTypeMapping(type, location);
         
         ProducedType ret = getNonPrimitiveType(type, scope, variance);
         if (ret.getUnderlyingType() == null) {
             ret.setUnderlyingType(getUnderlyingType(originalType, location));
         }
         return ret;
+    }
+    
+    private TypeMirror applyTypeMapping(TypeMirror type, TypeLocation location) {
+        // don't erase to c.l.String if in a type param location
+        if (sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM) {
+            return CEYLON_STRING_TYPE;
+            
+        } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
+            return CEYLON_BOOLEAN_TYPE;
+            
+        } else if (sameType(type, PRIM_BYTE_TYPE)) {
+            return CEYLON_INTEGER_TYPE;
+            
+        } else if (sameType(type, PRIM_SHORT_TYPE)) {
+            return CEYLON_INTEGER_TYPE;
+            
+        } else if (sameType(type, PRIM_INT_TYPE)) {
+            return CEYLON_INTEGER_TYPE;
+            
+        } else if (sameType(type, PRIM_LONG_TYPE)) {
+            return CEYLON_INTEGER_TYPE;
+            
+        } else if (sameType(type, PRIM_FLOAT_TYPE)) {
+            return CEYLON_FLOAT_TYPE;
+            
+        } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
+            return CEYLON_FLOAT_TYPE;
+            
+        } else if (sameType(type, PRIM_CHAR_TYPE)) {
+            return CEYLON_CHARACTER_TYPE;
+            
+        } else if (sameType(type, OBJECT_TYPE)) {
+            return CEYLON_OBJECT_TYPE;
+            
+        } else if (type.getKind() == TypeKind.ARRAY) {
+
+            TypeMirror ct = type.getComponentType();
+            
+            if (sameType(ct, PRIM_BOOLEAN_TYPE)) {
+                return JAVA_BOOLEAN_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_BYTE_TYPE)) {
+                return JAVA_BYTE_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_SHORT_TYPE)) {
+                return JAVA_SHORT_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_INT_TYPE)) { 
+                return JAVA_INT_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_LONG_TYPE)) { 
+                return JAVA_LONG_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_FLOAT_TYPE)) {
+                return JAVA_FLOAT_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_DOUBLE_TYPE)) {
+                return JAVA_DOUBLE_ARRAY_TYPE;
+            } else if (sameType(ct, PRIM_CHAR_TYPE)) {
+                return JAVA_CHAR_ARRAY_TYPE;
+            } else {
+                // object array
+                return new SimpleReflType(JAVA_LANG_OBJECT_ARRAY, SimpleReflType.Module.JDK, TypeKind.DECLARED, ct);
+            }
+        }
+        return type;
     }
     
     private boolean sameType(TypeMirror t1, TypeMirror t2) {
@@ -2531,11 +2537,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private ProducedType getNonPrimitiveType(TypeMirror type, Scope scope, VarianceLocation variance) {
-        Declaration decl = convertNonPrimitiveTypeToDeclaration(type, scope, DeclarationType.TYPE);
-        if(decl == null){
+        TypeDeclaration declaration = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(type, scope, DeclarationType.TYPE);
+        if(declaration == null){
             throw new RuntimeException("Failed to find declaration for "+type);
         }
-        TypeDeclaration declaration = (TypeDeclaration) decl;
+        return applyTypeArguments(declaration, type, scope, variance, TypeMappingMode.NORMAL);
+    }
+
+    private enum TypeMappingMode {
+        NORMAL, GENERATOR
+    }
+    
+    private ProducedType applyTypeArguments(TypeDeclaration declaration,
+                                            TypeMirror type, Scope scope, VarianceLocation variance, TypeMappingMode mode) {
         List<TypeMirror> javacTypeArguments = type.getTypeArguments();
         if(!javacTypeArguments.isEmpty()){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
@@ -2560,29 +2574,67 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         return result;
                     }
                 }
-                typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance));
+                ProducedType producedTypeArgument;
+                if(mode == TypeMappingMode.NORMAL)
+                    producedTypeArgument = obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance);
+                else
+                    producedTypeArgument = obtainTypeParameterBound(typeArgument, scope);
+                typeArguments.add(producedTypeArgument);
             }
             return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
         }else if(!declaration.getTypeParameters().isEmpty()){
             // we have a raw type
+            ProducedType result;
             if(variance == VarianceLocation.CONTRAVARIANT || Decl.isCeylon(declaration)){
                 // pretend each type arg is Object
                 // FIXME: use type parameter bounds?
                 int count = declaration.getTypeParameters().size();
                 List<ProducedType> typeArguments = new ArrayList<ProducedType>(count);
-                for(int i=0;i<count;i++){
-                    typeArguments.add(typeFactory.getObjectDeclaration().getType());
+                for(TypeParameterMirror tp : type.getDeclaredClass().getTypeParameters()){
+                    // FIXME: multiple bounds?
+                    if(tp.getBounds().size() == 1){
+                        TypeMirror bound = tp.getBounds().get(0);
+                        typeArguments.add(obtainTypeParameterBound(bound, declaration));
+                    }else
+                        typeArguments.add(typeFactory.getObjectDeclaration().getType());
                 }
-                return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+                result = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
+            }else{
+                // covariant raw erases to Object
+                result = typeFactory.getObjectDeclaration().getType();
             }
-            // covariant raw erases to Object
-            ProducedType result = typeFactory.getObjectDeclaration().getType();
             result.setUnderlyingType(type.getQualifiedName());
+            result.setRaw(true);
             return result;
         }
         return declaration.getType();
     }
 
+    private ProducedType obtainTypeParameterBound(TypeMirror type, Scope scope) {
+        // type variables are never mapped
+        if(type.getKind() == TypeKind.TYPEVAR){
+            TypeMirror bound = type.getUpperBound();
+            if(bound != null)
+                return obtainTypeParameterBound(bound, scope);
+            // no bound is Object
+            return typeFactory.getObjectDeclaration().getType();
+        }else{
+            TypeMirror mappedType = applyTypeMapping(type, TypeLocation.TYPE_PARAM);
+
+            TypeDeclaration declaration = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(mappedType, scope, DeclarationType.TYPE);
+            if(declaration == null){
+                throw new RuntimeException("Failed to find declaration for "+type);
+            }
+
+            ProducedType ret = applyTypeArguments(declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR);
+            
+            if (ret.getUnderlyingType() == null) {
+                ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TYPE_PARAM));
+            }
+            return ret;
+        }
+    }
+    
     private ProducedType getQualifyingType(TypeDeclaration declaration) {
         // As taken from ProducedType.getType():
         if (declaration.isMember()) {
