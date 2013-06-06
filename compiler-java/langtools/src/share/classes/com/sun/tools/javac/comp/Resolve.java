@@ -166,6 +166,11 @@ public class Resolve {
                     c.owner.outermostClass();
                 break;
             case 0:
+                if (((c.flags_field & SYNTHETIC) != 0)) {
+                    // Ceylon Hack: The anonymous synthetic class used to hide 
+                    // inner classes constructors isn't accessible. 
+                    break;
+                }
                 isAccessible =
                     env.toplevel.packge == c.owner // fast special case
                     ||
@@ -245,6 +250,8 @@ public class Resolve {
                  env.toplevel.packge == sym.packge())
                 &&
                 isAccessible(env, site, checkInner)
+                &&
+                isAccessible(env, sym.type.tsym, checkInner)
                 &&
                 sym.isInheritedIn(site.tsym, types)
                 &&
