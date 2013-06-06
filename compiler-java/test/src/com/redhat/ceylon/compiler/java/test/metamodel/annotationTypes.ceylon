@@ -148,8 +148,8 @@ shared abstract class AAbstractClass (
         
     }
     
-    //"AAbstractClass.objectMember"
-    // TODO shared object objectMember {}
+    "AAbstractClass.objectMember"
+    shared object objectMember {}
     
     "AAbstractClass.InnerClass"
     shared class InnerClass(
