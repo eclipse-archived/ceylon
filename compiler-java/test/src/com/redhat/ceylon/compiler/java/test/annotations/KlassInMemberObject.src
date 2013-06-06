@@ -54,6 +54,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
         }
     }
     
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::KlassInMemberObject.member")
     public final .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_ getMember() {
