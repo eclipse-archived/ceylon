@@ -161,6 +161,35 @@ public abstract class FreeClassOrInterface
         return members.getSequence();
     }
     
+    private <Kind> Kind filteredMember(
+            TypeDescriptor $reifiedKind,
+            Predicates.Predicate predicate) {
+        if (predicate == Predicates.false_()) {
+            return null;
+        }
+        List<com.redhat.ceylon.compiler.typechecker.model.Declaration> modelMembers = declaration.getMembers();
+        for(com.redhat.ceylon.compiler.typechecker.model.Declaration modelDecl : modelMembers){
+            if (predicate.accept(modelDecl)) {
+                return (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    @TypeInfo("Kind")
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
+    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Kind 
+    getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
+        
+        Predicates.Predicate predicate = Predicates.and(
+                Predicates.isDeclarationNamed(name),
+                Predicates.isDeclarationOfKind($reifiedKind)
+        );
+        
+        return filteredMember($reifiedKind, predicate);
+    }
+    
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::OpenParameterisedType<ceylon.language.metamodel.declaration::InterfaceDeclaration>>")
     public Sequential<? extends ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> getInterfaces() {

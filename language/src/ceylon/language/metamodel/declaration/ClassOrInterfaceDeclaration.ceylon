@@ -18,6 +18,10 @@ shared interface ClassOrInterfaceDeclaration
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies TopLevelOrMemberDeclaration;
     
+    "Looks up a member of this package by name and type."
+    shared formal Kind? getMember<Kind>(String name) 
+            given Kind satisfies TopLevelOrMemberDeclaration;
+    
     shared formal AppliedClassOrInterface<Anything> apply(Type* types);
     
     shared formal AppliedClassOrInterface<Anything> bindAndApply(Object instance, Type* types);
