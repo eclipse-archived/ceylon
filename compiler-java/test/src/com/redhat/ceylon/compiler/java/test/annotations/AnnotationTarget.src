@@ -14,7 +14,7 @@ class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget();
     }
     
@@ -38,7 +38,7 @@ final class annotationTarget_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget_.annotationTarget();
     }
 }
@@ -56,7 +56,7 @@ class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2();
     }
     
@@ -80,7 +80,7 @@ final class annotationTarget2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .ceylon.language.process_.$get().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.annotations.annotationTarget2_.annotationTarget2();
     }
 }
@@ -101,6 +101,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     final .java.lang.String parameter) {
         this.attribute = true;
         this.varAttribute = true;
+        this.obj = new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_();
     }
     private final boolean attribute;
     
@@ -123,12 +124,31 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    private final boolean getGetter$priv() {
+    @.ceylon.language.Shared$annotation
+    public final boolean getGetter() {
         return true;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation
-    private final void setGetter$priv(final boolean getter) {
+    public final void setGetter(final boolean getter) {
+    }
+    private final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ obj;
+    
+    public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private obj_() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_.class));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
+    @.ceylon.language.Shared$annotation
+    public final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ getObj() {
+        return obj;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
@@ -306,7 +326,7 @@ final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    static .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ getAnnotationTargetObject$() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -329,7 +349,7 @@ final class annotationTargetValue_ {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    static boolean getAnnotationTargetValue$() {
+    public static boolean $get() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -343,11 +363,11 @@ final class annotationTargetGetterSetter_ {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation
-    static boolean getAnnotationTargetGetterSetter$() {
+    public static boolean $get() {
         return true;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation
-    static void setAnnotationTargetGetterSetter(final boolean annotationTargetGetterSetter) {
+    public static void $set(final boolean annotationTargetGetterSetter) {
     }
 }
