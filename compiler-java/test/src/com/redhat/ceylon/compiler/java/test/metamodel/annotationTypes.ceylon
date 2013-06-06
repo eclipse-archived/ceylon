@@ -26,10 +26,10 @@ shared void aToplevelFunction(
     String parameter) {
     
 }
-//"aToplevelObject"
-//seq("aToplevelObject 1")
-//object aToplevelObject {
-//}
+"aToplevelObject"
+seq("aToplevelObject 1")
+shared object aToplevelObject {
+}
 
 "AInterface"
 seq("AInterface 1")

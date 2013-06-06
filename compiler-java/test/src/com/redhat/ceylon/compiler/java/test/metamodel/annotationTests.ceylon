@@ -33,6 +33,10 @@ VariableDeclaration aToplevelGetterSetterDecl {
     assert(is VariableDeclaration result = aPackage.getAttribute("aToplevelGetterSetter"));
     return result;
 }
+AttributeDeclaration aToplevelObjectDecl {
+    assert(is AttributeDeclaration result = aPackage.getAttribute("aToplevelObject"));
+    return result;
+}
 FunctionDeclaration aToplevelFunctionDecl {
     assert(is FunctionDeclaration result = aPackage.getFunction("aToplevelFunction"));
     return result;
@@ -180,9 +184,8 @@ void checkAToplevelFunctionAnnotations() {
             pseq.seq== "aToplevelFunction.parameter 1");
 }
 
-/*TODO test object declarations!
 void checkAToplevelObjectAnnotations() {
-    value aToplevelObjectDecl = type(aToplevelObject).declaration;
+    
     //shared
     assert(annotations(sharedAnnotation, aToplevelObjectDecl) exists);
     assert(optionalAnnotation(sharedAnnotation, aToplevelObjectDecl) exists);
@@ -202,7 +205,7 @@ void checkAToplevelObjectAnnotations() {
     assert(sequencedAnnotations(seqAnnotation, aToplevelObjectDecl).size == 1);
     assert(nonempty seq2 = aToplevelObjectDecl.annotations<Seq>(),
         seq2.first.seq == "aToplevelObject 1");
-}*/
+}
 
 void checkAClass() {
     //shared
@@ -660,8 +663,7 @@ void annotationTests() {
     checkAToplevelAttributeAnnotations();
     checkAToplevelGetterSetterAnnotations();
     checkAToplevelFunctionAnnotations();
-    // TODO once we support objects
-    // checkAToplevelObjectAnnotations();
+    checkAToplevelObjectAnnotations();
     checkAInterface();
     checkAAbstractClass();
     checkAClass();
