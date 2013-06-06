@@ -18,7 +18,7 @@ class AnnotationTargetClass(annotationTarget String parameter) {
     shared variable Boolean varAttribute = true;
     
     annotationTarget
-    Boolean getter => true;
+    shared Boolean getter => true;
     
     annotationTarget2
     assign getter {}
