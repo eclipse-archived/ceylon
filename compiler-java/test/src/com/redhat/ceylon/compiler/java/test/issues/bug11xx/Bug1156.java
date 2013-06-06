@@ -5,6 +5,7 @@ interface EventBus {
     void boundedMessage(Handler<? extends BoundedMessage> handler);
     void dualBoundedMessage(Handler<? extends DualBoundedMessage> handler);
     void dualComplexBoundedMessage(Handler<? extends DualComplexBoundedMessage> handler);
+    void r(Raw r);
 }
 
 interface Message<T> {}
@@ -14,4 +15,7 @@ interface DualComplexBoundedMessage<T extends String, T2 extends BoundedMessage<
 
 interface Handler<E> {
     void handle(E event);
+}
+
+interface Raw<T extends Raw<T>>{
 }
