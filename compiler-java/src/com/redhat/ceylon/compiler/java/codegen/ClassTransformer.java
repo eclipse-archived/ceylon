@@ -2555,10 +2555,14 @@ public class ClassTransformer extends AbstractTransformer {
             containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
-                result = result.appendList(AttributeDefinitionBuilder
-                    .getter(this, name, model)
-                    .modifiers(transformAttributeGetSetDeclFlags(model, false))
-                    .build());
+                AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
+                .getter(this, name, model)
+                .modifiers(transformAttributeGetSetDeclFlags(model, false));
+                if (def instanceof Tree.ObjectDefinition) {
+                    getter.userAnnotations(expressionGen().transform(((Tree.ObjectDefinition)def).getAnnotationList()));
+                }
+                
+                result = result.appendList(getter.build());
             }
         }
         
