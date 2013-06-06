@@ -24,6 +24,9 @@ class AnnotationTargetClass(annotationTarget String parameter) {
     assign getter {}
     
     annotationTarget
+    shared object obj {}
+    
+    annotationTarget
     void method(annotationTarget String parameter) {
         annotationTarget
         assert(true);
