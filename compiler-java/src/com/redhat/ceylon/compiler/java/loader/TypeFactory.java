@@ -164,4 +164,12 @@ public class TypeFactory extends Unit {
         Declaration trueDecl = getBooleanFalseDeclaration();
         return trueDecl instanceof TypedDeclaration ? ((TypedDeclaration)trueDecl).getTypeDeclaration() : null;
     }
+
+    public TypeDeclaration getMetamodelTypeDeclaration() {
+        return (TypeDeclaration) getLanguageModuleMetamodelDeclaration("Type");
+    }
+
+    public TypedDeclaration getMetamodelNothingTypeDeclaration() {
+        return (TypedDeclaration) getLanguageModuleMetamodelDeclaration("nothingType");
+    }
 }

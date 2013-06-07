@@ -83,6 +83,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
@@ -955,6 +956,25 @@ public class ExpressionTransformer extends AbstractTransformer {
             return transform((Tree.QuotedLiteral)literal);
         }
         throw Assert.fail();
+    }
+
+    public JCTree transform(Tree.TypeLiteral expr) {
+        at(expr);
+        // construct a call to typeLiteral<T>() and cast if required
+        JCExpression typeLiteralIdent = naming.makeFQIdent("ceylon", "language", "metamodel", "typeLiteral_", "typeLiteral");
+        JCExpression reifiedTypeArgument = makeReifiedTypeArgument(expr.getType().getTypeModel().resolveAliases());
+        // note that we don't pass it a Java type argument since it's not used
+        JCMethodInvocation call = make().Apply(null, typeLiteralIdent, List.of(reifiedTypeArgument));
+        // if we have a type that is not nothingType and not Type, we need to cast
+        ProducedType exprType = expr.getTypeModel().resolveAliases();
+        TypeDeclaration typeDeclaration = exprType.getDeclaration();
+        if(typeDeclaration instanceof UnionType == false
+                && !exprType.isExactly(typeFact().getMetamodelNothingTypeDeclaration().getType())
+                && !exprType.isExactly(typeFact().getMetamodelTypeDeclaration().getType())){
+            JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
+            return make().TypeCast(type, call);
+        }
+        return call;
     }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
