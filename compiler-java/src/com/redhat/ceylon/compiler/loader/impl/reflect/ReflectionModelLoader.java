@@ -63,8 +63,8 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
         // load two packages for the language module
         Module languageModule = modules.getLanguageModule();
         findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE);
-        findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_METADATA);
-        findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_METADATA_DECLARATION);
+        findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_METAMODEL);
+        findOrCreatePackage(languageModule, AbstractModelLoader.CEYLON_LANGUAGE_METAMODEL_DECLARATION);
     }
     
     @Override
