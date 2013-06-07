@@ -2,6 +2,8 @@ import ceylon.language.metamodel { ... }
 import ceylon.language.metamodel.declaration {
     AttributeDeclaration,
     FunctionDeclaration,
+    ClassDeclaration,
+    OpenParameterisedType,
     Declaration,
     TopLevelOrMemberDeclaration
 }
@@ -453,6 +455,23 @@ void checkModules(){
     assert(!modules.find("com.redhat.ceylon.compiler.java.test.metamodel", "54321") exists);
 }
 
+void checkObjectDeclaration(){
+    // get it via its package
+    value noParamsClass = type(NoParams());
+    value pkg = noParamsClass.declaration.packageContainer;
+    assert(exists topLevelObjectDeclarationAttribute = pkg.getAttribute("topLevelObjectDeclaration"));
+    assert(is OpenParameterisedType<ClassDeclaration> topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.type);
+    value topLevelObjectClassDeclaration = topLevelObjectTypeDeclaration.declaration;
+    assert(topLevelObjectClassDeclaration.name == "topLevelObjectDeclaration");
+    assert(topLevelObjectClassDeclaration.anonymous);
+    
+    // get it via its type
+    value topLevelObjectClass = type(topLevelObjectDeclaration);
+    // make sure we can't instantiate it
+    // FIXME: this may actually be wrong and we may want to be able to instantiate them
+    assert(!is Class<Anything, []> topLevelObjectClass);
+}
+
 shared void runtime() {
     visitStringHierarchy();
 
@@ -475,6 +494,8 @@ shared void runtime() {
     checkUntypedFunctionToAppliedFunction();
 
     checkModules();
+
+    checkObjectDeclaration();
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }

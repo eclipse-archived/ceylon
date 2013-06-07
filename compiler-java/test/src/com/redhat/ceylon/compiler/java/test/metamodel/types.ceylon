@@ -12,6 +12,9 @@ shared variable Character toplevelCharacter2 = 'a';
 shared variable Boolean toplevelBoolean2 = true;
 shared variable Object toplevelObject2 = 2;
 
+shared object topLevelObjectDeclaration {
+}
+
 shared class NoParams(){
     shared variable String str2 = "a";
     shared variable Integer integer2 = 1;
