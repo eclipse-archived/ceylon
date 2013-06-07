@@ -209,6 +209,44 @@ public class Unit {
         return null;
     }
     
+    /**
+     * Search for a declaration in {@code ceylon.language.metamodel} 
+     */
+    public Declaration getLanguageModuleMetamodelDeclaration(String name) {
+        //all elements in ceylon.language are auto-imported
+        //traverse all default module packages provided they have not been traversed yet
+        Module languageModule = getPackage().getModule().getLanguageModule();
+        if ( languageModule != null && languageModule.isAvailable() ) {
+            Package languageScope = languageModule.getPackage("ceylon.language.metamodel");
+            if (languageScope != null) {
+                Declaration d = languageScope.getMember(name, null, false);
+                if (d != null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Search for a declaration in {@code ceylon.language.metamodel.declaration} 
+     */
+    public Declaration getLanguageModuleMetamodelDeclarationDeclaration(String name) {
+        //all elements in ceylon.language are auto-imported
+        //traverse all default module packages provided they have not been traversed yet
+        Module languageModule = getPackage().getModule().getLanguageModule();
+        if ( languageModule != null && languageModule.isAvailable() ) {
+            Package languageScope = languageModule.getPackage("ceylon.language.metamodel.declaration");
+            if (languageScope != null) {
+                Declaration d = languageScope.getMember(name, null, false);
+                if (d != null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+
     public Interface getCorrespondenceDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Correspondence");
     }
