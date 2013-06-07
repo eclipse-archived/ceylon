@@ -1192,6 +1192,8 @@ base returns [Primary primary]
       { $primary=$nonstringLiteral.literal; }
     | stringExpression
       { $primary=$stringExpression.atom; }
+    | typeLiteral
+      { $primary=$typeLiteral.typeLiteral; }
     | enumeration
       { $primary=$enumeration.sequenceEnumeration; }
     | tuple
@@ -2413,6 +2415,15 @@ iterableType returns [IterableType type]
      { $type.setEndToken($RBRACE); }
    ;
 
+typeLiteral returns [TypeLiteral typeLiteral]
+    : d1=TYPE_LITERAL_DELIMITER
+      { $typeLiteral = new TypeLiteral($d1); }
+      t=type
+      { $typeLiteral.setType($t.type); }
+      d2=TYPE_LITERAL_DELIMITER
+      { $typeLiteral.setEndToken($d2); }
+    ;
+
 type returns [StaticType type]
     @init { EntryType bt=null; }
     : t1=unionType
@@ -3297,6 +3308,10 @@ MULTI_COMMENT
             $channel = HIDDEN;
         }
         ;
+
+TYPE_LITERAL_DELIMITER
+    : '`'
+    ;
 
 ASSERT
     : 'assert'
