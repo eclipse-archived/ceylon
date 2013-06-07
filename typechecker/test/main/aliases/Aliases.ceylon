@@ -117,10 +117,10 @@ void testOpAliases() {
     Or<Float,Integer> ornum2 = ornum;
 }
 
-abstract class S() => String();
-@error abstract class StringSubclass() extends S() {}
-@error abstract class IntSubclass() extends I() {}
-abstract class I() => Integer();
+abstract class S(String s) => String(s);
+@error abstract class StringSubclass(String s) extends S(s) {}
+@error abstract class IntSubclass(Integer i) extends I(i) {}
+abstract class I(Integer i) => Integer(i);
 
 void inheritsAlias() {
     interface I<T> {}

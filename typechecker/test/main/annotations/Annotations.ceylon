@@ -1,3 +1,5 @@
+import ceylon.language.metamodel { ... }
+
 Null table(String name, String schema) { return null; }
 Null persistent(String column, Anything type, Boolean update) { return null; }
 

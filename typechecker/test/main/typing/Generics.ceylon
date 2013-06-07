@@ -545,7 +545,7 @@ class Generics() {
     class WithParamOfClass<T>(T t) { Anything x = t; } 
 
     abstract class N()=>Null();
-    abstract class S()=>String();
+    abstract class S(String s)=>String(s);
 
     void unsatisfiable1<T>() @error given T satisfies Null&String {}
     void unsatisfiable2<T>() @error given T satisfies Null&Container<Anything> {}

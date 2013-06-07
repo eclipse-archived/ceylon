@@ -13,7 +13,8 @@ Entry<String,Integer> e1(String name, Integer i) => Entry<String,Integer>(name, 
 Entry<String,T> e2<T>(String name, T t) given T satisfies Object => Entry<String,T>(name,t);
 Entry<String,Integer> e3(String name, Integer i) => Entry(name,i);
 @error Callable<Entry<Object,Object>,Object,Object> e5 = Entry;
-abstract class F() => Float();
+abstract class F2(){}
+abstract class F() => F2();
 
 void check() { 
     E1 g1 = E1("gavin",1); 
