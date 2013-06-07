@@ -40,5 +40,9 @@ public class MetamodelTest extends CompilerTest {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.annotationTests", "annotationTypes.ceylon", "annotationTests.ceylon");
     }
 
+    @Test
+    public void testTypeLiterals() {
+        compareWithJavaSource("Literals");
+    }
 }
 

@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.metamodel;
+
+final class literals_ {
+    
+    private literals_() {
+    }
+    
+    static <T>void literals(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        final .ceylon.language.metamodel.Class<? extends .ceylon.language.Integer, ? super .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>> integerType = (.ceylon.language.metamodel.Class<? extends .ceylon.language.Integer, ? super .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.ceylon.language.Integer.$TypeDescriptor);
+        final .ceylon.language.metamodel.Interface<? extends .ceylon.language.Number> numberType = (.ceylon.language.metamodel.Interface<? extends .ceylon.language.Number>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.ceylon.language.Number.$TypeDescriptor);
+        final .ceylon.language.metamodel.Type parameterType = .ceylon.language.metamodel.typeLiteral_.typeLiteral($reifiedT);
+        final .ceylon.language.metamodel.UnionType unionType = (.ceylon.language.metamodel.UnionType).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Number.$TypeDescriptor, .ceylon.language.Closeable.$TypeDescriptor));
+        final .ceylon.language.metamodel.IntersectionType intersectionType = (.ceylon.language.metamodel.IntersectionType).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor, .ceylon.language.Closeable.$TypeDescriptor));
+        final .ceylon.language.metamodel.Type nothingType = .ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.metamodel.literals_.literals(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}
