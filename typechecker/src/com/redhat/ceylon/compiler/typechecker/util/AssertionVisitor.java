@@ -43,16 +43,22 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void checkType(Tree.Statement that, ProducedType type, Node typedNode) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
-                String expectedType = c.getStringLiteral().getText();
-                if (typedNode==null || type==null || 
-                        type.getDeclaration()==null) {
-                    out(that, "type not known");
+                Tree.StringLiteral sl = c.getStringLiteral();
+                if (sl==null) {
+                	out(that, "missing asserted type");
                 }
                 else {
-                    String actualType = type.getProducedTypeName(false);
-                    if ( !actualType.equals(expectedType) )
-                        out(that, "type " + actualType + 
-                                " not of expected type " + expectedType);
+                	String expectedType = sl.getText();
+                	if (typedNode==null || type==null || 
+                			type.getDeclaration()==null) {
+                		out(that, "type not known");
+                	}
+                	else {
+                		String actualType = type.getProducedTypeName(false);
+                		if ( !actualType.equals(expectedType) )
+                			out(that, "type " + actualType + 
+                					" not of expected type " + expectedType);
+                	}
                 }
             }
         }
