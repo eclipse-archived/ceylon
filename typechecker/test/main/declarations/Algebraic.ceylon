@@ -462,3 +462,5 @@ class RR<E>(E e)
         given E satisfies Ordinal<E> & Comparable<E>{
     if (is Integer e) {}
 }
+
+interface Foobarbaz<X> @error given X of Foobarbaz<X>? {}

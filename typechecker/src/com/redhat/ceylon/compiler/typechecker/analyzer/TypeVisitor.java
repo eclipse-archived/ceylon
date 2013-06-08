@@ -1143,7 +1143,10 @@ public class TypeVisitor extends Visitor {
         	if (type!=null) {
         		TypeDeclaration ctd = type.getDeclaration();
         		if (ctd!=null) {
-        			if (ctd.equals(td)) {
+        			if (ctd instanceof UnionType || ctd instanceof IntersectionType) {
+        				st.addError("case type must be a class, interface, or self type");
+        			}
+        			else if (ctd.equals(td)) {
         				st.addError("directly enumerates itself: " + td.getName());
         				continue;
         			}
