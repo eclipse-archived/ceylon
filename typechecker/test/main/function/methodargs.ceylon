@@ -108,6 +108,6 @@ void testSpreadTypeArg<Args>(Args args)
         given Args satisfies Anything[] {
     //Note: the type really should be [String,*Args], 
     //      if that were supported
-    @type "Tuple<String|Anything,String,Sequential<Anything>>" 
+    @type:"Tuple<Anything,String,Sequential<Anything>>" 
     value tup = ["hello", *args];
 }
