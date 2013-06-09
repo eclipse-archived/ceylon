@@ -189,4 +189,7 @@ void issue() {
         f<Integer>(s, c); //works
         f(s, c); //doesn't
     }
+    
+    T t<T>(T? t) => t else nothing;
+    @type:"Integer" t(true then 1);
 }
