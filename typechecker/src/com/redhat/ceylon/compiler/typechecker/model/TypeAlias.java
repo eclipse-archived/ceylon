@@ -12,4 +12,9 @@ public class TypeAlias extends TypeDeclaration {
 		return true;
 	}
 	
+    @Override
+    public boolean isMember() {
+        return getContainer() instanceof ClassOrInterface;
+    }
+
 }

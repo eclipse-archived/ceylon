@@ -169,3 +169,19 @@ abstract class GoodOuterClass() {
 abstract class ToplevelAlias() => AbstractClass();
 @error class BrokenToplevelAlias1() => AbstractClass();
 @error formal class BrokenToplevelAlias2() => AbstractClass();
+
+
+class Qux1<T>(T t) {
+    shared alias Q=>[T+];
+    shared Q q() => [t];
+}
+
+class Qux2<T>(T t) {
+    shared interface Q=>[T+];
+    shared Q q() => [t];
+}
+
+void testQux() {
+    @type:"Qux1<String>.Q" value q1 = Qux1("").q();
+    @type:"Qux2<String>.Q" value q2 = Qux2("").q();
+}
