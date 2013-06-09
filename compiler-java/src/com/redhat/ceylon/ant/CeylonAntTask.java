@@ -117,7 +117,7 @@ public abstract class CeylonAntTask extends Task {
                 exitHandler.handleExit(this, exitValue, null);
             }
         } catch (Throwable e) {
-            throw new BuildException("Error running Ceylon compiler", e, getLocation());
+            throw new BuildException("Error running Ceylon " + toolName + " tool (an exception was thrown, run ant with -v parameter to see the exception)", e, getLocation());
         }
     }
 
