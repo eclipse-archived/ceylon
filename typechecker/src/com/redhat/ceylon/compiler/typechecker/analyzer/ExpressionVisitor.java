@@ -514,28 +514,28 @@ public class ExpressionVisitor extends Visitor {
         ProducedType t = null;
         Node typedNode = null;
         Tree.Expression e = that.getExpression();
-		Tree.Variable v = that.getVariable();
+        Tree.Variable v = that.getVariable();
         if (e!=null) {
             t = e.getTypeModel();
             typedNode = e;
             checkInstantiationExpression(e);
         } 
         else if (v!=null) {
-        	t = v.getType().getTypeModel();
-        	typedNode = v.getType();
-        	Tree.SpecifierExpression se = v.getSpecifierExpression();
-        	if (se==null) {
-        		v.addError("missing resource specifier");
-        	}
-        	else {
-        		checkInstantiationExpression(se.getExpression());
-        		if (typedNode instanceof Tree.ValueModifier) {
-        			typedNode = se.getExpression();
-        		}
-        	}
+            t = v.getType().getTypeModel();
+            typedNode = v.getType();
+            Tree.SpecifierExpression se = v.getSpecifierExpression();
+            if (se==null) {
+                v.addError("missing resource specifier");
+            }
+            else {
+                checkInstantiationExpression(se.getExpression());
+                if (typedNode instanceof Tree.ValueModifier) {
+                    typedNode = se.getExpression();
+                }
+            }
         }
         else {
-        	that.addError("missing resource expression");
+            that.addError("missing resource expression");
         }
         if (typedNode!=null) {
             if (!t.isUnknown()) {
@@ -545,20 +545,20 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	private void checkInstantiationExpression(Tree.Expression e) {
-		Tree.Term term = e.getTerm();
-		if (term instanceof Tree.InvocationExpression) {
-		    Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
-		    Tree.Primary p = ie.getPrimary();
-			if (!(p instanceof Tree.BaseTypeExpression 
-		            || p instanceof Tree.QualifiedTypeExpression)) {
-		        e.addError("resource expression is not an instantiation");
-		    }
-		}
-		else {
-			e.addError("resource expression is not an instantiation");
-		}
-	}
+    private void checkInstantiationExpression(Tree.Expression e) {
+        Tree.Term term = e.getTerm();
+        if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+            Tree.Primary p = ie.getPrimary();
+            if (!(p instanceof Tree.BaseTypeExpression 
+                    || p instanceof Tree.QualifiedTypeExpression)) {
+                e.addError("resource expression is not an instantiation");
+            }
+        }
+        else {
+            e.addError("resource expression is not an instantiation");
+        }
+    }
     
     @Override public void visit(Tree.ForIterator that) {
         super.visit(that);
@@ -1938,19 +1938,45 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> list = new ArrayList<ProducedType>();
                 //If there is more than one type parameter in
                 //the union, ignore this union when inferring 
-                //types. TODO: this is a bit adhoc
-                boolean found = false;
+                //types. 
+                //TODO: This is all a bit adhoc. The problem is that
+                //      when a parameter type involves a union of type
+                //      parameters, it in theory imposes a compound 
+                //      constraint upon the type parameters, but our
+                //      algorithm doesn't know how to deal with compound
+                //      constraints
+                ProducedType typeParamType = null;
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                    if (ct.getDeclaration() instanceof TypeParameter) {
-                        if (found) return null;
-                        found = true;
+                    TypeDeclaration ctd = ct.getDeclaration();
+                    if (ctd instanceof TypeParameter && 
+                            tp.getDeclaration().equals(((TypeParameter) ctd).getDeclaration())) {                        
+                        if (typeParamType!=null) {
+                            //the parameter type involves two type
+                            //parameters which are being inferred
+                            return null;
+                        }
+                        typeParamType = ct;
                     }
                 }
-                for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
+                if (typeParamType==null) {
+                    for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
+                        //TODO: should this be addToIntersectionOrUnion()?!
+                        addToIntersection(list, inferTypeArg(tp, 
+                                ct.substitute(paramType.getTypeArguments()), 
+                                argType, visited), unit);
+                    }
+                } 
+                else {
+                    //if the param type is of form T|A1 and the arg type is
+                    //of form A2|B then constrain T by B and A1 by A2
+                    ProducedType pt = paramType.minus(typeParamType);
                     //TODO: should this be addToIntersectionOrUnion()?!
                     addToIntersection(list, inferTypeArg(tp, 
-                            ct.substitute(paramType.getTypeArguments()), 
-                            argType, visited), unit);
+                            paramType.minus(pt), argType.minus(pt), visited), 
+                            unit);
+                    addToIntersection(list, inferTypeArg(tp, 
+                            paramType.minus(typeParamType), pt, visited), 
+                            unit);
                 }
                 //TODO: if so, then this should be intersectionOrUnion()
                 return intersection(list);
@@ -2030,9 +2056,9 @@ public class ExpressionVisitor extends Visitor {
                     if (typeArgs.size()>=2) {
                         ProducedType tt = typeArgs.get(1);
                         checkIndirectInvocationArguments(that, tt,
-                        		unit.getTupleElementTypes(tt),
-                        		unit.isTupleLengthUnbounded(tt),
-                        		unit.getTupleMinimumLength(tt));
+                                unit.getTupleElementTypes(tt),
+                                unit.isTupleLengthUnbounded(tt),
+                                unit.getTupleMinimumLength(tt));
                     }
                 }
             }
@@ -2225,8 +2251,8 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(argType, pt, node,
                     "named argument must be assignable to parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
-                    		(pr.getQualifyingType()==null ? "" : 
-                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                            (pr.getQualifyingType()==null ? "" : 
+                                " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
                             2100);
         }
     }
@@ -2267,8 +2293,8 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(att, paramType, sa, 
                     "iterable arguments must be assignable to iterable parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
-                    		(pr.getQualifyingType()==null ? "" : 
-                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)));
+                            (pr.getQualifyingType()==null ? "" : 
+                                " in " + pr.getQualifyingType().getProducedTypeName(unit)));
         }
     }
     
@@ -2384,8 +2410,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
-    		ProducedType tt, List<ProducedType> paramTypes, boolean sequenced, 
-    		int firstDefaulted) {
+            ProducedType tt, List<ProducedType> paramTypes, boolean sequenced, 
+            int firstDefaulted) {
         
         if (that.getNamedArgumentList()!=null) {
             that.addError("named arguments not supported for indirect invocations");
@@ -2396,19 +2422,19 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> args = pal.getPositionalArguments();
             
             /*if (tt.getDeclaration() instanceof TypeParameter) {
-            	//TODO: really this should handle types like
-            	//          [String,Integer,*Args]
-            	//      by recursively walking the tuple type
-            	checkAssignable(getTupleType(args, false), tt, that, 
-            			"argument list type not assignable to parameter list type");
-            	return;
+                //TODO: really this should handle types like
+                //          [String,Integer,*Args]
+                //      by recursively walking the tuple type
+                checkAssignable(getTupleType(args, false), tt, that, 
+                        "argument list type not assignable to parameter list type");
+                return;
             }*/
             
             for (int i=0; i<paramTypes.size(); i++) {
-            	if (paramTypes.get(i).isUnknown()) {
-            		that.addError("parameter types cannot be determined from function reference");
-            		return;
-            	}
+                if (paramTypes.get(i).isUnknown()) {
+                    that.addError("parameter types cannot be determined from function reference");
+                    return;
+                }
             }
             
             for (int i=0; i<paramTypes.size(); i++) {
@@ -2534,17 +2560,17 @@ public class ExpressionVisitor extends Visitor {
                     checkAssignable(at, paramType, a, 
                             "spread argument must be assignable to variadic parameter " + 
                                     p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
-                            		(pr.getQualifyingType()==null ? "" : 
-                            			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
-                            		2101);
+                                    (pr.getQualifyingType()==null ? "" : 
+                                        " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                    2101);
                 }
                 else {
                     checkAssignable(at, set, a, 
                             "argument must be assignable to variadic parameter " + 
                                     p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
-                            		(pr.getQualifyingType()==null ? "" : 
-                            			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
-                            		2101);
+                                    (pr.getQualifyingType()==null ? "" : 
+                                        " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                                    2101);
                 }
             }
         }
@@ -2561,9 +2587,9 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter " + 
                             p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
-                    		(pr.getQualifyingType()==null ? "" : 
-                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
-                    		2101);
+                            (pr.getQualifyingType()==null ? "" : 
+                                " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                            2101);
         }
     }
     
@@ -2587,8 +2613,8 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(at, paramType, a, 
                     "argument must be assignable to parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit) + 
-                    		(pr.getQualifyingType()==null ? "" : 
-                    			" in " + pr.getQualifyingType().getProducedTypeName(unit)), 
+                            (pr.getQualifyingType()==null ? "" : 
+                                " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
                             2100);
         }
     }

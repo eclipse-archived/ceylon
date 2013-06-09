@@ -178,3 +178,15 @@ class QualifiedTypeArgInference() {
     @type:"QualifiedTypeArgInference.Outer<String|Null>.Inner<Integer|Float>"
     both(Outer("").Inner(1), Outer(null).Inner(1.0));
 }
+
+void issue() {
+    interface C<in A> {}
+    interface S<E> {}
+
+    void f<T>(S<T|Exception> s, C<S<T>> c) {}
+
+    void g(S<Integer|Exception> s, C<S<Integer>> c) {
+        f<Integer>(s, c); //works
+        f(s, c); //doesn't
+    }
+}
