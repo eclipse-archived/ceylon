@@ -6,6 +6,7 @@ public class Import {
 	private String alias;
 	private Declaration declaration;
 	private boolean wildcardImport;
+	private boolean ambiguous;
 	
 	public Import() {}
 
@@ -25,6 +26,14 @@ public class Import {
         this.alias = alias;
     }
     
+    public boolean isAmbiguous() {
+		return ambiguous;
+	}
+    
+    public void setAmbiguous(boolean ambiguous) {
+		this.ambiguous = ambiguous;
+	}
+    
     public TypeDeclaration getTypeDeclaration() {
 		return typeDeclaration;
 	}
@@ -35,7 +44,9 @@ public class Import {
     
     @Override
     public String toString() {
-        return "Import[" + alias + "]";
+        return "Import[" + alias + "=" + 
+        		(typeDeclaration==null?"":typeDeclaration.getName()) + 
+        		declaration.getName() + "]";
     }
     
     public boolean isWildcardImport() {

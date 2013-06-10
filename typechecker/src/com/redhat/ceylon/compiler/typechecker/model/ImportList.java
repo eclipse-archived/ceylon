@@ -102,7 +102,8 @@ public class ImportList implements Scope {
     
     public boolean hasImport(Declaration d) {
         for (Import i: getImports()) {
-            if (i.getDeclaration().equals(d)) {
+            if (!i.isAmbiguous() &&
+            		i.getDeclaration().equals(d)) {
                 return true;
             }
         }
@@ -111,7 +112,8 @@ public class ImportList implements Scope {
      
     public Import getImport(String alias) {
         for (Import i: getImports()) {
-            if (i.getAlias().equals(alias)) {
+            if (!i.isAmbiguous() &&
+            		i.getAlias().equals(alias)) {
                 return i;
             }
         }

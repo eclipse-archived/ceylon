@@ -104,7 +104,8 @@ public class Unit {
 
     public Import getImport(String name) {
         for (Import i: getImports()) {
-            if (i.getTypeDeclaration()==null &&
+            if (!i.isAmbiguous() &&
+            		i.getTypeDeclaration()==null &&
                     i.getAlias().equals(name)) {
                 return i;
             }
@@ -114,7 +115,8 @@ public class Unit {
     
     public String getAliasedName(Declaration dec) {
         for (Import i: getImports()) {
-            if (i.getDeclaration().equals(dec)) {
+            if (!i.isAmbiguous() &&
+            		i.getDeclaration().equals(dec)) {
                 return i.getAlias();
             }
         }
@@ -128,7 +130,8 @@ public class Unit {
     public Declaration getImportedDeclaration(String name, 
             List<ProducedType> signature, boolean ellipsis) {
         for (Import i: getImports()) {
-            if (i.getAlias().equals(name)) {
+            if (!i.isAmbiguous() && 
+            		i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
@@ -148,6 +151,7 @@ public class Unit {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
 			if (itd!=null && itd.equals(td) && 
+					!i.isAmbiguous() &&
             		i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
@@ -162,7 +166,7 @@ public class Unit {
     public Map<String, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
-            if (i.getAlias()!=null &&
+            if (i.getAlias()!=null && !i.isAmbiguous() &&
                     i.getAlias().toLowerCase().startsWith(startingWith.toLowerCase())) {
                 result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
             }
