@@ -44,6 +44,7 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 	PREPEND_JAVA_OPTS="$JAVA_DEBUG_OPTS"
 	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)"
 	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)"
+	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
