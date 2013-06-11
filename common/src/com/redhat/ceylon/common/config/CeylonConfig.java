@@ -8,7 +8,34 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
-
+/**
+ * Class to hold, retrieve and set Ceylon configuration values (options).
+ * This is basically a Map from key strings to value strings.
+ * Ceylon options are grouped in sections and which can be part of
+ * yet other sections. Even though this results in a hierarchical
+ * option "tree" the option names are "fully qualified" to keep the
+ * API as simple as possible.
+ * 
+ * This means that a configuration section like this:
+ * 
+ *    [testsection]
+ *    option1=foo
+ *    option2=bar
+ *    
+ *    [testsection.subsection]
+ *    option1=baz
+ *    
+ * Is actually represented as the following 3 options:
+ * 
+ *    testsection.option1=foo
+ *    testsection.option2=bar
+ *    testsection.subsection.option1=baz
+ *    
+ * Several static helper methods exists for easy access to the default
+ * Ceylon configuration.
+ * 
+ * @author Tako Schotanus (tako@ceylon-lang.org)
+ */
 public class CeylonConfig {
     private HashMap<String, String[]> options;
     private HashMap<String, HashSet<String>> sectionNames;
@@ -16,6 +43,14 @@ public class CeylonConfig {
     
     private volatile static CeylonConfig instance;
     
+    /**
+     * Retrieves the default configuration for the current JVM.
+     * WARNING: This actually uses the current working directory of the
+     * virtual machine, but the configuration is only determined once,
+     * so if the CWD changes the configuration will still reflect the
+     * state according to the old value! 
+     * @return Default CeylonConfig object
+     */
     public static CeylonConfig get() {
         if (instance == null) {
             synchronized (CeylonConfig.class) {
@@ -26,19 +61,39 @@ public class CeylonConfig {
         }
         return instance;
     }
-    
+
+    /**
+     * Set or override the default configuration
+     * @param config The CelyonConfig object to use as the default 
+     */
     public static void set(CeylonConfig config) {
         instance = config;
     }
-    
+
+    /**
+     * Retrieve the given option value from the default configuration
+     * @param key The name of the option to retrieve
+     * @return The value of the option or "null" if it wasn't found
+     */
     public static String get(String key) {
         return get().getOption(key);
     }
-    
+
+    /**
+     * Retrieve the given option value from the default configuration
+     * @param key The name of the option to retrieve
+     * @param defaultValue The default value to use if the option wasn't found
+     * @return The value of the option or the default value
+     */
     public static String get(String key, String defaultValue) {
         return get().getOption(key, defaultValue);
     }
-    
+
+    /**
+     * Returns a newly created default configuration (see ConfigParser.loadDefaultConfig())
+     * @param localDir The directory to start looking for local configuration files
+     * @return Default CeylonConfig object
+     */
     public static CeylonConfig createFromLocalDir(File localDir) {
         return ConfigParser.loadDefaultConfig(localDir);
     }
@@ -50,7 +105,7 @@ public class CeylonConfig {
         optionNames = new LinkedHashMap<String, HashSet<String>>();
     }
     
-    public static class Key {
+    static class Key {
         private String subsectionName; 
         private String optionName;
         private String sectionName;
@@ -126,14 +181,30 @@ public class CeylonConfig {
         }
     }
     
+    /**
+     * Determines if an option with the given name exists
+     * @param key The name of the option to check for
+     * @return Boolean indicating if the option exists
+     */
     public synchronized boolean isOptionDefined(String key) {
         return options.containsKey(key);
     }
-    
+
+    /**
+     * Retrieves the array of values defined for the given option
+     * @param key The name of the option to retrieve
+     * @return The array of values or "null" if the option didn't exist
+     */
     public synchronized String[] getOptionValues(String key) {
         return options.get(key);
     }
-    
+
+    /**
+     * Defines the array of values for the given option, if passing
+     * "null" the option will be removed from the configuration
+     * @param key The name of the option to define
+     * @param values Array of values to use or "null"
+     */
     public synchronized void setOptionValues(String key, String[] values) {
         if (values != null && values.length > 0) {
             options.put(key, values);
@@ -142,21 +213,51 @@ public class CeylonConfig {
             removeOption(key);
         }
     }
-    
+
+    /**
+     * Retrieves a single value for the given option. If more than one
+     * value exits only the first one is returned
+     * @param key The name of the option to retrieve
+     * @return The (first) value of the option or "null" if the option didn't exist 
+     */
     public String getOption(String key) {
         String[] result = getOptionValues(key);
         return (result != null) ? result[0] : null;
     }
     
+    /**
+     * Retrieves a single value for the given option. If more than one
+     * value exits only the first one is returned
+     * @param key The name of the option to retrieve
+     * @param defaultValue The default value to use if the option wasn't found
+     * @return The (first) value of the option or the default value
+     */
     public String getOption(String key, String defaultValue) {
         String result = getOption(key);
         return (result != null) ? result : defaultValue;
     }
     
+    /**
+     * Defines a sinlge value for the given option, if passing
+     * "null" the option will be removed from the configuration
+     * @param key The name of the option to define
+     * @param value The value to use or "null"
+     */
     public void setOption(String key, String value) {
-        setOptionValues(key, new String[] { value });
+        if (value != null) {
+            setOptionValues(key, new String[] { value });
+        } else {
+            removeOption(key);
+        }
     }
     
+    /**
+     * Retrieves a single numeric value for the given option. If more than one
+     * value exits only the first one is returned
+     * @param key The name of the option to retrieve
+     * @return The (first) value of the option or "null" if the option didn't exist
+     * or if it wasn't a valid number
+     */
     public Long getNumberOption(String key) {
         String result = getOption(key);
         if (result != null) {
@@ -169,6 +270,14 @@ public class CeylonConfig {
         return null;
     }
     
+    /**
+     * Retrieves a single numeric value for the given option. If more than one
+     * value exits only the first one is returned
+     * @param key The name of the option to retrieve
+     * @param defaultValue The default value to use if the option wasn't found
+     * @return The (first) value of the option, "null" if it wasn't a valid number
+     * or the default value if the option didn't exist
+     */
     public long getNumberOption(String key, long defaultValue) {
         String result = getOption(key);
         if (result != null) {
@@ -181,10 +290,22 @@ public class CeylonConfig {
         return defaultValue;
     }
     
+    /**
+     * Defines a single numeric value for the given option
+     * @param key The name of the option to define
+     * @param value The numeric value to use
+     */
     public void setNumberOption(String key, long value) {
         setOption(key, Long.toString(value));
     }
     
+    /**
+     * Retrieves a single boolean value for the given option. If more than one
+     * value exits only the first one is returned. The strings "true", "on",
+     * "yes" and "1" are considered to be "true", everything else is "false".
+     * @param key The name of the option to retrieve
+     * @return The (first) value of the option or "null" if the option didn't exist
+     */
     public Boolean getBoolOption(String key) {
         String result = getOption(key);
         if (result != null) {
@@ -193,6 +314,15 @@ public class CeylonConfig {
         return null;
     }
     
+    /**
+     * Retrieves a single boolean value for the given option. If more than one
+     * value exits only the first one is returned. The strings "true", "on",
+     * "yes" and "1" are considered to be "true", everything else is "false".
+     * @param key The name of the option to retrieve
+     * @param defaultValue The default value to use if the option wasn't found
+     * @return The (first) value of the option or the default value if the option
+     * didn't exist
+     */
     public boolean getBoolOption(String key, boolean defaultValue) {
         Boolean result = getBoolOption(key);
         if (result != null) {
@@ -201,10 +331,19 @@ public class CeylonConfig {
         return defaultValue;
     }
     
+    /**
+     * Defines a single boolean value for the given option
+     * @param key The name of the option to define
+     * @param value The boolean value to use
+     */
     public void setBoolOption(String key, boolean value) {
         setOption(key, Boolean.toString(value));
     }
 
+    /**
+     * Removes the given option (does nothing if it doesn't exist)
+     * @param key The name of the option to remove
+     */
     public synchronized void removeOption(String key) {
         options.remove(key);
         
@@ -215,6 +354,11 @@ public class CeylonConfig {
         }
     }
     
+    /**
+     * Determines if a section with the given name exists
+     * @param section The name of the section to check for
+     * @return Boolean indicating if the section exists
+     */
     public synchronized boolean isSectionDefined(String section) {
         return sectionNames.containsKey(section);
     }
@@ -240,6 +384,12 @@ public class CeylonConfig {
         return sn.toArray(res);
     }
     
+    /**
+     * Returns an array of option names in a given section or the list
+     * of all option names if "null" is passed
+     * @param section The name of the section or "null"
+     * @return An array of option names
+     */
     public synchronized String[] getOptionNames(String section) {
         if (section == null) {
             String[] res = new String[options.keySet().size()];
@@ -258,15 +408,26 @@ public class CeylonConfig {
             }
         }
     }
-    
-    public synchronized CeylonConfig merge(CeylonConfig local) {
-        for (String key : local.getOptionNames(null)) {
-            String[] values = local.getOptionValues(key);
+
+    /**
+     * Merges the options from the given configuration with the current
+     * one where duplicate options that exist locally will be overwritten
+     * by the ones encountered in the given configuration.
+     * @param local
+     * @return
+     */
+    public synchronized CeylonConfig merge(CeylonConfig other) {
+        for (String key : other.getOptionNames(null)) {
+            String[] values = other.getOptionValues(key);
             setOptionValues(key, values);
         }
         return this;
     }
 
+    /**
+     * Returns an exact and safe copy of the current configuration
+     * @return A clone of the current configuration
+     */
     public CeylonConfig copy() {
         CeylonConfig cfg = new CeylonConfig();
         cfg.merge(this);

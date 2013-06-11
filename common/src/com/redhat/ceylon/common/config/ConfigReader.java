@@ -11,6 +11,11 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.InvalidPropertiesFormatException;
 
+/**
+ * A "push reader" for git-like Ceylon configuration files.
+ *  
+ * @author Tako Schotanus (tako@ceylon-lang.org)
+ */
 public class ConfigReader {
     private ConfigReaderListener listener;
     private InputStream in;
@@ -20,11 +25,22 @@ public class ConfigReader {
     
     private enum Token { section, option, assign, comment, eol, error, eof }
     
+    /**
+     * Creates a new ConfigReader
+     * @param in The InputStream to read the actual file data from
+     * @param listener The listener to call when specific data items have been read and parsed
+     */
     public ConfigReader(InputStream in, ConfigReaderListener listener) {
         this.in = in;
         this.listener = listener;
     }
-    
+
+    /**
+     * Starts the actual processing of the input
+     * @throws IOException Either actual file-related IO exceptions or
+     * InvalidPropertiesFormatException when problems with the file format
+     * are detected
+     */
     public void process() throws IOException {
         section = null;
         try {
@@ -298,6 +314,22 @@ public class ConfigReader {
     }
 }
 
+/*
+ * Special "pushback" reader that combines the functionality of
+ * pushback (the ability to "peek" at the next character in a
+ * stream or pushing back the last character read) with a "memo"
+ * feature that records the last string of characters read since
+ * the last call to getAndClearMemo().
+ * This last feature is used to be able to retrieve the "actual
+ * characters read" that activated a certain event in the config
+ * reader listener.
+ * For example, when reading the string (without []):
+ *    [  "true"      ]
+ * the actual value is "true" (without the quotes) but the string
+ * of characters that was read was actually much longer, most of
+ * which was actually discarded. The memo feature exists to be
+ * able to easily retrieve that actual string of characters.
+ */
 class MemoPushbackReader extends PushbackReader {
     private StringBuilder memo;
     
