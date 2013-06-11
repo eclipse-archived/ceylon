@@ -8,12 +8,12 @@ shared abstract class Comparison(shared actual String string)
         of lt | st | eq {
     
     //TODO: remove all these:
-    shared deprecated Boolean largerThan() => this == larger;    
-    shared deprecated Boolean smallerThan() => this == smaller;
-    shared deprecated Boolean equal() => this == equal;
-    shared deprecated Boolean unequal() => this != equal;
-    shared deprecated Boolean asLargeAs() => this != smaller;
-    shared deprecated Boolean asSmallAs() => this != larger;
+    shared deprecated Boolean largerThan() => this == lt;    
+    shared deprecated Boolean smallerThan() => this == st;
+    shared deprecated Boolean equal() => this == eq;
+    shared deprecated Boolean unequal() => this != eq;
+    shared deprecated Boolean asLargeAs() => this != st;
+    shared deprecated Boolean asSmallAs() => this != lt;
 
 }
 
