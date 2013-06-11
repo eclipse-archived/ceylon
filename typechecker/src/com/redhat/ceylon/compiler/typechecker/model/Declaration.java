@@ -21,6 +21,7 @@ public abstract class Declaration
 	private boolean shared;
 	private boolean formal;
 	private boolean actual;
+	private boolean deprecated;
 	private boolean def;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Scope visibleScope;
@@ -58,6 +59,14 @@ public abstract class Declaration
     public boolean isParameterized() {
         return false;
     }
+    
+    public boolean isDeprecated() {
+		return deprecated;
+	}
+    
+    public void setDeprecated(boolean deprecated) {
+		this.deprecated = deprecated;
+	}
 
     @Override
     public List<Annotation> getAnnotations() {

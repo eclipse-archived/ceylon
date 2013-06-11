@@ -936,7 +936,9 @@ public class DeclarationVisitor extends Visitor {
         		that.addError("value may not be annotated both variable and transient: " + model.getName());
         	}
         }
-        
+        if (hasAnnotation(al, "deprecated")) {
+        	model.setDeprecated(true);
+        }
         
         buildAnnotations(al, model.getAnnotations());        
     }

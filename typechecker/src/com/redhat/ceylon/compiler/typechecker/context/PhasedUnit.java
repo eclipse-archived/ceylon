@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.DeprecationVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
@@ -265,6 +266,7 @@ public class PhasedUnit {
         ReferenceCounter rc = new ReferenceCounter();
 		compilationUnit.visit(rc);
         compilationUnit.visit(new UsageVisitor(rc));
+        compilationUnit.visit(new DeprecationVisitor());
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {
