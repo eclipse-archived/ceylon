@@ -24,5 +24,6 @@ final class module_ {
     @.ceylon.language.Doc$annotation(description = "Optionally depend on b")
     @.ceylon.language.Deprecation$annotation(description = "doesn\'t _do_ anything either")
     @.ceylon.language.Optional$annotation
+    @.java.lang.Deprecated
     public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$b = null;
 }
