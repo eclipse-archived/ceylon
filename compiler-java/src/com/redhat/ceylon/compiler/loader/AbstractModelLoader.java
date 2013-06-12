@@ -1715,6 +1715,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         markUnboxed(value, fieldMirror.getType());
         markTypeErased(value, fieldMirror, fieldMirror.getType());
+        setAnnotations(value, fieldMirror);
         klass.getMembers().add(value);
     }
     
@@ -1993,6 +1994,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     paramMirror.getType().getComponentType()
                     : paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
+            setAnnotations(parameter, paramMirror);
             parameters.getParameters().add(parameter);
             
             parameterIndex++;
