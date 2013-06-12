@@ -798,8 +798,9 @@ parameters returns [ParameterList parameterList]
           { $parameterList.setEndToken($c); }
           (
             ap2=parameterDeclaration
-            { $parameterList.addParameter($ap2.parameter); 
-              $parameterList.setEndToken(null); }
+            { if ($ap2.parameter!=null) {
+                  $parameterList.addParameter($ap2.parameter); 
+                  $parameterList.setEndToken(null); } }
           |
             { displayRecognitionError(getTokenNames(),
                 new MismatchedTokenException(UIDENTIFIER, input)); }
@@ -1014,20 +1015,6 @@ declaration returns [Declaration declaration]
     )
     { $declaration.setAnnotationList($annotations.annotationList);  }
     ;
-
-//special rule for syntactic predicate
-//to distinguish between an annotation
-//and an expression statement
-/*annotatedDeclarationStart
-    : declarationStart
-    | LIDENTIFIER
-      ( 
-          declarationStart
-        | LIDENTIFIER
-        | nonstringLiteral | stringLiteral
-        | arguments annotatedDeclarationStart //we need to recurse because it could be an inline callable argument
-      )
-    ;*/
 
 annotatedDeclarationStart
     : stringLiteral? annotation* declarationStart
@@ -1250,7 +1237,7 @@ supertypeQualifier returns [SupertypeQualifier qualifier]
 primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
-    (   
+    (
       //TODO: re-enable:
         /*inlineFunctionalArgument
       |*/ qualifiedReference
@@ -1279,13 +1266,15 @@ primary returns [Primary primary]
           }
           pe.addParameterList($parameters.parameterList);
           $primary = pe; }
-      | arguments
+      | positionalArguments 
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary($primary);
-          if ($arguments.argumentList instanceof PositionalArgumentList)
-              ie.setPositionalArgumentList((PositionalArgumentList)$arguments.argumentList);
-          if ($arguments.argumentList instanceof NamedArgumentList)
-              ie.setNamedArgumentList((NamedArgumentList)$arguments.argumentList);
+          ie.setPositionalArgumentList($positionalArguments.positionalArgumentList); 
+          $primary=ie; }
+      | namedArguments
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary($primary);
+          ie.setNamedArgumentList($namedArguments.namedArgumentList);
           $primary=ie; }
     )*
     ;
@@ -1455,13 +1444,6 @@ index returns [Expression expression]
     : additiveExpression 
       { $expression = new Expression(null);
         $expression.setTerm($additiveExpression.term); }
-    ;
-
-arguments returns [ArgumentList argumentList]
-    : positionalArguments 
-      { $argumentList = $positionalArguments.positionalArgumentList; }
-    | namedArguments
-      { $argumentList = $namedArguments.namedArgumentList; }
     ;
 
 namedArguments returns [NamedArgumentList namedArgumentList]
@@ -1725,7 +1707,7 @@ namedAnnotationArgumentsStart
     ;
 
 iterableArgumentStart
-    : compilerAnnotations expression (COMMA|RBRACE)
+    : compilerAnnotations expression (COMMA|SEMICOLON|RBRACE)
     ;
 
 //special rule for syntactic predicates
@@ -2605,46 +2587,14 @@ annotation returns [Annotation annotation]
         bme.setIdentifier($annotationName.identifier);
         bme.setTypeArguments( new InferredTypeArguments(null) );
         $annotation.setPrimary(bme); }
-      annotationArguments
-      { if ($annotationArguments.argumentList instanceof PositionalArgumentList)
-            $annotation.setPositionalArgumentList((PositionalArgumentList)$annotationArguments.argumentList);
-        if ($annotationArguments.argumentList instanceof NamedArgumentList)
-            $annotation.setNamedArgumentList((NamedArgumentList)$annotationArguments.argumentList); }
-    ;
-
-annotationArguments returns [ArgumentList argumentList]
-    : positionalArguments 
-      { $argumentList = $positionalArguments.positionalArgumentList; }
-    | (namedAnnotationArgumentsStart) =>
+    ( 
+      positionalArguments
+      { $annotation.setPositionalArgumentList($positionalArguments.positionalArgumentList); }
+    | (namedAnnotationArgumentsStart) => //to distinguish a named arg from an iterable type!
       namedArguments
-      { $argumentList = $namedArguments.namedArgumentList; }
-    | literalArguments
-      { $argumentList=$literalArguments.argumentList; }
-    ;
-
-literalArguments returns [PositionalArgumentList argumentList]
-    : { $argumentList = new PositionalArgumentList(null); }
-      (
-        literalArgument
-        { $argumentList.addPositionalArgument($literalArgument.positionalArgument); }
-      )*
-    ;
-    
-literalArgument returns [ListedArgument positionalArgument]
-    : nonstringLiteral
-      { $positionalArgument = new ListedArgument(null);
-        Expression e = new Expression(null);
-        e.setTerm($nonstringLiteral.literal);
-        $positionalArgument.setExpression(e); }
-    | stringLiteral
-      { $positionalArgument = new ListedArgument(null);
-        Expression e = new Expression(null);
-        e.setTerm($stringLiteral.stringLiteral);
-        $positionalArgument.setExpression(e); 
-         if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
-             $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
-         else
-             $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL); }
+      { $annotation.setNamedArgumentList($namedArguments.namedArgumentList); }
+    | { $annotation.setPositionalArgumentList(new PositionalArgumentList(null)); }
+    )
     ;
 
 prefixOperatorStart

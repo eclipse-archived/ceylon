@@ -5,13 +5,13 @@ Null persistent(String column, Anything type, Boolean update) { return null; }
 
 class Annotations() {
     
-    void print(doc "the thing to print" String text) {}
+    void print("the thing to print" String text) {}
     
     deprecated void noop() {}
     
-    doc "A class"
-    by "Gavin King"
-       "Emmanuel Bernard"
+    "A class"
+    by ("Gavin King",
+        "Emmanuel Bernard")
     class Class() {}
     
     see (Class, Annotations)
@@ -30,7 +30,7 @@ class Annotations() {
         
     }
     
-    @error print "hello" class Broken() {}
+    @error print ("hello") class Broken() {}
     
     class TypeDescription(String desc) 
         satisfies OptionalAnnotation<TypeDescription,Type<Object>> {}
