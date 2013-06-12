@@ -111,19 +111,22 @@ public class TypeVisitor extends Visitor {
     }
 
     private void addWildcardImport(ImportList il, Declaration dec, Import i) {
-        Import o = unit.getImport(dec.getName());
-        if (o!=null && o.isWildcardImport()) {
-        	i.setAmbiguous(true);
-        	o.setAmbiguous(true);
-            if (o.getDeclaration().equals(dec)) {
-                //this case only happens in the IDE,
-                //due to reuse of the Unit
-                unit.getImports().remove(o);
-                il.getImports().remove(o);
-            }
-        }
-        unit.getImports().add(i);
-        il.getImports().add(i);
+    	String alias = i.getAlias();
+		if (alias!=null) {
+    		Import o = unit.getImport(dec.getName());
+    		if (o!=null && o.isWildcardImport()) {
+    			i.setAmbiguous(true);
+    			o.setAmbiguous(true);
+    			if (o.getDeclaration().equals(dec)) {
+    				//this case only happens in the IDE,
+    				//due to reuse of the Unit
+    				unit.getImports().remove(o);
+    				il.getImports().remove(o);
+    			}
+    		}
+    		unit.getImports().add(i);
+    		il.getImports().add(i);
+    	}
     }
 
     private Package getPackage(Tree.ImportPath path) {
@@ -361,13 +364,16 @@ public class TypeVisitor extends Visitor {
 
     private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
             Import i) {
-        if (il.getImport(i.getAlias())==null) {
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else {
-            member.addError("duplicate member import alias: " + i.getAlias());
-        }
+    	String alias = i.getAlias();
+		if (alias!=null) {
+    		if (il.getImport(alias)==null) {
+    			unit.getImports().add(i);
+    			il.getImports().add(i);
+    		}
+    		else {
+    			member.addError("duplicate member import alias: " + alias);
+    		}
+    	}
     }
     
     private boolean isNonimportable(Package pkg, String name) {
@@ -378,21 +384,24 @@ public class TypeVisitor extends Visitor {
     }
 
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
-            Import i) {
-        Import o = unit.getImport(i.getAlias());
-        if (o==null) {
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else if (o.isWildcardImport()) {
-            unit.getImports().remove(o);
-            il.getImports().remove(o);
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else {
-            member.addError("duplicate import alias: " + i.getAlias());
-        }
+    		Import i) {
+    	String alias = i.getAlias();
+		if (alias!=null) {
+    		Import o = unit.getImport(alias);
+    		if (o==null) {
+    			unit.getImports().add(i);
+    			il.getImports().add(i);
+    		}
+    		else if (o.isWildcardImport()) {
+    			unit.getImports().remove(o);
+    			il.getImports().remove(o);
+    			unit.getImports().add(i);
+    			il.getImports().add(i);
+    		}
+    		else {
+    			member.addError("duplicate import alias: " + alias);
+    		}
+    	}
     }
         
     @Override 
