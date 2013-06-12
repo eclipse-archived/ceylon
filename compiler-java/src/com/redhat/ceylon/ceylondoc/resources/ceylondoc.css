@@ -208,6 +208,10 @@
 	padding-left: 4px;
 }
 
+div .type-alias-specifier {
+    padding-left: 60px;
+}
+
 .inherited-members {
 	padding-left: 30px;
 }
@@ -500,6 +504,10 @@ td [class^='icon-'] {
 
 .icon-collapse-all {
 	background-position: -480px 0px;
+}
+
+.icon-type-alias {
+    background-position: -512px 0px;
 }
 
 a:HOVER .icon-expand-all,

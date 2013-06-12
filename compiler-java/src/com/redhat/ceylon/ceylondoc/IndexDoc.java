@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -119,7 +120,7 @@ public class IndexDoc extends CeylonDoc {
         
         if (decl instanceof ClassOrInterface) {
             url = linkRenderer().to(decl).getUrl();
-        } else if (decl instanceof Method || decl instanceof Value) {
+        } else if (decl instanceof Method || decl instanceof Value || decl instanceof TypeAlias) {
             url = tool.getObjectUrl(module, container, false) + "#" + name;
             if (decl.isMember()) {
                 name = ((ClassOrInterface) container).getName() + "." + name;
@@ -202,6 +203,8 @@ public class IndexDoc extends CeylonDoc {
             return Character.isUpperCase(((Class)obj).getName().charAt(0)) ? "class" : "object";
         } else if (obj instanceof Interface) {
             return "interface";
+        } else if (obj instanceof TypeAlias) {
+            return "alias";
         } else if (obj instanceof AttributeDeclaration || (obj instanceof Declaration && Decl.isGetter((Declaration)obj))) {
             return "attribute";
         } else if (obj instanceof Method) {

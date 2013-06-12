@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public abstract class CeylonDoc extends Markup {
@@ -158,6 +159,7 @@ public abstract class CeylonDoc extends Markup {
         around("h5","Documentation:");
         writeKeyboardShortcutInfo("o", "Jump to module documentation");
         writeKeyboardShortcutInfo("p", "Jump to package documentation");
+        writeKeyboardShortcutInfo("l", "Jump to aliases");
         writeKeyboardShortcutInfo("a", "Jump to attributes");
         writeKeyboardShortcutInfo("n", "Jump to initializer");
         writeKeyboardShortcutInfo("m", "Jump to methods");
@@ -376,6 +378,10 @@ public abstract class CeylonDoc extends Markup {
                         }
                     }
                 }            
+            }
+            
+            if (decl instanceof TypeAlias) {
+                icons.add("icon-type-alias");
             }
         }
 

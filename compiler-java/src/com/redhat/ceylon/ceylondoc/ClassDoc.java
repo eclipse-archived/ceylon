@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -62,6 +63,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Interface> innerInterfaces;
     private List<Class> innerClasses;
     private List<Class> innerExceptions;
+    private List<TypeAlias> innerAliases;
     private List<Interface> satisfyingInterfaces;
     private List<ProducedType> superInterfaces;
     private List<TypeDeclaration> superClasses;
@@ -104,6 +106,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         innerInterfaces = new ArrayList<Interface>();
         innerClasses = new ArrayList<Class>();
         innerExceptions = new ArrayList<Class>();
+        innerAliases = new ArrayList<TypeAlias>();
         superClasses = getAncestors(klass);
         superInterfaces = getSuperInterfaces(klass);
         
@@ -124,6 +127,8 @@ public class ClassDoc extends ClassOrPackageDoc {
                     } else {
                         innerClasses.add(c);
                     }
+                } else if (m instanceof TypeAlias) {
+                    innerAliases.add((TypeAlias) m);
                 }
             }
         }
@@ -145,6 +150,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         Collections.sort(innerInterfaces, DeclarationComparatorByName.INSTANCE);
         Collections.sort(innerClasses, DeclarationComparatorByName.INSTANCE);
         Collections.sort(innerExceptions, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(innerAliases, DeclarationComparatorByName.INSTANCE);
         
         loadSuperclassInheritedMembers(attributeSpecification);
         loadSuperclassInheritedMembers(methodSpecification);
@@ -251,6 +257,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         writeDescription();
         
+        writeInnerTypes(innerAliases, "section-nested-aliases", "Nested Aliases");
         writeInnerTypes(innerInterfaces, "section-nested-interfaces", "Nested Interfaces");
         writeInnerTypes(innerClasses, "section-nested-classes", "Nested Classes");
         writeInnerTypes(innerExceptions, "section-nested-exceptions", "Nested Exceptions");
@@ -303,6 +310,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         if (hasAnyMethods()) {
             writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
+        }
+        if (!innerAliases.isEmpty()) {
+            writeSubNavBarLink("#section-nested-aliases", "Nested Aliases", 'l', "Jump to nested aliases");
         }
         if (!innerInterfaces.isEmpty()) {
             writeSubNavBarLink("#section-nested-interfaces", "Nested Interfaces", 'I', "Jump to nested interfaces");
@@ -482,12 +492,19 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("td", "tr");
     }
     
-    private void writeInnerTypes(List<? extends ClassOrInterface> innerTypeDeclarations, String id, String title) throws IOException {
+    private void writeInnerTypes(List<? extends TypeDeclaration> innerTypeDeclarations, String id, String title) throws IOException {
         if (!innerTypeDeclarations.isEmpty()) {
             openTable(id, title, 2, true);
-            for (ClassOrInterface innerTypeDeclaration : innerTypeDeclarations) {
-                tool.doc(innerTypeDeclaration);
-                doc(innerTypeDeclaration);
+            for (TypeDeclaration innerTypeDeclaration : innerTypeDeclarations) {
+                if (innerTypeDeclaration instanceof ClassOrInterface) {
+                    ClassOrInterface innerClassOrInterface = (ClassOrInterface) innerTypeDeclaration;
+                    tool.doc(innerClassOrInterface);
+                    doc(innerClassOrInterface);
+                }
+                if (innerTypeDeclaration instanceof TypeAlias) {
+                    TypeAlias innerAlias = (TypeAlias) innerTypeDeclaration;
+                    doc(innerAlias);
+                }
             }
             closeTable();
         }
@@ -543,6 +560,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         if (hasAnyMethods()) {
             registerKeyboardShortcut('m', "#section-methods");
+        }
+        if (!innerAliases.isEmpty()) {
+            registerKeyboardShortcut('l', "#section-nested-aliases");
         }
         if (!innerInterfaces.isEmpty()) {
             registerKeyboardShortcut('i', "#section-nested-interfaces");

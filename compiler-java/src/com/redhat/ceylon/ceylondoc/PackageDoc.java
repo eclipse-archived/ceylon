@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class PackageDoc extends ClassOrPackageDoc {
@@ -46,6 +47,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     private final List<MethodOrValue> attributes = new ArrayList<MethodOrValue>();
     private final List<Method> methods = new ArrayList<Method>();
     private final List<Class> exceptions = new ArrayList<Class>();
+    private final List<TypeAlias> aliases = new ArrayList<TypeAlias>();
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
@@ -72,6 +74,8 @@ public class PackageDoc extends ClassOrPackageDoc {
                 attributes.add((MethodOrValue) m);
             } else if (m instanceof Method) {
                 methods.add((Method) m);
+            } else if (m instanceof TypeAlias) {
+                aliases.add((TypeAlias) m);                
             }
         }
         
@@ -80,6 +84,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         Collections.sort(attributes, DeclarationComparatorByName.INSTANCE);
         Collections.sort(methods, DeclarationComparatorByName.INSTANCE);
         Collections.sort(exceptions, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(aliases, DeclarationComparatorByName.INSTANCE);
     }
 
     public void generate() throws IOException {
@@ -93,6 +98,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div class='container-fluid'");
         
         writeDescription();
+        writeAliases();
         writeAttributes();
         writeMethods();
         writeInterfaces();
@@ -126,6 +132,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (!sharingPageWithModule) {
             writeSubNavBarLink(linkRenderer().to(module).getUrl(), "Overview", 'O', "Jump to module documentation");
         }
+        if (!aliases.isEmpty()) {
+            writeSubNavBarLink("#section-aliases", "Aliases", 'l', "Jump to aliases");
+        }
         if (!attributes.isEmpty()) {
             writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
         }
@@ -152,16 +161,16 @@ public class PackageDoc extends ClassOrPackageDoc {
         writeBy(pkg);
         close("div");
     }
-
-    private void writeMethods() throws IOException {
-        if (methods.isEmpty()) {
+    
+    private void writeAliases() throws IOException {
+        if(aliases.isEmpty()) {
             return;
         }
-        openTable("section-methods", "Methods", 2, true);
-        for (Method m : methods) {
-            doc(m);
+        openTable("section-aliases", "Aliases", 2, true);
+        for (TypeAlias a : aliases) {
+            doc(a);
         }
-        close("table");
+        closeTable();
     }
 
     private void writeAttributes() throws IOException {
@@ -171,6 +180,17 @@ public class PackageDoc extends ClassOrPackageDoc {
         openTable("section-attributes", "Attributes", 2, true);
         for (MethodOrValue v : attributes) {
             doc(v);
+        }
+        closeTable();
+    }
+    
+    private void writeMethods() throws IOException {
+        if (methods.isEmpty()) {
+            return;
+        }
+        openTable("section-methods", "Methods", 2, true);
+        for (Method m : methods) {
+            doc(m);
         }
         closeTable();
     }
@@ -211,6 +231,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     @Override
     protected void registerAdditionalKeyboardShortcuts() throws IOException {
         registerKeyboardShortcut('p', "index.html");
+        if (!aliases.isEmpty()) {
+            registerKeyboardShortcut('l', "#section-aliases");
+        } 
         if (!attributes.isEmpty()) {
             registerKeyboardShortcut('a', "#section-attributes");
         } 

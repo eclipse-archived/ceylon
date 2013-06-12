@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -58,6 +59,39 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
 		super(module, tool, writer);
 	}
+    
+    protected final void doc(TypeAlias alias) throws IOException {
+        open("tr");
+        
+        open("td id='" + alias.getName() + "' nowrap");
+        writeIcon(alias);
+        write(alias.getName());
+        close("td");
+        
+        open("td");
+        writeLinkOneSelf(alias);
+        writeLinkSource(alias);
+        writeTagged(alias);
+        open("div class='signature'");
+        around("span class='modifiers'", getModifiers(alias));
+        write(" ");
+        write(alias.getName());
+        if (!alias.getTypeParameters().isEmpty()) {
+            writeTypeParameters(alias.getTypeParameters());
+            writeTypeParametersConstraints(alias.getTypeParameters());
+            open("div class='type-alias-specifier'");
+        }
+        around("span class='specifier-operator'", " => ");
+        linkRenderer().to(alias.getExtendedType()).write();
+        if (!alias.getTypeParameters().isEmpty()) {
+            close("div"); // type-alias-specifier
+        }
+        close("div"); // signature
+        writeDescription(alias);
+        close("td");
+        
+        close("tr");
+    }
 
     protected final void doc(ClassOrInterface d) throws IOException {
         open("tr");
@@ -223,6 +257,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeSee(d);
             writeLinkToRefinedDeclaration(d);
         }
+        if (d instanceof TypeAlias) {
+            writeBy(d);
+            writeSee(d);
+        }
         close("div"); // description
     }
     
@@ -235,7 +273,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
 
-    private void writeLinkSource(TypedDeclaration d) throws IOException {
+    private void writeLinkSource(Declaration d) throws IOException {
         if (!tool.isIncludeSourceCode()) {
             return;
         }

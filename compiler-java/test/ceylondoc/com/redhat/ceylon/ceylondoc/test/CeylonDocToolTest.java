@@ -216,6 +216,7 @@ public class CeylonDocToolTest {
         assertGenericTypeParams(destDir);
         assertObjectPageDifferences(destDir);
         assertSharedParameterOfClass(destDir);
+        assertAliases(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -692,7 +693,7 @@ public class CeylonDocToolTest {
     
 	private void assertSequencedParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<span class='void'>void</span> methodWithSequencedParameter\\(Integer\\[\\] numbers\\)"));
+                Pattern.compile("<span class='void'>void</span> methodWithSequencedParameter\\(<span title='ceylon.language::Integer'>Integer</span>\\[\\] numbers\\)"));
 	}
     
     private void assertCallableParameter(File destDir) throws IOException {
@@ -700,7 +701,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("methodWithCallableParameter1\\(<span class='void'>void</span> onClick\\(\\)\\)"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
-                  Pattern.compile("methodWithCallableParameter2<span class='type-parameter'>&lt;Element&gt;</span>\\(Boolean selecting\\(<span class='type-parameter'>Element</span> element\\)\\)"));
+                  Pattern.compile("methodWithCallableParameter2<span class='type-parameter'>&lt;Element&gt;</span>\\(<span title='ceylon.language::Boolean'>Boolean</span> selecting\\(<span class='type-parameter'>Element</span> element\\)\\)"));
 
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("methodWithCallableParameter3\\(<span class='void'>void</span> fce1\\(<span class='void'>void</span> fce2\\(<span class='void'>void</span> fce3\\(\\)\\)\\)\\)"));
@@ -708,15 +709,15 @@ public class CeylonDocToolTest {
     
     private void assertTupleParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("methodWithTouple1\\(\\[Integer, Float\\] t\\)"));
+                Pattern.compile("methodWithTouple1\\(\\[<span title='ceylon.language::Integer'>Integer</span>, <span title='ceylon.language::Float'>Float</span>\\] t\\)"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("methodWithTouple2<span class='type-parameter'>&lt;T&gt;</span>\\(\\[String|<span class='type-parameter'>T</span>, Integer=, Float\\*\\] t\\)"));
+                Pattern.compile("methodWithTouple2<span class='type-parameter'>&lt;T&gt;</span>\\(\\[<span title='ceylon.language::String'>String</span>|<span class='type-parameter'>T</span>, <span title='ceylon.language::Integer'>Integer=</span>, <span title='ceylon.language::Float'>Float</span>\\*\\] t\\)"));
     }
     
     private void assertAnythingReturnType(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("Anything methodWithAnything\\(\\)"));
+                Pattern.compile("<span title='ceylon.language::Anything'>Anything</span> methodWithAnything\\(\\)"));
     }
 
     private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws IOException {
@@ -786,17 +787,17 @@ public class CeylonDocToolTest {
     
     private void assertConstants(File destDir) throws IOException {
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("String constAbc<span class='specifier-operator'> = </span><span class='specifier-start'> \"abcdef\"</span><span class='specifier-semicolon'>;</span>"));
+                Pattern.compile("<span title='ceylon.language::String'>String</span> constAbc<span class='specifier-operator'> = </span><span class='specifier-start'> \"abcdef\"</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("String constLoremIpsumMultiLine<span class='specifier-operator'> = </span><span class='specifier-start'> \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, </span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>                                          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
+                Pattern.compile("<span title='ceylon.language::String'>String</span> constLoremIpsumMultiLine<span class='specifier-operator'> = </span><span class='specifier-start'> \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, </span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>                                          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("String\\[\\] constAbcArray<span class='specifier-operator'> = </span><span class='specifier-start'> \\[</span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>    \"abc\","));
+                Pattern.compile("<span title='ceylon.language::String'>String</span>\\[\\] constAbcArray<span class='specifier-operator'> = </span><span class='specifier-start'> \\[</span><a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'>...</a><div class='specifier-rest'>    \"abc\","));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("Character constCharA<span class='specifier-operator'> = </span><span class='specifier-start'> 'A'</span><span class='specifier-semicolon'>;</span>"));
+                Pattern.compile("<span title='ceylon.language::Character'>Character</span> constCharA<span class='specifier-operator'> = </span><span class='specifier-start'> 'A'</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("Integer constNumTwo<span class='specifier-operator'> = </span><span class='specifier-start'> constNumZero \\+ 1 \\+ 1</span><span class='specifier-semicolon'>;</span>"));
+                Pattern.compile("<span title='ceylon.language::Integer'>Integer</span> constNumTwo<span class='specifier-operator'> = </span><span class='specifier-start'> constNumZero \\+ 1 \\+ 1</span><span class='specifier-semicolon'>;</span>"));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("Float constNumPI<span class='specifier-operator'> = </span><span class='specifier-start'> 3.14</span><span class='specifier-semicolon'>;</span>"));
+                Pattern.compile("<span title='ceylon.language::Float'>Float</span> constNumPI<span class='specifier-operator'> = </span><span class='specifier-start'> 3.14</span><span class='specifier-semicolon'>;</span>"));
     }
     
     private void assertLinksToRefinedDeclaration(File destDir) throws IOException {
@@ -810,20 +811,20 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
                 Pattern.compile("<span class='sub-navbar-name'>StubClassWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, T1, T2, T3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>\\{<a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>\\*\\}&gt;</span></span>"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T1</span><span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T1</span><span class='type-parameter-keyword'> satisfies </span><span title='ceylon.language::Number'>Number</span> &amp; <span title='ceylon.language::Closeable'>Closeable</span></div>"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T2</span><span class='type-parameter-keyword'> of </span>Number | String</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T2</span><span class='type-parameter-keyword'> of </span><span title='ceylon.language::Number'>Number</span> | <span title='ceylon.language::String'>String</span></div>"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(String s\\)</div></div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(<span title='ceylon.language::String'>String</span> s\\)</div></div>"));
         
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> methodWithGenericTypeParams<span class='type-parameter'>&lt;<span class='type-parameter-keyword'>in </span>ContravariantType, X1, X2, X3, <span class='type-parameter-keyword'>out </span>CovariantType, DefaultedType<span class='type-parameter-keyword'> = </span>\\{<a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>\\*\\}&gt;</span>\\(\\)"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>X1</span><span class='type-parameter-keyword'> satisfies </span>Number &amp; Closeable</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>X1</span><span class='type-parameter-keyword'> satisfies </span><span title='ceylon.language::Number'>Number</span> &amp; <span title='ceylon.language::Closeable'>Closeable</span></div>"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>X2</span><span class='type-parameter-keyword'> of </span>Number | String</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>X2</span><span class='type-parameter-keyword'> of </span><span title='ceylon.language::Number'>Number</span> | <span title='ceylon.language::String'>String</span></div>"));
         assertMatchInFile(destDir, "StubClassWithGenericTypeParams.type.html",
-                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(String s\\)</div>"));
+                Pattern.compile("<div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T3</span>\\(<span title='ceylon.language::String'>String</span> s\\)</div>"));
     }
     
     private void assertObjectPageDifferences(File destDir) throws IOException {
@@ -880,7 +881,27 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<td id='printHello' nowrap><i class='icon-shared-member'></i>printHello</td>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> printHello\\(String name\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> printHello\\(<span title='ceylon.language::String'>String</span> name\\)</div>"));
+    }
+    
+    private void assertAliases(File destDir) throws IOException {
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("Aliases"));        
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<td id='AliasEntry' nowrap><i class='icon-type-alias'></i>AliasEntry</td>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> AliasEntry<span class='type-parameter'>&lt;T&gt;</span><div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T</span><span class='type-parameter-keyword'> satisfies </span><span title='ceylon.language::Object'>Object</span></div><div class='type-alias-specifier'><span class='specifier-operator'> => </span><span class='type-parameter'>T</span>-&gt;<span class='type-parameter'>T</span></div>"));
+        
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<td id='AliasStubs' nowrap><i class='icon-decoration-deprecated'><i class='icon-type-alias'></i></i>AliasStubs</td>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> AliasStubs<span class='specifier-operator'> => </span><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>|<a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>|<a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'>StubException</a>|<span title='ceylon.language::Null'>Null</span></div>")); 
+        
+        assertMatchInFile(destDir, "StubClassWithAlias.type.html",
+                Pattern.compile("Nested Aliases"));
+        assertMatchInFile(destDir, "StubClassWithAlias.type.html",
+                Pattern.compile("<td id='InnerAliasNumber' nowrap><i class='icon-type-alias'></i>InnerAliasNumber</td><td>"));        
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
@@ -892,28 +913,28 @@ public class CeylonDocToolTest {
 
     private void assertBug691AbbreviatedOptionalType(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> String\\? bug691AbbreviatedOptionalType1\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span title='ceylon.language::String'>String</span>\\? bug691AbbreviatedOptionalType1\\(\\)</div>"));
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\? bug691AbbreviatedOptionalType2<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
     
     private void assertBug839(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{&lt;Integer-&gt;<span class='type-parameter'>Element</span>&amp;Object&gt;\\*\\} bug839<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{&lt;<span title='ceylon.language::Integer'>Integer</span>-&gt;<span class='type-parameter'>Element</span>&amp;<span title='ceylon.language::Object'>Object</span>&gt;\\*\\} bug839<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
     }
 
     private void assertBug968(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{Integer\\*\\} bug968_1\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{<span title='ceylon.language::Integer'>Integer</span>\\*\\} bug968_1\\(\\)</div>"));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{Integer\\+\\} bug968_2\\(\\)</div>"));
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{<span title='ceylon.language::Integer'>Integer</span>\\+\\} bug968_2\\(\\)</div>"));
     }
 
     private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws IOException {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("Inherited Attributes"));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i>Object<div class='inherited-members'>hash, string</div></td>"));
+                Pattern.compile("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i><span title='ceylon.language::Object'>Object</span><div class='inherited-members'>hash, string</div></td>"));
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#string' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.string'>string</a></div></td>"));
     }

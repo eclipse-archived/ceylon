@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -72,13 +73,20 @@ public class LinkRenderer {
             if (declaration instanceof ClassOrInterface) {
                 ClassOrInterface clazz = (ClassOrInterface) declaration;
                 String clazzUrl = getUrl(clazz, null);
-                result = clazzUrl != null ? buildLinkElement(clazzUrl, clazz.getName(), "Go to " + clazz.getQualifiedNameString()) : clazz.getName();
+                if (clazzUrl != null) {
+                    result = buildLinkElement(clazzUrl, clazz.getName(), "Go to " + clazz.getQualifiedNameString());
+
+                } else {
+                    result = buildSpanElementWithNameAndTooltip(declaration);
+                }
             } else if (declaration instanceof TypeParameter) {
                 result = "<span class='type-parameter'>" + declaration.getName(unit) + "</span>";
             } else if (declaration instanceof TypedDeclaration) {
                 result = processTypedDeclaration((TypedDeclaration) declaration);
+            } else if (declaration instanceof TypeAlias) {
+                result = processTypeAlias((TypeAlias) declaration);
             } else {
-                result = declaration.getName();
+                result = buildSpanElementWithNameAndTooltip(declaration);
             }
             
             return encodeResult(result);
@@ -234,6 +242,18 @@ public class LinkRenderer {
             return buildLinkElement(url, declName, "Go to " + decl.getQualifiedNameString());
         } else {
             return declName;
+        }
+    }
+    
+    private String processTypeAlias(TypeAlias alias) {
+        String aliasName = alias.getName();
+        Scope aliasContainer = alias.getContainer();
+
+        String url = getUrl(aliasContainer, alias);
+        if (url != null) {
+            return buildLinkElement(url, aliasName, "Go to " + alias.getQualifiedNameString());
+        } else {
+            return buildSpanElementWithNameAndTooltip(alias);
         }
     }
 
@@ -461,7 +481,21 @@ public class LinkRenderer {
         }
         linkBuilder.append("</a>");
         return linkBuilder.toString();
-    }    
+    }
+    
+    private String buildSpanElementWithNameAndTooltip(Declaration d) {
+        StringBuilder spanBuilder = new StringBuilder();
+        spanBuilder.append("<span title='");
+        spanBuilder.append(d.getQualifiedNameString());
+        spanBuilder.append("'>");
+        if (customText != null) {
+            spanBuilder.append(customText);
+        } else {
+            spanBuilder.append(d.getName());
+        }
+        spanBuilder.append("</span>");
+        return spanBuilder.toString();
+    }
 
     private String buildModuleUrl(String moduleRepoUrl, Module module) {
         StringBuilder moduleUrlBuilder = new StringBuilder();
