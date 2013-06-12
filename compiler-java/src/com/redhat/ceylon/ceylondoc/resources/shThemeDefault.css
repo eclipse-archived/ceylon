@@ -172,6 +172,6 @@
 .syntaxhighlighter .color3,
 .syntaxhighlighter .color3 a
 { 
-    color: red !important; 
+    color: darkgray !important; 
     font-style: italic !important;
 }
