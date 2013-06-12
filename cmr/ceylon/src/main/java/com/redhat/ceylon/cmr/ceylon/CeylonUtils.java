@@ -248,14 +248,14 @@ public class CeylonUtils {
                 }
             }
                 
-            // Add globally defined repos (like the user repo and the default remote Herd repo)
-            Repositories.Repository[] lookups = repositories.getGlobalLookupRepositories();
-            for (Repositories.Repository lookup : lookups) {
+            // Add default non-remote repos (like the user repo)
+            Repositories.Repository[] globals = repositories.getGlobalLookupRepositories();
+            for (Repositories.Repository lookup : globals) {
                 addRepo(config, builder, lookup, false);
             }
 
-            // Add the "remote" repos (not necessarily remote but they're called that way
-            // because they will always come last in the list)
+            // Add the "remote" repos (not necessarily remote but it's at the point in the
+            // lookup order where you'd normally define remote repos)
             if (remoteRepos != null && !remoteRepos.isEmpty()) {
                 // Add remote repos
                 for (String repo : remoteRepos) {
@@ -267,6 +267,13 @@ public class CeylonUtils {
                 for (Repositories.Repository lookup : repos) {
                     addRepo(config, builder, lookup, false);
                 }
+            }
+
+            // Add the remaining ("other") default repos (like the Herd repo),
+            // these will always come last
+            Repositories.Repository[] others = repositories.getOtherLookupRepositories();
+            for (Repositories.Repository lookup : others) {
+                addRepo(config, builder, lookup, false);
             }
 
             log.debug("Repository lookup order:");
