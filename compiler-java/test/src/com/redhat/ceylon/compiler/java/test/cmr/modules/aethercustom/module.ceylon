@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "Bla bla."
-by "The Ceylon Team"
-license "http://www.gnu.org/licenses/gpl.html"
+"Bla bla."
+by("The Ceylon Team")
+license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.aethercustom '6.6.6' {
     import 'org.restlet:org.restlet' '1.1.10';
 }

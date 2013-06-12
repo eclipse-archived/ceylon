@@ -17,5 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "Great documentation"
+"Great documentation"
 shared package com.redhat.ceylon.compiler.java.test.structure.pkg;

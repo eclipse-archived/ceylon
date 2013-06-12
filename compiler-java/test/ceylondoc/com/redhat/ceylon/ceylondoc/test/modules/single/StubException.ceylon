@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is `StubException`"
+"This is `StubException`"
 shared class StubException()
         extends Exception("stub exception", null) {
 }

@@ -19,46 +19,46 @@ import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is `StubClass`"
+"This is `StubClass`"
 see(StubInterface, stubTopLevelAttribute, stubTopLevelMethod)
 tagged("stubTag1", "stubTag2")
-throws (StubException)
+throws(StubException)
 shared class StubClass(
-  doc "Initializer parameter `a`" Integer a,
-  doc "Initializer parameter `b`" Integer b,
+  "Initializer parameter `a`" Integer a,
+  "Initializer parameter `b`" Integer b,
   shared void printHello(String name) => print("Hello ``name``")) 
     satisfies StubInterface {
 
-    doc "The stub attribute with `throws`."
-    throws (OverflowException, "if the number is too large to be represented as an integer")
+    "The stub attribute with `throws`."
+    throws(OverflowException, "if the number is too large to be represented as an integer")
     shared Integer attributeWithThrows = 0;
     
-    doc "The stub attribute with `see`."
-    see (methodWithSee, stubObject.foo)
+    "The stub attribute with `see`."
+    see(methodWithSee, stubObject.foo)
     shared Integer attributeWithSee = 0;
     
-    doc "The stub attribute with `tagged`."
+    "The stub attribute with `tagged`."
     tagged("stubTag1")
     shared Integer attributeWithTagged = 0;
     
-    doc "The stub method with parameters documentation."
+    "The stub method with parameters documentation."
     shared void methodWithParametersDocumentation(
-        doc "Method parameter `a`" Integer a, 
-        doc "Method parameter `b`" Integer b) {}
+        "Method parameter `a`" Integer a, 
+        "Method parameter `b`" Integer b) {}
     
-    doc "The stub method with `throws`."
-    throws (StubException, "`when` with __WIKI__ syntax")
+    "The stub method with `throws`."
+    throws(StubException, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
     
-    doc "The stub method with `see`."
-    see (attributeWithSee, StubException, A1)
+    "The stub method with `see`."
+    see(attributeWithSee, StubException, A1)
     shared void methodWithSee() {}
     
-    doc "The stub method with `tagged` and long description <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>"
+    "The stub method with `tagged` and long description <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>"
     tagged("stubTag2")
     shared void methodWithTagged() {}
     
-    doc "The stub method with sequenced parameter."
+    "The stub method with sequenced parameter."
     shared void methodWithSequencedParameter(Integer* numbers) {}
     
     shared void methodWithCallableParameter1(void onClick()) {}
@@ -73,9 +73,40 @@ shared class StubClass(
     
     shared Anything methodWithAnything() { throw; }
     
-    doc "Test fenced code block delimited by backticks \` with syntax highlighter.
+    "Test fenced code block delimited by backticks \` with syntax highlighter.
          
-         \`\``ceylon
+     \`\``ceylon
+     shared default Boolean subset(Set set) {
+         for (element in this) {
+             if (!set.contains(element)) {
+                 return false;
+             }
+         }
+         return true;
+     }
+     \`\``
+     
+     <i>Lorem ipsum dolor sit amet, consectetur...</i>"
+    shared void methodWithCodeExamples() {}
+    
+    "Test fenced code block delimited by tilde ~ with syntax highlighter.
+     
+     ~~~~~~ceylon
+     shared actual default Integer hash {
+         variable Integer hashCode = 1;
+         for (Element elem in this) {
+             hashCode *= 31;
+             hashCode += elem.hash;
+         }
+         return hashCode;
+     }         
+     ~~~~~~
+     
+     <i>Lorem ipsum dolor sit amet, consectetur...</i>"
+    shared void methodWithCodeExamples2() {}
+    
+    "Test automatic syntax highlighter.
+     
          shared default Boolean subset(Set set) {
              for (element in this) {
                  if (!set.contains(element)) {
@@ -84,72 +115,41 @@ shared class StubClass(
              }
              return true;
          }
-         \`\``
-         
-         <i>Lorem ipsum dolor sit amet, consectetur...</i>"
-    shared void methodWithCodeExamples() {}
-    
-    doc "Test fenced code block delimited by tilde ~ with syntax highlighter.
-         
-         ~~~~~~ceylon
-         shared actual default Integer hash {
-             variable Integer hashCode = 1;
-             for (Element elem in this) {
-                 hashCode *= 31;
-                 hashCode += elem.hash;
-             }
-             return hashCode;
-         }         
-         ~~~~~~
-         
-         <i>Lorem ipsum dolor sit amet, consectetur...</i>"
-    shared void methodWithCodeExamples2() {}
-    
-    doc "Test automatic syntax highlighter.
-         
-             shared default Boolean subset(Set set) {
-                 for (element in this) {
-                     if (!set.contains(element)) {
-                         return false;
-                     }
-                 }
-                 return true;
-             }
-         
-         <i>Lorem ipsum dolor sit amet, consectetur...</i>"
+     
+     <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamplesAutomaticSyntaxHighlighter() {}
     
     
-    doc "Wiki-style links:
-         
-         1. StubClass = [[StubClass]]
-         1. StubInterface = [[StubInterface]]
-         1. StubInnerException = [[StubInnerException]]
-         1. stubTopLevelMethod = [[stubTopLevelMethod]]
-         1. stubTopLevelAttribute = [[stubTopLevelAttribute]]
-         1. StubInterface.formalMethodFromStubInterface = [[StubInterface.formalMethodFromStubInterface]]
-         1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
-         1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
-         1. StubInterface with custom name = [[custom stub interface|StubInterface]]
-         1. stubObject = [[stubObject]]
-         1. stubObject.foo = [[stubObject.foo]]
-         1. stubObject.stubInnerObject = [[stubObject.stubInnerObject]]
-         1. stubObject.stubInnerObject.fooInner = [[stubObject.stubInnerObject.fooInner]]
-         1. unresolvable1 = [[unresolvable]]
-         1. unresolvable2 = [[unresolvable with custom name|unresolvable]]
-         1. imported A1 = [[A1]]
-         1. imported AliasA2 = [[AliasA2]]
-         
-         
-         Wiki-style links with full qualified name:
-         
-         1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
-         1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface]]
-         1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
-         1. fullUnresolvable1 = [[unresolvable::Bar]]
-         1. fullUnresolvable2 = [[unresolvable.bar::Bar.foo]]
-         
-         "
+    "Wiki-style links:
+     
+     1. StubClass = [[StubClass]]
+     1. StubInterface = [[StubInterface]]
+     1. StubInnerException = [[StubInnerException]]
+     1. stubTopLevelMethod = [[stubTopLevelMethod]]
+     1. stubTopLevelAttribute = [[stubTopLevelAttribute]]
+     1. StubInterface.formalMethodFromStubInterface = [[StubInterface.formalMethodFromStubInterface]]
+     1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
+     1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
+     1. StubInterface with custom name = [[custom stub interface|StubInterface]]
+     1. stubObject = [[stubObject]]
+     1. stubObject.foo = [[stubObject.foo]]
+     1. stubObject.stubInnerObject = [[stubObject.stubInnerObject]]
+     1. stubObject.stubInnerObject.fooInner = [[stubObject.stubInnerObject.fooInner]]
+     1. unresolvable1 = [[unresolvable]]
+     1. unresolvable2 = [[unresolvable with custom name|unresolvable]]
+     1. imported A1 = [[A1]]
+     1. imported AliasA2 = [[AliasA2]]
+     
+     
+     Wiki-style links with full qualified name:
+     
+     1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
+     1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface]]
+     1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface]]
+     1. fullUnresolvable1 = [[unresolvable::Bar]]
+     1. fullUnresolvable2 = [[unresolvable.bar::Bar.foo]]
+     
+     "
     shared void methodWithLinksInDoc() {}
         
     shared actual void formalMethodFromStubInterface() {}
@@ -165,7 +165,7 @@ shared class StubClass(
     shared Iterable<Integer> bug968_1() { throw; }
     shared Iterable<Integer, Nothing> bug968_2() { throw; }
     
-    doc "This is `StubInnerInterface`"
+    "This is `StubInnerInterface`"
     tagged("stubInnerTag1")
     shared interface StubInnerInterface {
 
@@ -184,17 +184,17 @@ shared class StubClass(
 
     }
     
-    doc "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-         
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-         
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-         
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-         
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+     
+     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+     
+     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+     
+     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+     
+     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     shared void zzzIssue1072LinkingToMemberShouldExpandAndScrollDoc() {}
     
 }

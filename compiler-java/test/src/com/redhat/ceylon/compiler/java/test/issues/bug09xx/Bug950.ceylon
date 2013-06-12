@@ -30,6 +30,6 @@ shared interface Bug950_Right satisfies Bug950_Top {
     shared actual void foo(){}
 }
 @noanno
-doc "Goo"
+"Goo"
 shared class Bug950_Bottom() satisfies Bug950_Left & Bug950_Right {
 }

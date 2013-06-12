@@ -21,7 +21,7 @@ abstract class FormalClasses_Graph<N,E>()
     given N satisfies Node
     given E satisfies Edge {
 
-    doc "An Edge joins two Nodes. This is an 
+    "An Edge joins two Nodes. This is an 
          abstract type with a concrete
          implementation for each implementation
          of the family"
@@ -33,7 +33,7 @@ abstract class FormalClasses_Graph<N,E>()
         }
     }
 
-    doc "A Node. This is an abstract type with
+    "A Node. This is an abstract type with
          a concrete implementation for each 
          implementation of the family"
     shared formal class Node() of N {

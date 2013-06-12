@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-deprecated "This is `DeprecatedClass`"
+deprecated("This is `DeprecatedClass`")
 shared class DeprecatedClass() {
 
-    doc "Long time ago was this attribute useful."
-    deprecated "Don't use this attribute!"
+    "Long time ago was this attribute useful."
+    deprecated("Don't use this attribute!")
     shared void deprecatedAttribute() {} 
     
-    doc "Long time ago was this method useful and <cite>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</cite>"
-    deprecated "Don't use this method and <cite>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</cite>"
+    "Long time ago was this method useful and <cite>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</cite>"
+    deprecated("Don't use this method and <cite>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</cite>")
     shared void deprecatedMethod() {}    
 
-    deprecated "Don't use this inner class!"
+    deprecated("Don't use this inner class!")
     shared class DeprecatedInnerClass() {
     }
     

@@ -21,10 +21,10 @@ abstract class Bug796_Graph<N,E>()
     given N satisfies Node
     given E satisfies Edge {
 
-    doc "An Edge joins two Nodes. This is an 
-         abstract type with a concrete
-         implementation for each implementation
-         of the family"
+    "An Edge joins two Nodes. This is an 
+     abstract type with a concrete
+     implementation for each implementation
+     of the family"
     shared formal class Edge(n1, n2) of E {
         shared N n1;
         shared N n2;
@@ -33,9 +33,9 @@ abstract class Bug796_Graph<N,E>()
         }
     }
 
-    doc "A Node. This is an abstract type with
-         a concrete implementation for each 
-         implementation of the family"
+    "A Node. This is an abstract type with
+     a concrete implementation for each 
+     implementation of the family"
     shared formal class Node() of N {
         shared default Boolean touches(E edge) {
             return edge.touches(this of N);

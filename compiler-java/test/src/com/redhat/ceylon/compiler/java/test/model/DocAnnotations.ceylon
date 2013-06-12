@@ -17,47 +17,47 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "Foo"
+"Foo"
 shared interface DocAnnotationsInterface{
-    doc "Foo"
+    "Foo"
     shared formal void m();
 }
 
-doc "Bla bla doc"
-by ("Stef", "FroMage")
-see (DocAnnotations)
+"Bla bla doc"
+by("Stef", "FroMage")
+see(DocAnnotations)
 shared class DocAnnotations() satisfies DocAnnotationsInterface {
-    doc "Bla bla doc on field"
-    see (DocAnnotations)
+    "Bla bla doc on field"
+    see(DocAnnotations)
     shared Integer attr = 2;
 
-    doc "Foo"
+    "Foo"
     shared Integer getter { return 1; }
     assign getter {}
 
-    doc "Bla bla doc on method"
-    see (DocAnnotations)
-    throws (Exception, "when things go kaboom")
+    "Bla bla doc on method"
+    see(DocAnnotations)
+    throws(Exception, "when things go kaboom")
     shared actual void m(){}
 
-    doc "Bla bla doc on inner class"
-    see (InnerClass)
-    by ("Stef", "FroMage")
+    "Bla bla doc on inner class"
+    see(InnerClass)
+    by("Stef", "FroMage")
     shared class InnerClass(){}
 }
 
-doc "Foo"
+"Foo"
 shared Integer docAnnotationsAttr = 1;
 
-doc "Foo"
+"Foo"
 shared Integer docAnnotationsGetter { return 1; }
 assign docAnnotationsGetter {}
 
-doc "Foo"
+"Foo"
 shared void docAnnotationsMethod(){}
 
-doc "Foo"
+"Foo"
 shared object docAnnotationsObject satisfies DocAnnotationsInterface{
-    doc "Bar"
+    "Bar"
     shared actual void m() {}
 }

@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "The stub top level attribute"
-see (StubClass, stubTopLevelMethod)
+"The stub top level attribute"
+see(StubClass, stubTopLevelMethod)
 shared StubClass stubTopLevelAttribute = StubClass(0, 0);

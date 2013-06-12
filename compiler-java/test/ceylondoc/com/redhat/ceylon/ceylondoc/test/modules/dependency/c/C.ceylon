@@ -21,7 +21,7 @@ import com.redhat.ceylon.ceylondoc.test.modules.dependency.b { B }
 
 shared class C() extends B(){}
 
-doc "The classic Hello World program"
+"The classic Hello World program"
 shared void helloworld() {
     if (nonempty args=process.arguments) {
         process.write("Hello ");

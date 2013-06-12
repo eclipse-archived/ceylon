@@ -17,5 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is a **test** package"
+"This is a **test** package"
 shared package com.redhat.ceylon.ceylondoc.test.modules.single;

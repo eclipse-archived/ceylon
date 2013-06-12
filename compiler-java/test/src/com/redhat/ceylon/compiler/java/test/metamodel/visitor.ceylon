@@ -13,20 +13,20 @@ import ceylon.language.metamodel.declaration { ... }
 void visitStringHierarchy(){
     value classType = type("falbala");
     
-    doc "metamodel is Class"
+    "metamodel is Class"
     assert(is Class<Anything,[String]> classType);
     
     value klass = classType.declaration;
     
-    doc "metamodel class name is String"
+    "metamodel class name is String"
     assert(klass.name == "String");
     
     value st = klass.superclass;
     
-    doc "super class exists"
+    "super class exists"
     assert(exists st);
     
-    doc "metamodel superclass name is Object"
+    "metamodel superclass name is Object"
     assert(st.declaration.name == "Object");
     
     queue = [klass];

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is a **test** module"
-by "Tom Bentley"
-license "http://www.gnu.org/licenses/gpl.html"
+"This is a **test** module"
+by("Tom Bentley")
+license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.ceylondoc.test.modules.single '3.1.4' {}

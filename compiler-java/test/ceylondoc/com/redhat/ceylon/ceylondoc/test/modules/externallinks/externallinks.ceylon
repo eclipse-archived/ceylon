@@ -24,21 +24,21 @@ import com.redhat.ceylon.ceylondoc.test.modules.dependency.c { C }
 shared B fceB() { throw; }
 shared C fceC() { throw; }
 
-doc "External links:
-     
-     - b = [[b]]
-     - B = [[B]]
-     - B.b = [[B.b]]
-     - b2 = [[b2]]
-     - B2 = [[B2]]
-     - B2.b2 = [[B2.b2]]
+"External links:
+ 
+ - b = [[b]]
+ - B = [[B]]
+ - B.b = [[B.b]]
+ - b2 = [[b2]]
+ - B2 = [[B2]]
+ - B2.b2 = [[B2.b2]]
 
-     - com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b]]
-     - com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B]]
-     - com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b]]
-     - com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2]]
-     - com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2 = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2]]
-     - com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2]]
-     
-     "     
+ - com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b]]
+ - com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B]]
+ - com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b]]
+ - com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2]]
+ - com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2 = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2]]
+ - com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = [[com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2]]
+ 
+ "     
 shared void fceWithExternalLinksInDoc() {}

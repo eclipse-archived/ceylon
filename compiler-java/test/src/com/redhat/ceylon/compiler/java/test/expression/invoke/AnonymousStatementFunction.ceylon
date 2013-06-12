@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-doc "test"
+"test"
 void anonymousStatementFunction() {
     void fff(Anything(Object) callable) {}
     void ggg(Float(Float) callable) {}

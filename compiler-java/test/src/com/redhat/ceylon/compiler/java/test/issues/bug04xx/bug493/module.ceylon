@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @noanno
-doc "A JSON parser / serialiser"
-by "Stéphane Épardaud"
+"A JSON parser / serialiser"
+by("Stéphane Épardaud")
 module com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug493 '1' {}

@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-doc "The classic Hello World program"
+"The classic Hello World program"
 shared void helloworld() {
     if (nonempty args=process.arguments) {
         process.write("Hello ");

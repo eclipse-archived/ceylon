@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "Bla bla."
-by "David Festal"
-license "http://www.gnu.org/licenses/gpl.html"
+"Bla bla."
+by("David Festal")
+license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.implicit.a '1.2.3' {}

@@ -17,58 +17,58 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is `SharedClass`"
+"This is `SharedClass`"
 see(PrivateClass) 
 shared class SharedClass() {
-    doc "This simple attribte is `shared`"
+    "This simple attribte is `shared`"
     shared Integer sharedAttribute = 1;
     
-    doc "This simple attribute is not `shared`"
+    "This simple attribute is not `shared`"
     Integer privateAttribute = 1;
     
-    doc "This getter is `shared`"
+    "This getter is `shared`"
     shared Integer sharedGetter {
         return 1;
     }
     
-    doc "This getter is not `shared`"
+    "This getter is not `shared`"
     Integer privateGetter {
         return 1;
     }
     
-    doc "This method is `shared`"
+    "This method is `shared`"
     shared void sharedMethod() {}
     
-    doc "This method is not `shared`"
+    "This method is not `shared`"
     void privateMethod() {}
         
 }
 
-doc "This is `PrivateClass`"
+"This is `PrivateClass`"
 by("Tom Bentley")
 see(SharedClass)
 class PrivateClass() {
     
-    doc "This simple attribte is `shared`"
+    "This simple attribte is `shared`"
     shared Integer sharedAttribute = 1;
     
-    doc "This simple attribute is not `shared`"
+    "This simple attribute is not `shared`"
     Integer privateAttribute = 1;
     
-    doc "This getter is `shared`"
+    "This getter is `shared`"
     shared Integer sharedGetter {
         return 1;
     }
     
-    doc "This getter is not `shared`"
+    "This getter is not `shared`"
     Integer privateGetter {
         return 1;
     }
     
-    doc "This method is `shared`"
+    "This method is `shared`"
     shared void sharedMethod() {}
     
-    doc "This method is not `shared`"
+    "This method is not `shared`"
     void privateMethod() {}
         
 }

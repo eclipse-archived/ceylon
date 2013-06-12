@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This is `StubInterface`"
+"This is `StubInterface`"
 tagged("stubTag1a", "stubTag1b", "stubTagWithVeryLongName ... !!!")
 shared interface StubInterface {
 
-  doc "Description of StubInterface.formalMethodFromStubInterface"
+  "Description of StubInterface.formalMethodFromStubInterface"
   shared formal void formalMethodFromStubInterface();
   
-  deprecated "Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"
-  doc "Description of StubInterface.defaultDeprecatedMethodFromStubInterface"
+  "Description of StubInterface.defaultDeprecatedMethodFromStubInterface"
+  deprecated("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface")
   shared default void defaultDeprecatedMethodFromStubInterface() {}
   
-  doc "bug #927 in loading inherited members"
+  "bug #927 in loading inherited members"
   shared actual default String string { return ""; }
     
 }

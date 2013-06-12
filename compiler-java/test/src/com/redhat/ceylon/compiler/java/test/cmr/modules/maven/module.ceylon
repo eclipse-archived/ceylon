@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "Bla bla."
-by "Stef FroMage"
-license "http://www.gnu.org/licenses/gpl.html"
+"Bla bla."
+by("Stef FroMage")
+license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.maven '6.6.6' {
     import 'javax.ws.rs.jsr311-api' '1.1.1';
 }

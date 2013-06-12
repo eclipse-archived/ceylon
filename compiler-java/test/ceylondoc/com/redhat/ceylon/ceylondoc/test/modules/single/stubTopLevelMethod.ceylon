@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "The stub top level method"
-see (StubClass, stubTopLevelAttribute)
+"The stub top level method"
+see(StubClass, stubTopLevelAttribute)
 shared StubClass? stubTopLevelMethod(
-	doc "Sequenced parameters `numbers`" Integer* numbers) {
+	"Sequenced parameters `numbers`" Integer* numbers) {
     return null;
 }

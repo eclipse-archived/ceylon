@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "CaseSensitive and caseSensitive differ only by case"
+"CaseSensitive and caseSensitive differ only by case"
 see(caseSensitive)
 shared abstract class CaseSensitive() of caseSensitive {}
 
-doc "caseSensitive and CaseSensitive differ only by case"
+"caseSensitive and CaseSensitive differ only by case"
 see(CaseSensitive)
 shared object caseSensitive extends CaseSensitive() {}
 

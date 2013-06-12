@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @error
-doc "Bla bla."
-by "Stef FroMage"
-license "http://www.gnu.org/licenses/gpl.html"
+"Bla bla."
+by("Stef FroMage")
+license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.interdep.a '6.6.6' {
     import com.redhat.ceylon.compiler.java.test.cmr.modules.interdep.b '6.6.6';
 }

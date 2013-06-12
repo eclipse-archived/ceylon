@@ -1,3 +1,3 @@
 "Module A doc"
-by "Tom"
+by("Tom")
 package com.redhat.ceylon.compiler.java.test.annotations.modules.a;

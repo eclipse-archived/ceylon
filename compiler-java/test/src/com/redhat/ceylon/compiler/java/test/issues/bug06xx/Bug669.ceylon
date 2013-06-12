@@ -27,7 +27,7 @@ Boolean bug669_eq(Object? expected, Object? got) {
     return got exists == expected exists;
 }
 
-doc "Fails the test if the two objects are not equal"
+"Fails the test if the two objects are not equal"
 shared void bug669_assertEquals(Object? expected, Object? got,
         String? message=null,
         Boolean compare(Object? expected, Object? got) => bug669_eq(expected, got)) {

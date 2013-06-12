@@ -17,5 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "Bla bla."
+"Bla bla."
 shared package com.redhat.ceylon.compiler.java.test.cmr.modules.interdep.b;

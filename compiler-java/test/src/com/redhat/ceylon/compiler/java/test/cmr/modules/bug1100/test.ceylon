@@ -3,7 +3,7 @@ import org.apache.camel.component.jetty { JettyHttpComponent }
 import org.apache.camel.builder { RouteBuilder }
 import java.lang { Thread { currentThread } }
 
-doc "Run the module `simple`."
+"Run the module `simple`."
 shared void run() {
   print("Start Camel");
   value context = DefaultCamelContext();

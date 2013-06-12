@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "This one should test the code for creating links to types"
-by "Tom Bentley"
+"This one should test the code for creating links to types"
+by("Tom Bentley")
 shared interface Types<X,Y> {
     shared formal X&Y paramIntersection();
     shared formal X|Y paramUnion();

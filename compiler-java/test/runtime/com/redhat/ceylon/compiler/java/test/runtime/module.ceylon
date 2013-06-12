@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-doc "The Ceylon tests."
-by "Stef Epardaud"
-license "http://www.gnu.org/licenses/gpl.html"
+"The Ceylon tests."
+by("Stef Epardaud")
+license("http://www.gnu.org/licenses/gpl.html")
 module com.redhat.ceylon.compiler.java.test.runtime '0.1' {}
