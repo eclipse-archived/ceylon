@@ -120,16 +120,22 @@ public class RepositoriesTest {
     @Test
     public void testGetDefaultGlobalLookupRepositories() {
         Repository[] lookup = defaultRepos.getGlobalLookupRepositories();
-        Assert.assertTrue(lookup.length == 2);
+        Assert.assertTrue(lookup.length == 1);
         File userDir = defaultRepos.getUserRepoDir();
         assertRepository(lookup[0], "USER", userDir.getAbsolutePath(), null, null);
-        assertRepository(lookup[1], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
     }
     
     @Test
     public void testGetDefaultRemoteLookupRepositories() {
         Repository[] lookup = defaultRepos.getRemoteLookupRepositories();
         Assert.assertTrue(lookup.length == 0);
+    }
+    
+    @Test
+    public void testGetDefaultOtherLookupRepositories() {
+        Repository[] lookup = defaultRepos.getOtherLookupRepositories();
+        Assert.assertTrue(lookup.length == 1);
+        assertRepository(lookup[0], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
     }
     
     @Test
@@ -142,9 +148,15 @@ public class RepositoriesTest {
     @Test
     public void testGetOverriddenGlobalLookupRepositories() {
         Repository[] lookup = overriddenRepos.getGlobalLookupRepositories();
-        Assert.assertTrue(lookup.length == 2);
+        Assert.assertTrue(lookup.length == 1);
         assertRepository(lookup[0], "USER", "user", null, null);
-        assertRepository(lookup[1], "REMOTE", "http://remote", null, null);
+    }
+    
+    @Test
+    public void testGetOverriddenOtherLookupRepositories() {
+        Repository[] lookup = overriddenRepos.getOtherLookupRepositories();
+        Assert.assertTrue(lookup.length == 1);
+        assertRepository(lookup[0], "REMOTE", "http://remote", null, null);
     }
     
     @Test

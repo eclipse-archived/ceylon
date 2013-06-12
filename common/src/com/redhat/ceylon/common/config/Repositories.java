@@ -19,6 +19,7 @@ public class Repositories {
     public static final String REPO_TYPE_LOCAL_LOOKUP = "lookup";
     public static final String REPO_TYPE_GLOBAL_LOOKUP = "global";
     public static final String REPO_TYPE_REMOTE_LOOKUP = "remote";
+    public static final String REPO_TYPE_OTHER_LOOKUP = "other";
     
     private static final String REPO_NAME_SYSTEM = "SYSTEM";
     private static final String REPO_NAME_LOCAL = "LOCAL";
@@ -222,6 +223,7 @@ public class Repositories {
         repos.put(REPO_TYPE_LOCAL_LOOKUP, getRepositoriesByType(REPO_TYPE_LOCAL_LOOKUP));
         repos.put(REPO_TYPE_GLOBAL_LOOKUP, getRepositoriesByType(REPO_TYPE_GLOBAL_LOOKUP));
         repos.put(REPO_TYPE_REMOTE_LOOKUP, getRepositoriesByType(REPO_TYPE_REMOTE_LOOKUP));
+        repos.put(REPO_TYPE_OTHER_LOOKUP, getRepositoriesByType(REPO_TYPE_OTHER_LOOKUP));
         return repos;
     }
     
@@ -232,6 +234,7 @@ public class Repositories {
         setRepositoriesByType(REPO_TYPE_LOCAL_LOOKUP, repos.get(REPO_TYPE_LOCAL_LOOKUP));
         setRepositoriesByType(REPO_TYPE_GLOBAL_LOOKUP, repos.get(REPO_TYPE_GLOBAL_LOOKUP));
         setRepositoriesByType(REPO_TYPE_REMOTE_LOOKUP, repos.get(REPO_TYPE_REMOTE_LOOKUP));
+        setRepositoriesByType(REPO_TYPE_OTHER_LOOKUP, repos.get(REPO_TYPE_OTHER_LOOKUP));
     }
     
     public File getSystemRepoDir() {
@@ -304,11 +307,9 @@ public class Repositories {
     public Repository[] getGlobalLookupRepositories() {
         Repository[] repos = getRepositoriesByType(REPO_TYPE_GLOBAL_LOOKUP);
         if (repos == null) {
-            repos = new Repository[2];
+            repos = new Repository[1];
             // By default "$HOME/.ceylon/repo"
             repos[0] = getRepository(REPO_NAME_USER);
-            // By default "http://modules.ceylon-lang.org"
-            repos[1] = getRepository(REPO_NAME_REMOTE);
         }
         return repos;
     }
@@ -317,6 +318,16 @@ public class Repositories {
         Repository[] repos = getRepositoriesByType(REPO_TYPE_REMOTE_LOOKUP);
         if (repos == null) {
             repos = new Repository[0];
+        }
+        return repos;
+    }
+    
+    public Repository[] getOtherLookupRepositories() {
+        Repository[] repos = getRepositoriesByType(REPO_TYPE_OTHER_LOOKUP);
+        if (repos == null) {
+            repos = new Repository[1];
+            // By default "http://modules.ceylon-lang.org"
+            repos[0] = getRepository(REPO_NAME_REMOTE);
         }
         return repos;
     }
