@@ -716,4 +716,53 @@ public class ModelLoaderTest extends CompilerTest {
 }
         }, Collections.EMPTY_LIST);
     }
+    
+    @Test
+    public void javaDeprecated(){
+        compile("JavaDeprecated.java");
+        verifyClassLoading("JavaDeprecated.ceylon", new RunnableTest(){
+            @Override
+            public void test(ModelLoader loader) {
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
+                Assert.assertNotNull(mod);
+                Package p = mod.getDirectPackage(packageForJavaModelLoading());
+                Assert.assertNotNull(p);
+                Declaration javaDep = p.getDirectMember("JavaDeprecated", null, false);
+                Assert.assertNotNull(javaDep);
+                Assert.assertEquals(javaDep.toString(), 1, numDeprecated(javaDep));
+                
+                Method javaMethod = (Method) javaDep.getDirectMember("m", null, false);
+                Assert.assertNotNull(javaMethod);
+                Assert.assertEquals(javaMethod.toString(), 1, numDeprecated(javaMethod));
+                
+                Parameter javaParameter = javaMethod.getParameterLists().get(0).getParameters().get(0);
+                Assert.assertNotNull(javaParameter);
+                Assert.assertEquals(javaParameter.toString(), 1, numDeprecated(javaParameter));
+                
+                Value javaField = (Value) javaDep.getDirectMember("s", null, false);
+                Assert.assertNotNull(javaField);
+                Assert.assertEquals(javaField.toString(), 1, numDeprecated(javaField));
+                
+                // Check there is only 1 model Annotation, when annotation with ceylon's deprecated... 
+                javaMethod = (Method) javaDep.getDirectMember("ceylonDeprecation", null, false);
+                Assert.assertNotNull(javaMethod);
+                Assert.assertEquals(javaMethod.toString(), 1, numDeprecated(javaMethod));
+                
+                // ... or both the ceylon and java deprecated
+                javaMethod = (Method) javaDep.getDirectMember("bothDeprecation", null, false);
+                Assert.assertNotNull(javaMethod);
+                Assert.assertEquals(javaMethod.toString(), 1, numDeprecated(javaMethod));
+            }
+
+            private int numDeprecated(Declaration javaDep) {
+                int num = 0;
+                for (Annotation a : javaDep.getAnnotations()) {
+                    if ("deprecated".equals(a.getName())) {
+                        num++;
+                    }
+                }
+                return num;
+            }
+        });
+    }
 }
