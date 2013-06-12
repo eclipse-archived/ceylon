@@ -4029,6 +4029,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result.appendList(annotations);
             }
         }
+        
+        // Special case: Generate a @java.lang.Deprecated() if Ceylon deprecated
+        if (annotationList != null) {
+            for (Tree.Annotation annotation : annotationList.getAnnotations()) {
+                if (isDeprecatedAnnotation(annotation.getPrimary())) {
+                    result.append(make().Annotation(make().Type(syms().deprecatedType), List.<JCExpression>nil()));
+                }
+            }
+        }
+        
         return result.toList();
     }
     
@@ -4040,6 +4050,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         Class annotationClass = visitor.getAnnotationClass();
         
         putAnnotation(annotationSet, annotation, annotationClass);
+    }
+
+    /**
+     * Returns true if the given primary is {@code ceylon.language.deprecated()}
+     */
+    private boolean isDeprecatedAnnotation(Tree.Primary primary) {
+        return primary instanceof Tree.BaseMemberExpression
+                && typeFact().getLanguageModuleDeclaration("deprecated").equals(((Tree.BaseMemberExpression)primary).getDeclaration());
     }
 
     private void putAnnotation(
