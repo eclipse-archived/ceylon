@@ -133,6 +133,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
     private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
+    private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
 
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
@@ -1429,10 +1430,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
         List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
-        if(annotations == null)
-            return;
-        for(AnnotationMirror annotation : annotations){
-            decl.getAnnotations().add(readModelAnnotation(annotation));
+        if(annotations != null) {
+            for(AnnotationMirror annotation : annotations){
+                decl.getAnnotations().add(readModelAnnotation(annotation));
+            }
+        }
+        // Add a ceylon deprecated("") if it's annotated with java.lang.Deprecated
+        // and doesn't already have the ceylon annotation
+        if (classMirror.getAnnotation(JAVA_DEPRECATED_ANNOTATION) != null) {
+            boolean hasCeylonDeprecated = false;
+            for(Annotation a : decl.getAnnotations()) {
+                if (a.getName().equals("deprecated")) {
+                    hasCeylonDeprecated = true;
+                    break;
+                }
+            }
+            if (!hasCeylonDeprecated) {
+                Annotation modelAnnotation = new Annotation();
+                modelAnnotation.setName("deprecated");
+                modelAnnotation.getPositionalArguments().add("");
+                decl.getAnnotations().add(modelAnnotation);
+            }
         }
     }
 
