@@ -2419,7 +2419,7 @@ print(greeting);</programlisting>
         <para>Any declaration may be preceded by a list of annotations. An annotation is 
         an initial lowercase identifier, optionally followed by an argument list.</para>
         
-        <synopsis>Annotation: MemberName ( Arguments | Literal+ )?</synopsis>
+        <synopsis>Annotation: MemberName Arguments?</synopsis>
         
         <para>A list of annotations does not require punctuation between the individual 
         annotations in the list. An annotation list may begin with a string literal, in
@@ -2428,18 +2428,12 @@ print(greeting);</programlisting>
         
         <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
         
-        <para>For an annotation with no arguments, or with only literal-valued positional
-        arguments, the parentheses around, and commas between, the positional arguments 
-        may be omitted.</para>
-        
-        <comment><para>TODO: do we still need this shortcut? The only good usecase for 
-        it was <literal>doc</literal>, and now we've got an even nicer abbreviation for 
-        that case. Wouldn't the annotation list be more readable with all the parens in 
-        there?</para></comment>
+        <para>For an annotation with no arguments, the list may be omitted, in which case
+        the annotation is interpreted as having an empty positional argument list.</para>
         
         <programlisting>"The user login action"
-by "Gavin King"
-   "Andrew Haley"
+by ("Gavin King",
+    "Andrew Haley")
 throws (DatabaseException,
         "if database access fails")
 seeAlso (LogoutAction.logout)
@@ -2459,23 +2453,18 @@ shared deprecated</programlisting>
         <section id="annotationarguments">
             <title>Annotation arguments</title>
         
-        <para>An annotation may be specified at a program element using any one of 
-        three forms.</para>
+        <para>An annotation may be specified at a program element using one of two 
+        forms.</para>
         
         <itemizedlist>
-        <listitem>
-        <para>Using a positional argument invocation of the method:</para>
-        <programlisting>doc("the name") String name;</programlisting>
-        </listitem>
-        <listitem>
-        <para>Using a named argument invocation of the method:</para>
-        <programlisting>doc {description="the name";} String name;</programlisting>
-        </listitem>
-        <listitem>
-        <para>Or using the special abbreviated form for annotations with literal value
-        arguments:</para>
-        <programlisting>doc "the name" String name;</programlisting>
-        </listitem>
+            <listitem>
+                <para>Using a positional argument invocation of the method:</para>
+                <programlisting>doc ("the name") String name;</programlisting>
+            </listitem>
+            <listitem>
+                <para>Using a named argument invocation of the method:</para>
+                <programlisting>doc { description="the name"; } String name;</programlisting>
+            </listitem>
         </itemizedlist>
         
         <para>As a special case, the name of the <literal>doc</literal> annotation

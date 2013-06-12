@@ -443,7 +443,7 @@
     annotations.
     </para>
     
-    <programlisting>doc "Base type for higher-order abstract stuff."
+    <programlisting>"Base type for higher-order abstract stuff."
 shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     <para>
