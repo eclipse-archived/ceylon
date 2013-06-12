@@ -1,3 +1,3 @@
-by "Enrique Zamudio"
-by "Ivo Kasiuk"
+by("Enrique Zamudio")
+by("Ivo Kasiuk")
 shared package members;

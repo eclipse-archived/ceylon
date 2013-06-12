@@ -10,7 +10,7 @@ shared annotation AnnoTest1 annotest2(Integer count) => AnnoTest1("With Count", 
 shared annotest1 class Example1() {
   shared actual String string => "Example1";
 }
-annotest1 "with something different"
+annotest1("with something different")
 shared class Example2() {
   annotest1{text="named call";}
   shared actual String string => "Example2";

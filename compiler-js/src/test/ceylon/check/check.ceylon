@@ -55,7 +55,7 @@ shared void test() {
         check("Assertion failed: '2+2==5'" in ex.message, "Assertion message");
     }
     try {
-        doc "ms is a looong String"
+        "ms is a looong String"
         assert(is String ms, ms[1100] exists);
         fail("check assert [2]");
     } catch (Exception ex) {

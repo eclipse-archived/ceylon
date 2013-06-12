@@ -13,7 +13,7 @@ String mpl2(Integer a)(Object b)(Float c) {
   variable value insideMpl2 = 5;
   return a.string + ":" + b.string + ":" + c.string;
 }
-doc "A nested function. Should the doc be in the metamodel as well?"
+"A nested function. Should the doc be in the metamodel as well?"
 shared Integer nested(String s) {
   String f() { //we should skip this
     return s + "!";
