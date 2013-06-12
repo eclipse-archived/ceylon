@@ -1,9 +1,9 @@
 import ceylon.language { lt=larger, st=smaller, eq=equal }
 
-doc "The result of a comparison between two `Comparable` 
-     objects."
+"The result of a comparison between two `Comparable` 
+ objects."
 see (Comparable)
-by "Gavin"
+by ("Gavin")
 shared abstract class Comparison(shared actual String string) 
         of lt | st | eq {
     
@@ -17,14 +17,14 @@ shared abstract class Comparison(shared actual String string)
 
 }
 
-doc "The value is exactly equal to the given value."
-by "Gavin"
+"The value is exactly equal to the given value."
+by ("Gavin")
 shared object equal extends Comparison("equal") {}
 
-doc "The value is smaller than the given value."
-by "Gavin"
+"The value is smaller than the given value."
+by ("Gavin")
 shared object smaller extends Comparison("smaller") {}
 
-doc "The value is larger than the given value."
-by "Gavin"
+"The value is larger than the given value."
+by ("Gavin")
 shared object larger extends Comparison("larger") {}

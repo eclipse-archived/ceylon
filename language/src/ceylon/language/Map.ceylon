@@ -1,23 +1,23 @@
-doc "Represents a collection which maps _keys_ to _items_,
-     where a key can map to at most one item. Each such 
-     mapping may be represented by an `Entry`.
-     
-     A `Map` is a `Collection` of its `Entry`s, and a 
-     `Correspondence` from keys to items.
-     
-     The presence of an entry in a map may be tested
-     using the `in` operator:
-     
-         if (\"lang\"->\"en_AU\" in settings) { ... }
-     
-     The entries of the map may be iterated using `for`:
-     
-         for (key->item in settings) { ... }
-     
-     The item for a key may be obtained using the item
-     operator:
-     
-         String lang = settings[\"lang\"] else \"en_US\";"
+"Represents a collection which maps _keys_ to _items_,
+ where a key can map to at most one item. Each such 
+ mapping may be represented by an `Entry`.
+ 
+ A `Map` is a `Collection` of its `Entry`s, and a 
+ `Correspondence` from keys to items.
+ 
+ The presence of an entry in a map may be tested
+ using the `in` operator:
+ 
+     if (\"lang\"->\"en_AU\" in settings) { ... }
+ 
+ The entries of the map may be iterated using `for`:
+ 
+     for (key->item in settings) { ... }
+ 
+ The item for a key may be obtained using the item
+ operator:
+ 
+     String lang = settings[\"lang\"] else \"en_US\";"
 see (Entry, forKey, forItem, byItem, byKey)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
@@ -26,12 +26,12 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
     
-    doc "Two `Map`s are considered equal iff they have the 
-         same _entry sets_. The entry set of a `Map` is the
-         set of `Entry`s belonging to the map. Therefore, the
-         maps are equal iff they have same set of `keys`, and 
-         for every key in the key set, the maps have equal
-         items."
+    "Two `Map`s are considered equal iff they have the 
+     same _entry sets_. The entry set of a `Map` is the
+     set of `Entry`s belonging to the map. Therefore, the
+     maps are equal iff they have same set of `keys`, and 
+     for every key in the key set, the maps have equal
+     items."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that,
                 that.size==size) {
@@ -62,31 +62,31 @@ shared interface Map<out Key,out Item>
         return hashCode;
     }
     
-    doc "Returns the set of keys contained in this `Map`."
+    "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys =>
             LazySet ({ for (k->v in this) k });
     
-    doc "Returns all the values stored in this `Map`. An 
-         element can be stored under more than one key in 
-         the map, and so it can be contained more than once 
-         in the resulting collection."
+    "Returns all the values stored in this `Map`. An 
+     element can be stored under more than one key in 
+     the map, and so it can be contained more than once 
+     in the resulting collection."
     shared default Collection<Item> values =>
             LazyList ({ for (k->v in this) v });
     
-    doc "Returns a `Map` in which every key is an `Item` in 
-         this map, and every value is the set of keys that 
-         stored the `Item` in this map."
+    "Returns a `Map` in which every key is an `Item` in 
+     this map, and every value is the set of keys that 
+     stored the `Item` in this map."
     shared default Map<Item,Set<Key>> inverse =>
             LazyMap ({ for (key->item in this) item -> 
                 LazySet ({ for (k->i in this) if (i==item) k }) });
     
-    doc "Returns a `Map` with the same keys as this map. For
-         every key, the item is the result of applying the
-         given transformation function."
+    "Returns a `Map` with the same keys as this map. For
+     every key, the item is the result of applying the
+     given transformation function."
     shared default Map<Key,Result> mapItems<Result>(
-            doc "The function that transforms a key/item
-                 pair, producing the item of the resulting
-                 map."
+            "The function that transforms a key/item
+             pair, producing the item of the resulting
+             map."
             Result mapping(Key key, Item item)) 
             given Result satisfies Object =>
                 LazyMap ({ for (key->item in this) 

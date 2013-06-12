@@ -1,20 +1,20 @@
-doc "Abstraction of types which support a unary additive inversion
-     operation. For a numeric type, this should return the 
-     negative of the argument value. Note that the type 
-     parameter of this interface is not restricted to be a 
-     self type, in order to accommodate the possibility of 
-     types whose additive inverse can only be expressed in terms of 
-     a wider type."
+"Abstraction of types which support a unary additive inversion
+ operation. For a numeric type, this should return the 
+ negative of the argument value. Note that the type 
+ parameter of this interface is not restricted to be a 
+ self type, in order to accommodate the possibility of 
+ types whose additive inverse can only be expressed in terms of 
+ a wider type."
 see (Integer, Float)
-by "Gavin"
+by ("Gavin")
 shared interface Invertable<out Inverse> {
     
-    doc "The additive inverse of the value, which may be expressed
-         as an instance of a wider type."
+    "The additive inverse of the value, which may be expressed
+     as an instance of a wider type."
     shared formal Inverse negativeValue;
     
-    doc "The value itself, expressed as an instance of the
-         wider type."
+    "The value itself, expressed as an instance of the
+     wider type."
     shared formal Inverse positiveValue;
 
 }

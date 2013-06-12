@@ -1,6 +1,6 @@
-doc "Applies a function to each element of two `Iterable`s
-     and returns an `Iterable` with the results."
-by "Gavin" "Enrique Zamudio" "Tako"
+"Applies a function to each element of two `Iterable`s
+ and returns an `Iterable` with the results."
+by ("Gavin", "Enrique Zamudio", "Tako")
 shared Iterable<Result,Absent> combine<Result,Absent,Element,OtherElement>(
         Result combination(Element element, OtherElement otherElement), 
         Iterable<Element,Absent> elements, 

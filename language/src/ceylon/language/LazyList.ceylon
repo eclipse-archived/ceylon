@@ -1,7 +1,7 @@
-doc "An implementation of List that wraps an `Iterable` of
-     elements. All operations on this List are performed on 
-     the Iterable."
-by "Enrique Zamudio"
+"An implementation of `List` that wraps an `Iterable` of
+ elements. All operations on this `List` are performed on 
+ the `Iterable`."
+by ("Enrique Zamudio")
 shared class LazyList<out Element>({Element*} elems)
         satisfies List<Element> {
     
@@ -24,11 +24,11 @@ shared class LazyList<out Element>({Element*} elems)
     shared actual Iterator<Element> iterator() => 
             elems.iterator();
     
-    doc "Returns a `List` with the elements of this `List` 
-         in reverse order. This operation will create copy 
-         the elements to a new `List`, so changes to the 
-         original `Iterable` will no longer be reflected in 
-         the new `List`."
+    "Returns a `List` with the elements of this `List` 
+     in reverse order. This operation will create copy 
+     the elements to a new `List`, so changes to the 
+     original `Iterable` will no longer be reflected in 
+     the new `List`."
     shared actual List<Element> reversed =>
             elems.sequence.reversed;
     

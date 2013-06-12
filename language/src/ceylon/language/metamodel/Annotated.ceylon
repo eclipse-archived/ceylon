@@ -1,3 +1,3 @@
-doc "A program element that can
-     be annotated."
+"A program element that can
+ be annotated."
 shared interface Annotated {}

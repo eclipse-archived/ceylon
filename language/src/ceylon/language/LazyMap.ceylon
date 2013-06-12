@@ -1,7 +1,7 @@
-doc "A Map implementation that wraps an `Iterable` of 
-     entries. All operations, such as lookups, size, etc. 
-     are performed on the `Iterable`."
-by "Enrique Zamudio"
+"A `Map` implementation that wraps an `Iterable` of 
+ entries. All operations, such as lookups, size, etc. 
+ are performed on the `Iterable`."
+by ("Enrique Zamudio")
 shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
     satisfies Map<Key,Item>
         given Key satisfies Object

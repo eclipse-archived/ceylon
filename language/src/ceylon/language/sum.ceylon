@@ -1,5 +1,5 @@
-doc "Given a nonempty sequence of `Summable` values, return 
-     the sum of the values."
+"Given a nonempty sequence of `Summable` values, return 
+ the sum of the values."
 see (product)
 shared Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value> {

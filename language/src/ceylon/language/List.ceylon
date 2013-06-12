@@ -1,24 +1,24 @@
-doc "Represents a collection in which every element has a 
-     unique non-negative integer index.
-     
-     A `List` is a `Collection` of its elements, and a 
-     `Correspondence` from indices to elements.
-     
-     Direct access to a list element by index produces a
-     value of optional type. The following idiom may be
-     used instead of upfront bounds-checking, as long as 
-     the list element type is a non-`null` type:
-     
-         value char = \"hello world\"[index];
-         if (exists char) { /*do something*/ }
-         else { /*out of bounds*/ }
-     
-     To iterate the indexes of a `List`, use the following
-     idiom:
-     
-         for (i->char in \"hello world\".indexed) { ... }
-     
-     "
+"Represents a collection in which every element has a 
+ unique non-negative integer index.
+ 
+ A `List` is a `Collection` of its elements, and a 
+ `Correspondence` from indices to elements.
+ 
+ Direct access to a list element by index produces a
+ value of optional type. The following idiom may be
+ used instead of upfront bounds-checking, as long as 
+ the list element type is a non-`null` type:
+ 
+     value char = \"hello world\"[index];
+     if (exists char) { /*do something*/ }
+     else { /*out of bounds*/ }
+ 
+ To iterate the indexes of a `List`, use the following
+ idiom:
+ 
+     for (i->char in \"hello world\".indexed) { ... }
+ 
+ "
 see (Sequence, Empty, Array)
 shared interface List<out Element>
         satisfies Collection<Element> &
@@ -26,26 +26,26 @@ shared interface List<out Element>
                   Ranged<Integer,List<Element>> &
                   Cloneable<List<Element>> {
     
-    doc "The index of the last element of the list, or
-         null if the list is empty."
+    "The index of the last element of the list, or
+     null if the list is empty."
     see (size)
     shared formal Integer? lastIndex;
     
-    doc "The number of elements in this sequence, always
-         `sequence.lastIndex+1`."
+    "The number of elements in this sequence, always
+     `sequence.lastIndex+1`."
     see (lastIndex)
     shared actual default Integer size => (lastIndex else -1) + 1;
     
-    doc "The rest of the list, without the first element."
+    "The rest of the list, without the first element."
     shared actual formal List<Element> rest;
     
-    doc "Determines if the given index refers to an element
+    "Determines if the given index refers to an element
          of this sequence, that is, if
          `index<=sequence.lastIndex`."
     shared actual default Boolean defines(Integer index) => 
             index <= (lastIndex else -1);
 	
-    doc "Returns the element of this sequence with the given
+    "Returns the element of this sequence with the given
          index, or `null` if the given index is past the end
          of the sequence, that is, if
          `index>sequence.lastIndex`. The first element of
@@ -69,19 +69,19 @@ shared interface List<out Element>
         return listIterator;
     }
     
-    doc "Reverse this list, returning a new list."
+    "Reverse this list, returning a new list."
     shared formal List<Element> reversed;
     
-    doc "Two `List`s are considered equal iff they have the 
-         same `size` and _entry sets_. The entry set of a 
-         list `l` is the set of elements of `l.indexed`. 
-         This definition is equivalent to the more intuitive 
-         notion that two lists are equal iff they have the 
-         same `size` and for every index either:
-         
-         - the lists both have the element `null`, or
-         - the lists both have a non-null element, and the
-           two elements are equal."
+    "Two `List`s are considered equal iff they have the 
+     same `size` and _entry sets_. The entry set of a 
+     list `l` is the set of elements of `l.indexed`. 
+     This definition is equivalent to the more intuitive 
+     notion that two lists are equal iff they have the 
+     same `size` and for every index either:
+     
+     - the lists both have the element `null`, or
+     - the lists both have a non-null element, and the
+       two elements are equal."
     shared actual default Boolean equals(Object that) {
         if (is List<Anything> that) {
             if (that.size==size) {
@@ -138,10 +138,10 @@ shared interface List<out Element>
         return null;
     }*/
     
-    doc "Returns the first element of this `List`, if any."
+    "Returns the first element of this `List`, if any."
     shared actual default Element? first => this[0];
     
-    doc "Returns the last element of this `List`, if any."
+    "Returns the last element of this `List`, if any."
     shared actual default Element? last {
         if (exists i = lastIndex) {
             return this[i];
@@ -149,11 +149,11 @@ shared interface List<out Element>
         return null;
     }
     
-    doc "Returns a new `List` that starts with the specified
-         element, followed by the elements of this `List`."
+    "Returns a new `List` that starts with the specified
+     element, followed by the elements of this `List`."
     see (following)
     shared default [Element|Other+] withLeading<Other>(
-            doc "The first element of the resulting sequence."
+            "The first element of the resulting sequence."
             Other element) {
         value sb = SequenceBuilder<Element|Other>();
         sb.append(element);
@@ -164,11 +164,11 @@ shared interface List<out Element>
         return seq;
     }
     
-    doc "Returns a new `List` that contains the specified
-         element appended to the end of the elements of this 
-         `List`."
+    "Returns a new `List` that contains the specified
+     element appended to the end of the elements of this 
+     `List`."
     shared default [Element|Other+] withTrailing<Other>(
-            doc "The last element of the resulting sequence."
+            "The last element of the resulting sequence."
             Other element) {
         value sb = SequenceBuilder<Element|Other>();
         if (!empty) {
@@ -179,7 +179,7 @@ shared interface List<out Element>
         return seq;
     }
     
-    /*doc "Select the elements between the given indices. If 
+    /*"Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
          index is larger than the end index, return the
@@ -193,7 +193,7 @@ shared interface List<out Element>
     shared actual formal List<Element> span(Integer from,
                                         Integer? to);
 	
-    doc "Returns a list containing the elements beginning 
+    "Returns a list containing the elements beginning 
          from the given index, with the given length."
     shared actual formal List<Element> segment(Integer from,
                                            Integer length);*/

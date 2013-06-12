@@ -1,5 +1,5 @@
-doc "Given a nonempty sequence of `Comparable` values, 
-     return the largest value in the sequence."
+"Given a nonempty sequence of `Comparable` values, 
+ return the largest value in the sequence."
 see (Comparable, min, largest)
 shared Absent|Value max<Value,Absent>(Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>

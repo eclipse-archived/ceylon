@@ -1,3 +1,3 @@
 "The Ceylon metamodel package"
-by "Gavin King" "Stephane Epardaud"
+by ("Gavin King", "Stephane Epardaud")
 shared package ceylon.language.metamodel;

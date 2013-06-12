@@ -1,50 +1,50 @@
-doc "A _tuple_ is a typed linked list. Each instance of 
-     `Tuple` represents the value and type of a single link.
-     The attributes `first` and `rest` allow us to retrieve
-     a value form the list without losing its static type 
-     information.
-     
-         value point = Tuple(0.0, Tuple(0.0, Tuple(\"origin\")));
-         Float x = point.first;
-         Float y = point.rest.first;
-         String label = point.rest.rest.first;
-     
-     Usually, we abbreviate code involving tuples.
-     
-         [Float,Float,String] point = [0.0, 0.0, \"origin\"];
-         Float x = point[0];
-         Float y = point[1];
-         String label = point[2];
-     
-     A list of types enclosed in brackets is an abbreviated 
-     tuple type. An instance of `Tuple` may be constructed 
-     by surrounding a value list in brackets:
-     
-         [String,String] words = [\"hello\", \"world\"];
-     
-     The index operator with a literal integer argument is a 
-     shortcut for a chain of evaluations of `rest` and 
-     `first`. For example, `point[1]` means `point.rest.first`.
-     
-     A _terminated_ tuple type is a tuple where the type of
-     the last link in the chain is `Empty`. An _unterminated_ 
-     tuple type is a tuple where the type of the last link
-     in the chain is `Sequence` or `Sequential`. Thus, a 
-     terminated tuple type has a length that is known
-     statically. For an unterminated tuple type only a lower
-     bound on its length is known statically.
-     
-     Here, `point` is an unterminated tuple:
-     
-         String[] labels = ... ;
-         [Float,Float,String*] point = [0.0, 0.0, *labels];
-         Float x = point[0];
-         Float y = point[1];
-         String? firstLabel = point[2];
-         String[] allLabels = point[2...];
-     
-     "
-by "Gavin"
+"A _tuple_ is a typed linked list. Each instance of 
+ `Tuple` represents the value and type of a single link.
+ The attributes `first` and `rest` allow us to retrieve
+ a value form the list without losing its static type 
+ information.
+ 
+     value point = Tuple(0.0, Tuple(0.0, Tuple(\"origin\")));
+     Float x = point.first;
+     Float y = point.rest.first;
+     String label = point.rest.rest.first;
+ 
+ Usually, we abbreviate code involving tuples.
+ 
+     [Float,Float,String] point = [0.0, 0.0, \"origin\"];
+     Float x = point[0];
+     Float y = point[1];
+     String label = point[2];
+ 
+ A list of types enclosed in brackets is an abbreviated 
+ tuple type. An instance of `Tuple` may be constructed 
+ by surrounding a value list in brackets:
+ 
+     [String,String] words = [\"hello\", \"world\"];
+ 
+ The index operator with a literal integer argument is a 
+ shortcut for a chain of evaluations of `rest` and 
+ `first`. For example, `point[1]` means `point.rest.first`.
+ 
+ A _terminated_ tuple type is a tuple where the type of
+ the last link in the chain is `Empty`. An _unterminated_ 
+ tuple type is a tuple where the type of the last link
+ in the chain is `Sequence` or `Sequential`. Thus, a 
+ terminated tuple type has a length that is known
+ statically. For an unterminated tuple type only a lower
+ bound on its length is known statically.
+ 
+ Here, `point` is an unterminated tuple:
+ 
+     String[] labels = ... ;
+     [Float,Float,String*] point = [0.0, 0.0, *labels];
+     Float x = point[0];
+     Float y = point[1];
+     String? firstLabel = point[2];
+     String[] allLabels = point[2...];
+ 
+ "
+by ("Gavin")
 shared class Tuple<out Element, out First, out Rest=[]>
             (first, rest)
         extends Object()

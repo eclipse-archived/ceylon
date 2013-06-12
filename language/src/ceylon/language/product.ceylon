@@ -1,5 +1,5 @@
-doc "Given a nonempty sequence of `Numeric` values, return 
-     the product of the values."
+"Given a nonempty sequence of `Numeric` values, return 
+ the product of the values."
 see (sum)
 shared Value product<Value>({Value+} values) 
         given Value satisfies Numeric<Value> {
