@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "A small example showing the use of an external module from Herd"
-by "The Ceylon Team"
-license "http://www.apache.org/licenses/LICENSE-2.0"
+"A small example showing the use of an external module from Herd"
+by("The Ceylon Team")
+license("http://www.apache.org/licenses/LICENSE-2.0")
 module com.example.withmodule '1.0.0' {
     import ceylon.collection '0.6';
 }

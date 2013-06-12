@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "The classic Hello World example"
+"The classic Hello World example"
 shared
 package com.example.helloworld;

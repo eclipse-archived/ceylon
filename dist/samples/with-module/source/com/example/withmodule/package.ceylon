@@ -13,5 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "A small example showing the use of an external module from Herd"
+"A small example showing the use of an external module from Herd"
 shared package com.example.withmodule;

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "The classic Hello World module with Java interop"
-by "Stéphane Épardaud"
-license "http://www.apache.org/licenses/LICENSE-2.0"
+"The classic Hello World module with Java interop"
+by("Stéphane Épardaud")
+license("http://www.apache.org/licenses/LICENSE-2.0")
 module com.example.interop '1.0.0' {
     import java.base '7';
 }

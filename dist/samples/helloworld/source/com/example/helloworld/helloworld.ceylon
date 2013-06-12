@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "The classic Hello World program"
+"The classic Hello World program"
 shared void hello(String name = "World") {
     print("Hello, `` name ``!");
 }
 
-doc "The runnable method of the module." 
+"The runnable method of the module." 
 shared void run(){
     if (nonempty args=process.arguments) {
         for (arg in args) {

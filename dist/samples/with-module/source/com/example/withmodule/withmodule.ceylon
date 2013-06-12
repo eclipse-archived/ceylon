@@ -16,18 +16,18 @@
 // Importing the collection module from Herd
 import ceylon.collection { ... }
 
-doc "Return the first letter of a word in lower case"
+"Return the first letter of a word in lower case"
 shared Character firstLetter(String word) {
     assert (exists f=word.first);
     return f.lowercased;
 }
 
-doc "Group words in a text together on the basis of their first letter"
+"Group words in a text together on the basis of their first letter"
 shared Map<Character, {String+}> groupWordsByFirstLetter(String text) {
     return group(text.split({ ' ', '.', ',', ';', '\n' }), firstLetter);
 }
 
-doc "The runnable method of the module." 
+"The runnable method of the module." 
 shared void run(){
     String text = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
                    nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
@@ -51,3 +51,4 @@ shared void run(){
     value lines = "\n".join { for(entry in sortedGroups) entry.string };
     print(lines);
 }
+
