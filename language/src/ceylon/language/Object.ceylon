@@ -1,18 +1,18 @@
-"The abstract supertype of all types representing 
- definite values. Any two `Object`s may be compared
- for value equality using the `==` and `!=` operators:
- 
-     true==false
-     1==\"hello world\"
-     \"hello\"+ \" \" + \"world\"==\"hello world\"
-     Singleton(\"hello world\")=={ \"hello world\" }
- 
- However, since `Null` is not a subtype of `Object`, the 
- value `null` cannot be compared to any other value
- using `==`. Thus, value equality is not defined for 
- optional types. This neatly voids the problem of 
- deciding the value of the expression `null==null`, 
- which is simply illegal."
+"""The abstract supertype of all types representing 
+   definite values. Any two `Object`s may be compared
+   for value equality using the `==` and `!=` operators:
+   
+       true==false
+       1=="hello world"
+       "hello"+" "+"world"=="hello world"
+       Singleton("hello world")=={ "hello world" }
+   
+   However, since `Null` is not a subtype of `Object`, the
+   value `null` cannot be compared to any other value
+   using `==`. Thus, value equality is not defined for
+   optional types. This neatly voids the problem of
+   deciding the value of the expression `null==null`,
+   which is simply illegal."""
 see (Basic, Null)
 by ("Gavin")
 shared abstract class Object() 

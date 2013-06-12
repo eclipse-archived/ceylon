@@ -1,24 +1,22 @@
-"Represents a collection in which every element has a 
- unique non-negative integer index.
- 
- A `List` is a `Collection` of its elements, and a 
- `Correspondence` from indices to elements.
- 
- Direct access to a list element by index produces a
- value of optional type. The following idiom may be
- used instead of upfront bounds-checking, as long as 
- the list element type is a non-`null` type:
- 
-     value char = \"hello world\"[index];
-     if (exists char) { /*do something*/ }
-     else { /*out of bounds*/ }
- 
- To iterate the indexes of a `List`, use the following
- idiom:
- 
-     for (i->char in \"hello world\".indexed) { ... }
- 
- "
+"""Represents a collection in which every element has a 
+   unique non-negative integer index.
+   
+   A `List` is a `Collection` of its elements, and a 
+   `Correspondence` from indices to elements.
+   
+   Direct access to a list element by index produces a
+   value of optional type. The following idiom may be
+   used instead of upfront bounds-checking, as long as 
+   the list element type is a non-`null` type:
+   
+       value char = "hello world"[index];
+       if (exists char) { /*do something*/ }
+       else { /*out of bounds*/ }
+   
+   To iterate the indexes of a `List`, use the following
+   idiom:
+   
+       for (i->char in "hello world".indexed) { ... }"""
 see (Sequence, Empty, Array)
 shared interface List<out Element>
         satisfies Collection<Element> &

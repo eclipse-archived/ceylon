@@ -1,23 +1,23 @@
-"Represents a collection which maps _keys_ to _items_,
- where a key can map to at most one item. Each such 
- mapping may be represented by an `Entry`.
+"""Represents a collection which maps _keys_ to _items_,
+   where a key can map to at most one item. Each such 
+   mapping may be represented by an `Entry`.
+   
+   A `Map` is a `Collection` of its `Entry`s, and a 
+   `Correspondence` from keys to items.
+   
+   The presence of an entry in a map may be tested
+   using the `in` operator:
+   
+       if ("lang"->"en_AU" in settings) { ... }
  
- A `Map` is a `Collection` of its `Entry`s, and a 
- `Correspondence` from keys to items.
- 
- The presence of an entry in a map may be tested
- using the `in` operator:
- 
-     if (\"lang\"->\"en_AU\" in settings) { ... }
- 
- The entries of the map may be iterated using `for`:
- 
-     for (key->item in settings) { ... }
- 
- The item for a key may be obtained using the item
- operator:
- 
-     String lang = settings[\"lang\"] else \"en_US\";"
+   The entries of the map may be iterated using `for`:
+   
+       for (key->item in settings) { ... }
+   
+   The item for a key may be obtained using the item
+   operator:
+   
+       String lang = settings["lang"] else "en_US";"""
 see (Entry, forKey, forItem, byItem, byKey)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &

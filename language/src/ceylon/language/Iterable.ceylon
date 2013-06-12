@@ -1,75 +1,74 @@
 import ceylon.language { internalFirst = first }
 
-"Abstract supertype of containers whose elements may be 
- iterated. An iterable container need not be finite, but
- its elements must at least be countable. There may not
- be a well-defined iteration order, and so the order of
- iterated elements may not be stable.
- 
- The type `Iterable<Element,Null>`, usually abbreviated
- `{Element*}` represents a possibly-empty iterable 
- container. The type `Iterable<Element,Nothing>`, 
- usually abbreviated `{Element+}` represents a nonempty 
- iterable container.
- 
- An instance of `Iterable` may be constructed by 
- surrounding a value list in braces:
- 
-     {String+} words = { \"hello\", \"world\" };
- 
- An instance of `Iterable` may be iterated using a `for`
- loop:
- 
-     for (c in \"hello world\") { ... }
- 
- `Iterable` and its subtypes define various operations
- that return other iterable objects. Such operations 
- come in two flavors:
- 
- - _Lazy_ operations return a \"view\" of the receiving
-   iterable object. If the underlying iterable object is
-   mutable, then changes to the underlying object will
-   be reflected in the resulting view. Lazy operations
-   are usually efficient, avoiding memory allocation or
-   iteration of the receiving iterable object.
- 
- - _Eager_ operations return an immutable object. If the
-   receiving iterable object is mutable, changes to this
-   object will not be reflected in the resulting 
-   immutable object. Eager operations are often 
-   expensive, involving memory allocation and iteration
-   of the receiving iterable object.
- 
- Lazy operations are preferred, because they can be 
- efficiently chained. For example:
- 
-     string.filter((Character c) => c.letter)
-           .map((Character c) => c.uppercased)
- 
- is much less expensive than:
- 
-     string.select((Character c) => c.letter)
-           .collect((Character c) => c.uppercased)
- 
- Furthermore, it is always easy to produce a new 
- immutable iterable object given the view produced by a
- lazy operation. For example:
- 
-     [ *string.filter((Character c) => c.letter)
+"""Abstract supertype of containers whose elements may be 
+   iterated. An iterable container need not be finite, but
+   its elements must at least be countable. There may not
+   be a well-defined iteration order, and so the order of
+   iterated elements may not be stable.
+   
+   The type `Iterable<Element,Null>`, usually abbreviated
+   `{Element*}` represents a possibly-empty iterable 
+   container. The type `Iterable<Element,Nothing>`, 
+   usually abbreviated `{Element+}` represents a nonempty 
+   iterable container.
+   
+   An instance of `Iterable` may be constructed by 
+   surrounding a value list in braces:
+   
+       {String+} words = { "hello", "world" };
+   
+   An instance of `Iterable` may be iterated using a `for`
+   loop:
+   
+       for (c in "hello world") { ... }
+   
+   `Iterable` and its subtypes define various operations
+   that return other iterable objects. Such operations 
+   come in two flavors:
+   
+   - _Lazy_ operations return a *view* of the receiving
+     iterable object. If the underlying iterable object is
+     mutable, then changes to the underlying object will
+     be reflected in the resulting view. Lazy operations
+     are usually efficient, avoiding memory allocation or
+     iteration of the receiving iterable object.
+   - _Eager_ operations return an immutable object. If the
+     receiving iterable object is mutable, changes to this
+     object will not be reflected in the resulting 
+     immutable object. Eager operations are often 
+     expensive, involving memory allocation and iteration
+     of the receiving iterable object.
+   
+   Lazy operations are preferred, because they can be 
+   efficiently chained. For example:
+   
+       string.filter((Character c) => c.letter)
+             .map((Character c) => c.uppercased)
+   
+   is much less expensive than:
+   
+       string.select((Character c) => c.letter)
+             .collect((Character c) => c.uppercased)
+   
+   Furthermore, it is always easy to produce a new 
+   immutable iterable object given the view produced by a
+   lazy operation. For example:
+   
+       [ *string.filter((Character c) => c.letter)
              .map((Character c) => c.uppercased) ]
- 
- Lazy operations normally return an instance of 
- `Iterable` or `Map`.
- 
- However, there are certain scenarios where an eager 
- operation is more useful, more convenient, or no more 
- expensive than a lazy operation, including:
- 
- - sorting operations, which are eager by nature,
- - operations which preserve emptiness/nonemptiness of
-   the receiving iterable object.
- 
- Eager operations normally return a sequence."
+   
+   Lazy operations normally return an instance of 
+   `Iterable` or `Map`.
+   
+   However, there are certain scenarios where an eager 
+   operation is more useful, more convenient, or no more 
+   expensive than a lazy operation, including:
+   
+   - sorting operations, which are eager by nature,
+   - operations which preserve emptiness/nonemptiness of
+     the receiving iterable object.
+   
+   Eager operations normally return a sequence."""
 see (Collection)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>

@@ -1,4 +1,4 @@
-"Given a nonempty sequence of `Numeric` values, return 
+"Given a nonempty stream of `Numeric` values, return 
  the product of the values."
 see (sum)
 shared Value product<Value>({Value+} values) 

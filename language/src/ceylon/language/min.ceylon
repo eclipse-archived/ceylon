@@ -1,5 +1,5 @@
-"Given a nonempty sequence of `Comparable` values, 
- return the smallest value in the sequence."
+"Given a nonempty stream of `Comparable` values, 
+ return the smallest value in the stream."
 see (Comparable, max, smallest)
 shared Absent|Value min<Value,Absent>(Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>
