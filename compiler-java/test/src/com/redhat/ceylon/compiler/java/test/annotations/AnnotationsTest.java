@@ -151,4 +151,9 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("modules/b/module");
         compareWithJavaSource("modules/c/module");
     }
+    
+    @Test
+    public void testDeprecated(){
+        compareWithJavaSource("Deprecated");
+    }
  }

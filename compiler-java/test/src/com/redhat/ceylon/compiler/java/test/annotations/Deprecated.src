@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.ceylon.language.Deprecation$annotation(description = "A deprecated class")
+@.java.lang.Deprecated
+class Deprecated implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Deprecated() {
+    }
+    
+    @.ceylon.language.Deprecation$annotation(description = "A deprecated method")
+    @.java.lang.Deprecated
+    private final void m$priv() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.Deprecated();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Deprecated.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Deprecated.class);
+}
