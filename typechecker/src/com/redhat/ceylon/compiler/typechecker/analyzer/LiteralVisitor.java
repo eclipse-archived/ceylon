@@ -36,19 +36,19 @@ public class LiteralVisitor extends Visitor {
             indent = getIndentPosition(that);
         }
         if (type==VERBATIM_STRING || type==AVERBATIM_STRING) {
-            text = text.substring(3,text.length()-3);
+            text = text.substring(3,text.length()-(text.endsWith("\"\"\"")?3:0));
         }
         else if (type==STRING_MID) {
             text = text.substring(2, text.length()-2);
         }
         else if (type==STRING_END) {
-            text = text.substring(2, text.length()-1);
+            text = text.substring(2, text.length()-(text.endsWith("\"")?1:0));
         }
         else if (type==STRING_START) {
             text = text.substring(1, text.length()-2);
         }
         else {
-            text = text.substring(1, text.length()-1);
+            text = text.substring(1, text.length()-(text.endsWith("\"")?1:0));
         }
         StringBuilder result = new StringBuilder();
         boolean allTrimmed = stripIndent(text, indent, result);
