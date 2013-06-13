@@ -1,0 +1,144 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+public interface Bug1151_A {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$impl();
+    
+    public .java.lang.Object methodA();
+    
+    public abstract long methodA$a();
+    
+    public .java.lang.Object methodA(final long a);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A.class);
+}
+public final class Bug1151_A$impl {
+    
+    public Bug1151_A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A $this;
+    
+    public final .java.lang.Object methodA() {
+        return (
+            let
+            {
+                long $ceylontmp$a$0 = methodA$a();
+            }
+            returning $this.methodA($ceylontmp$a$0);
+        );
+    }
+    
+    public final long methodA$a() {
+        return 1L;
+    }
+    
+    public .java.lang.Object methodA(final long a) {
+        return null;
+    }
+}
+public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1151_B() {
+    }
+    
+    public .java.lang.Object methodB() {
+        return (
+            let
+            {
+                long $ceylontmp$a$1 = methodB$a();
+            }
+            returning methodB($ceylontmp$a$1);
+        );
+    }
+    
+    public final long methodB$a() {
+        return 1L;
+    }
+    
+    public .java.lang.Object methodB(final long a) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B.class);
+}
+public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_B implements .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A {
+    
+    public Bug1151_C() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this;
+    }
+    
+    @.java.lang.Override
+    public final long methodA$a() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this.methodA$a();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer methodA() {
+        return (.ceylon.language.Integer)$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$this.methodA();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer methodA(final long a) {
+        return .ceylon.language.Integer.instance(a);
+    }
+    
+    public final .ceylon.language.Integer methodB() {
+        return (.ceylon.language.Integer)super.methodB();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer methodB(final long a) {
+        return .ceylon.language.Integer.instance(a);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1151_callsite_ {
+    
+    private bug1151_callsite_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1151_callsite() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C c = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C();
+        final long ia3 = c.methodA().longValue();
+        if (1L == ia3) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ia3"));
+        final long ib3 = c.methodB().longValue();
+        if (1L == ib3) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ib3"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1151_callsite_.bug1151_callsite();
+    }
+}
