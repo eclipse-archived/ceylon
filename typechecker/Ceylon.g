@@ -3182,16 +3182,16 @@ CHAR_LITERAL
 
 fragment STRING_START:;
 STRING_LITERAL
-    :   '"' StringPart ( '"' | '``' { $type = STRING_START; } (('`' ~'`') => '`')?  | (EOF)=> )
+    :   '"' StringPart ( '"' | '``' { $type = STRING_START; } (('`' ~'`') => '`')? )?
     ;
 
 fragment STRING_MID:;
 STRING_END
-    :   '``' StringPart ( '"' | '``' { $type = STRING_MID; } (('`' ~'`') => '`')?  | (EOF)=> )
+    :   '``' StringPart ( '"' | '``' { $type = STRING_MID; } (('`' ~'`') => '`')? )?
     ;
 
 VERBATIM_STRING
-    :	'"""' (~('"'|EOF) | '"' ~('"'|EOF) | '""' ~('"'|EOF))* ('"""' ('"' '"'?)? | (EOF)=> )
+    :	'"""' (~'"' | '"' ~'"' | '""' ~'"')* ('"' ('"' ('"' ('"' '"'?)?)?)?)?
     ;
 
 /*
@@ -3202,7 +3202,7 @@ VERBATIM_STRING
 */
 fragment
 CharPart
-    : ( ~('\\' | '\'' | EOF) | EscapeSequence )*
+    : ( ~('\\' | '\'') | EscapeSequence )*
     ;
     
 /*
@@ -3215,13 +3215,13 @@ CharPart
 */
 fragment
 StringPart
-    : ( ~('\\' | '"' | '`' | EOF) | ( ('`' ~'`') => '`' ) | EscapeSequence )*
+    : ( ~('\\' | '"' | '`') | ( ('`' ~'`') => '`' ) | EscapeSequence )*
     ;
 
 fragment
 EscapeSequence 
     :   '\\' 
-        ( ~('{'|EOF) | '{' (~('}'|EOF))* '}' )
+        ( ~'{' | '{' (~'}')* '}'? )?
     ;
 
 WS  
@@ -3239,7 +3239,7 @@ WS
     ;
 
 LINE_COMMENT
-    :   ('//'|'#!') ~('\n'|'\r'|EOF)*  ('\r\n' | '\r' | '\n')?
+    :   ('//'|'#!') ~('\n'|'\r')*  ('\r\n' | '\r' | '\n')?
         {
             $channel = HIDDEN;
         }
@@ -3247,7 +3247,7 @@ LINE_COMMENT
 
 MULTI_COMMENT
     :   '/*'
-        (    ~('/'|'*'|EOF)
+        (    ~('/'|'*')
         |    ('/' ~'*') => '/'
         |    ('*' ~'/') => '*'
         |    MULTI_COMMENT
