@@ -1875,47 +1875,46 @@ public class ClassTransformer extends AbstractTransformer {
             boolean transformOverloads, int overloadsFlags, 
             boolean transformDefaultValues, boolean defaultValuesBody) {
         
-        final Method model = def.getDeclarationModel();
+        final Method methodModel = def.getDeclarationModel();
         ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
         boolean needsRaw = false;
-        if (Decl.withinClassOrInterface(model)) {
-            final Scope refinedFrom = model.getRefinedDeclaration().getContainer();
-            final ProducedType inheritedFrom = ((ClassOrInterface)model.getContainer()).getType().getSupertype((TypeDeclaration)refinedFrom);
+        if (Decl.withinClassOrInterface(methodModel)) {
+            final Scope refinedFrom = methodModel.getRefinedDeclaration().getContainer();
+            final ProducedType inheritedFrom = ((ClassOrInterface)methodModel.getContainer()).getType().getSupertype((TypeDeclaration)refinedFrom);
             needsRaw = needsRawification(inheritedFrom);
         }
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                this, model);
+                this, methodModel);
         
         // do the reified type param arguments
-        if(def.getTypeParameterList() != null && gen().supportsReified(model))
+        if(def.getTypeParameterList() != null && gen().supportsReified(methodModel))
             methodBuilder.reifiedTypeParameters(def.getTypeParameterList().getTypeParameterDeclarations());
         
-        final ParameterList parameterList = model.getParameterLists().get(0);
-        Tree.ParameterList paramList = def.getParameterLists().get(0);
-        for (Tree.Parameter param : paramList.getParameters()) {
-            Parameter parameter = param.getDeclarationModel();
+        Tree.ParameterList parameterList = def.getParameterLists().get(0);
+        for (final Tree.Parameter parameter : parameterList.getParameters()) {
+            Parameter parameterModel = parameter.getDeclarationModel();
             List<JCAnnotation> annotations = null;
             if (includeAnnotations) {
-                annotations = expressionGen().transform(param.getAnnotationList());
+                annotations = expressionGen().transform(parameter.getAnnotationList());
             }
-            Parameter parameterModel = param.getDeclarationModel();
+            
             methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
-            if (parameter.isDefaulted()
-                    || parameter.isSequenced()) {
-                if (model.getRefinedDeclaration() == model) {
+            if (parameterModel.isDefaulted()
+                    || parameterModel.isSequenced()) {
+                if (methodModel.getRefinedDeclaration() == methodModel) {
                     
                     if (transformOverloads) {
-                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, model);
+                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
                         MethodDefinitionBuilder overloadedMethod = makeOverloadsForDefaultedParameter(
                                 overloadsFlags, 
                                 overloadBuilder, 
-                                model, parameterList.getParameters(), parameter, def.getTypeParameterList());
+                                methodModel, parameterList, parameter, def.getTypeParameterList());
                         lb.append(overloadedMethod);
                     }
                     
                     if (transformDefaultValues) {
-                        lb.append(makeParamDefaultValueMethod(defaultValuesBody, model, paramList, param, def.getTypeParameterList()));    
+                        lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, def.getTypeParameterList()));    
                     }
                 }
             }    
@@ -1923,22 +1922,22 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (transformMethod) {
             methodBuilder
-                .modifiers(transformMethodDeclFlags(model));
+                .modifiers(transformMethodDeclFlags(methodModel));
             if (actual) {
-                methodBuilder.isOverride(model.isActual());
+                methodBuilder.isOverride(methodModel.isActual());
             }
             if (includeAnnotations) {
                 methodBuilder.userAnnotations(expressionGen().transform(def.getAnnotationList()));
-                methodBuilder.modelAnnotations(model.getAnnotations());
+                methodBuilder.modelAnnotations(methodModel.getAnnotations());
             } else {
                 methodBuilder.noAnnotations();
             }
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
                 methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
             }
-            methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
+            methodBuilder.resultType(methodModel, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {
-                copyTypeParameters(model, methodBuilder);
+                copyTypeParameters(methodModel, methodBuilder);
             }
             if (body != null) {
                 // Construct the outermost method using the body we've built so far
@@ -2186,32 +2185,11 @@ public class ClassTransformer extends AbstractTransformer {
             int flags,
             MethodDefinitionBuilder overloadBuilder,
             Declaration model,
-            Tree.ParameterList paramList,
-            Tree.Parameter currentParam,
+            Tree.ParameterList parameterList,
+            Tree.Parameter currentParameter,
             Tree.TypeParameterList typeParameterList) {
-        at(currentParam);
-        java.util.List<Parameter> parameters = new java.util.ArrayList<Parameter>(paramList.getParameters().size());
-        for (Tree.Parameter param : paramList.getParameters()) {
-            parameters.add(param.getDeclarationModel());
-        }
-        return makeOverloadsForDefaultedParameter(flags,
-                overloadBuilder, model,
-                parameters, currentParam != null ? currentParam.getDeclarationModel() : null,
-                typeParameterList);
-    }
-    
-    /**
-     * Generates an overloaded method where all the defaulted parameters after 
-     * and including the given {@code currentParam} are given their default 
-     * values. Using Java-side overloading ensures positional invocations 
-     * are binary compatible when new defaulted parameters are appended to a
-     * parameter list.
-     * @param typeParameterList 
-     */
-    private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
-            int flags, MethodDefinitionBuilder overloadBuilder,
-            final Declaration model, java.util.List<Parameter> parameters,
-            final Parameter currentParam, TypeParameterList typeParameterList) {
+        at(currentParameter);
+        
         // need annotations for BC, but the method isn't really there
         overloadBuilder.ignoreModelAnnotations();
         
@@ -2305,7 +2283,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (model instanceof Class
                 && !Strategy.defaultParameterMethodStatic(model)
                 && !Strategy.defaultParameterMethodOnOuter(model)
-                && currentParam != null) {
+                && currentParameter != null) {
             Class classModel = (Class)model;
             vars.append(makeVar(companionInstanceName, 
                     makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
@@ -2316,9 +2294,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         boolean useDefault = false;
-        for (Parameter param2 : parameters) {
-            
-            if (param2 == currentParam) {
+        for (Tree.Parameter parameter : parameterList.getParameters()) {
+            final Parameter parameterModel = parameter.getDeclarationModel();
+            if (parameter == currentParameter) {
                 useDefault = true;
             }
             if (useDefault) {
@@ -2338,14 +2316,14 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     dpmQualifier = companionInstanceName.makeIdent();
                 }
-                JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(dpmQualifier, param2);
+                JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(dpmQualifier, parameterModel);
                 
-                Naming.SyntheticName varName = naming.temp("$"+param2.getName()+"$");
+                Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
                 final ProducedType paramType;
-                if (param2 instanceof FunctionalParameter) {
-                    paramType = typeFact().getCallableType(param2.getType());
+                if (parameterModel instanceof FunctionalParameter) {
+                    paramType = typeFact().getCallableType(parameterModel.getType());
                 } else {
-                    paramType = param2.getType();
+                    paramType = parameterModel.getType();
                 }
                 vars.append(makeVar(varName, 
                         makeJavaType(paramType), 
@@ -2354,8 +2332,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 ListBuffer.<JCExpression>lb().appendList(args).toList())));
                 args.add(varName.makeIdent());
             } else {
-                overloadBuilder.parameter(param2, null, 0, false);
-                args.add(naming.makeName(param2, Naming.NA_MEMBER | Naming.NA_ALIASED));
+                overloadBuilder.parameter(parameterModel, null, 0, false);
+                args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
             }
         }
         
@@ -2391,9 +2369,9 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             overloadBuilder.noBody();
         }
-        
         return overloadBuilder;
     }
+
 
     /**
      * When generating an instantiator method if the inner class has a type 
