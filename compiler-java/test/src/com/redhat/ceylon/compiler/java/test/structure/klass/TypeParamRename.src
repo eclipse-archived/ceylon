@@ -36,9 +36,9 @@ final class TypeParamRename$impl<T, U> {
         return (
             let
             {
-                T $ceylontmp$t$1 = m$t();
+                T $ceylontmp$t$0 = m$t();
             }
-            returning m($ceylontmp$t$1);
+            returning m($ceylontmp$t$0);
         );
     }
     
@@ -54,9 +54,9 @@ final class TypeParamRename$impl<T, U> {
         return (
             let
             {
-                V $ceylontmp$v$5 = m2$v($reifiedV, $reifiedW);
+                V $ceylontmp$v$2 = m2$v($reifiedV, $reifiedW);
             }
-            returning m2($reifiedV, $reifiedW, $ceylontmp$v$5);
+            returning m2($reifiedV, $reifiedW, $ceylontmp$v$2);
         );
     }
     

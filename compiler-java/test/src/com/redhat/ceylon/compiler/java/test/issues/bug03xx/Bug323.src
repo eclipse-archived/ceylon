@@ -19,9 +19,9 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             (
                 let
                 {
-                    long $ceylontmp$f$1 = $Inner$init$f();
-                    long $ceylontmp$g$2 = $Inner$init$g($ceylontmp$f$1);
-                    this($ceylontmp$f$1, $ceylontmp$g$2);
+                    long $ceylontmp$f$0 = $Inner$init$f();
+                    long $ceylontmp$g$1 = $Inner$init$g($ceylontmp$f$0);
+                    this($ceylontmp$f$0, $ceylontmp$g$1);
                 }
                 returning null;
             );
@@ -31,8 +31,8 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             (
                 let
                 {
-                    long $ceylontmp$g$4 = $Inner$init$g(f);
-                    this(f, $ceylontmp$g$4);
+                    long $ceylontmp$g$2 = $Inner$init$g(f);
+                    this(f, $ceylontmp$g$2);
                 }
                 returning null;
             );

@@ -56,10 +56,10 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$1 = defaultedParams$p();
-                .java.lang.Object $ceylontmp$p2$2 = defaultedParams$p2($ceylontmp$p$1);
+                .java.lang.Object $ceylontmp$p$0 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p2$1 = defaultedParams$p2($ceylontmp$p$0);
             }
-            returning defaultedParams($ceylontmp$p$1, $ceylontmp$p2$2);
+            returning defaultedParams($ceylontmp$p$0, $ceylontmp$p2$1);
         );
     }
     
@@ -71,9 +71,9 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p2$4 = defaultedParams$p2(p);
+                .java.lang.Object $ceylontmp$p2$2 = defaultedParams$p2(p);
             }
-            returning defaultedParams(p, $ceylontmp$p2$4);
+            returning defaultedParams(p, $ceylontmp$p2$2);
         );
     }
     
@@ -97,10 +97,10 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$16 = $Class$init$p();
-                .java.lang.Object $ceylontmp$p2$17 = $Class$init$p2($ceylontmp$p$16);
+                .java.lang.Object $ceylontmp$p$8 = $Class$init$p();
+                .java.lang.Object $ceylontmp$p2$9 = $Class$init$p2($ceylontmp$p$8);
             }
-            returning new Class($ceylontmp$p$16, $ceylontmp$p2$17);
+            returning new Class($ceylontmp$p$8, $ceylontmp$p2$9);
         );
     }
     
@@ -112,9 +112,9 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p2$21 = $Class$init$p2(p);
+                .java.lang.Object $ceylontmp$p2$11 = $Class$init$p2(p);
             }
-            returning new Class(p, $ceylontmp$p2$21);
+            returning new Class(p, $ceylontmp$p2$11);
         );
     }
     

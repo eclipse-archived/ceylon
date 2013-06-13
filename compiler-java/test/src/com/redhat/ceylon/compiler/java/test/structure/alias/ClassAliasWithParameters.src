@@ -10,8 +10,8 @@ public class ClassAliasWithParameters_Foo implements .com.redhat.ceylon.compiler
         (
             let
             {
-                .java.lang.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.$init$s(i);
-                this(i, $ceylontmp$s$1);
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.$init$s(i);
+                this(i, $ceylontmp$s$0);
             }
             returning null;
         );

@@ -73,8 +73,8 @@ class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                .java.lang.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.$init$s();
-                this($ceylontmp$s$1);
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.$init$s();
+                this($ceylontmp$s$0);
             }
             returning null;
         );
@@ -161,8 +161,8 @@ class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon.compi
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$3 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.$init$s();
-                this($ceylontmp$s$3);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.$init$s();
+                this($ceylontmp$s$1);
             }
             returning null;
         );
@@ -223,8 +223,8 @@ class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon.compi
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$s$5 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$init$s();
-                this($ceylontmp$s$5);
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$s$2 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$init$s();
+                this($ceylontmp$s$2);
             }
             returning null;
         );

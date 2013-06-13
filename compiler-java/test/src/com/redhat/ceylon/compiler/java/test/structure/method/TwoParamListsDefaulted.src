@@ -9,9 +9,9 @@ public final class twoParamListsDefaulted_ {
         return (
             let
             {
-                .java.lang.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
+                .java.lang.String $ceylontmp$firstName$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
             }
-            returning twoParamListsDefaulted($ceylontmp$firstName$1);
+            returning twoParamListsDefaulted($ceylontmp$firstName$0);
         );
     }
     
@@ -40,9 +40,9 @@ final class twoParamListsDefaulted_caller_ {
         (
             let
             {
-                .java.lang.String $arg$2$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
+                .java.lang.String $arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted($arg$2$0);
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted($arg$1$0);
         ).$call(.ceylon.language.String.instance("Doe"));
     }
     

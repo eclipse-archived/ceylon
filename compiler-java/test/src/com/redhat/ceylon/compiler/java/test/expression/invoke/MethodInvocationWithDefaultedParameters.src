@@ -27,9 +27,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$1 = f1$n();
+                long $ceylontmp$n$0 = f1$n();
             }
-            returning f1($ceylontmp$n$1);
+            returning f1($ceylontmp$n$0);
         );
     }
     
@@ -45,9 +45,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$3 = f2$s(n);
+                .java.lang.String $ceylontmp$s$1 = f2$s(n);
             }
-            returning f2(n, $ceylontmp$s$3);
+            returning f2(n, $ceylontmp$s$1);
         );
     }
     
@@ -63,10 +63,10 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$5 = f3$n();
-                long $ceylontmp$m$6 = f3$m($ceylontmp$n$5);
+                long $ceylontmp$n$2 = f3$n();
+                long $ceylontmp$m$3 = f3$m($ceylontmp$n$2);
             }
-            returning f3($ceylontmp$n$5, $ceylontmp$m$6);
+            returning f3($ceylontmp$n$2, $ceylontmp$m$3);
         );
     }
     
@@ -78,9 +78,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$m$8 = f3$m(n);
+                long $ceylontmp$m$4 = f3$m(n);
             }
-            returning f3(n, $ceylontmp$m$8);
+            returning f3(n, $ceylontmp$m$4);
         );
     }
     
@@ -96,10 +96,10 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$10 = f4$n();
-                long $ceylontmp$m$11 = f4$m($ceylontmp$n$10);
+                long $ceylontmp$n$5 = f4$n();
+                long $ceylontmp$m$6 = f4$m($ceylontmp$n$5);
             }
-            returning f4($ceylontmp$n$10, $ceylontmp$m$11);
+            returning f4($ceylontmp$n$5, $ceylontmp$m$6);
         );
     }
     
@@ -111,9 +111,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$m$13 = f4$m(n);
+                long $ceylontmp$m$7 = f4$m(n);
             }
-            returning f4(n, $ceylontmp$m$13);
+            returning f4(n, $ceylontmp$m$7);
         );
     }
     
@@ -129,9 +129,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$15 = f5$n();
+                long $ceylontmp$n$8 = f5$n();
             }
-            returning f5($ceylontmp$n$15);
+            returning f5($ceylontmp$n$8);
         );
     }
     
@@ -147,9 +147,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$17 = f6$n();
+                long $ceylontmp$n$9 = f6$n();
             }
-            returning f6($ceylontmp$n$17);
+            returning f6($ceylontmp$n$9);
         );
     }
     
@@ -165,9 +165,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$19 = f7$n();
+                long $ceylontmp$n$10 = f7$n();
             }
-            returning f7($ceylontmp$n$19);
+            returning f7($ceylontmp$n$10);
         );
     }
     
@@ -183,9 +183,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$21 = f8$n();
+                long $ceylontmp$n$11 = f8$n();
             }
-            returning f8($ceylontmp$n$21);
+            returning f8($ceylontmp$n$11);
         );
     }
     
@@ -201,9 +201,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$23 = f9$n();
+                long $ceylontmp$n$12 = f9$n();
             }
-            returning f9($ceylontmp$n$23);
+            returning f9($ceylontmp$n$12);
         );
     }
     
@@ -219,10 +219,10 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                long $ceylontmp$n$25 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$26 = fa$seq($ceylontmp$n$25);
+                long $ceylontmp$n$13 = fa$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$14 = fa$seq($ceylontmp$n$13);
             }
-            returning fa($ceylontmp$n$25, $ceylontmp$seq$26);
+            returning fa($ceylontmp$n$13, $ceylontmp$seq$14);
         );
     }
     
@@ -234,9 +234,9 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$28 = fa$seq(n);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$15 = fa$seq(n);
             }
-            returning fa(n, $ceylontmp$seq$28);
+            returning fa(n, $ceylontmp$seq$15);
         );
     }
     
@@ -394,9 +394,9 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$30 = f1$n();
+                long $ceylontmp$n$16 = f1$n();
             }
-            returning $this.f1($ceylontmp$n$30);
+            returning $this.f1($ceylontmp$n$16);
         );
     }
     
@@ -408,9 +408,9 @@ final class Barface$impl {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$34 = f2$s(n);
+                .java.lang.String $ceylontmp$s$18 = f2$s(n);
             }
-            returning $this.f2(n, $ceylontmp$s$34);
+            returning $this.f2(n, $ceylontmp$s$18);
         );
     }
     
@@ -422,10 +422,10 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$38 = f3$n();
-                long $ceylontmp$m$39 = f3$m($ceylontmp$n$38);
+                long $ceylontmp$n$20 = f3$n();
+                long $ceylontmp$m$21 = f3$m($ceylontmp$n$20);
             }
-            returning $this.f3($ceylontmp$n$38, $ceylontmp$m$39);
+            returning $this.f3($ceylontmp$n$20, $ceylontmp$m$21);
         );
     }
     
@@ -437,9 +437,9 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$m$41 = f3$m(n);
+                long $ceylontmp$m$22 = f3$m(n);
             }
-            returning $this.f3(n, $ceylontmp$m$41);
+            returning $this.f3(n, $ceylontmp$m$22);
         );
     }
     
@@ -451,10 +451,10 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$48 = f4$n();
-                long $ceylontmp$m$49 = f4$m($ceylontmp$n$48);
+                long $ceylontmp$n$26 = f4$n();
+                long $ceylontmp$m$27 = f4$m($ceylontmp$n$26);
             }
-            returning $this.f4($ceylontmp$n$48, $ceylontmp$m$49);
+            returning $this.f4($ceylontmp$n$26, $ceylontmp$m$27);
         );
     }
     
@@ -466,9 +466,9 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$m$51 = f4$m(n);
+                long $ceylontmp$m$28 = f4$m(n);
             }
-            returning $this.f4(n, $ceylontmp$m$51);
+            returning $this.f4(n, $ceylontmp$m$28);
         );
     }
     
@@ -480,9 +480,9 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$58 = f5$n();
+                long $ceylontmp$n$32 = f5$n();
             }
-            returning $this.f5($ceylontmp$n$58);
+            returning $this.f5($ceylontmp$n$32);
         );
     }
     
@@ -494,9 +494,9 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$62 = f7$n();
+                long $ceylontmp$n$34 = f7$n();
             }
-            returning $this.f7($ceylontmp$n$62);
+            returning $this.f7($ceylontmp$n$34);
         );
     }
     
@@ -508,9 +508,9 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$66 = f9$n();
+                long $ceylontmp$n$36 = f9$n();
             }
-            returning $this.f9($ceylontmp$n$66);
+            returning $this.f9($ceylontmp$n$36);
         );
     }
     
@@ -522,10 +522,10 @@ final class Barface$impl {
         return (
             let
             {
-                long $ceylontmp$n$70 = fa$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$71 = fa$seq($ceylontmp$n$70);
+                long $ceylontmp$n$38 = fa$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$39 = fa$seq($ceylontmp$n$38);
             }
-            returning $this.fa($ceylontmp$n$70, $ceylontmp$seq$71);
+            returning $this.fa($ceylontmp$n$38, $ceylontmp$seq$39);
         );
     }
     
@@ -537,9 +537,9 @@ final class Barface$impl {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$73 = fa$seq(n);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$40 = fa$seq(n);
             }
-            returning $this.fa(n, $ceylontmp$seq$73);
+            returning $this.fa(n, $ceylontmp$seq$40);
         );
     }
     
@@ -765,242 +765,242 @@ final class methodInvocationWithDefaultedParameters_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$79$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$79$this$ = $arg$79$callable$;
-                long $arg$79$0 = $arg$79$this$.f1$n();
-                $arg$79$callable$.f1($arg$79$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$44$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$44$this$ = $arg$44$callable$;
+                long $arg$44$0 = $arg$44$this$.f1$n();
+                $arg$44$callable$.f1($arg$44$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$80$callable$ = f;
-                long $arg$80$0 = 6L;
-                $arg$80$callable$.f1($arg$80$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$45$callable$ = f;
+                long $arg$45$0 = 6L;
+                $arg$45$callable$.f1($arg$45$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$81$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$81$this$ = $arg$81$callable$;
-                long $arg$81$0 = 1L;
-                .java.lang.String $arg$81$1 = $arg$81$this$.f2$s($arg$81$0);
-                $arg$81$callable$.f2($arg$81$0, $arg$81$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$46$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$46$this$ = $arg$46$callable$;
+                long $arg$46$0 = 1L;
+                .java.lang.String $arg$46$1 = $arg$46$this$.f2$s($arg$46$0);
+                $arg$46$callable$.f2($arg$46$0, $arg$46$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$82$callable$ = f;
-                long $arg$82$0 = 1L;
-                .java.lang.String $arg$82$1 = "foo";
-                $arg$82$callable$.f2($arg$82$0, $arg$82$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$47$callable$ = f;
+                long $arg$47$0 = 1L;
+                .java.lang.String $arg$47$1 = "foo";
+                $arg$47$callable$.f2($arg$47$0, $arg$47$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$83$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$83$this$ = $arg$83$callable$;
-                long $arg$83$0 = $arg$83$this$.f3$n();
-                long $arg$83$1 = $arg$83$this$.f3$m($arg$83$0);
-                $arg$83$callable$.f3($arg$83$0, $arg$83$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$48$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$48$this$ = $arg$48$callable$;
+                long $arg$48$0 = $arg$48$this$.f3$n();
+                long $arg$48$1 = $arg$48$this$.f3$m($arg$48$0);
+                $arg$48$callable$.f3($arg$48$0, $arg$48$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$84$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$84$this$ = $arg$84$callable$;
-                long $arg$84$0 = 6L;
-                long $arg$84$1 = $arg$84$this$.f3$m($arg$84$0);
-                $arg$84$callable$.f3($arg$84$0, $arg$84$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$49$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$49$this$ = $arg$49$callable$;
+                long $arg$49$0 = 6L;
+                long $arg$49$1 = $arg$49$this$.f3$m($arg$49$0);
+                $arg$49$callable$.f3($arg$49$0, $arg$49$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$85$callable$ = f;
-                long $arg$85$1 = 9L;
-                long $arg$85$0 = 6L;
-                $arg$85$callable$.f3($arg$85$0, $arg$85$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$50$callable$ = f;
+                long $arg$50$1 = 9L;
+                long $arg$50$0 = 6L;
+                $arg$50$callable$.f3($arg$50$0, $arg$50$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$86$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$86$this$ = $arg$86$callable$;
-                long $arg$86$0 = $arg$86$this$.f4$n();
-                long $arg$86$1 = $arg$86$this$.f4$m($arg$86$0);
-                $arg$86$callable$.f4($arg$86$0, $arg$86$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$51$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$51$this$ = $arg$51$callable$;
+                long $arg$51$0 = $arg$51$this$.f4$n();
+                long $arg$51$1 = $arg$51$this$.f4$m($arg$51$0);
+                $arg$51$callable$.f4($arg$51$0, $arg$51$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$87$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$87$this$ = $arg$87$callable$;
-                long $arg$87$0 = 6L;
-                long $arg$87$1 = $arg$87$this$.f4$m($arg$87$0);
-                $arg$87$callable$.f4($arg$87$0, $arg$87$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$52$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$52$this$ = $arg$52$callable$;
+                long $arg$52$0 = 6L;
+                long $arg$52$1 = $arg$52$this$.f4$m($arg$52$0);
+                $arg$52$callable$.f4($arg$52$0, $arg$52$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$88$callable$ = f;
-                long $arg$88$1 = 9L;
-                long $arg$88$0 = 6L;
-                $arg$88$callable$.f4($arg$88$0, $arg$88$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$53$callable$ = f;
+                long $arg$53$1 = 9L;
+                long $arg$53$0 = 6L;
+                $arg$53$callable$.f4($arg$53$0, $arg$53$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$89$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$89$this$ = $arg$89$callable$;
-                long $arg$89$0 = $arg$89$this$.f5$n();
-                $arg$89$callable$.f5($arg$89$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$54$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$54$this$ = $arg$54$callable$;
+                long $arg$54$0 = $arg$54$this$.f5$n();
+                $arg$54$callable$.f5($arg$54$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$90$callable$ = f;
-                long $arg$90$0 = 6L;
-                $arg$90$callable$.f5($arg$90$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$55$callable$ = f;
+                long $arg$55$0 = 6L;
+                $arg$55$callable$.f5($arg$55$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$91$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$91$this$ = $arg$91$callable$;
-                long $arg$91$0 = $arg$91$this$.f6$n();
-                $arg$91$callable$.f6($arg$91$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$56$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$56$this$ = $arg$56$callable$;
+                long $arg$56$0 = $arg$56$this$.f6$n();
+                $arg$56$callable$.f6($arg$56$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$92$callable$ = f;
-                long $arg$92$0 = 6L;
-                $arg$92$callable$.f6($arg$92$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$57$callable$ = f;
+                long $arg$57$0 = 6L;
+                $arg$57$callable$.f6($arg$57$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$93$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$93$this$ = $arg$93$callable$;
-                long $arg$93$0 = $arg$93$this$.f7$n();
-                $arg$93$callable$.f7($arg$93$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$58$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$58$this$ = $arg$58$callable$;
+                long $arg$58$0 = $arg$58$this$.f7$n();
+                $arg$58$callable$.f7($arg$58$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$94$callable$ = f;
-                long $arg$94$0 = 6L;
-                $arg$94$callable$.f7($arg$94$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$59$callable$ = f;
+                long $arg$59$0 = 6L;
+                $arg$59$callable$.f7($arg$59$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$95$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$95$this$ = $arg$95$callable$;
-                long $arg$95$0 = $arg$95$this$.f8$n();
-                $arg$95$callable$.f8($arg$95$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$60$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$60$this$ = $arg$60$callable$;
+                long $arg$60$0 = $arg$60$this$.f8$n();
+                $arg$60$callable$.f8($arg$60$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$96$callable$ = f;
-                long $arg$96$0 = 6L;
-                $arg$96$callable$.f8($arg$96$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$61$callable$ = f;
+                long $arg$61$0 = 6L;
+                $arg$61$callable$.f8($arg$61$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$97$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$97$this$ = $arg$97$callable$;
-                long $arg$97$0 = $arg$97$this$.f9$n();
-                $arg$97$callable$.f9($arg$97$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$62$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$62$this$ = $arg$62$callable$;
+                long $arg$62$0 = $arg$62$this$.f9$n();
+                $arg$62$callable$.f9($arg$62$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$98$callable$ = f;
-                long $arg$98$0 = 6L;
-                $arg$98$callable$.f9($arg$98$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$63$callable$ = f;
+                long $arg$63$0 = 6L;
+                $arg$63$callable$.f9($arg$63$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$99$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$99$this$ = $arg$99$callable$;
-                long $arg$99$0 = $arg$99$this$.fa$n();
-                .ceylon.language.Sequential $arg$99$1 = $arg$99$this$.fa$seq($arg$99$0);
-                $arg$99$callable$.fa($arg$99$0, $arg$99$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$64$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$64$this$ = $arg$64$callable$;
+                long $arg$64$0 = $arg$64$this$.fa$n();
+                .ceylon.language.Sequential $arg$64$1 = $arg$64$this$.fa$seq($arg$64$0);
+                $arg$64$callable$.fa($arg$64$0, $arg$64$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$100$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$100$this$ = $arg$100$callable$;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$100$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                long $arg$100$0 = $arg$100$this$.fa$n();
-                $arg$100$callable$.fa($arg$100$0, $arg$100$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$65$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$65$this$ = $arg$65$callable$;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$65$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                long $arg$65$0 = $arg$65$this$.fa$n();
+                $arg$65$callable$.fa($arg$65$0, $arg$65$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$101$callable$ = f;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$101$this$ = $arg$101$callable$;
-                long $arg$101$0 = 6L;
-                .ceylon.language.Sequential $arg$101$1 = $arg$101$this$.fa$seq($arg$101$0);
-                $arg$101$callable$.fa($arg$101$0, $arg$101$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$66$callable$ = f;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$66$this$ = $arg$66$callable$;
+                long $arg$66$0 = 6L;
+                .ceylon.language.Sequential $arg$66$1 = $arg$66$this$.fa$seq($arg$66$0);
+                $arg$66$callable$.fa($arg$66$0, $arg$66$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$102$callable$ = f;
-                long $arg$102$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$102$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                $arg$102$callable$.fa($arg$102$0, $arg$102$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$67$callable$ = f;
+                long $arg$67$0 = 6L;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$67$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                $arg$67$callable$.fa($arg$67$0, $arg$67$1);
             }
             returning null;
         );
@@ -1036,242 +1036,242 @@ final class methodInvocationWithDefaultedParameters_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$103$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$103$this$ = $arg$103$callable$;
-                long $arg$103$0 = $arg$103$this$.f1$n();
-                $arg$103$callable$.f1($arg$103$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$68$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$68$this$ = $arg$68$callable$;
+                long $arg$68$0 = $arg$68$this$.f1$n();
+                $arg$68$callable$.f1($arg$68$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$104$callable$ = f2;
-                long $arg$104$0 = 6L;
-                $arg$104$callable$.f1($arg$104$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$69$callable$ = f2;
+                long $arg$69$0 = 6L;
+                $arg$69$callable$.f1($arg$69$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$105$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$105$this$ = $arg$105$callable$;
-                long $arg$105$0 = 1L;
-                .java.lang.String $arg$105$1 = $arg$105$this$.f2$s($arg$105$0);
-                $arg$105$callable$.f2($arg$105$0, $arg$105$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$70$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$70$this$ = $arg$70$callable$;
+                long $arg$70$0 = 1L;
+                .java.lang.String $arg$70$1 = $arg$70$this$.f2$s($arg$70$0);
+                $arg$70$callable$.f2($arg$70$0, $arg$70$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$106$callable$ = f2;
-                long $arg$106$0 = 1L;
-                .java.lang.String $arg$106$1 = "foo";
-                $arg$106$callable$.f2($arg$106$0, $arg$106$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$71$callable$ = f2;
+                long $arg$71$0 = 1L;
+                .java.lang.String $arg$71$1 = "foo";
+                $arg$71$callable$.f2($arg$71$0, $arg$71$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$107$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$107$this$ = $arg$107$callable$;
-                long $arg$107$0 = $arg$107$this$.f3$n();
-                long $arg$107$1 = $arg$107$this$.f3$m($arg$107$0);
-                $arg$107$callable$.f3($arg$107$0, $arg$107$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$72$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$72$this$ = $arg$72$callable$;
+                long $arg$72$0 = $arg$72$this$.f3$n();
+                long $arg$72$1 = $arg$72$this$.f3$m($arg$72$0);
+                $arg$72$callable$.f3($arg$72$0, $arg$72$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$108$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$108$this$ = $arg$108$callable$;
-                long $arg$108$0 = 6L;
-                long $arg$108$1 = $arg$108$this$.f3$m($arg$108$0);
-                $arg$108$callable$.f3($arg$108$0, $arg$108$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$73$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$73$this$ = $arg$73$callable$;
+                long $arg$73$0 = 6L;
+                long $arg$73$1 = $arg$73$this$.f3$m($arg$73$0);
+                $arg$73$callable$.f3($arg$73$0, $arg$73$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$109$callable$ = f2;
-                long $arg$109$1 = 9L;
-                long $arg$109$0 = 6L;
-                $arg$109$callable$.f3($arg$109$0, $arg$109$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$74$callable$ = f2;
+                long $arg$74$1 = 9L;
+                long $arg$74$0 = 6L;
+                $arg$74$callable$.f3($arg$74$0, $arg$74$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$110$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$110$this$ = $arg$110$callable$;
-                long $arg$110$0 = $arg$110$this$.f4$n();
-                long $arg$110$1 = $arg$110$this$.f4$m($arg$110$0);
-                $arg$110$callable$.f4($arg$110$0, $arg$110$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$75$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$75$this$ = $arg$75$callable$;
+                long $arg$75$0 = $arg$75$this$.f4$n();
+                long $arg$75$1 = $arg$75$this$.f4$m($arg$75$0);
+                $arg$75$callable$.f4($arg$75$0, $arg$75$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$111$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$111$this$ = $arg$111$callable$;
-                long $arg$111$0 = 6L;
-                long $arg$111$1 = $arg$111$this$.f4$m($arg$111$0);
-                $arg$111$callable$.f4($arg$111$0, $arg$111$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$76$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$76$this$ = $arg$76$callable$;
+                long $arg$76$0 = 6L;
+                long $arg$76$1 = $arg$76$this$.f4$m($arg$76$0);
+                $arg$76$callable$.f4($arg$76$0, $arg$76$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$112$callable$ = f2;
-                long $arg$112$1 = 9L;
-                long $arg$112$0 = 6L;
-                $arg$112$callable$.f4($arg$112$0, $arg$112$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$77$callable$ = f2;
+                long $arg$77$1 = 9L;
+                long $arg$77$0 = 6L;
+                $arg$77$callable$.f4($arg$77$0, $arg$77$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$113$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$113$this$ = $arg$113$callable$;
-                long $arg$113$0 = $arg$113$this$.f5$n();
-                $arg$113$callable$.f5($arg$113$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$78$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$78$this$ = $arg$78$callable$;
+                long $arg$78$0 = $arg$78$this$.f5$n();
+                $arg$78$callable$.f5($arg$78$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$114$callable$ = f2;
-                long $arg$114$0 = 6L;
-                $arg$114$callable$.f5($arg$114$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$79$callable$ = f2;
+                long $arg$79$0 = 6L;
+                $arg$79$callable$.f5($arg$79$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$115$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$115$this$ = $arg$115$callable$;
-                long $arg$115$0 = $arg$115$this$.f6$n();
-                $arg$115$callable$.f6($arg$115$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$80$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$80$this$ = $arg$80$callable$;
+                long $arg$80$0 = $arg$80$this$.f6$n();
+                $arg$80$callable$.f6($arg$80$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$116$callable$ = f2;
-                long $arg$116$0 = 6L;
-                $arg$116$callable$.f6($arg$116$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$81$callable$ = f2;
+                long $arg$81$0 = 6L;
+                $arg$81$callable$.f6($arg$81$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$117$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$117$this$ = $arg$117$callable$;
-                long $arg$117$0 = $arg$117$this$.f7$n();
-                $arg$117$callable$.f7($arg$117$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$82$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$82$this$ = $arg$82$callable$;
+                long $arg$82$0 = $arg$82$this$.f7$n();
+                $arg$82$callable$.f7($arg$82$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$118$callable$ = f2;
-                long $arg$118$0 = 6L;
-                $arg$118$callable$.f7($arg$118$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$83$callable$ = f2;
+                long $arg$83$0 = 6L;
+                $arg$83$callable$.f7($arg$83$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$119$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$119$this$ = $arg$119$callable$;
-                long $arg$119$0 = $arg$119$this$.f8$n();
-                $arg$119$callable$.f8($arg$119$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$84$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$84$this$ = $arg$84$callable$;
+                long $arg$84$0 = $arg$84$this$.f8$n();
+                $arg$84$callable$.f8($arg$84$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$120$callable$ = f2;
-                long $arg$120$0 = 6L;
-                $arg$120$callable$.f8($arg$120$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$85$callable$ = f2;
+                long $arg$85$0 = 6L;
+                $arg$85$callable$.f8($arg$85$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$121$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$121$this$ = $arg$121$callable$;
-                long $arg$121$0 = $arg$121$this$.f9$n();
-                $arg$121$callable$.f9($arg$121$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$86$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$86$this$ = $arg$86$callable$;
+                long $arg$86$0 = $arg$86$this$.f9$n();
+                $arg$86$callable$.f9($arg$86$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$122$callable$ = f2;
-                long $arg$122$0 = 6L;
-                $arg$122$callable$.f9($arg$122$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$87$callable$ = f2;
+                long $arg$87$0 = 6L;
+                $arg$87$callable$.f9($arg$87$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$123$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$123$this$ = $arg$123$callable$;
-                long $arg$123$0 = $arg$123$this$.fa$n();
-                .ceylon.language.Sequential $arg$123$1 = $arg$123$this$.fa$seq($arg$123$0);
-                $arg$123$callable$.fa($arg$123$0, $arg$123$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$88$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$88$this$ = $arg$88$callable$;
+                long $arg$88$0 = $arg$88$this$.fa$n();
+                .ceylon.language.Sequential $arg$88$1 = $arg$88$this$.fa$seq($arg$88$0);
+                $arg$88$callable$.fa($arg$88$0, $arg$88$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$124$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$124$this$ = $arg$124$callable$;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$124$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                long $arg$124$0 = $arg$124$this$.fa$n();
-                $arg$124$callable$.fa($arg$124$0, $arg$124$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$89$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$89$this$ = $arg$89$callable$;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$89$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                long $arg$89$0 = $arg$89$this$.fa$n();
+                $arg$89$callable$.fa($arg$89$0, $arg$89$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$125$callable$ = f2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$125$this$ = $arg$125$callable$;
-                long $arg$125$0 = 6L;
-                .ceylon.language.Sequential $arg$125$1 = $arg$125$this$.fa$seq($arg$125$0);
-                $arg$125$callable$.fa($arg$125$0, $arg$125$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$90$callable$ = f2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$90$this$ = $arg$90$callable$;
+                long $arg$90$0 = 6L;
+                .ceylon.language.Sequential $arg$90$1 = $arg$90$this$.fa$seq($arg$90$0);
+                $arg$90$callable$.fa($arg$90$0, $arg$90$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$126$callable$ = f2;
-                long $arg$126$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$126$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                $arg$126$callable$.fa($arg$126$0, $arg$126$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$91$callable$ = f2;
+                long $arg$91$0 = 6L;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$91$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                $arg$91$callable$.fa($arg$91$0, $arg$91$1);
             }
             returning null;
         );
@@ -1302,204 +1302,204 @@ final class methodInvocationWithDefaultedParameters_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$127$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$127$this$ = $arg$127$callable$;
-                long $arg$127$0 = $arg$127$this$.f1$n();
-                $arg$127$callable$.f1($arg$127$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$92$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$92$this$ = $arg$92$callable$;
+                long $arg$92$0 = $arg$92$this$.f1$n();
+                $arg$92$callable$.f1($arg$92$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$128$callable$ = b;
-                long $arg$128$0 = 6L;
-                $arg$128$callable$.f1($arg$128$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$93$callable$ = b;
+                long $arg$93$0 = 6L;
+                $arg$93$callable$.f1($arg$93$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$129$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$129$this$ = $arg$129$callable$;
-                long $arg$129$0 = 1L;
-                .java.lang.String $arg$129$1 = $arg$129$this$.f2$s($arg$129$0);
-                $arg$129$callable$.f2($arg$129$0, $arg$129$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$94$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$94$this$ = $arg$94$callable$;
+                long $arg$94$0 = 1L;
+                .java.lang.String $arg$94$1 = $arg$94$this$.f2$s($arg$94$0);
+                $arg$94$callable$.f2($arg$94$0, $arg$94$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$130$callable$ = b;
-                long $arg$130$0 = 1L;
-                .java.lang.String $arg$130$1 = "foo";
-                $arg$130$callable$.f2($arg$130$0, $arg$130$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$95$callable$ = b;
+                long $arg$95$0 = 1L;
+                .java.lang.String $arg$95$1 = "foo";
+                $arg$95$callable$.f2($arg$95$0, $arg$95$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$131$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$131$this$ = $arg$131$callable$;
-                long $arg$131$0 = $arg$131$this$.f3$n();
-                long $arg$131$1 = $arg$131$this$.f3$m($arg$131$0);
-                $arg$131$callable$.f3($arg$131$0, $arg$131$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$96$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$96$this$ = $arg$96$callable$;
+                long $arg$96$0 = $arg$96$this$.f3$n();
+                long $arg$96$1 = $arg$96$this$.f3$m($arg$96$0);
+                $arg$96$callable$.f3($arg$96$0, $arg$96$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$132$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$132$this$ = $arg$132$callable$;
-                long $arg$132$0 = 6L;
-                long $arg$132$1 = $arg$132$this$.f3$m($arg$132$0);
-                $arg$132$callable$.f3($arg$132$0, $arg$132$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$97$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$97$this$ = $arg$97$callable$;
+                long $arg$97$0 = 6L;
+                long $arg$97$1 = $arg$97$this$.f3$m($arg$97$0);
+                $arg$97$callable$.f3($arg$97$0, $arg$97$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$133$callable$ = b;
-                long $arg$133$1 = 9L;
-                long $arg$133$0 = 6L;
-                $arg$133$callable$.f3($arg$133$0, $arg$133$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$98$callable$ = b;
+                long $arg$98$1 = 9L;
+                long $arg$98$0 = 6L;
+                $arg$98$callable$.f3($arg$98$0, $arg$98$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$134$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$134$this$ = $arg$134$callable$;
-                long $arg$134$0 = $arg$134$this$.f4$n();
-                long $arg$134$1 = $arg$134$this$.f4$m($arg$134$0);
-                $arg$134$callable$.f4($arg$134$0, $arg$134$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$99$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$99$this$ = $arg$99$callable$;
+                long $arg$99$0 = $arg$99$this$.f4$n();
+                long $arg$99$1 = $arg$99$this$.f4$m($arg$99$0);
+                $arg$99$callable$.f4($arg$99$0, $arg$99$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$135$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$135$this$ = $arg$135$callable$;
-                long $arg$135$0 = 6L;
-                long $arg$135$1 = $arg$135$this$.f4$m($arg$135$0);
-                $arg$135$callable$.f4($arg$135$0, $arg$135$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$100$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$100$this$ = $arg$100$callable$;
+                long $arg$100$0 = 6L;
+                long $arg$100$1 = $arg$100$this$.f4$m($arg$100$0);
+                $arg$100$callable$.f4($arg$100$0, $arg$100$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$136$callable$ = b;
-                long $arg$136$1 = 9L;
-                long $arg$136$0 = 6L;
-                $arg$136$callable$.f4($arg$136$0, $arg$136$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$101$callable$ = b;
+                long $arg$101$1 = 9L;
+                long $arg$101$0 = 6L;
+                $arg$101$callable$.f4($arg$101$0, $arg$101$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$137$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$137$this$ = $arg$137$callable$;
-                long $arg$137$0 = $arg$137$this$.f5$n();
-                $arg$137$callable$.f5($arg$137$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$102$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$102$this$ = $arg$102$callable$;
+                long $arg$102$0 = $arg$102$this$.f5$n();
+                $arg$102$callable$.f5($arg$102$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$138$callable$ = b;
-                long $arg$138$0 = 6L;
-                $arg$138$callable$.f5($arg$138$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$103$callable$ = b;
+                long $arg$103$0 = 6L;
+                $arg$103$callable$.f5($arg$103$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$139$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$139$this$ = $arg$139$callable$;
-                long $arg$139$0 = $arg$139$this$.f7$n();
-                $arg$139$callable$.f7($arg$139$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$104$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$104$this$ = $arg$104$callable$;
+                long $arg$104$0 = $arg$104$this$.f7$n();
+                $arg$104$callable$.f7($arg$104$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$140$callable$ = b;
-                long $arg$140$0 = 6L;
-                $arg$140$callable$.f7($arg$140$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$105$callable$ = b;
+                long $arg$105$0 = 6L;
+                $arg$105$callable$.f7($arg$105$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$141$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$141$this$ = $arg$141$callable$;
-                long $arg$141$0 = $arg$141$this$.f9$n();
-                $arg$141$callable$.f9($arg$141$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$106$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$106$this$ = $arg$106$callable$;
+                long $arg$106$0 = $arg$106$this$.f9$n();
+                $arg$106$callable$.f9($arg$106$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$142$callable$ = b;
-                long $arg$142$0 = 6L;
-                $arg$142$callable$.f9($arg$142$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$107$callable$ = b;
+                long $arg$107$0 = 6L;
+                $arg$107$callable$.f9($arg$107$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$143$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$143$this$ = $arg$143$callable$;
-                long $arg$143$0 = $arg$143$this$.fa$n();
-                .ceylon.language.Sequential $arg$143$1 = $arg$143$this$.fa$seq($arg$143$0);
-                $arg$143$callable$.fa($arg$143$0, $arg$143$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$108$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$108$this$ = $arg$108$callable$;
+                long $arg$108$0 = $arg$108$this$.fa$n();
+                .ceylon.language.Sequential $arg$108$1 = $arg$108$this$.fa$seq($arg$108$0);
+                $arg$108$callable$.fa($arg$108$0, $arg$108$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$144$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$144$this$ = $arg$144$callable$;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$144$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                long $arg$144$0 = $arg$144$this$.fa$n();
-                $arg$144$callable$.fa($arg$144$0, $arg$144$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$109$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$109$this$ = $arg$109$callable$;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$109$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                long $arg$109$0 = $arg$109$this$.fa$n();
+                $arg$109$callable$.fa($arg$109$0, $arg$109$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$145$callable$ = b;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$145$this$ = $arg$145$callable$;
-                long $arg$145$0 = 6L;
-                .ceylon.language.Sequential $arg$145$1 = $arg$145$this$.fa$seq($arg$145$0);
-                $arg$145$callable$.fa($arg$145$0, $arg$145$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$110$callable$ = b;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$110$this$ = $arg$110$callable$;
+                long $arg$110$0 = 6L;
+                .ceylon.language.Sequential $arg$110$1 = $arg$110$this$.fa$seq($arg$110$0);
+                $arg$110$callable$.fa($arg$110$0, $arg$110$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$146$callable$ = b;
-                long $arg$146$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$146$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                $arg$146$callable$.fa($arg$146$0, $arg$146$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$111$callable$ = b;
+                long $arg$111$0 = 6L;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$111$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                $arg$111$callable$.fa($arg$111$0, $arg$111$1);
             }
             returning null;
         );
@@ -1530,204 +1530,204 @@ final class methodInvocationWithDefaultedParameters_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$147$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$147$this$ = $arg$147$callable$;
-                long $arg$147$0 = $arg$147$this$.f1$n();
-                $arg$147$callable$.f1($arg$147$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$112$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$112$this$ = $arg$112$callable$;
+                long $arg$112$0 = $arg$112$this$.f1$n();
+                $arg$112$callable$.f1($arg$112$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$148$callable$ = b2;
-                long $arg$148$0 = 6L;
-                $arg$148$callable$.f1($arg$148$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$113$callable$ = b2;
+                long $arg$113$0 = 6L;
+                $arg$113$callable$.f1($arg$113$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$149$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$149$this$ = $arg$149$callable$;
-                long $arg$149$0 = 1L;
-                .java.lang.String $arg$149$1 = $arg$149$this$.f2$s($arg$149$0);
-                $arg$149$callable$.f2($arg$149$0, $arg$149$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$114$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$114$this$ = $arg$114$callable$;
+                long $arg$114$0 = 1L;
+                .java.lang.String $arg$114$1 = $arg$114$this$.f2$s($arg$114$0);
+                $arg$114$callable$.f2($arg$114$0, $arg$114$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$150$callable$ = b2;
-                long $arg$150$0 = 1L;
-                .java.lang.String $arg$150$1 = "foo";
-                $arg$150$callable$.f2($arg$150$0, $arg$150$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$115$callable$ = b2;
+                long $arg$115$0 = 1L;
+                .java.lang.String $arg$115$1 = "foo";
+                $arg$115$callable$.f2($arg$115$0, $arg$115$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$151$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$151$this$ = $arg$151$callable$;
-                long $arg$151$0 = $arg$151$this$.f3$n();
-                long $arg$151$1 = $arg$151$this$.f3$m($arg$151$0);
-                $arg$151$callable$.f3($arg$151$0, $arg$151$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$116$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$116$this$ = $arg$116$callable$;
+                long $arg$116$0 = $arg$116$this$.f3$n();
+                long $arg$116$1 = $arg$116$this$.f3$m($arg$116$0);
+                $arg$116$callable$.f3($arg$116$0, $arg$116$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$152$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$152$this$ = $arg$152$callable$;
-                long $arg$152$0 = 6L;
-                long $arg$152$1 = $arg$152$this$.f3$m($arg$152$0);
-                $arg$152$callable$.f3($arg$152$0, $arg$152$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$117$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$117$this$ = $arg$117$callable$;
+                long $arg$117$0 = 6L;
+                long $arg$117$1 = $arg$117$this$.f3$m($arg$117$0);
+                $arg$117$callable$.f3($arg$117$0, $arg$117$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$153$callable$ = b2;
-                long $arg$153$1 = 9L;
-                long $arg$153$0 = 6L;
-                $arg$153$callable$.f3($arg$153$0, $arg$153$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$118$callable$ = b2;
+                long $arg$118$1 = 9L;
+                long $arg$118$0 = 6L;
+                $arg$118$callable$.f3($arg$118$0, $arg$118$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$154$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$154$this$ = $arg$154$callable$;
-                long $arg$154$0 = $arg$154$this$.f4$n();
-                long $arg$154$1 = $arg$154$this$.f4$m($arg$154$0);
-                $arg$154$callable$.f4($arg$154$0, $arg$154$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$119$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$119$this$ = $arg$119$callable$;
+                long $arg$119$0 = $arg$119$this$.f4$n();
+                long $arg$119$1 = $arg$119$this$.f4$m($arg$119$0);
+                $arg$119$callable$.f4($arg$119$0, $arg$119$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$155$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$155$this$ = $arg$155$callable$;
-                long $arg$155$0 = 6L;
-                long $arg$155$1 = $arg$155$this$.f4$m($arg$155$0);
-                $arg$155$callable$.f4($arg$155$0, $arg$155$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$120$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$120$this$ = $arg$120$callable$;
+                long $arg$120$0 = 6L;
+                long $arg$120$1 = $arg$120$this$.f4$m($arg$120$0);
+                $arg$120$callable$.f4($arg$120$0, $arg$120$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$156$callable$ = b2;
-                long $arg$156$1 = 9L;
-                long $arg$156$0 = 6L;
-                $arg$156$callable$.f4($arg$156$0, $arg$156$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$121$callable$ = b2;
+                long $arg$121$1 = 9L;
+                long $arg$121$0 = 6L;
+                $arg$121$callable$.f4($arg$121$0, $arg$121$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$157$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$157$this$ = $arg$157$callable$;
-                long $arg$157$0 = $arg$157$this$.f5$n();
-                $arg$157$callable$.f5($arg$157$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$122$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$122$this$ = $arg$122$callable$;
+                long $arg$122$0 = $arg$122$this$.f5$n();
+                $arg$122$callable$.f5($arg$122$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$158$callable$ = b2;
-                long $arg$158$0 = 6L;
-                $arg$158$callable$.f5($arg$158$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$123$callable$ = b2;
+                long $arg$123$0 = 6L;
+                $arg$123$callable$.f5($arg$123$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$159$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$159$this$ = $arg$159$callable$;
-                long $arg$159$0 = $arg$159$this$.f7$n();
-                $arg$159$callable$.f7($arg$159$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$124$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$124$this$ = $arg$124$callable$;
+                long $arg$124$0 = $arg$124$this$.f7$n();
+                $arg$124$callable$.f7($arg$124$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$160$callable$ = b2;
-                long $arg$160$0 = 6L;
-                $arg$160$callable$.f7($arg$160$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$125$callable$ = b2;
+                long $arg$125$0 = 6L;
+                $arg$125$callable$.f7($arg$125$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$161$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$161$this$ = $arg$161$callable$;
-                long $arg$161$0 = $arg$161$this$.f9$n();
-                $arg$161$callable$.f9($arg$161$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$126$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$126$this$ = $arg$126$callable$;
+                long $arg$126$0 = $arg$126$this$.f9$n();
+                $arg$126$callable$.f9($arg$126$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$162$callable$ = b2;
-                long $arg$162$0 = 6L;
-                $arg$162$callable$.f9($arg$162$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$127$callable$ = b2;
+                long $arg$127$0 = 6L;
+                $arg$127$callable$.f9($arg$127$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$163$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$163$this$ = $arg$163$callable$;
-                long $arg$163$0 = $arg$163$this$.fa$n();
-                .ceylon.language.Sequential $arg$163$1 = $arg$163$this$.fa$seq($arg$163$0);
-                $arg$163$callable$.fa($arg$163$0, $arg$163$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$128$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$128$this$ = $arg$128$callable$;
+                long $arg$128$0 = $arg$128$this$.fa$n();
+                .ceylon.language.Sequential $arg$128$1 = $arg$128$this$.fa$seq($arg$128$0);
+                $arg$128$callable$.fa($arg$128$0, $arg$128$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$164$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$164$this$ = $arg$164$callable$;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$164$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                long $arg$164$0 = $arg$164$this$.fa$n();
-                $arg$164$callable$.fa($arg$164$0, $arg$164$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$129$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$129$this$ = $arg$129$callable$;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$129$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                long $arg$129$0 = $arg$129$this$.fa$n();
+                $arg$129$callable$.fa($arg$129$0, $arg$129$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$165$callable$ = b2;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$165$this$ = $arg$165$callable$;
-                long $arg$165$0 = 6L;
-                .ceylon.language.Sequential $arg$165$1 = $arg$165$this$.fa$seq($arg$165$0);
-                $arg$165$callable$.fa($arg$165$0, $arg$165$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$130$callable$ = b2;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$130$this$ = $arg$130$callable$;
+                long $arg$130$0 = 6L;
+                .ceylon.language.Sequential $arg$130$1 = $arg$130$this$.fa$seq($arg$130$0);
+                $arg$130$callable$.fa($arg$130$0, $arg$130$1);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$166$callable$ = b2;
-                long $arg$166$0 = 6L;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$166$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                $arg$166$callable$.fa($arg$166$0, $arg$166$1);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$131$callable$ = b2;
+                long $arg$131$0 = 6L;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$131$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                $arg$131$callable$.fa($arg$131$0, $arg$131$1);
             }
             returning null;
         );

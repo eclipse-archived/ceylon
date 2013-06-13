@@ -6,9 +6,9 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .ceylon.language.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$firstName();
-                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName($ceylontmp$firstName$1);
-                this($ceylontmp$firstName$1, $ceylontmp$lastName$2);
+                .ceylon.language.String $ceylontmp$firstName$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$firstName();
+                .ceylon.language.String $ceylontmp$lastName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName($ceylontmp$firstName$0);
+                this($ceylontmp$firstName$0, $ceylontmp$lastName$1);
             }
             returning null;
         );
@@ -18,8 +18,8 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .ceylon.language.String $ceylontmp$lastName$4 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName(firstName$);
-                this(firstName$, $ceylontmp$lastName$4);
+                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName(firstName$);
+                this(firstName$, $ceylontmp$lastName$2);
             }
             returning null;
         );
@@ -61,30 +61,30 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
                 (
                     let
                     {
-                        .ceylon.language.String $ceylontmp5 = getFirstName$priv();
+                        .ceylon.language.String $ceylontmp3 = getFirstName$priv();
                     }
-                    returning $ceylontmp5 != null ? $ceylontmp5 : .ceylon.language.String.instance("");
+                    returning $ceylontmp3 != null ? $ceylontmp3 : .ceylon.language.String.instance("");
                 ),
                 (
                     let
                     {
-                        .ceylon.language.String $ceylontmp6 = getLastName$priv();
+                        .ceylon.language.String $ceylontmp4 = getLastName$priv();
                     }
-                    returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.String.instance("");
+                    returning $ceylontmp4 != null ? $ceylontmp4 : .ceylon.language.String.instance("");
                 )}));
     }
     
     public final void setFullName(final .java.lang.String fullName) {
         final .ceylon.language.Iterator<? extends .ceylon.language.String> tokens = .ceylon.language.String.split(fullName).iterator();
-        .java.lang.Object $first$8;
-        if (($first$8 = tokens.next()) instanceof .ceylon.language.String) {
-            final .java.lang.String $first$9 = ((.ceylon.language.String)$first$8).toString();
-            setFirstName$priv(.ceylon.language.String.instance($first$9));
+        .java.lang.Object $first$6;
+        if (($first$6 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $first$7 = ((.ceylon.language.String)$first$6).toString();
+            setFirstName$priv(.ceylon.language.String.instance($first$7));
         }
-        .java.lang.Object $last$11;
-        if (($last$11 = tokens.next()) instanceof .ceylon.language.String) {
-            final .java.lang.String $last$12 = ((.ceylon.language.String)$last$11).toString();
-            setLastName$priv(.ceylon.language.String.instance($last$12));
+        .java.lang.Object $last$9;
+        if (($last$9 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $last$10 = ((.ceylon.language.String)$last$9).toString();
+            setLastName$priv(.ceylon.language.String.instance($last$10));
         }
     }
     

@@ -13,9 +13,9 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return (
             let
             {
-                U $ceylontmp$u$1 = m1$u($reifiedU, b);
+                U $ceylontmp$u$0 = m1$u($reifiedU, b);
             }
-            returning m1$priv($reifiedU, b, $ceylontmp$u$1);
+            returning m1$priv($reifiedU, b, $ceylontmp$u$0);
         );
     }
     

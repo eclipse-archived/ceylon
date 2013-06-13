@@ -11,8 +11,8 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                long $ceylontmp$i$1 = m$i();
-                m$priv($ceylontmp$i$1);
+                long $ceylontmp$i$0 = m$i();
+                m$priv($ceylontmp$i$0);
             }
             returning null;
         );
@@ -29,9 +29,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$3 = m2$i();
+                long $ceylontmp$i$1 = m2$i();
             }
-            returning m2($ceylontmp$i$3);
+            returning m2($ceylontmp$i$1);
         );
     }
     
@@ -47,10 +47,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$5 = m3$i();
-                long $ceylontmp$n$6 = m3$n($ceylontmp$i$5);
+                long $ceylontmp$i$2 = m3$i();
+                long $ceylontmp$n$3 = m3$n($ceylontmp$i$2);
             }
-            returning m3$priv($ceylontmp$i$5, $ceylontmp$n$6);
+            returning m3$priv($ceylontmp$i$2, $ceylontmp$n$3);
         );
     }
     
@@ -62,9 +62,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$8 = m3$n(i);
+                long $ceylontmp$n$4 = m3$n(i);
             }
-            returning m3$priv(i, $ceylontmp$n$8);
+            returning m3$priv(i, $ceylontmp$n$4);
         );
     }
     
@@ -80,9 +80,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$10 = m4$n(i);
+                long $ceylontmp$n$5 = m4$n(i);
             }
-            returning m4$priv(i, $ceylontmp$n$10);
+            returning m4$priv(i, $ceylontmp$n$5);
         );
     }
     
@@ -98,10 +98,10 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                T $ceylontmp$t$12 = m5$t($reifiedU, i);
-                U $ceylontmp$u$13 = m5$u($reifiedU, i, $ceylontmp$t$12);
+                T $ceylontmp$t$6 = m5$t($reifiedU, i);
+                U $ceylontmp$u$7 = m5$u($reifiedU, i, $ceylontmp$t$6);
             }
-            returning m5$priv($reifiedU, i, $ceylontmp$t$12, $ceylontmp$u$13);
+            returning m5$priv($reifiedU, i, $ceylontmp$t$6, $ceylontmp$u$7);
         );
     }
     
@@ -113,9 +113,9 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                U $ceylontmp$u$15 = m5$u($reifiedU, i, t);
+                U $ceylontmp$u$8 = m5$u($reifiedU, i, t);
             }
-            returning m5$priv($reifiedU, i, t, $ceylontmp$u$15);
+            returning m5$priv($reifiedU, i, t, $ceylontmp$u$8);
         );
     }
     
@@ -146,72 +146,72 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> $arg$16$callable$ = c;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> $arg$16$this$ = $arg$16$callable$;
-                long $arg$16$0 = $arg$16$this$.m$i();
-                $arg$16$callable$.m$priv($arg$16$0);
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> $arg$9$callable$ = c;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> $arg$9$this$ = $arg$9$callable$;
+                long $arg$9$0 = $arg$9$this$.m$i();
+                $arg$9$callable$.m$priv($arg$9$0);
             }
             returning null;
         );
         (
             let
             {
-                long $arg$17$0 = 2L;
-                m$priv($arg$17$0);
+                long $arg$10$0 = 2L;
+                m$priv($arg$10$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$18$this$ = this;
-                long $arg$18$0 = $arg$18$this$.m2$i();
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$11$this$ = this;
+                long $arg$11$0 = $arg$11$this$.m2$i();
             }
-            returning m2($arg$18$0);
+            returning m2($arg$11$0);
         );
         m2(2L);
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$19$this$ = this;
-                long $arg$19$0 = $arg$19$this$.m3$i();
-                long $arg$19$1 = $arg$19$this$.m3$n($arg$19$0);
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$12$this$ = this;
+                long $arg$12$0 = $arg$12$this$.m3$i();
+                long $arg$12$1 = $arg$12$this$.m3$n($arg$12$0);
             }
-            returning m3$priv($arg$19$0, $arg$19$1);
+            returning m3$priv($arg$12$0, $arg$12$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$20$this$ = this;
-                long $arg$20$0 = 5L;
-                long $arg$20$1 = $arg$20$this$.m3$n($arg$20$0);
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$13$this$ = this;
+                long $arg$13$0 = 5L;
+                long $arg$13$1 = $arg$13$this$.m3$n($arg$13$0);
             }
-            returning m3$priv($arg$20$0, $arg$20$1);
+            returning m3$priv($arg$13$0, $arg$13$1);
         );
         (
             let
             {
-                long $arg$21$0 = 4L;
-                long $arg$21$1 = 5L;
+                long $arg$14$0 = 4L;
+                long $arg$14$1 = 5L;
             }
-            returning m3$priv($arg$21$0, $arg$21$1);
+            returning m3$priv($arg$14$0, $arg$14$1);
         );
         (
             let
             {
-                long $arg$22$1 = 5L;
-                long $arg$22$0 = 4L;
+                long $arg$15$1 = 5L;
+                long $arg$15$0 = 4L;
             }
-            returning m3$priv($arg$22$0, $arg$22$1);
+            returning m3$priv($arg$15$0, $arg$15$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$23$this$ = this;
-                long $arg$23$1 = 5L;
-                long $arg$23$0 = $arg$23$this$.m3$i();
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> $arg$16$this$ = this;
+                long $arg$16$1 = 5L;
+                long $arg$16$0 = $arg$16$this$.m3$i();
             }
-            returning m3$priv($arg$23$0, $arg$23$1);
+            returning m3$priv($arg$16$0, $arg$16$1);
         );
         m4$priv(5L);
         m4$priv(4L, 5L);

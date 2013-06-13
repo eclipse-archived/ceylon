@@ -173,8 +173,8 @@ class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.comp
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$init$a();
-                this($ceylontmp$a$1);
+                .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$init$a();
+                this($ceylontmp$a$0);
             }
             returning null;
         );

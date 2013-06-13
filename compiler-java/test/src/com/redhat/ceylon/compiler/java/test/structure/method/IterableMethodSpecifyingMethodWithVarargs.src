@@ -9,8 +9,8 @@ class IterableMethodSpecifyingMethodWithVarargs implements .com.redhat.ceylon.co
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = foo$seq();
-                foo$priv($ceylontmp$seq$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = foo$seq();
+                foo$priv($ceylontmp$seq$0);
             }
             returning null;
         );

@@ -21,8 +21,8 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$1 = m2$seq(i);
-                m2$priv(i, $ceylontmp$seq$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = m2$seq(i);
+                m2$priv(i, $ceylontmp$seq$0);
             }
             returning null;
         );
@@ -46,8 +46,8 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
         (
             let
             {
-                long $ceylontmp$i$3 = m4$i();
-                m4$priv($ceylontmp$i$3);
+                long $ceylontmp$i$1 = m4$i();
+                m4$priv($ceylontmp$i$1);
             }
             returning null;
         );

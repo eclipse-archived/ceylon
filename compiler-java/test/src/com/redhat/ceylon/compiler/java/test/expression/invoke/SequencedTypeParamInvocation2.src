@@ -9,8 +9,8 @@ final class sequencedTypeParamInvocation2_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.sequencedTypeParamInvocation2$ts($reifiedT);
-                sequencedTypeParamInvocation2($reifiedT, $ceylontmp$ts$1);
+                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.sequencedTypeParamInvocation2$ts($reifiedT);
+                sequencedTypeParamInvocation2($reifiedT, $ceylontmp$ts$0);
             }
             returning null;
         );
@@ -32,9 +32,9 @@ final class sequencedTypeParamInvocation2_test_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$2$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.empty_.$get()));
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.<.ceylon.language.Integer>sequencedTypeParamInvocation2($arg$2$reified$0, $arg$2$0);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$1$0 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(2L), .ceylon.language.empty_.$get()));
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.<.ceylon.language.Integer>sequencedTypeParamInvocation2($arg$1$reified$0, $arg$1$0);
             }
             returning null;
         );

@@ -6,8 +6,8 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name();
-                this($ceylontmp$name$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$name$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo.$init$name();
+                this($ceylontmp$name$0);
             }
             returning null;
         );

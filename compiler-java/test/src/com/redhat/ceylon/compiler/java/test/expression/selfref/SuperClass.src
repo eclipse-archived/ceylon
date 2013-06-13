@@ -83,10 +83,10 @@ abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expr
         (
             let
             {
-                long $ceylontmpop3 = super.getA();
-                super.setA($ceylontmpop3 + 1);
+                long $ceylontmpop0 = super.getA();
+                super.setA($ceylontmpop0 + 1);
             }
-            returning $ceylontmpop3;
+            returning $ceylontmpop0;
         );
         return super.getI() + super.m();
     }
@@ -95,10 +95,10 @@ abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expr
         (
             let
             {
-                long $ceylontmpop4 = super.getA();
-                super.setA($ceylontmpop4 + 1);
+                long $ceylontmpop1 = super.getA();
+                super.setA($ceylontmpop1 + 1);
             }
-            returning $ceylontmpop4;
+            returning $ceylontmpop1;
         );
         return super.getI() + super.m();
     }

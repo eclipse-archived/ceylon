@@ -9,9 +9,9 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$3 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.bug675$elements($reifiedElement);
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$2 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.bug675$elements($reifiedElement);
             }
-            returning bug675($reifiedElement, $ceylontmp$elements$3);
+            returning bug675($reifiedElement, $ceylontmp$elements$2);
         );
     }
     

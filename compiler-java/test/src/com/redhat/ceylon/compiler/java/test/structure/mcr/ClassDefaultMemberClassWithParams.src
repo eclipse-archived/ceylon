@@ -24,9 +24,9 @@ class ClassDefaultMemberClassWithParams implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                long $arg$1$0 = 1L;
+                long $arg$0$0 = 1L;
             }
-            returning Member$new($arg$1$0);
+            returning Member$new($arg$0$0);
         );
         return Member$new(1L);
     }
@@ -69,9 +69,9 @@ class ClassDefaultMemberClassWithParams_sub extends .com.redhat.ceylon.compiler.
         (
             let
             {
-                long $arg$3$0 = 2L;
+                long $arg$1$0 = 2L;
             }
-            returning Member$new($arg$3$0);
+            returning Member$new($arg$1$0);
         );
         return Member$new(2L);
     }

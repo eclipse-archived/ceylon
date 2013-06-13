@@ -44,8 +44,8 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             (
                 let
                 {
-                    boolean $ceylontmp$b$1 = $InnerClass$init$b();
-                    this($ceylontmp$b$1);
+                    boolean $ceylontmp$b$0 = $InnerClass$init$b();
+                    this($ceylontmp$b$0);
                 }
                 returning null;
             );
@@ -58,9 +58,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return (
                 let
                 {
-                    boolean $ceylontmp$b$3 = m$b();
+                    boolean $ceylontmp$b$1 = m$b();
                 }
-                returning m$priv($ceylontmp$b$3);
+                returning m$priv($ceylontmp$b$1);
             );
         }
         
@@ -90,9 +90,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return (
                 let
                 {
-                    boolean $ceylontmp$b$5 = m$b();
+                    boolean $ceylontmp$b$2 = m$b();
                 }
-                returning m$priv($ceylontmp$b$5);
+                returning m$priv($ceylontmp$b$2);
             );
         }
         
@@ -121,9 +121,9 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 (
                     let
                     {
-                        LocalClass$impl $ceylontmp$impl$6 = new LocalClass$impl();
-                        boolean $ceylontmp$b$7 = $ceylontmp$impl$6.$init$b();
-                        this($ceylontmp$b$7);
+                        LocalClass$impl $ceylontmp$impl$3 = new LocalClass$impl();
+                        boolean $ceylontmp$b$4 = $ceylontmp$impl$3.$init$b();
+                        this($ceylontmp$b$4);
                     }
                     returning null;
                 );
@@ -151,8 +151,8 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 (
                     let
                     {
-                        boolean $ceylontmp$b$9 = m$b();
-                        m$priv($ceylontmp$b$9);
+                        boolean $ceylontmp$b$5 = m$b();
+                        m$priv($ceylontmp$b$5);
                     }
                     returning null;
                 );

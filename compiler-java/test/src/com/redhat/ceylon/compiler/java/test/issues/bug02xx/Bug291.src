@@ -16,8 +16,8 @@ final class run_ {
                 (
                     let
                     {
-                        .java.lang.String $ceylontmp$name$1 = holaMundo$name();
-                        holaMundo($ceylontmp$name$1);
+                        .java.lang.String $ceylontmp$name$0 = holaMundo$name();
+                        holaMundo($ceylontmp$name$0);
                     }
                     returning null;
                 );
@@ -32,10 +32,10 @@ final class run_ {
             }
         }
         final holaMundo_ holaMundo = new holaMundo_();
-        .ceylon.language.String $arg$3;
-        if (($arg$3 = .ceylon.language.process_.$get().getArguments().getFirst()) != null) {
-            final .java.lang.String $arg$4 = $arg$3.toString();
-            holaMundo.holaMundo($arg$4);
+        .ceylon.language.String $arg$2;
+        if (($arg$2 = .ceylon.language.process_.$get().getArguments().getFirst()) != null) {
+            final .java.lang.String $arg$3 = $arg$2.toString();
+            holaMundo.holaMundo($arg$3);
         } else {
             holaMundo.holaMundo();
         }

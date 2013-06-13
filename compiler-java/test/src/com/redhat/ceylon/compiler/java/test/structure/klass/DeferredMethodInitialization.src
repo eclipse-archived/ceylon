@@ -19,9 +19,9 @@ class DeferredInitializedMethod implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$name$1 = s$name();
+                .java.lang.String $ceylontmp$name$0 = s$name();
             }
-            returning s$priv($ceylontmp$name$1);
+            returning s$priv($ceylontmp$name$0);
         );
     }
     

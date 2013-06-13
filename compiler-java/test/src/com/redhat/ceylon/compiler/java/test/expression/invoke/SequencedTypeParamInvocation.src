@@ -11,8 +11,8 @@ class SequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.jav
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$1 = algo$strings();
-                algo($ceylontmp$strings$1);
+                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = algo$strings();
+                algo($ceylontmp$strings$0);
             }
             returning null;
         );

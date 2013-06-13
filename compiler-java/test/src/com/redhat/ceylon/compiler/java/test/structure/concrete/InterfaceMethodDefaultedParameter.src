@@ -59,9 +59,9 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$i$1 = m$i();
+                long $ceylontmp$i$0 = m$i();
             }
-            returning $this.m($ceylontmp$i$1);
+            returning $this.m($ceylontmp$i$0);
         );
     }
     
@@ -73,9 +73,9 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$i$5 = m2$i();
+                long $ceylontmp$i$2 = m2$i();
             }
-            returning $this.m2($ceylontmp$i$5);
+            returning $this.m2($ceylontmp$i$2);
         );
     }
     
@@ -87,10 +87,10 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$i$9 = m3$i();
-                long $ceylontmp$n$10 = m3$n($ceylontmp$i$9);
+                long $ceylontmp$i$4 = m3$i();
+                long $ceylontmp$n$5 = m3$n($ceylontmp$i$4);
             }
-            returning $this.m3($ceylontmp$i$9, $ceylontmp$n$10);
+            returning $this.m3($ceylontmp$i$4, $ceylontmp$n$5);
         );
     }
     
@@ -102,9 +102,9 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$n$12 = m3$n(i);
+                long $ceylontmp$n$6 = m3$n(i);
             }
-            returning $this.m3(i, $ceylontmp$n$12);
+            returning $this.m3(i, $ceylontmp$n$6);
         );
     }
     
@@ -116,9 +116,9 @@ final class I$impl<T> {
         return (
             let
             {
-                long $ceylontmp$n$19 = m4$n(i);
+                long $ceylontmp$n$10 = m4$n(i);
             }
-            returning $this.m4(i, $ceylontmp$n$19);
+            returning $this.m4(i, $ceylontmp$n$10);
         );
     }
     
@@ -130,10 +130,10 @@ final class I$impl<T> {
         return (
             let
             {
-                T $ceylontmp$t$23 = m5$t($reifiedU, i);
-                U $ceylontmp$u$24 = m5$u($reifiedU, i, $ceylontmp$t$23);
+                T $ceylontmp$t$12 = m5$t($reifiedU, i);
+                U $ceylontmp$u$13 = m5$u($reifiedU, i, $ceylontmp$t$12);
             }
-            returning $this.m5($reifiedU, i, $ceylontmp$t$23, $ceylontmp$u$24);
+            returning $this.m5($reifiedU, i, $ceylontmp$t$12, $ceylontmp$u$13);
         );
     }
     
@@ -145,9 +145,9 @@ final class I$impl<T> {
         return (
             let
             {
-                U $ceylontmp$u$26 = m5$u($reifiedU, i, t);
+                U $ceylontmp$u$14 = m5$u($reifiedU, i, t);
             }
-            returning $this.m5($reifiedU, i, t, $ceylontmp$u$26);
+            returning $this.m5($reifiedU, i, t, $ceylontmp$u$14);
         );
     }
     
@@ -184,79 +184,79 @@ final class named_ {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$32$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$32$this$ = $arg$32$callable$;
-                long $arg$32$0 = $arg$32$this$.m$i();
-                $arg$32$callable$.m($arg$32$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$18$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$18$this$ = $arg$18$callable$;
+                long $arg$18$0 = $arg$18$this$.m$i();
+                $arg$18$callable$.m($arg$18$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$33$callable$ = i2;
-                long $arg$33$0 = 2L;
-                $arg$33$callable$.m($arg$33$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$19$callable$ = i2;
+                long $arg$19$0 = 2L;
+                $arg$19$callable$.m($arg$19$0);
             }
             returning null;
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$34$callable$ = i2;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$34$this$ = $arg$34$callable$;
-                long $arg$34$0 = $arg$34$this$.m2$i();
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$20$callable$ = i2;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<.ceylon.language.String> $arg$20$this$ = $arg$20$callable$;
+                long $arg$20$0 = $arg$20$this$.m2$i();
             }
-            returning $arg$34$callable$.m2($arg$34$0);
+            returning $arg$20$callable$.m2($arg$20$0);
         );
         i.m2(2L);
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$35$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$35$this$ = $arg$35$callable$;
-                long $arg$35$0 = $arg$35$this$.m3$i();
-                long $arg$35$1 = $arg$35$this$.m3$n($arg$35$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$21$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$21$this$ = $arg$21$callable$;
+                long $arg$21$0 = $arg$21$this$.m3$i();
+                long $arg$21$1 = $arg$21$this$.m3$n($arg$21$0);
             }
-            returning $arg$35$callable$.m3($arg$35$0, $arg$35$1);
+            returning $arg$21$callable$.m3($arg$21$0, $arg$21$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$36$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$36$this$ = $arg$36$callable$;
-                long $arg$36$0 = 5L;
-                long $arg$36$1 = $arg$36$this$.m3$n($arg$36$0);
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$22$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$22$this$ = $arg$22$callable$;
+                long $arg$22$0 = 5L;
+                long $arg$22$1 = $arg$22$this$.m3$n($arg$22$0);
             }
-            returning $arg$36$callable$.m3($arg$36$0, $arg$36$1);
+            returning $arg$22$callable$.m3($arg$22$0, $arg$22$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$37$callable$ = i;
-                long $arg$37$0 = 4L;
-                long $arg$37$1 = 5L;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$23$callable$ = i;
+                long $arg$23$0 = 4L;
+                long $arg$23$1 = 5L;
             }
-            returning $arg$37$callable$.m3($arg$37$0, $arg$37$1);
+            returning $arg$23$callable$.m3($arg$23$0, $arg$23$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$38$callable$ = i;
-                long $arg$38$1 = 5L;
-                long $arg$38$0 = 4L;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$24$callable$ = i;
+                long $arg$24$1 = 5L;
+                long $arg$24$0 = 4L;
             }
-            returning $arg$38$callable$.m3($arg$38$0, $arg$38$1);
+            returning $arg$24$callable$.m3($arg$24$0, $arg$24$1);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$39$callable$ = i;
-                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$39$this$ = $arg$39$callable$;
-                long $arg$39$1 = 5L;
-                long $arg$39$0 = $arg$39$this$.m3$i();
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$25$callable$ = i;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $arg$25$this$ = $arg$25$callable$;
+                long $arg$25$1 = 5L;
+                long $arg$25$0 = $arg$25$this$.m3$i();
             }
-            returning $arg$39$callable$.m3($arg$39$0, $arg$39$1);
+            returning $arg$25$callable$.m3($arg$25$0, $arg$25$1);
         );
         i.m4(5L);
         i.m4(4L, 5L);

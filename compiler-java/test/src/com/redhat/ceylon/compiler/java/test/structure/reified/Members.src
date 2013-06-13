@@ -109,13 +109,13 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
                 this.$reifiedInner = $reifiedInner;
             }
         }
-        .java.lang.Object $o$2;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$2 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, .ceylon.language.Integer.$TypeDescriptor))) {
-            final InnerClass<.ceylon.language.Integer> $o$3 = (InnerClass)$o$2;
+        .java.lang.Object $o$1;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$1 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, .ceylon.language.Integer.$TypeDescriptor))) {
+            final InnerClass<.ceylon.language.Integer> $o$2 = (InnerClass)$o$1;
         }
-        .java.lang.Object $o$5;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$5 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface.class, .ceylon.language.Integer.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<.ceylon.language.Integer> $o$6 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface)$o$5;
+        .java.lang.Object $o$4;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$4 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface.class, .ceylon.language.Integer.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<.ceylon.language.Integer> $o$5 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface)$o$4;
         }
     }
     
@@ -263,13 +263,13 @@ public final class outerMethod_ {
                 this.$reifiedInner = $reifiedInner;
             }
         }
-        .java.lang.Object $o$8;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$8 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, .ceylon.language.Integer.$TypeDescriptor))) {
-            final InnerClass<.ceylon.language.Integer> $o$9 = (InnerClass)$o$8;
+        .java.lang.Object $o$7;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$7 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, .ceylon.language.Integer.$TypeDescriptor))) {
+            final InnerClass<.ceylon.language.Integer> $o$8 = (InnerClass)$o$7;
         }
-        .java.lang.Object $o$11;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$11 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_.class, .ceylon.language.Integer.$TypeDescriptor))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_<.ceylon.language.Integer> $o$12 = (.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_)$o$11;
+        .java.lang.Object $o$10;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$10 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_.class, .ceylon.language.Integer.$TypeDescriptor))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_<.ceylon.language.Integer> $o$11 = (.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_)$o$10;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
@@ -349,9 +349,9 @@ public final class testMembers_ {
     public static void testMembers(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object o) {
-        .java.lang.Object $o$15;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$15 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .ceylon.language.Integer.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass.class, .ceylon.language.String.$TypeDescriptor)))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<.ceylon.language.Integer>.InnerClass<.ceylon.language.String> $o$16 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass)$o$15;
+        .java.lang.Object $o$13;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified($o$13 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .ceylon.language.Integer.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass.class, .ceylon.language.String.$TypeDescriptor)))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<.ceylon.language.Integer>.InnerClass<.ceylon.language.String> $o$14 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass)$o$13;
         }
     }
 }

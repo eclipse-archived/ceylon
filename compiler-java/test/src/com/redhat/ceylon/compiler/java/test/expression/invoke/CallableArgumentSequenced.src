@@ -17,8 +17,8 @@ final class callableArgumentSequenced_g_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g$s();
-                callableArgumentSequenced_g($ceylontmp$s$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g$s();
+                callableArgumentSequenced_g($ceylontmp$s$0);
             }
             returning null;
         );

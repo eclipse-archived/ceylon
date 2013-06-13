@@ -9,9 +9,9 @@ public abstract class Bug589 implements .com.redhat.ceylon.compiler.java.runtime
         return (
             let
             {
-                long $ceylontmp$i$1 = inc$i();
+                long $ceylontmp$i$0 = inc$i();
             }
-            returning inc($ceylontmp$i$1);
+            returning inc($ceylontmp$i$0);
         );
     }
     

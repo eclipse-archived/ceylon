@@ -15,8 +15,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$1 = f1$n();
-                f1$priv($ceylontmp$n$1);
+                long $ceylontmp$n$0 = f1$n();
+                f1$priv($ceylontmp$n$0);
             }
             returning null;
         );
@@ -33,8 +33,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .java.lang.String $ceylontmp$s$3 = f2$s(n);
-                f2(n, $ceylontmp$s$3);
+                .java.lang.String $ceylontmp$s$1 = f2$s(n);
+                f2(n, $ceylontmp$s$1);
             }
             returning null;
         );
@@ -51,9 +51,9 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$5 = f3$n();
-                long $ceylontmp$m$6 = f3$m($ceylontmp$n$5);
-                f3($ceylontmp$n$5, $ceylontmp$m$6);
+                long $ceylontmp$n$2 = f3$n();
+                long $ceylontmp$m$3 = f3$m($ceylontmp$n$2);
+                f3($ceylontmp$n$2, $ceylontmp$m$3);
             }
             returning null;
         );
@@ -67,8 +67,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$m$8 = f3$m(n);
-                f3(n, $ceylontmp$m$8);
+                long $ceylontmp$m$4 = f3$m(n);
+                f3(n, $ceylontmp$m$4);
             }
             returning null;
         );
@@ -85,9 +85,9 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$10 = f4$n();
-                long $ceylontmp$m$11 = f4$m($ceylontmp$n$10);
-                f4($ceylontmp$n$10, $ceylontmp$m$11);
+                long $ceylontmp$n$5 = f4$n();
+                long $ceylontmp$m$6 = f4$m($ceylontmp$n$5);
+                f4($ceylontmp$n$5, $ceylontmp$m$6);
             }
             returning null;
         );
@@ -101,8 +101,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$m$13 = f4$m(n);
-                f4(n, $ceylontmp$m$13);
+                long $ceylontmp$m$7 = f4$m(n);
+                f4(n, $ceylontmp$m$7);
             }
             returning null;
         );
@@ -119,8 +119,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$15 = f5$n();
-                f5($ceylontmp$n$15);
+                long $ceylontmp$n$8 = f5$n();
+                f5($ceylontmp$n$8);
             }
             returning null;
         );
@@ -137,9 +137,9 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$17 = f6$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f6$seq($ceylontmp$n$17);
-                f6($ceylontmp$n$17, $ceylontmp$seq$18);
+                long $ceylontmp$n$9 = f6$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = f6$seq($ceylontmp$n$9);
+                f6($ceylontmp$n$9, $ceylontmp$seq$10);
             }
             returning null;
         );
@@ -153,8 +153,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$20 = f6$seq(n);
-                f6(n, $ceylontmp$seq$20);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = f6$seq(n);
+                f6(n, $ceylontmp$seq$11);
             }
             returning null;
         );
@@ -244,9 +244,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$22 = f1$n();
+                long $ceylontmp$n$12 = f1$n();
             }
-            returning $this.f1($ceylontmp$n$22);
+            returning $this.f1($ceylontmp$n$12);
         );
     }
     
@@ -258,9 +258,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$26 = f2$s(n);
+                .java.lang.String $ceylontmp$s$14 = f2$s(n);
             }
-            returning $this.f2(n, $ceylontmp$s$26);
+            returning $this.f2(n, $ceylontmp$s$14);
         );
     }
     
@@ -272,10 +272,10 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$30 = f3$n();
-                long $ceylontmp$m$31 = f3$m($ceylontmp$n$30);
+                long $ceylontmp$n$16 = f3$n();
+                long $ceylontmp$m$17 = f3$m($ceylontmp$n$16);
             }
-            returning $this.f3($ceylontmp$n$30, $ceylontmp$m$31);
+            returning $this.f3($ceylontmp$n$16, $ceylontmp$m$17);
         );
     }
     
@@ -287,9 +287,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$m$33 = f3$m(n);
+                long $ceylontmp$m$18 = f3$m(n);
             }
-            returning $this.f3(n, $ceylontmp$m$33);
+            returning $this.f3(n, $ceylontmp$m$18);
         );
     }
     
@@ -301,10 +301,10 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$40 = f4$n();
-                long $ceylontmp$m$41 = f4$m($ceylontmp$n$40);
+                long $ceylontmp$n$22 = f4$n();
+                long $ceylontmp$m$23 = f4$m($ceylontmp$n$22);
             }
-            returning $this.f4($ceylontmp$n$40, $ceylontmp$m$41);
+            returning $this.f4($ceylontmp$n$22, $ceylontmp$m$23);
         );
     }
     
@@ -316,9 +316,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$m$43 = f4$m(n);
+                long $ceylontmp$m$24 = f4$m(n);
             }
-            returning $this.f4(n, $ceylontmp$m$43);
+            returning $this.f4(n, $ceylontmp$m$24);
         );
     }
     
@@ -330,9 +330,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$50 = f5$n();
+                long $ceylontmp$n$28 = f5$n();
             }
-            returning $this.f5($ceylontmp$n$50);
+            returning $this.f5($ceylontmp$n$28);
         );
     }
     
@@ -344,10 +344,10 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$54 = f6$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$55 = f6$seq($ceylontmp$n$54);
+                long $ceylontmp$n$30 = f6$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$31 = f6$seq($ceylontmp$n$30);
             }
-            returning $this.f6($ceylontmp$n$54, $ceylontmp$seq$55);
+            returning $this.f6($ceylontmp$n$30, $ceylontmp$seq$31);
         );
     }
     
@@ -359,9 +359,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$57 = f6$seq(n);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$32 = f6$seq(n);
             }
-            returning $this.f6(n, $ceylontmp$seq$57);
+            returning $this.f6(n, $ceylontmp$seq$32);
         );
     }
     

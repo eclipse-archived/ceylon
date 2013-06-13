@@ -17,9 +17,9 @@ final class arrayOfSome_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.arrayOfSome_.arrayOfSome$elements($reifiedElement);
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$0 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.arrayOfSome_.arrayOfSome$elements($reifiedElement);
             }
-            returning arrayOfSome($reifiedElement, $ceylontmp$elements$1);
+            returning arrayOfSome($reifiedElement, $ceylontmp$elements$0);
         );
     }
     
@@ -42,18 +42,18 @@ final class bug647test_ {
         (
             let
             {
-                .ceylon.language.String $arg$2$0 = .ceylon.language.String.instance("foo");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.String.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647_.<.ceylon.language.String>bug647($arg$2$reified$0, $arg$2$0);
+                .ceylon.language.String $arg$1$0 = .ceylon.language.String.instance("foo");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647_.<.ceylon.language.String>bug647($arg$1$reified$0, $arg$1$0);
             }
             returning null;
         );
         (
             let
             {
-                .java.lang.Object $arg$3$0 = .ceylon.language.String.instance("foo");
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$3$reified$0 = .ceylon.language.Object.$TypeDescriptor;
-                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647_.<.java.lang.Object>bug647($arg$3$reified$0, $arg$3$0);
+                .java.lang.Object $arg$2$0 = .ceylon.language.String.instance("foo");
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$2$reified$0 = .ceylon.language.Object.$TypeDescriptor;
+                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug647_.<.java.lang.Object>bug647($arg$2$reified$0, $arg$2$0);
             }
             returning null;
         );

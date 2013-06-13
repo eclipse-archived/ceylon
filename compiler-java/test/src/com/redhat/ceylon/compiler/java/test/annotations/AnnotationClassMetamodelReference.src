@@ -75,8 +75,8 @@ class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.c
         (
             let
             {
-                .java.lang.Object $ceylontmp$mmr$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$init$mmr();
-                this($ceylontmp$mmr$1);
+                .java.lang.Object $ceylontmp$mmr$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted.$init$mmr();
+                this($ceylontmp$mmr$0);
             }
             returning null;
         );
@@ -157,8 +157,8 @@ class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.ceylon.co
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$mmrs$3 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$init$mmrs();
-                this($ceylontmp$mmrs$3);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$mmrs$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic.$init$mmrs();
+                this($ceylontmp$mmrs$1);
             }
             returning null;
         );

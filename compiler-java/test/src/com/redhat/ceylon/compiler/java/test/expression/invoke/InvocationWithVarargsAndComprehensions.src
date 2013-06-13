@@ -9,8 +9,8 @@ class InvocationWithVarargsAndComprehensions implements .com.redhat.ceylon.compi
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$1 = m$b();
-                m$priv($ceylontmp$b$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = m$b();
+                m$priv($ceylontmp$b$0);
             }
             returning null;
         );

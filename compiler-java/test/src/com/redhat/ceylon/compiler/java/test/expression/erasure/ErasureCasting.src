@@ -458,9 +458,9 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$23 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
             }
-            returning defaultedParams($ceylontmp$p$23);
+            returning defaultedParams($ceylontmp$p$22);
         );
     }
     
@@ -484,9 +484,9 @@ final class EC_ErasedMember$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$31 = $Class$init$p();
+                .java.lang.Object $ceylontmp$p$25 = $Class$init$p();
             }
-            returning new Class($ceylontmp$p$31);
+            returning new Class($ceylontmp$p$25);
         );
     }
     

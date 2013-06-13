@@ -23,9 +23,9 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                long $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$a();
-                long $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$b($ceylontmp$a$1);
-                this($ceylontmp$a$1, $ceylontmp$b$2);
+                long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$a();
+                long $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$b($ceylontmp$a$0);
+                this($ceylontmp$a$0, $ceylontmp$b$1);
             }
             returning null;
         );
@@ -36,8 +36,8 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                long $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$b(a);
-                this(a, $ceylontmp$b$4);
+                long $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$b(a);
+                this(a, $ceylontmp$b$2);
             }
             returning null;
         );
@@ -115,10 +115,10 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$a$9 = $Member$init$a();
-                long $ceylontmp$b$10 = $Member$init$b($ceylontmp$a$9);
+                long $ceylontmp$a$3 = $Member$init$a();
+                long $ceylontmp$b$4 = $Member$init$b($ceylontmp$a$3);
             }
-            returning new Member($ceylontmp$a$9, $ceylontmp$b$10);
+            returning new Member($ceylontmp$a$3, $ceylontmp$b$4);
         );
     }
     
@@ -132,9 +132,9 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$b$12 = $Member$init$b(a);
+                long $ceylontmp$b$5 = $Member$init$b(a);
             }
-            returning new Member(a, $ceylontmp$b$12);
+            returning new Member(a, $ceylontmp$b$5);
         );
     }
     

@@ -52,9 +52,9 @@ final class ConcreteMethodBySpecification$impl {
         return (
             let
             {
-                long $ceylontmp$i$1 = mSharedMem$i();
+                long $ceylontmp$i$0 = mSharedMem$i();
             }
-            returning $this.mSharedMem($ceylontmp$i$1);
+            returning $this.mSharedMem($ceylontmp$i$0);
         );
     }
     
@@ -74,9 +74,9 @@ final class ConcreteMethodBySpecification$impl {
         return (
             let
             {
-                long $ceylontmp$i$5 = mDefaultMem$i();
+                long $ceylontmp$i$2 = mDefaultMem$i();
             }
-            returning $this.mDefaultMem($ceylontmp$i$5);
+            returning $this.mDefaultMem($ceylontmp$i$2);
         );
     }
     
@@ -116,9 +116,9 @@ final class ConcreteMethodBySpecificationSub$impl {
         return (
             let
             {
-                long $ceylontmp$i$9 = mSharedSup$i();
+                long $ceylontmp$i$4 = mSharedSup$i();
             }
-            returning $this.mSharedSup($ceylontmp$i$9);
+            returning $this.mSharedSup($ceylontmp$i$4);
         );
     }
     
@@ -134,9 +134,9 @@ final class ConcreteMethodBySpecificationSub$impl {
         return (
             let
             {
-                long $ceylontmp$i$13 = mDefaultSup$i();
+                long $ceylontmp$i$6 = mDefaultSup$i();
             }
-            returning $this.mDefaultSup($ceylontmp$i$13);
+            returning $this.mDefaultSup($ceylontmp$i$6);
         );
     }
     

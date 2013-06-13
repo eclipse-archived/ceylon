@@ -67,9 +67,9 @@ final class annotationClassBoolean_ {
         return (
             let
             {
-                boolean $ceylontmp$x$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.annotationClassBoolean$x();
+                boolean $ceylontmp$x$0 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassBoolean_.annotationClassBoolean$x();
             }
-            returning annotationClassBoolean($ceylontmp$x$1);
+            returning annotationClassBoolean($ceylontmp$x$0);
         );
     }
     
@@ -100,8 +100,8 @@ class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compiler.jav
         (
             let
             {
-                boolean $ceylontmp$b$3 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted.$init$b();
-                this($ceylontmp$b$3);
+                boolean $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted.$init$b();
+                this($ceylontmp$b$1);
             }
             returning null;
         );
@@ -174,8 +174,8 @@ class AnnotationClassBooleanVariadic implements .com.redhat.ceylon.compiler.java
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$5 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.$init$b();
-                this($ceylontmp$b$5);
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic.$init$b();
+                this($ceylontmp$b$2);
             }
             returning null;
         );
@@ -236,9 +236,9 @@ final class annotationClassVariadicVariadic_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$7 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassVariadicVariadic_.annotationClassVariadicVariadic$b();
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$3 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassVariadicVariadic_.annotationClassVariadicVariadic$b();
             }
-            returning annotationClassVariadicVariadic($ceylontmp$b$7);
+            returning annotationClassVariadicVariadic($ceylontmp$b$3);
         );
     }
     
@@ -343,9 +343,9 @@ final class annotationClassSequenceVariadic_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$9 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassSequenceVariadic_.annotationClassSequenceVariadic$b();
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassSequenceVariadic_.annotationClassSequenceVariadic$b();
             }
-            returning annotationClassSequenceVariadic($ceylontmp$b$9);
+            returning annotationClassSequenceVariadic($ceylontmp$b$4);
         );
     }
     
@@ -437,9 +437,9 @@ final class annotationClassIterableVariadic_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$11 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIterableVariadic_.annotationClassIterableVariadic$b();
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$5 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassIterableVariadic_.annotationClassIterableVariadic$b();
             }
-            returning annotationClassIterableVariadic($ceylontmp$b$11);
+            returning annotationClassIterableVariadic($ceylontmp$b$5);
         );
     }
     

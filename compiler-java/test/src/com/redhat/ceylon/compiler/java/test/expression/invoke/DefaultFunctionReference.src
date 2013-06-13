@@ -9,8 +9,8 @@ final class defaultFunctionReference_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_.defaultFunctionReference$f();
-                defaultFunctionReference($ceylontmp$f$1);
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_.defaultFunctionReference$f();
+                defaultFunctionReference($ceylontmp$f$0);
             }
             returning null;
         );
@@ -54,9 +54,9 @@ final class defaultFunctionReference2_ {
         (
             let
             {
-                .java.lang.String $ceylontmp$s$3 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2$s();
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$4 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2$f($ceylontmp$s$3);
-                defaultFunctionReference2($ceylontmp$s$3, $ceylontmp$f$4);
+                .java.lang.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2$s();
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2$f($ceylontmp$s$1);
+                defaultFunctionReference2($ceylontmp$s$1, $ceylontmp$f$2);
             }
             returning null;
         );
@@ -72,8 +72,8 @@ final class defaultFunctionReference2_ {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$6 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2$f(s);
-                defaultFunctionReference2(s, $ceylontmp$f$6);
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$3 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2$f(s);
+                defaultFunctionReference2(s, $ceylontmp$f$3);
             }
             returning null;
         );

@@ -6,8 +6,8 @@ class NamedArgumentInvocationInitWithEmptySequence implements .com.redhat.ceylon
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence.$init$b();
-                this($ceylontmp$b$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence.$init$b();
+                this($ceylontmp$b$0);
             }
             returning null;
         );
@@ -17,9 +17,9 @@ class NamedArgumentInvocationInitWithEmptySequence implements .com.redhat.ceylon
         final .java.lang.Object o = (
             let
             {
-                .ceylon.language.Sequential $arg$2$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence.$init$b();
+                .ceylon.language.Sequential $arg$1$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence.$init$b();
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence($arg$2$0);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence($arg$1$0);
         );
     }
     
