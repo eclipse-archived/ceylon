@@ -2423,7 +2423,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (!Strategy.defaultParameterMethodStatic(klass)
                     && !Strategy.defaultParameterMethodOnOuter(klass)
                     && currentParameter != null) {
-                //companionInstanceName = naming.temp("$impl$");
+                companionInstanceName = naming.temp("$impl$");
                 vars.append(makeVar(companionInstanceName, 
                         makeJavaType(klass.getType(), AbstractTransformer.JT_COMPANION),
                         make().NewClass(null, 
