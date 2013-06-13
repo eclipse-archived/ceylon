@@ -159,11 +159,11 @@ public class ClassTransformer extends AbstractTransformer {
             // Member classes need a instantiator method
             boolean generateInstantiator = Strategy.generateInstantiator(cls);
             if(generateInstantiator){
-                generateInstantiators(model, classBuilder, paramList, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
+                generateInstantiators(cls, classBuilder, paramList, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
             }
             classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.ClassDefinition){
-                transformClass(def, model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
+                transformClass(def, (Class)model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
@@ -540,28 +540,29 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void generateInstantiators(ClassOrInterface model, ClassDefinitionBuilder classBuilder, Tree.ParameterList paramList,
+    private void generateInstantiators(Class model, ClassDefinitionBuilder classBuilder, Tree.ParameterList paramList,
             Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
         // TODO Instantiators on companion classes
         classBuilder.constructorModifiers(PROTECTED);
+        Overloaded overloaded = new OverloadedInstantiator(model);
         if (Decl.withinInterface(cls)) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-            makeOverloadsForDefaultedParameter(0,
+            overloaded.makeOverloadsForDefaultedParameter(0,
                     instBuilder,
-                    model, paramList, null, typeParameterList);
+                    paramList, null, typeParameterList);
             instantiatorDeclCb.method(instBuilder);
         }
         if (!Decl.withinInterface(cls)
                 || !model.isFormal()) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-            makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
+            overloaded.makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
                     instBuilder,
-                    model, paramList, null, typeParameterList);
+                    paramList, null, typeParameterList);
             instantiatorImplCb.method(instBuilder);
         }
     }
 
-    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder, 
+    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Class model, ClassDefinitionBuilder classBuilder, 
             com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList paramList, boolean generateInstantiator, 
             Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
         // do reified type params first
@@ -608,22 +609,22 @@ public class ClassTransformer extends AbstractTransformer {
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
                         MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        makeOverloadsForDefaultedParameter(0,
+                        new OverloadedInstantiator(model).makeOverloadsForDefaultedParameter(0,
                                 instBuilder,
-                                model, paramList, param, typeParameterList);
+                                paramList, param, typeParameterList);
                         instantiatorDeclCb.method(instBuilder);
                     }
                     MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                    makeOverloadsForDefaultedParameter(OL_BODY,
+                    new OverloadedInstantiator(model).makeOverloadsForDefaultedParameter(OL_BODY,
                             instBuilder,
-                            model, paramList, param, typeParameterList);
+                            paramList, param, typeParameterList);
                     instantiatorImplCb.method(instBuilder);
                 } else {
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    makeOverloadsForDefaultedParameter(OL_BODY,
+                    new OverloadedConstructor(model).makeOverloadsForDefaultedParameter(OL_BODY,
                             overloadBuilder,
-                            model, paramList, param, typeParameterList);
+                            paramList, param, typeParameterList);
                 }
             }
         }
@@ -1900,16 +1901,17 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
+
             if (parameterModel.isDefaulted()
                     || parameterModel.isSequenced()) {
                 if (methodModel.getRefinedDeclaration() == methodModel) {
                     
                     if (transformOverloads) {
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
-                        MethodDefinitionBuilder overloadedMethod = makeOverloadsForDefaultedParameter(
+                        MethodDefinitionBuilder overloadedMethod = new OverloadedMethod(methodModel).makeOverloadsForDefaultedParameter(
                                 overloadsFlags, 
                                 overloadBuilder, 
-                                methodModel, parameterList, parameter, def.getTypeParameterList());
+                                parameterList, parameter, def.getTypeParameterList());
                         lb.append(overloadedMethod);
                     }
                     
@@ -2170,189 +2172,66 @@ public class ClassTransformer extends AbstractTransformer {
         throw new RuntimeException();
     }
 
+    /** Generate a body for the overload method */
     private static int OL_BODY = 1<<0;
     private static int OL_IMPLEMENTOR = 1<<1;
+    /** The body will delegate to the full parameter list version of the method*/
     private static int OL_DELEGATOR = 1<<2;
     
-    /**
-     * Generates an overloaded method where all the defaulted parameters after 
-     * and including the given {@code currentParam} are given their default 
-     * values. Using Java-side overloading ensures positional invocations 
-     * are binary compatible when new defaulted parameters are appended to a
-     * parameter list.
-     */
-    private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
-            int flags,
-            MethodDefinitionBuilder overloadBuilder,
-            Declaration model,
-            Tree.ParameterList parameterList,
-            Tree.Parameter currentParameter,
-            Tree.TypeParameterList typeParameterList) {
-        at(currentParameter);
-        
-        // need annotations for BC, but the method isn't really there
-        overloadBuilder.ignoreModelAnnotations();
-        
-        final JCExpression methName;
-        if (model instanceof Method) {
-            long mods = transformOverloadMethodDeclFlags((Method)model);
-            if ((flags & OL_BODY) != 0) {
-                mods &= ~ABSTRACT;
+    abstract class Overloaded {
+        protected abstract long getModifiers(int flags);
+
+        protected abstract JCExpression getMethodName(int flags);
+
+        protected abstract void resultType(MethodDefinitionBuilder overloadBuilder);
+
+        protected abstract void typeParameters(MethodDefinitionBuilder overloadBuilder);
+
+        protected void appendImplicitArguments(TypeParameterList typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            if(typeParameterList != null){
+                java.util.List<TypeParameterDeclaration> typeParameterDeclarations = typeParameterList.getTypeParameterDeclarations();
+                overloadBuilder.reifiedTypeParameters(typeParameterDeclarations);
             }
-            if ((flags & OL_IMPLEMENTOR) != 0 || (flags & OL_DELEGATOR) != 0) {
-                mods |= FINAL;
-            }
-            overloadBuilder.modifiers(mods);
-            JCExpression qualifier;
-            if ((flags & OL_DELEGATOR) != 0) {
-                qualifier = naming.makeQuotedThis();
-            } else {
-                qualifier = null;
-            }
-            methName = naming.makeQualifiedName(qualifier, (Method)model, Naming.NA_MEMBER);
-            overloadBuilder.resultType((Method)model, 0);
-        } else if (model instanceof Class) {
-            Class klass = (Class)model;
-            if (Strategy.generateInstantiator(model)) {
-                overloadBuilder.ignoreModelAnnotations();
-                if (!klass.isAlias() 
-                        && Strategy.generateInstantiator(klass.getExtendedTypeDeclaration())
-                        && klass.isActual()){
-                        //&& ((Class)model).getExtendedTypeDeclaration().getContainer() instanceof Class) {
-                    overloadBuilder.isOverride(true);
-                }
-                // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
-                // not for a method if in an interface
-                overloadBuilder.modifiers(transformClassDeclFlags(klass) & ~FINAL);
-                methName = naming.makeInstantiatorMethodName(null, klass);
-                JCExpression resultType;
-                ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
-                if (Decl.isAncestorLocal(model)) {
-                    // We can't expose a local type name to a place it's not visible
-                    resultType = make().Type(syms().objectType);
-                } else {
-                    resultType = makeJavaType(type);
-                }
-                overloadBuilder.resultType(null, resultType);
-            } else {   
-                overloadBuilder.modifiers(transformOverloadCtorFlags(klass));
-                methName = naming.makeThis();
-            }
-        } else {
-            throw new RuntimeException();
         }
         
-        // TODO MPL
-        if (model instanceof Method) {
-            copyTypeParameters((Functional)model, overloadBuilder);
-        } else if (Strategy.generateInstantiator(model)) {
-            for (TypeParameter tp : typeParametersForInstantiator((Class)model)) {
-                overloadBuilder.typeParameter(tp);
+        abstract void initVars(Tree.Parameter currentParameter, ListBuffer<JCStatement> vars);
+
+        public final List<JCExpression> makeTypeArguments(int flags) {
+            if (defaultParameterMethodOnSelf() 
+                    || defaultParameterMethodOnOuter()
+                    || (flags & OL_IMPLEMENTOR) != 0) {
+                return List.<JCExpression>nil();
+            } else if (defaultParameterMethodStatic()){
+                return typeArguments((Functional)getModel());
+            } else {
+                return List.<JCExpression>nil();
             }
         }
 
-        // TODO Some simple default expressions (e.g. literals, null and 
-        // base expressions it might be worth inlining the expression rather 
-        // than calling the default value method.
-        // TODO This really belongs in the invocation builder
-        
-        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-        ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
-        
-        if(typeParameterList != null){
-            java.util.List<TypeParameterDeclaration> typeParameterDeclarations = typeParameterList.getTypeParameterDeclarations();
-            overloadBuilder.reifiedTypeParameters(typeParameterDeclarations);
-            // we pass the reified type parameters along, but only if we're not building an instantiator
-            if (!Strategy.generateInstantiator(model)) {
-                for(TypeParameterDeclaration tp : typeParameterDeclarations){
-                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText())));
-                }
-            }
+        public boolean defaultParameterMethodOnSelf() {
+            return Strategy.defaultParameterMethodOnSelf(getModel());
         }
-        if (Strategy.generateInstantiator(model)) {
-            Class klass = (Class) model;
-            ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
-            type = type.resolveAliases();
-            // fetch the type parameters from the klass we're instantiating itself if any
-            for(ProducedType pt : type.getTypeArgumentList()){
-                args.append(makeReifiedTypeArgument(pt));
-            }
+
+        public boolean defaultParameterMethodOnOuter() {
+            return Strategy.defaultParameterMethodOnOuter(getModel());
         }
-        
-        final Naming.SyntheticName companionInstanceName = naming.temp("$impl$");
-        if (model instanceof Class
-                && !Strategy.defaultParameterMethodStatic(model)
-                && !Strategy.defaultParameterMethodOnOuter(model)
-                && currentParameter != null) {
-            Class classModel = (Class)model;
-            vars.append(makeVar(companionInstanceName, 
-                    makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
-                    make().NewClass(null, 
-                            null,
-                            makeJavaType(classModel.getType(), AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_COMPANION),
-                            List.<JCExpression>nil(), null)));
+
+        public boolean defaultParameterMethodStatic() {
+            return Strategy.defaultParameterMethodStatic(getModel());
         }
-        
-        boolean useDefault = false;
-        for (Tree.Parameter parameter : parameterList.getParameters()) {
-            final Parameter parameterModel = parameter.getDeclarationModel();
-            if (parameter == currentParameter) {
-                useDefault = true;
-            }
-            if (useDefault) {
-                List<JCExpression> typeArguments = List.<JCExpression>nil();
-                JCIdent dpmQualifier;
-                if (Strategy.defaultParameterMethodOnSelf(model) 
-                        || Strategy.defaultParameterMethodOnOuter(model)
-                        || (flags & OL_IMPLEMENTOR) != 0) {
-                    dpmQualifier = null;
-                } else if (Strategy.defaultParameterMethodStatic(model)){
-                    dpmQualifier = null;
-                    if (model instanceof Class) {
-                        typeArguments = typeArguments((Class)model);
-                    } else if (model instanceof Method) {
-                        typeArguments = typeArguments((Method)model);
-                    }
-                } else {
-                    dpmQualifier = companionInstanceName.makeIdent();
-                }
-                JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(dpmQualifier, parameterModel);
-                
-                Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
-                final ProducedType paramType;
-                if (parameterModel instanceof FunctionalParameter) {
-                    paramType = typeFact().getCallableType(parameterModel.getType());
-                } else {
-                    paramType = parameterModel.getType();
-                }
-                vars.append(makeVar(varName, 
-                        makeJavaType(paramType), 
-                        make().Apply(typeArguments, 
-                                defaultValueMethodName, 
-                                ListBuffer.<JCExpression>lb().appendList(args).toList())));
-                args.add(varName.makeIdent());
-            } else {
-                overloadBuilder.parameter(parameterModel, null, 0, false);
-                args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
-            }
+
+        protected abstract Declaration getModel();
+
+        JCExpression makeInvocation(int flags, ListBuffer<JCExpression> args) {
+            final JCExpression methName = getMethodName(flags);
+            return make().Apply(List.<JCExpression>nil(),
+                    methName, args.toList());            
         }
-        
-        // TODO Type args on method call
-        if ((flags & OL_BODY) != 0) {
-            JCExpression invocation;
-            if (Strategy.generateInstantiator(model)) {
-                Class klass = (Class) model;
-                ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
-                invocation = make().NewClass(null, 
-                        null, 
-                        makeJavaType(type, JT_CLASS_NEW | JT_NON_QUALIFIED),
-                        args.toList(),
-                        null);
-            } else {
-                invocation = make().Apply(List.<JCExpression>nil(),
-                    methName, args.toList());
-            }
-               
+
+        final void makeBody(int flags, MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args, ListBuffer<JCStatement> vars) {
+            JCExpression invocation = makeInvocation(flags, args);
+            Declaration model = getModel();// TODO Yuk
             if (!isVoid(model)
                     || model instanceof Method && !(Decl.isUnboxedVoid(model))
                     || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
@@ -2366,11 +2245,303 @@ public class ClassTransformer extends AbstractTransformer {
                 invocation = make().LetExpr(vars.toList(), makeNull());
                 overloadBuilder.body(make().Exec(invocation));
             }
-        } else {
-            overloadBuilder.noBody();
         }
-        return overloadBuilder;
+
+        abstract JCIdent getQualifier(int flags);
+        
+        
+        /**
+         * Generates an overloaded method where all the defaulted parameters after 
+         * and including the given {@code currentParam} are given their default 
+         * values. Using Java-side overloading ensures positional invocations 
+         * are binary compatible when new defaulted parameters are appended to a
+         * parameter list.
+         */
+        public MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
+                int flags,
+                MethodDefinitionBuilder overloadBuilder,
+                Tree.ParameterList parameterList,
+                Tree.Parameter currentParameter,
+                Tree.TypeParameterList typeParameterList) {
+            at(currentParameter);
+
+            // Make the declaration
+            // need annotations for BC, but the method isn't really there
+            overloadBuilder.ignoreModelAnnotations();
+            overloadBuilder.modifiers(getModifiers(flags));
+            resultType(overloadBuilder);
+            typeParameters(overloadBuilder);
+            
+            // Make the body
+            // TODO MPL
+            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
+            appendImplicitArguments(typeParameterList, overloadBuilder, args);
+            
+            initVars(currentParameter, vars);
+            
+            boolean useDefault = false;
+            for (Tree.Parameter parameter : parameterList.getParameters()) {
+                final Parameter parameterModel = parameter.getDeclarationModel();
+                if (parameter == currentParameter) {
+                    useDefault = true;
+                }
+                if (useDefault) {
+                    JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(getQualifier(flags), parameterModel);
+                    Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
+                    final ProducedType paramType;
+                    if (parameterModel instanceof FunctionalParameter) {
+                        paramType = typeFact().getCallableType(parameterModel.getType());
+                    } else {
+                        paramType = parameterModel.getType();
+                    }
+                    vars.append(makeVar(varName, 
+                            makeJavaType(paramType), 
+                            make().Apply(makeTypeArguments(flags), 
+                                    defaultValueMethodName, 
+                                    ListBuffer.<JCExpression>lb().appendList(args).toList())));
+                    args.add(varName.makeIdent());
+                } else {
+                    overloadBuilder.parameter(parameterModel, null, 0, false);
+                    args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
+                }
+            }
+            
+            // TODO Type args on method call
+            if ((flags & OL_BODY) != 0) {
+                makeBody(flags, overloadBuilder, args, vars);
+            } else {
+                overloadBuilder.noBody();
+            }
+            return overloadBuilder;
+        }
+
     }
+    class OverloadedMethod extends Overloaded {
+        private final Method method;
+
+        OverloadedMethod(Method method) {
+            this.method = method;
+        }
+
+        @Override
+        protected Method getModel() {
+            return method;
+        }
+        @Override
+        protected long getModifiers(int flags) {
+            long mods = transformOverloadMethodDeclFlags(method);
+            if ((flags & OL_BODY) != 0) {
+                mods &= ~ABSTRACT;
+            }
+            if ((flags & OL_IMPLEMENTOR) != 0 || (flags & OL_DELEGATOR) != 0) {
+                mods |= FINAL;
+            }
+            return mods;
+        }
+
+        @Override
+        protected JCExpression getMethodName(int flags) {
+            JCExpression qualifier;
+            if ((flags & OL_DELEGATOR) != 0) {
+                qualifier = naming.makeQuotedThis();
+            } else {
+                qualifier = null;
+            }
+            return naming.makeQualifiedName(qualifier, method, Naming.NA_MEMBER);
+        }
+
+        @Override
+        protected void resultType(MethodDefinitionBuilder overloadBuilder) {
+            overloadBuilder.resultType(method, 0);            
+        }
+
+        @Override
+        protected void typeParameters(MethodDefinitionBuilder overloadBuilder) {
+            copyTypeParameters(method, overloadBuilder);
+        }
+        
+        @Override
+        protected void appendImplicitArguments(TypeParameterList typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            super.appendImplicitArguments(typeParameterList, overloadBuilder, args);
+            if(typeParameterList != null){
+                // we pass the reified type parameters along
+                java.util.List<TypeParameterDeclaration> typeParameterDeclarations = typeParameterList.getTypeParameterDeclarations();
+                for(TypeParameterDeclaration tp : typeParameterDeclarations){
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText())));
+                }
+            }
+        }
+
+        @Override
+        void initVars(Tree.Parameter currentParameter, ListBuffer<JCStatement> vars) {
+            // TODO Auto-generated method stub
+            naming.temp("$impl$");
+        }
+
+        @Override
+        JCIdent getQualifier(int flags) {
+            return null;
+        }
+    }
+    abstract class OverloadedClassyThing extends Overloaded {
+        
+        protected final Class klass;
+        
+        protected Naming.SyntheticName companionInstanceName = null;
+
+        OverloadedClassyThing(Class klass) {
+            this.klass = klass;
+        }
+        
+        @Override
+        protected final Class getModel() {
+            return klass;
+        }
+        
+        @Override
+        void initVars(Tree.Parameter currentParameter, ListBuffer<JCStatement> vars) {
+            companionInstanceName = naming.temp("$impl$");
+            if (!Strategy.defaultParameterMethodStatic(klass)
+                    && !Strategy.defaultParameterMethodOnOuter(klass)
+                    && currentParameter != null) {
+                //companionInstanceName = naming.temp("$impl$");
+                vars.append(makeVar(companionInstanceName, 
+                        makeJavaType(klass.getType(), AbstractTransformer.JT_COMPANION),
+                        make().NewClass(null, 
+                                null,
+                                makeJavaType(klass.getType(), AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_COMPANION),
+                                List.<JCExpression>nil(), null)));
+            }
+        }
+        
+        @Override
+        JCIdent getQualifier(int flags) {
+            if (defaultParameterMethodOnSelf() 
+                    || defaultParameterMethodOnOuter()
+                    || (flags & OL_IMPLEMENTOR) != 0) {
+                return null;
+            } else if (defaultParameterMethodStatic()){
+                return null;
+            } else {
+                return companionInstanceName.makeIdent();
+            }
+        }
+        
+    }
+    
+    class OverloadedConstructor extends OverloadedClassyThing {
+
+        OverloadedConstructor(Class klass) {
+            super(klass);
+        }
+
+        @Override
+        protected long getModifiers(int flags) {
+            return transformOverloadCtorFlags(klass);
+        }
+
+        @Override
+        protected JCExpression getMethodName(int flags) {
+            return naming.makeThis();
+        }
+
+        @Override
+        protected void resultType(MethodDefinitionBuilder overloadBuilder) {
+        }
+
+        @Override
+        protected void typeParameters(MethodDefinitionBuilder overloadBuilder) {
+        }
+        
+        @Override
+        protected void appendImplicitArguments(TypeParameterList typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            super.appendImplicitArguments(typeParameterList, overloadBuilder, args);
+            if(typeParameterList != null){
+                // we pass the reified type parameters along
+                java.util.List<TypeParameterDeclaration> typeParameterDeclarations = typeParameterList.getTypeParameterDeclarations();
+                for(TypeParameterDeclaration tp : typeParameterDeclarations){
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText())));
+                }
+            }
+        }
+    }
+    class OverloadedInstantiator extends OverloadedClassyThing {
+
+        OverloadedInstantiator(Class klass) {
+            super(klass);
+        }
+
+        @Override
+        protected long getModifiers(int flags) {
+            // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
+            // not for a method if in an interface
+            return transformClassDeclFlags(klass) & ~FINAL;
+        }
+
+        @Override
+        protected JCExpression getMethodName(int flags) {
+            return naming.makeInstantiatorMethodName(null, klass);
+        }
+
+        @Override
+        protected void resultType(MethodDefinitionBuilder overloadBuilder) {
+            /* Not actually part of the return type */
+            overloadBuilder.ignoreModelAnnotations();
+            if (!klass.isAlias() 
+                    && Strategy.generateInstantiator(klass.getExtendedTypeDeclaration())
+                    && klass.isActual()){
+                    //&& ((Class)model).getExtendedTypeDeclaration().getContainer() instanceof Class) {
+                overloadBuilder.isOverride(true);
+            }
+            /**/
+            
+            
+            JCExpression resultType;
+            ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
+            if (Decl.isAncestorLocal(klass)) {
+                // We can't expose a local type name to a place it's not visible
+                resultType = make().Type(syms().objectType);
+            } else {
+                resultType = makeJavaType(type);
+            }
+            overloadBuilder.resultType(null, resultType);
+        }
+
+        @Override
+        protected void typeParameters(MethodDefinitionBuilder overloadBuilder) {
+            for (TypeParameter tp : typeParametersForInstantiator(klass)) {
+                overloadBuilder.typeParameter(tp);
+            }
+        }
+        
+        @Override
+        protected void appendImplicitArguments(TypeParameterList typeParameterList,
+                MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args) {
+            super.appendImplicitArguments(typeParameterList, overloadBuilder, args);
+            ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
+            type = type.resolveAliases();
+            // fetch the type parameters from the klass we're instantiating itself if any
+            for(ProducedType pt : type.getTypeArgumentList()){
+                args.append(makeReifiedTypeArgument(pt));
+            }
+            
+        }
+
+        @Override
+        JCExpression makeInvocation(int flags, ListBuffer<JCExpression> args) {
+            
+            ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
+            return make().NewClass(null, 
+                    null, 
+                    makeJavaType(type, JT_CLASS_NEW | JT_NON_QUALIFIED),
+                    args.toList(),
+                    null);
+        }
+    }
+    
 
 
     /**
