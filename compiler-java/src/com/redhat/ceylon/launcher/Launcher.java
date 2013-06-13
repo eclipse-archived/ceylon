@@ -14,28 +14,28 @@ import java.util.logging.Logger;
 
 public class Launcher {
     private static volatile CeylonClassLoader ceylonClassLoader;
-    
+
     public static void main(String[] args) throws Throwable {
         System.exit(run(args));
     }
 
     public static int run(String... args) throws Throwable {
         Java7Checker.check();
-        
+
         // If the --sysrep option was set on the command line we set the corresponding system property
         String ceylonSystemRepo = getArgument(args, "--sysrep", false);
         if (ceylonSystemRepo != null) {
             System.setProperty("ceylon.system.repo", ceylonSystemRepo);
         }
-        
+
         // If the --ceylonversion option was set on the command line we set the corresponding system property
         String ceylonSystemVersion = getArgument(args, "--ceylonversion", false);
         if (ceylonSystemVersion != null) {
             System.setProperty("ceylon.system.version", ceylonSystemVersion);
         }
-        
+
         CeylonClassLoader loader = getClassLoader();
-        
+
         // We actually need to construct and set a new class path for the compiler
         // which doesn't use the actual class path used by the JVM but it constructs
         // it's own list looking at the arguments passed on the command line or
@@ -49,27 +49,27 @@ public class Launcher {
             classPath.append(f.getAbsolutePath());
         }
         System.setProperty("env.class.path", classPath.toString());
-        
+
         boolean verbose = hasArgument(args, "--verbose") && getArgument(args, "--verbose", true) == null;
         initGlobalLogger(verbose);
-        
+
         if (verbose) {
             System.err.println("INFO: Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
             for (File f : cp) {
                 System.err.println("INFO: path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
             }
         }
-        
+
         // Find the proper class and method to execute
         Class<?> mainClass = loader.loadClass("com.redhat.ceylon.tools.CeylonTool");
         Method mainMethod = mainClass.getMethod("start", args.getClass());
 
         // Invoke the actual ceylon tool
         Object result = mainMethod.invoke(null, (Object)args);
-        
+
         return ((Integer)result).intValue();
     }
-    
+
     public static CeylonClassLoader getClassLoader() throws MalformedURLException, FileNotFoundException, URISyntaxException {
         // Check if we need to create a CeylonClassLoader or if we can use the existing one
         synchronized (CeylonClassLoader.class) {
@@ -78,10 +78,10 @@ public class Launcher {
                 ceylonClassLoader = new CeylonClassLoader();
             }
         }
-        
+
         // Set context class loader for current thread
         Thread.currentThread().setContextClassLoader(ceylonClassLoader);
-        
+
         // Set some important system properties
         System.setProperty("ceylon.home", LauncherUtil.determineHome().getAbsolutePath());
         System.setProperty("ceylon.system.repo", LauncherUtil.determineRepo().getAbsolutePath());
@@ -89,7 +89,7 @@ public class Launcher {
 
         return ceylonClassLoader;
     }
-    
+
     private static boolean hasArgument(final String[] args, final String test) {
         for (String arg : args) {
             if ("--".equals(arg)) {
@@ -101,7 +101,7 @@ public class Launcher {
         }
         return false;
     }
-    
+
     private static String getArgument(final String[] args, final String test, boolean optionalArgument) {
         for (int i=0; i < args.length; i++) {
             String arg = args[i];
@@ -117,10 +117,14 @@ public class Launcher {
         }
         return null;
     }
-    
+
     private static void initGlobalLogger(boolean verbose) {
         try {
+            boolean handlersExists = false;
             for (Handler handler : Logger.getLogger("").getHandlers()) {
+                handlersExists = true;
+
+                //TODO Should we remove this hack? If handler are configured then levels should be too.
                 // This is a hack, but at least it works. With a property file our log
                 // formatter has to be in the boot class path. This way it doesn't.
                 if (handler instanceof ConsoleHandler) {
@@ -131,7 +135,15 @@ public class Launcher {
                 }
             }
             if (verbose) {
-                Logger.getLogger("com.redhat.ceylon.cmr").setLevel(Level.ALL);
+                //TODO do not configure root logger, make it flags aware
+                Logger logger = Logger.getLogger("");
+                logger.setLevel(Level.ALL);
+                if (handlersExists == false) {
+                    ConsoleHandler handler = new ConsoleHandler();
+                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
+                    handler.setLevel(Level.ALL);
+                    logger.addHandler(handler);
+                }
             }
         } catch (Throwable ex) {
             System.err.println("Warning: log configuration failed: " + ex.getMessage());
