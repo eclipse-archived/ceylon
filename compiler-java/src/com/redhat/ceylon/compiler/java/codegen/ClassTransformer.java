@@ -1483,9 +1483,6 @@ public class ClassTransformer extends AbstractTransformer {
     
     private int transformOverloadMethodDeclFlags(final Method model) {
         int mods = transformMethodDeclFlags(model);
-        if (!Decl.withinInterface((model))) {
-            mods |= FINAL;
-        }
         return mods;
     }
 
