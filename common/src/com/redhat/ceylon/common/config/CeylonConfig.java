@@ -371,6 +371,23 @@ public class CeylonConfig {
     public synchronized boolean isSectionDefined(String section) {
         return sectionNames.containsKey(section);
     }
+
+    /**
+     * Removes the given section and all its options
+     * (does nothing if it doesn't exist)
+     * @param key The name of the option to remove
+     */
+    public synchronized void removeSection(String section) {
+        String sectionDot = section + ".";
+        if (isSectionDefined(section)) {
+            LinkedHashSet<String> keys = new LinkedHashSet<String>(options.keySet());
+            for (String key : keys) {
+                if (key.startsWith(sectionDot)) {
+                    removeOption(key);
+                }
+            }
+        }
+    }
     
     /**
      * Returns the list of all section names, the root section names
