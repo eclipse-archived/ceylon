@@ -28,8 +28,8 @@ public class Launcher {
             System.setProperty("ceylon.system.repo", ceylonSystemRepo);
         }
         
-        // If the --system option was set on the command line we set the corresponding system property
-        String ceylonSystemVersion = getArgument(args, "--system", false);
+        // If the --ceylonversion option was set on the command line we set the corresponding system property
+        String ceylonSystemVersion = getArgument(args, "--ceylonversion", false);
         if (ceylonSystemVersion != null) {
             System.setProperty("ceylon.system.version", ceylonSystemVersion);
         }
