@@ -182,6 +182,15 @@ public class CeylonConfig {
     }
     
     /**
+     * Returns the "size" of the configuration which is defined
+     * as the number of unique option names
+     * @return The size of the configuration
+     */
+    public synchronized int size() {
+        return options.size();
+    }
+    
+    /**
      * Determines if an option with the given name exists
      * @param key The name of the option to check for
      * @return Boolean indicating if the option exists
