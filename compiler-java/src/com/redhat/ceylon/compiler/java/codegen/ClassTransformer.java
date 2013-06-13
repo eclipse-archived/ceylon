@@ -1870,8 +1870,9 @@ public class ClassTransformer extends AbstractTransformer {
         final Method methodModel = def.getDeclarationModel();
         ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
         boolean needsRaw = false;
+        Declaration refinedDeclaration = methodModel.getRefinedDeclaration();
         if (Decl.withinClassOrInterface(methodModel)) {
-            final Scope refinedFrom = methodModel.getRefinedDeclaration().getContainer();
+            final Scope refinedFrom = refinedDeclaration.getContainer();
             final ProducedType inheritedFrom = ((ClassOrInterface)methodModel.getContainer()).getType().getSupertype((TypeDeclaration)refinedFrom);
             needsRaw = needsRawification(inheritedFrom);
         }
@@ -1895,7 +1896,9 @@ public class ClassTransformer extends AbstractTransformer {
 
             if (parameterModel.isDefaulted()
                     || parameterModel.isSequenced()) {
-                if (methodModel.getRefinedDeclaration() == methodModel) {
+                if (methodModel.getRefinedDeclaration() == methodModel
+                        || !methodModel.getType().isExactly(
+                                ((TypedDeclaration)refinedDeclaration).getType())) {
                     
                     if (daoTransformation != null) {
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
@@ -1905,11 +1908,12 @@ public class ClassTransformer extends AbstractTransformer {
                         lb.append(overloadedMethod);
                     }
                     
-                    if (transformDefaultValues) {
+                    if (transformDefaultValues
+                            && refinedDeclaration == methodModel) {
                         lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, def.getTypeParameterList()));    
                     }
                 }
-            }    
+            }
         }
         
         if (transformMethod) {
