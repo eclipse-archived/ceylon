@@ -354,15 +354,36 @@ public class CeylonConfig {
      * @param key The name of the option to remove
      */
     public synchronized void removeOption(String key) {
-        options.remove(key);
-        
         Key k = new Key(key);
+        options.remove(key);
         HashSet<String> on = optionNames.get(k.getSectionName());
         if (on != null) {
             on.remove(k.getOptionName());
+            if (on.isEmpty()) {
+                cleanupSection(k.getSectionName());
+            }
         }
     }
     
+    private void cleanupSection(String sectionName) {
+        HashSet<String> on = optionNames.get(sectionName);
+        if (on != null && on.isEmpty()) {
+            optionNames.remove(sectionName);
+        }
+        HashSet<String> sn = sectionNames.get(sectionName);
+        if (sn != null && sn.isEmpty()) {
+            sectionNames.remove(sectionName);
+        }
+        if (!optionNames.containsKey(sectionName) && !sectionNames.containsKey(sectionName)) {
+            Key k = new Key(sectionName + ".dummy");
+            HashSet<String> psn = sectionNames.get(k.getParentSectionName());
+            psn.remove(k.getSubsectionName());
+            if (!k.getParentSectionName().isEmpty()) {
+                cleanupSection(k.getParentSectionName());
+            }
+        }
+    }
+
     /**
      * Determines if a section with the given name exists
      * @param section The name of the section to check for
