@@ -414,7 +414,7 @@ public class CeylonConfig {
      * Returns an array of option names in a given section or the list
      * of all option names if "null" is passed
      * @param section The name of the section or "null"
-     * @return An array of option names
+     * @return An array of option names or "null" if the section doesn't exist
      */
     public synchronized String[] getOptionNames(String section) {
         if (section == null) {
@@ -427,6 +427,8 @@ public class CeylonConfig {
                     String[] res = new String[on.size()];
                     return on.toArray(res);
                 } else {
+                    // A section can have only subsections and
+                    // no options of its own
                     return new String[0];
                 }
             } else {
