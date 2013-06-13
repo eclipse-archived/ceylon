@@ -74,7 +74,6 @@
     abstract Declaration declarationModel;)
 
 ^(MISSING_DECLARATION:DECLARATION
-    ANNOTATION_LIST?
     Declaration declarationModel;)
 
 "A class, interface, or type parameter declaration."
