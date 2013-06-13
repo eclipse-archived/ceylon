@@ -136,7 +136,7 @@ public class CeylonConfig {
             }
             String[] parts = key.split("\\.");
             if (parts.length < 2) {
-                throw new IllegalArgumentException("Illegal key");
+                throw new IllegalArgumentException("Illegal key '" + key + "', needs a section name");
             }
             subsectionName = parts[parts.length - 2]; 
             optionName = parts[parts.length - 1];
