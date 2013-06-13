@@ -19,6 +19,8 @@ package com.redhat.ceylon.common.config;
 import java.io.File;
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
+
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -44,6 +46,11 @@ public class CeylonConfigTool implements Tool {
     private Tool action;
     
     private File file;
+    private boolean system;
+    private boolean user;
+    private boolean local;
+    
+    private int configFileArgCount = 0;
     
     @OptionArgument(argumentName="file")
     @Description("The file to operate on.")
@@ -51,26 +58,99 @@ public class CeylonConfigTool implements Tool {
         this.file = file;
     }
     
+    @Option(longName="system")
+    @Description("Apply operation to the system configuration.")
+    public void setSystem(boolean system) {
+        this.system = system;
+    }
+    
+    @Option(longName="user")
+    @Description("Apply operation to the user configuration.")
+    public void setUser(boolean user) {
+        this.user = user;
+    }
+    
+    @Option(longName="local")
+    @Description("Apply operation to the local configuration.")
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+    
     @Subtool(argumentName="action",
-            classes={List.class, Get.class, Set.class, Unset.class, RenameSection.class, RemoveSection.class, Keystore.class})
+            classes={List.class, Get.class, Set.class, Remove.class, RenameSection.class, RemoveSection.class, Keystore.class})
     public void setAction(Tool action) {
         this.action = action;
     }
 
-    private CeylonConfig getConfig() throws IOException {
+    private CeylonConfig readConfig() throws IOException {
         if (file != null) {
-            return ConfigParser.loadConfigFromFile(file);
+            if (file.exists()) {
+                return ConfigParser.loadConfigFromFile(file);
+            } else {
+                return new CeylonConfig();
+            }
         } else {
+            if (system) {
+                return ConfigParser.loadSystemConfig();
+            }
+            if (user) {
+                return ConfigParser.loadUserConfig();
+            }
+            if (local) {
+                return ConfigParser.loadConfigFromFile(ConfigParser.findLocalConfig(new File(".")));
+            }
             return CeylonConfig.get();
+        }
+    }
+    
+    private void writeConfig(CeylonConfig config) throws IOException {
+        File cfgFile;
+        if (file != null) {
+            cfgFile = file;
+        } else {
+            if (system) {
+                cfgFile = ConfigParser.findSystemConfig();
+            } else if (user) {
+                cfgFile = ConfigParser.findUserConfig();
+            } else if (local) {
+                cfgFile = ConfigParser.findLocalConfig(new File("."));
+            } else {
+                throw new IllegalStateException("A configuration must be specified");
+            }
+        }
+        ConfigWriter.write(config, cfgFile);
+    }
+    
+    private void initSubtool() {
+        configFileArgCount = 0;
+        if (file != null) configFileArgCount++;
+        if (system) configFileArgCount++;
+        if (user) configFileArgCount++;
+        if (local) configFileArgCount++;
+        
+        if (configFileArgCount > 1) {
+            throw new IllegalStateException("Only one argument specifying a configuration can be used at a time");
+        }
+    }
+    
+    private void initUpdatingSubtool() {
+        initSubtool();
+        if (configFileArgCount == 0) {
+            throw new IllegalStateException("A configuration must be specified");
         }
     }
     
     @Description("Lists configuration values")
     public class List implements Tool {
-    
+
+        @PostConstruct
+        public void init() {
+            initSubtool();
+        }
+
         @Override
         public void run() throws IOException {
-            CeylonConfig config = getConfig();
+            CeylonConfig config = readConfig();
             System.out.print(config.toString());
         }
     }
@@ -84,10 +164,15 @@ public class CeylonConfigTool implements Tool {
         public void setKey(String key) {
             this.key = key;
         }
+
+        @PostConstruct
+        public void init() {
+            initSubtool();
+        }
         
         @Override
         public void run() throws IOException {
-            CeylonConfig config = getConfig();
+            CeylonConfig config = readConfig();
             String[] values = config.getOptionValues(key);
             if (values != null) {
                 for (String value : values) {
@@ -97,62 +182,118 @@ public class CeylonConfigTool implements Tool {
         }
     }
     
-    @Description("Set the value of the `<key>` to `<value>` in the config file")
+    @Description("Set the value of the `<key>` to `<values>` in the config file")
     public class Set implements Tool {
+
+        private String key;
+        private java.util.List<String> values;
+        
         @Argument(argumentName="key", multiplicity="1", order=1)
         public void setKey(String key) {
-            
+            this.key = key;
         }
         
-        @Argument(argumentName="value", multiplicity="1", order=2)
-        public void setValue(String value) {
-            
+        @Argument(argumentName="values", multiplicity="+", order=2)
+        public void setValues(java.util.List<String> values) {
+            this.values = values;
+        }
+
+        @PostConstruct
+        public void init() {
+            initUpdatingSubtool();
         }
         
         @Override
-        public void run() {
+        public void run() throws IOException {
+            CeylonConfig config = readConfig();
+            String[] vals = values.toArray(new String[values.size()]);
+            try {
+                config.setOptionValues(key, vals);
+            } catch (IllegalArgumentException ex) {
+                throw new ConfigException(ex.getMessage());
+            }
+            writeConfig(config);
         }
     }
     
-    @Description("Unsets the value of the `<key>` in the config file")
-    public class Unset implements Tool {
+    @Description("Removes the value of the `<key>` in the config file")
+    public class Remove implements Tool {
+        
+        private String key;
         
         @Argument(argumentName="key", multiplicity="1")
         public void setKey(String key) {
-            
+            this.key = key;
         }
+
+        @PostConstruct
+        public void init() {
+            initUpdatingSubtool();
+        }
+        
         @Override
-        public void run() {
+        public void run() throws IOException {
+            CeylonConfig config = readConfig();
+            try {
+                config.removeOption(key);
+            } catch (IllegalArgumentException ex) {
+                throw new ConfigException(ex.getMessage());
+            }
+            writeConfig(config);
         }
     }
     
     @Description("Renames the section `<old-name>` in the config file to `<new-name>`")
     public class RenameSection implements Tool {
         
+        private String oldName;
+        private String newName;
+        
         @Argument(argumentName="old-name", multiplicity="1", order=1)
         public void setOldName(String oldName) {
-            
+            this.oldName = oldName;
         }
         
         @Argument(argumentName="new-name", multiplicity="1", order=2)
         public void setNewName(String newName) {
-            
+            this.newName = newName;
+        }
+
+        @PostConstruct
+        public void init() {
+            initUpdatingSubtool();
         }
         
         @Override
-        public void run() {
+        public void run() throws IOException {
+            throw new ConfigException("Not implemented yet");
         }
     }
     
     @Description("Removes the named `<section>` from the config file")
     public class RemoveSection implements Tool {
+        
+        private String name;
+        
         @Argument(argumentName="name", multiplicity="1", order=1)
-        public void setSection(String section) {
-            
+        public void setSection(String name) {
+            this.name = name;
+        }
+
+        @PostConstruct
+        public void init() {
+            initUpdatingSubtool();
         }
         
         @Override
-        public void run() {
+        public void run() throws IOException {
+            CeylonConfig config = readConfig();
+            try {
+                config.removeSection(name);
+            } catch (IllegalArgumentException ex) {
+                throw new ConfigException(ex.getMessage());
+            }
+            writeConfig(config);
         }
     }
     
@@ -233,6 +374,7 @@ public class CeylonConfigTool implements Tool {
         public void setAction(Tool action) {
             this.tool = tool;
         }
+        
         @Override
         public void run() throws Exception {
             tool.run();
