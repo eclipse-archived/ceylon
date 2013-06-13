@@ -34,6 +34,12 @@ public class CeylonConfigTest {
     }
     
     @Test
+    public void testIsSectionDefined() {
+        Assert.assertFalse(testConfig.isSectionDefined("foo"));
+        Assert.assertTrue(testConfig.isSectionDefined("test"));
+    }
+    
+    @Test
     public void testStrings() {
         Assert.assertEquals(null, testConfig.getOption("foo.bar"));
         Assert.assertEquals("test", testConfig.getOption("foo.bar", "test"));
@@ -142,6 +148,45 @@ public class CeylonConfigTest {
         Assert.assertTrue(compareStringArrays(new String[]{"one", "two"}, mergedConfig.getOptionValues("test.multiple.strings")));
     }
     
+    @Test
+    public void testCopy() {
+        CeylonConfig tmpConfig = testConfig.copy();
+        Assert.assertTrue(compareConfigs(tmpConfig, testConfig));
+    }
+    
+    @Test
+    public void testSetOption() {
+        CeylonConfig tmpConfig = testConfig.copy();
+        Assert.assertEquals("hello", tmpConfig.getOption("test.string-hello"));
+        tmpConfig.setOption("test.string-hello", "world");
+        Assert.assertEquals("world", tmpConfig.getOption("test.string-hello"));
+    }
+    
+    @Test
+    public void testSetOptionValues() {
+        CeylonConfig tmpConfig = testConfig.copy();
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"hello"}, tmpConfig.getOptionValues("test.string-hello")));
+        tmpConfig.setOptionValues("test.string-hello", new String[] { "hello", "world" });
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"hello", "world"}, tmpConfig.getOptionValues("test.string-hello")));
+    }
+    
+    @Test
+    public void testRemoveOption() {
+        CeylonConfig tmpConfig = testConfig.copy();
+        Assert.assertTrue(tmpConfig.isOptionDefined("test.string-hello"));
+        tmpConfig.removeOption("test.string-hello");
+        Assert.assertFalse(tmpConfig.isOptionDefined("test.string-hello"));
+    }
+    
+    @Test
+    public void testRemoveSection() {
+        CeylonConfig tmpConfig = testConfig.copy();
+        Assert.assertTrue(tmpConfig.isSectionDefined("test"));
+        tmpConfig.removeSection("test");
+        Assert.assertFalse(tmpConfig.isSectionDefined("test"));
+        Assert.assertFalse(tmpConfig.isOptionDefined("test.string-hello"));
+    }
+    
     private boolean compareStringArrays(String[] one, String[] two) {
         return Arrays.equals(one, two);
     }
@@ -160,5 +205,18 @@ public class CeylonConfigTest {
         } catch (IOException e) {
             return false;
         }
+    }
+    
+    private boolean compareConfigs(CeylonConfig one, CeylonConfig two) {
+        if (one.size() == two.size()) {
+            for (String key : one.getOptionNames(null)) {
+                if (!two.isOptionDefined(key)
+                        || !compareStringArraysSorted(one.getOptionValues(key), two.getOptionValues(key))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
