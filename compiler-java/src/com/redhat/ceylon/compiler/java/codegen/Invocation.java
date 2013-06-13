@@ -112,6 +112,10 @@ abstract class Invocation {
         }
     }
     
+    public String toString() {
+        return getClass().getName() + " of " + node;
+    }
+    
     Node getNode() {
         return node;
     }
