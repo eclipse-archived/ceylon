@@ -7,6 +7,69 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.FileUtil;
 
+/**
+ * Repositories is a wrapper around a CeylonConfig object providing easy access to
+ * repository related configuration information. 
+ * 
+ * Ceylon uses a set of local and remote repositories for its modules.
+ * The order and significance of the lookup (which is fixed) is:
+ * 
+ *   system - Essential system modules
+ *   cache  - A cache of modules that were previously downloaded from remote repositories
+ *   output - Where the compiler stores newly created modules
+ *   lookup - User-defined local repositories
+ *   global - Predefined non-remote repositories
+ *   remote - User defined remote repositories
+ *   other  - Predefined remote repositories (like Herd)
+ *   
+ * The "system" section by default contains a reference to the system global repository,
+ * which normally is something like "%CEYLONHOME%/repo". Do not override.
+ * 
+ * The "cache" section is where modules downloaded from remote repositories are kept so they
+ * don't have to be downloaded each time. By default this points to "%USER_HOME%/.ceylon/cache".
+ * 
+ *  The "output" section is where newly compiled modules are stored. By default this is "./modules".
+ *  
+ *  The "lookup" section is for modules local to the project and other user-defined
+ *  repositories. By default this is "./modules".
+ *  
+ *  The "global" section is meant for pre-defined, essential, non-remote repositories.
+ *  By default this is "%USER_HOME%/.ceylon/repo". It's normally not advisable to override this.
+ *  
+ *  The "remote" section is meant for user-defined remote repositories. By default this is empty.
+ * 
+ *  The "other" section is meant for pre-defined, essential, remote repositories. By default
+ *  this is points to the official Ceylon Herd repository. It's normally not advisable to
+ *  override this.
+ *  
+ * The [repositories] section in a configuration file can be used to override the default
+ * values for those entries thereby changing or extending the lookup order. Take a look at
+ * the following example:
+ * 
+ *   [repositories]
+ *   output=./output # Store new modules in the local `output` folder
+ *   cache=/huge-disk/tom/ceylon/repocache # Store the cached modules on a bigger disk
+ *   lookup=./modules
+ *   lookup=./extra-modules
+ *   lookup=/usr/local/ceylon/even-more-modules
+ *   remote=http://ceylon.example.com # An external site with Ceylon modules
+ *
+ * First of all, the values for ouput and cache (as well as system, but you should normally
+ * never try overriding it) can only be specified once, while the others (lookup, global and
+ * remote) can be specified multiple times, Ceylon will try them one by one in the order you
+ * specify in this list.
+ * 
+ * NB: When we say "in the order you specify" we refer to the ones with the same key name,
+ * so if you add several remote repositories they will be tried in the order you specify,
+ * but you cannot change the main ordering: lookup repositories will always be tried before
+ * global, which will always be tried before remote.
+ * 
+ * The remote entry doesn't have any default value, so it can be easily used without having to
+ * worry about pre-existing values. It's specifically meant to add extra (normally remote)
+ * respositories that will be tried after all other options have been exhausted.
+ * 
+ * @author Tako Schotanus (tako@ceylon-lang.org)
+ */
 public class Repositories {
     private CeylonConfig config;
     
