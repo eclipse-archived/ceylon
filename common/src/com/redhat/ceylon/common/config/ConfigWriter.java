@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,7 +33,7 @@ public class ConfigWriter {
         } else {
             try {
                 // First create any parent directories if necessary
-                File parentDir = destination.getParentFile();
+                File parentDir = destination.getAbsoluteFile().getParentFile();
                 if (!parentDir.exists()) {
                     parentDir.mkdirs();
                 }
@@ -61,42 +62,44 @@ public class ConfigWriter {
             File tmpFile = null;
             boolean ok = false;
             try {
-                in = new FileInputStream(source);
-                if (overwriteSource) {
-                    // Send the output to a temporary file first
-                    tmpFile = File.createTempFile(source.getName(), "tmp", source.getParentFile());
-                    out = new FileOutputStream(tmpFile);
-                } else {
-                    // First create any parent directories if necessary
-                    File parentDir = destination.getParentFile();
-                    if (!parentDir.exists()) {
-                        parentDir.mkdirs();
+                try {
+                    in = new FileInputStream(source);
+                    if (overwriteSource) {
+                        // Send the output to a temporary file first
+                        tmpFile = File.createTempFile(source.getName(), "tmp", source.getAbsoluteFile().getParentFile());
+                        out = new FileOutputStream(tmpFile);
+                    } else {
+                        // First create any parent directories if necessary
+                        File parentDir = destination.getAbsoluteFile().getParentFile();
+                        if (!parentDir.exists()) {
+                            parentDir.mkdirs();
+                        }
+                        // Now create the file itself
+                        out = new FileOutputStream(destination);
                     }
-                    // Now create the file itself
-                    out = new FileOutputStream(destination);
+                    write(config, in, out);
+                    ok = true;
+                } finally {
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException e) { }
+                    }
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e) { }
+                    }
                 }
-                write(config, in, out);
-                ok = true;
+                if (ok) {
+                    File sourceBackup = new File(source.getAbsoluteFile().getParentFile(), source.getName() + ".old");
+                    Files.deleteIfExists(sourceBackup.toPath());
+                    Files.move(source.toPath(), sourceBackup.toPath());
+                    Files.move(tmpFile.toPath(), source.toPath());
+                }
             } finally {
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) { }
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) { }
-                }
-            }
-            if (ok) {
-                File sourceBackup = new File(source.getParentFile(), source.getName() + ".old");
-                sourceBackup.delete();
-                source.renameTo(sourceBackup);
-                tmpFile.renameTo(source);
-            } else {
                 if (tmpFile != null) {
-                    tmpFile.delete();
+                    Files.deleteIfExists(tmpFile.toPath());
                 }
             }
         } else {
@@ -130,7 +133,7 @@ public class ConfigWriter {
         OutputStream out = null;
         try {
             // First create any parent directories if necessary
-            File parentDir = destination.getParentFile();
+            File parentDir = destination.getAbsoluteFile().getParentFile();
             if (!parentDir.exists()) {
                 parentDir.mkdirs();
             }
