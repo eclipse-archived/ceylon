@@ -2258,7 +2258,25 @@ public class ClassTransformer extends AbstractTransformer {
                     args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
                 }
             }
-            overloaded.makeBody(overloadBuilder, args, vars);
+            makeBody(overloaded, overloadBuilder, args, vars);
+        }
+        
+        protected final void makeBody(DefaultedArgumentOverload overloaded, MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args, ListBuffer<JCStatement> vars) {
+            JCExpression invocation = overloaded.makeInvocation(args);
+            Declaration model = overloaded.getModel();// TODO Yuk
+            if (!isVoid(model)
+                    || model instanceof Method && !(Decl.isUnboxedVoid(model))
+                    || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
+                    || Strategy.generateInstantiator(model)) {
+                if (!vars.isEmpty()) {
+                    invocation = make().LetExpr(vars.toList(), invocation);
+                }
+                overloadBuilder.body(make().Return(invocation));
+            } else {
+                vars.append(make().Exec(invocation));
+                invocation = make().LetExpr(vars.toList(), makeNull());
+                overloadBuilder.body(make().Exec(invocation));
+            }
         }
     }
     final DaoThis daoThis = new DaoThis();
@@ -2295,6 +2313,10 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private class DaoSuper extends DaoBody {
 
+        JCExpression makeMethodNameQualifier() {
+            return naming.makeSuper();
+        }
+        
         @Override
         void makeBody(
                 DefaultedArgumentOverload overloaded,
@@ -2302,6 +2324,7 @@ public class ClassTransformer extends AbstractTransformer {
                 com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList parameterList,
                 com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter currentParameter,
                 TypeParameterList typeParameterList) {
+            
             ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
             for (Tree.Parameter parameter : parameterList.getParameters()) {
                 if (parameter == currentParameter) {
@@ -2309,9 +2332,10 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 args.add(naming.makeUnquotedIdent(parameter.getIdentifier().getText()));
             }
-            JCMethodInvocation superCall = make().Apply(null,
+            JCExpression superCall = overloaded.makeInvocation(args);
+            /*JCMethodInvocation superCall = make().Apply(null,
                     naming.makeQualIdent(naming.makeSuper(), ((Method)overloaded.getModel()).getName()),
-                    args.toList());
+                    args.toList());*/
             JCExpression refinedType = makeJavaType(((Method)overloaded.getModel()).getType(), JT_NO_PRIMITIVES);
             overloadBuilder.body(make().Return(make().TypeCast(refinedType, superCall)));
         }
@@ -2374,24 +2398,6 @@ public class ClassTransformer extends AbstractTransformer {
             final JCExpression methName = makeMethodName();
             return make().Apply(List.<JCExpression>nil(),
                     methName, args.toList());            
-        }
-
-        protected final void makeBody(MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args, ListBuffer<JCStatement> vars) {
-            JCExpression invocation = makeInvocation(args);
-            Declaration model = getModel();// TODO Yuk
-            if (!isVoid(model)
-                    || model instanceof Method && !(Decl.isUnboxedVoid(model))
-                    || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
-                    || Strategy.generateInstantiator(model)) {
-                if (!vars.isEmpty()) {
-                    invocation = make().LetExpr(vars.toList(), invocation);
-                }
-                overloadBuilder.body(make().Return(invocation));
-            } else {
-                vars.append(make().Exec(invocation));
-                invocation = make().LetExpr(vars.toList(), makeNull());
-                overloadBuilder.body(make().Exec(invocation));
-            }
         }
 
         /** Returns the qualiifier to use when invoking the default parameter value method */
