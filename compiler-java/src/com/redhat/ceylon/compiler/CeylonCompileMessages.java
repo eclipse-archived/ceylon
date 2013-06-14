@@ -48,4 +48,23 @@ public class CeylonCompileMessages extends Messages {
         fmt.setFormats(formats);
         return fmt.format(new Object[]{numErrors});
     }
+    
+    public static String msgSystemError() {
+        return msg("error.system") 
+                + msg("error.report.url")
+                + msg("error.report.list")
+                + msg("error.report.description")
+                + msg("error.report.thanks");
+    }
+    
+    public static String msgBug(int code, Throwable cause) {
+        String message = msg("error.bug", code) + msg("error.report.url");
+        message += msg("error.report.list");
+        if (cause != null) {
+            message += msg("error.report.stacktrace");
+        }
+        message += msg("error.report.description");
+        message += msg("error.report.thanks");
+        return message;
+    }
 }

@@ -95,7 +95,7 @@ public class Main extends com.sun.tools.javac.main.Main {
     /**
      * Result codes.
      */
-    static final int EXIT_OK = 0, // Compilation completed with no errors.
+    public static final int EXIT_OK = 0, // Compilation completed with no errors.
             EXIT_ERROR = 1, // Completed but reported errors.
             EXIT_CMDERR = 2, // Bad command-line arguments
             EXIT_SYSERR = 3, // System error or resource exhaustion.
@@ -174,6 +174,12 @@ public class Main extends com.sun.tools.javac.main.Main {
      * Number of errors found during compilation
      */
     public int errorCount = 0;
+    
+    /**
+     * The exception which caused the compilation to fail with 
+     * {@link #EXIT_ABNORMAL}  
+     */
+    public Throwable abortingException = null;
 
     /**
      * Report a usage error.
@@ -366,6 +372,7 @@ public class Main extends com.sun.tools.javac.main.Main {
         filenames = new ListBuffer<File>();
         classnames = new ListBuffer<String>();
         errorCount  = 0;
+        abortingException = null;
         JavaCompiler comp = null;
         /* TODO: Logic below about what is an acceptable command line should be
          * updated to take annotation processing semantics into account. */
@@ -466,6 +473,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             // exceptions.
             if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null)
                 bugMessage(ex);
+            this.abortingException = ex;
             return EXIT_ABNORMAL;
         } finally {
             if (comp != null)

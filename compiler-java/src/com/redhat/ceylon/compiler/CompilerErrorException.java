@@ -21,6 +21,9 @@ package com.redhat.ceylon.compiler;
 
 import com.redhat.ceylon.common.tool.NonFatal;
 
+/**
+ * Thrown when there were errors in the source code 
+ */
 @NonFatal
 public class CompilerErrorException extends RuntimeException {
 
