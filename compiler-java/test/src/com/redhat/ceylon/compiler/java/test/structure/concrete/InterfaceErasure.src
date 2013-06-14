@@ -97,10 +97,10 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$8 = $Class$init$p();
-                .java.lang.Object $ceylontmp$p2$9 = $Class$init$p2($ceylontmp$p$8);
+                .java.lang.Object $ceylontmp$p$3 = $Class$init$p();
+                .java.lang.Object $ceylontmp$p2$4 = $Class$init$p2($ceylontmp$p$3);
             }
-            returning new Class($ceylontmp$p$8, $ceylontmp$p2$9);
+            returning new Class($ceylontmp$p$3, $ceylontmp$p2$4);
         );
     }
     
@@ -112,9 +112,9 @@ final class InterfaceErasure$impl<Element, Absent> {
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p2$11 = $Class$init$p2(p);
+                .java.lang.Object $ceylontmp$p2$5 = $Class$init$p2(p);
             }
-            returning new Class(p, $ceylontmp$p2$11);
+            returning new Class(p, $ceylontmp$p2$5);
         );
     }
     

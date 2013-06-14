@@ -77,10 +77,10 @@ final class I2$impl {
         return (
             let
             {
-                long $ceylontmp$i$6 = m2$i();
-                boolean $ceylontmp$b$7 = m2$b($ceylontmp$i$6);
+                long $ceylontmp$i$3 = m2$i();
+                boolean $ceylontmp$b$4 = m2$b($ceylontmp$i$3);
             }
-            returning $this.m2($ceylontmp$i$6, $ceylontmp$b$7);
+            returning $this.m2($ceylontmp$i$3, $ceylontmp$b$4);
         );
     }
     
@@ -92,9 +92,9 @@ final class I2$impl {
         return (
             let
             {
-                boolean $ceylontmp$b$8 = m2$b(i);
+                boolean $ceylontmp$b$5 = m2$b(i);
             }
-            returning $this.m2(i, $ceylontmp$b$8);
+            returning $this.m2(i, $ceylontmp$b$5);
         );
     }
     

@@ -105,9 +105,9 @@ final class I2$impl {
         return (
             let
             {
-                long $ceylontmp$n$2 = m2$n();
+                long $ceylontmp$n$1 = m2$n();
             }
-            returning m2($ceylontmp$n$2);
+            returning m2($ceylontmp$n$1);
         );
     }
     
@@ -155,9 +155,9 @@ final class I4$impl {
         return (
             let
             {
-                long $ceylontmp$n$4 = m4$n();
+                long $ceylontmp$n$2 = m4$n();
             }
-            returning m4($ceylontmp$n$4);
+            returning m4($ceylontmp$n$2);
         );
     }
     

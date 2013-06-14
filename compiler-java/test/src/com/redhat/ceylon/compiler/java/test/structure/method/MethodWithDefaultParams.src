@@ -258,9 +258,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$14 = f2$s(n);
+                .java.lang.String $ceylontmp$s$13 = f2$s(n);
             }
-            returning $this.f2(n, $ceylontmp$s$14);
+            returning $this.f2(n, $ceylontmp$s$13);
         );
     }
     
@@ -272,10 +272,10 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$16 = f3$n();
-                long $ceylontmp$m$17 = f3$m($ceylontmp$n$16);
+                long $ceylontmp$n$14 = f3$n();
+                long $ceylontmp$m$15 = f3$m($ceylontmp$n$14);
             }
-            returning $this.f3($ceylontmp$n$16, $ceylontmp$m$17);
+            returning $this.f3($ceylontmp$n$14, $ceylontmp$m$15);
         );
     }
     
@@ -287,9 +287,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$m$18 = f3$m(n);
+                long $ceylontmp$m$16 = f3$m(n);
             }
-            returning $this.f3(n, $ceylontmp$m$18);
+            returning $this.f3(n, $ceylontmp$m$16);
         );
     }
     
@@ -301,10 +301,10 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$22 = f4$n();
-                long $ceylontmp$m$23 = f4$m($ceylontmp$n$22);
+                long $ceylontmp$n$17 = f4$n();
+                long $ceylontmp$m$18 = f4$m($ceylontmp$n$17);
             }
-            returning $this.f4($ceylontmp$n$22, $ceylontmp$m$23);
+            returning $this.f4($ceylontmp$n$17, $ceylontmp$m$18);
         );
     }
     
@@ -316,9 +316,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$m$24 = f4$m(n);
+                long $ceylontmp$m$19 = f4$m(n);
             }
-            returning $this.f4(n, $ceylontmp$m$24);
+            returning $this.f4(n, $ceylontmp$m$19);
         );
     }
     
@@ -330,9 +330,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$28 = f5$n();
+                long $ceylontmp$n$20 = f5$n();
             }
-            returning $this.f5($ceylontmp$n$28);
+            returning $this.f5($ceylontmp$n$20);
         );
     }
     
@@ -344,10 +344,10 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                long $ceylontmp$n$30 = f6$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$31 = f6$seq($ceylontmp$n$30);
+                long $ceylontmp$n$21 = f6$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$22 = f6$seq($ceylontmp$n$21);
             }
-            returning $this.f6($ceylontmp$n$30, $ceylontmp$seq$31);
+            returning $this.f6($ceylontmp$n$21, $ceylontmp$seq$22);
         );
     }
     
@@ -359,9 +359,9 @@ final class MethodWithDefaultParams2$impl {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$32 = f6$seq(n);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$23 = f6$seq(n);
             }
-            returning $this.f6(n, $ceylontmp$seq$32);
+            returning $this.f6(n, $ceylontmp$seq$23);
         );
     }
     
