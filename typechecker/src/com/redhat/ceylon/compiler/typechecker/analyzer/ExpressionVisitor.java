@@ -1948,8 +1948,8 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType typeParamType = null;
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
                     TypeDeclaration ctd = ct.getDeclaration();
-                    if (ctd instanceof TypeParameter && 
-                            tp.getDeclaration().equals(((TypeParameter) ctd).getDeclaration())) {                        
+                    if (ctd instanceof TypeParameter /*&& 
+                            tp.getDeclaration().equals(((TypeParameter) ctd).getDeclaration())*/) {                        
                         if (typeParamType!=null) {
                             //the parameter type involves two type
                             //parameters which are being inferred
@@ -1973,6 +1973,7 @@ public class ExpressionVisitor extends Visitor {
                             paramType.minus(pt), argType.minus(pt), visited));
                     addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
                             paramType.minus(typeParamType), pt, visited));
+                	//return null;
                 }
                 return unionOrIntersection(tp, list);
             }

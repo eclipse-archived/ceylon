@@ -193,3 +193,13 @@ void issue() {
     T t<T>(T? t) => t else nothing;
     @type:"Integer" t(true then 1);
 }
+
+void folding() {
+    
+    {String+} s2 = { "Hello", "World" };
+    s2.fold(1, (Integer a, String b) => a+b.size);
+    
+    LazyMap<String,Integer> m = LazyMap({"a"->1, "b"->2, "c"->3});
+    m.fold(0, (Integer x, String->Integer e) => x+e.item);
+    
+}
