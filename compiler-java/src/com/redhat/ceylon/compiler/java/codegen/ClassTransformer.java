@@ -1460,10 +1460,6 @@ public class ClassTransformer extends AbstractTransformer {
         return transformClassDeclFlags(cdecl.getDeclarationModel());
     }
     
-    private int transformOverloadCtorFlags(Class typeDecl) {
-        return transformClassDeclFlags(typeDecl) & (PUBLIC | PRIVATE | PROTECTED);
-    }
-    
     private int transformMethodDeclFlags(Method def) {
         int result = 0;
 
@@ -1481,11 +1477,6 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    private int transformOverloadMethodDeclFlags(final Method model) {
-        int mods = transformMethodDeclFlags(model);
-        return mods;
-    }
-
     private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
@@ -2454,7 +2445,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         @Override
         protected long getModifiers() {
-            long mods = transformOverloadMethodDeclFlags(method);
+            long mods = transformMethodDeclFlags(method);
             if (daoBody instanceof DaoAbstract == false) {
                 mods &= ~ABSTRACT;
             }
@@ -2568,7 +2559,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         @Override
         protected long getModifiers() {
-            return transformOverloadCtorFlags(klass);
+            return transformClassDeclFlags(klass) & (PUBLIC | PRIVATE | PROTECTED);
         }
 
         @Override
