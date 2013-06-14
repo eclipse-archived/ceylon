@@ -1781,12 +1781,14 @@ public class ClassTransformer extends AbstractTransformer {
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
         if (!Decl.withinInterface(model)) {
             // Transform to the class
+            boolean refinedResultType = !model.getType().isExactly(
+                    ((TypedDeclaration)model.getRefinedDeclaration()).getType());
             result = transformMethod(def, 
                     true,
                     true,
                     true,
                     transformMplBody(def.getParameterLists(), model, body),
-                    daoThis,
+                    refinedResultType ? daoSuper : daoThis,
                     !Strategy.defaultParameterMethodOnSelf(model));
         } else {// Is within interface
             // Transform the definition to the companion class, how depends
@@ -2301,7 +2303,18 @@ public class ClassTransformer extends AbstractTransformer {
                 com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList parameterList,
                 com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter currentParameter,
                 TypeParameterList typeParameterList) {
-            // TODO call super
+            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+            for (Tree.Parameter parameter : parameterList.getParameters()) {
+                if (parameter == currentParameter) {
+                    break;
+                }
+                args.add(naming.makeUnquotedIdent(parameter.getIdentifier().getText()));
+            }
+            JCMethodInvocation superCall = make().Apply(null,
+                    naming.makeQualIdent(naming.makeSuper(), ((Method)overloaded.getModel()).getName()),
+                    args.toList());
+            JCExpression refinedType = makeJavaType(((Method)overloaded.getModel()).getType(), JT_NO_PRIMITIVES);
+            overloadBuilder.body(make().Return(make().TypeCast(refinedType, superCall)));
         }
     }
     final DaoSuper daoSuper = new DaoSuper();
