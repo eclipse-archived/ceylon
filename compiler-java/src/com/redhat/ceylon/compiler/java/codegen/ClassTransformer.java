@@ -544,10 +544,11 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
         // TODO Instantiators on companion classes
         classBuilder.constructorModifiers(PROTECTED);
-        Overloaded overloaded = new OverloadedInstantiator(model);
+        
         if (Decl.withinInterface(cls)) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-            overloaded.makeOverloadsForDefaultedParameter(0,
+            Overloaded overloaded = new OverloadedInstantiator(0, model);
+            overloaded.makeOverloadsForDefaultedParameter(
                     instBuilder,
                     paramList, null, typeParameterList);
             instantiatorDeclCb.method(instBuilder);
@@ -555,7 +556,8 @@ public class ClassTransformer extends AbstractTransformer {
         if (!Decl.withinInterface(cls)
                 || !model.isFormal()) {
             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-            overloaded.makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
+            Overloaded overloaded = new OverloadedInstantiator(!cls.isFormal() ? OL_BODY : 0, model);
+            overloaded.makeOverloadsForDefaultedParameter(
                     instBuilder,
                     paramList, null, typeParameterList);
             instantiatorImplCb.method(instBuilder);
@@ -609,20 +611,18 @@ public class ClassTransformer extends AbstractTransformer {
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
                         MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        new OverloadedInstantiator(model).makeOverloadsForDefaultedParameter(0,
-                                instBuilder,
+                        new OverloadedInstantiator(0, model).makeOverloadsForDefaultedParameter(                                instBuilder,
                                 paramList, param, typeParameterList);
                         instantiatorDeclCb.method(instBuilder);
                     }
                     MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                    new OverloadedInstantiator(model).makeOverloadsForDefaultedParameter(OL_BODY,
-                            instBuilder,
+                    new OverloadedInstantiator(OL_BODY, model).makeOverloadsForDefaultedParameter(                            instBuilder,
                             paramList, param, typeParameterList);
                     instantiatorImplCb.method(instBuilder);
                 } else {
                     // Add overloaded constructors for defaulted parameter
                     MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    new OverloadedConstructor(model).makeOverloadsForDefaultedParameter(OL_BODY,
+                    new OverloadedConstructor(OL_BODY, model).makeOverloadsForDefaultedParameter(
                             overloadBuilder,
                             paramList, param, typeParameterList);
                 }
@@ -1908,8 +1908,7 @@ public class ClassTransformer extends AbstractTransformer {
                     
                     if (transformOverloads) {
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
-                        MethodDefinitionBuilder overloadedMethod = new OverloadedMethod(methodModel).makeOverloadsForDefaultedParameter(
-                                overloadsFlags, 
+                        MethodDefinitionBuilder overloadedMethod = new OverloadedMethod(overloadsFlags, methodModel).makeOverloadsForDefaultedParameter(
                                 overloadBuilder, 
                                 parameterList, parameter, def.getTypeParameterList());
                         lb.append(overloadedMethod);
@@ -2174,14 +2173,27 @@ public class ClassTransformer extends AbstractTransformer {
 
     /** Generate a body for the overload method */
     private static int OL_BODY = 1<<0;
+    /** 
+     * TODO
+     * OL_IMPLEMENTOR implies OL_BODY 
+     */
     private static int OL_IMPLEMENTOR = 1<<1;
-    /** The body will delegate to the full parameter list version of the method*/
+    /** 
+     * The body will delegate to the full parameter list version of the method
+     * OL_DELEGATOR implies OL_IMPLEMENTOR
+     */ 
     private static int OL_DELEGATOR = 1<<2;
     
     abstract class Overloaded {
-        protected abstract long getModifiers(int flags);
+        protected final int flags;
+        
+        protected Overloaded(int flags){
+            this.flags = flags;
+        }
+        
+        protected abstract long getModifiers();
 
-        protected abstract JCExpression getMethodName(int flags);
+        protected abstract JCExpression makeMethodName();
 
         protected abstract void resultType(MethodDefinitionBuilder overloadBuilder);
 
@@ -2200,7 +2212,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         protected abstract void initVars(Tree.Parameter currentParameter, ListBuffer<JCStatement> vars);
 
-        protected final List<JCExpression> makeTypeArguments(int flags) {
+        protected final List<JCExpression> makeTypeArguments() {
             if (defaultParameterMethodOnSelf() 
                     || defaultParameterMethodOnOuter()
                     || (flags & OL_IMPLEMENTOR) != 0) {
@@ -2226,14 +2238,14 @@ public class ClassTransformer extends AbstractTransformer {
 
         protected abstract Declaration getModel();
 
-        protected JCExpression makeInvocation(int flags, ListBuffer<JCExpression> args) {
-            final JCExpression methName = getMethodName(flags);
+        protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
+            final JCExpression methName = makeMethodName();
             return make().Apply(List.<JCExpression>nil(),
                     methName, args.toList());            
         }
 
-        protected final void makeBody(int flags, MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args, ListBuffer<JCStatement> vars) {
-            JCExpression invocation = makeInvocation(flags, args);
+        protected final void makeBody(MethodDefinitionBuilder overloadBuilder, ListBuffer<JCExpression> args, ListBuffer<JCStatement> vars) {
+            JCExpression invocation = makeInvocation(args);
             Declaration model = getModel();// TODO Yuk
             if (!isVoid(model)
                     || model instanceof Method && !(Decl.isUnboxedVoid(model))
@@ -2250,7 +2262,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
 
-        protected abstract JCIdent getQualifier(int flags);
+        protected abstract JCIdent makeQualifier();
         
         
         /**
@@ -2261,7 +2273,6 @@ public class ClassTransformer extends AbstractTransformer {
          * parameter list.
          */
         public MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
-                int flags,
                 MethodDefinitionBuilder overloadBuilder,
                 Tree.ParameterList parameterList,
                 Tree.Parameter currentParameter,
@@ -2271,7 +2282,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Make the declaration
             // need annotations for BC, but the method isn't really there
             overloadBuilder.ignoreModelAnnotations();
-            overloadBuilder.modifiers(getModifiers(flags));
+            overloadBuilder.modifiers(getModifiers());
             resultType(overloadBuilder);
             typeParameters(overloadBuilder);
 
@@ -2296,7 +2307,7 @@ public class ClassTransformer extends AbstractTransformer {
                     useDefault = true;
                 }
                 if (useDefault) {
-                    JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(getQualifier(flags), parameterModel);
+                    JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(makeQualifier(), parameterModel);
                     Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
                     final ProducedType paramType;
                     if (parameterModel instanceof FunctionalParameter) {
@@ -2306,7 +2317,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     vars.append(makeVar(varName, 
                             makeJavaType(paramType), 
-                            make().Apply(makeTypeArguments(flags), 
+                            make().Apply(makeTypeArguments(), 
                                     defaultValueMethodName, 
                                     ListBuffer.<JCExpression>lb().appendList(args).toList())));
                     args.add(varName.makeIdent());
@@ -2317,7 +2328,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             if ((flags & OL_BODY) != 0) {
-                makeBody(flags, overloadBuilder, args, vars);
+                makeBody(overloadBuilder, args, vars);
             } else {
                 overloadBuilder.noBody();
             }
@@ -2328,7 +2339,8 @@ public class ClassTransformer extends AbstractTransformer {
     class OverloadedMethod extends Overloaded {
         private final Method method;
 
-        OverloadedMethod(Method method) {
+        OverloadedMethod(int flags, Method method) {
+            super(flags);
             this.method = method;
         }
 
@@ -2337,7 +2349,7 @@ public class ClassTransformer extends AbstractTransformer {
             return method;
         }
         @Override
-        protected long getModifiers(int flags) {
+        protected long getModifiers() {
             long mods = transformOverloadMethodDeclFlags(method);
             if ((flags & OL_BODY) != 0) {
                 mods &= ~ABSTRACT;
@@ -2349,7 +2361,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCExpression getMethodName(int flags) {
+        protected JCExpression makeMethodName() {
             JCExpression qualifier;
             if ((flags & OL_DELEGATOR) != 0) {
                 qualifier = naming.makeQuotedThis();
@@ -2386,7 +2398,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCIdent getQualifier(int flags) {
+        protected JCIdent makeQualifier() {
             return null;
         }
     }
@@ -2396,7 +2408,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         protected Naming.SyntheticName companionInstanceName = null;
 
-        OverloadedClassyThing(Class klass) {
+        OverloadedClassyThing(int flags, Class klass) {
+            super(flags);
             this.klass = klass;
         }
         
@@ -2421,7 +2434,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected JCIdent getQualifier(int flags) {
+        protected JCIdent makeQualifier() {
             if (defaultParameterMethodOnSelf() 
                     || defaultParameterMethodOnOuter()
                     || (flags & OL_IMPLEMENTOR) != 0) {
@@ -2436,17 +2449,17 @@ public class ClassTransformer extends AbstractTransformer {
     
     class OverloadedConstructor extends OverloadedClassyThing {
 
-        OverloadedConstructor(Class klass) {
-            super(klass);
+        OverloadedConstructor(int flags, Class klass) {
+            super(flags, klass);
         }
 
         @Override
-        protected long getModifiers(int flags) {
+        protected long getModifiers() {
             return transformOverloadCtorFlags(klass);
         }
 
         @Override
-        protected JCExpression getMethodName(int flags) {
+        protected JCExpression makeMethodName() {
             return naming.makeThis();
         }
 
@@ -2474,19 +2487,19 @@ public class ClassTransformer extends AbstractTransformer {
     }
     class OverloadedInstantiator extends OverloadedClassyThing {
 
-        OverloadedInstantiator(Class klass) {
-            super(klass);
+        OverloadedInstantiator(int flags, Class klass) {
+            super(flags, klass);
         }
 
         @Override
-        protected long getModifiers(int flags) {
+        protected long getModifiers() {
             // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
             // not for a method if in an interface
             return transformClassDeclFlags(klass) & ~FINAL;
         }
 
         @Override
-        protected JCExpression getMethodName(int flags) {
+        protected JCExpression makeMethodName() {
             return naming.makeInstantiatorMethodName(null, klass);
         }
 
@@ -2532,7 +2545,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCExpression makeInvocation(int flags, ListBuffer<JCExpression> args) {
+        protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
             ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
             return make().NewClass(null, 
                     null, 
