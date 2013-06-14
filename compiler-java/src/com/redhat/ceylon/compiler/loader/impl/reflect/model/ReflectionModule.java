@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 public class ReflectionModule extends LazyModule {
 
     private ReflectionModuleManager modelManager;
-    private boolean packagesLoaded = true;
+    private boolean packagesLoaded = false;
 
     public ReflectionModule(ReflectionModuleManager reflectionModuleManager) {
         this.modelManager = reflectionModuleManager;
