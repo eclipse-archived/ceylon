@@ -2287,55 +2287,56 @@ public class ClassTransformer extends AbstractTransformer {
             typeParameters(overloadBuilder);
 
             appendImplicitParameters(typeParameterList, overloadBuilder);
-            
-            // TODO Type args on method call
-            
+            for (Tree.Parameter parameter : parameterList.getParameters()) {
+                if (parameter == currentParameter) {
+                    break;
+                }
+                overloadBuilder.parameter(parameter.getDeclarationModel(), null, 0, false);
+            }
             
             // Make the body
             // TODO MPL
-
-            ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
-            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-            appendImplicitArguments(typeParameterList, overloadBuilder, args);
-            
-            initVars(currentParameter, vars);
-            
-            boolean useDefault = false;
-            for (Tree.Parameter parameter : parameterList.getParameters()) {
-                final Parameter parameterModel = parameter.getDeclarationModel();
-                if (parameter == currentParameter) {
-                    useDefault = true;
-                }
-                if (useDefault) {
-                    JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(makeQualifier(), parameterModel);
-                    Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
-                    final ProducedType paramType;
-                    if (parameterModel instanceof FunctionalParameter) {
-                        paramType = typeFact().getCallableType(parameterModel.getType());
-                    } else {
-                        paramType = parameterModel.getType();
-                    }
-                    vars.append(makeVar(varName, 
-                            makeJavaType(paramType), 
-                            make().Apply(makeTypeArguments(), 
-                                    defaultValueMethodName, 
-                                    ListBuffer.<JCExpression>lb().appendList(args).toList())));
-                    args.add(varName.makeIdent());
-                } else {
-                    overloadBuilder.parameter(parameterModel, null, 0, false);
-                    args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
-                }
-            }
-            
-            if ((flags & OL_BODY) != 0) {
-                makeBody(overloadBuilder, args, vars);
-            } else {
+            // TODO Type args on method call
+            if ((flags & OL_BODY) == 0) {
                 overloadBuilder.noBody();
+            } else {
+                ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+                appendImplicitArguments(typeParameterList, overloadBuilder, args);
+                
+                ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
+                initVars(currentParameter, vars);
+                
+                boolean useDefault = false;
+                for (Tree.Parameter parameter : parameterList.getParameters()) {
+                    final Parameter parameterModel = parameter.getDeclarationModel();
+                    if (parameter == currentParameter) {
+                        useDefault = true;
+                    }
+                    if (useDefault) {
+                        JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(makeQualifier(), parameterModel);
+                        Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
+                        final ProducedType paramType;
+                        if (parameterModel instanceof FunctionalParameter) {
+                            paramType = typeFact().getCallableType(parameterModel.getType());
+                        } else {
+                            paramType = parameterModel.getType();
+                        }
+                        vars.append(makeVar(varName, 
+                                makeJavaType(paramType), 
+                                make().Apply(makeTypeArguments(), 
+                                        defaultValueMethodName, 
+                                        ListBuffer.<JCExpression>lb().appendList(args).toList())));
+                        args.add(varName.makeIdent());
+                    } else {
+                        args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
+                    }
+                }
+                makeBody(overloadBuilder, args, vars);
             }
             return overloadBuilder;
         }
-
     }
+    
     class OverloadedMethod extends Overloaded {
         private final Method method;
 
