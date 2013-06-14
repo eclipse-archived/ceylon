@@ -2240,7 +2240,7 @@ public class ClassTransformer extends AbstractTransformer {
                     useDefault = true;
                 }
                 if (useDefault) {
-                    JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeQualifier(), parameterModel);
+                    JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
                     Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
                     final ProducedType paramType;
                     if (parameterModel instanceof FunctionalParameter) {
@@ -2394,7 +2394,8 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
 
-        protected abstract JCIdent makeQualifier();
+        /** Returns the qualiifier to use when invoking the default parameter value method */
+        protected abstract JCIdent makeDefaultArgumentValueMethodQualifier();
         
         
         /**
@@ -2495,7 +2496,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCIdent makeQualifier() {
+        protected JCIdent makeDefaultArgumentValueMethodQualifier() {
             return null;
         }
     }
@@ -2536,7 +2537,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected JCIdent makeQualifier() {
+        protected JCIdent makeDefaultArgumentValueMethodQualifier() {
             if (defaultParameterMethodOnSelf() 
                     || defaultParameterMethodOnOuter()
                     || daoBody instanceof DaoCompanion) {
