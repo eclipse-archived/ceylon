@@ -839,7 +839,7 @@ public class ClassTransformer extends AbstractTransformer {
                             
                             final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                                     typedMember,
-                                    PUBLIC | FINAL, 
+                                    PUBLIC | (method.isDefault() ? 0 : FINAL), 
                                     typeParameters,  
                                     typedMember.getType(), 
                                     naming.selector(method), 
