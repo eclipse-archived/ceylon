@@ -2194,6 +2194,10 @@ public class ClassTransformer extends AbstractTransformer {
                 Tree.ParameterList parameterList,
                 Tree.Parameter currentParameter,
                 Tree.TypeParameterList typeParameterList);
+
+        JCExpression makeMethodNameQualifier() {
+            return null;
+        }
         
     }
     
@@ -2276,6 +2280,10 @@ public class ClassTransformer extends AbstractTransformer {
      * canonical method.
      */
     private class DaoCompanionDollarThis extends DaoCompanion {
+        @Override
+        JCExpression makeMethodNameQualifier() {
+            return naming.makeQuotedThis();
+        }
     }
     final DaoCompanionDollarThis daoCompanionDollarThis = new DaoCompanionDollarThis();
     
@@ -2456,14 +2464,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCExpression makeMethodName() {
-            JCExpression qualifier;
-            if (daoBody instanceof DaoCompanionDollarThis) {
-                qualifier = naming.makeQuotedThis();
-            } else {
-                qualifier = null;
-            }
-            return naming.makeQualifiedName(qualifier, method, Naming.NA_MEMBER);
+        protected final JCExpression makeMethodName() {
+            return naming.makeQualifiedName(daoBody.makeMethodNameQualifier(), method, Naming.NA_MEMBER);
         }
 
         @Override
@@ -2564,7 +2566,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         @Override
         protected JCExpression makeMethodName() {
-            return naming.makeThis();
+            return naming.makeQualifiedThis(daoBody.makeMethodNameQualifier());
         }
 
         @Override
@@ -2609,7 +2611,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         @Override
         protected JCExpression makeMethodName() {
-            return naming.makeInstantiatorMethodName(null, klass);
+            return naming.makeInstantiatorMethodName(daoBody.makeMethodNameQualifier(), klass);
         }
 
         @Override
