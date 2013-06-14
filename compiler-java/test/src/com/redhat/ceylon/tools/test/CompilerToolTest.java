@@ -30,6 +30,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
+import com.redhat.ceylon.compiler.CompilerErrorException;
 import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class CompilerToolTest {
@@ -67,5 +68,20 @@ public class CompilerToolTest {
         tool.run();
     }
     
-    
+    @Test
+    public void testCompileWithErrors()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.errors"));
+        try{
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        }catch(CompilerErrorException x){
+            Assert.assertEquals("There were 3 errors", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
 }
