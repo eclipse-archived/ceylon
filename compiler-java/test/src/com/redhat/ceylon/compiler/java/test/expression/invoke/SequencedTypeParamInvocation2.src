@@ -5,7 +5,7 @@ final class sequencedTypeParamInvocation2_ {
     private sequencedTypeParamInvocation2_() {
     }
     
-    static final <T>void sequencedTypeParamInvocation2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    static <T>void sequencedTypeParamInvocation2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         (
             let
             {

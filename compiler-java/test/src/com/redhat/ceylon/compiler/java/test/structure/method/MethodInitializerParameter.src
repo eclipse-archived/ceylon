@@ -71,7 +71,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
             }
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            final void m(final long i) {
+            void m(final long i) {
                 (
                     let
                     {
@@ -150,7 +150,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
             }
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            final void m() {
+            void m() {
                 (
                     let
                     {

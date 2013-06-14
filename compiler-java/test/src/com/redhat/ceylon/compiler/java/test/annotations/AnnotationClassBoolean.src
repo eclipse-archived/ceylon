@@ -63,7 +63,7 @@ final class annotationClassBoolean_ {
     }
     static final boolean x = true;
     
-    static final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean annotationClassBoolean() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean annotationClassBoolean() {
         return (
             let
             {
@@ -232,7 +232,7 @@ final class annotationClassVariadicVariadic_ {
     private annotationClassVariadicVariadic_() {
     }
     
-    static final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic annotationClassVariadicVariadic() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic annotationClassVariadicVariadic() {
         return (
             let
             {
@@ -339,7 +339,7 @@ final class annotationClassSequenceVariadic_ {
     private annotationClassSequenceVariadic_() {
     }
     
-    static final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence annotationClassSequenceVariadic() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence annotationClassSequenceVariadic() {
         return (
             let
             {
@@ -433,7 +433,7 @@ final class annotationClassIterableVariadic_ {
     private annotationClassIterableVariadic_() {
     }
     
-    static final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable annotationClassIterableVariadic() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable annotationClassIterableVariadic() {
         return (
             let
             {

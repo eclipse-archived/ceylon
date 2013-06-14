@@ -145,7 +145,7 @@ final class annotationClassCharacter_ {
     }
     static final int c = 122;
     
-    static final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter() {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter() {
         return (
             let
             {

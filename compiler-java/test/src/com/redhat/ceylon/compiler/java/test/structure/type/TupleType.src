@@ -14,7 +14,7 @@ final class add_ {
     private add_() {
     }
     
-    static final double add() {
+    static double add() {
         return (
             let
             {

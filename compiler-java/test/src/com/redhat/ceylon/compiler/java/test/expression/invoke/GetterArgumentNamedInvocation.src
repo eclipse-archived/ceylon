@@ -12,7 +12,7 @@ final class getterArgumentNamedInvocation_ {
             private callFunction_() {
             }
             
-            final void callFunction() {
+            void callFunction() {
                 (
                     let
                     {
@@ -28,7 +28,7 @@ final class getterArgumentNamedInvocation_ {
                 return 2L;
             }
             
-            final void callFunction(final long i) {
+            void callFunction(final long i) {
                 (
                     let
                     {

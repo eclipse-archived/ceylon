@@ -112,7 +112,7 @@ public final class variadicMethod_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final void variadicMethod() {
+    public static void variadicMethod() {
         (
             let
             {

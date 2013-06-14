@@ -5,7 +5,7 @@ public final class twoParamListsDefaulted_ {
     private twoParamListsDefaulted_() {
     }
     
-    public static final .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted() {
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted() {
         return (
             let
             {

@@ -5,7 +5,7 @@ final class defaultedParameter_ {
     private defaultedParameter_() {
     }
     
-    static final .java.lang.String defaultedParameter() {
+    static .java.lang.String defaultedParameter() {
         return (
             let
             {

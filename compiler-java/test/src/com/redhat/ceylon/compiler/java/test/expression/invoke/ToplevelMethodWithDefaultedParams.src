@@ -5,7 +5,7 @@ public final class f1_ {
     private f1_() {
     }
     
-    public static final void f1() {
+    public static void f1() {
         (
             let
             {
@@ -33,7 +33,7 @@ public final class f2_ {
     private f2_() {
     }
     
-    public static final void f2(final long n) {
+    public static void f2(final long n) {
         (
             let
             {
@@ -56,7 +56,7 @@ public final class f3_ {
     private f3_() {
     }
     
-    public static final void f3() {
+    public static void f3() {
         (
             let
             {
@@ -72,7 +72,7 @@ public final class f3_ {
         return 5L;
     }
     
-    public static final void f3(final long n) {
+    public static void f3(final long n) {
         (
             let
             {
@@ -100,7 +100,7 @@ public final class f4_ {
     private f4_() {
     }
     
-    public static final void f4() {
+    public static void f4() {
         (
             let
             {
@@ -116,7 +116,7 @@ public final class f4_ {
         return 5L;
     }
     
-    public static final void f4(final long n) {
+    public static void f4(final long n) {
         (
             let
             {
@@ -144,7 +144,7 @@ public final class f5_ {
     private f5_() {
     }
     
-    public static final void f5() {
+    public static void f5() {
         (
             let
             {
@@ -160,7 +160,7 @@ public final class f5_ {
         return 5L;
     }
     
-    public static final void f5(final long n) {
+    public static void f5(final long n) {
         (
             let
             {

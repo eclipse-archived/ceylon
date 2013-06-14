@@ -5,7 +5,7 @@ final class f1_ {
     private f1_() {
     }
     
-    static final void f1() {
+    static void f1() {
         (
             let
             {
@@ -33,7 +33,7 @@ final class f2_ {
     private f2_() {
     }
     
-    static final long f2() {
+    static long f2() {
         return (
             let
             {
@@ -61,7 +61,7 @@ final class f3_ {
     private f3_() {
     }
     
-    static final long f3() {
+    static long f3() {
         return (
             let
             {
@@ -76,7 +76,7 @@ final class f3_ {
         return 1L;
     }
     
-    static final long f3(final long i) {
+    static long f3(final long i) {
         return (
             let
             {
@@ -104,7 +104,7 @@ final class f4_ {
     private f4_() {
     }
     
-    static final long f4(final long i) {
+    static long f4(final long i) {
         return (
             let
             {
@@ -127,7 +127,7 @@ final class f5_ {
     private f5_() {
     }
     
-    static final <U>long f5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
+    static <U>long f5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i) {
         return (
             let
             {

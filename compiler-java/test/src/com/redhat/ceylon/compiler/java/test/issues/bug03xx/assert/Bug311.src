@@ -5,7 +5,7 @@ public final class volatile_ {
     private volatile_() {
     }
     
-    public static final void $volatile(final boolean assertion) {
+    public static void $volatile(final boolean assertion) {
         (
             let
             {

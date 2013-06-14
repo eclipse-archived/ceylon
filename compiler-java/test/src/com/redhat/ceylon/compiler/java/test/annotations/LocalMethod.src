@@ -19,7 +19,7 @@ public class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            final void m2(final long i1) {
+            void m2(final long i1) {
                 (
                     let
                     {

@@ -13,7 +13,7 @@ final class callableArgumentSequenced_g_ {
     private callableArgumentSequenced_g_() {
     }
     
-    static final void callableArgumentSequenced_g() {
+    static void callableArgumentSequenced_g() {
         (
             let
             {

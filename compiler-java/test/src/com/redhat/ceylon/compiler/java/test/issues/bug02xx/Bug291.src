@@ -12,7 +12,7 @@ final class run_ {
             private holaMundo_() {
             }
             
-            final void holaMundo() {
+            void holaMundo() {
                 (
                     let
                     {

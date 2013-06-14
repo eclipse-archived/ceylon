@@ -23,7 +23,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return init;
     }
     
-    public final .java.lang.Object f1() {
+    public .java.lang.Object f1() {
         return (
             let
             {
@@ -41,7 +41,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f2(final long n) {
+    public .java.lang.Object f2(final long n) {
         return (
             let
             {
@@ -59,7 +59,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f3() {
+    public .java.lang.Object f3() {
         return (
             let
             {
@@ -74,7 +74,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return 5L;
     }
     
-    public final .java.lang.Object f3(final long n) {
+    public .java.lang.Object f3(final long n) {
         return (
             let
             {
@@ -92,7 +92,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f4() {
+    public .java.lang.Object f4() {
         return (
             let
             {
@@ -107,7 +107,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return 5L;
     }
     
-    public final .java.lang.Object f4(final long n) {
+    public .java.lang.Object f4(final long n) {
         return (
             let
             {
@@ -125,7 +125,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f5() {
+    public .java.lang.Object f5() {
         return (
             let
             {
@@ -143,7 +143,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f6() {
+    public .java.lang.Object f6() {
         return (
             let
             {
@@ -161,7 +161,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f7() {
+    public .java.lang.Object f7() {
         return (
             let
             {
@@ -179,7 +179,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f8() {
+    public .java.lang.Object f8() {
         return (
             let
             {
@@ -197,7 +197,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object f9() {
+    public .java.lang.Object f9() {
         return (
             let
             {
@@ -215,7 +215,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return null;
     }
     
-    public final .java.lang.Object fa() {
+    public .java.lang.Object fa() {
         return (
             let
             {
@@ -230,7 +230,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return 5L;
     }
     
-    public final .java.lang.Object fa(final long n) {
+    public .java.lang.Object fa(final long n) {
         return (
             let
             {

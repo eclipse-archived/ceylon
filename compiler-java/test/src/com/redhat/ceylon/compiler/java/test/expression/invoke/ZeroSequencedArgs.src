@@ -12,7 +12,7 @@ final class zeroSequencedArgs_ {
             private m_() {
             }
             
-            final <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+            <Element>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
                 (
                     let
                     {

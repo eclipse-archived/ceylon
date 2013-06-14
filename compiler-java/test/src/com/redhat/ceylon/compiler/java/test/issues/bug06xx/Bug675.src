@@ -5,7 +5,7 @@ public final class bug675_ {
     private bug675_() {
     }
     
-    public static final <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> bug675(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> bug675(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         return (
             let
             {
