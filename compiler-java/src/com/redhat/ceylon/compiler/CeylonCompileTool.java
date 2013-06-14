@@ -272,7 +272,7 @@ public class CeylonCompileTool implements Tool{
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         if (result != 0) {
-            throw new CompilerErrorException(CeylonCompileMessages.msgCompilerErrors(result));
+            throw new CompilerErrorException(CeylonCompileMessages.msgCompilerErrors(compiler.errorCount));
         }
     }
 

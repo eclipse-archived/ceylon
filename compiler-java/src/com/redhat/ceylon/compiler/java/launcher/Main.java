@@ -171,6 +171,11 @@ public class Main extends com.sun.tools.javac.main.Main {
     public ListBuffer<String> classnames = null; // XXX sb protected
 
     /**
+     * Number of errors found during compilation
+     */
+    public int errorCount = 0;
+
+    /**
      * Report a usage error.
      */
     void error(String key, Object... args) {
@@ -360,6 +365,7 @@ public class Main extends com.sun.tools.javac.main.Main {
 
         filenames = new ListBuffer<File>();
         classnames = new ListBuffer<String>();
+        errorCount  = 0;
         JavaCompiler comp = null;
         /* TODO: Logic below about what is an acceptable command line should be
          * updated to take annotation processing semantics into account. */
@@ -430,7 +436,8 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
             comp.compile(fileObjects, classnames.toList(), processors);
 
-            if (comp.errorCount() != 0)
+            errorCount = comp.errorCount();
+            if (errorCount != 0)
                 return EXIT_ERROR;
         } catch (IOException ex) {
             ioMessage(ex);
