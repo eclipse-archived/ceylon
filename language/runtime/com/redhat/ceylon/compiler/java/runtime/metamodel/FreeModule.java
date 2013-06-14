@@ -77,7 +77,7 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
     public Sequential<? extends FreePackage> getMembers() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.packages == null){
-            List<com.redhat.ceylon.compiler.typechecker.model.Package> modelPackages = declaration.getAllPackages();
+            List<com.redhat.ceylon.compiler.typechecker.model.Package> modelPackages = declaration.getPackages();
             FreePackage[] packages = new FreePackage[modelPackages.size()];
             for(int i=0;i<packages.length;i++){
                 packages[i] = Metamodel.getOrCreateMetamodel(modelPackages.get(i));
