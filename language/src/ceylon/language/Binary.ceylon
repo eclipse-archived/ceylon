@@ -1,5 +1,6 @@
-"Abstraction of numeric types that consist in
-     a sequence of bits, like `Integer`."
+"Abstraction of numeric types like `Integer` that may be 
+ represented as a sequence of bits, and may be the subject
+ of bitwise operations."
 see (Integer)
 by ("Stef")
 shared interface Binary<Other> of Other 
