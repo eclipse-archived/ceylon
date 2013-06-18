@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -58,7 +59,7 @@ public class FreeFunction
         
         List<ParameterList> parameterLists = declaration.getParameterLists();
         String methodName = Metamodel.getJavaMethodName(declaration);
-        Annotation[][] parameterAnnotations = findMethod(Metamodel.getJavaClass(declaration), methodName).getParameterAnnotations();
+        Annotation[][] parameterAnnotations = Metamodel.getJavaMethod(declaration).getParameterAnnotations();
         ParameterList parameterList = parameterLists.get(0);
         List<Parameter> modelParameters = parameterList.getParameters();
         ceylon.language.metamodel.declaration.ParameterDeclaration[] parameters = new ceylon.language.metamodel.declaration.ParameterDeclaration[modelParameters.size()];
@@ -217,41 +218,6 @@ public class FreeFunction
     @Ignore
     @Override
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
-        Class<?> javaClass = Metamodel.getJavaClass(declaration);
-        String name = Naming.selector((TypedDeclaration)declaration, 0);
-        java.lang.reflect.Method best = findMethod(javaClass, name);
-        return best.getAnnotations();
-    }
-
-    private static java.lang.reflect.Method findMethod(Class<?> javaClass, String methodName) {
-        // How to find the right Method, just go for the one with the longest parameter list?
-        // OR go via the Method in AppliedFunction?
-        java.lang.reflect.Method best = null;
-        int numBestParams = -1;
-        int numBest = 0;
-        for (java.lang.reflect.Method meth : javaClass.getDeclaredMethods()) {
-            if (!meth.getName().equals(methodName)
-                    || meth.isBridge() 
-                    || meth.isSynthetic()
-                    || meth.getAnnotation(Ignore.class) != null) {
-                continue;
-            }
-            
-            Class<?>[] parameterTypes = meth.getParameterTypes();
-            if (parameterTypes.length > numBestParams) {
-                best = meth;
-                numBestParams = parameterTypes.length;
-                numBest = 1;
-            } else if (parameterTypes.length == numBestParams) {
-                numBest++;
-            }
-        }
-        if (best == null) {
-            throw new RuntimeException("Couldn't find method " + javaClass + "." + methodName);
-        }
-        if (numBest > 1) {
-            throw new RuntimeException("Method arity ambiguity " + javaClass + "." + methodName);
-        }
-        return best;
+        return Metamodel.getJavaMethod((Method) declaration).getAnnotations();
     }
 }

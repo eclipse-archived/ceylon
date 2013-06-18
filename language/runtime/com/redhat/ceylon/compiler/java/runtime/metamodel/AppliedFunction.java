@@ -76,8 +76,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
         // FIXME: deal with Java classes and overloading
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-        // FIXME: perhaps we should just store the damn method in the underlying JavaMethod?
-        Method found = null;
+        Method found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);;
         String name = Metamodel.getJavaMethodName((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
         for(Method method : javaClass.getDeclaredMethods()){
             if(!method.getName().equals(name))
@@ -92,10 +91,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 continue;
             }
             // FIXME: deal with private stuff?
-            if(found != null){
-                throw new RuntimeException("More than one method found for: "+javaClass+", 1st: "+found+", 2nd: "+method);
-            }
-            found = method;
         }
         if(found != null){
             method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction);

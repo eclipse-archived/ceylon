@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionMethod;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -245,6 +246,18 @@ public class Metamodel {
         }
         if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
             return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
+        }
+        throw new RuntimeException("Unsupported declaration type: " + declaration);
+    }
+
+    public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
+        if(declaration instanceof JavaMethod){
+            ReflectionMethod methodMirror = (ReflectionMethod) ((JavaMethod) declaration).mirror;
+            return (java.lang.reflect.Method) methodMirror.method;
+        }
+        if(declaration instanceof LazyMethod){
+            ReflectionMethod methodMirror = (ReflectionMethod) ((LazyMethod) declaration).getMethodMirror();
+            return (java.lang.reflect.Method) methodMirror.method;
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
     }
