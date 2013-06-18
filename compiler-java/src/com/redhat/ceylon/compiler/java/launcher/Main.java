@@ -471,9 +471,10 @@ public class Main extends com.sun.tools.javac.main.Main {
             // Nasty. If we've already reported an error, compensate
             // for buggy compiler error recovery by swallowing thrown
             // exceptions.
-            if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null)
+            if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null) {
                 bugMessage(ex);
-            this.abortingException = ex;
+                this.abortingException = ex;
+            }
             return EXIT_ABNORMAL;
         } finally {
             if (comp != null)

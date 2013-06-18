@@ -278,6 +278,14 @@ public class CeylonCompileTool implements Tool{
             throw new CompilerErrorException(CeylonCompileMessages.msgCompilerErrors(compiler.errorCount));
         case com.redhat.ceylon.compiler.java.launcher.Main.EXIT_SYSERR:
             throw new SystemErrorException(CeylonCompileMessages.msgSystemError());
+        case com.redhat.ceylon.compiler.java.launcher.Main.EXIT_ABNORMAL:
+            if (compiler.abortingException == null
+                    && compiler.errorCount != 0) {
+                // pretend it's an ordinary compiler error, to work around javacs sloppy error handling 
+                // (see where compiler.compile() returns EXIT_ABNORMAL)
+                throw new CompilerErrorException(CeylonCompileMessages.msgCompilerErrors(compiler.errorCount));
+            }
+            // else fall through
         default:
             throw new CompilerBugException(CeylonCompileMessages.msgBug(result, compiler.abortingException), compiler.abortingException);
         }
