@@ -182,7 +182,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public final long mDefaultSup() {
+    public long mDefaultSup() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mDefaultSup();
     }
     
@@ -228,7 +228,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public final long mDefaultMem() {
+    public long mDefaultMem() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mDefaultMem();
     }
     

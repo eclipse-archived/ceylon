@@ -105,7 +105,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
+    public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2($reifiedV, $reifiedW);
     }
     

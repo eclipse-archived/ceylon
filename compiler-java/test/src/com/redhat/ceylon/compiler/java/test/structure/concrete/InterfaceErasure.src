@@ -159,7 +159,7 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final .java.lang.Object defaultedParams() {
+    public .java.lang.Object defaultedParams() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.defaultedParams();
     }
     
@@ -169,7 +169,7 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final .java.lang.Object defaultedParams(final .java.lang.Object p) {
+    public .java.lang.Object defaultedParams(final .java.lang.Object p) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this.defaultedParams(p);
     }
     

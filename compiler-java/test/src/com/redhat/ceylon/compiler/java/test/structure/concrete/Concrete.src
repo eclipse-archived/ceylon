@@ -395,7 +395,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault() {
+    public .java.lang.Object mDefault() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault();
     }
     
@@ -405,7 +405,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault(final B a) {
+    public .java.lang.Object mDefault(final B a) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a);
     }
     
@@ -646,7 +646,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault() {
+    public .java.lang.Object mDefault() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault();
     }
     
@@ -656,7 +656,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault(final C a) {
+    public .java.lang.Object mDefault(final C a) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a);
     }
     
@@ -897,7 +897,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault() {
+    public .java.lang.Object mDefault() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault();
     }
     
@@ -907,7 +907,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault(final D a) {
+    public .java.lang.Object mDefault(final D a) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a);
     }
     
@@ -1313,7 +1313,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault() {
+    public .java.lang.Object mDefault() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault();
     }
     
@@ -1323,7 +1323,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mDefault(final F a) {
+    public .java.lang.Object mDefault(final F a) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a);
     }
     

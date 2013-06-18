@@ -56,7 +56,7 @@ class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     @.java.lang.Override
-    public final long m1() {
+    public long m1() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1();
     }
     
@@ -188,7 +188,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     @.java.lang.Override
-    public final long m1() {
+    public long m1() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1();
     }
     
@@ -209,7 +209,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     @.java.lang.Override
-    public final long m2() {
+    public long m2() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2();
     }
     
@@ -266,7 +266,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public final long m1() {
+    public long m1() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this.m1();
     }
     
@@ -287,7 +287,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public final long m2() {
+    public long m2() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this.m2();
     }
     
@@ -308,7 +308,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public final long m4() {
+    public long m4() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$this.m4();
     }
     
