@@ -246,7 +246,6 @@ public class MiscTest extends CompilerTest {
                 "io",
                 "json",
                 "math",
-                "util",
                 "net",
                 "process",
         };
