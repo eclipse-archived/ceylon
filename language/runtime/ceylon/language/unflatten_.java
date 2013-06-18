@@ -18,7 +18,7 @@ public final class unflatten_ {
     
     @TypeParameters({@TypeParameter(value="Return"),
                      @TypeParameter(value="Args", satisfies="ceylon.language::Sequential<ceylon.language::Anything>")})
-    @TypeInfo("ceylon.language::Callable<Return,ceylon.language::Tuple<Args,Args,Empty>>")
+    @TypeInfo("ceylon.language::Callable<Return,ceylon.language::Tuple<Args,Args,ceylon.language::Empty>>")
     public static <Return,Args> Callable<Return> unflatten(
         @Ignore TypeDescriptor $reifiedReturn,
         @Ignore TypeDescriptor $reifiedArgs,

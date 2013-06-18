@@ -31,7 +31,7 @@ final class integerRangeByIterable_ {
     @TypeParameters(@TypeParameter(value="Element", 
             satisfies={"ceylon.language::Ordinal<Element>", 
                 "ceylon.language::Comparable<Element>"}))
-    @TypeInfo(value="ceylon.language::Iterable<Element, Nothing>")
+    @TypeInfo(value="ceylon.language::Iterable<Element,ceylon.language::Nothing>")
     static <Element extends ceylon.language.Ordinal<? extends Element> & ceylon.language.Comparable<? super Element>> 
             ceylon.language.Iterable<Element,?> integerRangeByIterable(@Ignore final TypeDescriptor $reifiedElement,
                     @Name("range")
