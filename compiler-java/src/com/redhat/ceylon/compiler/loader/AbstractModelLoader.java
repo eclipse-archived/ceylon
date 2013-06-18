@@ -779,11 +779,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             ClassMirror classMirror = lookupClassMirror(module, typeName);
             if (classMirror == null) {
-                String simpleName = typeName.substring(typeName.lastIndexOf(".")+1);
-                Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(simpleName);
-                if (languageModuleDeclaration != null) {
-                    return languageModuleDeclaration;
+                // special case when bootstrapping because we may need to pull the decl from the typechecked model
+                if(isBootstrap && typeName.startsWith(CEYLON_LANGUAGE+".")){
+                    ProducedType languageType = findLanguageModuleDeclarationForBootstrap(typeName);
+                    if(languageType != null)
+                        return languageType.getDeclaration();
                 }
+                
                 throw new ModelResolutionException("Failed to resolve "+typeName);
             }
             // we only allow source loading when it's java code we're compiling in the same go
@@ -2718,18 +2720,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // we're looking for type declarations, so anything else doesn't work for us
             return null;
         }
-        
+
+        return findLanguageModuleDeclarationForBootstrap(name);
+    }
+
+    private ProducedType findLanguageModuleDeclarationForBootstrap(String name) {
         // make sure we don't return anything for ceylon.language
         if(name.equals(CEYLON_LANGUAGE))
             return null;
         
         // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
         Module languageModule = modules.getLanguageModule();
-        String simpleName = name.substring(name.lastIndexOf(".")+1);
+        
+        int lastDot = name.lastIndexOf(".");
+        if(lastDot == -1)
+            return null;
+        String pkgName = name.substring(0, lastDot);
+        String simpleName = name.substring(lastDot+1);
         // Nothing is a special case with no real decl
         if(name.equals("ceylon.language.Nothing"))
             return typeFactory.getNothingDeclaration().getType();
-        for(Package pkg : languageModule.getPackages()){
+
+        // find the right package
+        Package pkg = languageModule.getDirectPackage(pkgName);
+        if(pkg != null){
             Declaration member = pkg.getDirectMember(simpleName, null, false);
             // if we get a value, we want its type
             if(Decl.isValue(member)
