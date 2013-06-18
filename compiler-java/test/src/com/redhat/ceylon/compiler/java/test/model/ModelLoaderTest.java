@@ -43,6 +43,7 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -764,5 +765,62 @@ public class ModelLoaderTest extends CompilerTest {
                 return num;
             }
         });
+    }
+    
+    @Test
+    public void bogusModelAnnotationsTopLevelAttribute(){
+        compile("bogusTopLevelAttributeNoGetter_.java", "bogusTopLevelAttributeMissingType_.java", "bogusTopLevelAttributeInvalidType_.java");
+        assertErrors("bogusTopLevelAttributeUser",
+                new CompilerError(-1, "Error while resolving toplevel attribute com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeNoGetter: getter method missing"),
+                new CompilerError(-1, "Error while resolving type of toplevel attribute for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeMissingType: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while parsing type of toplevel attribute for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelAttributeInvalidType: Expecting word but got AND"),
+                new CompilerError(3, "could not determine type of function or value reference: bogusTopLevelAttributeNoGetter"),
+                new CompilerError(4, "could not determine type of function or value reference: bogusTopLevelAttributeMissingType"),
+                new CompilerError(5, "could not determine type of function or value reference: bogusTopLevelAttributeInvalidType")
+                );
+    }
+
+    @Test
+    public void bogusModelAnnotationsTopLevelMethod(){
+        compile("bogusTopLevelMethodNoMethod_.java", "bogusTopLevelMethodMissingType_.java", "bogusTopLevelMethodInvalidType_.java");
+        assertErrors("bogusTopLevelMethodUser",
+                new CompilerError(-1, "Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNoMethod: static method missing"),
+                new CompilerError(-1, "Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNotStatic: method is not static"),
+                new CompilerError(-1, "Error while resolving type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodMissingType: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while parsing type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodInvalidType: Expecting word but got AND"),
+                // FIXME: this is not great
+                new CompilerError(3, "function has no parameter list: bogusTopLevelMethodNoMethod"),
+                new CompilerError(3, "could not determine type of function or value reference: bogusTopLevelMethodNoMethod"),
+                // FIXME: this is not great
+                new CompilerError(4, "function has no parameter list: bogusTopLevelMethodNotStatic"),
+                new CompilerError(4, "could not determine type of function or value reference: bogusTopLevelMethodNotStatic"),
+                new CompilerError(5, "could not determine type of function or value reference: bogusTopLevelMethodMissingType"),
+                new CompilerError(6, "could not determine type of function or value reference: bogusTopLevelMethodInvalidType")
+        );
+
+    }
+    
+    @Test
+    public void bogusModelAnnotationsTopLevelClass(){
+        compile("BogusTopLevelClass.java", "BogusTopLevelClass2.java");
+        assertErrors("bogusTopLevelClassUser",
+                new CompilerError(-1, "Constructor for 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping constructor."),
+                new CompilerError(-1, "Error while resolving type of getter 'getter' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of parameter 'arg0' of method 'method' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass.method: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of method 'method' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of setter 'setSetter' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of parameter 'arg0' of method 'setSetter' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass.setSetter: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of extended type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of self type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Invalid type signature for self type of com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: com.redhat.ceylon.compiler.java.test.model::MissingType is not a type parameter"),
+                new CompilerError(-1, "Error while resolving type of type parameter 'T' satisfied types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of type parameter 'T' case types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of type parameter 'T' defaultValue for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Error while resolving type of case types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass2: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
+                new CompilerError(-1, "Method 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass.params' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping method."),
+
+                // FIXME: I wish I knew how to get rid of that one...
+                new CompilerError(3, "constructor BogusTopLevelClass in class com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass<T> cannot be applied to given types;\n  required: no arguments\n  found: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n  reason: actual and formal argument lists differ in length")
+        );
     }
 }
