@@ -1787,7 +1787,6 @@ public class ClassTransformer extends AbstractTransformer {
                     true,
                     transformMplBody(def.getParameterLists(), model, body),
                     daoThis,
-                    true,
                     !Strategy.defaultParameterMethodOnSelf(model));
         } else {// Is within interface
             // Transform the definition to the companion class, how depends
@@ -1804,7 +1803,6 @@ public class ClassTransformer extends AbstractTransformer {
                             true,
                             null,
                             daoCompanionDollarThis,
-                            true,
                             false);   
                 } else {
                     companionDefs = transformMethod(def,
@@ -1813,7 +1811,6 @@ public class ClassTransformer extends AbstractTransformer {
                             !model.isShared(),
                             transformMplBody(def.getParameterLists(), model, body),
                             daoCompanionDollarThis,
-                            true,
                             false);
                 }
             } else if (def instanceof Tree.MethodDefinition) {
@@ -1823,7 +1820,6 @@ public class ClassTransformer extends AbstractTransformer {
                         !model.isShared(),
                         transformMethodBlock((Tree.MethodDefinition)def),
                         daoCompanion,
-                        true,
                         false);
             } else {
                 throw new RuntimeException();
@@ -1840,7 +1836,6 @@ public class ClassTransformer extends AbstractTransformer {
                         true,
                         null,
                         daoAbstract,
-                        true,
                         !Strategy.defaultParameterMethodOnSelf(model));
             }
         }
@@ -1865,7 +1860,7 @@ public class ClassTransformer extends AbstractTransformer {
     private List<MethodDefinitionBuilder> transformMethod(Tree.AnyMethod def,
             boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
             DaoBody daoTransformation, 
-            boolean transformDefaultValues, boolean defaultValuesBody) {
+            boolean defaultValuesBody) {
         
         final Method methodModel = def.getDeclarationModel();
         ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
@@ -1909,8 +1904,7 @@ public class ClassTransformer extends AbstractTransformer {
                         lb.append(overloadedMethod);
                     }
                     
-                    if (transformDefaultValues
-                            && refinedDeclaration == methodModel) {
+                    if (refinedDeclaration == methodModel) {
                         lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, def.getTypeParameterList()));    
                     }
                 }
