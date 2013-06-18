@@ -1896,9 +1896,10 @@ public class ClassTransformer extends AbstractTransformer {
 
             if (parameterModel.isDefaulted()
                     || parameterModel.isSequenced()) {
-                if (methodModel.getRefinedDeclaration() == methodModel
-                        || !methodModel.getType().isExactly(
-                                ((TypedDeclaration)refinedDeclaration).getType())) {
+                if (refinedDeclaration == methodModel
+                        || (!methodModel.getType().isExactly(
+                                ((TypedDeclaration)refinedDeclaration).getType())
+                                && !Decl.withinInterface(refinedDeclaration))) {
                     
                     if (daoTransformation != null) {
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
