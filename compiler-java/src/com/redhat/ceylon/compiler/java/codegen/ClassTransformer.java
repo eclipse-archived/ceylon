@@ -816,14 +816,17 @@ public class ClassTransformer extends AbstractTransformer {
             if (member instanceof Method) {
                 Method method = (Method)member;
                 final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
-                final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
-                final java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+                final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember((TypedDeclaration)model.getMember(method.getName(), null, false), Collections.<ProducedType>emptyList());
+                Method subMethod = (Method)model.getMember(method.getName(), null, false);
+                final ProducedType refinedType = subMethod.getType();
+                final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
+                final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
                 if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
                     
                     for (Parameter param : parameters) {
                         if (param.isDefaulted()
                                 || param.isSequenced()) {
-                            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
+                            final ProducedTypedReference typedParameter = refinedTypedMember.getTypedParameter(param);
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
                             // which also delegates to the $impl
@@ -838,7 +841,7 @@ public class ClassTransformer extends AbstractTransformer {
                             classBuilder.method(defaultValueDelegate);
                             
                             final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
-                                    typedMember,
+                                    refinedTypedMember,
                                     PUBLIC | (method.isDefault() ? 0 : FINAL), 
                                     typeParameters,  
                                     typedMember.getType(), 
@@ -848,7 +851,6 @@ public class ClassTransformer extends AbstractTransformer {
                             classBuilder.method(overload);
                         }
                     }
-                    
                 }
                 // if it has the *most refined* default concrete member, 
                 // then generate a method on the class
@@ -1779,7 +1781,8 @@ public class ClassTransformer extends AbstractTransformer {
                     true,
                     true,
                     transformMplBody(def.getParameterLists(), model, body),
-                    refinedResultType ? daoSuper : daoThis,
+                    refinedResultType 
+                    && !Decl.withinInterface(model.getRefinedDeclaration())? daoSuper : daoThis,
                     !Strategy.defaultParameterMethodOnSelf(model));
         } else {// Is within interface
             // Transform the definition to the companion class, how depends
