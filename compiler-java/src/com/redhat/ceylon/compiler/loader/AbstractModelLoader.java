@@ -37,6 +37,7 @@ import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.util.Timer;
@@ -719,7 +720,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': skipping constructor.");
             else
                 logError("Method '"+container.getQualifiedName()+"."+methodMirror.getName()+"' should take "+tpCount
-                    +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': skipping method.");
+                    +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': method is invalid.");
             return false;
         }
         return true;
@@ -1352,13 +1353,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
                     addValue(klass, methodMirror, "string", isCeylon);
-                } else if(!isCeylon || checkReifiedTypeDescriptors(methodMirror.getTypeParameters().size(), classMirror, methodMirror, false)){
+                } else {
                     // normal method
                     Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
                     if (isOverloaded) {
                         overloads.add(m);
                     }
-                    // otherwise just ignore it since we logged an error
                 }
             }
             
@@ -1444,9 +1444,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
+        if(isCeylon)
+            checkReifiedGenericsForMethods(klass, classMirror);
         setAnnotations(klass, classMirror);
     }
 
+    private void checkReifiedGenericsForMethods(ClassOrInterface klass, ClassMirror classMirror) {
+        for(Declaration member : klass.getMembers()){
+            if(member instanceof JavaMethod == false)
+                continue;
+            MethodMirror mirror = ((JavaMethod)member).mirror;
+            if(AbstractTransformer.supportsReified(member)){
+                checkReifiedTypeDescriptors(mirror.getTypeParameters().size(), classMirror, mirror, false);
+            }
+        }
+    }
+    
     private boolean isFromJDK(ClassMirror classMirror) {
         String pkgName = classMirror.getPackage().getQualifiedName();
         return JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName);
