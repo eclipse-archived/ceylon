@@ -148,7 +148,7 @@ public class FreeClass
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        return new AppliedClassType(appliedClassType, instance);
+        return new AppliedClassType(null, null, appliedClassType, instance);
     }
 
     @Override

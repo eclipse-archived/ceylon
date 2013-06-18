@@ -152,7 +152,7 @@ public class FreeFunction
             @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        return new AppliedFunction(appliedFunction, this, instance);
+        return new AppliedFunction(null, null, appliedFunction, this, instance);
     }
 
     @Ignore
@@ -198,7 +198,7 @@ public class FreeFunction
         return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind, container){
             @Override
             protected Kind bindTo(Object instance) {
-                return (Kind) new AppliedFunction(appliedFunction, FreeFunction.this, instance);
+                return (Kind) new AppliedFunction(null, null, appliedFunction, FreeFunction.this, instance);
             }
         };
     }

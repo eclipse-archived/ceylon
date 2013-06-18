@@ -195,10 +195,10 @@ public class Metamodel {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // FIXME: this null is most likely just wrong
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassType(pt, null);
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassType(null, null, pt, null);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterfaceType(pt);
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterfaceType(null, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
             return new AppliedUnionType(declaration.getCaseTypes());

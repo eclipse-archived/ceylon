@@ -19,8 +19,8 @@ public class AppliedInterfaceType<Type>
     extends AppliedClassOrInterfaceType<Type>
     implements ceylon.language.metamodel.Interface<Type> {
 
-    public AppliedInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
-        super(producedType);
+    public AppliedInterfaceType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
+        super(null, producedType);
     }
 
     @Override

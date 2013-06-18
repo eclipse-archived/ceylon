@@ -269,8 +269,8 @@ public abstract class FreeClassOrInterface
             @Override
             protected Kind bindTo(Object instance) {
                 return (Kind) (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface 
-                        ? new AppliedInterfaceType(appliedType)
-                        : new AppliedClassType(appliedType, instance));
+                        ? new AppliedInterfaceType(null, appliedType)
+                        : new AppliedClassType(null, null, appliedType, instance));
             }
         };
     }

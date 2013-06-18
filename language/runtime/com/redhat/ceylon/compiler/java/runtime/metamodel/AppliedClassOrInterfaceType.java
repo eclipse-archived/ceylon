@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.reflect.AnnotatedElement;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.DeclarationType$impl;
 
@@ -44,7 +42,7 @@ public class AppliedClassOrInterfaceType<Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
-    AppliedClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
+    AppliedClassOrInterfaceType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
     }

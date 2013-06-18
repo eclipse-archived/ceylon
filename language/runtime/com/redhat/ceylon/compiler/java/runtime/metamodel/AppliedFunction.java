@@ -44,7 +44,9 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private MethodHandle[] dispatch;
     private int firstDefaulted = -1;
 
-    public AppliedFunction(ProducedReference appliedFunction, FreeFunction function, Object instance) {
+    public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
+                           @Ignore TypeDescriptor $reifiedArguments,
+                           ProducedReference appliedFunction, FreeFunction function, Object instance) {
         ProducedType appliedType = appliedFunction.getType();
         
         // FIXME: check that this returns a Callable if we have multiple parameter lists

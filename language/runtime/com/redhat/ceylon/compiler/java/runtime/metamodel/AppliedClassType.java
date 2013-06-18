@@ -39,8 +39,10 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     private int firstDefaulted;
     private MethodHandle[] dispatch;
     
-    public AppliedClassType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
-        super(producedType);
+    public AppliedClassType(@Ignore TypeDescriptor $reifiedType, 
+                            @Ignore TypeDescriptor $reifiedArguments,
+                            com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
+        super($reifiedType, producedType);
         this.instance = instance;
     }
 
