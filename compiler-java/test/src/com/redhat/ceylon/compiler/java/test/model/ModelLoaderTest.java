@@ -817,7 +817,7 @@ public class ModelLoaderTest extends CompilerTest {
                 new CompilerError(-1, "Error while resolving type of type parameter 'T' case types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Error while resolving type of type parameter 'T' defaultValue for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Error while resolving type of case types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass2: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Method 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass.params' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping method."),
+                new CompilerError(-1, "Method 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass.params' should take 1 reified type arguments (TypeDescriptor) but has '0': method is invalid."),
 
                 // FIXME: I wish I knew how to get rid of that one...
                 new CompilerError(3, "constructor BogusTopLevelClass in class com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass<T> cannot be applied to given types;\n  required: no arguments\n  found: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n  reason: actual and formal argument lists differ in length")
