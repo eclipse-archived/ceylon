@@ -39,7 +39,7 @@ import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 
 public class ReflectionMethod implements MethodMirror {
 
-    private Member method;
+    public final Member method;
     private ArrayList<VariableMirror> parameters;
     private List<TypeParameterMirror> typeParameters;
     private Boolean overridingMethod;

@@ -2119,6 +2119,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // save the method name
             method.setRealMethodName(meth.getName());
             
+            // save the method
+            method.setMethodMirror(meth);
+            
             // type params first
             setTypeParameters(method, meth);
 

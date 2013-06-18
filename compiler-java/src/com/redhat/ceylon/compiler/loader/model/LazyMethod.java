@@ -26,6 +26,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.ModelCompleter;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -49,7 +50,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
  */
 public class LazyMethod extends Method implements LazyElement {
 
-    public ClassMirror classMirror;
+    private MethodMirror methodMirror;
+    public final ClassMirror classMirror;
     private ModelCompleter completer;
     private String realName;
     private String realMethodName;
@@ -63,6 +65,15 @@ public class LazyMethod extends Method implements LazyElement {
         this.completer = completer;
         this.realName = classMirror.getName();
         setName(Util.getMirrorName(classMirror));
+    }
+
+    public void setMethodMirror(MethodMirror methorMirror) {
+        this.methodMirror = methorMirror;
+    }
+    
+    public MethodMirror getMethodMirror(){
+        load();
+        return this.methodMirror;
     }
 
     public String getRealName() {
