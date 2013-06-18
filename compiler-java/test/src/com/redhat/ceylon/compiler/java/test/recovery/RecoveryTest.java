@@ -29,6 +29,7 @@ import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -64,6 +65,12 @@ public class RecoveryTest extends CompilerTest {
     @Test
     public void testRcvM3Features(){
         compile(1, "M3Features.ceylon");
+    }
+
+    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1173")
+    @Test
+    public void testRcvIndirectUser(){
+        compile(1, "BrokenIndirectUser.ceylon");
     }
 
     private void compile(int expectedErrors, String... ceylon){
