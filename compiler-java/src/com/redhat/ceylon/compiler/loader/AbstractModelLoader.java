@@ -1547,7 +1547,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, boolean isOverloaded) {
-        JavaMethod method = new JavaMethod();
+        JavaMethod method = new JavaMethod(methodMirror);
         
         method.setContainer(klass);
         method.setRealName(methodMirror.getName());

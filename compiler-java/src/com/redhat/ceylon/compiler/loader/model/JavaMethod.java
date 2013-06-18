@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader.model;
 
+import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 
 /**
@@ -30,7 +31,12 @@ public class JavaMethod extends Method {
 
     private String realName;
     private boolean defaultedAnnotation;
-
+    public final MethodMirror mirror;
+    
+    public JavaMethod(MethodMirror mirror){
+        this.mirror = mirror;
+    }
+    
     public void setRealName(String name) {
         this.realName = name;
     }
