@@ -37,7 +37,6 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -49,10 +48,6 @@ public class Metamodel {
 
     private static RuntimeModuleManager moduleManager;
     
-    static{
-        resetModuleManager();
-    }
-
     // FIXME: this will need better thinking in terms of memory usage
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration> typeCheckModelToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Declaration, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTopLevelOrMemberDeclaration>();
@@ -62,6 +57,10 @@ public class Metamodel {
 
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule> typeCheckModulesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule>();
+
+    static{
+        resetModuleManager();
+    }
 
     public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
         moduleManager.loadModule(name, version, result, classLoader);
@@ -97,6 +96,9 @@ public class Metamodel {
         moduleManager = new RuntimeModuleManager(context);
         moduleManager.initCoreModules();
         moduleManager.prepareForTypeChecking();
+        typeCheckModelToRuntimeModel.clear();
+        typeCheckModulesToRuntimeModel.clear();
+        typeCheckPackagesToRuntimeModel.clear();
     }
 
     public static TypeDescriptor getTypeDescriptor(Object instance) {
