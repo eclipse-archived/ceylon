@@ -603,18 +603,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         Class supercls = makeLazyClass(classMirror, null, null, false);
                         supercls.setAbstraction(true);
                         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
-                        boolean isFromJDK = isFromJDK(classMirror);
+                        // all filtering is done in getClassConstructors
                         for (MethodMirror constructor : constructors) {
-                            // FIXME: tmp hack to skip constructors that have type params as we don't handle them yet
-                            if(!constructor.getTypeParameters().isEmpty())
-                                continue;
-                            // We skip members marked with @Ignore
-                            if(constructor.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                                continue;
-                            // FIXME: temporary, because some private classes from the jdk are
-                            // referenced in private methods but not available
-                            if(isFromJDK && !constructor.isPublic())
-                                continue;
                             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
                             subdecl.setOverloaded(true);
                             overloads.add(subdecl);
@@ -688,11 +678,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private List<MethodMirror> getClassConstructors(ClassMirror classMirror) {
         LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
+        boolean isFromJDK = isFromJDK(classMirror);
         for(MethodMirror methodMirror : classMirror.getDirectMethods()){
             // We skip members marked with @Ignore
             if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
             if(!methodMirror.isConstructor())
+                continue;
+            // FIXME: tmp hack to skip constructors that have type params as we don't handle them yet
+            if(!methodMirror.getTypeParameters().isEmpty())
+                continue;
+            // FIXME: temporary, because some private classes from the jdk are
+            // referenced in private methods but not available
+            if(isFromJDK && !methodMirror.isPublic())
                 continue;
 
             // if we are expecting Ceylon code, check that we have enough reified type parameters
