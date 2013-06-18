@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public final class ObjectArray<T> implements ReifiedType {
     
-    public ObjectArray(@Name("size") int size, @TypeInfo("T|ceylon.language::Null") @Defaulted @Name("element") T element){
+    public ObjectArray(@Ignore TypeDescriptor $reifiedT, @Name("size") int size, @TypeInfo("T|ceylon.language::Null") @Defaulted @Name("element") T element){
         throw Util.makeJavaArrayWrapperException();
     }
 
