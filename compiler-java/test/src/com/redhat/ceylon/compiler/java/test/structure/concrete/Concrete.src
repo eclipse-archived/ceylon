@@ -380,13 +380,13 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends B> mFormal$aseq(final B a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal$aseq(a);
+    public final .ceylon.language.Sequential<? extends B> mFormal$aseq(final B b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal$aseq(b);
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mFormal(final B a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal(a);
+    public final .java.lang.Object mFormal(final B b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal(b);
     }
     
     @.java.lang.Override
@@ -631,13 +631,13 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends C> mFormal$aseq(final C a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal$aseq(a);
+    public final .ceylon.language.Sequential<? extends C> mFormal$aseq(final C c) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal$aseq(c);
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mFormal(final C a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal(a);
+    public final .java.lang.Object mFormal(final C c) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal(c);
     }
     
     @.java.lang.Override
@@ -651,13 +651,13 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends C> mDefault$aseq(final C a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$aseq(a);
+    public final .ceylon.language.Sequential<? extends C> mDefault$aseq(final C c) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$aseq(c);
     }
     
     @.java.lang.Override
-    public .java.lang.Object mDefault(final C a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a);
+    public .java.lang.Object mDefault(final C c) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(c);
     }
     
     @.java.lang.Override
@@ -1298,13 +1298,13 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends F> mFormal$aseq(final F a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal$aseq(a);
+    public final .ceylon.language.Sequential<? extends F> mFormal$aseq(final F f) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal$aseq(f);
     }
     
     @.java.lang.Override
-    public final .java.lang.Object mFormal(final F a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal(a);
+    public final .java.lang.Object mFormal(final F f) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mFormal(f);
     }
     
     @.java.lang.Override
@@ -1318,13 +1318,13 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends F> mDefault$aseq(final F a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$aseq(a);
+    public final .ceylon.language.Sequential<? extends F> mDefault$aseq(final F f) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault$aseq(f);
     }
     
     @.java.lang.Override
-    public .java.lang.Object mDefault(final F a) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a);
+    public .java.lang.Object mDefault(final F f) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(f);
     }
     
     @.java.lang.Override

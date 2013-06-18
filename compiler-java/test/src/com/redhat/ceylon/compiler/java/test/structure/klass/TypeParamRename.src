@@ -100,13 +100,13 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public final <V, W>V m2$v(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2$v($reifiedV, $reifiedW);
+    public final <A, B>A m2$v(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2$v($reifiedA, $reifiedB);
     }
     
     @.java.lang.Override
-    public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedW) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2($reifiedV, $reifiedW);
+    public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2($reifiedA, $reifiedB);
     }
     
     @.java.lang.Override
