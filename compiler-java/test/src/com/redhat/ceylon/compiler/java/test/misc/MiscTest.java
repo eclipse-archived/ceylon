@@ -97,7 +97,7 @@ public class MiscTest extends CompilerTest {
                 for (String s : new String[]{"Array", "ArraySequence", "Boolean", "Callable", "Character", "className",
                         "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
                         "language", "process", "integerRangeByIterable",
-                        "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "unflatten"}) {
+                        "SequenceBuilder", "SequenceAppender", "String", "StringBuilder"}) {
                     if (s.equals(filename)) {
                         return true;
                     }
@@ -111,7 +111,7 @@ public class MiscTest extends CompilerTest {
         };
         String[] extras = new String[]{
                 "array", "arrayOfSize", "false", "infinity",
-                "parseFloat", "parseInteger", "string", "true", "integerRangeByIterable"
+                "parseFloat", "parseInteger", "string", "true", "integerRangeByIterable", "unflatten"
         };
         
         for(String pkg : ceylonPackages){
