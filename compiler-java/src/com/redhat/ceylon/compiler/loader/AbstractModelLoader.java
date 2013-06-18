@@ -140,6 +140,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
+    private static final TypeMirror CEYLON_TYPE_DESCRIPTOR_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
     
     private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
     private static final TypeMirror CEYLON_STRING_TYPE = simpleCeylonObjectType("ceylon.language.String");
@@ -691,11 +692,39 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip members marked with @Ignore
             if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
-            if(methodMirror.isConstructor()) {
-                constructors.add(methodMirror);
+            if(!methodMirror.isConstructor())
+                continue;
+
+            // if we are expecting Ceylon code, check that we have enough reified type parameters
+            if(classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
+                if(!checkReifiedTypeDescriptors(classMirror.getTypeParameters().size(), classMirror, methodMirror, true))
+                    continue;
             }
+            
+            constructors.add(methodMirror);
         }
         return constructors;
+    }
+
+    private boolean checkReifiedTypeDescriptors(int tpCount, ClassMirror container, MethodMirror methodMirror, boolean isConstructor) {
+        List<VariableMirror> params = methodMirror.getParameters();
+        int actualTypeDescriptorParameters = 0;
+        for(VariableMirror param : params){
+            if(param.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null && sameType(CEYLON_TYPE_DESCRIPTOR_TYPE, param.getType())){
+                actualTypeDescriptorParameters++;
+            }else
+                break;
+        }
+        if(tpCount != actualTypeDescriptorParameters){
+            if(isConstructor)
+                logError("Constructor for '"+container.getQualifiedName()+"' should take "+tpCount
+                        +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': skipping constructor.");
+            else
+                logError("Method '"+container.getQualifiedName()+"."+methodMirror.getName()+"' should take "+tpCount
+                    +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': skipping method.");
+            return false;
+        }
+        return true;
     }
 
     protected Unit getCompiledUnit(LazyPackage pkg, ClassMirror classMirror) {
@@ -1323,12 +1352,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
                     addValue(klass, methodMirror, "string", isCeylon);
-                } else {
+                } else if(!isCeylon || checkReifiedTypeDescriptors(methodMirror.getTypeParameters().size(), classMirror, methodMirror, false)){
                     // normal method
                     Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
                     if (isOverloaded) {
                         overloads.add(m);
                     }
+                    // otherwise just ignore it since we logged an error
                 }
             }
             
