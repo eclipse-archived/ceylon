@@ -188,14 +188,12 @@
 	color: rgb(160, 160, 160);
 }
 
-.specifier-operator,
-.specifier-semicolon {
-	color: rgb(120, 120, 120);
-}
-
-.specifier-start,
+.specifier,
 .specifier-rest {
-	color: rgb(77, 77, 255);
+	color: darkblue;
+	font-size: 12px;
+	font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+	padding-left: 6px;
 }
 
 .specifier-rest {

@@ -31,7 +31,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.antlr.runtime.Token;
+import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -81,7 +81,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeTypeParametersConstraints(alias.getTypeParameters());
             open("div class='type-alias-specifier'");
         }
-        around("span class='specifier-operator'", " => ");
+        around("span class='specifier'", "=> ");
         linkRenderer().to(alias.getExtendedType()).write();
         if (!alias.getTypeParameters().isEmpty()) {
             close("div"); // type-alias-specifier
@@ -189,60 +189,20 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         
         Tree.AttributeDeclaration attribute = (Tree.AttributeDeclaration) node;
         Tree.SpecifierOrInitializerExpression specifierExpression = attribute.getSpecifierOrInitializerExpression();
-        if (specifierExpression == null || specifierExpression.getExpression() == null) {
+        if (specifierExpression == null) {
             return;
         }
         
-        Token startToken = specifierExpression.getExpression().getToken();
-        int startLine = startToken.getLine();
-        int startLinePosition = startToken.getCharPositionInLine();
-
-        Token endToken = attribute.getEndToken();
-        int endLine = endToken.getLine();
-        int endLinePosition = endToken.getCharPositionInLine();
-
-        StringBuilder valueBuilder = new StringBuilder(" ");
-        BufferedReader sourceCodeReader = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
-        try{
-            int lineIndex = 1;
-            String line = sourceCodeReader.readLine();
-            while (line != null) {
-                if (lineIndex == startLine && lineIndex == endLine) {
-                    valueBuilder.append(line.substring(startLinePosition, endLinePosition));
-                    break;
-                } else if (lineIndex == startLine) {
-                    valueBuilder.append(line.substring(startLinePosition, line.length()));
-                } else if (lineIndex > startLine && lineIndex < endLine) {
-                    valueBuilder.append("\n");
-                    valueBuilder.append(line);
-                } else if( lineIndex == endLine) {
-                    valueBuilder.append("\n");
-                    valueBuilder.append(line.substring(0, endLinePosition));
-                    break;
-                }
-
-                line = sourceCodeReader.readLine();
-                lineIndex++;
-            }
-        } finally {
-            sourceCodeReader.close();
-        }
-
-        String value = valueBuilder.toString();
+        String value = getSourceCode(pu, specifierExpression);
         int newLineIndex = value.indexOf("\n");
         String valueFirstLine = newLineIndex != -1 ? value.substring(0, newLineIndex) : value;
 
-        around("span class='specifier-operator'", " = ");
-        around("span class='specifier-start'", valueFirstLine);
+        around("span class='specifier'", valueFirstLine);
         if (newLineIndex != -1) {
-            around("a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'",
-                    "...");
+            around("a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'", "...");
             open("div class='specifier-rest'");
             write(value.substring(newLineIndex + 1));
-            around("span class='specifier-semicolon'", ";");
             close("div");
-        } else {
-            around("span class='specifier-semicolon'", ";");
         }
     }
 
@@ -394,6 +354,27 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     linkRenderer().to(param.getType()).write();
                     write(" ", param.getName());
                 }
+                
+                if (param.isDefaulted()) {
+                    PhasedUnit pu = tool.getDeclarationUnit(param);
+                    Node paramNode = tool.getDeclarationNode(param);
+                    if (pu != null && paramNode != null && paramNode instanceof Tree.Parameter) {
+                        Tree.DefaultArgument defArg = ((Tree.Parameter) paramNode).getDefaultArgument();
+                        if (defArg != null && defArg.getSpecifierExpression() != null) {
+                            String value = getSourceCode(pu, defArg.getSpecifierExpression());
+                            int newLineIndex = value.indexOf("\n");
+                            String valueFirstLine = newLineIndex != -1 ? value.substring(0, newLineIndex) : value;
+                            around("span class='specifier'", valueFirstLine);
+                            if (newLineIndex != -1) {
+                                around("a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'", "...");
+                                open("div class='specifier-rest'");
+                                write(value.substring(newLineIndex + 1));
+                                close("div");
+                            }
+                        }
+                    }
+                }
+                
             }
             write(")");
         }
@@ -520,6 +501,31 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
             close("div");
         }
+    }
+
+    private String getSourceCode(PhasedUnit pu, Node node) throws IOException {
+        int startIndex = ((CommonToken) node.getToken()).getStartIndex();
+        int stopIndex = ((CommonToken) node.getEndToken()).getStopIndex();
+    
+        StringBuilder result = new StringBuilder();
+        BufferedReader sourceCodeReader = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
+        try {
+            while (true) {
+                String line = sourceCodeReader.readLine();
+                if (line != null && result.length() <= stopIndex) {
+                    if (result.length() != 0) {
+                        result.append("\n");
+                    }
+                    result.append(line);
+                } else {
+                    break;
+                }
+            }
+        } finally {
+            sourceCodeReader.close();
+        }
+    
+        return result.substring(startIndex, stopIndex + 1);
     }    
 
 }
