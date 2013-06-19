@@ -189,6 +189,10 @@ public class Decl {
         return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
     }
     
+    public static boolean withinClass(Declaration decl) {
+        return container(decl) instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+    }
+    
     /**
      * Determines whether the declaration's containing scope is an interface
      * @param decl The declaration
@@ -377,7 +381,7 @@ public class Decl {
     }
     
     public static boolean isLocalToInitializer(Declaration decl) {
-        return withinClassOrInterface(decl)&& !Decl.isCaptured(decl);
+        return withinClass(decl) && !Decl.isCaptured(decl);
     }
     
     public static boolean isOverloaded(Declaration decl) {
