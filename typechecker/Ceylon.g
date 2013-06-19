@@ -2426,6 +2426,8 @@ metaLiteral returns [MetaLiteral meta]
         ml.setEndToken(null); }
     | t=type
       { tl.setType($t.type); }
+    | m3=memberName
+      { ml.setIdentifier($m3.identifier); }
     )
       d2=BACKTICK
       { $meta.setEndToken($d2); }
