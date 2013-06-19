@@ -34,7 +34,12 @@ public class MetamodelTest extends CompilerTest {
     public void testRuntime() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.runtime", "runtime.ceylon", "types.ceylon", "visitor.ceylon");
     }
-    
+
+    @Test
+    public void testInteropRuntime() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.interopRuntime", "interopRuntime.ceylon", "JavaType.java");
+    }
+
     @Test
     public void testAnnotations() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.annotationTests", "annotationTypes.ceylon", "annotationTests.ceylon");
