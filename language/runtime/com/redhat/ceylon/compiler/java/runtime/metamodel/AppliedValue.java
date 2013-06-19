@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
+// FIXME: ceylonize
 public class AppliedValue<Type> 
         implements ceylon.language.metamodel.Attribute<Type>, ReifiedType {
 
