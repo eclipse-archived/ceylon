@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.annotations;
 
+import java.util.Arrays;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -144,12 +146,15 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
-    public void testAnnotationModule(){
+    public void testAnnotationModule() throws NoSuchFieldException, SecurityException{
         // TODO Add a package.ceylon, so we can check that too.
         compareWithJavaSource("modules/a/module");
         compareWithJavaSource("modules/a/package");
         compareWithJavaSource("modules/b/module");
         compareWithJavaSource("modules/c/module");
+        Class<?> klass = loadClass("com.redhat.ceylon.compiler.java.test.annotations.modules.c.module_",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.annotations.modules.c", "0.1"));
+        System.out.println(Arrays.toString(klass.getField("com$redhat$ceylon$module-resolver").getAnnotations()));
     }
     
     @Test

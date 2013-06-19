@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -439,6 +440,24 @@ public abstract class CompilerTest {
         };
     }
 
+    protected Class<?> loadClass(String className, ModuleWithArtifact... modules) {
+        synchronized(RUN_LOCK){
+            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
+            // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
+            // we set up the module system while another thread is setting it up for other modules we're toast
+            try{
+                // make sure we load the stuff from the Car
+                NonCachingURLClassLoader loader = getClassLoader(className, modules);
+                
+                java.lang.Class<?> klass = java.lang.Class.forName(className, true, loader);
+                
+                return klass;
+            }catch(Exception x){
+                throw new RuntimeException(x);
+            }
+        }
+    }
+    
     protected void run(String main, ModuleWithArtifact... modules) {
         synchronized(RUN_LOCK){
             // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
@@ -447,22 +466,7 @@ public abstract class CompilerTest {
             try{
                 // make sure we load the stuff from the Car
 
-                @SuppressWarnings("deprecation")
-                List<URL> urls = new ArrayList<URL>(modules.length);
-                for (ModuleWithArtifact module : modules) {
-                    File car = module.file;
-                    Assert.assertTrue("Car exists", car.exists());
-                    URL url = car.toURL();
-                    urls.add(url);
-                }
-                System.err.println("Running " + main +" with classpath" + urls);
-                NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
-                // set up the runtime module system
-                Metamodel.resetModuleManager();
-                Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
-                for (ModuleWithArtifact module : modules) {
-                    Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
-                }
+                NonCachingURLClassLoader loader = getClassLoader(main, modules);
                 String mainClass = main;
                 String mainMethod = main.replaceAll("^.*\\.", "");
                 if (Util.isInitialLowerCase(mainMethod)) {
@@ -486,6 +490,27 @@ public abstract class CompilerTest {
                 throw new RuntimeException(x);
             }
         }
+    }
+
+    private NonCachingURLClassLoader getClassLoader(String main,
+            ModuleWithArtifact... modules) throws MalformedURLException {
+        @SuppressWarnings("deprecation")
+        List<URL> urls = new ArrayList<URL>(modules.length);
+        for (ModuleWithArtifact module : modules) {
+            File car = module.file;
+            Assert.assertTrue(car + " does not exist", car.exists());
+            URL url = car.toURL();
+            urls.add(url);
+        }
+        System.err.println("Running " + main +" with classpath" + urls);
+        NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
+        // set up the runtime module system
+        Metamodel.resetModuleManager();
+        Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
+        for (ModuleWithArtifact module : modules) {
+            Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+        }
+        return loader;
     }
 
     public static class NonCachingURLClassLoader extends URLClassLoader {

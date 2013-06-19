@@ -13,7 +13,10 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.c;
                 @.com.redhat.ceylon.compiler.java.metadata.Import(
                         name = "com.redhat.ceylon.compiler.java.test.annotations.modules.b",
                         version = "0.1",
-                        optional = true)})
+                        optional = true),
+                @.com.redhat.ceylon.compiler.java.metadata.Import(
+                        name = "com.redhat.ceylon.module-resolver",
+                        version = "0.6")})
 @.ceylon.language.Doc$annotation(description = "Module C doc, with imports!")
 final class module_ {
     
@@ -26,4 +29,6 @@ final class module_ {
     @.ceylon.language.Optional$annotation
     @.java.lang.Deprecated
     public static final .java.lang.String com$redhat$ceylon$compiler$java$test$annotations$modules$b = null;
+    @.ceylon.language.Doc$annotation(description = "module name with a dash")
+    public static final .java.lang.String com$redhat$ceylon$module-resolver = null;
 }
