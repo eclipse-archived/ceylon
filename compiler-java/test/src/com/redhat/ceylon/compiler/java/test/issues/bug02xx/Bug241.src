@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
 class Bug241<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug241(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug241(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

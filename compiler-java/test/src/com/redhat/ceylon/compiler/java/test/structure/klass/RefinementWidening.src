@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class RWInvParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    RWInvParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    RWInvParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -19,7 +19,7 @@ class RWInvParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Re
 }
 class RWInvParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParam<T> {
     
-    RWInvParamExt(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    RWInvParamExt(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         super($reifiedT);
         this.$reifiedT = $reifiedT;
     }
@@ -37,7 +37,7 @@ class RWInvParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.k
 }
 class RWCovParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    RWCovParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    RWCovParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -54,7 +54,7 @@ class RWCovParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Re
 }
 class RWCovParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam<T> {
     
-    RWCovParamExt(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    RWCovParamExt(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         super($reifiedT);
         this.$reifiedT = $reifiedT;
     }
@@ -72,7 +72,7 @@ class RWCovParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.k
 }
 class RWContrParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    RWContrParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    RWContrParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -89,7 +89,7 @@ class RWContrParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 class RWContrParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam<T> {
     
-    RWContrParamExt(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    RWContrParamExt(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         super($reifiedT);
         this.$reifiedT = $reifiedT;
     }
@@ -143,7 +143,7 @@ final class RWRight$impl {
 }
 abstract class RWTop<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    RWTop(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY) {
+    RWTop(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY) {
         this.$reifiedX = $reifiedX;
         this.$reifiedY = $reifiedY;
     }
@@ -181,7 +181,7 @@ abstract class RWTop<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.m
 }
 abstract class RWBottom<Z> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTop<.ceylon.language.Number, Z> {
     
-    RWBottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+    RWBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
         super(.ceylon.language.Number.$TypeDescriptor, $reifiedZ);
         this.$reifiedZ = $reifiedZ;
     }

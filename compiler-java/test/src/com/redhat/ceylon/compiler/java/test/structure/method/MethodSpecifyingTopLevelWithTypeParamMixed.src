@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
@@ -23,7 +23,7 @@ class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
 }
 class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodSpecifyingTopLevelWithTypeParamMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    MethodSpecifyingTopLevelWithTypeParamMixed(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedS = $reifiedS;
         this.$reifiedT = $reifiedT;
     }

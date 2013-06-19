@@ -19,7 +19,7 @@ final class Scalable$impl<T, S extends .com.redhat.ceylon.compiler.java.test.iss
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Scalable<? super T, ? extends S> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS) {
         this.$reifiedS = $reifiedS;
         this.$reifiedT = $reifiedT;
     }
@@ -47,7 +47,7 @@ final class Numeric$impl<T extends .com.redhat.ceylon.compiler.java.test.issues.
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Numeric<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     

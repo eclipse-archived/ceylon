@@ -6,7 +6,7 @@ interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boo
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedT = $reifiedT;
         this.$reifiedX = $reifiedX;
     }

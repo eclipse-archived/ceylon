@@ -16,7 +16,7 @@ public final class Bug963$impl<Element> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
     }
     

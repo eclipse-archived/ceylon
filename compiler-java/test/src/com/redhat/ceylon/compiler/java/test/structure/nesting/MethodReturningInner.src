@@ -10,7 +10,7 @@ interface MethodReturningInner$CI<T> {
 }
 class MethodReturningInner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodReturningInner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    MethodReturningInner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

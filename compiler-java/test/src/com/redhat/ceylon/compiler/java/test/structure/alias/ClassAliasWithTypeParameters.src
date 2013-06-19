@@ -11,7 +11,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 public class ClassAliasWithTypeParameters_Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public ClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
         this.$reifiedT = $reifiedT;

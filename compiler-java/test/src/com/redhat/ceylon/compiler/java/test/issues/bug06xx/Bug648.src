@@ -9,7 +9,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 class Bug648<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug648(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

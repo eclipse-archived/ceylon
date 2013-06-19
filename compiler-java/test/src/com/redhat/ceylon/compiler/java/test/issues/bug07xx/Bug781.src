@@ -35,7 +35,7 @@ final class Bug781Interface$impl {
 }
 class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug781_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+    Bug781_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
         this.$reifiedT = $reifiedT;
         t.c();
         t.i();
@@ -65,7 +65,7 @@ final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     

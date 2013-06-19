@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug604<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug604(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
+    Bug604(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
         this.$reifiedN = $reifiedN;
         this.$reifiedE = $reifiedE;
     }

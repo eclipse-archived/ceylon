@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    KlassTypeParams(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U uu, final V vv) {
+    KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U uu, final V vv) {
         this.$reifiedU = $reifiedU;
         this.$reifiedV = $reifiedV;
         this.attr = uu;

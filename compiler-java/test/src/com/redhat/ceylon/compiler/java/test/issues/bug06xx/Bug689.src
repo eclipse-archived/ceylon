@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug689(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y, final .java.lang.Object xy) {
+    Bug689(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y, final .java.lang.Object xy) {
         this.$reifiedX = $reifiedX;
         this.$reifiedY = $reifiedY;
         this.attributeWithUnion = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedX, $reifiedY), $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reifiedY, $reifiedY, .ceylon.language.Empty.$TypeDescriptor), x, new .ceylon.language.Tuple<Y, Y, .ceylon.language.Empty>($reifiedY, $reifiedY, .ceylon.language.Empty.$TypeDescriptor, y, .ceylon.language.empty_.$get()));

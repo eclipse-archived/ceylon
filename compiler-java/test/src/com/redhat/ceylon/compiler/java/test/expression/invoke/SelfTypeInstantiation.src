@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class SelfTypeInstantiation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SelfTypeInstantiation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    SelfTypeInstantiation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

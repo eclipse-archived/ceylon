@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    QualifiedParameterisedInstantiation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
+    QualifiedParameterisedInstantiation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
         this.$reifiedG = $reifiedG;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG;
     
     class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Inner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String s) {
+        Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .java.lang.String s) {
             this.$reifiedT = $reifiedT;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

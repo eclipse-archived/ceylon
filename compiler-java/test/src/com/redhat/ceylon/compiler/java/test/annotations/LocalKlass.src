@@ -21,7 +21,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
         class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>> {
             
             Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
                 this.$reifiedT = $reifiedT;
                 this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<Local<T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reifiedT), this);
                 this.i1 = 1L;

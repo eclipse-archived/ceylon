@@ -14,7 +14,7 @@ final class AbstractSatisfier_I$impl {
 }
 abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
     
-    AbstractSatisfier(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    AbstractSatisfier(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl(this);
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Null.$TypeDescriptor, (.ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>)(.ceylon.language.Iterable)this);

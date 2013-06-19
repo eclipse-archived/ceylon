@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    OptimSuperclass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+    OptimSuperclass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedI, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
         this.$reifiedI = $reifiedI;
         this.$reifiedF = $reifiedF;
         this.$reifiedC = $reifiedC;

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
 
 public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public Bug1059(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSomeType, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i) {
+    public Bug1059(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSomeType, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i) {
         this.$reifiedSomeType = $reifiedSomeType;
         this.i = i;
     }

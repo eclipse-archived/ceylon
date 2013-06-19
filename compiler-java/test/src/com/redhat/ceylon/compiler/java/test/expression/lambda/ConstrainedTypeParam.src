@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
 class ConstrainedTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ConstrainedTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    ConstrainedTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

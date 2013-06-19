@@ -28,7 +28,7 @@ final class callableArgumentParameterTypeParamMixed_baz_ {
 }
 class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    CallableArgumentParameterTypeParamMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    CallableArgumentParameterTypeParamMixed(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;

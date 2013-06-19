@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 public abstract class LogicalOperatorsParent<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public LogicalOperatorsParent(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+    public LogicalOperatorsParent(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
         this.$reifiedB = $reifiedB;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB;

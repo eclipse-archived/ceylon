@@ -13,7 +13,7 @@ final class ExtendsGeneric_Foo$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo<? super T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -30,7 +30,7 @@ final class ExtendsGeneric_Bar$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar<? extends T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -47,13 +47,13 @@ final class ExtendsGeneric_Baz$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
 class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ExtendsGeneric(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    ExtendsGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -70,7 +70,7 @@ class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
 }
 class ExtendsGeneric2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ExtendsGeneric2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    ExtendsGeneric2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

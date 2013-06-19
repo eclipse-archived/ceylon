@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 public class TypeAliasWithTypeParametersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public TypeAliasWithTypeParametersClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public TypeAliasWithTypeParametersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -30,7 +30,7 @@ public final class TypeAliasWithTypeParametersInterface$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }

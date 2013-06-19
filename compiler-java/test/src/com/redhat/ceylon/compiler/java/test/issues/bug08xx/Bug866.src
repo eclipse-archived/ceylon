@@ -19,7 +19,7 @@ final class Bug866_Visitable$impl<Visited extends .com.redhat.ceylon.compiler.ja
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedVisited;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug866_Visitable<Visited> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedVisited) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedVisited) {
         this.$reifiedVisited = $reifiedVisited;
     }
     

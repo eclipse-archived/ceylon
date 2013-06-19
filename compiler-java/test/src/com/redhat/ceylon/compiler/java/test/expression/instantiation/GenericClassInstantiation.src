@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Single(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element e) {
+    Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element e) {
         this.$reifiedElement = $reifiedElement;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
@@ -14,7 +14,7 @@ class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 public class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public KlassTypeParams(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U u, final V v) {
+    public KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedV, final U u, final V v) {
         this.$reifiedU = $reifiedU;
         this.$reifiedV = $reifiedV;
     }
@@ -74,14 +74,14 @@ class KlassTypeParamsInstantiation implements .com.redhat.ceylon.compiler.java.r
 }
 class KlassTypeParamsInstantiationT<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    KlassTypeParamsInstantiationT(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    KlassTypeParamsInstantiationT(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     
     class Inner<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Inner(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
+        Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
             this.$reifiedG = $reifiedG;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG;

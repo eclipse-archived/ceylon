@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
 abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
     
-    Bug477_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug477_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>($reifiedT, this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>($reifiedT, this);
@@ -271,7 +271,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
 }
 abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
     
-    Bug477_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug477_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>($reifiedT, this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>($reifiedT, this);

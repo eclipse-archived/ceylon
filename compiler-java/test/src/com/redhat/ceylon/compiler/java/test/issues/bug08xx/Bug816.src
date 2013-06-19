@@ -13,13 +13,13 @@ final class Bug816I$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<? extends T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
 class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object> {
     
-    Bug816C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2) {
+    Bug816C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2) {
         this.$reifiedT1 = $reifiedT1;
         this.$reifiedT2 = $reifiedT2;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reifiedT1, $reifiedT2), (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I)this);

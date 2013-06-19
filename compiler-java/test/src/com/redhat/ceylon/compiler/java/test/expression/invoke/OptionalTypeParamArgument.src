@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Foo(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

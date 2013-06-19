@@ -25,7 +25,7 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
         this.$reifiedT = $reifiedT;
     }

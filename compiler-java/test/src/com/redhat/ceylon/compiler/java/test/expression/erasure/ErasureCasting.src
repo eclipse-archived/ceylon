@@ -65,7 +65,7 @@ final class EC_Parameterised$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -84,7 +84,7 @@ final class EC_ParameterisedSelfBound$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound<? extends T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -103,7 +103,7 @@ final class EC_DoubleParameters$impl<T1, T2> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<T1, T2> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2) {
         this.$reifiedT2 = $reifiedT2;
         this.$reifiedT1 = $reifiedT1;
     }
@@ -334,7 +334,7 @@ final class EC_ParameterisedTOrString$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -441,7 +441,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, Absent> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
         this.$reifiedAbsent = $reifiedAbsent;
         this.$reifiedElement = $reifiedElement;
     }
@@ -503,7 +503,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
 }
 class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, .java.lang.Object> {
     
-    EC_ErasedMemberImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    EC_ErasedMemberImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
         this.$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
     }
@@ -567,7 +567,7 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
 }
 class EC_Tuple<Element, First extends Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    EC_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First first) {
+    EC_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First first) {
         this.$reifiedElement = $reifiedElement;
         this.$reifiedFirst = $reifiedFirst;
         this.first = first;

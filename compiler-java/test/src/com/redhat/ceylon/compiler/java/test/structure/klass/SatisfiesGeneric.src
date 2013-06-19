@@ -13,7 +13,7 @@ final class SatisfiesGeneric_Foo$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -30,7 +30,7 @@ final class SatisfiesGeneric_Bar$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -47,7 +47,7 @@ final class SatisfiesGeneric_Baz$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
 }
@@ -68,7 +68,7 @@ final class SatisfiesGeneric$impl<X, Y, Z> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric<? extends X, ? super Y, Z> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedZ) {
         this.$reifiedZ = $reifiedZ;
         this.$reifiedY = $reifiedY;
         this.$reifiedX = $reifiedX;

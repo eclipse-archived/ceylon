@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    NamedArgumentSequencedTypeParamInvocation(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    NamedArgumentSequencedTypeParamInvocation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

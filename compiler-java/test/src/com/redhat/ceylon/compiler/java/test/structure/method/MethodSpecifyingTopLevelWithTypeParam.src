@@ -11,7 +11,7 @@ final class methodSpecifyingTopLevelWithTypeParam_f_ {
 }
 class MethodSpecifyingTopLevelWithTypeParam<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodSpecifyingTopLevelWithTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    MethodSpecifyingTopLevelWithTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedS, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedS = $reifiedS;
         this.$reifiedT = $reifiedT;
     }

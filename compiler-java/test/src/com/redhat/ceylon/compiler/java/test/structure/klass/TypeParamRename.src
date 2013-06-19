@@ -27,7 +27,7 @@ final class TypeParamRename$impl<T, U> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
         this.$reifiedU = $reifiedU;
         this.$reifiedT = $reifiedT;
     }
@@ -70,7 +70,7 @@ final class TypeParamRename$impl<T, U> {
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
     
-    TypeParamRenameKls(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY) {
+    TypeParamRenameKls(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY) {
         this.$reifiedX = $reifiedX;
         this.$reifiedY = $reifiedY;
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>($reifiedX, $reifiedY, this);

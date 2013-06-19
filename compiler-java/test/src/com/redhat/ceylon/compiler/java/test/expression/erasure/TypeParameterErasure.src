@@ -439,7 +439,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class Parameterized<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Parameterized(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        Parameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -480,7 +480,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class ParameterizedWithBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        ParameterizedWithBounds(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        ParameterizedWithBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
             t.left();
             t.left();
@@ -495,7 +495,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class ParameterizedWithIntersectionBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        ParameterizedWithIntersectionBounds(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        ParameterizedWithIntersectionBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
             t.left();
             t.left();
@@ -534,7 +534,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class ParameterizedWithErasedBounds<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        ParameterizedWithErasedBounds(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        ParameterizedWithErasedBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -547,7 +547,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        ParameterizedWithParameterizedBounds(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
+        ParameterizedWithParameterizedBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T t) {
             this.$reifiedT = $reifiedT;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -798,7 +798,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
     
     class TestPrimitiveBound<T extends .ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        TestPrimitiveBound(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T init) {
+        TestPrimitiveBound(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T init) {
             this.$reifiedT = $reifiedT;
             T n = init;
         }

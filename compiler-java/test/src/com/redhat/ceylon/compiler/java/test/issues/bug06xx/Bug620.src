@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug620(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug620(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

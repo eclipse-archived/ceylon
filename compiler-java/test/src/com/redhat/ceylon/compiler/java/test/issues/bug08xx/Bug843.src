@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 class Bug843_1<Element, Rest> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug843_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final .ceylon.language.Sequential<? extends Element> rest) {
+    Bug843_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final .ceylon.language.Sequential<? extends Element> rest) {
         this.$reifiedElement = $reifiedElement;
         this.$reifiedRest = $reifiedRest;
     }
@@ -16,7 +16,7 @@ class Bug843_1<Element, Rest> implements .com.redhat.ceylon.compiler.java.runtim
 }
 class Bug843_2<Rest> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug843_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> rest) {
+    Bug843_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> rest) {
         this.$reifiedRest = $reifiedRest;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest;

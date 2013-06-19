@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.t = null;
     }

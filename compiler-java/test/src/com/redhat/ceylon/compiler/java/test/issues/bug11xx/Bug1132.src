@@ -67,7 +67,7 @@ public class Bug1132Class2<T> implements .com.redhat.ceylon.compiler.java.runtim
         );
     }
     
-    public Bug1132Class2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends T> f1) {
+    public Bug1132Class2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends T> f1) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

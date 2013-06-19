@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 public class GenericMethodInvocationMixedClass<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public GenericMethodInvocationMixedClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
+    public GenericMethodInvocationMixedClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
         this.$reifiedU = $reifiedU;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
@@ -23,7 +23,7 @@ public class GenericMethodInvocationMixedClass<U> implements .com.redhat.ceylon.
 }
 class GenericMethodInvocationMixed<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenericMethodInvocationMixed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    GenericMethodInvocationMixed(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;

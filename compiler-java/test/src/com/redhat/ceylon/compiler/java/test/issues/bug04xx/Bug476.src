@@ -38,7 +38,7 @@ final class Bug476C$impl {
 }
 abstract class Bug476Top<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug476Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug476Top(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -58,7 +58,7 @@ abstract class Bug476Top<T> implements .com.redhat.ceylon.compiler.java.runtime.
 }
 class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476Top<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A> {
     
-    Bug476Bottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
+    Bug476Bottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU) {
         super(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A.$TypeDescriptor);
         this.$reifiedT = $reifiedT;
         this.$reifiedU = $reifiedU;
@@ -107,7 +107,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
 }
 public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
     
-    public Bug476(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public Bug476(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>($reifiedT, this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>($reifiedT, this);

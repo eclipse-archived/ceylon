@@ -15,7 +15,7 @@ public final class TestInterface$impl<Key, Value> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
         this.$reifiedValue = $reifiedValue;
         this.$reifiedKey = $reifiedKey;
     }
@@ -35,14 +35,14 @@ public final class TestInterface2$impl<Key, Value> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
         this.$reifiedValue = $reifiedValue;
         this.$reifiedKey = $reifiedKey;
     }
 }
 public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, .ceylon.language.Integer> {
     
-    public TestClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public TestClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
         this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer>($reifiedKey, .ceylon.language.Integer.$TypeDescriptor, this);

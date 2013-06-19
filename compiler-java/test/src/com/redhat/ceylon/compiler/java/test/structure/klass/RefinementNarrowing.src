@@ -19,7 +19,7 @@ final class RNParameters$impl<Element, Absent> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
         this.$reifiedAbsent = $reifiedAbsent;
         this.$reifiedElement = $reifiedElement;
     }
@@ -30,7 +30,7 @@ final class RNParameters$impl<Element, Absent> {
 }
 class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object> {
     
-    RNParametersImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    RNParametersImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
     }

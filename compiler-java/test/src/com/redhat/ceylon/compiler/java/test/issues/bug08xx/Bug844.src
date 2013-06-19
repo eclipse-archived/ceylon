@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public Bug844_Top(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    public Bug844_Top(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
         this.firstAttribute = (Element).ceylon.language.nothing_.$get();
     }
@@ -29,7 +29,7 @@ public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.run
 }
 public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top<Element> {
     
-    public Bug844_Bottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First firstAttribute) {
+    public Bug844_Bottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First firstAttribute) {
         super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
         this.$reifiedFirst = $reifiedFirst;
@@ -56,7 +56,7 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
 }
 public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
     
-    public Bug844_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final First first, final .ceylon.language.Sequential<? extends Element> rest) {
+    public Bug844_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, final First first, final .ceylon.language.Sequential<? extends Element> rest) {
         super();
         this.$reifiedElement = $reifiedElement;
         this.$reifiedFirst = $reifiedFirst;

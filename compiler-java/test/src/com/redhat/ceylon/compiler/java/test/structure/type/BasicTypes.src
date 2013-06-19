@@ -286,7 +286,7 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
 }
 abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    TypeParameterClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam, final ClassParam classParam) {
+    TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam, final ClassParam classParam) {
         this.$reifiedClassParam = $reifiedClassParam;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedClassParam;

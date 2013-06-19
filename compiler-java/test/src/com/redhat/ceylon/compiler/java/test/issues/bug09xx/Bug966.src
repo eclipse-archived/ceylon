@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category {
     
-    public Bug966(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element first, final Element last) {
+    public Bug966(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element first, final Element last) {
         super();
         this.$reifiedElement = $reifiedElement;
         this.first = first;

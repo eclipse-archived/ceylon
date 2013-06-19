@@ -9,7 +9,7 @@ final class bug1043_ {
         
         class Delegate<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            Delegate(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+            Delegate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
                 this.$reifiedT = $reifiedT;
             }
             private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -41,7 +41,7 @@ final class bug1043_ {
                 );
             }
             
-            Consumer(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends Delegate<? super T>> dels) {
+            Consumer(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Sequential<? extends Delegate<? super T>> dels) {
                 this.$reifiedT = $reifiedT;
             }
             private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

@@ -28,7 +28,7 @@ final class bug708_ {
 }
 class Bug708<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug708(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug708(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -73,7 +73,7 @@ final class bug708_test_ {
 class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug708_Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -155,7 +155,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
 public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object> {
     
     public Bug708Map(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         super();
         this.$reifiedT = $reifiedT;
         this.$ceylon$language$Map$this = new .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, $reifiedT), this);

@@ -43,7 +43,7 @@ final class Concrete$impl<A> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA;
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA) {
         this.$reifiedA = $reifiedA;
     }
     
@@ -332,7 +332,7 @@ final class concreteCallsites_ {
 }
 class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<B> {
     
-    ConcreteImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
+    ConcreteImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB) {
         this.$reifiedB = $reifiedB;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B>($reifiedB, this);
     }
@@ -583,7 +583,7 @@ final class concreteImplCallsites_ {
 }
 class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<C> {
     
-    ConcreteImplWithDefault(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC) {
+    ConcreteImplWithDefault(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC) {
         this.$reifiedC = $reifiedC;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C>($reifiedC, this);
     }
@@ -834,7 +834,7 @@ final class concreteImplWithDefaultCallsites_ {
 }
 abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<D> {
     
-    Abstract(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
+    Abstract(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
         this.$reifiedD = $reifiedD;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D>($reifiedD, this);
     }
@@ -1075,7 +1075,7 @@ final class abstractCallsites_ {
 }
 class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract<E> {
     
-    AbstractSub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
+    AbstractSub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
         super($reifiedE);
         this.$reifiedE = $reifiedE;
     }
@@ -1250,7 +1250,7 @@ final class abstractSubCallsites_ {
 }
 abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<F> {
     
-    AbstractImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF) {
+    AbstractImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedF) {
         this.$reifiedF = $reifiedF;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F>($reifiedF, this);
     }
@@ -1496,7 +1496,7 @@ final class abstractImpl_ {
 }
 class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl<G> {
     
-    AbstractImplSub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
+    AbstractImplSub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedG) {
         super($reifiedG);
         this.$reifiedG = $reifiedG;
     }

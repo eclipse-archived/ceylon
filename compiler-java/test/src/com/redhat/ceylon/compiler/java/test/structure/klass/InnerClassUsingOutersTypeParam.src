@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 public class InnerClassUsingOutersTypeParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    public InnerClassUsingOutersTypeParam(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public InnerClassUsingOutersTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SelfType(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    SelfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -34,7 +34,7 @@ final class selfType_ {
 }
 abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SelfType2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    SelfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

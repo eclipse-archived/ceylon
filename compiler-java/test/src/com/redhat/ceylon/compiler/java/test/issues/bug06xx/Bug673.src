@@ -50,7 +50,7 @@ public final class Bug673_EventObserver$impl<Evento extends .com.redhat.ceylon.c
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedEvento;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<Evento> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedEvento) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedEvento) {
         this.$reifiedEvento = $reifiedEvento;
     }
     

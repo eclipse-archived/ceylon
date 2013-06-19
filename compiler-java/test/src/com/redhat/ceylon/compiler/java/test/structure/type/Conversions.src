@@ -61,7 +61,7 @@ class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
 }
 class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenInv(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    GenInv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -81,7 +81,7 @@ class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
 }
 class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenCov(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    GenCov(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -101,7 +101,7 @@ class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
 }
 class GenCon<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenCon(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    GenCon(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -135,7 +135,7 @@ final class ISats$impl {
 }
 class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Sats(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Sats(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
@@ -282,7 +282,7 @@ final class ISats2$impl {
 }
 class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    UpperBoundErasure1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    UpperBoundErasure1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

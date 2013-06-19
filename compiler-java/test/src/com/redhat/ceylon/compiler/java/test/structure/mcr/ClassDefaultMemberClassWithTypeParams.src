@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
 class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassDefaultMemberClassWithTypeParams(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T tt) {
+    ClassDefaultMemberClassWithTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final T tt) {
         this.$reifiedT = $reifiedT;
         this.tt = tt;
     }
@@ -15,7 +15,7 @@ class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.com
     
     public class Member<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        protected Member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final T t, final U u) {
+        protected Member(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final T t, final U u) {
             this.$reifiedU = $reifiedU;
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;
@@ -46,7 +46,7 @@ class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.com
 }
 class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X> {
     
-    ClassDefaultMemberClassWithTypeParams_sub(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final X xx) {
+    ClassDefaultMemberClassWithTypeParams_sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX, final X xx) {
         super($reifiedX, xx);
         this.$reifiedX = $reifiedX;
         this.xx = xx;
@@ -61,7 +61,7 @@ class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.co
     
     public class Member<Y> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X>.Member<Y> {
         
-        protected Member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y) {
+        protected Member(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y) {
             super($reifiedY, x, y);
             this.$reifiedY = $reifiedY;
         }

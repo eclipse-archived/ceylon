@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    IndirectInvoke(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    IndirectInvoke(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
         this.value1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             

@@ -31,7 +31,7 @@ public final class Interface$impl<Key, Value> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue) {
         this.$reifiedValue = $reifiedValue;
         this.$reifiedKey = $reifiedKey;
     }
@@ -98,8 +98,8 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedValue, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
@@ -157,7 +157,7 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
 public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure.reified.Class<T, .ceylon.language.Integer> {
     
     public SubClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         super($reifiedT, .ceylon.language.Integer.$TypeDescriptor);
         this.$reifiedT = $reifiedT;
     }

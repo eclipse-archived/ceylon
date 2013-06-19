@@ -93,7 +93,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
 public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public ParameterisedMemberKlass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.foo = new .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_();
     }
@@ -130,7 +130,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
         public class MemberMember<TTT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             protected MemberMember(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT) {
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTTT) {
                 this.$reifiedTTT = $reifiedTTT;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore

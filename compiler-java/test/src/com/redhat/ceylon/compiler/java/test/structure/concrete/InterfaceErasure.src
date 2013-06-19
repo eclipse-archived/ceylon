@@ -39,7 +39,7 @@ final class InterfaceErasure$impl<Element, Absent> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent;
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, Absent> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedAbsent) {
         this.$reifiedAbsent = $reifiedAbsent;
         this.$reifiedElement = $reifiedElement;
     }
@@ -131,7 +131,7 @@ final class InterfaceErasure$impl<Element, Absent> {
 }
 class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, .java.lang.Object> {
     
-    InterfaceErasureImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    InterfaceErasureImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>($reifiedElement, .ceylon.language.Null.$TypeDescriptor, this);
     }

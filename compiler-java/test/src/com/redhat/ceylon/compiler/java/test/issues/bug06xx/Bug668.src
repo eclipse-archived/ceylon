@@ -17,7 +17,7 @@ public final class Bug668_X$impl<Element, Nada> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada) {
         this.$reifiedNada = $reifiedNada;
         this.$reifiedElement = $reifiedElement;
     }
@@ -38,7 +38,7 @@ public final class Bug668_Y$impl<Element> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<? extends Element> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
     }
     

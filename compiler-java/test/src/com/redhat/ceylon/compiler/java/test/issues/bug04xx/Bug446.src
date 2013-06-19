@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
 abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
     
-    Bug446(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    Bug446(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>($reifiedT, this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>($reifiedT, this);

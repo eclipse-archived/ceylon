@@ -28,7 +28,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public MemberClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Name("c")
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Name("c")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
     final C c) {
         this.$reifiedC = $reifiedC;
@@ -58,7 +58,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
     public class Member<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
         final T t) {
             this.$reifiedT = $reifiedT;

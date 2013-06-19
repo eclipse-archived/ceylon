@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
     
-    Bug837(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element first, final long length) {
+    Bug837(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final Element first, final long length) {
         super();
         this.$reifiedElement = $reifiedElement;
         this.first = first;

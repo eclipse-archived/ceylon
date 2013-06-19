@@ -17,7 +17,7 @@ final class Bug633Ranged$impl<Index, Span> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSpan;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedIndex, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSpan) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedIndex, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedSpan) {
         this.$reifiedSpan = $reifiedSpan;
         this.$reifiedIndex = $reifiedIndex;
     }

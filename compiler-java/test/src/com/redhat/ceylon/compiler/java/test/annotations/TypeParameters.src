@@ -33,10 +33,10 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 public class TypeParameters<A extends .ceylon.language.Number & .ceylon.language.Closeable, B, C, D> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public TypeParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedA, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedB, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedD) {
         this.$reifiedA = $reifiedA;
         this.$reifiedB = $reifiedB;
         this.$reifiedC = $reifiedC;

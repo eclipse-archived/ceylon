@@ -27,7 +27,7 @@ interface OuterClass$outerMethod$0$InnerInterface<Inner> {
 public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public OuterClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOuter) {
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOuter) {
         this.$reifiedOuter = $reifiedOuter;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -53,7 +53,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
     public class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         protected InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
             this.$reifiedInner = $reifiedInner;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -82,7 +82,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
         class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
                 this.$reifiedInner = $reifiedInner;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -105,7 +105,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner;
             private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<Inner> $this;
             
-            public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
                 this.$reifiedInner = $reifiedInner;
             }
         }
@@ -182,7 +182,7 @@ public final class OuterInterface$impl<Outer> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOuter;
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface<Outer> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOuter) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOuter) {
         this.$reifiedOuter = $reifiedOuter;
     }
     
@@ -196,7 +196,7 @@ public final class OuterInterface$impl<Outer> {
         private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner;
         private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$InnerInterface<Outer, Inner> $this;
         
-        public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+        public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
             this.$reifiedInner = $reifiedInner;
         }
     }
@@ -236,7 +236,7 @@ public final class outerMethod_ {
         class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
                 this.$reifiedInner = $reifiedInner;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -259,7 +259,7 @@ public final class outerMethod_ {
             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner;
             private final .com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$0$InnerInterface_<Inner> $this;
             
-            public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
+            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedInner) {
                 this.$reifiedInner = $reifiedInner;
             }
         }

@@ -117,7 +117,7 @@ class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         );
     }
     
-    C5(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final U u) {
+    C5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final long i, final U u) {
         this.$reifiedU = $reifiedU;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU;

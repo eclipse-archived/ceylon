@@ -10,7 +10,7 @@ final class spreadArguments_ {
 }
 class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    SpreadArguments(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long i, final T s) {
+    SpreadArguments(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final long i, final T s) {
         this.$reifiedT = $reifiedT;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;

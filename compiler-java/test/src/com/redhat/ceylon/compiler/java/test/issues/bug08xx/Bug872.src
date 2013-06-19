@@ -291,7 +291,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         );
     }
     
-    public Container(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType, final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
+    public Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedTagType, final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         this.$reifiedTagType = $reifiedTagType;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
         this.tags = initialTags;

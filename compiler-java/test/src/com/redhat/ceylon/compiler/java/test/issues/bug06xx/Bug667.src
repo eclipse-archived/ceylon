@@ -58,7 +58,7 @@ final class Bug667Interface$impl<T> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
         this.$reifiedT = $reifiedT;
     }
     
@@ -68,7 +68,7 @@ final class Bug667Interface$impl<T> {
 }
 class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
     
-    Bug667Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada, final Nada n) {
+    Bug667Class(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada, final Nada n) {
         this.$reifiedNada = $reifiedNada;
         this.n = n;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, this);

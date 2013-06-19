@@ -24,7 +24,7 @@ final class bug674_ {
             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
             private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$0$X_<T> $this;
             
-            public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+            public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
                 this.$reifiedT = $reifiedT;
             }
         }

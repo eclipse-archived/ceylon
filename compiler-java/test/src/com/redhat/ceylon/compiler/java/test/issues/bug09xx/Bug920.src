@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug920_Tuple<Element, First extends Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug920_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First first) {
+    Bug920_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, final First first) {
         this.$reifiedElement = $reifiedElement;
         this.$reifiedFirst = $reifiedFirst;
         this.first = first;

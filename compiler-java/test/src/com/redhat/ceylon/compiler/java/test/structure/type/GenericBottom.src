@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    GenericBottom(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .java.lang.Object argObject) {
+    GenericBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final .java.lang.Object argObject) {
         this.$reifiedT = $reifiedT;
         this.$reifiedU = $reifiedU;
         this.attrTp = (T).ceylon.language.nothing_.$get();

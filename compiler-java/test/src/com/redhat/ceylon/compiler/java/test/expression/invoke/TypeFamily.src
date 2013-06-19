@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    TypeFamily(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
+    TypeFamily(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedN, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedE) {
         this.$reifiedN = $reifiedN;
         this.$reifiedE = $reifiedE;
     }

@@ -41,7 +41,7 @@ final class InstantiatorDelegates$impl<X> {
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this;
     
-    public void $refine(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
     }
     
@@ -194,7 +194,7 @@ final class InstantiatorDelegates$impl<X> {
 }
 class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> {
     
-    InstantiatorDelegatesImpl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
+    InstantiatorDelegatesImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX) {
         this.$reifiedX = $reifiedX;
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>($reifiedX, this);
     }
