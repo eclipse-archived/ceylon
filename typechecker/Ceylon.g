@@ -1179,8 +1179,8 @@ base returns [Primary primary]
       { $primary=$nonstringLiteral.literal; }
     | stringExpression
       { $primary=$stringExpression.atom; }
-    | typeLiteral
-      { $primary=$typeLiteral.typeLiteral; }
+    | metaLiteral
+      { $primary=$metaLiteral.meta; }
     | enumeration
       { $primary=$enumeration.sequenceEnumeration; }
     | tuple
@@ -2397,13 +2397,38 @@ iterableType returns [IterableType type]
      { $type.setEndToken($RBRACE); }
    ;
 
-typeLiteral returns [TypeLiteral typeLiteral]
-    : d1=TYPE_LITERAL_DELIMITER
-      { $typeLiteral = new TypeLiteral($d1); }
-      t=type
-      { $typeLiteral.setType($t.type); }
-      d2=TYPE_LITERAL_DELIMITER
-      { $typeLiteral.setEndToken($d2); }
+metaLiteral returns [MetaLiteral meta]
+    @init { TypeLiteral tl=null; 
+            MemberLiteral ml=null; }
+    : d1=BACKTICK
+      { tl = new TypeLiteral($d1);
+        $meta = tl; }
+    (
+      (abbreviatedType MEMBER_OP) =>
+      { ml = new MemberLiteral($d1);
+        $meta = ml; }
+      at=abbreviatedType
+      { ml.setType($at.type); }
+      o1=MEMBER_OP
+      { ml.setEndToken($o1); }
+      m1=memberName
+      { ml.setIdentifier($m1.identifier); 
+        ml.setEndToken(null); }
+    | (groupedType MEMBER_OP) =>
+      { ml = new MemberLiteral($d1);
+        $meta = ml; }
+      gt=groupedType
+      { ml.setType($gt.type); }
+      o2=MEMBER_OP
+      { ml.setEndToken($o2); }
+      m2=memberName
+      { ml.setIdentifier($m2.identifier); 
+        ml.setEndToken(null); }
+    | t=type
+      { tl.setType($t.type); }
+    )
+      d2=BACKTICK
+      { $meta.setEndToken($d2); }
     ;
 
 type returns [StaticType type]
@@ -3259,7 +3284,7 @@ MULTI_COMMENT
         }
         ;
 
-TYPE_LITERAL_DELIMITER
+BACKTICK
     : '`'
     ;
 
