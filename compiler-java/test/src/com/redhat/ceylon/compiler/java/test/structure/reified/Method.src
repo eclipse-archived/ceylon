@@ -220,7 +220,7 @@ public final class MethodInterface$impl {
             {
                 long $ceylontmp$a$5 = methodWithOverloads$a($reifiedT);
                 long $ceylontmp$b$6 = methodWithOverloads$b($reifiedT, $ceylontmp$a$5);
-                methodWithOverloads($reifiedT, $ceylontmp$a$5, $ceylontmp$b$6);
+                $this.methodWithOverloads($reifiedT, $ceylontmp$a$5, $ceylontmp$b$6);
             }
             returning null;
         );
@@ -237,7 +237,7 @@ public final class MethodInterface$impl {
             let
             {
                 long $ceylontmp$b$7 = methodWithOverloads$b($reifiedT, a);
-                methodWithOverloads($reifiedT, a, $ceylontmp$b$7);
+                $this.methodWithOverloads($reifiedT, a, $ceylontmp$b$7);
             }
             returning null;
         );

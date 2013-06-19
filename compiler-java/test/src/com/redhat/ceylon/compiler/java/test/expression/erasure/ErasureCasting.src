@@ -460,7 +460,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
             {
                 .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
             }
-            returning defaultedParams($ceylontmp$p$22);
+            returning $this.defaultedParams($ceylontmp$p$22);
         );
     }
     

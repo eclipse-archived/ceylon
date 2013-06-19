@@ -71,7 +71,7 @@ public final class Visitable$impl {
             let
             {
                 .ceylon.language.Sequential $ceylontmp$tags$0 = visitAroundTags$tags(visitor, name);
-                visitAroundTags(visitor, name, $ceylontmp$tags$0);
+                $this.visitAroundTags(visitor, name, $ceylontmp$tags$0);
             }
             returning null;
         );

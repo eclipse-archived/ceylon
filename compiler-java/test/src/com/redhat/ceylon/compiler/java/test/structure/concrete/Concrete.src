@@ -87,7 +87,7 @@ final class Concrete$impl<A> {
             {
                 A $ceylontmp$a$3 = mShared$a();
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$4 = mShared$aseq($ceylontmp$a$3);
-                mShared($ceylontmp$a$3, $ceylontmp$aseq$4);
+                $this.mShared($ceylontmp$a$3, $ceylontmp$aseq$4);
             }
             returning null;
         );
@@ -102,7 +102,7 @@ final class Concrete$impl<A> {
             let
             {
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$5 = mShared$aseq(a);
-                mShared(a, $ceylontmp$aseq$5);
+                $this.mShared(a, $ceylontmp$aseq$5);
             }
             returning null;
         );
@@ -152,7 +152,7 @@ final class Concrete$impl<A> {
                 A $ceylontmp$a$9 = mDefault$a();
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$10 = mDefault$aseq($ceylontmp$a$9);
             }
-            returning mDefault($ceylontmp$a$9, $ceylontmp$aseq$10);
+            returning $this.mDefault($ceylontmp$a$9, $ceylontmp$aseq$10);
         );
     }
     
@@ -166,7 +166,7 @@ final class Concrete$impl<A> {
             {
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$11 = mDefault$aseq(a);
             }
-            returning mDefault(a, $ceylontmp$aseq$11);
+            returning $this.mDefault(a, $ceylontmp$aseq$11);
         );
     }
     

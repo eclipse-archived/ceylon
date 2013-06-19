@@ -26,7 +26,7 @@ final class I1$impl {
             {
                 long $ceylontmp$n$0 = m1$n();
             }
-            returning m1($ceylontmp$n$0);
+            returning $this.m1($ceylontmp$n$0);
         );
     }
     
@@ -107,7 +107,7 @@ final class I2$impl {
             {
                 long $ceylontmp$n$1 = m2$n();
             }
-            returning m2($ceylontmp$n$1);
+            returning $this.m2($ceylontmp$n$1);
         );
     }
     
@@ -157,7 +157,7 @@ final class I4$impl {
             {
                 long $ceylontmp$n$2 = m4$n();
             }
-            returning m4($ceylontmp$n$2);
+            returning $this.m4($ceylontmp$n$2);
         );
     }
     

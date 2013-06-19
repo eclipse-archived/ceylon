@@ -38,7 +38,7 @@ final class TypeParamRename$impl<T, U> {
             {
                 T $ceylontmp$t$0 = m$t();
             }
-            returning m($ceylontmp$t$0);
+            returning $this.m($ceylontmp$t$0);
         );
     }
     
@@ -56,7 +56,7 @@ final class TypeParamRename$impl<T, U> {
             {
                 V $ceylontmp$v$1 = m2$v($reifiedV, $reifiedW);
             }
-            returning m2($reifiedV, $reifiedW, $ceylontmp$v$1);
+            returning $this.m2($reifiedV, $reifiedW, $ceylontmp$v$1);
         );
     }
     

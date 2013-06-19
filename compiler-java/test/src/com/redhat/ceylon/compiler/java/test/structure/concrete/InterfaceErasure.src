@@ -59,7 +59,7 @@ final class InterfaceErasure$impl<Element, Absent> {
                 .java.lang.Object $ceylontmp$p$0 = defaultedParams$p();
                 .java.lang.Object $ceylontmp$p2$1 = defaultedParams$p2($ceylontmp$p$0);
             }
-            returning defaultedParams($ceylontmp$p$0, $ceylontmp$p2$1);
+            returning $this.defaultedParams($ceylontmp$p$0, $ceylontmp$p2$1);
         );
     }
     
@@ -73,7 +73,7 @@ final class InterfaceErasure$impl<Element, Absent> {
             {
                 .java.lang.Object $ceylontmp$p2$2 = defaultedParams$p2(p);
             }
-            returning defaultedParams(p, $ceylontmp$p2$2);
+            returning $this.defaultedParams(p, $ceylontmp$p2$2);
         );
     }
     
