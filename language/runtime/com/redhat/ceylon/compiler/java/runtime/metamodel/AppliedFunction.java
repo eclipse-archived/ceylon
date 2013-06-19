@@ -93,20 +93,20 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: deal with private stuff?
         }
         if(found != null){
-            method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction);
+            method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameters);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     // FIXME: proper checks
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction, parameters);
                 }
                 dispatch[i] = method;
             }
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, ProducedReference appliedFunction) {
+    private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, ProducedReference appliedFunction, List<Parameter> parameters) {
         MethodHandle method;
         try {
             method = MethodHandles.lookup().unreflect(found);
@@ -131,8 +131,10 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             }
             method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
         }
+        // get a list of produced parameter types
+        List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         // now convert all arguments (we may need to unbox)
-        method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes);
+        method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes, parameterProducedTypes);
         return method;
     }
 

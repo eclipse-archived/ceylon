@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Callable;
@@ -139,20 +140,20 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             }
         }
         if(found != null){
-            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType);
+            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameters);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     // FIXME: proper checks
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameters);
                 }
                 dispatch[i] = constructor;
             }
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, ProducedType producedType) {
+    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, ProducedType producedType, List<Parameter> parameters) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
         try {
@@ -177,8 +178,10 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             List<ProducedType> typeArguments = producedType.getTypeArgumentList();
             constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
         }
+        // get a list of produced parameter types
+        List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
         // now convert all arguments (we may need to unbox)
-        constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes);
+        constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes, parameterProducedTypes);
         
         return constructor;
     }

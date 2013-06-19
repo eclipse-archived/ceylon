@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 public class MethodHandleUtil {
 
@@ -18,32 +19,50 @@ public class MethodHandleUtil {
         return MethodHandles.insertArguments(constructor, insertAt, typeDescriptors);
     }
 
-    public static MethodHandle unboxArguments(MethodHandle method, int typeParameterCount, int filterIndex, java.lang.Class<?>[] parameterTypes) {
+    public static MethodHandle unboxArguments(MethodHandle method, int typeParameterCount, int filterIndex, java.lang.Class<?>[] parameterTypes, List<ProducedType> producedTypes) {
         MethodHandle[] filters = new MethodHandle[parameterTypes.length - typeParameterCount];
         try {
             for(int i=0;i<filters.length;i++){
                 java.lang.Class<?> paramType = parameterTypes[i + typeParameterCount];
+                ProducedType producedType = producedTypes.get(i);
                 // FIXME: more boxing for interop
                 if(paramType == java.lang.String.class){
                     // ((ceylon.language.String)obj).toString()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.String.class, "toString", 
                                                                                MethodType.methodType(java.lang.String.class));
                     filters[i] = unbox.asType(MethodType.methodType(java.lang.String.class, java.lang.Object.class));
+                }else if(paramType == byte.class 
+                        || paramType == short.class
+                        || (paramType == int.class && !isCeylonCharacter(producedType))){
+                    // (paramType)((ceylon.language.Integer)obj).longValue()
+                    MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Integer.class, "longValue", 
+                                                                             MethodType.methodType(long.class));
+                    filters[i] = MethodHandles.explicitCastArguments(unbox, MethodType.methodType(paramType, java.lang.Object.class));
                 }else if(paramType == long.class){
                     // ((ceylon.language.Integer)obj).longValue()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Integer.class, "longValue", 
                                                                              MethodType.methodType(long.class));
                     filters[i] = unbox.asType(MethodType.methodType(long.class, java.lang.Object.class));
+                }else if(paramType == float.class){
+                    // (float)((ceylon.language.Float)obj).doubleValue()
+                    MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Float.class, "doubleValue", 
+                                                                             MethodType.methodType(double.class));
+                    filters[i] = MethodHandles.explicitCastArguments(unbox, MethodType.methodType(float.class, java.lang.Object.class));
                 }else if(paramType == double.class){
                     // ((ceylon.language.Float)obj).doubleValue()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Float.class, "doubleValue", 
                                                                              MethodType.methodType(double.class));
                     filters[i] = unbox.asType(MethodType.methodType(double.class, java.lang.Object.class));
-                }else if(paramType == int.class){
+                }else if(paramType == int.class && isCeylonCharacter(producedType)){
                     // ((ceylon.language.Character)obj).intValue()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Character.class, "intValue", 
                                                                              MethodType.methodType(int.class));
                     filters[i] = unbox.asType(MethodType.methodType(int.class, java.lang.Object.class));
+                }else if(paramType == char.class){
+                    // ((ceylon.language.Character)obj).charValue()
+                    MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Character.class, "intValue", 
+                                                                             MethodType.methodType(int.class));
+                    filters[i] = MethodHandles.explicitCastArguments(unbox, MethodType.methodType(char.class, java.lang.Object.class));
                 }else if(paramType == boolean.class){
                     // ((ceylon.language.Boolean)obj).booleanValue()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.Boolean.class, "booleanValue", 
@@ -61,6 +80,16 @@ public class MethodHandleUtil {
             throw new RuntimeException("Failed to filter parameter", e);
         }
         return MethodHandles.filterArguments(method, filterIndex, filters);
+    }
+
+    private static boolean isCeylonCharacter(ProducedType producedType) {
+        if(producedType == null)
+            return false;
+        TypeDeclaration declaration = producedType.getDeclaration();
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class == false)
+            return false;
+        // this is probably the fastest check we can make
+        return declaration.getQualifiedNameString().equals("ceylon.language::Character");
     }
 
     public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type) {

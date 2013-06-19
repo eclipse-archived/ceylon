@@ -32,10 +32,10 @@ public class AppliedValue<Type>
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(valueType);
         this.declaration = value;
         
-        initField(instance);
+        initField(instance, valueType);
     }
 
-    private void initField(Object instance) {
+    private void initField(Object instance, ProducedType valueType) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration decl = declaration.declaration;
         if(decl instanceof JavaBeanValue){
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
@@ -49,7 +49,7 @@ public class AppliedValue<Type>
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 
-                initField(decl, javaClass, getterType, instance);
+                initField(decl, javaClass, getterType, instance, valueType);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -70,7 +70,7 @@ public class AppliedValue<Type>
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 
-                initField(decl, javaClass, getterType, null);
+                initField(decl, javaClass, getterType, null, valueType);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -83,7 +83,8 @@ public class AppliedValue<Type>
     }
 
     // for AppliedVariable
-    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType, Object instance) {}
+    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, 
+                             java.lang.Class<?> getterReturnType, Object instance, ProducedType valueType) {}
 
     @Override
     @Ignore

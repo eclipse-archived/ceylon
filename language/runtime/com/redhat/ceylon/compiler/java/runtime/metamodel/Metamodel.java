@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -500,5 +502,14 @@ public class Metamodel {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
         return module != null ? getOrCreateMetamodel(module) : null;
+    }
+
+    public static List<ProducedType> getParameterProducedTypes(List<Parameter> parameters, ProducedReference producedReference) {
+        List<ProducedType> parameterProducedTypes = new ArrayList<ProducedType>(parameters.size());
+        for(Parameter parameter : parameters){
+            ProducedType ft = producedReference.getTypedParameter(parameter).getFullType();
+            parameterProducedTypes.add(ft);
+        }
+        return parameterProducedTypes;
     }
 }

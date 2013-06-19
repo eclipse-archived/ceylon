@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import ceylon.language.metamodel.Variable$impl;
 
@@ -23,7 +24,8 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
     }
 
     @Override
-    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, java.lang.Class<?> getterReturnType, Object instance) {
+    protected void initField(com.redhat.ceylon.compiler.typechecker.model.Declaration decl, java.lang.Class<?> javaClass, 
+                             java.lang.Class<?> getterReturnType, Object instance, ProducedType valueType) {
         if(decl instanceof JavaBeanValue){
             String setterName = ((JavaBeanValue) decl).getSetterName();
             try {
@@ -31,7 +33,7 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType});
+                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -46,7 +48,7 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType});
+                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
             } catch (SecurityException e) {
