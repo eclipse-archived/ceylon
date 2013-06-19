@@ -661,8 +661,8 @@ public class ExpressionVisitor extends Visitor {
                             Tree.Parameter param = params.get(i);
                             ProducedType t = param.getDeclarationModel()
                                     .getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
-                            checkAssignable(t, at, param.getType(), 
-                                    "declared parameter type must be a subtype of type declared in function declaration");
+                            checkAssignable(at, t, param.getType(), 
+                                    "declared parameter type must be a supertype of type declared in function declaration");
                         }
                         if (!params.isEmpty()) {
                             Tree.Parameter lastParam = params.get(params.size()-1);

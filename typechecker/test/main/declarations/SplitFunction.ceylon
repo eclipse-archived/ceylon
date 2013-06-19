@@ -10,12 +10,11 @@ void splitFunction() {
     Float l(Float x);
     
     f(Float x) => x^0.5;
-    j(Float x) => x^0.5;
-    
+    j(@error Float x) => x^0.5;    
     @error g(Float y, Float x) => x^0.5;
     h(@error Integer x) => x^2;
     @error i() => 0.5;
-    k(@error Object x) => 1.0;
+    k(Object x) => 1.0;
     @error l(Float x) => 3;
     
     Float add(Float x)(Float y);
@@ -70,8 +69,8 @@ void splitFunction() {
     Anything higher2(void f(String s), String g(Integer i));
     higher2(void f(String s), @error String g(Float i)) => print(f(g(0.0)));
     
-    Anything higher3(void f(String s), String g(Integer i));
-    higher3(void f(String s), String g(Object i)) => print(f(g(0.0)));
+    Anything higher3(void f(String s), String g(Object i));
+    higher3(void f(String s), String g(Integer i)) => print(f(g(0)));
     
     void myvoid();
     myvoid() => print("hello");
@@ -131,4 +130,14 @@ void splitFunction() {
         int => 1;
     }
 
+}
+
+interface Int {
+    shared formal String met(String? s = null);
+}
+class Cla1() satisfies Int {
+    met(@error String s) => s;
+}
+class Cla2() satisfies Int {
+    met(Anything a) => a?.string else "";
 }
