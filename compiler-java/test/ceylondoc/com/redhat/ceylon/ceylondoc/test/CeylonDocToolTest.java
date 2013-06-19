@@ -364,6 +364,7 @@ public class CeylonDocToolTest {
         String moduleName = "default";
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        tool.setIncludeNonShared(true);
         tool.makeDoc();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
@@ -521,9 +522,11 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, "caseSensitive.object.html");
         if( includeNonShared ) {
             assertFileExists(destDir, "PrivateClass.type.html");
+            assertFileExists(destDir, "privatepackage/index.html");
         }
         else {
             assertFileNotExists(destDir, "PrivateClass.type.html");
+            assertFileNotExists(destDir, "privatepackage");
         }
     }
 

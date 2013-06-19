@@ -522,7 +522,7 @@ public class CeylonDocTool implements Tool {
     }
 
     private boolean isEmpty(Module module) {
-        for(Package pkg : module.getPackages())
+        for(Package pkg : getPackages(module))
             if(!pkg.getMembers().isEmpty())
                 return false;
         return true;
@@ -561,7 +561,7 @@ public class CeylonDocTool implements Tool {
 
     private void collectSubclasses() throws IOException {
         for (Module module : modules) {
-            for (Package pkg : module.getPackages()) {
+            for (Package pkg : getPackages(module)) {
                 for (Declaration decl : pkg.getMembers()) {
                     if(!shouldInclude(decl)) {
                         continue;
@@ -632,6 +632,11 @@ public class CeylonDocTool implements Tool {
 
     private void copySourceFiles() throws FileNotFoundException, IOException {
         for (PhasedUnit pu : phasedUnits) {
+            Package pkg = pu.getUnit().getPackage();
+            if (!shouldInclude(pkg)) {
+                continue;
+            }
+
             File file = new File(getFolder(pu.getPackage()), pu.getUnitFile().getName()+".html");
             File dir = file.getParentFile();
             if (!dir.exists() && !dir.mkdirs()) {
@@ -639,20 +644,19 @@ public class CeylonDocTool implements Tool {
             }
             Writer writer = openWriter(file);
             try {
-            Markup markup = new Markup(writer);
+                Markup markup = new Markup(writer);
                 markup.write("<!DOCTYPE html>");
                 markup.open("html xmlns='http://www.w3.org/1999/xhtml'");
                 markup.open("head");
                 markup.tag("meta charset='UTF-8'");
                 markup.around("title", pu.getUnit().getFilename());
-                Package decl = pu.getUnit().getPackage();
-                markup.tag("link href='" + getResourceUrl(decl, "favicon.ico") + "' rel='shortcut icon'");
-                markup.tag("link href='" + getResourceUrl(decl, "shCore.css") + "' rel='stylesheet' type='text/css'");
-                markup.tag("link href='" + getResourceUrl(decl, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
-                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "jquery-1.8.2.min.js")+"'");
-                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "ceylondoc.js")+"'"); 
-                markup.around("script src='" + getResourceUrl(decl, "shCore.js") + "' type='text/javascript'");
-                markup.around("script src='" + getResourceUrl(decl, "shBrushCeylon.js") + "' type='text/javascript'");
+                markup.tag("link href='" + getResourceUrl(pkg, "favicon.ico") + "' rel='shortcut icon'");
+                markup.tag("link href='" + getResourceUrl(pkg, "shCore.css") + "' rel='stylesheet' type='text/css'");
+                markup.tag("link href='" + getResourceUrl(pkg, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+                markup.around("script type='text/javascript' src='"+getResourceUrl(pkg, "jquery-1.8.2.min.js")+"'");
+                markup.around("script type='text/javascript' src='"+getResourceUrl(pkg, "ceylondoc.js")+"'"); 
+                markup.around("script src='" + getResourceUrl(pkg, "shCore.js") + "' type='text/javascript'");
+                markup.around("script src='" + getResourceUrl(pkg, "shBrushCeylon.js") + "' type='text/javascript'");
                 markup.close("head");
                 markup.open("body", "pre class='brush: ceylon'");
                 // XXX source char encoding
@@ -678,7 +682,7 @@ public class CeylonDocTool implements Tool {
         try {
             ModuleDoc moduleDoc = new ModuleDoc(this, rootWriter, module);
             moduleDoc.generate();
-            for (Package pkg : module.getPackages()) {
+            for (Package pkg : getPackages(module)) {
                 if(pkg.getMembers().isEmpty()){
                     continue;
                 }
@@ -794,27 +798,25 @@ public class CeylonDocTool implements Tool {
     List<Package> getPackages(Module module) {
         List<Package> packages = new ArrayList<Package>();
         for (Package pkg : module.getPackages()) {
-            if (pkg.getMembers().size() > 0
-                    && shouldInclude(pkg))
+            if (pkg.getMembers().size() > 0 && shouldInclude(pkg)) {
                 packages.add(pkg);
+            }
         }
         Collections.sort(packages, new Comparator<Package>() {
             @Override
             public int compare(Package a, Package b) {
                 return a.getNameAsString().compareTo(b.getNameAsString());
             }
-
         });
         return packages;
     }
-
 
     protected boolean shouldInclude(Declaration decl){
         return includeNonShared || decl.isShared();
     }
     
-    protected boolean shouldInclude(Package pkg){
-        return true; // TODO includeNonShared || pkg.isShared();
+    protected boolean shouldInclude(Package pkg) {
+        return includeNonShared || pkg.isShared();
     }
     
     protected boolean shouldInclude(Module module){
