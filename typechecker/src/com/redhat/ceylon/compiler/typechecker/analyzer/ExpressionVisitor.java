@@ -901,7 +901,10 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     Tree.Parameter tp = tpl.getParameters().get(j++);
-                    l.getParameters().add(tp.getDeclarationModel());
+                    Parameter newParameter = tp.getDeclarationModel();
+                    // FIXME: temporary fix for https://github.com/ceylon/ceylon-spec/issues/674, see issue for more details
+                    newParameter.setDefaulted(p.isDefaulted());
+                    l.getParameters().add(newParameter);
                 }
             }
             m.getParameterLists().add(l);
