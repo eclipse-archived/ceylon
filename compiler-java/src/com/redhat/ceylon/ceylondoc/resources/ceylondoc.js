@@ -538,26 +538,23 @@ $(document).ready(function() {
     highlightAndExpandAnchorTarget();
 
     function highlightAndExpandAnchorTarget() {
-        var highlightedSpan = $('td > span.highlight');
-        if (highlightedSpan.length > 0) {
-            var highlightedTd = highlightedSpan.parent();
-            highlightedSpan.contents().appendTo(highlightedTd);
-            highlightedSpan.remove();
+        var highlightedRows = $('tr.highlight');
+        if (highlightedRows.length > 0) {
+        	highlightedRows.removeClass('highlight');
         }
 
         var anchor = location.hash;
         if (anchor) {
             var td = $(anchor);
-            if (td.is('td')) {
-                td.wrapInner('<span class="highlight" />');
-                
-                var tr = td.parent();
-                if( tr.is('tr') && tr.hasClass('row-collapsible') ) {
-                    if( $('.description-collapsed', tr).length > 0 ) {
-                        $('.link-collapsible', tr).click();
-                        scrollIntoView(tr);
-                    }
-                }                
+            var tr = td.parent();
+            if (tr.is('tr') ) {
+                tr.addClass('highlight');
+                if (tr.hasClass('row-collapsible')) {
+					if ($('.description-collapsed', tr).length > 0) {
+						$('.link-collapsible', tr).click();
+						scrollIntoView(tr);
+					}
+				}                
             }
         }
     }
