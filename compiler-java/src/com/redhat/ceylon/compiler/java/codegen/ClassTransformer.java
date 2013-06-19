@@ -1798,7 +1798,7 @@ public class ClassTransformer extends AbstractTransformer {
                             true,
                             true,
                             null,
-                            daoCompanionDollarThis,
+                            model.isShared() ? daoCompanionDollarThis : daoCompanion,//daoCompanionDollarThis,
                             false);   
                 } else {
                     companionDefs = transformMethod(def,
@@ -1806,7 +1806,7 @@ public class ClassTransformer extends AbstractTransformer {
                             false,
                             !model.isShared(),
                             transformMplBody(def.getParameterLists(), model, body),
-                            daoCompanionDollarThis,
+                            model.isShared() ? daoCompanionDollarThis : daoCompanion,//daoCompanionDollarThis,
                             false);
                 }
             } else if (def instanceof Tree.MethodDefinition) {
@@ -1815,7 +1815,7 @@ public class ClassTransformer extends AbstractTransformer {
                         false,
                         !model.isShared(),
                         transformMethodBlock((Tree.MethodDefinition)def),
-                        daoCompanion,
+                        model.isShared() ? daoCompanionDollarThis : daoCompanion,
                         false);
             } else {
                 throw new RuntimeException();
