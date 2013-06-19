@@ -315,15 +315,11 @@ public class MethodDefinitionBuilder {
     
     public MethodDefinitionBuilder parameter(Parameter param, List<JCAnnotation> userAnnotations, int flags, boolean canWiden) {
         String paramName = param.getName();
-        String aliasedName = paramName;
+        String aliasedName = Naming.getAliasedParameterName(param);
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         int mods = 0;
         if (!Decl.isValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
-        }
-        if (mov instanceof Method
-                || Decl.isValue(mov) && mov.isVariable() && mov.isCaptured()) {
-            aliasedName = Naming.getAliasedParameterName(param);
         }
         TypedDeclaration nonWideningDecl;
         ProducedType nonWideningType;
