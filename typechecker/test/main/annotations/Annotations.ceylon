@@ -12,10 +12,10 @@ class Annotations() {
     "A class"
     by ("Gavin King",
         "Emmanuel Bernard")
-    class Class() {}
+    class LocalClass() {}
     
-    see (Class, Annotations)
-    void accept(Class c) {}
+    see (LocalClass, Annotations)
+    void accept(LocalClass c) {}
     
     class TrimmedString() {}
     
@@ -32,17 +32,17 @@ class Annotations() {
     
     @error print ("hello") class Broken() {}
     
-    class TypeDescription(String desc) 
-        satisfies OptionalAnnotation<TypeDescription,Type<Object>> {}
+    annotation class TypeDescription(String desc) 
+        satisfies OptionalAnnotation<TypeDescription,Annotated> {}
     
-    class SequencedDescription(String desc) 
+    annotation class SequencedDescription(String desc) 
         satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
 
     //temporary errors until we got metatypes done 
-    @error Type<Annotations> at = Annotations;
-    @error Type<TypeDescription> tdt = TypeDescription;
-    @error Type<SequencedDescription> sdt = SequencedDescription;
-    TypeDescription? d = annotations<TypeDescription,TypeDescription?,Type<Object>>(tdt, at);
-    SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Type<Object>>(sdt, at);
+    Class<Annotations,[]> at = `Annotations`;
+    Class<TypeDescription,[String]> tdt = `TypeDescription`;
+    Class<SequencedDescription,[String]> sdt = `SequencedDescription`;
     
+    TypeDescription? d = annotations<TypeDescription,TypeDescription?,Annotated>(tdt, at.declaration);
+    SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt, at.declaration);
 }
