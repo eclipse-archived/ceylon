@@ -885,6 +885,7 @@ public class ExpressionVisitor extends Visitor {
                     null : tpls.get(i++);
             int j=0;
             for (Parameter p: pl.getParameters()) {
+                ProducedType pt = rm.getTypedParameter(p).getFullType();
                 //TODO: meaningful errors when parameters don't line up
                 //      currently this is handled elsewhere, but we can
                 //      probably do it better right here
@@ -893,7 +894,7 @@ public class ExpressionVisitor extends Visitor {
                     vp.setSequenced(p.isSequenced());
                     vp.setDefaulted(p.isDefaulted());
                     vp.setName(p.getName());
-                    vp.setType(rm.getTypedParameter(p).getFullType());
+                    vp.setType(pt);
                     vp.setDeclaration(m);
                     vp.setContainer(m);
                     vp.setScope(m);
@@ -901,10 +902,13 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     Tree.Parameter tp = tpl.getParameters().get(j++);
-                    Parameter newParameter = tp.getDeclarationModel();
-                    // FIXME: temporary fix for https://github.com/ceylon/ceylon-spec/issues/674, see issue for more details
-                    newParameter.setDefaulted(p.isDefaulted());
-                    l.getParameters().add(newParameter);
+                    Parameter rp = tp.getDeclarationModel();
+                    ProducedType rpt = rp.getProducedReference(null, 
+                            Collections.<ProducedType>emptyList()).getFullType();
+					checkAssignable(rpt, pt, tp.getType(), 
+                    		"declared parameter type must exactly the same as type of parameter of refined method");
+                    rp.setDefaulted(p.isDefaulted());
+                    l.getParameters().add(rp);
                 }
             }
             m.getParameterLists().add(l);

@@ -139,5 +139,5 @@ class Cla1() satisfies Int {
     met(@error String s) => s;
 }
 class Cla2() satisfies Int {
-    met(Anything a) => a?.string else "";
+    met(@error Anything a) => a?.string else "";
 }
