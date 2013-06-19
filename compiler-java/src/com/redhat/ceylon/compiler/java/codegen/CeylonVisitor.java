@@ -171,7 +171,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         int annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
-        } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
+        } else if (Decl.withinInterface(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
             if (decl.getDeclarationModel().isShared()) {
