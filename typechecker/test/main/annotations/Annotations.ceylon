@@ -14,7 +14,7 @@ class Annotations() {
         "Emmanuel Bernard")
     class LocalClass() {}
     
-    see (LocalClass, Annotations)
+    see (`LocalClass`, `Annotations`)
     void accept(LocalClass c) {}
     
     class TrimmedString() {}
