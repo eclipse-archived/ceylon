@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.js;
 
-import com.redhat.ceylon.common.tool.NonFatal;
+import com.redhat.ceylon.common.tool.ToolError;
+import com.redhat.ceylon.common.tool.WordWrap;
 
-@NonFatal
-public class CeylonRunJsException extends RuntimeException {
+
+public class CeylonRunJsException extends ToolError {
 
     private static final long serialVersionUID = 1L;
 
