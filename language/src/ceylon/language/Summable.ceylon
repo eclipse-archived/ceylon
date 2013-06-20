@@ -3,7 +3,7 @@
  numeric addition. For strings, it is string 
  concatenation. In general, the addition operation 
  should be a binary associative operation."
-see (`String`, `Numeric`)
+//see (`String`, `Numeric`)
 by ("Gavin")
 shared interface Summable<Other> of Other
         given Other satisfies Summable<Other> {

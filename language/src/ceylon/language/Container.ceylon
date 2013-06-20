@@ -6,7 +6,7 @@
  is always empty is a `Container<Nothing,Null>`. A 
  container which is never empty is a 
  `Container<Element,Nothing>`."
-see (`Category`)
+//see (`Category`)
 by ("Gavin")
 deprecated ("Will be removed in Ceylon 1.0.")
 shared interface Container<out Element, out Absent=Null>

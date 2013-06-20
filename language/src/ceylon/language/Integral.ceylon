@@ -4,7 +4,7 @@
  in a remainder. Therefore, integral numeric types have 
  an operation to determine the remainder of any division 
  operation."
-see (`Integer`)
+//see (`Integer`)
 by ("Gavin")
 shared interface Integral<Other> of Other
         satisfies Numeric<Other> & Enumerable<Other>
@@ -12,7 +12,7 @@ shared interface Integral<Other> of Other
 
     "The remainder, after dividing this number by the 
      given number."
-    see (`divided`)
+    //see (`divided`)
     shared formal Other remainder(Other other);
 
     "Determine if the number is zero."

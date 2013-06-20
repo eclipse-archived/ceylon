@@ -1,7 +1,7 @@
 "An immutable `Sequence` implemented using the platform's 
  native array type. Where possible copying of the underlying 
  array is avoided."
-see (`SequenceBuilder`, `SequenceAppender`)
+//see (`SequenceBuilder`, `SequenceAppender`)
 shared native class ArraySequence<out Element>({Element+} elements) 
         satisfies Sequence<Element> {
     

@@ -17,7 +17,7 @@
    idiom:
    
        for (i->char in "hello world".indexed) { ... }"""
-see (`Sequence`, `Empty`, `Array`)
+//see (`Sequence`, `Empty`, `Array`)
 shared interface List<out Element>
         satisfies Collection<Element> &
                   Correspondence<Integer,Element> &
@@ -26,12 +26,12 @@ shared interface List<out Element>
     
     "The index of the last element of the list, or
      null if the list is empty."
-    see (`size`)
+    //see (`size`)
     shared formal Integer? lastIndex;
     
     "The number of elements in this sequence, always
      `sequence.lastIndex+1`."
-    see (`lastIndex`)
+    //see (`lastIndex`)
     shared actual default Integer size => (lastIndex else -1) + 1;
     
     "The rest of the list, without the first element."
@@ -149,7 +149,7 @@ shared interface List<out Element>
     
     "Returns a new `List` that starts with the specified
      element, followed by the elements of this `List`."
-    see (`following`)
+    //see (`following`)
     shared default [Element|Other+] withLeading<Other>(
             "The first element of the resulting sequence."
             Other element) {
