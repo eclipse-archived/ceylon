@@ -89,7 +89,7 @@ void method() {
     void notbroke() => noop();
     @error Z moreBroke() => Z;
     @error do(Z);
-    @type:"Anything" function z() => Z;
+    @error function z() => Z;
     
     String s1 = pass((String s) => s, "hello");
     String s2 = pass((Float f) => f.string, 1.0);

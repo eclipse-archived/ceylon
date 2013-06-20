@@ -3615,9 +3615,9 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseMemberExpression(that, member, ta, tal);
                 //otherwise infer type arguments later
             }
-            else {
-                //TODO: set the correct metatype
-                that.setTypeModel(unit.getAnythingDeclaration().getType());
+            else if (!that.getDirectlyInvoked()) {
+                that.addError("missing type arguments to: " + 
+                		member.getName(unit));
             }
             /*if (defaultArgument) {
                 if (member.isClassOrInterfaceMember()) {
@@ -3704,7 +3704,7 @@ public class ExpressionVisitor extends Visitor {
                     member.setOtherInstanceAccess(true);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
-                if (explicitTypeArguments(member,tal, that)) {
+                if (explicitTypeArguments(member, tal, that)) {
                     List<ProducedType> ta = getTypeArguments(tal,
                             getTypeParameters(member));
                     tal.setTypeModels(ta);
@@ -3716,9 +3716,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                     //otherwise infer type arguments later
                 }
-                else {
-                    //TODO: set the correct metatype
-                    that.setTypeModel(unit.getAnythingDeclaration().getType());
+                else if (!that.getDirectlyInvoked()) {
+                    that.addError("missing type arguments to: " + 
+                    		member.getName(unit));
                 }
                 checkOverloadedReference(that);
             }
@@ -3803,6 +3803,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("type is not visible: " +
                         name(that.getIdentifier()), 400);
             }
+            checkConcreteClass(type, that);
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(type, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal, 
@@ -3811,13 +3812,33 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseTypeExpression(that, type, ta, tal);
                 //otherwise infer type arguments later
             }
-            else {
-                //TODO: set the correct metatype
-                that.setTypeModel(unit.getAnythingDeclaration().getType());
+            else if (!that.getDirectlyInvoked()) {
+                that.addError("missing type arguments to: " + 
+                		type.getName(unit));
             }
             checkOverloadedReference(that);
         }
     }
+
+	private void checkConcreteClass(TypeDeclaration type,
+			Tree.MemberOrTypeExpression that) {
+		if (type instanceof Class) {
+			if (((Class) type).isAbstract()) {
+		        that.addError("class is abstract: " +
+		                type.getName(unit));
+			}
+		}
+		else if (type instanceof TypeParameter) {
+			if (((TypeParameter) type).getParameterList()==null) {
+		        that.addError("type parameter is abstract: " +
+		                type.getName(unit));
+			}
+		}
+		else {
+		    that.addError("type is not a class: " +
+		    		type.getName(unit));
+		}
+	}
 
     static TypeDeclaration getSupertypeTypeDeclaration(Tree.BaseTypeExpression that, 
             Tree.SupertypeQualifier sq) {
@@ -3904,6 +3925,7 @@ public class ExpressionVisitor extends Visitor {
                 if (!selfReference && !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
+                checkConcreteClass(type, that);
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal, that)) {
                     List<ProducedType> ta = getTypeArguments(tal,
@@ -3917,9 +3939,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                     //otherwise infer type arguments later
                 }
-                else {
-                    //TODO: set the correct metatype
-                    that.setTypeModel(unit.getAnythingDeclaration().getType());
+                else if (!that.getDirectlyInvoked()) {
+                    that.addError("missing type arguments to: " + 
+                    		type.getName(unit));
                 }
                 checkOverloadedReference(that);
             }
