@@ -23,7 +23,7 @@
    otherwise:
    
        Float? diff = x>=y then x-y;"""
-see (null)
+see (`null`)
 by ("Gavin") 
 shared abstract class Null() 
         of null

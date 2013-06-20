@@ -1,13 +1,13 @@
 "The type of the value that indicates that 
  an `Iterator` is exhausted and has no more 
  values to return."
-see (Iterator)
+see (`Iterator`)
 shared abstract class Finished() of finished {}
 
 "A value that indicates that an `Iterator`
  is exhausted and has no more values to 
  return."
-see (Iterator)
+see (`Iterator`)
 shared object finished extends Finished() {
     shared actual String string => "finished";
 }

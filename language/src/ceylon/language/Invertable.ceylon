@@ -5,7 +5,7 @@
  self type, in order to accommodate the possibility of 
  types whose additive inverse can only be expressed in terms of 
  a wider type."
-see (Integer, Float)
+see (`Integer`, `Float`)
 by ("Gavin")
 shared interface Invertable<out Inverse> {
     

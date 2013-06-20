@@ -8,7 +8,7 @@
  
      print(\"hello world\"[0..5])
  "
-see (List, Sequence, String)
+see (`List`, `Sequence`, `String`)
 shared interface Ranged<in Index, out Span> 
         given Index satisfies Comparable<Index> {
     

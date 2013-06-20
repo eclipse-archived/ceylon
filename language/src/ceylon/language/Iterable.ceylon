@@ -69,7 +69,7 @@ import ceylon.language { internalFirst = first }
      the receiving iterable object.
    
    Eager operations normally return a sequence."""
-see (Collection)
+see (`Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
         satisfies Container<Element,Absent> 
@@ -119,7 +119,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "An `Iterable` containing the results of applying
      the given mapping to the elements of to this 
      container."
-    see (collect)
+    see (`collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
@@ -133,7 +133,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "An `Iterable` containing the elements of this 
      container that satisfy the given predicate."
-    see (select)
+    see (`select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
@@ -190,7 +190,7 @@ shared interface Iterable<out Element, out Absent=Null>
          \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
      
      This operation is eager by nature."
-    see (byIncreasing, byDecreasing)
+    see (`byIncreasing`, byDecreasing)
     shared default Element[] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) =>
@@ -199,7 +199,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the results of applying the
      given mapping to the elements of this container. An 
      eager counterpart to `map()`."
-    see (map)
+    see (`map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) =>
@@ -208,7 +208,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the elements of this 
      container that satisfy the given predicate. An 
      eager counterpart to `filter()`."
-    see (filter)
+    see (`filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) =>

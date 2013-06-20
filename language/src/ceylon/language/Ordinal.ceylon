@@ -3,7 +3,7 @@
  `Integer` and other `Integral` numeric types.
  `Character` is also considered an ordinal type. 
  `Ordinal` types may be used to generate a `Range`."
-see (Character, Integer, Integral, Range)
+see (`Character`, `Integer`, `Integral`, `Range`)
 by ("Gavin")
 shared interface Ordinal<out Other> of Other
         given Other satisfies Ordinal<Other> {

@@ -12,7 +12,7 @@
  same structure as the original collection&mdash;that 
  is, it should produce an immutable shallow copy of the
  collection."
-see (List, Map, Set)
+see (`List`, `Map`, `Set`)
 shared interface Collection<out Element>
         satisfies {Element*} &
                   Cloneable<Collection<Element>> {

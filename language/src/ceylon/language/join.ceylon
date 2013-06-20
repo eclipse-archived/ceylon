@@ -2,7 +2,7 @@
  of all elements of the all given objects. If there are
  no arguments, or if none of the arguments contains any
  elements, return the empty sequence."
-see (SequenceBuilder)
+see (`SequenceBuilder`)
 shared Element[] join<Element>(
         "The iterable objects to join."
         {Element*}* iterables) =>

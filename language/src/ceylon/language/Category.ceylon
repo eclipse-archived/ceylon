@@ -17,7 +17,7 @@
    to form a meaningful `Category` using a different
    equivalence relation. For example, an `IdentitySet` is
    a meaningful `Category`."""
-see (Container)
+see (`Container`)
 by ("Gavin")
 shared interface Category {
     
@@ -32,12 +32,12 @@ shared interface Category {
      other equivalence relation, for example `===`. 
      Therefore implementations of `contains()` which do 
      not satisfy this relationship are tolerated."
-    see (containsEvery, containsAny)
+    see (`containsEvery`, containsAny)
     shared formal Boolean contains(Object element);
     
     "Determines if every one of the given values belongs
      to this `Category`."
-    see (contains)
+    see (`contains`)
     shared default Boolean containsEvery({Object*} elements) {
         for (element in elements) {
             if (!contains(element)) {
@@ -51,7 +51,7 @@ shared interface Category {
 
     "Determines if any one of the given values belongs 
      to this `Category`"
-    see (contains)
+    see (`contains`)
     shared default Boolean containsAny({Object*} elements) {
         for (element in elements) {
             if (contains(element)) {

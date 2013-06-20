@@ -43,7 +43,7 @@
    `span()`, and `segment()` require iteration from the 
    beginning of the string to the given index."""
 by ("Gavin")
-see (string)
+see (`string`)
 shared native final class String(String val)
         extends Object()
         satisfies List<Character> & 
@@ -171,7 +171,7 @@ shared native final class String(String val)
      potentially costly for long strings, since the
      underlying representation of the characters uses a
      UTF-16 encoding."
-    see (longerThan, shorterThan)
+    see (`longerThan`, shorterThan)
     shared actual native Integer size;
     
     "The index of the last character in the string, or
@@ -262,13 +262,13 @@ shared native final class String(String val)
     "Determines if this string is longer than the given
      length. This is a more efficient operation than
      `string.size>length`."
-    see (size)
+    see (`size`)
     shared native Boolean longerThan(Integer length);
     
     "Determines if this string is shorter than the given
      length. This is a more efficient operation than
      `string.size>length`."
-    see (size)
+    see (`size`)
     shared native Boolean shorterThan(Integer length);
     
     "Determines if the given object is a string, and if
@@ -285,7 +285,7 @@ shared native final class String(String val)
     "Determines if this string has no characters, that
      is, if it has zero `size`. This is a more efficient 
      operation than `string.size==0`."
-    see (size)
+    see (`size`)
     shared actual native Boolean empty;
     
     "Returns this string."

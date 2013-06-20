@@ -1,6 +1,6 @@
 "An `Iterator` that returns the elements of two
  `Iterable`s, as if they were chained together."
-//see (Iterator.chain)
+//see (`Iterator.chain`)
 by ("Enrique Zamudio")
 class ChainedIterator<out Element,out Other>({Element*} first, {Other*} second) 
         satisfies Iterator<Element|Other> {

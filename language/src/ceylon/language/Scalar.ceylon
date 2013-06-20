@@ -1,6 +1,6 @@
 "Abstraction of numeric types representing scalar
  values, including `Integer` and `Float`."
-see (Integer, Float)
+see (`Integer`, `Float`)
 by ("Gavin")
 shared interface Scalar<Other> of Other
         satisfies Numeric<Other> & Comparable<Other> &
