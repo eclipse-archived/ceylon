@@ -3535,8 +3535,7 @@ public class ExpressionVisitor extends Visitor {
     //Atoms:
     
     private void checkOverloadedReference(Tree.MemberOrTypeExpression that) {
-        if (isAbstraction(that.getDeclaration()) &&
-                that.getSignature() != null) {
+        if (isAbstraction(that.getDeclaration())) {
             that.addError("ambiguous reference to overloaded method or class: " +
                     that.getDeclaration().getName(unit));
         }
