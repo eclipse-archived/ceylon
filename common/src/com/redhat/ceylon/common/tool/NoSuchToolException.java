@@ -1,6 +1,5 @@
 package com.redhat.ceylon.common.tool;
 
-@NonFatal
 public class NoSuchToolException extends OptionArgumentException.InvalidArgumentValueException {
 
     private String toolName;
@@ -13,6 +12,5 @@ public class NoSuchToolException extends OptionArgumentException.InvalidArgument
     public String getToolName() {
         return toolName;
     }
-
 
 }

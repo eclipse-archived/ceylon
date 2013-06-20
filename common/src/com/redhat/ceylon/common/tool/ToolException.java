@@ -1,16 +1,19 @@
 package com.redhat.ceylon.common.tool;
 
+/**
+ * An exception in the tool API.
+ */
 public class ToolException extends RuntimeException {
 
-    ToolException() {
+    protected ToolException() {
         super();
     }
 
-    public ToolException(String message, Throwable cause) {
+    protected ToolException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ToolException(String message) {
+    protected ToolException(String message) {
         super(message);
     }
 

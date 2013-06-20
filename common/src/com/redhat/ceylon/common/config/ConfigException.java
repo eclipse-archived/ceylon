@@ -19,10 +19,11 @@
  */
 package com.redhat.ceylon.common.config;
 
-import com.redhat.ceylon.common.tool.NonFatal;
+import com.redhat.ceylon.common.tool.ToolError;
+import com.redhat.ceylon.common.tool.WordWrap;
 
-@NonFatal
-public class ConfigException extends RuntimeException {
+
+public class ConfigException extends ToolError {
 
     public ConfigException(String message) {
         super(message);

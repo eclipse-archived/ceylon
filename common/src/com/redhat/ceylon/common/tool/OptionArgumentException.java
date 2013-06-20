@@ -6,9 +6,20 @@ import java.util.List;
 /**
  * Exception for problems parsing options and arguments.
  */
-@NonFatal
-public abstract class OptionArgumentException extends ToolException {
+public abstract class OptionArgumentException extends ToolError {
 
+    private static String getIllegalArgumentErrorMessage(Throwable t) {
+        String msg = "";
+        if (t.getLocalizedMessage() != null) {
+            msg += t.getLocalizedMessage();
+        }
+        if (t.getCause() instanceof IllegalArgumentException
+                && t.getCause().getLocalizedMessage() != null) {
+            msg += ": " + t.getCause().getLocalizedMessage();
+        }
+        return msg;
+    }
+    
     private static String getToolName(ArgumentModel<?> argumentModel) {
         return getToolName(argumentModel.getToolModel());
     }
@@ -37,15 +48,18 @@ public abstract class OptionArgumentException extends ToolException {
     OptionArgumentException(Throwable cause) {
         super(cause);
     }
-
-    @NonFatal
+    
     public static class ToolInitializationException extends OptionArgumentException {
         public ToolInitializationException(Throwable cause) {
             super(cause.getLocalizedMessage(), cause);
         }
+        
+        @Override
+        public String getErrorMessage() {
+            return getIllegalArgumentErrorMessage(this);
+        }
     }
     
-    @NonFatal
     public static class OptionWithoutArgumentException extends OptionArgumentException {
         private final OptionModel<?> optionModel;
 
@@ -64,14 +78,12 @@ public abstract class OptionArgumentException extends ToolException {
         
     }
     
-    @NonFatal
     public static class UnexpectedArgumentException extends OptionArgumentException {
         public UnexpectedArgumentException(String arg, ToolModel<?> toolModel) {
             super(ToolMessages.msg("argument.unexpected", arg, getToolName(toolModel)));
         }
     }
     
-    @NonFatal
     public static class InvalidOptionValueException extends OptionArgumentException {
         private final OptionModel<?> optionModel;
         private final String givenOption;
@@ -102,9 +114,12 @@ public abstract class OptionArgumentException extends ToolException {
             return badValue;
         }
         
+        @Override
+        public String getErrorMessage() {
+            return getIllegalArgumentErrorMessage(this);
+        }
     }
     
-    @NonFatal
     public static class InvalidArgumentValueException extends OptionArgumentException {
         private final ArgumentModel<?> argumentModel;
         private final String badValue;
@@ -127,10 +142,14 @@ public abstract class OptionArgumentException extends ToolException {
         
         public String getBadValue() {
             return badValue;
-        }    
+        }
+        
+        @Override
+        public String getErrorMessage() {
+            return getIllegalArgumentErrorMessage(this);
+        }
     }
     
-    @NonFatal
     public static class OptionMultiplicityException extends OptionArgumentException {
         private final OptionModel<?> optionModel;
 
@@ -147,10 +166,8 @@ public abstract class OptionArgumentException extends ToolException {
         public ToolModel<?> getToolModel() {
             return getOptionModel().getToolModel();
         }
-        
     }
     
-    @NonFatal
     public static class ArgumentMultiplicityException extends OptionArgumentException {
         private ArgumentModel<?> argumentModel;
 
@@ -168,7 +185,6 @@ public abstract class OptionArgumentException extends ToolException {
         }
     }
     
-    @NonFatal
     public static class UnknownOptionException extends OptionArgumentException {
 
         private final List<UnknownOptionException> aggregating;
@@ -203,7 +219,7 @@ public abstract class OptionArgumentException extends ToolException {
         public List<UnknownOptionException> getAggregating() {
             return aggregating;
         }
-
+        
         public static UnknownOptionException shortOption(ToolModel<?> toolModel, char shortName,
                 String arg) {
             String msgKey;
