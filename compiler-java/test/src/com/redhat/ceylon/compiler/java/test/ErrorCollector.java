@@ -39,14 +39,14 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
 
     static Classification classifyDiagnostic(Diagnostic<? extends FileObject> diagnostic) {
         String code = diagnostic.getCode();
-        if (diagnostic.getMessage(Locale.getDefault()).startsWith("Compiler error:")) {
+        if (code != null && code.startsWith("compiler.err.ceylon.codegen.exception")) {
             return Classification.CRASH;
+        } else if (code != null && code.startsWith("compiler.err.ceylon.codegen.erroneous")) {
+            return Classification.BACKEND;
         } else if (code != null && code.startsWith("compiler.err.ceylon")) {
             return Classification.FRONTEND;
-        } else if (code != null && code.startsWith("compiler.err")) {
-            return Classification.BACKEND;
         }
-        return Classification.UNCLASSIFIED;
+        return Classification.BACKEND;
     }
     
     @Override
