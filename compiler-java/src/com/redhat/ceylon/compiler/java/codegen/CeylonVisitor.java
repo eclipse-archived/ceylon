@@ -571,6 +571,29 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.DynamicStatement that) {
         append(gen.at(that).Exec(gen.makeErroneous(that, "Dynamic not yet supported on the JVM")));
     }
+    
+    public void visit(Tree.CompilationUnit cu) {
+        super.visit(cu);
+        String arg = CodegenUtil.getCompilerAnnotationArgument(cu, "die");
+        if (arg != null) {
+            if (arg.isEmpty()) {
+                arg = "java.lang.RuntimeException";
+            }
+            try {
+                java.lang.Class<? extends Throwable> exceptionClass = (java.lang.Class<? extends RuntimeException>)java.lang.Class.forName(arg, true, getClass().getClassLoader());
+                Throwable exception = exceptionClass.newInstance();
+                if (exception instanceof RuntimeException) {                    
+                    throw (RuntimeException)exception;
+                } else if (exception instanceof Error) {
+                    throw (Error)exception;
+                } else {
+                    throw new RuntimeException(exception);
+                }
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     /**
      * Gets all the results which were appended during the visit
