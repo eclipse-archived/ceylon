@@ -120,6 +120,12 @@ public class Launcher {
 
     private static void initGlobalLogger(boolean verbose) {
         try {
+            //if no log Manager specified use JBoss LogManager
+            String logManager = System.getProperty("java.util.logging.manager");
+            if (logManager == null) {
+                System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
+            }
+
             boolean handlersExists = false;
             for (Handler handler : Logger.getLogger("").getHandlers()) {
                 handlersExists = true;
