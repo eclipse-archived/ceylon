@@ -5,15 +5,15 @@ package com.redhat.ceylon.common.tool;
  */
 public class ToolException extends RuntimeException {
 
-    protected ToolException() {
+    ToolException() {
         super();
     }
 
-    protected ToolException(String message, Throwable cause) {
+    ToolException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    protected ToolException(String message) {
+    ToolException(String message) {
         super(message);
     }
 
