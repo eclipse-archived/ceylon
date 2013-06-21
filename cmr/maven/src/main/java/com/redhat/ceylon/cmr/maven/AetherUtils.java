@@ -88,6 +88,9 @@ public class AetherUtils {
         final String artifactId = name.substring(p + 1);
         final String version = ac.getVersion();
 
+        if (ac.getSuffix().equals("-sources.jar")) {
+            return fetchWithClassifier(groupId, artifactId, version, "sources", offline);
+        }
         return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact(), offline);
     }
 
@@ -139,6 +142,24 @@ public class AetherUtils {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
         }
+    }
+
+    private ArtifactResult fetchWithClassifier(String groupId, String artifactId, String version, String classifier, final boolean offline) {
+        final String name = toCanonicalForm(groupId, artifactId);
+        final String coordinates = toCanonicalForm(toCanonicalForm(toCanonicalForm(name, "jar"), classifier), version);
+        try {
+            final MavenStrategyStage source_mss = getResolver(offline).resolve(coordinates);
+            final MavenFormatStage source_mfs = source_mss.using(SCOPED_STRATEGY);
+            final MavenResolvedArtifact info = source_mfs.asSingleResolvedArtifact();
+            if (info != null) {
+                return new SingleArtifactResult(name, version, info.asFile());
+            }
+        } catch (ResolutionException e) {
+            log.debug("Could not resolve " + classifier + " for artifact [" + coordinates + "] : " + e);
+        }
+
+        log.debug("No artifact found: " + coordinates);
+        return null;
     }
 
     private static String toCanonicalForm(String groupId, String artifactId) {

@@ -42,7 +42,7 @@ public class MavenRepository extends AbstractRepository {
     public String getArtifactName(ArtifactContext context) {
         String name = context.getName();
         final int p = name.lastIndexOf(".");
-        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
+        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffix());
     }
 
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, final Node node) {

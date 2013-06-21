@@ -59,7 +59,7 @@ public class AetherRepository extends MavenRepository {
         String name = context.getName();
         final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
 
-        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
+        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), context.getSuffix());
     }
 
     @Override
