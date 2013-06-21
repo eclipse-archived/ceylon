@@ -166,7 +166,7 @@ public class CeylonTransformer extends AbstractTransformer {
         disableAnnotations = 0;
         ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
         CeylonVisitor visitor = new CeylonVisitor(this, builder);
-        t.visitChildren(visitor);
+        t.visit(visitor);
         
         ListBuffer<JCTree> result = ListBuffer.lb();
         result.appendList((ListBuffer<JCTree>) visitor.getResult());
