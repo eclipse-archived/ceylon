@@ -25,7 +25,6 @@ public class MethodHandleUtil {
             for(int i=0;i<filters.length;i++){
                 java.lang.Class<?> paramType = parameterTypes[i + typeParameterCount];
                 ProducedType producedType = producedTypes.get(i);
-                // FIXME: more boxing for interop
                 if(paramType == java.lang.String.class){
                     // ((ceylon.language.String)obj).toString()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.String.class, "toString", 
@@ -92,7 +91,7 @@ public class MethodHandleUtil {
         return declaration.getQualifiedNameString().equals("ceylon.language::Character");
     }
 
-    public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type) {
+    public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type, ProducedType producedType) {
         try {
             // FIXME: more boxing for interop
             if(type == java.lang.String.class){
@@ -100,6 +99,17 @@ public class MethodHandleUtil {
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.String.class, "instance", 
                                                         MethodType.methodType(ceylon.language.String.class, java.lang.String.class));
                 method = MethodHandles.filterReturnValue(method, box);
+            }else if(type == int.class && isCeylonCharacter(producedType)){
+                // ceylon.language.Character.instance(obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Character.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Character.class, int.class));
+                return MethodHandles.filterReturnValue(method, box);
+            }else if(type == byte.class || type == int.class || type == short.class){
+                // ceylon.language.Integer.instance((long)obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Integer.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Integer.class, long.class));
+                box = box.asType(MethodType.methodType(ceylon.language.Integer.class, type));
+                return MethodHandles.filterReturnValue(method, box);
             }else if(type == long.class){
                 // ceylon.language.Integer.instance(obj)
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Integer.class, "instance", 
@@ -110,10 +120,17 @@ public class MethodHandleUtil {
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Float.class, "instance", 
                                                                      MethodType.methodType(ceylon.language.Float.class, double.class));
                 return MethodHandles.filterReturnValue(method, box);
-            }else if(type == int.class){
-                // ceylon.language.Character.instance(obj)
+            }else if(type == float.class){
+                // ceylon.language.Float.instance((double)obj)
+                MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Float.class, "instance", 
+                                                                     MethodType.methodType(ceylon.language.Float.class, double.class));
+                box = box.asType(MethodType.methodType(ceylon.language.Float.class, type));
+                return MethodHandles.filterReturnValue(method, box);
+            }else if(type == char.class){
+                // ceylon.language.Character.instance((int)obj)
                 MethodHandle box = MethodHandles.lookup().findStatic(ceylon.language.Character.class, "instance", 
                                                                      MethodType.methodType(ceylon.language.Character.class, int.class));
+                box = box.asType(MethodType.methodType(ceylon.language.Character.class, type));
                 return MethodHandles.filterReturnValue(method, box);
             }else if(type == boolean.class){
                 // ceylon.language.Boolean.instance(obj)

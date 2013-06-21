@@ -45,7 +45,7 @@ public class AppliedValue<Type>
                 Method m = javaClass.getMethod(getterName);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
-                getter = MethodHandleUtil.boxReturnValue(getter, getterType);
+                getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
                 getter = getter.bindTo(instance);
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
@@ -67,7 +67,7 @@ public class AppliedValue<Type>
                 Method m = javaClass.getMethod(getterName);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
-                getter = MethodHandleUtil.boxReturnValue(getter, getterType);
+                getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 

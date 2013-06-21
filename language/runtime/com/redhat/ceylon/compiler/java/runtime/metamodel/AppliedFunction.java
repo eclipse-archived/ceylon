@@ -114,7 +114,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
         }
         // box the return type
-        method = MethodHandleUtil.boxReturnValue(method, found.getReturnType());
+        method = MethodHandleUtil.boxReturnValue(method, found.getReturnType(), appliedFunction.getType());
         // we need to cast to Object because this is what comes out when calling it in $call
         java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
         if(instance != null)
