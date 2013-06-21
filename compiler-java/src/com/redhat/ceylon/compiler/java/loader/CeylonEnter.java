@@ -21,6 +21,8 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject.Kind;
@@ -510,7 +512,7 @@ public class CeylonEnter extends Enter {
                     if(err instanceof CodeGenError){
                         CodeGenError error = ((CodeGenError)err);
                         logError(getPosition(err.getTreeNode()), "ceylon.codegen.exception", "Uncaught exception during code generation: "+error.getCause());
-                        error.getCause().printStackTrace();
+                        logStackTrace("ceylon.codegen.exception", error.getCause());
                     }
                 }
                 // Ignore those
@@ -541,6 +543,22 @@ public class CeylonEnter extends Enter {
         log.multipleErrors = true;
         try{
             log.warning(position, key, message);
+        }finally{
+            log.multipleErrors = prev;
+        }
+    }
+    
+    protected void logStackTrace(String key, Throwable t) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        pw.close();
+        String tracktrace = sw.toString();
+        boolean prev = log.multipleErrors;
+        // we want multiple errors for Ceylon
+        log.multipleErrors = true;
+        try{
+            log.printErrLines(key, tracktrace);
         }finally{
             log.multipleErrors = prev;
         }
