@@ -30,7 +30,9 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
+import com.redhat.ceylon.compiler.CompilerBugException;
 import com.redhat.ceylon.compiler.CompilerErrorException;
+import com.redhat.ceylon.compiler.SystemErrorException;
 import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class CompilerToolTest {
@@ -69,16 +71,101 @@ public class CompilerToolTest {
     }
     
     @Test
-    public void testCompileWithErrors()  throws Exception {
+    public void testCompileWithSyntaxErrors()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, 
-                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.errors"));
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.syntax"));
+        try{
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        }catch(CompilerErrorException x){
+            Assert.assertEquals("There was 1 error", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
+    
+    @Test
+    public void testCompileWithAnalysisErrors()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.analysis"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
         }catch(CompilerErrorException x){
             Assert.assertEquals("There were 3 errors", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
+  
+    @Test
+    public void testCompileWithErroneous()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.erroneous"));
+        try{
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        }catch(CompilerBugException x){
+            Assert.assertEquals("Codegen Assertion", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
+    
+    @Test
+    public void testCompileWithRuntimeException()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.runtimeex"));
+        try{
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        }catch(CompilerBugException x){
+            Assert.assertEquals("Codegen Bug", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
+    
+    @Test
+    public void testCompileWithOomeException()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.oome"));
+        try{
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        }catch(SystemErrorException x){
+            Assert.assertEquals("java.lang.OutOfMemoryError", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
+    
+    @Test
+    public void testCompileWithStackOverflowError()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.stackoverflow"));
+        try{
+            tool.run();
+            Assert.fail("Tool should have thrown an exception");
+        }catch(SystemErrorException x){
+            Assert.assertEquals("java.lang.StackOverflowError", x.getMessage());
         }catch(Throwable t){
             t.printStackTrace();
             Assert.fail("Unexpected exception");
