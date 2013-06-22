@@ -1780,7 +1780,7 @@ else {
             
             <synopsis>LoopCondition: "while" ConditionList</synopsis>
             
-            <comment><para>TODO: does <literal>while</literal> need a <literal>fail</literal> 
+            <comment><para>TODO: does <literal>while</literal> need an <literal>else</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
             
             <para>For example:</para>
@@ -1908,6 +1908,9 @@ Element first = elements.first;</programlisting>
             <programlisting>assert (total&lt;bound) 
 else "total must be less than ``bound``";</programlisting>
             </comment>
+            
+            <comment><para>TODO: should we have a <literal>fail</literal> statement,
+            meaning, approximately, <literal>assert (false)</literal>?</para></comment>
             
         </section>
         
