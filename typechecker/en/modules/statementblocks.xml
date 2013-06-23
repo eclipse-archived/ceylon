@@ -1246,8 +1246,10 @@ else {
         <section id="controlstructurevariables">
             <title>Control structure variables</title>
        
-            <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
-            a reference that is scoped to the control structure body.</para>
+            <para>Assertions and some control structures allow inline declaration of a 
+            <emphasis>variable</emphasis>. A variable declared by an assertion is a reference
+            scoped to the body in which the assertion occurs. A variable declared by a control
+            structure is a reference scoped to the control structure body.</para>
             
             <synopsis>TypedVariable: Type MemberName</synopsis>
             
