@@ -28,12 +28,14 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.FatalToolError;
 import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
@@ -53,11 +55,34 @@ import com.redhat.ceylon.common.tool.Tools;
 public class CeylonTool implements Tool {
 
     private static final String ARG_VERSION = "--version";
+    /** Normal termination */
     public static final int SC_OK = 0;
-    public static final int SC_TOOL_EXCEPTION = 1;
+    /** 
+     * Tool threw an exception, but it's a no an unexpected error. 
+     * (e.g. a compiler finding parse or type errors) 
+     */
+    public static final int SC_TOOL_ERROR = 1;
+    /** 
+     * Tool threw an exception
+     */
+    public static final int SC_TOOL_EXCEPTION = 2;
+    /** 
+     * The supplied tool arguments were bad in some way
+     */
     public static final int SC_ARGS = 2;
+    /** 
+     * The supplied tool name doesn't exist
+     */
     public static final int SC_NO_SUCH_TOOL = 3;
-    public static final int SC_TOOL_CREATION = 4;
+    /** 
+     * The tool detected a bug 
+     */
+    public static final int SC_TOOL_BUG = 5;
+    /** The tool instance couldn't be created 
+     * (i.e. a programming error with the tools API or a bug in the tools API)
+     */
+    public static final int SC_TOOL_CREATION = 6;
+    
     
     private String toolName;
     private List<String> toolArgs;
@@ -213,6 +238,12 @@ public class CeylonTool implements Tool {
         } catch (OptionArgumentException e) {
             error = e;
             result = SC_ARGS;
+        } catch (FatalToolError e) {
+            error = e;
+            result = SC_TOOL_BUG;
+        } catch (ToolError e) {
+            error = e;
+            result = SC_TOOL_ERROR;
         } catch (Exception e) {
             error = e;
             result = SC_TOOL_EXCEPTION;

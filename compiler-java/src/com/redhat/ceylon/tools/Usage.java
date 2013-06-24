@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.redhat.ceylon.common.tool.ArgumentParser;
 import com.redhat.ceylon.common.tool.EnumerableParser;
+import com.redhat.ceylon.common.tool.FatalToolError;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.ArgumentMultiplicityException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidArgumentValueException;
@@ -35,6 +36,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.OptionWithoutArgume
 import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel;
+import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
@@ -195,7 +197,9 @@ class Usage {
                 printUsage((OptionArgumentException)t);
             }
             
-            if (rootTool.getStacktraces() || Tools.isFatal(t)) {
+            if (rootTool.getStacktraces() 
+                    || t instanceof FatalToolError
+                    || t instanceof ToolError == false) {
                 out.flush();
                 t.printStackTrace(System.err);
             }
@@ -210,26 +214,17 @@ class Usage {
             sb.append(' ').append(toolName);
         }
         sb.append(": ");
-        if (Tools.isFatal(t)) {
+        if (t instanceof FatalToolError) {
             sb.append(CeylonToolMessages.msg("fatal.error")).append(": ");
-        }
-        
-        if (t.getLocalizedMessage() != null) {
-            String[] lines = t.getLocalizedMessage().split("\n");
-            sb.append(lines[0]);
-            if ((t instanceof InvalidOptionValueException 
-                    || t instanceof InvalidArgumentValueException
-                    || t instanceof ToolInitializationException)
-                    && t.getCause() instanceof IllegalArgumentException) {
-                sb.append(": ").append(t.getCause().getLocalizedMessage());
-            }
-            out.append(sb.toString()).newline();
-            
-            for (int i = 1; i < lines.length; i++) {
-                out.append(lines[i]).newline();
-            }
+            sb.append(((FatalToolError)t).getErrorMessage());
+        } else if (t instanceof ToolError) {
+            sb.append(((ToolError)t).getErrorMessage());
         } else {
-            out.append(sb.toString()).newline();
+            sb.append(t.getLocalizedMessage());
+        }
+        String[] lines = sb.toString().split("\n");
+        for (String line : lines) { 
+            out.append(line).newline();
         }
     }
     
@@ -241,6 +236,9 @@ class Usage {
     }
     
     private void printUsage(OptionArgumentException t) throws Exception {
+        // It would be much more natural for OptionArgumentException to have a method
+        // for this, unfortunately the implementation depends on the help tool
+        // which isn't part of the tool API
         if (t instanceof UnknownOptionException) {
             UnknownOptionException e = (UnknownOptionException)t;
             printSynopsis(e.getToolModel());
