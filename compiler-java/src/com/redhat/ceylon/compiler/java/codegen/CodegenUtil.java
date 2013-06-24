@@ -161,6 +161,33 @@ class CodegenUtil {
         }
         return false;
     }
+    
+    private static String getCompilerAnnotationArgument(Iterable<Tree.CompilerAnnotation> compilerAnnotations, String name) {
+        for (CompilerAnnotation annotation : compilerAnnotations) {
+            if (annotation.getIdentifier().getText().equals(name)) {
+                if (annotation.getStringLiteral() == null) {
+                    continue;
+                } 
+                String text = annotation.getStringLiteral().getText();
+                return text;
+            }
+        }
+        return null;
+    }
+    
+    static String getCompilerAnnotationArgument(Tree.StatementOrArgument def, 
+            String name) {
+        return getCompilerAnnotationArgument(def.getCompilerAnnotations(), name);
+    }
+    
+    /**
+     * Returns the compiler annotation with the given name on the 
+     * given compilation unit, or null iff the unit lacks that annotation.  
+     */
+    static String getCompilerAnnotationArgument(Tree.CompilationUnit def, 
+            String name) {
+        return getCompilerAnnotationArgument(def.getCompilerAnnotations(), name);
+    }
 
 
     static boolean isDirectAccessVariable(Term term) {
