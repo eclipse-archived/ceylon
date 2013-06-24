@@ -450,7 +450,7 @@ public class ClassDefinitionBuilder {
                 // The field itself is created by the ClassTransformer
                 init.append(gen.make().Exec(
                         gen.make().Assign(gen.naming.makeQualifiedName(gen.naming.makeThis(), decl, Naming.NA_IDENT), 
-                                gen.naming.makeName(decl, Naming.NA_IDENT))));
+                                gen.makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
             }
         }
     }
@@ -464,6 +464,7 @@ public class ClassDefinitionBuilder {
         String name = param.getName();
         JCExpression type = gen.classGen().transformClassParameterType(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.aliasName(Naming.getAliasedParameterName(param));
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
         pdb.type(type, gen.makeJavaTypeAnnotations(param));
