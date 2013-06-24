@@ -57,7 +57,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.TypeAliasDeclaration decl){
         if(hasErrors(decl))
             return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         
         if (Decl.withinClassOrInterface(decl)) {
             if (Decl.withinInterface(decl)) {
@@ -80,7 +80,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             return;
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         
         if (Decl.withinClassOrInterface(decl)) {
             if (Decl.withinInterface(decl)) {
@@ -109,7 +109,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             return;
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transformObjectDefinition(decl, classBuilder));
         } else {
@@ -121,7 +121,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.AttributeDeclaration decl){
         if(hasErrors(decl))
             return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
@@ -145,7 +145,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.AttributeGetterDefinition decl){
         if(hasErrors(decl))
             return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -168,7 +168,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(final Tree.AttributeSetterDefinition decl) {
         if(hasErrors(decl))
             return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)) {
@@ -193,7 +193,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             return;
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
-        int annots = gen.checkCompilerAnnotations(decl);
+        int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl)
                 && (!Decl.isDeferred(decl) || Decl.isCaptured(decl))) {
             classBuilder.method(decl);

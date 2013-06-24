@@ -1716,13 +1716,17 @@ public abstract class AbstractTransformer implements Transformation {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil()));
     }
 
-    int checkCompilerAnnotations(Tree.Declaration decl){
+    int checkCompilerAnnotations(Tree.Declaration decl, ListBuffer<JCTree> result){
         int old = gen().disableAnnotations;
         if(CodegenUtil.hasCompilerAnnotation(decl, "noanno")) {
             gen().disableAnnotations = CeylonTransformer.DISABLE_MODEL_ANNOS | CeylonTransformer.DISABLE_USER_ANNOS;
         }
         if(CodegenUtil.hasCompilerAnnotation(decl, "nomodel"))
             gen().disableAnnotations = CeylonTransformer.DISABLE_MODEL_ANNOS;
+        if(CodegenUtil.hasCompilerAnnotation(decl, "erroneous")) {
+            String message = CodegenUtil.getCompilerAnnotationArgument(decl, "erroneous");
+            result.append(gen().makeErroneous(decl, message));
+        }
         return old;
     }
 
