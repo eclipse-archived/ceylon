@@ -10,6 +10,6 @@ annotation class AnnotationClassMetamodelReferenceVariadic(Anything* mmrs) satis
 @nomodel
 annotation AnnotationClassMetamodelReference annotationClassMetamodelReference(Anything mmr) => AnnotationClassMetamodelReference(mmr);
 @nomodel
-annotationClassMetamodelReference(Anything)
-annotationClassMetamodelReference(process)
+annotationClassMetamodelReference(`Anything`)
+annotationClassMetamodelReference(`process`)
 class AnnotationClassMetamodelReference_callsite() {}

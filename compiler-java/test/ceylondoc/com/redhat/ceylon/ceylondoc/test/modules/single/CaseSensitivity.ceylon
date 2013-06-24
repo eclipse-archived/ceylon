@@ -18,11 +18,11 @@
  * MA  02110-1301, USA.
  */
 "CaseSensitive and caseSensitive differ only by case"
-see(caseSensitive)
+see(`caseSensitive`)
 shared abstract class CaseSensitive() of caseSensitive {}
 
 "caseSensitive and CaseSensitive differ only by case"
-see(CaseSensitive)
+see(`CaseSensitive`)
 shared object caseSensitive extends CaseSensitive() {}
 
 

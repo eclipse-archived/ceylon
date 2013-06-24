@@ -20,7 +20,7 @@ import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
  * MA  02110-1301, USA.
  */
 "This is `StubClass`"
-see(StubInterface, stubTopLevelAttribute, stubTopLevelMethod)
+see(`StubInterface`, `stubTopLevelAttribute`, `stubTopLevelMethod`)
 tagged("stubTag1", "stubTag2")
 throws(StubException)
 shared class StubClass(
@@ -51,7 +51,7 @@ shared class StubClass(
     shared void methodWithThrows() {}
     
     "The stub method with `see`."
-    see(attributeWithSee, StubException, A1)
+    see(`attributeWithSee`, `StubException`, `A1`)
     shared void methodWithSee() {}
     
     "The stub method with `tagged` and long description <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>"

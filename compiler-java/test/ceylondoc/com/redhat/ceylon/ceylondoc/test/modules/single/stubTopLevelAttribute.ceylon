@@ -18,5 +18,5 @@
  * MA  02110-1301, USA.
  */
 "The stub top level attribute"
-see(StubClass, stubTopLevelMethod)
+see(`StubClass`, `stubTopLevelMethod`)
 shared StubClass stubTopLevelAttribute = StubClass(0, 0);
