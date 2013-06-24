@@ -594,6 +594,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
         }
     }
+    
+    public void visit(Tree.CompilerAnnotation ca) {
+        // Don't end up visiting the String literal argument of the compiler annotation!
+    }
 
     /**
      * Gets all the results which were appended during the visit
