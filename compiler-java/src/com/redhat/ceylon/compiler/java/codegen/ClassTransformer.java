@@ -1960,32 +1960,24 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> body = null;
         final Method model = def.getDeclarationModel();
         
-        if (Decl.isDeferredOrParamInitialized(def)) {
+        if (model.isDeferred()) {
             // Uninitialized or deferred initialized method => Make a Callable field
+            String fieldName = naming.selector(model);
             final Parameter initializingParameter = CodegenUtil.findParamForDecl(def);
             int mods = PRIVATE;
             JCExpression initialValue;
             if (initializingParameter != null) {
                 mods |= FINAL;
-                int namingOptions = Naming.NA_MEMBER;
-                if (initializingParameter.getContainer() instanceof Method) {
-                    // We're initializing a local method, which will have a 
-                    // class wrapper of the same name as the param, so 
-                    // the param gets renamed
-                    namingOptions |= Naming.NA_ALIASED;
-                }
-                initialValue = naming.makeName(initializingParameter, namingOptions);
+                initialValue = makeUnquotedIdent(Naming.getAliasedParameterName(initializingParameter));
             } else {
                 // The field isn't initialized by a parameter, but later in the block
                 initialValue = makeNull();
             }
-            current().field(mods, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
+            current().field(mods, fieldName, makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
             Invocation invocation = new CallableSpecifierInvocation(
                     this,
                     model,
-                    initializingParameter != null ? 
-                                            naming.makeName(initializingParameter, Naming.NA_IDENT) : 
-                                            naming.makeName(model, Naming.NA_IDENT),
+                    makeUnquotedIdent(fieldName),
                     def);
             invocation.handleBoxing(true);
             JCExpression call = expressionGen().transformInvocation(invocation);
@@ -2000,7 +1992,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (initializingParameter == null) {
                 // If the field isn't initialized by a parameter we have to 
                 // cope with the possibility that it's never initialized
-                final JCBinary cond = make().Binary(JCTree.EQ, naming.makeName(model, Naming.NA_IDENT), makeNull());
+                final JCBinary cond = make().Binary(JCTree.EQ, makeUnquotedIdent(fieldName), makeNull());
                 final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
                         makeIdent(syms().ceylonUninitializedMethodErrorType), 
                         List.<JCExpression>nil(), 
