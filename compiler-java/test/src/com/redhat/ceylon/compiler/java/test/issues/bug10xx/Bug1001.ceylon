@@ -18,18 +18,20 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer mmm() {
+Integer bug1001Foo() {
     return 0;
 }
 @nomodel
-shared class Bug1001(Integer paramUnusedMethodRef(), Integer paramMethodRef(), Integer paramMethodRefCaptured()) {
+shared class Bug1001(Integer paramUnusedMethodRef(), Integer paramMethodRef(), Integer paramMethodRefCaptured(), paramMethodRefCaptured2) {
+    shared void paramMethodRefCaptured2(Integer i);
     Integer initUnusedMethodRef();
     Integer initLateMethodRef();
-    initLateMethodRef = mmm;
+    initLateMethodRef = bug1001Foo;
     Integer() initLateCallableAttrib;
-    initLateCallableAttrib = mmm;
+    initLateCallableAttrib = bug1001Foo;
     Integer initLateMethodRefCaptured();
-    initLateMethodRefCaptured = mmm;
+    initLateMethodRefCaptured = bug1001Foo;
+    print(paramMethodRefCaptured2(0));
     print(initLateMethodRef());
     print(initLateCallableAttrib());
     print(initLateMethodRefCaptured());
@@ -38,11 +40,11 @@ shared class Bug1001(Integer paramUnusedMethodRef(), Integer paramMethodRef(), I
     void m() {
         Integer localUnusedMethodRef();
         Integer localLateMethodRef();
-        localLateMethodRef = mmm;
+        localLateMethodRef = bug1001Foo;
         Integer() localLateCallableAttrib;
-        localLateCallableAttrib = mmm;
+        localLateCallableAttrib = bug1001Foo;
         Integer localLateMethodRefCaptured();
-        localLateMethodRefCaptured = mmm;
+        localLateMethodRefCaptured = bug1001Foo;
         print(localLateMethodRef());
         print(localLateCallableAttrib());
         print(localLateMethodRefCaptured());
@@ -54,4 +56,8 @@ shared class Bug1001(Integer paramUnusedMethodRef(), Integer paramMethodRef(), I
             Integer y = localLateMethodRefCaptured();
         }
     }
+}
+@nomodel
+void bug1001bar(Bug1001 bug) {
+    bug.paramMethodRefCaptured2(0);
 }
