@@ -181,7 +181,6 @@ public class ExpressionTest extends CompilerTest {
                 new CompilerError(36, "Invalid binary literal (must be unsigned and fit in 64 bits)")
         );
         assertErrors("literal/NumericLiteralParserErrors",
-                new CompilerError(-1, "Ceylon parser failed"),
                 new CompilerError(23, "incorrect syntax: no viable alternative at character '-'"),
                 new CompilerError(24, "incorrect syntax: no viable alternative at character '+'"),
                 new CompilerError(25, "incorrect syntax: no viable alternative at character '-'"),
