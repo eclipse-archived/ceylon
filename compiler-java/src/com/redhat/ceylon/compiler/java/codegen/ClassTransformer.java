@@ -1628,7 +1628,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         List<JCTree> result = builder.build();
         
-        if (Decl.isLocal(def)) {
+        if (Decl.isLocal(def) || Decl.isLocalToInitializer(def)) {
             // Inner method
             JCVariableDecl call = at(def).VarDef(
                     make().Modifiers(FINAL),

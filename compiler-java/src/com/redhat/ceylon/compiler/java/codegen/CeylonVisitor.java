@@ -194,7 +194,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
         int annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinClassOrInterface(decl)) {
+        if (Decl.withinClassOrInterface(decl)
+                && (!Decl.isDeferred(decl) || Decl.isCaptured(decl))) {
             classBuilder.method(decl);
         } else {
             appendList(gen.classGen().transformWrappedMethod(decl));
