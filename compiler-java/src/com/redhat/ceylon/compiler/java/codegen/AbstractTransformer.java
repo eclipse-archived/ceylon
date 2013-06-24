@@ -2673,9 +2673,9 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if (message != null) {
             if (node != null) {
-                log.error(getPosition(node), "ceylon", message);
+                log.error(getPosition(node), "ceylon.codegen.erroneous", message);
             } else {
-                log.error("ceylon", message);
+                log.error("ceylon.codegen.erroneous", message);
             }
         }
         return make().Erroneous(errs);

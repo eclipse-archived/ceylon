@@ -19,15 +19,24 @@
  */
 package com.redhat.ceylon.compiler;
 
-import com.redhat.ceylon.common.tool.NonFatal;
+import com.redhat.ceylon.common.tool.ToolError;
 
 /**
- * Thrown when there were errors in the source code 
+ * Exception type used when compilation could not complete normally due to 
+ * errors in the source code, such as syntax or type errors. 
  */
-@NonFatal
-public class CompilerErrorException extends RuntimeException {
+public class CompilerErrorException extends ToolError {
 
-    public CompilerErrorException(String message) {
-        super(message);
+    private final int numErrors;
+
+    CompilerErrorException(int numErrors) {
+        super(CeylonCompileMessages.msgCompilerErrors(numErrors));
+        this.numErrors = numErrors;
     }
+    
+    /** The number of errors */
+    public int getNumErrors() {
+        return numErrors;
+    }
+
 }

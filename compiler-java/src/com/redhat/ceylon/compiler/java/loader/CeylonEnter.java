@@ -472,30 +472,34 @@ public class CeylonEnter extends Enter {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu, runAssertions){
                 @Override
                 protected void out(UnexpectedError err) {
-                    logError(getPosition(err.getTreeNode()), err.getMessage());
+                    logError(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisError err) {
                     Node node = getIdentifyingNode(err.getTreeNode());
-                    logError(getPosition(node), err.getMessage());
+                    logError(getPosition(node), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisWarning err) {
                     Node node = getIdentifyingNode(err.getTreeNode());
                     if (allowWarnings) {
-                        logWarning(getPosition(node), err.getMessage());
+                        logWarning(getPosition(node), "ceylon", err.getMessage());
                     } else {
-                        logError(getPosition(node), err.getMessage());
+                        logError(getPosition(node), "ceylon", err.getMessage());
                     }
                 }
                 @Override
                 protected void out(Node that, String message) {
-                    logError(getPosition(that), message);
+                    logError(getPosition(that), "ceylon", message);
                 }
             });
         }
     }
 
+    /**
+     * Visits the nodes of each unit calling 
+     * {@link #logError(int, String, String)} for each {@link CodeGenError}
+     */
     private void printGeneratorErrors() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
@@ -505,7 +509,7 @@ public class CeylonEnter extends Enter {
                 protected void out(UnexpectedError err) {
                     if(err instanceof CodeGenError){
                         CodeGenError error = ((CodeGenError)err);
-                        logError(getPosition(err.getTreeNode()), "Compiler error: "+error.getCause());
+                        logError(getPosition(err.getTreeNode()), "ceylon.codegen.exception", "Uncaught exception during code generation: "+error.getCause());
                         error.getCause().printStackTrace();
                     }
                 }
@@ -520,23 +524,23 @@ public class CeylonEnter extends Enter {
         }
     }
 
-    protected void logError(int position, String message) {
+    protected void logError(int position, String key, String message) {
         boolean prev = log.multipleErrors;
         // we want multiple errors for Ceylon
         log.multipleErrors = true;
         try{
-            log.error(position, "ceylon", message);
+            log.error(position, key, message);
         }finally{
             log.multipleErrors = prev;
         }
     }
 
-    protected void logWarning(int position, String message) {
+    protected void logWarning(int position, String key, String message) {
         boolean prev = log.multipleErrors;
         // we want multiple errors for Ceylon
         log.multipleErrors = true;
         try{
-            log.warning(position, "ceylon", message);
+            log.warning(position, key, message);
         }finally{
             log.multipleErrors = prev;
         }

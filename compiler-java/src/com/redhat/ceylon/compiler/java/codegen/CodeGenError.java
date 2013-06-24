@@ -24,7 +24,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 
 /**
- * Represents a bug in the code generator. 
+ * Represents a bug  in the code generator, that is an exception 
+ * propogated to {@link CeylonVisitor#handleException(Exception, Node)}).
  * @author Tom Bentley
  */
 public class CodeGenError extends UnexpectedError {

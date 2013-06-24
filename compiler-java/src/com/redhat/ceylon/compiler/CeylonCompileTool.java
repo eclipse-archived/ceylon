@@ -27,6 +27,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.redhat.ceylon.compiler.java.launcher.Main;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
+
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -201,7 +204,13 @@ public class CeylonCompileTool implements Tool{
         }
                 
     }
-    
+
+    /**
+     * Run the compilation
+     * @throws CompilerErrorException If the source code had errors
+     * @throws SystemErrorException If there was a system error
+     * @throws CompilerBugException If a bug in the compiler was detected.
+     */
     @Override
     public void run() {
         List<String> arguments = new ArrayList<>();
@@ -269,28 +278,56 @@ public class CeylonCompileTool implements Tool{
             System.out.println(arguments);
             System.out.flush();
         }
-        com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
+        Main compiler = new Main("ceylon compile");
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
-        switch (result) {
-        case com.redhat.ceylon.compiler.java.launcher.Main.EXIT_OK:
+        handleExitCode(result, compiler.exitState);
+    }
+
+    private void handleExitCode(
+            int javacExitCode,
+            Main.ExitState exitState) {
+        if (exitState == null) {
+            throw new IllegalStateException("Missing ExitState, " + javacExitCode);
+        }
+        CeylonState ceylonState = exitState.ceylonState;
+        switch (ceylonState) {
+        case OK:
             break;
-        case com.redhat.ceylon.compiler.java.launcher.Main.EXIT_ERROR:
-            throw new CompilerErrorException(CeylonCompileMessages.msgCompilerErrors(compiler.errorCount));
-        case com.redhat.ceylon.compiler.java.launcher.Main.EXIT_SYSERR:
-            throw new SystemErrorException(CeylonCompileMessages.msgSystemError());
-        case com.redhat.ceylon.compiler.java.launcher.Main.EXIT_ABNORMAL:
-            if (compiler.abortingException == null
-                    && compiler.errorCount != 0) {
+        case ERROR:
+            throw new CompilerErrorException(exitState.errorCount);
+        case SYS:
+            throw new SystemErrorException(exitState.abortingException);
+        case BUG:
+            throw new CompilerBugException(exitState);
+        default:
+            throw new IllegalStateException("Unexpected CeylonState " + ceylonState);
+        }
+    }
+/*
+    private void handleExitCode(
+            Main compiler, int javacExitCode) {
+        switch (javacExitCode) {
+        case Main.EXIT_OK:
+            break;
+        case Main.EXIT_ERROR:
+            if (compiler.ceylonBackendErrors) {
+                throw new CompilerBugException(javacExitCode, compiler);
+            }
+            throw new CompilerErrorException(compiler.errorCount);
+        case Main.EXIT_SYSERR:
+            throw new SystemErrorException(compiler.abortingException);
+        case Main.EXIT_ABNORMAL:
+            if (!compiler.bug && !compiler.ceylonBackendErrors) {
                 // pretend it's an ordinary compiler error, to work around javacs sloppy error handling 
                 // (see where compiler.compile() returns EXIT_ABNORMAL)
-                throw new CompilerErrorException(CeylonCompileMessages.msgCompilerErrors(compiler.errorCount));
+                throw new CompilerErrorException(compiler.errorCount);
             }
             // else fall through
         default:
-            throw new CompilerBugException(CeylonCompileMessages.msgBug(result, compiler.abortingException), compiler.abortingException);
+            throw new CompilerBugException(javacExitCode, compiler);
         }
     }
-
+*/
     private void addJavacArguments(List<String> arguments) {
         for (String argument : javac) {       
             String value = null;

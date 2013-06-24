@@ -30,6 +30,11 @@ import com.sun.tools.javac.util.Log;
 
 public class CeylonLog extends Log {
 
+    private int numCeylonAnalysisErrors;
+    private int numCeylonCodegenException;
+    private int numCeylonCodegenErroneous;
+    private int numNonCeylonErrors;
+    
     /** Get the Log instance for this context. */
     public static Log instance(Context context) {
         Log instance = context.get(logKey);
@@ -58,6 +63,20 @@ public class CeylonLog extends Log {
 
     @Override
     public void report(JCDiagnostic diagnostic) {
+        String messageKey = diagnostic.getCode();
+        if (messageKey != null) {
+            if (messageKey.startsWith("compiler.err.ceylon.codegen.exception")) {
+                numCeylonCodegenException++;
+            } else if (messageKey.startsWith("compiler.err.ceylon.codegen.erroneous")) {
+                numCeylonCodegenErroneous++;
+            } else if (messageKey.startsWith("compiler.err.ceylon")) {
+                numCeylonAnalysisErrors++;
+            } else if (Context.isCeylon()) {
+                numNonCeylonErrors++;
+            }
+        } else if (Context.isCeylon()) {
+            numNonCeylonErrors++;
+        }
         DiagnosticSource source = diagnostic.getDiagnosticSource();
         if(source != null){
             JavaFileObject file = source.getFile();
@@ -90,5 +109,36 @@ public class CeylonLog extends Log {
                 return;
         }
         super.warning(key, args);
+    }
+
+    /** 
+     * The number of errors logs due to uncaught exceptions or messageful makeErroneous() 
+     * calls during ceylon codegen.  
+     */
+    public int getCeylonCodegenErrorCount() {
+        return numCeylonCodegenException + numCeylonCodegenErroneous;
+    }
+    
+    /** 
+     * The number of errors logs due to uncaught exceptions  
+     * calls during ceylon codegen.  
+     */
+    public int getCeylonCodegenExceptionCount() {
+        return numCeylonCodegenException;
+    }
+    
+    /** 
+     * The number of errors logs due to messageful makeErroneous() 
+     * calls during ceylon codegen.  
+     */
+    public int getCeylonCodegenErroneousCount() {
+        return numCeylonCodegenErroneous;
+    }
+    
+    /**
+     * A count of the number of non-ceylon errors
+     */
+    public int getNonCeylonErrorCount() {
+        return numNonCeylonErrors;
     }
 }

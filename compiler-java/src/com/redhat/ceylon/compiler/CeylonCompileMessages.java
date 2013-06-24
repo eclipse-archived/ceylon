@@ -36,7 +36,7 @@ public class CeylonCompileMessages extends Messages {
         return msg(RESOURCE_BUNDLE, msgKey, msgArgs);
     }
     
-    public static String msgCompilerErrors(int numErrors) {
+    static String msgCompilerErrors(int numErrors) {
         MessageFormat fmt = new MessageFormat("");
         fmt.setLocale(Locale.getDefault());
         double[] limits = {1, 2};
@@ -49,7 +49,7 @@ public class CeylonCompileMessages extends Messages {
         return fmt.format(new Object[]{numErrors});
     }
     
-    public static String msgSystemError() {
+    static String msgSystemError() {
         return msg("error.system") 
                 + msg("error.report.url")
                 + msg("error.report.list")
@@ -57,11 +57,14 @@ public class CeylonCompileMessages extends Messages {
                 + msg("error.report.thanks");
     }
     
-    public static String msgBug(int code, Throwable cause) {
+    static String msgBug(int code, Throwable cause, boolean stackDumpedAbove) {
         String message = msg("error.bug", code) + msg("error.report.url");
         message += msg("error.report.list");
+        if (stackDumpedAbove) {
+            message += msg("error.report.stacktrace.above");
+        }
         if (cause != null) {
-            message += msg("error.report.stacktrace");
+            message += msg("error.report.stacktrace.below");
         }
         message += msg("error.report.description");
         message += msg("error.report.thanks");

@@ -171,15 +171,188 @@ public class Main extends com.sun.tools.javac.main.Main {
     public ListBuffer<String> classnames = null; // XXX sb protected
 
     /**
-     * Number of errors found during compilation
+     * Rich information about the failure (or success) of a compilation.
+     * 
+     * The factory methods on this class serve as a mapping between javacs
+     * error handling, and that required for ceylon.
+     * 
+     * <h3>Gory details</h3>
+     * 
+     * <h4>Ceylon Syntax and Type Errors</h4>
+     * 
+     * <p>A `JavacAssertionVisitor` logs an `error()` with key "compiler.err.ceylon"
+     * on the javac `Log` (which happens to be a `CeylonLog`)
+     * 
+     * <h4>Exceptions throw during codegen</h4>
+     * 
+     * <p>A `JavacAssertionVisitor` logs an `error()` with key "compiler.err.ceylon.codegen.exception"
+     * on the javac `Log`
+     * (which happens to be a `CeylonLog`)
+     * 
+     * <h4><code>makeErroneous()</code></h4>
+     * 
+     * <p>Logs an `error()` with key "ceylon.codegen.erroneous"
+     * on the javac `Log` (which happens to be a `CeylonLog`) and returns an `Erroneous`
+     * 
+     * <h4><code>Tree.JCErroneous</code></h4>
+     * 
+     * <p>`Attr` produces an error for these.
+     * 
+     * <h4><code>Diagnostic</code> keys</h4>
+     * 
+     * </p>`Diagnostic`s in the javac `Log` which don't have a message 
+     * code beginning with "compiler.err.ceylon" must therefore be due to codegen generating 
+     * an AST which isn't accepted by javacs typechecker. I.e these 
+     * represent a bug in codegen.
+     * 
+     * <h4>IDE Error reporting</h4>
+     * 
+     * <p>The IDE uses a javac `DiagnosticListener` to find out about errors
+     *
      */
-    public int errorCount = 0;
+    public static class ExitState {
+        
+        public static enum CeylonState {
+            OK,
+            ERROR,
+            SYS,
+            BUG
+        }
+        
+        public final int javacExitCode;
+        
+        public final CeylonState ceylonState;
+        
+        /**
+         * Number of errors found during compilation
+         */
+        public final int errorCount;
+        
+        /**
+         * The exception which caused the compilation to fail with 
+         * {@link #EXIT_ABNORMAL} or {@link #EXIT_SYSERR}  
+         */
+        public final Throwable abortingException;
+
+        public final int ceylonCodegenExceptionCount;
+        
+        public final int ceylonCodegenErroneousCount;
+
+        public final int nonCeylonErrorCount;
+        
+        private ExitState(int javacExitCode, CeylonState ceylonState, int errorCount,
+                Throwable abortingException, 
+                JavaCompiler comp) {
+            super();
+            this.javacExitCode = javacExitCode;
+            this.ceylonState = ceylonState;
+            this.errorCount = errorCount;
+            this.ceylonCodegenExceptionCount = comp != null ? getCeylonCodegenExceptionCount(comp) : 0;
+            this.ceylonCodegenErroneousCount = comp != null ? getCeylonCodegenErroneousCount(comp) : 0;
+            this.nonCeylonErrorCount = comp != null ? getNonCeylonErrorCount(comp) : 0;
+            this.abortingException = abortingException;
+        }
+        
+        private ExitState(int javacExitCode, CeylonState ceylonState, int errorCount,
+                Throwable abortingException) {
+            this(javacExitCode, ceylonState, errorCount, abortingException, null); 
+        }
+        
+        /**
+         * javac had errors logged. Causes:
+         * <ul>
+         * <li>Compiling .java source which had errors
+         * <li>Compiling .ceylon source and codegen produced a bad tree
+         * <li>Compiling .ceylon source and codegen threw an exception
+         * </ul>
+         */
+        public static ExitState error(JavaCompiler comp) {
+            if (hasCeylonCodegenErrors(comp)) {
+                // ceylon codegen generates something which was rejected by javac => BUG
+                return new ExitState(EXIT_ERROR, CeylonState.BUG, comp.errorCount(), null, comp);
+            } else {   
+                return new ExitState(EXIT_ERROR, CeylonState.ERROR, comp.errorCount(), null);
+            }
+        }
+
+        private static int getCeylonCodegenExceptionCount(JavaCompiler comp) {
+            if (comp.log instanceof CeylonLog) {
+                CeylonLog log = ((CeylonLog)comp.log);
+                return log.getCeylonCodegenExceptionCount();
+            } 
+            return 0;
+        }
+        
+        private static int getCeylonCodegenErroneousCount(JavaCompiler comp) {
+            if (comp.log instanceof CeylonLog) {
+                CeylonLog log = ((CeylonLog)comp.log);
+                return log.getCeylonCodegenErroneousCount();
+            } 
+            return 0;
+        }
+        
+        private static int getCeylonCodegenErrorCount(JavaCompiler comp) {
+            return getCeylonCodegenErroneousCount(comp) + getCeylonCodegenExceptionCount(comp);
+        }
+        
+        private static int getNonCeylonErrorCount(JavaCompiler comp) {
+            if (comp.log instanceof CeylonLog) {
+                CeylonLog log = ((CeylonLog)comp.log);
+                return log.getNonCeylonErrorCount();
+            } 
+            return 0;
+        }
+        
+        private static boolean hasCeylonCodegenErrors(JavaCompiler comp) {
+            return getCeylonCodegenErrorCount(comp) > 0 || getNonCeylonErrorCount(comp) > 0;
+        }
+        
+        public boolean hasCeylonCodegenErrors() {
+            return this.ceylonCodegenErroneousCount > 0
+                    || this.ceylonCodegenExceptionCount > 0 
+                    || this.nonCeylonErrorCount > 0;
+        }
+
+        public static ExitState ok() {
+            return new ExitState(EXIT_ERROR, CeylonState.OK, 0, null, null);
+        }
+
+        /**
+         * uncaught exception. Causes:
+         * <ul>
+         * <li>Despite some earlier javac phase logging an error, it's 
+         *     resulted in an exception (typically AssertionError) being thrown 
+         *     by a later phase. Javac uses a heuristic to determin whether
+         *     an uncaught exception is really a bug
+         * <li>Despite of the heuristic, if there are any backend errors, we 
+         *     consider that a bug in the ceylon compiler
+         * <li>Otherwise there were errors (which were not ceylon backend 
+         *     errors), so the heuristic implies we treat it as an error.
+         * </ul>
+         */
+        public static ExitState abnormal(JavaCompiler comp, Throwable ex,
+                Options options) {
+            if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null) {
+                // This is the heuristic javac uses
+                return new ExitState(EXIT_ABNORMAL, CeylonState.BUG, 0, ex, null);
+            } else if (hasCeylonCodegenErrors(comp)) {
+                return new ExitState(EXIT_ABNORMAL, CeylonState.BUG, comp.errorCount(), ex, comp);
+            }
+            return new ExitState(EXIT_ABNORMAL, CeylonState.ERROR, comp.errorCount(), null, null);
+        }
+
+        public static ExitState systemError(Throwable ex) {
+            // Note: ex can be null
+            return new ExitState(EXIT_SYSERR, CeylonState.SYS, 0, ex, null);
+        }
+
+        public static ExitState cmderror() {
+            // icky: We'd prefer this to be handled at the tool API level 
+            return new ExitState(EXIT_CMDERR, CeylonState.BUG, 0, null, null);
+        }    
+    }
     
-    /**
-     * The exception which caused the compilation to fail with 
-     * {@link #EXIT_ABNORMAL}  
-     */
-    public Throwable abortingException = null;
+    public ExitState exitState = null;
 
     /**
      * Report a usage error.
@@ -371,14 +544,14 @@ public class Main extends com.sun.tools.javac.main.Main {
 
         filenames = new ListBuffer<File>();
         classnames = new ListBuffer<String>();
-        errorCount  = 0;
-        abortingException = null;
+        exitState = null;
         JavaCompiler comp = null;
         /* TODO: Logic below about what is an acceptable command line should be
          * updated to take annotation processing semantics into account. */
         try {
             if (args.length == 0 && fileObjects.isEmpty()) {
                 help();
+                this.exitState = ExitState.cmderror();
                 return EXIT_CMDERR;
             }
 
@@ -387,6 +560,7 @@ public class Main extends com.sun.tools.javac.main.Main {
                 filenames = processArgs(CommandLine.parse(args));
                 if (filenames == null) {
                     // null signals an error in options, abort
+                    this.exitState = ExitState.cmderror();
                     return EXIT_CMDERR;
                 } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
                     // it is allowed to compile nothing if just asking for help
@@ -398,10 +572,12 @@ public class Main extends com.sun.tools.javac.main.Main {
                             || options.get("-fullversion") != null)
                         return EXIT_OK;
                     error("err.no.source.files");
+                    this.exitState = ExitState.cmderror();
                     return EXIT_CMDERR;
                 }
             } catch (java.io.FileNotFoundException e) {
                 Log.printLines(out, ownName + ": " + getLocalizedString("err.file.not.found", e.getMessage()));
+                this.exitState = ExitState.systemError(e);
                 return EXIT_SYSERR;
             }
 
@@ -421,8 +597,10 @@ public class Main extends com.sun.tools.javac.main.Main {
             fileManager = context.get(JavaFileManager.class);
 
             comp = LanguageCompiler.instance(context);
-            if (comp == null)
+            if (comp == null) {
+                this.exitState = ExitState.systemError(null);
                 return EXIT_SYSERR;
+            }
 
             if(!classnames.isEmpty())
                 filenames = addModuleSources(filenames);
@@ -439,27 +617,36 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
             if(fileObjects.isEmpty()){
                 error("err.no.source.files");
+                this.exitState = ExitState.cmderror();
                 return EXIT_CMDERR;
             }
             comp.compile(fileObjects, classnames.toList(), processors);
 
-            errorCount = comp.errorCount();
-            if (errorCount != 0)
+            int errorCount = comp.errorCount();
+            //ceylonBackendErrors = comp.log instanceof CeylonLog ? ((CeylonLog)comp.log).ceylonBackendErrors() : false;
+            if (errorCount != 0) {
+                this.exitState = ExitState.error(comp);
                 return EXIT_ERROR;
+            }
         } catch (IOException ex) {
             ioMessage(ex);
+            this.exitState = ExitState.systemError(ex);
             return EXIT_SYSERR;
         } catch (OutOfMemoryError ex) {
             resourceMessage(ex);
+            this.exitState = ExitState.systemError(ex);
             return EXIT_SYSERR;
         } catch (StackOverflowError ex) {
             resourceMessage(ex);
+            this.exitState = ExitState.systemError(ex);
             return EXIT_SYSERR;
         } catch (FatalError ex) {
             feMessage(ex);
+            this.exitState = ExitState.systemError(ex);
             return EXIT_SYSERR;
         } catch (AnnotationProcessingError ex) {
             apMessage(ex);
+            this.exitState = ExitState.systemError(ex);
             return EXIT_SYSERR;
         } catch (ClientCodeException ex) {
             // as specified by javax.tools.JavaCompiler#getTask
@@ -473,8 +660,8 @@ public class Main extends com.sun.tools.javac.main.Main {
             // exceptions.
             if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null) {
                 bugMessage(ex);
-                this.abortingException = ex;
             }
+            this.exitState = ExitState.abnormal(comp, ex, options);
             return EXIT_ABNORMAL;
         } finally {
             if (comp != null)
@@ -486,6 +673,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
             timer = null;
         }
+        this.exitState = ExitState.ok();
         return EXIT_OK;
     }
 
