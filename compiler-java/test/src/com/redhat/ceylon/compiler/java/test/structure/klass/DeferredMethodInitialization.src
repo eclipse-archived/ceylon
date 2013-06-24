@@ -3,8 +3,34 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 class DeferredInitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     DeferredInitializedMethod() {
-        this.s = null;
-        s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+        
+        final class s_ {
+            
+            private s_() {
+                this.s$priv = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.String> s$priv;
+            
+            private final .java.lang.String s$priv() {
+                return (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$name$0 = s$name();
+                    }
+                    returning s$priv($ceylontmp$name$0);
+                );
+            }
+            
+            private final .java.lang.String s$name() {
+                return "world";
+            }
+            
+            private final .java.lang.String s$priv(final .java.lang.String name) {
+                if (s$priv == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s$priv.$call(.ceylon.language.String.instance(name)).toString();
+            }
+        }
+        final s_ s = new s_();
+        s.s$priv = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
@@ -12,25 +38,6 @@ class DeferredInitializedMethod implements .com.redhat.ceylon.compiler.java.runt
                 return .ceylon.language.String.instance("hello " + name);
             }
         };
-    }
-    private .ceylon.language.Callable<? extends .ceylon.language.String> s;
-    
-    private final .java.lang.String s$priv() {
-        return (
-            let
-            {
-                .java.lang.String $ceylontmp$name$0 = s$name();
-            }
-            returning s$priv($ceylontmp$name$0);
-        );
-    }
-    
-    private final .java.lang.String s$name() {
-        return "world";
-    }
-    
-    private final .java.lang.String s$priv(final .java.lang.String name) {
-        if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call(.ceylon.language.String.instance(name)).toString();
     }
     
     public static void main(.java.lang.String[] args) {

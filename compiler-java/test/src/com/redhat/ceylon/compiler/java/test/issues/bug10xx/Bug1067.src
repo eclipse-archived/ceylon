@@ -13,9 +13,33 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         );
     }
     
-    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> g) {
-        this.f = f;
-        this.g = g;
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f$, final .ceylon.language.Callable<? extends .java.lang.Object> g$) {
+        
+        final class f_ {
+            
+            private f_() {
+                this.f$priv = f$;
+            }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> f$priv;
+            
+            private final void f$priv() {
+                f$priv.$call();
+            }
+        }
+        final f_ f = new f_();
+        
+        final class g_ {
+            
+            private g_() {
+                this.g$priv = g$;
+            }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> g$priv;
+            
+            private final void g$priv() {
+                g$priv.$call();
+            }
+        }
+        final g_ g = new g_();
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> $init$g(final .java.lang.Object f$) {
@@ -26,16 +50,6 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 return null;
             }
         };
-    }
-    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
-    
-    private final void f$priv() {
-        f.$call();
-    }
-    private final .ceylon.language.Callable<? extends .java.lang.Object> g;
-    
-    private final void g$priv() {
-        g.$call();
     }
     
     @.java.lang.Override

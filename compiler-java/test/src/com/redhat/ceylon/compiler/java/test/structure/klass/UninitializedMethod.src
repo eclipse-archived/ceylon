@@ -3,13 +3,20 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public UninitializedMethod() {
-        this.t = null;
+        
+        final class t_ {
+            
+            private t_() {
+                this.t$priv = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> t$priv;
+            
+            private final long t$priv() {
+                if (t$priv == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return t$priv.$call().longValue();
+            }
+        }
+        final t_ t = new t_();
         .ceylon.language.print_.print(.ceylon.language.String.instance("hello"));
-    }
-    private .ceylon.language.Callable<? extends .ceylon.language.Integer> t;
-    
-    private final long t$priv() {
-        if (t == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return t.$call().longValue();
     }
     
     @.java.lang.Override

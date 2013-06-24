@@ -25,9 +25,9 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
         );
     }
     
-    DefaultedVariableAttribute(final .ceylon.language.String firstName, final .ceylon.language.String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    DefaultedVariableAttribute(final .ceylon.language.String firstName$, final .ceylon.language.String lastName$) {
+        this.firstName = firstName$;
+        this.lastName = lastName$;
     }
     
     static .ceylon.language.String $init$firstName() {
