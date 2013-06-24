@@ -535,8 +535,8 @@ public class Naming implements LocalId {
     
     static String getAliasedParameterName(Parameter parameter) {
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(parameter);
-        if (mov instanceof Method
-                || Decl.isValue(mov) && mov.isVariable() && mov.isCaptured()) {
+        if ((mov instanceof Method && ((Method)mov).isDeferred())
+                || (Decl.isValue(mov) && mov.isVariable() && mov.isCaptured())) {
             return parameter.getName()+"$";
         }
         return parameter.getName();
