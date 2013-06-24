@@ -422,13 +422,13 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private void initParam(String name, Parameter decl) {
+    private void initParam(Parameter decl) {
         boolean impliedAttribute = decl.isDefault()
                 || decl.isActual()
                 || decl.isShared();
         if (impliedAttribute 
                 || decl.isCaptured()) {
-            defs.append(gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), 
+            defs.append(gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(decl.getName()), 
                     gen.classGen().transformClassParameterType(decl), null));
             
             init.append(gen.make().Exec(gen.make().Assign(
@@ -471,7 +471,7 @@ public class ClassDefinitionBuilder {
         pdb.modelAnnotations(param.getAnnotations());
         pdb.userAnnotations(annotations);
         parameter(pdb);
-        initParam(name, param);
+        initParam(param);
         return this;
     }
     
