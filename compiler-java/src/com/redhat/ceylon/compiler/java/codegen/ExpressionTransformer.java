@@ -2986,7 +2986,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         } else if (decl instanceof Method) {
-            if (Decl.isLocal(decl)) {
+            if (Decl.isLocal(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred())) {
                 primaryExpr = null;
                 int flags = Naming.NA_MEMBER;
                 if (!isRecursiveReference(expr)) {
@@ -3359,11 +3359,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
                 }
             }
-        } else if (decl instanceof Method
-                && !Decl.withinClassOrInterface(decl)) {
-            // Deferred method initialization of a local function
-            // The Callable field has the same name as the method, so use NA_MEMBER
-            result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER), rhs);
+        } else if (decl instanceof Method && Decl.isDeferred(decl)) {
+            if (Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) {
+                // Deferred method initialization of a local function
+                // The Callable field has the same name as the method, so use NA_MEMBER
+                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER), rhs);
+            } else {
+                // Deferred method initialization of a class function
+                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_MEMBER), rhs);
+            }
         } else if ((variable || decl.isLate()) && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
             if(Decl.isJavaField(decl)){
