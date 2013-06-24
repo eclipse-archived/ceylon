@@ -24,6 +24,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private List<Declaration> overloads;
     private boolean declaredAnything;
     private AnnotationInstantiation annotationInstantiation;
+    private boolean deferred;
     
 
     /*public boolean isFormal() {
@@ -91,6 +92,14 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     
     public void setDeclaredAnything(boolean declaredAnything) {
         this.declaredAnything = declaredAnything;
+    }
+    
+    public boolean isDeferred() {
+        return deferred;
+    }
+    
+    public void setDeferred(boolean deferred) {
+        this.deferred = deferred;
     }
     
     @Override
