@@ -324,10 +324,10 @@ public class LanguageCompiler extends JavaCompiler {
                     return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
                 }
             }
-        } catch (CompilerErrorException e) {
-            log.error("ceylon", e.getMessage());
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
-            log.error("ceylon", e);
+            throw new RuntimeException(e);
         }
 
         JCCompilationUnit result = make.TopLevel(List.<JCAnnotation> nil(), null, List.<JCTree> of(make.Erroneous()));
