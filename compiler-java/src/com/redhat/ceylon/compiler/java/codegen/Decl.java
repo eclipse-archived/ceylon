@@ -309,6 +309,14 @@ public class Decl {
         return decl.isNative();
     }
     
+    public static boolean isDeferred(Tree.Declaration decl) {
+        return isDeferred(decl.getDeclarationModel());
+    }
+    
+    public static boolean isDeferred(Declaration decl) {
+        return (decl instanceof Method) && ((Method)decl).isDeferred();
+    }
+    
     /**
      * Determines whether the declaration is local to a method,
      * getter, setter or class initializer.
@@ -414,12 +422,6 @@ public class Decl {
         }
         // if it's not one of those it must be from source (Ceylon)
         return true;
-    }
-
-    public static boolean isDeferredOrParamInitialized(Tree.AnyMethod def) {
-        return !Decl.isFormal(def)
-            && def instanceof Tree.MethodDeclaration
-            && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null;
     }
 
     /**
