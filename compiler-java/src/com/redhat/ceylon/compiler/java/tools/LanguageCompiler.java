@@ -306,9 +306,9 @@ public class LanguageCompiler extends JavaCompiler {
                 }
 
                 if (lexer.getNumberOfSyntaxErrors() != 0) {
-                    log.error("ceylon.lexer.failed");
+                    log.printErrLines("ceylon.lexer.failed");
                 } else if (parser.getNumberOfSyntaxErrors() != 0) {
-                    log.error("ceylon.parser.failed");
+                    log.printErrLines("ceylon.parser.failed");
                 } else {
                     // FIXME: this is bad in many ways
                     String pkgName = getPackage(filename);
