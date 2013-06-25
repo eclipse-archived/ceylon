@@ -228,8 +228,15 @@ class AnnotationInvocationVisitor extends Visitor {
         if (exprs != null) {
             exprs.append(expr);
         } else {
+            JCExpression memberName;
+            if (this.parameter != null) {
+                memberName = exprGen.naming.makeUnquotedIdent(
+                exprGen.naming.selector(this.parameter, Naming.NA_ANNOTATION_MEMBER));
+            } else {
+                memberName = exprGen.makeErroneous();
+            }
             annotationArguments.append(exprGen.make().Assign(
-                    exprGen.naming.makeQuotedIdent(this.parameter == null ? null : this.parameter.getName()), expr));
+                    memberName, expr));
         }
     }
 
