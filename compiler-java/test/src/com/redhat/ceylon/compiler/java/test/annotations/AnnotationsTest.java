@@ -129,6 +129,11 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("AnnotationClassMetamodelReference");
     }
     @Test
+    public void testAnnotationClassQuoting(){
+        compareWithJavaSource("AnnotationClassQuoting");
+    }
+    
+    @Test
     public void testAnnotationModelLoading(){
         compile("AnnotationConstructor.ceylon");
         compile("AnnotationConstructorUse.ceylon");
