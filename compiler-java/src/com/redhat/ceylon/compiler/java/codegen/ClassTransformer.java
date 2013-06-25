@@ -83,6 +83,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -1649,7 +1650,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             private ListBuffer<JCStatement> staticArgs = ListBuffer.<JCStatement>lb();
             private boolean checkingArguments;
-            private String fieldName;
+            private Parameter parameter;
             
             @Override
             public void handleException(Exception e, Node node) {
@@ -1663,7 +1664,7 @@ public class ClassTransformer extends AbstractTransformer {
             public void visit(Tree.Parameter p) {
                 if (p.getDefaultArgument() != null) {
                     checkingArguments = true;
-                    fieldName = p.getDeclarationModel().getName();
+                    parameter = p.getDeclarationModel();
                     super.visit(p);
                     checkingArguments = false;
                 }
@@ -1682,7 +1683,18 @@ public class ClassTransformer extends AbstractTransformer {
             
             public void visit(Tree.Literal literal) {
                 if (checkingArguments){
-                    appendStaticArgument(literal, expressionGen().transform(literal));
+                    JCExpression lit = expressionGen().transform(literal);
+                    lit = expressionGen().applyErasureAndBoxing(lit, literal.getTypeModel(), false, BoxingStrategy.UNBOXED, parameter.getType());
+                    appendStaticArgument(literal, lit);
+                }
+            }
+            public void visit(Tree.NegativeOp op) {
+                if (op.getTerm() instanceof Tree.NaturalLiteral) {
+                    JCExpression lit = expressionGen().transform(op);
+                    lit = expressionGen().applyErasureAndBoxing(lit, op.getTypeModel(), false, BoxingStrategy.UNBOXED, parameter.getType());
+                    appendStaticArgument((Tree.NaturalLiteral)op.getTerm(), lit);
+                } else {
+                    super.visit(op);
                 }
             }
             
@@ -1698,19 +1710,19 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             public void visit(Tree.PositionalArgument arg) {
-                fieldName = arg.getParameter().getName();
+                parameter = arg.getParameter();
                 super.visit(arg);
             }
             
             public void visit(Tree.NamedArgument arg) {
-                fieldName = arg.getParameter().getName();
+                parameter = arg.getParameter();
                 super.visit(arg);
             }
             
             private void appendStaticArgument(Tree.Primary bme, JCExpression init) {
                 staticArgs.append(makeVar(STATIC | FINAL | (method.getDeclarationModel().isShared() ? PUBLIC : 0), 
-                        fieldName,
-                        makeJavaType(bme.getTypeModel()), 
+                        parameter.getName(),
+                        makeJavaType(parameter.getType()), 
                         init));
             }
             
