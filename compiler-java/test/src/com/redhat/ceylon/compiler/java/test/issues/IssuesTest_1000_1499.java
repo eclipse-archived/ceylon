@@ -268,4 +268,9 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1174() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1174_callsite", "bug11xx/Bug1174.ceylon");
     }
+    
+    @Test
+    public void testBug1177_fail() {
+        compareWithJavaSource("bug11xx/Bug1177");
+    }
 }
