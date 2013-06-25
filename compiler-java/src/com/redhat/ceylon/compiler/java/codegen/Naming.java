@@ -125,13 +125,13 @@ public class Naming implements LocalId {
                 "clone"));
     }
     
-    private static String getMethodName(TypedDeclaration decl) {
+    private static String getMethodName(TypedDeclaration decl, int namingOptions) {
         if (decl.isClassOrInterfaceMember()) {
             String name = decl.getName();
             // ERASURE
-            if ("hash".equals(name)) {
+            if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 && "hash".equals(name)) {
                 return "hashCode";
-            } else if ("string".equals(name)) {
+            } else if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 && "string".equals(name)) {
                 return "toString";
             } else if ("equals".equals(name)) {
                 // This is a special case where we override the mangling of getMethodNameInternal()
@@ -454,10 +454,10 @@ public class Naming implements LocalId {
         return name;
     }
 
-    private static String quoteMethodName(Method decl){
+    private static String quoteMethodName(Method decl, int namingOptions){
         // always use the refined decl
         Declaration refinedDecl = decl.getRefinedDeclaration();  
-        return getMethodName((Method)refinedDecl);
+        return getMethodName((Method)refinedDecl, namingOptions);
     
     }
 
@@ -837,7 +837,7 @@ public class Naming implements LocalId {
         } else if (decl instanceof Setter) {
             expr = makeQualIdent(expr, getSetterName(decl.getName()));
         } else if (decl instanceof Method) {
-            expr = makeQualIdent(expr, getMethodName((Method)decl));
+            expr = makeQualIdent(expr, getMethodName((Method)decl, namingOptions));
         } else if (decl instanceof Parameter) {
             if ((namingOptions & NA_ALIASED) != 0) {
                 expr = makeQualIdent(expr, getAliasedParameterName((Parameter)decl));
@@ -984,16 +984,16 @@ public class Naming implements LocalId {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
                     return ((JavaMethod)decl).getRealName();
-                return getMethodName(decl);    
+                return getMethodName(decl, namingOptions);
             }
-            return quoteMethodName((Method)decl);
+            return quoteMethodName((Method)decl, namingOptions);
         } else if (decl instanceof Parameter) {
             Assert.that(
                     decl.getContainer() instanceof Declaration
                     && (Decl.isAnnotationClass((Declaration)decl.getContainer())
                             || Decl.isAnnotationConstructor((Declaration)decl.getContainer())),
                     "Not an annotation class parameter");
-            return getMethodName(decl);
+            return getMethodName(decl, namingOptions);
         }
         Assert.fail();
         return null;
