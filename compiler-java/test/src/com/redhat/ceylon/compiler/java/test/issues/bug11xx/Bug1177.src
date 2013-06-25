@@ -1,1 +1,56 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1177_ {
+    
+    private bug1177_() {
+    }
+    
+    static void bug1177() {
+        
+        final class m_ {
+            
+            private m_() {
+                this.m = null;
+            }
+            private .ceylon.language.Callable<? extends .java.lang.Object> m;
+            
+            .java.lang.Object m() {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$s$0 = m$s();
+                    }
+                    returning m($ceylontmp$s$0);
+                );
+            }
+            
+            private final .ceylon.language.String m$s() {
+                return null;
+            }
+            
+            .java.lang.Object m(final .ceylon.language.String s) {
+                if (m == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return m.$call(s);
+            }
+        }
+        final m_ m = new m_();
+        m.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor)), "Anything(String?=)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .ceylon.language.String s = (.ceylon.language.String)$param$0;
+                return $call$typed(s);
+            }
+            
+            private .java.lang.Object $call$typed(.ceylon.language.String s) {
+                return .ceylon.language.String.instance("");
+            }
+        };
+        .ceylon.language.print_.print(m.m());
+        .ceylon.language.print_.print(m.m(.ceylon.language.String.instance("foo")));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1177_.bug1177();
+    }
+}

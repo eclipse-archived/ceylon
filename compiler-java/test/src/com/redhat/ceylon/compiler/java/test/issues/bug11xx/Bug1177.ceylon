@@ -21,4 +21,6 @@
 void bug1177() {
     Anything m(String? s = null);
     m(String? s) => "";
+    print(m());
+    print(m("foo"));
 }
