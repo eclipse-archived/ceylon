@@ -286,7 +286,7 @@ class AnnotationInvocationVisitor extends Visitor {
     public void visit(Tree.NegativeOp term) {
         if (term.getTerm() instanceof Tree.NaturalLiteral
                 || term.getTerm() instanceof Tree.FloatLiteral) {
-            append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
+            append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType()));
         } else {
             append(exprGen.makeErroneous(term, "Unable to use that kind of term " + term.getClass().getSimpleName()));
         }
