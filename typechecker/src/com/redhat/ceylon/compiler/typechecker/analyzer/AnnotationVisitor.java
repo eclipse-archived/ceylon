@@ -173,6 +173,15 @@ public class AnnotationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.NegativeOp op) {
+        if (op.getTerm() instanceof Tree.Literal) {
+            op.visitChildren(this);
+        } else {
+            super.visit(op);
+        }
+    }
+    
+    @Override
     public void visit(Tree.Expression term) {
         if (annotationConstructor != null) {
             term.visitChildren(this);
