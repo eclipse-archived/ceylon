@@ -52,6 +52,7 @@ public class CallableBuilder {
     private ParameterList paramLists;
     private Tree.ParameterList parameterListTree;
     private Term forwardCallTo;
+    private boolean noDelegates;
     
     private CallableBuilder(CeylonTransformer gen) {
         this.gen = gen;
@@ -118,6 +119,17 @@ public class CallableBuilder {
         return cb;
     }
 
+    /**
+     * Determines wether or not delegate methods will be generated
+     * for optional parameters. By default they will.
+     * @param noDelegates Passing true will prevent the generation of delegates
+     * @return This object for call chaining
+     */
+    public CallableBuilder noDelegates(boolean noDelegates) {
+        this.noDelegates = noDelegates;
+        return this;
+    }
+    
     public JCNewClass build() {
         // Generate a subclass of Callable
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
@@ -157,10 +169,12 @@ public class CallableBuilder {
             }
         }
             
-        // now generate a method for each supported minimum number of parameters below 4
-        // which delegates to the $call$typed method if required
-        for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-            classBody.append(makeDefaultedCall(i, hasOptionalParameters, parameterTypes));
+        if (!noDelegates) {
+            // now generate a method for each supported minimum number of parameters below 4
+            // which delegates to the $call$typed method if required
+            for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
+                classBody.append(makeDefaultedCall(i, hasOptionalParameters, parameterTypes));
+            }
         }
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
