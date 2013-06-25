@@ -1994,10 +1994,10 @@ public class ClassTransformer extends AbstractTransformer {
             invocation.handleBoxing(true);
             JCExpression call = expressionGen().transformInvocation(invocation);
             JCStatement stmt;
-            if (isVoid(def)) {
-                stmt = make().Exec(call);
-            } else {
+            if (!isVoid(def) || !Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid((Method)model)) {
                 stmt = make().Return(call);
+            } else {
+                stmt = make().Exec(call);
             }
             
             JCStatement result;
