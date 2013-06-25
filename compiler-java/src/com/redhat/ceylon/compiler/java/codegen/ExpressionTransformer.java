@@ -3290,6 +3290,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     decl.getParameterLists().get(0),
                     paramExpr.getParameterLists().get(0),
                     paramExpr.getPrimary().getTypeModel());
+            callableBuilder.noDelegates(decl.isDeferred());
             rhs = callableBuilder.build();
         }
 
