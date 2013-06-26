@@ -255,7 +255,7 @@ public class MethodHandleUtil {
 
     private static boolean hasAnnotation(Class<?> toFind, Annotation[] annotations) {
         for(Annotation annotation : annotations){
-            if(toFind == annotation.getClass())
+            if(toFind == annotation.annotationType())
                 return true;
         }
         return false;
