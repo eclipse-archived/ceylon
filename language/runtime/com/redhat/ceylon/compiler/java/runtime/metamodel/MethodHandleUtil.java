@@ -24,13 +24,13 @@ public class MethodHandleUtil {
         return MethodHandles.insertArguments(constructor, insertAt, typeDescriptors);
     }
 
-    public static MethodHandle unboxArguments(MethodHandle method, int typeParameterCount, int filterIndex, 
+    public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
                                               java.lang.Class<?>[] parameterTypes, List<ProducedType> producedTypes,
                                               boolean variadic) {
-        MethodHandle[] filters = new MethodHandle[parameterTypes.length - typeParameterCount];
+        MethodHandle[] filters = new MethodHandle[parameterTypes.length - skippedParameters];
         try {
             for(int i=0;i<filters.length;i++){
-                java.lang.Class<?> paramType = parameterTypes[i + typeParameterCount];
+                java.lang.Class<?> paramType = parameterTypes[i + skippedParameters];
                 ProducedType producedType = producedTypes.get(i);
                 if(variadic && i == filters.length - 1){
                     // we need to convert our ArraySequence instance to a T[] or primitive array
