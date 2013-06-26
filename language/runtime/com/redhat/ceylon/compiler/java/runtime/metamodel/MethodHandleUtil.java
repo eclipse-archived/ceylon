@@ -1,10 +1,15 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -19,13 +24,79 @@ public class MethodHandleUtil {
         return MethodHandles.insertArguments(constructor, insertAt, typeDescriptors);
     }
 
-    public static MethodHandle unboxArguments(MethodHandle method, int typeParameterCount, int filterIndex, java.lang.Class<?>[] parameterTypes, List<ProducedType> producedTypes) {
+    public static MethodHandle unboxArguments(MethodHandle method, int typeParameterCount, int filterIndex, 
+                                              java.lang.Class<?>[] parameterTypes, List<ProducedType> producedTypes,
+                                              boolean variadic) {
         MethodHandle[] filters = new MethodHandle[parameterTypes.length - typeParameterCount];
         try {
             for(int i=0;i<filters.length;i++){
                 java.lang.Class<?> paramType = parameterTypes[i + typeParameterCount];
                 ProducedType producedType = producedTypes.get(i);
-                if(paramType == java.lang.String.class){
+                if(variadic && i == filters.length - 1){
+                    // we need to convert our ArraySequence instance to a T[] or primitive array
+                    String methodName = null;
+                    Object empty = null;
+                    java.lang.Class<?> initialParamType = null;
+                    if(paramType == boolean[].class){
+                        methodName = "toBooleanArray";
+                        empty = new boolean[0];
+                        initialParamType = paramType;
+                    }else if(paramType == byte[].class){
+                        methodName = "toByteArray";
+                        empty = new long[0];
+                        initialParamType = long[].class;
+                    }else if(paramType == short[].class){
+                        methodName = "toShortArray";
+                        empty = new long[0];
+                        initialParamType = long[].class;
+                    }else if(paramType == int[].class){
+                        methodName = "toIntArray";
+                        empty = new long[0];
+                        initialParamType = long[].class;
+                    }else if(paramType == long[].class){
+                        methodName = "toLongArray";
+                        empty = new long[0];
+                        initialParamType = long[].class;
+                    }else if(paramType == float[].class){
+                        methodName = "toFloatArray";
+                        empty = new double[0];
+                        initialParamType = double[].class;
+                    }else if(paramType == double[].class){
+                        methodName = "toDoubleArray";
+                        empty = new double[0];
+                        initialParamType = double[].class;
+                    }else if(paramType == char[].class){
+                        methodName = "toCharArray";
+                        empty = new int[0];
+                        initialParamType = int[].class;
+                    }else if(paramType == java.lang.String[].class){
+                        methodName = "toJavaStringArray";
+                        empty = new java.lang.String[0];
+                        initialParamType = paramType;
+                    }
+                    if(methodName != null && empty != null && initialParamType != null){
+                        MethodHandle convert = MethodHandles.lookup().findStatic(Util.class, methodName, 
+                                                                                 MethodType.methodType(paramType, 
+                                                                                                       ceylon.language.List.class, 
+                                                                                                       initialParamType));
+                        // get rid of the second argument by fixing it to an empty array
+                        convert = MethodHandles.insertArguments(convert, 1, empty);
+                        filters[i] = convert.asType(MethodType.methodType(paramType, java.lang.Object.class));
+                    }else{
+                        // non-primitive object, use the array type
+                        // if we have a T... and T has bounds "B0 & B1 ...", the underlying type will be B0[]
+                        // if there are no bounds we will have Object[] so we're all good
+                        MethodHandle convert = MethodHandles.lookup().findStatic(Util.class, "toArray", 
+                                                                                 MethodType.methodType(java.lang.Object[].class,
+                                                                                                       ceylon.language.List.class,
+                                                                                                       java.lang.Class.class,
+                                                                                                       java.lang.Object[].class));
+                        // get rid of the second argument by fixing it to the array type
+                        // get rid of the third argument by fixing it to an empty array
+                        convert = MethodHandles.insertArguments(convert, 1, paramType.getComponentType(), new java.lang.Object[0]);
+                        filters[i] = convert.asType(MethodType.methodType(paramType, java.lang.Object.class));
+                    }
+                }else if(paramType == java.lang.String.class){
                     // ((ceylon.language.String)obj).toString()
                     MethodHandle unbox = MethodHandles.lookup().findVirtual(ceylon.language.String.class, "toString", 
                                                                                MethodType.methodType(java.lang.String.class));

@@ -134,7 +134,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         // now convert all arguments (we may need to unbox)
-        method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes, parameterProducedTypes);
+        method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes, parameterProducedTypes, found.isVarArgs());
         return method;
     }
 

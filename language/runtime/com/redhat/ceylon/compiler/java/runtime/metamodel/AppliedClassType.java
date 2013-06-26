@@ -156,13 +156,16 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, ProducedType producedType, List<Parameter> parameters) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
+        boolean variadic;
         try {
             if(!javaClass.isMemberClass()){
                 constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
                 parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
+                variadic = ((java.lang.reflect.Constructor<?>)found).isVarArgs();
             }else{
                 constructor = MethodHandles.lookup().unreflect((Method) found);
                 parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
+                variadic = ((java.lang.reflect.Method)found).isVarArgs();
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
@@ -181,7 +184,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
         // now convert all arguments (we may need to unbox)
-        constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes, parameterProducedTypes);
+        constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes, parameterProducedTypes, variadic);
         
         return constructor;
     }
