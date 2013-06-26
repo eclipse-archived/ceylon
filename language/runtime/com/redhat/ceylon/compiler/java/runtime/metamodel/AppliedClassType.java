@@ -90,15 +90,16 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         // FIXME: delay constructor setup for when we actually use it?
         // FIXME: finding the right MethodHandle for the constructor could actually be done in the Class declaration
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);
-        // FIXME: deal with Java classes
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         Object found = null;
-        if(!javaClass.isMemberClass()){
+        if(!javaClass.isMemberClass() || !Metamodel.isCeylon(decl)){
             for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
                 if(constr.isAnnotationPresent(Ignore.class)){
                     // it's likely an overloaded constructor
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
+                        // this doesn't need to count synthetic parameters because we only use the constructor for Java types
+                        // which can't have defaulted parameters
                         int params = constr.getParameterTypes().length;
                         defaultedMethods[params - firstDefaulted] = constr;
                     }
@@ -156,7 +157,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         java.lang.Class<?>[] parameterTypes;
         boolean variadic;
         try {
-            if(!javaClass.isMemberClass()){
+            if(found instanceof java.lang.reflect.Constructor){
                 constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
                 parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
                 variadic = ((java.lang.reflect.Constructor<?>)found).isVarArgs();
@@ -168,17 +169,29 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
         }
+        boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null;
         // we need to cast to Object because this is what comes out when calling it in $call
+        
+        // if it's a java member we will be using the member constructor which has an extra synthetic parameter so we can't bind it
+        // until we have casted it first
+        if(isJavaMember)
+            constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
+        // now bind it to the object
         if(instance != null)
             constructor = constructor.bindTo(instance);
-        constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
+        // if it was not a java member we have no extra synthetic instance parameter and we need to get rid of it before casting
+        if(!isJavaMember)
+            constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
+        
         int typeParametersCount = javaClass.getTypeParameters().length;
         int skipParameters = 0;
+        if(isJavaMember)
+            skipParameters++; // skip the first parameter for boxing
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, instance != null)){
             List<ProducedType> typeArguments = producedType.getTypeArgumentList();
             constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
-            skipParameters = typeParametersCount;
+            skipParameters += typeParametersCount;
         }
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
