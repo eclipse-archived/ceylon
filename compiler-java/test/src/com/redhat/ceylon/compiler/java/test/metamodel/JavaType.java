@@ -38,15 +38,54 @@ public class JavaType {
     }
 
     public boolean getBoolean(){ return true; }
+    public void setBoolean(boolean b){
+        assertt(b == true);
+    }
+    
     public byte getByte(){ return 1; }
+    public void setByte(byte b){
+        assertt(b == 1);
+    }
+
     public short getShort(){ return 2; }
+    public void setShort(short b){
+        assertt(b == 2);
+    }
+
     public int getInt(){ return 3; }
+    public void setInt(int b){
+        assertt(b == 3);
+    }
+
     public long getLong(){ return 4; }
+    public void setLong(long b){
+        assertt(b == 4);
+    }
+
     public float getFloat(){ return (float) 1.0; }
+    public void setFloat(float b){
+        assertt(b == 1.0);
+    }
+
     public double getDouble(){ return 2.0; }
+    public void setDouble(double b){
+        assertt(b == 2.0);
+    }
+
     public char getChar(){ return 'a'; }
+    public void setChar(char b){
+        assertt(b == 'a');
+    }
+
     public String getStr(){ return "a"; }
+    public void setStr(String b){
+        assertt(b.equals("a"));
+    }
+
     public Object getObject(){ return ceylon.language.String.instance("b"); }
+    public void setObject(Object b){
+        assertt(ceylon.language.String.instance("b").equals(b));
+    }
     
     static void assertt(boolean test){
         if(!test)
