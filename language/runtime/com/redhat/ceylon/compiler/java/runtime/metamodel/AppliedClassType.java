@@ -5,12 +5,10 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
-import ceylon.language.nothing_;
 import ceylon.language.metamodel.Class$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
