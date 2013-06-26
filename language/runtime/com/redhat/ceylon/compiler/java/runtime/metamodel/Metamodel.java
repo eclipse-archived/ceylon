@@ -512,4 +512,12 @@ public class Metamodel {
         }
         return parameterProducedTypes;
     }
+    
+    public static boolean isCeylon(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration){
+        if(declaration instanceof LazyClass)
+            return ((LazyClass) declaration).isCeylon();
+        if(declaration instanceof LazyInterface)
+            return ((LazyInterface) declaration).isCeylon();
+        throw new RuntimeException("Declaration type not supported: "+declaration);
+    }
 }
