@@ -10,6 +10,7 @@ void interopRuntime(){
 
     //
     // methods
+    
     assert(exists method = javaType.getFunction<JavaType,Function<Anything,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]>>("method"));
     method(instance)(true,1,2,3,4,1.0,2.0,'a',"a","b");
 
@@ -42,6 +43,41 @@ void interopRuntime(){
 
     assert(exists methodObject = javaType.getFunction<Anything,Function<Object,[]>>("methodObject"));
     assert("b" == methodObject(instance)());
+
+    // variadic
+
+    assert(exists methodBooleanVarargs = javaType.getFunction<Anything,Function<Anything,[Boolean, Boolean*]>>("methodBooleanVarargs"));
+    methodBooleanVarargs(instance)(true, true);
+
+    assert(exists methodByteVarargs = javaType.getFunction<Anything,Function<Anything,[Integer, Integer*]>>("methodByteVarargs"));
+    methodByteVarargs(instance)(1, 1);
+
+    assert(exists methodShortVarargs = javaType.getFunction<Anything,Function<Anything,[Integer, Integer*]>>("methodShortVarargs"));
+    methodShortVarargs(instance)(2, 2);
+
+    assert(exists methodIntVarargs = javaType.getFunction<Anything,Function<Anything,[Integer, Integer*]>>("methodIntVarargs"));
+    methodIntVarargs(instance)(3, 3);
+
+    assert(exists methodLongVarargs = javaType.getFunction<Anything,Function<Anything,[Integer, Integer*]>>("methodLongVarargs"));
+    methodLongVarargs(instance)(4, 4);
+
+    assert(exists methodFloatVarargs = javaType.getFunction<Anything,Function<Anything,[Float, Float*]>>("methodFloatVarargs"));
+    methodFloatVarargs(instance)(1.0, 1.0);
+
+    assert(exists methodDoubleVarargs = javaType.getFunction<Anything,Function<Anything,[Float, Float*]>>("methodDoubleVarargs"));
+    methodDoubleVarargs(instance)(2.0, 2.0);
+
+    assert(exists methodCharVarargs = javaType.getFunction<Anything,Function<Anything,[Character, Character*]>>("methodCharVarargs"));
+    methodCharVarargs(instance)('a', 'a');
+
+    assert(exists methodJavaStringVarargs = javaType.getFunction<Anything,Function<Anything,[String, String*]>>("methodJavaStringVarargs"));
+    methodJavaStringVarargs(instance)("a", "a");
+
+    assert(exists methodObjectVarargs = javaType.getFunction<Anything,Function<Anything,[Object, Object*]>>("methodObjectVarargs"));
+    methodObjectVarargs(instance)("b", "b");
+
+    assert(exists methodBoundObjectVarargs = javaType.getFunction<Anything,Function<Anything,[Integer, Integer*]>>("methodBoundObjectVarargs", `Integer`));
+    methodBoundObjectVarargs(instance)(1, 1);
 
     //
     // properties
@@ -85,4 +121,10 @@ void interopRuntime(){
     assert(exists objectAttr = javaType.getAttribute<JavaType,Variable<Object>>("object"));
     assert(objectAttr(instance).get() == "b");
     objectAttr(instance).set("b");
+    
+    //
+    // Member types
+    
+    assert(exists memberMember = javaType.getClassOrInterface<JavaType, Class<JavaType.Member, [Boolean]>>("Member"));
+    memberMember(instance)(true);
 }

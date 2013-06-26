@@ -61,6 +61,61 @@ public class JavaType {
     public String methodStr() { return "a"; }
     public Object methodObject() { return ceylon.language.String.instance("b"); }
 
+    public void methodBooleanVarargs(boolean b0, boolean... b){
+        assertt(b0 == true);
+        assertt(b != null && b.length == 1 && b[0] == true);
+    }
+    
+    public void methodByteVarargs(byte b0, byte... b){
+        assertt(b0 == 1);
+        assertt(b != null && b.length == 1 && b[0] == 1);
+    }
+    
+    public void methodShortVarargs(short b0, short... b){
+        assertt(b0 == 2);
+        assertt(b != null && b.length == 1 && b[0] == 2);
+    }
+    
+    public void methodIntVarargs(int b0, int... b){
+        assertt(b0 == 3);
+        assertt(b != null && b.length == 1 && b[0] == 3);
+    }
+    
+    public void methodLongVarargs(long b0, long... b){
+        assertt(b0 == 4);
+        assertt(b != null && b.length == 1 && b[0] == 4);
+    }
+    
+    public void methodFloatVarargs(float b0, float... b){
+        assertt(b0 == 1.0);
+        assertt(b != null && b.length == 1 && b[0] == 1.0);
+    }
+    
+    public void methodDoubleVarargs(double b0, double... b){
+        assertt(b0 == 2.0);
+        assertt(b != null && b.length == 1 && b[0] == 2.0);
+    }
+    
+    public void methodCharVarargs(char b0, char... b){
+        assertt(b0 == 'a');
+        assertt(b != null && b.length == 1 && b[0] == 'a');
+    }
+    
+    public void methodJavaStringVarargs(String b0, String... b){
+        assertt(b0.equals("a"));
+        assertt(b != null && b.length == 1 && b[0].equals("a"));
+    }
+    
+    public void methodObjectVarargs(Object b0, Object... b){
+        assertt(b0.equals(ceylon.language.String.instance("b")));
+        assertt(b != null && b.length == 1 && b[0].equals(ceylon.language.String.instance("b")));
+    }
+    
+    public <T extends ceylon.language.Number> void methodBoundObjectVarargs(T b0, T... b){
+        assertt(b0.equals(ceylon.language.Integer.instance(1)));
+        assertt(b != null && b.length == 1 && b[0].equals(ceylon.language.Integer.instance(1)));
+    }
+    
     public boolean getBoolean(){ return true; }
     public void setBoolean(boolean b){
         assertt(b == true);
@@ -119,5 +174,11 @@ public class JavaType {
     @Override
     public String toString() {
         return "JavaType is there";
+    }
+    
+    public class Member{
+        public Member(boolean unboxed){
+            assertt(unboxed == true);
+        }
     }
 }
