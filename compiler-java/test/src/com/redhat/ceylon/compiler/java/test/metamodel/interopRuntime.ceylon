@@ -1,9 +1,50 @@
-import ceylon.language.metamodel { Class, Attribute, Variable }
+import ceylon.language.metamodel { Class, Attribute, Variable, Function }
 
 void interopRuntime(){
     Class<JavaType,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;
     
+    //
+    // constructor
+    
     value instance = javaType(true,1,2,3,4,1.0,2.0,'a',"a","b");
+
+    //
+    // methods
+    assert(exists method = javaType.getFunction<JavaType,Function<Anything,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]>>("method"));
+    method(instance)(true,1,2,3,4,1.0,2.0,'a',"a","b");
+
+    assert(exists methodBoolean = javaType.getFunction<Anything,Function<Boolean,[]>>("methodBoolean"));
+    assert(true == methodBoolean(instance)());
+
+    assert(exists methodByte = javaType.getFunction<Anything,Function<Integer,[]>>("methodByte"));
+    assert(1 == methodByte(instance)());
+
+    assert(exists methodShort = javaType.getFunction<Anything,Function<Integer,[]>>("methodShort"));
+    assert(2 == methodShort(instance)());
+
+    assert(exists methodInt = javaType.getFunction<Anything,Function<Integer,[]>>("methodInt"));
+    assert(3 == methodInt(instance)());
+
+    assert(exists methodLong = javaType.getFunction<Anything,Function<Integer,[]>>("methodLong"));
+    assert(4 == methodLong(instance)());
+
+    assert(exists methodFloat = javaType.getFunction<Anything,Function<Float,[]>>("methodFloat"));
+    assert(1.0 == methodFloat(instance)());
+
+    assert(exists methodDouble = javaType.getFunction<Anything,Function<Float,[]>>("methodDouble"));
+    assert(2.0 == methodDouble(instance)());
+
+    assert(exists methodChar = javaType.getFunction<Anything,Function<Character,[]>>("methodChar"));
+    assert('a' == methodChar(instance)());
+
+    assert(exists methodStr = javaType.getFunction<Anything,Function<String,[]>>("methodStr"));
+    assert("a" == methodStr(instance)());
+
+    assert(exists methodObject = javaType.getFunction<Anything,Function<Object,[]>>("methodObject"));
+    assert("b" == methodObject(instance)());
+
+    //
+    // properties
     
     assert(exists booleanAttr = javaType.getAttribute<JavaType,Variable<Boolean>>("boolean"));
     assert(booleanAttr(instance).get() == true);

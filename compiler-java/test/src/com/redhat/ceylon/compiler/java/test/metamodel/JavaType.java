@@ -37,6 +37,30 @@ public class JavaType {
         assertt(o instanceof ceylon.language.String && o.toString().equals("b"));
     }
 
+    public void method(boolean bo, byte by, short s, int i, long l, float f, double d, char c, String str, Object o){
+        assertt(bo == true);
+        assertt(by == 1);
+        assertt(s == 2);
+        assertt(i == 3);
+        assertt(l == 4);
+        assertt(f == 1.0);
+        assertt(d == 2.0);
+        assertt(c == 'a');
+        assertt(str.equals("a"));
+        assertt(o instanceof ceylon.language.String && o.toString().equals("b"));
+    }
+    
+    public boolean methodBoolean() { return true; }
+    public byte methodByte() { return 1; }
+    public short methodShort() { return 2; }
+    public int methodInt() { return 3; }
+    public long methodLong() { return 4; }
+    public float methodFloat() { return (float) 1.0; }
+    public double methodDouble() { return 2.0; }
+    public char methodChar() { return 'a'; }
+    public String methodStr() { return "a"; }
+    public Object methodObject() { return ceylon.language.String.instance("b"); }
+
     public boolean getBoolean(){ return true; }
     public void setBoolean(boolean b){
         assertt(b == true);
