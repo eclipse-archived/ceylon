@@ -529,6 +529,20 @@ public class Util {
         return ret;
     }
 
+    public static <T> T[] toArray(ceylon.language.List<? extends T> sequence,
+            java.lang.Class<T> klass, T... initialElements){
+        @SuppressWarnings("unchecked")
+        T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, (int)sequence.getSize() + initialElements.length);
+
+        System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
+        int i=initialElements.length;
+        while(!sequence.getEmpty()){
+            ret[i++] = sequence.getFirst();
+            sequence = (ceylon.language.List<? extends T>)sequence.getRest();
+        }
+        return ret;
+    }
+
     public static <T> T[] toArray(ceylon.language.Iterable<? extends T, ? extends java.lang.Object> iterable,
             java.lang.Class<T> klass, T... initialElements){
         List<T> list = collectIterable(iterable);
