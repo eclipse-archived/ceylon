@@ -121,20 +121,21 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             method = method.bindTo(instance);
         method = method.asType(MethodType.methodType(Object.class, parameterTypes));
         int typeParametersCount = found.getTypeParameters().length;
+        int skipParameters = 0;
         // insert any required type descriptors
-        // FIXME: only if it's expecting them!
-        if(typeParametersCount != 0){
+        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, instance != null)){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>();
             Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
             for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }
             method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
+            skipParameters = typeParametersCount;
         }
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         // now convert all arguments (we may need to unbox)
-        method = MethodHandleUtil.unboxArguments(method, typeParametersCount, 0, parameterTypes, parameterProducedTypes, found.isVarArgs());
+        method = MethodHandleUtil.unboxArguments(method, skipParameters, 0, parameterTypes, parameterProducedTypes, found.isVarArgs());
         return method;
     }
 

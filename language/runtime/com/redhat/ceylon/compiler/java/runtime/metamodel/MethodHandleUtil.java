@@ -217,4 +217,44 @@ public class MethodHandleUtil {
         }
     }
 
+    public static boolean isReifiedTypeSupported(Object methodOrConstructor, boolean isMember) {
+        int tpCount;
+        Class<?>[] parameterTypes;
+        Annotation[][] annotations;
+        if(methodOrConstructor instanceof Method){
+            Method method = (Method) methodOrConstructor;
+            tpCount = method.getTypeParameters().length;
+            parameterTypes = method.getParameterTypes();
+            annotations = method.getParameterAnnotations();
+        }else{
+            Constructor<?> constructor = (Constructor<?>) methodOrConstructor;
+            tpCount = constructor.getTypeParameters().length;
+            parameterTypes = constructor.getParameterTypes();
+            annotations = constructor.getParameterAnnotations();
+        }
+        int start = isMember ? 1 : 0;
+        // without the instance parameter, does it have enough parameters for the type descriptors?
+        if(tpCount > parameterTypes.length - start)
+            return false;
+        // BEWARE: if getParameterTypes has same length as getParameterAnnotations then synthetic parameters are included
+        // but if they differ, they are not included
+        int annotationOffset = annotations.length - parameterTypes.length;
+        for(int i = 0 ; i < tpCount ; i++ ){
+            if(parameterTypes[i + start] != TypeDescriptor.class)
+                return false;
+            // must also be marked with @Ignore
+            if(!hasAnnotation(Ignore.class, annotations[i + start - annotationOffset]))
+                return false;
+        }
+        // all good
+        return true;
+    }
+
+    private static boolean hasAnnotation(Class<?> toFind, Annotation[] annotations) {
+        for(Annotation annotation : annotations){
+            if(toFind == annotation.getClass())
+                return true;
+        }
+        return false;
+    }
 }

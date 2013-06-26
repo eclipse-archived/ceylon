@@ -175,16 +175,17 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             constructor = constructor.bindTo(instance);
         constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
         int typeParametersCount = javaClass.getTypeParameters().length;
+        int skipParameters = 0;
         // insert any required type descriptors
-        // FIXME: only if it's expecting them!
-        if(typeParametersCount != 0){
+        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, instance != null)){
             List<ProducedType> typeArguments = producedType.getTypeArgumentList();
             constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
+            skipParameters = typeParametersCount;
         }
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
         // now convert all arguments (we may need to unbox)
-        constructor = MethodHandleUtil.unboxArguments(constructor, typeParametersCount, 0, parameterTypes, parameterProducedTypes, variadic);
+        constructor = MethodHandleUtil.unboxArguments(constructor, skipParameters, 0, parameterTypes, parameterProducedTypes, variadic);
         
         return constructor;
     }
