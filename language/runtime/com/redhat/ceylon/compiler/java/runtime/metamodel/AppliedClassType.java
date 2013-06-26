@@ -188,7 +188,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         if(isJavaMember)
             skipParameters++; // skip the first parameter for boxing
         // insert any required type descriptors
-        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, instance != null)){
+        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, isJavaMember)){
             List<ProducedType> typeArguments = producedType.getTypeArgumentList();
             constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
             skipParameters += typeParametersCount;

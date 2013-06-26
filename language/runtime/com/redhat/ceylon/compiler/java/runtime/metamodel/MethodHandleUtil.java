@@ -217,7 +217,7 @@ public class MethodHandleUtil {
         }
     }
 
-    public static boolean isReifiedTypeSupported(Object methodOrConstructor, boolean isMember) {
+    public static boolean isReifiedTypeSupported(Object methodOrConstructor, boolean skipFirstParameter) {
         int tpCount;
         Class<?>[] parameterTypes;
         Annotation[][] annotations;
@@ -232,7 +232,7 @@ public class MethodHandleUtil {
             parameterTypes = constructor.getParameterTypes();
             annotations = constructor.getParameterAnnotations();
         }
-        int start = isMember ? 1 : 0;
+        int start = skipFirstParameter ? 1 : 0;
         // without the instance parameter, does it have enough parameters for the type descriptors?
         if(tpCount > parameterTypes.length - start)
             return false;

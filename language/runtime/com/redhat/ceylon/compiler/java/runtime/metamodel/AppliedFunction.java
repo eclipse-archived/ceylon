@@ -123,7 +123,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         int typeParametersCount = found.getTypeParameters().length;
         int skipParameters = 0;
         // insert any required type descriptors
-        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, instance != null)){
+        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>();
             Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
             for (com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.compiler.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
