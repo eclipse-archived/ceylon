@@ -221,16 +221,19 @@ public class MethodHandleUtil {
         int tpCount;
         Class<?>[] parameterTypes;
         Annotation[][] annotations;
+        boolean checkIgnoreAnnotations;
         if(methodOrConstructor instanceof Method){
             Method method = (Method) methodOrConstructor;
             tpCount = method.getTypeParameters().length;
             parameterTypes = method.getParameterTypes();
             annotations = method.getParameterAnnotations();
+            checkIgnoreAnnotations = method.getAnnotation(Ignore.class) == null;
         }else{
             Constructor<?> constructor = (Constructor<?>) methodOrConstructor;
             tpCount = constructor.getTypeParameters().length;
             parameterTypes = constructor.getParameterTypes();
             annotations = constructor.getParameterAnnotations();
+            checkIgnoreAnnotations = constructor.getAnnotation(Ignore.class) == null;
         }
         int start = skipFirstParameter ? 1 : 0;
         // without the instance parameter, does it have enough parameters for the type descriptors?
@@ -242,8 +245,8 @@ public class MethodHandleUtil {
         for(int i = 0 ; i < tpCount ; i++ ){
             if(parameterTypes[i + start] != TypeDescriptor.class)
                 return false;
-            // must also be marked with @Ignore
-            if(!hasAnnotation(Ignore.class, annotations[i + start - annotationOffset]))
+            // if its container is not marked with @Ignore, the parameter must also be marked with @Ignore
+            if(checkIgnoreAnnotations && !hasAnnotation(Ignore.class, annotations[i + start - annotationOffset]))
                 return false;
         }
         // all good
