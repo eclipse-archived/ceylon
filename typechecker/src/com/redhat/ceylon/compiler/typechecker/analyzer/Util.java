@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -428,9 +427,38 @@ public class Util {
     			return id;
     		}
     	}
+    	else if (t instanceof Tree.TypeLiteral) {
+    	    Tree.TypeLiteral tl = (Tree.TypeLiteral) t;
+    	    if(tl.getType() != null)
+    	        return toString(tl.getType());
+    	    return null;
+    	}
+        else if (t instanceof Tree.MemberLiteral) {
+            Tree.MemberLiteral ml = (Tree.MemberLiteral) t;
+            if(ml.getType() != null){
+                String qualifier = toString(ml.getType());
+                if(qualifier != null)
+                    return qualifier + "." + ml.getIdentifier().getText();
+                return null;
+            }
+            return ml.getIdentifier().getText();
+        }
     	else {
     		return null;
     	}
+    }
+
+    private static String toString(Tree.StaticType type) {
+        // FIXME: we're discarding syntactic types and union/intersection types
+        if(type instanceof Tree.BaseType){
+            return ((Tree.BaseType) type).getIdentifier().getText();
+        }else if(type instanceof Tree.QualifiedType){
+            String qualifier = toString(((Tree.QualifiedType) type).getOuterType());
+            if(qualifier != null)
+                return qualifier + "." + ((Tree.SimpleType)type).getIdentifier().getText();
+            return null;
+        }
+        return null;
     }
 
     static boolean inLanguageModule(Unit unit) {
