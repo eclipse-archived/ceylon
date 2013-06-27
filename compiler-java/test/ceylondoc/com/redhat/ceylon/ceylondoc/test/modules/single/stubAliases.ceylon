@@ -19,7 +19,7 @@
  */
 "Alias for stub stuffs"
 by("Tomas")
-see(`AliasEntry`)
+see(`AliasEntry<String>`)
 deprecated
 shared alias AliasStubs => StubInterface|StubClass|StubException|Null;
 
