@@ -93,20 +93,30 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: deal with private stuff?
         }
         if(found != null){
-            method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameters);
+            boolean variadic = found.isVarArgs();
+            method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameters, variadic, false);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     // FIXME: proper checks
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction, parameters);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction, parameters, variadic, false);
                 }
                 dispatch[i] = method;
+            }else if(variadic){
+                // variadic methods don't have defaulted parameters, but we will simulate one because our calling convention is that
+                // we treat variadic methods as if the last parameter is optional
+                firstDefaulted = parameters.size() - 1;
+                dispatch = new MethodHandle[2];
+                dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameters, variadic, true);
+                dispatch[1] = method;
             }
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, ProducedReference appliedFunction, List<Parameter> parameters) {
+    private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, 
+                                                  ProducedReference appliedFunction, List<Parameter> parameters,
+                                                  boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle method;
         try {
             method = MethodHandles.lookup().unreflect(found);
@@ -135,7 +145,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         // now convert all arguments (we may need to unbox)
-        method = MethodHandleUtil.unboxArguments(method, skipParameters, 0, parameterTypes, parameterProducedTypes, found.isVarArgs());
+        method = MethodHandleUtil.unboxArguments(method, skipParameters, 0, parameterTypes,
+                                                 parameterProducedTypes, variadic, bindVariadicParameterToEmptyArray);
         return method;
     }
 

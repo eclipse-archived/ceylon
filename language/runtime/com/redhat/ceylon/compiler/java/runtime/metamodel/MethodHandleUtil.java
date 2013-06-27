@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -25,9 +26,54 @@ public class MethodHandleUtil {
     }
 
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
-                                              java.lang.Class<?>[] parameterTypes, List<ProducedType> producedTypes,
+            java.lang.Class<?>[] parameterTypes,
+            List<ProducedType> producedTypes) {
+        return unboxArguments(method, skippedParameters, filterIndex, parameterTypes, parameterTypes.length, producedTypes, false);
+    }
+    
+    public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
+            java.lang.Class<?>[] parameterTypes,
+            List<ProducedType> producedTypes,
+            boolean variadic, boolean bindVariadicParameterToEmptyArray) {
+        if(bindVariadicParameterToEmptyArray){
+            // filter all but the last parameter
+            MethodHandle ret = unboxArguments(method, skippedParameters, filterIndex, parameterTypes, parameterTypes.length-1,
+                                              producedTypes, false); // do not consider it variadic because we're ignoring the last parameter
+            // fix the last argument
+            java.lang.Class<?> paramType = parameterTypes[parameterTypes.length-1];
+            Object val;
+            if(paramType == byte[].class)
+                val = new byte[0];
+            else if(paramType == short[].class)
+                val = new short[0];
+            else if(paramType == int[].class)
+                val = new int[0];
+            else if(paramType == long[].class)
+                val = new long[0];
+            else if(paramType == float[].class)
+                val = new float[0];
+            else if(paramType == double[].class)
+                val = new double[0];
+            else if(paramType == boolean[].class)
+                val = new boolean[0];
+            else if(paramType == char[].class)
+                val = new char[0];
+            else if(paramType == java.lang.Object[].class)
+                val = new java.lang.Object[0];
+            else
+                val = Array.newInstance(paramType.getComponentType(), 0);
+            return MethodHandles.insertArguments(ret, parameterTypes.length-1-skippedParameters, val);
+        }else{
+            return unboxArguments(method, skippedParameters, filterIndex, parameterTypes, parameterTypes.length,
+                                  producedTypes, variadic);
+        }
+    }
+
+    public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
+                                              java.lang.Class<?>[] parameterTypes, int parameterCount, 
+                                              List<ProducedType> producedTypes,
                                               boolean variadic) {
-        MethodHandle[] filters = new MethodHandle[parameterTypes.length - skippedParameters];
+        MethodHandle[] filters = new MethodHandle[parameterCount - skippedParameters];
         try {
             for(int i=0;i<filters.length;i++){
                 java.lang.Class<?> paramType = parameterTypes[i + skippedParameters];
@@ -259,5 +305,13 @@ public class MethodHandleUtil {
                 return true;
         }
         return false;
+    }
+
+    public static boolean isVariadicMethodOrConstructor(Object found) {
+        if(found instanceof java.lang.reflect.Constructor){
+            return ((java.lang.reflect.Constructor<?>)found).isVarArgs();
+        }else{
+            return ((java.lang.reflect.Method)found).isVarArgs();
+        }
     }
 }

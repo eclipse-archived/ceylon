@@ -139,32 +139,39 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
             }
         }
         if(found != null){
-            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameters);
+            boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
+            constructor = reflectionToMethodHandle(found, javaClass, instance, producedType, parameters, variadic, false);
             if(defaultedMethods != null){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     // FIXME: proper checks
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameters);
+                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameters, variadic, false);
                 }
                 dispatch[i] = constructor;
+            }else if(variadic){
+                // variadic methods don't have defaulted parameters, but we will simulate one because our calling convention is that
+                // we treat variadic methods as if the last parameter is optional
+                firstDefaulted = parameters.size() - 1;
+                dispatch = new MethodHandle[2];
+                dispatch[0] = reflectionToMethodHandle(found, javaClass, instance, producedType, parameters, variadic, true);
+                dispatch[1] = constructor;
             }
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, ProducedType producedType, List<Parameter> parameters) {
+    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass, Object instance2, 
+                                                  ProducedType producedType, List<Parameter> parameters,
+                                                  boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
-        boolean variadic;
         try {
             if(found instanceof java.lang.reflect.Constructor){
                 constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
                 parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
-                variadic = ((java.lang.reflect.Constructor<?>)found).isVarArgs();
             }else{
                 constructor = MethodHandles.lookup().unreflect((Method) found);
                 parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
-                variadic = ((java.lang.reflect.Method)found).isVarArgs();
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
@@ -196,7 +203,8 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
         // get a list of produced parameter types
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
         // now convert all arguments (we may need to unbox)
-        constructor = MethodHandleUtil.unboxArguments(constructor, skipParameters, 0, parameterTypes, parameterProducedTypes, variadic);
+        constructor = MethodHandleUtil.unboxArguments(constructor, skipParameters, 0, parameterTypes,
+                                                      parameterProducedTypes, variadic, bindVariadicParameterToEmptyArray);
         
         return constructor;
     }

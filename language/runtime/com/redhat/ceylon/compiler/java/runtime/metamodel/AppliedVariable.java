@@ -33,7 +33,7 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType), false);
+                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
             } catch (SecurityException e) {
@@ -48,7 +48,7 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType), false);
+                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
             } catch (SecurityException e) {
