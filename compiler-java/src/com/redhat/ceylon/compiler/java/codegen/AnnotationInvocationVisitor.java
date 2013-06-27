@@ -329,6 +329,19 @@ class AnnotationInvocationVisitor extends Visitor {
         }
     }
     
+    @Override
+    public void visit(Tree.TypeLiteral tl){
+        // FIXME: this is all temporary
+        if(tl.getType() != null && tl.getType().getTypeModel() != null)
+            append(exprGen.make().Literal(tl.getType().getTypeModel().resolveAliases().getProducedTypeQualifiedName()));
+    }
+    
+    @Override
+    public void visit(Tree.MemberLiteral tl){
+        // FIXME: this is all temporary
+        append(exprGen.make().Literal(tl.getDeclaration().getQualifiedNameString()));
+    }
+    
     private ListBuffer<JCExpression> startArray() {
         ListBuffer<JCExpression> prevCollect = exprs;
         exprs = ListBuffer.<JCExpression>lb();
