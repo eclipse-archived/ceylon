@@ -5108,4 +5108,38 @@ public class ExpressionVisitor extends Visitor {
             that.addError("Type literal not supported yet: " + declaration);
         }
     }
+    
+    public void visit(Tree.MemberLiteral that) {
+        super.visit(that);
+        
+        if(that.getIdentifier() == null)
+            return;
+        String name = that.getIdentifier().getText();
+
+        if(that.getType() != null){
+            ProducedType qualifyingType = that.getType().getTypeModel();
+            if(qualifyingType == null)
+                return;
+
+            qualifyingType = qualifyingType.resolveAliases();
+            TypeDeclaration d = qualifyingType.getDeclaration();
+            String container = "type " + d.getName(unit);
+            TypedDeclaration member = (TypedDeclaration) d.getMember(name, unit, null, false);
+            if(member == null)
+                that.addError("member method or attribute is ambiguous: " +
+                              name + " for " + container);
+            else
+                that.setDeclaration(member);
+        }else{
+            Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
+            if (result instanceof TypedDeclaration) {
+                that.setDeclaration(result);
+            }else{
+                that.addError("function or value does not exist: " +
+                              name(that.getIdentifier()), 100);
+                unit.getUnresolvedReferences().add(that.getIdentifier());
+            }
+        }
+        // FIXME: deal with type arguments and stuff
+    }
 }
