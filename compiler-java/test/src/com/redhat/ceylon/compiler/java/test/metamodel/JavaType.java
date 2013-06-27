@@ -61,9 +61,12 @@ public class JavaType {
     public String methodStr() { return "a"; }
     public Object methodObject() { return ceylon.language.String.instance("b"); }
 
-    public void methodBooleanVarargs(boolean b0, boolean... b){
+    public void methodBooleanVarargs(long count, boolean b0, boolean... b){
         assertt(b0 == true);
-        assertt(b != null && b.length == 1 && b[0] == true);
+        assertt(b != null && b.length == count);
+        for(boolean bb : b){
+            assertt(bb == true);
+        }
     }
     
     public void methodByteVarargs(byte b0, byte... b){
@@ -106,14 +109,20 @@ public class JavaType {
         assertt(b != null && b.length == 1 && b[0].equals("a"));
     }
     
-    public void methodObjectVarargs(Object b0, Object... b){
+    public void methodObjectVarargs(long count, Object b0, Object... b){
         assertt(b0.equals(ceylon.language.String.instance("b")));
-        assertt(b != null && b.length == 1 && b[0].equals(ceylon.language.String.instance("b")));
+        assertt(b != null && b.length == count);
+        for(Object bb : b){
+            assertt(bb.equals(ceylon.language.String.instance("b")));
+        }
     }
     
-    public <T extends ceylon.language.Number> void methodBoundObjectVarargs(T b0, T... b){
+    public <T extends ceylon.language.Number> void methodBoundObjectVarargs(long count, T b0, T... b){
         assertt(b0.equals(ceylon.language.Integer.instance(1)));
-        assertt(b != null && b.length == 1 && b[0].equals(ceylon.language.Integer.instance(1)));
+        assertt(b != null && b.length == count);
+        for(T t : b){
+            assertt(t.equals(ceylon.language.Integer.instance(1)));
+        }
     }
     
     public boolean getBoolean(){ return true; }
@@ -179,6 +188,16 @@ public class JavaType {
     public class Member{
         public Member(boolean unboxed){
             assertt(unboxed == true);
+        }
+    }
+
+    public class MemberVarargs{
+        public MemberVarargs(long count, boolean unboxed, boolean... b){
+            assertt(unboxed == true);
+            assertt(b != null && b.length == count);
+            for(boolean bb : b){
+                assertt(bb == true);
+            }
         }
     }
 }
