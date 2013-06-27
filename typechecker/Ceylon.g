@@ -2425,9 +2425,13 @@ metaLiteral returns [MetaLiteral meta]
       { ml.setIdentifier($m2.identifier); 
         ml.setEndToken(null); }
     | t=type
-      { tl.setType($t.type); }
+      { tl = new TypeLiteral($d1);
+        $meta = tl;
+        tl.setType($t.type); }
     | m3=memberName
-      { ml.setIdentifier($m3.identifier); }
+      { ml = new MemberLiteral($d1);
+        $meta = ml;
+        ml.setIdentifier($m3.identifier); }
     )
       d2=TYPE_LITERAL_DELIMITER
       { $meta.setEndToken($d2); }
