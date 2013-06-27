@@ -2400,7 +2400,7 @@ iterableType returns [IterableType type]
 metaLiteral returns [MetaLiteral meta]
     @init { TypeLiteral tl=null; 
             MemberLiteral ml=null; }
-    : d1=TYPE_LITERAL_DELIMITER
+    : d1=BACKTICK
       { tl = new TypeLiteral($d1);
         $meta = tl; }
     (
@@ -2433,7 +2433,7 @@ metaLiteral returns [MetaLiteral meta]
         $meta = ml;
         ml.setIdentifier($m3.identifier); }
     )
-      d2=TYPE_LITERAL_DELIMITER
+      d2=BACKTICK
       { $meta.setEndToken($d2); }
     ;
 
@@ -3290,7 +3290,7 @@ MULTI_COMMENT
         }
         ;
 
-TYPE_LITERAL_DELIMITER
+BACKTICK
     : '`'
     ;
 
