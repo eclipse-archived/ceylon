@@ -124,6 +124,7 @@ public class AnnotationsTest extends CompilerTest {
     public void testAnnotationClassAnnotationClass(){
         compareWithJavaSource("AnnotationClassAnnotationClass");
     }
+    @Ignore("M6: Until it is implemented")
     @Test
     public void testAnnotationClassMetamodelReference(){
         compareWithJavaSource("AnnotationClassMetamodelReference");
