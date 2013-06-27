@@ -464,3 +464,8 @@ class RR<E>(E e)
 }
 
 interface Foobarbaz<X> @error given X of Foobarbaz<X>? {}
+
+interface Experimental<out Output> @error given Output of String?|Integer? {
+    shared formal Output fileContents(String filePath);
+}
+
