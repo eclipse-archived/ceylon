@@ -248,7 +248,14 @@ public class MiscTest extends CompilerTest {
                 "math",
                 "net",
                 "process",
+                "test",
+                "time"
         };
+        compileSDKOnly(modules);
+        compileSDKTests(modules);
+    }
+
+    private void compileSDKOnly(String[] modules){
         String sourceDir = "../ceylon-sdk/source";
         // don't run this if the SDK is not checked out
         File sdkFile = new File(sourceDir);
@@ -272,7 +279,35 @@ public class MiscTest extends CompilerTest {
                 Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk"), 
                 moduleNames, null);
         Boolean result = task.call();
-        Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
+        Assert.assertEquals("Compilation of SDK itself failed", Boolean.TRUE, result);
+    }
+
+    private void compileSDKTests(String[] modules){
+        String sourceDir = "../ceylon-sdk/test-source";
+        String depsDir = "../ceylon-sdk/test-deps";
+        // don't run this if the SDK is not checked out
+        File sdkFile = new File(sourceDir);
+        if(!sdkFile.exists())
+            return;
+        
+        java.util.List<String> moduleNames = new ArrayList<String>(modules.length);
+        for(String module : modules){
+            moduleNames.add("test.ceylon." + module);
+        }
+        
+        CeyloncTool compiler;
+        try {
+            compiler = new CeyloncTool();
+        } catch (VerifyError e) {
+            System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
+            throw e;
+        }
+        CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+                Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk"), 
+                moduleNames, null);
+        Boolean result = task.call();
+        Assert.assertEquals("Compilation of SDK tests failed", Boolean.TRUE, result);
     }
 
     //
