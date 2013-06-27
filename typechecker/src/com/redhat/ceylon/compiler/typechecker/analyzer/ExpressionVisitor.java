@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -5064,4 +5065,47 @@ public class ExpressionVisitor extends Visitor {
         return ut.getType();
     }
     
+    @Override
+    public void visit(Tree.TypeLiteral that) {
+        super.visit(that);
+        // grammar will catch that error
+        if(that.getType() == null)
+            return;
+        // FIXME: should we disallow type parameters in there?
+        ProducedType literalType = that.getType().getTypeModel();
+        if(literalType == null)
+            return;
+        // FIXME: should we really resolve aliases? I guess since they are not present in the runtime metamodel
+        literalType = literalType.resolveAliases();
+        TypeDeclaration declaration = literalType.getDeclaration();
+        if(declaration == null)
+            return;
+        if(declaration instanceof Class){
+            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
+            ParameterList parameterList = ((Class) declaration).getParameterList();
+            ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
+            that.setTypeModel(metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType());
+        }else if(declaration instanceof Interface){
+            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
+            that.setTypeModel(metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType());
+        }else if(declaration instanceof UnionType){
+            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("UnionType");
+            that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
+        }else if(declaration instanceof IntersectionType){
+            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("IntersectionType");
+            that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
+        }else if(declaration instanceof NothingType){
+            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("nothingType");
+            if(metamodelDecl instanceof TypedDeclaration){
+                that.setTypeModel(((TypedDeclaration) metamodelDecl).getType());
+            }
+        }else if(declaration instanceof TypeParameter){
+            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Type");
+            that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
+        }else{
+            // FIXME: we get there for UnknownType too, but I'm not sure if we need to add an error or if getting an UnknownType
+            // means we already logged an error?
+            that.addError("Type literal not supported yet: " + declaration);
+        }
+    }
 }
