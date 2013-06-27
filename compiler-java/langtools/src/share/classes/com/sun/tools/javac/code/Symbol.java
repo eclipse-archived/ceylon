@@ -1116,11 +1116,16 @@ public abstract class Symbol implements Element {
             for (Scope.Entry e = c.members().lookup(name);
                  impl == null && e.scope != null;
                  e = e.next()) {
-                if (this.overrides(e.sym, (TypeSymbol)owner, types, true) &&
+                if (this.overrides(e.sym, (TypeSymbol)owner, types, true)/* &&
+                    // Ceylon (Stef): I disabled this because it failed to notice that "<T> T[] toArray(T[] ret)" would be implementing
+                    // "<T> T[] Collection.toArray(T[] ret)", and because this.overrides has the last parameter set to "true", which means
+                    // the return type is already checked and agrees with covariance and type parameter substitution, which types.isSameType
+                    // does not do
+                    
                     // FIXME: I suspect the following requires a
                     // subst() for a parametric return type.
                     types.isSameType(type.getReturnType(),
-                                     types.memberType(owner.type, e.sym).getReturnType())) {
+                                     types.memberType(owner.type, e.sym).getReturnType())*/) {
                     impl = e.sym;
                 }
             }
