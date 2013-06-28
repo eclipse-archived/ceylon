@@ -20,15 +20,13 @@
 package com.redhat.ceylon.compiler;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-
-import com.redhat.ceylon.compiler.java.launcher.Main;
-import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -39,9 +37,14 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.compiler.java.launcher.Main;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.sun.tools.javac.main.JavacOption;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.main.RecognizedOptions;
+import com.sun.tools.javac.main.RecognizedOptions.OptionHelper;
+import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Options;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
@@ -93,6 +96,50 @@ import com.sun.tools.javac.main.RecognizedOptions;
 "future releases.")
 public class CeylonCompileTool implements Tool{
 
+    private static final class Helper implements OptionHelper {
+        String lastError;
+
+        @Override
+        public void setOut(PrintWriter out) {
+            
+        }
+
+        @Override
+        public void printXhelp() {
+            
+        }
+
+        @Override
+        public void printVersion() {
+            
+        }
+
+        @Override
+        public void printHelp() {
+            
+        }
+
+        @Override
+        public void printFullVersion() {
+            
+        }
+
+        @Override
+        public void error(String key, Object... args) {
+            lastError = Main.getLocalizedString(key, args);
+        }
+
+        @Override
+        public void addFile(File f) {
+        }
+
+        @Override
+        public void addClassName(String s) {
+        }
+    }
+    
+    private static final Helper HELPER = new Helper();
+
     private List<File> source = Collections.singletonList(new File("source"));
     private String out;
     private List<URI> repo = Collections.emptyList();
@@ -106,8 +153,6 @@ public class CeylonCompileTool implements Tool{
     private boolean verbose = false;
     private String verboseFlags = "";
     private boolean offline;
-
-    private List<String> arguments;
 
     public CeylonCompileTool() {
     }
@@ -198,9 +243,14 @@ public class CeylonCompileTool implements Tool{
     public void setOffline(boolean offline) {
         this.offline = offline;
     }
+
+    private List<String> arguments;
+    
+    private Main compiler;
     
     @PostConstruct
     public void init() {
+        compiler = new Main("ceylon compile");
         if (module.isEmpty() &&
                 !javac.contains("-help") &&
                 !javac.contains("-X") &&
@@ -264,12 +314,18 @@ public class CeylonCompileTool implements Tool{
         
         addJavacArguments(arguments);
         
-        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE);
+        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
+        Options options = Options.instance(new Context());
         for (String moduleSpec : this.module) {
-            if (sourceFileOpt != null
-                    && !sourceFileOpt.matches(moduleSpec)) {
-                throw new IllegalArgumentException("Not a valid module name or source file: " + moduleSpec);
+            if (sourceFileOpt != null) {
+                if (!sourceFileOpt.matches(moduleSpec)) {
+                    throw new IllegalArgumentException("Not a valid module name or source file: " + moduleSpec);
+                }
+                //if (sourceFileOpt.process(options, moduleSpec)) {
+                //    throw new IllegalArgumentException("Not a valid module name or source file: " + HELPER.errors);
+                //}
             }
+            
             arguments.add(moduleSpec);
         }
         
@@ -279,9 +335,9 @@ public class CeylonCompileTool implements Tool{
         }
     }
     
-    private JavacOption getJavacOpt(OptionName optionName) {
-        for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(null)) {
-            if (o.getName() == optionName) {
+    private JavacOption getJavacOpt(String optionName) {
+        for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
+            if (optionName.equals(o.getName().toString())) {
                 return o;
             }
         }
@@ -296,8 +352,6 @@ public class CeylonCompileTool implements Tool{
      */
     @Override
     public void run() {
-        
-        Main compiler = new Main("ceylon compile");
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         handleExitCode(result, compiler.exitState);
     }
@@ -322,44 +376,54 @@ public class CeylonCompileTool implements Tool{
             throw new IllegalStateException("Unexpected CeylonState " + ceylonState);
         }
     }
-/*
-    private void handleExitCode(
-            Main compiler, int javacExitCode) {
-        switch (javacExitCode) {
-        case Main.EXIT_OK:
-            break;
-        case Main.EXIT_ERROR:
-            if (compiler.ceylonBackendErrors) {
-                throw new CompilerBugException(javacExitCode, compiler);
-            }
-            throw new CompilerErrorException(compiler.errorCount);
-        case Main.EXIT_SYSERR:
-            throw new SystemErrorException(compiler.abortingException);
-        case Main.EXIT_ABNORMAL:
-            if (!compiler.bug && !compiler.ceylonBackendErrors) {
-                // pretend it's an ordinary compiler error, to work around javacs sloppy error handling 
-                // (see where compiler.compile() returns EXIT_ABNORMAL)
-                throw new CompilerErrorException(compiler.errorCount);
-            }
-            // else fall through
-        default:
-            throw new CompilerBugException(javacExitCode, compiler);
-        }
-    }
-*/
+
     private void addJavacArguments(List<String> arguments) {
-        for (String argument : javac) {       
+        Options options = Options.instance(new Context());
+        for (String argument : javac) {
+            HELPER.lastError = null;
             String value = null;
             int index = argument.indexOf('=');
             if (index != -1) {
                 value = index < argument.length() ? argument.substring(index+1) : "";
                 argument = argument.substring(0, index);
             }
+            
+            JavacOption javacOpt = getJavacOpt(argument.replaceAll(":.*", ":"));
+            if (javacOpt == null) {
+                throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
+            }
+            
+            
+            if (value != null) {
+                if (!javacOpt.hasArg()) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, "Unexpected argument given"));
+                }
+                if (!javacOpt.matches(argument)) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
+                }
+                if (javacOpt.process(options, argument, value)) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, HELPER.lastError));
+                }
+                
+            
+            } else {
+                if (javacOpt.hasArg()) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, "Missing expected argument"));
+                }
+                if (!javacOpt.matches(argument)) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
+                }
+                if (javacOpt.process(options, argument)) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, HELPER.lastError));
+                }
+            }
+            
             arguments.add(argument);
             if (value != null) {
                 arguments.add(value);
             }
         }
+        
     
     }
 }
