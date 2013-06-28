@@ -171,4 +171,20 @@ public class CompilerToolTest {
             Assert.fail("Unexpected exception");
         }
     }
+    
+    @Test
+    public void testBug1179()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try{
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--src=test/src", "3"));
+            Assert.fail("Tool should have thrown an exception");
+        }catch(OptionArgumentException x){
+            Assert.assertEquals("Not a valid module name or source file: 3", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
 }
