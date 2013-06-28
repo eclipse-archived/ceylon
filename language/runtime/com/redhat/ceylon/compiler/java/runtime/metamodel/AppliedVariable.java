@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -11,6 +12,7 @@ import ceylon.language.metamodel.Variable$impl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -55,6 +57,21 @@ public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
+            }
+        }else if(decl instanceof FieldValue){
+            String fieldName = ((FieldValue) decl).getRealName();
+            try {
+                Field f = javaClass.getField(fieldName);
+                setter = MethodHandles.lookup().unreflectSetter(f);
+                setter = setter.bindTo(instance);
+                setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
+                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+            } catch (SecurityException e) {
+                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
             }
         }else
             throw new RuntimeException("Unsupported attribute type: "+decl);

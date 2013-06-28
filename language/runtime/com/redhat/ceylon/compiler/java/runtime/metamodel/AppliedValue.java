@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.DeclarationType$impl;
@@ -14,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -78,6 +80,27 @@ public class AppliedValue<Type>
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
+            }
+        }else if(decl instanceof FieldValue){
+            FieldValue fieldDecl = (FieldValue) decl;
+            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
+            String fieldName = fieldDecl.getRealName();
+            try {
+                Field f = javaClass.getField(fieldName);
+                getter = MethodHandles.lookup().unreflectGetter(f);
+                java.lang.Class<?> getterType = f.getType();
+                getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
+                getter = getter.bindTo(instance);
+                // we need to cast to Object because this is what comes out when calling it in $call
+                getter = getter.asType(MethodType.methodType(Object.class));
+
+                initField(decl, javaClass, getterType, instance, valueType);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+            } catch (SecurityException e) {
+                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
             }
         }else
             throw new RuntimeException("Unsupported attribute type: "+decl);
