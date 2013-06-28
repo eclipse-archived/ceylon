@@ -62,9 +62,6 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArrayIterable may not have zero elements (array)");
     	}
-        if (rest.getEmpty()) {
-            throw new IllegalArgumentException("ArrayIterable may not have zero elements (rest)");
-        }
         this.array = array;
         this.first = first;
         this.rest = rest;
@@ -95,9 +92,6 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         // make sure we dont' create ArrayIterables with no fixed elements
         if(array.length == 0)
             return rest;
-        // make sure we don't create ArrayIterables with empty rests
-        if(rest.getEmpty())
-            return ArraySequence.<Element>instance($reifiedElement, array);
         return new ArrayIterable<Element, Null>($reifiedElement, Null.$TypeDescriptor, rest, array);
     }
     
