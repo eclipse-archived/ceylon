@@ -5175,10 +5175,24 @@ public class ExpressionVisitor extends Visitor {
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
             ParameterList parameterList = ((Class) declaration).getParameterList();
             ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType());
+            ProducedType classType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType();
+            if(declaration.isMember()){
+                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+                ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), classType)).getType();
+                that.setTypeModel(memberType);
+            }else{
+                that.setTypeModel(classType);
+            }
         }else if(declaration instanceof Interface){
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType());
+            ProducedType interfaceType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType();
+            if(declaration.isMember()){
+                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+                ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), interfaceType)).getType();
+                that.setTypeModel(memberType);
+            }else{
+                that.setTypeModel(interfaceType);
+            }
         }else if(declaration instanceof UnionType){
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("UnionType");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
