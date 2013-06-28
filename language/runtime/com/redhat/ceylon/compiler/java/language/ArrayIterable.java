@@ -43,13 +43,13 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Ignore
     private TypeDescriptor $reifiedAbsent;
 
-    public ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, 
+    private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, 
             Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array) {
         this($reifiedElement, $reifiedAbsent, rest, array, 0);
     }
 
     @Ignore
-    public ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent,
+    private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent,
             Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
