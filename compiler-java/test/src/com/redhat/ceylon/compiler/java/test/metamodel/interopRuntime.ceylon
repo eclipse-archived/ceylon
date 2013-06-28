@@ -129,6 +129,49 @@ void interopRuntime(){
     objectAttr(instance).set("b");
     
     //
+    // fields
+    
+    assert(exists booleanFieldAttr = javaType.getAttribute<JavaType,Variable<Boolean>>("booleanField"));
+    assert(booleanFieldAttr(instance).get() == true);
+    booleanFieldAttr(instance).set(true);
+
+    assert(exists byteFieldAttr = javaType.getAttribute<JavaType,Variable<Integer>>("byteField"));
+    assert(byteFieldAttr(instance).get() == 1);
+    byteFieldAttr(instance).set(1);
+
+    assert(exists shortFieldAttr = javaType.getAttribute<JavaType,Variable<Integer>>("shortField"));
+    assert(shortFieldAttr(instance).get() == 2);
+    shortFieldAttr(instance).set(2);
+
+    assert(exists intFieldAttr = javaType.getAttribute<JavaType,Variable<Integer>>("intField"));
+    assert(intFieldAttr(instance).get() == 3);
+    intFieldAttr(instance).set(3);
+    
+    assert(exists longFieldAttr = javaType.getAttribute<JavaType,Variable<Integer>>("longField"));
+    assert(longFieldAttr(instance).get() == 4);
+    longFieldAttr(instance).set(4);
+
+    assert(exists floatFieldAttr = javaType.getAttribute<JavaType,Variable<Float>>("floatField"));
+    assert(floatFieldAttr(instance).get() == 1.0);
+    floatFieldAttr(instance).set(1.0);
+
+    assert(exists doubleFieldAttr = javaType.getAttribute<JavaType,Variable<Float>>("doubleField"));
+    assert(doubleFieldAttr(instance).get() == 2.0);
+    doubleFieldAttr(instance).set(2.0);
+
+    assert(exists charFieldAttr = javaType.getAttribute<JavaType,Variable<Character>>("charField"));
+    assert(charFieldAttr(instance).get() == 'a');
+    charFieldAttr(instance).set('a');
+
+    assert(exists stringFieldAttr = javaType.getAttribute<JavaType,Variable<String>>("stringField"));
+    assert(stringFieldAttr(instance).get() == "a");
+    stringFieldAttr(instance).set("a");
+
+    assert(exists objectFieldAttr = javaType.getAttribute<JavaType,Variable<Object>>("objectField"));
+    assert(objectFieldAttr(instance).get() == "b");
+    objectFieldAttr(instance).set("b");
+
+    //
     // Member types
     
     assert(exists memberMember = javaType.getClassOrInterface<JavaType, Class<JavaType.Member, [Boolean]>>("Member"));

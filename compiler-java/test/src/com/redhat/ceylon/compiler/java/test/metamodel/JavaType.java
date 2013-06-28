@@ -23,6 +23,17 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 import junit.framework.AssertionFailedError;
 
 public class JavaType {
+
+    public boolean booleanField = true;
+    public byte byteField = 1;
+    public short shortField = 2;
+    public int intField = 3;
+    public long longField = 4;
+    public float floatField = 1.0f;
+    public double doubleField = 2.0;
+    public char charField = 'a';
+    public String stringField = "a";
+    public Object objectField = ceylon.language.String.instance("b");
     
     public JavaType(boolean bo, byte by, short s, int i, long l, float f, double d, char c, String str, Object o){
         assertt(bo == true);
