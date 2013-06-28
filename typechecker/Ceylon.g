@@ -2432,6 +2432,10 @@ metaLiteral returns [MetaLiteral meta]
       { ml = new MemberLiteral($d1);
         $meta = ml;
         ml.setIdentifier($m3.identifier); }
+      (
+        typeArguments
+        { ml.setTypeArgumentList($typeArguments.typeArgumentList); }
+      )?
     )
       d2=BACKTICK
       { $meta.setEndToken($d2); }
