@@ -39,6 +39,9 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
+import com.sun.tools.javac.main.JavacOption;
+import com.sun.tools.javac.main.OptionName;
+import com.sun.tools.javac.main.RecognizedOptions;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
@@ -103,6 +106,8 @@ public class CeylonCompileTool implements Tool{
     private boolean verbose = false;
     private String verboseFlags = "";
     private boolean offline;
+
+    private List<String> arguments;
 
     public CeylonCompileTool() {
     }
@@ -193,7 +198,7 @@ public class CeylonCompileTool implements Tool{
     public void setOffline(boolean offline) {
         this.offline = offline;
     }
-
+    
     @PostConstruct
     public void init() {
         if (module.isEmpty() &&
@@ -202,18 +207,7 @@ public class CeylonCompileTool implements Tool{
                 !javac.contains("-version")) {
             throw new IllegalStateException("Argument moduleOrFile should appear at least 1 time(s)");
         }
-                
-    }
-
-    /**
-     * Run the compilation
-     * @throws CompilerErrorException If the source code had errors
-     * @throws SystemErrorException If there was a system error
-     * @throws CompilerBugException If a bug in the compiler was detected.
-     */
-    @Override
-    public void run() {
-        List<String> arguments = new ArrayList<>();
+        arguments = new ArrayList<>();
         for (File source : this.source) {
             arguments.add("-src");
             arguments.add(source.getPath());
@@ -270,7 +264,12 @@ public class CeylonCompileTool implements Tool{
         
         addJavacArguments(arguments);
         
+        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE);
         for (String moduleSpec : this.module) {
+            if (sourceFileOpt != null
+                    && !sourceFileOpt.matches(moduleSpec)) {
+                throw new IllegalArgumentException("Not a valid module name or source file: " + moduleSpec);
+            }
             arguments.add(moduleSpec);
         }
         
@@ -278,6 +277,26 @@ public class CeylonCompileTool implements Tool{
             System.out.println(arguments);
             System.out.flush();
         }
+    }
+    
+    private JavacOption getJavacOpt(OptionName optionName) {
+        for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(null)) {
+            if (o.getName() == optionName) {
+                return o;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Run the compilation
+     * @throws CompilerErrorException If the source code had errors
+     * @throws SystemErrorException If there was a system error
+     * @throws CompilerBugException If a bug in the compiler was detected.
+     */
+    @Override
+    public void run() {
+        
         Main compiler = new Main("ceylon compile");
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         handleExitCode(result, compiler.exitState);
