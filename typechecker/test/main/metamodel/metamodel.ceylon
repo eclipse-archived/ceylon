@@ -29,7 +29,24 @@ void test<T>() {
     value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
     @type:"Member<ParameterisedContainer<String>,Interface<ParameterisedContainer<String>.InnerInterface<Integer>>>"
     value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
+
+    // toplevel methods    
+    @type:"Function<Integer,Tuple<String,String,Empty>>"
+    value toplevelMethod = `method`;
+    @type:"Function<Integer,Tuple<String,String,Empty>>"
+    value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
+    @error:"missing type arguments to: parameterisedMethod"
+    value toplevelParameterisedMethodErr = `parameterisedMethod`;
+    @type:"Function<Callable<Integer,Tuple<Boolean,Boolean,Empty>>,Tuple<String,String,Empty>>"
+    value toplevelMPLMethod = `mplMethod`;
+    
+    // toplevel attributes
+    @type:"Attribute<Integer>"
+    value toplevelAttribute = `attribute`;
+    @type:"Variable<Integer>"
+    value toplevelVariableAttribute = `variableAttribute`;
 }
+
 
 // put them after usage to make sure their types are available when we deal with literals
 
@@ -39,6 +56,13 @@ class ParameterisedClass<T>(){}
 interface Interface1{}
 interface Interface2{}
 alias Alias => NoParams;
+
+Integer attribute = 2;
+variable Integer variableAttribute = 2;
+
+Integer method(String p){ return 1; }
+Integer mplMethod(String p)(Boolean b){ return 1; }
+Ret parameterisedMethod<Ret, Arg>(Arg a){ return nothing; }
 
 class Container(){
     shared interface InnerInterface{}
