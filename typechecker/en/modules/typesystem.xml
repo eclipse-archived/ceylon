@@ -895,10 +895,10 @@ Float|Integer num = one;</programlisting></comment>
             
             <para>If a class or interface <literal>A</literal> is a subtype of the types
             <literal>B&lt;X&gt;</literal> and <literal>B&lt;Y&gt;</literal> for some
-            parameterized type <literal>B&lt;T&gt;</literal>, and types <literal>X</literal> 
+            parameterized type <literal>B&lt;T&gt;</literal>, and distinct types <literal>X</literal> 
             and <literal>Y</literal>, then <literal>A</literal> must also be a subtype of 
-            <literal>B&lt;Z&gt;</literal> for some subtype <literal>Z</literal> of 
-            <literal>X</literal> and <literal>Y</literal>.</para>
+            <literal>B&lt;Z&gt;</literal> for some type <literal>Z</literal> such that 
+            <literal>B&lt;Z&gt;</literal> is a subtype of <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>.</para>
             
             <para>Or, equivalently, <literal>B&lt;T&gt;</literal> must not be invariant in 
             <literal>T</literal> and <literal>A</literal> must also be a subtype of:</para>
