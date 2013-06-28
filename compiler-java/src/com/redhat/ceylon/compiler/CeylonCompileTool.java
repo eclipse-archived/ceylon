@@ -248,9 +248,29 @@ public class CeylonCompileTool implements Tool{
     
     private Main compiler;
     
+    private static void validateWithJavac(Options options, JavacOption encodingOpt, String option, String argument, String key) {
+        if (!encodingOpt.matches(option)) {
+            throw new IllegalArgumentException(CeylonCompileMessages.msg(key, option));
+        }
+        HELPER.lastError = null;
+        if (encodingOpt.hasArg()) {
+            if (encodingOpt.process(options, option, argument)
+                    || HELPER.lastError != null) {
+                throw new IllegalArgumentException(HELPER.lastError);
+            }
+        } else {
+            if (encodingOpt.process(options, option)
+                    || HELPER.lastError != null) {
+                throw new IllegalArgumentException(HELPER.lastError);
+            }
+        }
+    }
+    
     @PostConstruct
     public void init() {
         compiler = new Main("ceylon compile");
+        Options options = Options.instance(new Context());
+        
         if (module.isEmpty() &&
                 !javac.contains("-help") &&
                 !javac.contains("-X") &&
@@ -261,6 +281,7 @@ public class CeylonCompileTool implements Tool{
         for (File source : this.source) {
             arguments.add("-src");
             arguments.add(source.getPath());
+            options.addMulti(OptionName.SOURCEPATH, source.getPath());
         }
         
         if (d) {
@@ -298,7 +319,9 @@ public class CeylonCompileTool implements Tool{
             fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
         }
         if (fileEncoding != null) {
-            arguments.add("-encoding");
+            JavacOption encodingOpt = getJavacOpt(OptionName.ENCODING.toString());
+            validateWithJavac(options, encodingOpt, OptionName.ENCODING.toString(), fileEncoding, "option.error.syntax.encoding");
+            arguments.add(OptionName.ENCODING.toString());
             arguments.add(fileEncoding);
         }
 
@@ -315,17 +338,11 @@ public class CeylonCompileTool implements Tool{
         addJavacArguments(arguments);
         
         JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
-        Options options = Options.instance(new Context());
+        
         for (String moduleSpec : this.module) {
             if (sourceFileOpt != null) {
-                if (!sourceFileOpt.matches(moduleSpec)) {
-                    throw new IllegalArgumentException("Not a valid module name or source file: " + moduleSpec);
-                }
-                //if (sourceFileOpt.process(options, moduleSpec)) {
-                //    throw new IllegalArgumentException("Not a valid module name or source file: " + HELPER.errors);
-                //}
-            }
-            
+                validateWithJavac(options, sourceFileOpt, moduleSpec, moduleSpec, "argument.error");
+            }            
             arguments.add(moduleSpec);
         }
         
@@ -335,7 +352,7 @@ public class CeylonCompileTool implements Tool{
         }
     }
     
-    private JavacOption getJavacOpt(String optionName) {
+    private static JavacOption getJavacOpt(String optionName) {
         for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
             if (optionName.equals(o.getName().toString())) {
                 return o;

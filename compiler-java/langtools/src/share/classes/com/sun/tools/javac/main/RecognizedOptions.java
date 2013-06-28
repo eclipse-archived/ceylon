@@ -39,6 +39,9 @@ import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -414,7 +417,21 @@ public class RecognizedOptions {
         new Option(S,                   "opt.arg.directory",    "opt.sourceDest"),
         new Option(IMPLICIT,                                    "opt.implicit",
                 Option.ChoiceKind.ONEOF, "none", "class"),
-        new Option(ENCODING,            "opt.arg.encoding",     "opt.encoding"),
+        new Option(ENCODING,            "opt.arg.encoding",     "opt.encoding") {
+            @Override
+            public boolean process(Options options, String option, String operand) {
+                try {
+                    Charset.forName(operand);
+                    return false;
+                } catch (UnsupportedCharsetException e) {
+                    helper.error("err.unsupported.encoding", operand);
+                    return true;
+                } catch (IllegalCharsetNameException e) {
+                    helper.error("err.unsupported.encoding", operand);
+                    return true;
+                }
+            }
+        },
         new Option(SOURCE,              "opt.arg.release",      "opt.source") {
             @Override
             public boolean process(Options options, String option, String operand) {
@@ -722,8 +739,29 @@ public class RecognizedOptions {
                     }
                     helper.addFile(f);
                 }
-                else
-                    helper.addClassName(s);
+                else {
+                    // Should be a module name
+                    List<String> sourcePaths = options.getMulti("-sourcepath");
+                    if(sourcePaths.isEmpty())
+                        sourcePaths = Arrays.asList("source");// default value
+                    // walk every path arg
+                    for(String sourcePath : sourcePaths){
+                        // split the path
+                        for(String part : sourcePath.split("\\"+File.pathSeparator)){
+                            // try to see if it's a module folder
+                            File moduleFolder = new File(part, s.replace(".", File.separator));
+                            if (moduleFolder.isDirectory()) {
+                                // A Ceylon module name that ends with .ceylon or .java
+                                helper.addClassName(s);
+                                return false;
+                            }
+                        }
+                    }
+
+                    String paths = sourcePaths.toString();
+                    helper.error("err.module.not.found", s, paths.substring(1,  paths.length()-1));
+                    return true;
+                }
                 return false;
             }
         },
