@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.OptionArgumentException;
@@ -68,6 +69,80 @@ public class CompilerToolTest {
         CeylonCompileTool tool = pluginFactory.bindArguments(model, 
                 Arrays.asList("--verbose", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
+    }
+    
+    @Test
+    public void testCompileNoSuchModule()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Module com.redhat.ceylon.tools.test.nosuchmodule not found in source directories: test/src", e.getMessage());   
+        }
+    }
+    
+    @Test
+    public void testCompileNoSuchModuleDotJava()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.java"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("file not found: com.redhat.ceylon.tools.test.nosuchmodule.java", e.getMessage());   
+        }
+    }
+    
+    @Test
+    public void testCompileNoSuchModuleDotCeylon()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.ceylon"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("file not found: com.redhat.ceylon.tools.test.nosuchmodule.ceylon", e.getMessage());   
+        }
+    }
+    
+    @Test
+    public void testCompileValidEncoding()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);        
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--src=test/src", "--encoding=UTF-8", "com.redhat.ceylon.tools.test.ceylon"));
+    }
+    
+    @Test
+    public void testCompileNoSuchEncoding()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--src=test/src", "--encoding=foo", "com.redhat.ceylon.tools.test.ceylon"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unsupported encoding: foo", e.getMessage());   
+        }
+    }
+    
+    @Test
+    public void testCompileModuleAndVersion()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.ceylon/1.0"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Invalid module name or source file: com.redhat.ceylon.tools.test.ceylon/1.0", e.getMessage());   
+        }
+        
     }
     
     @Test
@@ -181,7 +256,63 @@ public class CompilerToolTest {
                     Arrays.asList("--src=test/src", "3"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
-            Assert.assertEquals("Not a valid module name or source file: 3", x.getMessage());
+            Assert.assertEquals("Invalid module name or source file: 3", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+    }
+    
+    @Test
+    public void testValidatingJavaOptions()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try{
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--javac=-target=foo", "com.example"));
+            Assert.fail("Tool should have thrown an exception");
+        }catch(OptionArgumentException x){
+            Assert.assertEquals("Invalid --javac option: -target: invalid target release: foo", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+        
+        try{
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--javac=-source=foo", "com.example"));
+            Assert.fail("Tool should have thrown an exception");
+        }catch(OptionArgumentException x){
+            Assert.assertEquals("Invalid --javac option: -source: invalid source release: foo", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+        
+        try{
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--javac=-monkey", "com.example"));
+            Assert.fail("Tool should have thrown an exception");
+        }catch(OptionArgumentException x){
+            Assert.assertEquals("Unknown --javac option: -monkey", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
+        }
+        
+        {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--javac=-Xlint:cast", 
+                            "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+        }
+        
+        try{
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    Arrays.asList("--javac=-Xlint:monkey", 
+                            "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+            Assert.fail("Tool should have thrown an exception");
+        }catch(OptionArgumentException x){
+            Assert.assertEquals("Unknown --javac option: -Xlint:monkey", x.getMessage());
         }catch(Throwable t){
             t.printStackTrace();
             Assert.fail("Unexpected exception");
