@@ -19,6 +19,16 @@ void test<T>() {
     value nothingType = `String&Integer`;
     @type:"Class<NoParams,Empty>" 
     value aliasType = `Alias`;
+    
+    // members
+    @type:"Member<Container,Class<Container.InnerClass,Empty>>"
+    value memberClassType = `Container.InnerClass`;
+    @type:"Member<Container,Interface<Container.InnerInterface>>"
+    value memberInterfaceType = `Container.InnerInterface`;
+    @type:"Member<ParameterisedContainer<String>,Class<ParameterisedContainer<String>.InnerClass<Integer>,Empty>>"
+    value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
+    @type:"Member<ParameterisedContainer<String>,Interface<ParameterisedContainer<String>.InnerInterface<Integer>>>"
+    value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
 }
 
 // put them after usage to make sure their types are available when we deal with literals
@@ -29,3 +39,19 @@ class ParameterisedClass<T>(){}
 interface Interface1{}
 interface Interface2{}
 alias Alias => NoParams;
+
+class Container(){
+    shared interface InnerInterface{}
+    shared class InnerClass(){}
+    shared void method(){}
+    shared Integer attribute = 2;
+    shared variable Integer variableAttribute = 2;
+}
+
+class ParameterisedContainer<Outer>(){
+    shared interface InnerInterface<Inner>{}
+    shared class InnerClass<Inner>(){}
+    shared void method<Inner>(){}
+    shared Integer attribute = 2;
+    shared variable Integer variableAttribute = 2;
+}
