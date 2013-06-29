@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +39,10 @@ public class Stitcher {
         if (!destFile.exists()) {
             destFile.createNewFile();
         }
-        FileInputStream fIn = null;
-        FileOutputStream fOut = null;
-        FileChannel source = null;
-        FileChannel destination = null;
-        try {
-            fIn = new FileInputStream(sourceFile);
-            source = fIn.getChannel();
-            fOut = new FileOutputStream(destFile);
-            destination = fOut.getChannel();
+        try (FileInputStream fIn = new FileInputStream(sourceFile);
+                FileChannel source = fIn.getChannel();
+                FileOutputStream fOut = new FileOutputStream(destFile);
+                FileChannel destination = fOut.getChannel()) {
             long transfered = 0;
             long bytes = source.size();
             while (transfered < bytes) {
@@ -56,22 +50,13 @@ public class Stitcher {
                 destination.position(transfered);
             }
         } finally {
-            if (source != null) {
-                source.close();
-            } else if (fIn != null) {
-                fIn.close();
-            }
-            if (destination != null) {
-                destination.close();
-            } else if (fOut != null) {
-                fOut.close();
-            }
         }
     }
 
     private static void compileLanguageModule(List<String> sources, PrintWriter writer, String clmod)
             throws IOException {
         final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
+        final File clSrcDirJs = new File("../ceylon.language/runtime-js");
         File tmpdir = File.createTempFile("ceylonjs", "clsrc");
         tmpdir.delete();
         tmpdir = new File(tmpdir.getAbsolutePath());
@@ -86,7 +71,8 @@ public class Stitcher {
 
         //Typecheck the whole language module
         System.out.println("Compiling language module from Ceylon source");
-        TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(clSrcDir.getParentFile().getParentFile());
+        TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(clSrcDir.getParentFile().getParentFile())
+                .addSrcDirectory(new File(clSrcDir.getParentFile().getParentFile().getParentFile(), "runtime-js"));
         tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
         //This is to use the JSON metamodel
@@ -103,7 +89,10 @@ public class Stitcher {
             System.out.println("Compiling " + line);
             final List<String> includes = new ArrayList<String>();
             for (String filename : line.split(",")) {
-                final File src = new File(clSrcDir, String.format("%s.ceylon", filename.trim()));
+                final boolean isJsSrc = filename.trim().endsWith(".js");
+                final File src = new File(isJsSrc ? clSrcDirJs : clSrcDir,
+                        isJsSrc ? filename.trim() :
+                        String.format("%s.ceylon", filename.trim()));
                 if (src.exists() && src.isFile() && src.canRead()) {
                     includes.add(src.getPath());
                 } else {
@@ -118,8 +107,7 @@ public class Stitcher {
             jsc.generate();
             File compsrc = new File(tmpout, String.format("ceylon/language/%s/ceylon.language-%<s.js", VERSION));
             if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
-                BufferedReader jsr = new BufferedReader(new FileReader(compsrc));
-                try {
+                try (BufferedReader jsr = new BufferedReader(new FileReader(compsrc))) {
                     String jsline = null;
                     while ((jsline = jsr.readLine()) != null) {
                         if (!jsline.contains("=require('")) {
@@ -127,7 +115,6 @@ public class Stitcher {
                         }
                     }
                 } finally {
-                    jsr.close();
                     compsrc.delete();
                 }
             } else {
@@ -145,14 +132,7 @@ public class Stitcher {
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.length() > 0) {
-                    if (line.startsWith("//#include ")) {
-                        File auxfile = new File(infile.getParentFile(), line.substring(11).trim());
-                        if (auxfile.exists() && auxfile.isFile() && auxfile.canRead()) {
-                            stitch(auxfile, writer, null);
-                        } else {
-                            throw new IllegalArgumentException("Invalid included file " + auxfile);
-                        }
-                    } else if (line.equals("//#METAMODEL")) {
+                    if (line.equals("//#METAMODEL")) {
                         System.out.println("Generating language module metamodel in JSON...");
                         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
                         tcb.addSrcDirectory(new File("../ceylon.language/src"));
@@ -211,8 +191,7 @@ public class Stitcher {
             if (!(clSourcesPath.exists() && clSourcesPath.isFile() && clSourcesPath.canRead())) {
                 throw new IllegalArgumentException("Invalid language module sources list " + args[2]);
             }
-            BufferedReader listReader = new BufferedReader(new FileReader(clSourcesPath));
-            try {
+            try (BufferedReader listReader = new BufferedReader(new FileReader(clSourcesPath))) {
                 String line;
                 //Copy the files to a temporary dir
                 while ((line = listReader.readLine()) != null) {
@@ -221,13 +200,10 @@ public class Stitcher {
                     }
                 }
             } finally {
-                listReader.close();
             }
-            PrintWriter writer = new PrintWriter(outfile, "UTF-8");
-            try {
+            try (PrintWriter writer = new PrintWriter(outfile, "UTF-8")) {
                 stitch(infile, writer, clsrc);
             } finally {
-                writer.close();
                 ShaSigner.sign(outfile, new JULLogger(), true);
             }
         } else {
