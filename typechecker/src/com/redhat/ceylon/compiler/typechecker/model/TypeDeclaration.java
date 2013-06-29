@@ -135,6 +135,9 @@ public abstract class TypeDeclaration extends Declaration
         /*if (!acceptsArguments(this, typeArguments)) {
               return null;
           }*/
+    	if (qualifyingType!=null && qualifyingType.isNothing()) {
+    		return qualifyingType;
+    	}
         ProducedType pt = new ProducedType();
         pt.setDeclaration(this);
         pt.setQualifyingType(qualifyingType);

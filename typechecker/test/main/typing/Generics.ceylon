@@ -572,15 +572,18 @@ class Invariance() {
         //these fail because of the famous problem with
         //not being able to write down the pricipal
         //instantiation of O<E> & O<I>
-        @error O<E> val1 = val;
-        @error O<I> val2 = val;
+        /*@error*/ O<E> val1 = val;
+        /*@error*/ O<I> val2 = val;
     }
     
     void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
             given E satisfies O<E> {
-        O<E> & O<I> g1 = f1; 
-        O<E&I> g2 = f2; 
-        O<E> & O<I> g3 = f3; 
+        O<E&I> g2 = f2;
+        //fail because F1/F2 are not well-defined
+        //and the subtype algo can't calculate
+        //the principal type
+        @error O<E> & O<I> g1 = f1; 
+        @error O<E> & O<I> g3 = f3; 
     }
     
 }
@@ -613,6 +616,27 @@ class CoVariance() {
         O<E> & O<I> g3 = f3; 
     }
     
+}
+
+class MoreInvariance() {
+    interface Num<T> {
+        shared formal T set(T t);
+    }
+    interface Int {}
+    
+    interface X satisfies Num<String> {}
+    interface Y satisfies Num<Object> {}
+    
+    void testit<T>(Num<Int>&Num<T> n) {
+        @type:"MoreInvariance.Num<MoreInvariance.Int>&MoreInvariance.Num<T>"
+        value nn = n;
+        @error n.set(nothing);
+        @error value set = n.set(nothing);
+        @error Num<Int&T> m = n;
+        @error Num<Int>&Num<T> nn = m;
+        @error Num<Int|T> mm = nn;
+        @error Num<Int>&Num<T> nnn = mm;
+    }
 }
 
 interface Bound1 {}

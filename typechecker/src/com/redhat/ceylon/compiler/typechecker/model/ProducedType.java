@@ -3,8 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.constructPrincipalInstantiation;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.principalQualifyingType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -720,8 +719,7 @@ public class ProducedType extends ProducedReference {
                     
                     Unit unit = getDeclaration().getUnit();
 					if (d!=null) {
-                        result = d.getProducedType(principalQualifyingType(result, possibleResult, d, unit),
-                        		constructPrincipalInstantiation(d, result, possibleResult, unit));
+						return principalInstantiation(d, possibleResult, result, unit);
                     }
                     else {
                         //ambiguous! we can't decide between the two 
@@ -1004,9 +1002,7 @@ public class ProducedType extends ProducedReference {
      * garbage nulls?
      */
     public boolean isWellDefined() {
-    	TypeDeclaration d = getDeclaration();
-		//if (d instanceof UnknownType) return false;
-    	List<TypeParameter> tps = d.getTypeParameters();
+    	List<TypeParameter> tps = getDeclaration().getTypeParameters();
 		List<ProducedType> tas = getTypeArgumentList();
 		for (int i=0; i<tps.size(); i++) {
 			ProducedType at=tas.get(i);
@@ -1016,6 +1012,23 @@ public class ProducedType extends ProducedReference {
             }
         }
         return true;
+    }
+
+    /**
+     * Is the type well-defined? Are any of its arguments
+     * garbage nulls?
+     */
+    public boolean containsUnknowns() {
+		if (getDeclaration() instanceof UnknownType) {
+			return true;
+		}
+		List<ProducedType> tas = getTypeArgumentList();
+		for (ProducedType at: tas) {
+    		if (at.containsUnknowns()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private List<ProducedType> getInternalSatisfiedTypes() {

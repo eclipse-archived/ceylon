@@ -448,9 +448,12 @@ public class Util {
                             t.getDeclaration() instanceof ClassOrInterface && 
                             pt.getDeclaration().equals(t.getDeclaration()) ) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
-                        iter.remove();
-                        list.add(principalInstantiation(pt, t, unit));
-                        return;
+                        ProducedType pi = principalInstantiation(pt.getDeclaration(), pt, t, unit);
+                        if (!pi.containsUnknowns()) {
+                        	iter.remove();
+                        	list.add(pi);
+                        	return;
+                        }
                     }
                 }
             }
@@ -562,48 +565,6 @@ public class Util {
     }
 
     /**
-     * Given two produced types for the exact same type
-     * constructor, return the principal instantiation
-     * of that type constructor for the intersection of 
-     * the two types.
-     * @param pt an instantiation of the type constructor
-     * @param t another instantiation of the type constructor
-     */
-    private static ProducedType principalInstantiation(ProducedType pt,
-            ProducedType t, Unit unit) {
-        TypeDeclaration td = pt.getDeclaration();
-        List<ProducedType> args = new ArrayList<ProducedType>();
-        for (int i=0; i<td.getTypeParameters().size(); i++) {
-            TypeParameter tp = td.getTypeParameters().get(i);
-            ProducedType pta = pt.getTypeArguments().get(tp);
-            ProducedType ta = t.getTypeArguments().get(tp);
-            if (tp.isContravariant()) {
-                args.add(unionType(pta, ta, unit));
-            }
-            else if (tp.isCovariant()) {
-                args.add(intersectionType(pta, ta, unit));
-            }
-            else {
-                //TODO: this is not correct: the intersection
-                //      of two different instantiations of an
-                //      invariant type is actually Nothing
-                //      unless the type arguments are equivalent
-                //      or are type parameters that might 
-                //      represent equivalent types at runtime.
-                //      Therefore, a method T x(T y) of Inv<T> 
-                //      should have the signature:
-                //             Foo&Bar x(Foo|Bar y)
-                //      on the intersection Inv<Foo>&Inv<Bar>.
-                //      But this code gives it the more 
-                //      restrictive signature:
-                //             Foo&Bar x(Foo&Bar y)
-                args.add(intersectionType(pta, ta, unit));
-            }
-        }
-        return td.getProducedType(principalQualifyingType(pt, t, td, unit), args);
-    }
-    
-    /**
      * Given two instantiations of a qualified type constructor, 
      * determine the qualifying type of the principal 
      * instantiation of that type constructor for the 
@@ -613,17 +574,16 @@ public class Util {
             ProducedType t, TypeDeclaration td, Unit unit) {
         ProducedType ptqt = pt.getQualifyingType();
         ProducedType tqt = t.getQualifyingType();
-        ProducedType qt = null;
         if (ptqt!=null && tqt!=null && 
                 td.getContainer() instanceof TypeDeclaration) {
             TypeDeclaration qtd = (TypeDeclaration) td.getContainer();
             ProducedType pst = ptqt.getSupertype(qtd);
             ProducedType st = tqt.getSupertype(qtd);
             if (pst!=null && st!=null) {
-                qt = principalInstantiation(pst, st, unit);
+                return principalInstantiation(qtd, pst, st, unit);
             }
         }
-        return qt;
+        return null;
     }
     
     /**
@@ -871,43 +831,44 @@ public class Util {
      * 
      * Nevertheless, we give it our best shot!
      */
-    public static List<ProducedType> constructPrincipalInstantiation(
-            TypeDeclaration dec, ProducedType first, ProducedType second,
+    public static ProducedType principalInstantiation(
+            TypeDeclaration dec, ProducedType first, ProducedType second, 
             Unit unit) {
         List<ProducedType> args = new ArrayList<ProducedType>();
         for (TypeParameter tp: dec.getTypeParameters()) {
-            List<ProducedType> l = new ArrayList<ProducedType>();
             ProducedType arg;
             ProducedType rta = first.getTypeArguments().get(tp);
             ProducedType prta = second.getTypeArguments().get(tp);
             if (tp.isContravariant()) {
-                addToUnion(l, rta);
-                addToUnion(l, prta);
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(l);
-                arg = ut.getType();
+            	arg = unionType(rta, prta, unit);
             }
-            else { //if (tp.isCovariant()) {
-                addToIntersection(l, rta, unit);
-                addToIntersection(l, prta, unit);
-                IntersectionType it = new IntersectionType(unit);
-                it.setSatisfiedTypes(l);
-                arg = it.canonicalize().getType();
+            else if (tp.isCovariant()) {
+            	arg = intersectionType(rta, prta, unit);
             }
-//                            else {
-//                                if (rta.isExactlyInternal(prta)) {
-//                                    arg = rta;
-//                                }
-//                                else {
-//                                    //TODO: think this case through better!
-//                                    return null;
-//                                }
-//                            }
+            else {
+            	//invariant type
+                if (rta.isExactly(prta)) {
+                    arg = rta;
+                }
+                else if (rta.containsTypeParameters() ||
+                		 prta.containsTypeParameters()) {
+                    //type parameters that might represent 
+            		//equivalent types at runtime. This is
+                	//a hole in our type system!
+                	arg = new UnknownType(unit).getType();
+                }
+                else {
+            		//the type arguments are distinct, and the
+            		//intersection is Nothing, so there is
+            		//no reasonable principal instantiation
+                    return unit.getNothingDeclaration().getType();
+                }
+            }
             args.add(arg);
         }
-        return args;
+        return dec.getProducedType(principalQualifyingType(first, second, dec, unit), args);
     }
-
+    
     public static boolean areConsistentSupertypes(ProducedType st1, 
             ProducedType st2, Unit unit) {
         //can't inherit two instantiations of an invariant type
