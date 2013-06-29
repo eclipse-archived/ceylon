@@ -1,7 +1,3 @@
-var exports=null;//IGNORE
-function String$(a,b){}//IGNORE
-function StringBuilder(){}//IGNORE
-
 function string(/*Iterable<Character>*/chars) {
     if (chars === undefined) return String$('',0);
     var s = StringBuilder();

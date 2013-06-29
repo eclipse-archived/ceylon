@@ -1,12 +1,3 @@
-function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
-function inheritProto(a,b,c,d,e,f,g,h,j,i,k,l);//IGNORE
-function ArraySequence(x){}//IGNORE
-function Singleton(x){}//IGNORE
-function largest(a,b){}//IGNORE
-function smallest(a,b){}//IGNORE
-var Object$,List,Comparable,Ranged,Summable,Cloneable,smaller,larger,equal;//IGNORE
-var Iterator,exports;//IGNORE
-
 function String$(value,size) {
     if (value && value.getT$name && value.getT$name() == 'ceylon.language::String') {
         return value;

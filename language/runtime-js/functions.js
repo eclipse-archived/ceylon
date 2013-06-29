@@ -1,10 +1,3 @@
-var exports,console,process$,empty;//IGNORE
-function Comparison(x){}//IGNORE
-function Entry(a,b){}//IGNORE
-function Singleton(x){}//IGNORE
-function SequenceBuilder(){}//IGNORE
-function String$(f,x){}//IGNORE
-
 var larger = Comparison("larger");
 function getLarger() { return larger }
 var smaller = Comparison("smaller");

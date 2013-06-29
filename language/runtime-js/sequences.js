@@ -1,13 +1,3 @@
-function initTypeProto(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
-function String$(x){}//IGNORE
-function Character(x){}//IGNORE
-function isOfType(a,b){}//IGNORE
-function smallest(x,y){}//IGNORE
-function largest(x,y){}//IGNORE
-function Exception(){}//IGNORE
-var List,Cloneable,Ranged,exports,larger,smaller,equal,Object$,Iterator;//IGNORE
-var Category;//IGNORE
-
 function Array$() {
     var that = new Array$.$$;
     List(that);

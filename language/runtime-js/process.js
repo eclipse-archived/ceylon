@@ -1,10 +1,4 @@
 // implementation of object "process" in ceylon.language
-
-function inheritProto(x,y){}//IGNORE
-function String$(x){}//IGNORE
-function ArraySequence(x){}//IGNORE
-var exports;//IGNORE
-
 function languageClass() {
     var lang = new languageClass.$$;
     Basic(lang);

@@ -1,9 +1,8 @@
 #This is the list of language module files that can be compiled from their Ceylon source
 #each line states a list of files to be compiled in one pass
-
 #Identifiable is a problem because it can't extend itself
 #Identifiable
-Basic
+callable.js,collections.js,Basic
 Exception
 
 #Anything,Object,Null
@@ -43,3 +42,4 @@ identical,compose,shuffle,plus,times,combine,sort
 metamodel/Annotated,metamodel/Annotation,metamodel/Type,metamodel/Class,metamodel/ClassOrInterface,metamodel/ConstrainedAnnotation,metamodel/DeclarationType,metamodel/Function,metamodel/Interface,metamodel/IntersectionType,metamodel/Member,metamodel/SequencedAnnotation,metamodel/UnionType,metamodel/Attribute,metamodel/Variable,metamodel/annotations,metamodel/nothingType,metamodel/OptionalAnnotation,metamodel/SequencedAnnotation
 metamodel/declaration/AnnotatedDeclaration,metamodel/declaration/ClassDeclaration,metamodel/declaration/ClassOrInterfaceDeclaration,metamodel/declaration/Declaration,metamodel/declaration/TopLevelOrMemberDeclaration,metamodel/declaration/FunctionDeclaration,metamodel/declaration/FunctionalDeclaration,metamodel/declaration/InterfaceDeclaration,metamodel/declaration/OpenIntersection,metamodel/declaration/ModuleAndPackage,metamodel/declaration/ParameterDeclaration,metamodel/declaration/GenericDeclaration,metamodel/declaration/OpenParameterisedType,metamodel/declaration/OpenType,metamodel/declaration/TypeParameter,metamodel/declaration/OpenTypeVariable,metamodel/declaration/OpenUnion,metamodel/declaration/AttributeDeclaration,metamodel/declaration/VariableDeclaration,metamodel/declaration/nothingType,metamodel/declaration/SetterDeclaration
 annotations
+metamodel.js,numbers.js,strings.js,misc1.js,functions.js,functions2.js,sequences.js,process.js

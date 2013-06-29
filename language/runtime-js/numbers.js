@@ -1,9 +1,15 @@
-function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
-function String$(x){};//IGNORE
-function Character(x){};//IGNORE
-function inheritProto(a,b,c,d,e,f,g);//IGNORE
-function Exception$(x){};//IGNORE
-var Object$,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
+function Number$(wat) {
+    return wat;
+}
+initType(Number$, 'ceylon.language::Number');
+Number$.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']};
+exports.Number=Number$;
+function $init$Number$() {
+    if (Number$.$$===undefined) {
+        initType(Number$, 'ceylon.language::Number');
+    }
+    return Number$;
+}
 
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');

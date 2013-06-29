@@ -1,15 +1,3 @@
-function initType(a,b,c,d,e,f,g,h,i,j,k,l){}//IGNORE
-function initTypeProto(a,b,c,d,e,f,g){}//IGNORE
-function inheritProto(a,b,c){}//IGNORE
-function exists(x){}//IGNORE
-function Exception(){}//IGNORE
-function isOfType(a,b){}//IGNORE
-function getNothing(){}//IGNORE
-function String$(x,l){}//IGNORE
-function TypeCategory(a,b){}//IGNORE
-function ArraySequence(x){}//IGNORE
-var exports,Container,Cloneable,smaller,larger,Object$;//IGNORE
-
 function Comprehension(makeNextFunc, $$targs$$, compr) {
     $init$Comprehension();
     if (compr===undefined) {compr = new Comprehension.$$;}
