@@ -4007,8 +4007,16 @@ public class ExpressionVisitor extends Visitor {
             ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
                     new UnknownType(unit).getType() : //TODO: set the correct metatype
                     t.getFullType(wrap(t, receivingType, that));
-            that.setTypeModel(ft);
             that.setTarget(t);
+            if (isTypeUnknown(ft)) {
+                if (!dynamic) {
+                    that.addError("could not determine type of member class reference: " +
+                    		type.getName(unit)  + " of " + receiverType.getDeclaration().getName(unit));
+                }
+            }
+            else {
+                that.setTypeModel(ft);
+            }
         }
     }
 

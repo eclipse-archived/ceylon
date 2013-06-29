@@ -1003,6 +1003,10 @@ public class ProducedType extends ProducedReference {
      */
     public boolean isWellDefined() {
     	List<TypeParameter> tps = getDeclaration().getTypeParameters();
+    	ProducedType qt = getQualifyingType();
+		if (qt!=null && !qt.isWellDefined()) {
+			return false;
+		}
 		List<ProducedType> tas = getTypeArgumentList();
 		for (int i=0; i<tps.size(); i++) {
 			ProducedType at=tas.get(i);
@@ -1015,16 +1019,20 @@ public class ProducedType extends ProducedReference {
     }
 
     /**
-     * Is the type well-defined? Are any of its arguments
-     * garbage nulls?
+     * Is the type fully-known? Are any of its arguments
+     * unknowns?
      */
     public boolean containsUnknowns() {
-		if (getDeclaration() instanceof UnknownType) {
+		if (isUnknown()) {
+			return true;
+		}
+		ProducedType qt = getQualifyingType();
+		if (qt!=null && qt.containsUnknowns()) {
 			return true;
 		}
 		List<ProducedType> tas = getTypeArgumentList();
 		for (ProducedType at: tas) {
-    		if (at.containsUnknowns()) {
+    		if (at==null || at.containsUnknowns()) {
                 return true;
             }
         }

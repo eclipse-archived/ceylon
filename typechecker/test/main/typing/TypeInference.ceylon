@@ -78,17 +78,17 @@ interface TypeInference {
         
         @error @type:"unknown" function g() => burp;
         
-        @type:"Sequence<unknown>" value seq = [ @error burp ].sequence;
+        @error @type:"unknown" value seq = [ @error burp ].sequence;
         
-        @type:"Sequence<unknown>" function createSeq() {
-            @type:"Sequence<unknown>" return [ @error hi ].sequence;
+        @type:"unknown" function createSeq() {
+            @error @type:"unknown" return [ @error hi ].sequence;
         }
         
         Sequence<T> singleton<T>(T element) {
             return [element];
         }
         
-        @type:"Sequence<unknown>" @error value sing = singleton(hi);
+        @type:"unknown" @error value sing = singleton(hi);
         
         value hi = "hi";
         
