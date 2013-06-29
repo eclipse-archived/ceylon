@@ -218,7 +218,7 @@ void method() {
     Float root(Float x) => temp(x);
     
     @error Callable<Anything> reallyBroken(void foo()) {
-        @error return foo;
+        /*@error*/ return foo;
     }
     
     Null foo(Integer* seq) => null;

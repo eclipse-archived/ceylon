@@ -621,6 +621,7 @@ class CoVariance() {
 class MoreInvariance() {
     interface Num<T> {
         shared formal T set(T t);
+        shared class X() {}
     }
     interface Int {}
     
@@ -636,6 +637,7 @@ class MoreInvariance() {
         @error Num<Int>&Num<T> nn = m;
         @error Num<Int|T> mm = nn;
         @error Num<Int>&Num<T> nnn = mm;
+        @error n.X();
     }
 }
 

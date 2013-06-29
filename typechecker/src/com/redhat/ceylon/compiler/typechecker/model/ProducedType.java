@@ -1023,7 +1023,7 @@ public class ProducedType extends ProducedReference {
      * unknowns?
      */
     public boolean containsUnknowns() {
-		if (isUnknown()) {
+		if (getDeclaration() instanceof UnknownType) {
 			return true;
 		}
 		ProducedType qt = getQualifyingType();
@@ -1619,6 +1619,7 @@ public class ProducedType extends ProducedReference {
 		return false;
     }
     
+    @Deprecated
     public boolean isUnknown() {
         return getDeclaration() instanceof UnknownType;
     }
