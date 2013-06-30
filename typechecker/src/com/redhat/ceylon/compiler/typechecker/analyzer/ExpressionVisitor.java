@@ -3922,6 +3922,13 @@ public class ExpressionVisitor extends Visitor {
                 p instanceof Tree.QualifiedTypeExpression) {
                 that.setStaticMethodReference(true);
                 ((Tree.MemberOrTypeExpression) p).setStaticMethodReferencePrimary(true);
+                if (p instanceof Tree.QualifiedTypeExpression) {
+                    Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
+                    if (!(pp instanceof Tree.BaseTypeExpression)
+                            && !(pp instanceof Tree.QualifiedTypeExpression)) {
+                        that.getPrimary().addError("non-static type expression in static member reference");
+                    }
+                }
             }
         }
         super.visit(that);

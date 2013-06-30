@@ -32,4 +32,5 @@ void funrefs<T>(T t) given T satisfies Category {
     Person.Address(String,String,String) addFun = Person.Address(person);
     String()(Person.Address) formatfun = Person.Address.format;
     String() format = Person.Address.format(person.Address("","", ""));
+    @error String()(Person.Address) broke = person.Address.format;
 }
