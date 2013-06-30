@@ -4,7 +4,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
@@ -4005,14 +4004,14 @@ public class ExpressionVisitor extends Visitor {
                 checkOverloadedReference(that);
             }
             //TODO: this is temporary until we get metamodel reference expressions!
-            if (p instanceof Tree.BaseTypeExpression ||
+            /*if (p instanceof Tree.BaseTypeExpression ||
                     p instanceof Tree.QualifiedTypeExpression) {
                 ProducedReference target = that.getTarget();
                 if (target!=null) {
                     checkTypeBelongsToContainingScope(target.getType(), 
                             that.getScope(), that);
                 }
-            }
+            }*/
             if (!inExtendsClause && p instanceof Tree.Super) {
                 if (type!=null && type.isFormal()) {
                     that.addError("superclass member class is formal");
