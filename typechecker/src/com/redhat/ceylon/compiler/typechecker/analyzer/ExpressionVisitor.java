@@ -3733,15 +3733,14 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration d) {
         if (p instanceof Tree.MemberOrTypeExpression) {
             Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
-            if (pd instanceof Functional) {
+            if (pd instanceof TypeDeclaration) {
+                that.setStaticMethodReference(true);
+                return (TypeDeclaration) pd;
+            }
+            else if (pd instanceof Functional) {
                 //this is a direct function ref
-                if (pd instanceof Class) {
-                    that.setStaticMethodReference(true);
-                    return (Class) pd;
-                }
-                else {
-                    that.addError("direct function references do not have members");
-                }
+                //its not a type, it can't have members
+                that.addError("direct function references do not have members");
             }
         }
         return d;
