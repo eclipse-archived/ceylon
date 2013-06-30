@@ -4,6 +4,8 @@ class Person(shared String name)
         print(name + saying);
     }
     shared class Address(String x, String y, String z) {}
+    
+    Person.Address(String,String,String)(Person) addy = Person.Address;
 }
 
 void funrefs() {
