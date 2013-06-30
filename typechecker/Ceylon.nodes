@@ -610,7 +610,8 @@
     boolean ellipsis;
     boolean directlyInvoked;
     boolean assigned;
-    boolean staticMethodReference;)
+    boolean staticMethodReference;
+    boolean staticMethodReferencePrimary;)
 
 ^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
 
