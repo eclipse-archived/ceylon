@@ -13,7 +13,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -71,21 +70,6 @@ public class Util {
         }
     }
     
-    static void checkTypeBelongsToContainingScope(ProducedType type,
-            Scope scope, Node that) {
-        //TODO: this does not account for types 
-        //      inherited by a containing scope!
-        //TODO: what if the type arguments don't match?!
-        while (scope!=null) {
-            if (type.getDeclaration().getContainer()==scope) {
-                return;
-            }
-            scope=scope.getContainer();
-        }
-        that.addError("illegal use of qualified type outside scope of qualifying type: " + 
-                type.getProducedTypeName(that.getUnit()));
-    }
-
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();

@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
@@ -527,43 +526,11 @@ public class TypeVisitor extends Visitor {
         }
         return unit.getTupleType(args, sequenced, atleastone, firstDefaulted);
 	}
-    
-    //TODO: copy/pasted from ExpressionVisitor
-	private static TypeDeclaration getSupertypeDeclaration(Tree.BaseType that, 
-			Tree.SupertypeQualifier sq) {
-		String typeName = name(sq.getIdentifier());
-		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null, false);
-		if (dec instanceof TypeDeclaration) {
-			/*ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
-			if (ci.getType().getSupertype((TypeDeclaration) dec)==null) {
-				sq.addError("not a supertype of containing class or interface: " +
-						ci.getName() + " does not inherit " + dec.getName());
-			}*/
-			Declaration member = dec.getMember(name(that.getIdentifier()), null, false);
-			if (member instanceof TypeDeclaration) {
-				return (TypeDeclaration) member;
-			}
-			else{
-				return null;
-			}
-		}
-		else {
-			sq.addError("qualifying supertype does not exist: " + typeName);
-			return null;
-		}
-	}
 
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type;
-        Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
-		if (sq==null) {
-        	type = getBaseDeclaration(that);
-        }
-        else {
-        	type = getSupertypeDeclaration(that, sq);
-        }
+        TypeDeclaration type = getBaseDeclaration(that);
         String name = name(that.getIdentifier());
         if (type==null) {
             that.addError("type declaration does not exist: " + name, 102);
@@ -945,7 +912,6 @@ public class TypeVisitor extends Visitor {
             that.addError("alias may not extend a type");
             return;
         }
-        Tree.InvocationExpression ie = that.getInvocationExpression();
         Tree.SimpleType et = that.getType();
         if (et==null) {
             that.addError("malformed extended type");
@@ -976,23 +942,6 @@ public class TypeVisitor extends Visitor {
         				//TODO: handle indirect circularities!
         				et.addError("directly extends itself: " + td.getName());
         				return;
-        			}
-        			if (et instanceof Tree.QualifiedType) {
-        				if ( !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType) ) {
-        					checkTypeBelongsToContainingScope(type, td.getContainer(), et);
-        				}
-        			}
-                    if (ie!=null) {
-        				//TODO: it would probably be better to leave
-        				//      all this following  stuff to 
-        				//ExpressionVisitor.visit(ExtendedTypeExpression)
-        				Tree.Primary pr = ie.getPrimary();
-        				if (pr instanceof Tree.ExtendedTypeExpression) {
-        					pr.setTypeModel(type);
-        					Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-        					ete.setDeclaration(etd);
-        					ete.setTarget(type);
-        				}
         			}
         			if (etd instanceof TypeParameter) {
         				et.addError("directly extends a type parameter: " + 
@@ -1085,9 +1034,6 @@ public class TypeVisitor extends Visitor {
             			st.addError("satisfied type must be an interface");
             			continue;
             		}
-                    if (st instanceof Tree.QualifiedType) {
-                        checkTypeBelongsToContainingScope(type, td.getContainer(), st);
-                    }
                 }
                 list.add(type);
             }

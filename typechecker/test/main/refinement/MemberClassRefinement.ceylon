@@ -62,11 +62,31 @@ interface InterfaceFormalMemberClass {
 }
 
 class InterfaceFormalMemberClass1() satisfies InterfaceFormalMemberClass {
-    shared actual default class Member() extends InterfaceFormalMemberClass::Member() {}
+    shared actual default class Member() extends InterfaceFormalMemberClass.Member(super)() {}
 }
 class InterfaceFormalMemberClass2() extends InterfaceFormalMemberClass1() {
-    @error shared actual class Member() extends InterfaceFormalMemberClass::Member() {}
+    @error shared actual class Member() extends InterfaceFormalMemberClass.Member(super)() {}
 }
 class InterfaceFormalMemberClass3() extends InterfaceFormalMemberClass1() {
-    shared actual class Member() extends InterfaceFormalMemberClass1::Member() {}
+    shared actual class Member() extends InterfaceFormalMemberClass1.Member(super)() {}
 }
+
+interface OuterInter<T> {
+    shared interface SuperInter {}
+    shared class SuperClass() {}
+}
+
+@error class BrokenToplevelClass() extends OuterInter<Integer>.SuperClass() {}
+@error interface BrokenToplevelInterface satisfies OuterInter<Integer>.SuperInter {}
+
+class OuterClass() satisfies OuterInter<String> {
+    shared interface SubInter satisfies OuterInter<String>.SuperInter {}
+    @error shared interface BrokenInter satisfies OuterInter<Integer>.SuperInter {}
+    shared class SubClass() extends OuterInter<String>.SuperClass(super)() {}
+    @error shared class BrokenClass() extends OuterInter<Integer>.SuperClass(super)() {}
+    @error shared class BrokenClass0() extends OuterInter<String>.SuperClass() {}
+    @error shared class BrokenClass1() extends OuterInter<String>.SuperClass(super) {}
+    @error shared class BrokenClass2() extends OuterInter<String>.SuperClass {}
+    @error shared class BrokenClass3() extends OuterInter<String>.SuperClass(this)() {}
+    @error shared class BrokenClass4() extends OuterInter<String>.SuperClass(super)(1) {}
+} 

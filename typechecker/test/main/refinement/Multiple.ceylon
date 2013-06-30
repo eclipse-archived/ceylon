@@ -7,70 +7,70 @@ interface Multiple {
     interface X satisfies Top {
         shared actual default String name { return "X"; }
         shared actual default class Inner() 
-                extends Top::Inner() {}
+                extends Top.Inner(super)() {}
         shared actual String getName() { return "X"; }
     }
     interface Y satisfies Top {
         shared actual default String name { return "Y"; }
     }
     class C() satisfies X & Y {
-        X::Inner inner() {
-            X::Inner inn = X::Inner();
+        X.Inner inner() {
+            X.Inner inn = X.Inner(super)();
             return inn;
         }
         shared actual String name {
-            return X::name;
+            return X.name(super);
         }
         shared actual String string {
-            return Y::name;
+            return Y.name(super);
         }
         shared actual class Inner() 
-                extends X::Inner() {
+                extends X.Inner(super)() {
             //@type:"Multiple.X.Inner" X::Inner();
         }
     }
     interface Silly { shared String name { return "Gavin"; }  }
     class Broken() satisfies X & Y {
         void method() {
-            X::getName();
-            @error Y::getName();
-            @error Top::getName();
+            X.getName(super)();
+            @error Y.getName(super)();
+            @error Top.getName(super)();
         }
         shared actual String name {
-            @error return Top::name;
+            @error return Top.name(super);
         }
         shared actual String string {
-            @error return Silly::name;
+            @error return Silly.name(super);
         }
         @error shared actual class Inner() 
-                extends Top::Inner() {}
+                extends Top.Inner() {}
         class My() {
-            @error X::Inner();
-            @error print(Y::name);
-            @error print(Top::name);
-            @error print(Silly::name);
+            @error X.Inner(super)();
+            @error print(Y.name(super));
+            @error print(Top.name(super));
+            @error print(Silly.name(super));
         }
     }
     abstract class MyList() satisfies List<Integer> {
         shared actual String string {
-            return List::string;
+            return List<Integer>.string(super);
         }
         shared actual Integer hash {
-            return List::hash;
+            return List<Integer>.hash(super);
         }
         shared actual Boolean equals(Object that) {
-            return List::equals(that);
+            return List<Integer>.equals(super)(that);
         }
     }
     abstract class MyAltList() satisfies List<Integer> {
         shared actual String string {
-            @error return Basic::string;
+            @error return Basic.string(super);
         }
         shared actual Integer hash {
-            @error return Object::hash;
+            @error return Object.hash(super);
         }
         shared actual Boolean equals(Object that) {
-            return Identifiable::equals(that);
+            return Identifiable.equals(super)(that);
         }
     }
 }

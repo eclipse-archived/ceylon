@@ -113,7 +113,7 @@ class Inheritance() {
                 hello(); 
             }
         }
-        class Inner5() extends Inheritance.Outer.Inner4() {}
+        class Inner5() extends Inheritance.Outer.Inner4(super)() {}
         shared Inner2 inner1 = Inner3();
         Outer.Inner2 inner2 = Inner3();
         Outer.Inner2 inner3 = Inner3();
