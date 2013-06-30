@@ -609,7 +609,8 @@
     List<ProducedType> signature;
     boolean ellipsis;
     boolean directlyInvoked;
-    boolean assigned;)
+    boolean assigned;
+    boolean staticMethodReference;)
 
 ^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
 
