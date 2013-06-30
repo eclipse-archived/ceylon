@@ -3769,7 +3769,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
             ProducedType receivingType, TypedDeclaration member, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType = accountForStaticReference(that, unwrap(receivingType, that));
+        ProducedType receiverType = accountForStaticReference(that, that.getPrimary(), unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             /*if (ptr==null) {
@@ -3788,29 +3788,35 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else {
-                    that.setTypeModel(accountForStaticReference(that, receivingType, t));
+                    that.setTypeModel(accountForStaticReference(that, that.getPrimary(), receivingType, t));
                 }
             //}
         }
     }
 
     private ProducedType accountForStaticReference(Tree.MemberOrTypeExpression that, 
-            ProducedType receivingType) {
-        if (that.getStaticMethodReference() && !isTypeUnknown(receivingType)) {
-            return receivingType.getTypeArgumentList().get(0); //TODO: this is lame!
+            Tree.Primary primary, ProducedType receivingType) {
+        if (that.getStaticMethodReference()) {
+//            return receivingType.getTypeArgumentList().get(0);
+            return ((Tree.MemberOrTypeExpression) primary).getTarget().getType();
         }
-        return receivingType;
+        else {
+            return receivingType;
+        }
     }
     
     private ProducedType accountForStaticReference(Tree.MemberOrTypeExpression that, 
-            ProducedType receivingType, ProducedType t) {
-        if (that.getStaticMethodReference() && !isTypeUnknown(receivingType)) {
-            ProducedType rt = receivingType.getTypeArgumentList().get(0);
-            t = producedType(unit.getCallableDeclaration(), t,
+            Tree.Primary primary, ProducedType receivingType, ProducedType t) {
+        if (that.getStaticMethodReference()) {
+            ProducedType rt = ((Tree.MemberOrTypeExpression) primary).getTarget().getType();
+//            ProducedType rt = receivingType.getTypeArgumentList().get(0);
+            return producedType(unit.getCallableDeclaration(), t,
                     producedType(unit.getTupleDeclaration(), 
                             rt, rt, unit.getEmptyDeclaration().getType()));
         }
-        return t;
+        else {
+            return t;
+        }
     }
     
     private void visitBaseMemberExpression(Tree.StaticMemberOrTypeExpression that, 
@@ -4058,7 +4064,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
             ProducedType receivingType, TypeDeclaration type, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType =  accountForStaticReference(that, unwrap(receivingType, that));
+        ProducedType receiverType =  accountForStaticReference(that, that.getPrimary(), unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t =receiverType.getTypeMember(type, typeArgs);
             ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
@@ -4073,7 +4079,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                that.setTypeModel(accountForStaticReference(that, receivingType, ft));
+                that.setTypeModel(accountForStaticReference(that, that.getPrimary(), receivingType, ft));
             }
         }
     }

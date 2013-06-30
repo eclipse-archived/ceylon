@@ -23,5 +23,6 @@ void funrefs() {
     String?(Integer)(Singleton<String>) get = Singleton<String>.get;
     Person.Address(String,String,String)(Person) addFunFun = Person.Address;
     Person.Address(String,String,String) addFun = Person.Address(person);
-    String()(Person.Address) format = Person.Address.format;
+    String()(Person.Address) formatfun = Person.Address.format;
+    String() format = Person.Address.format(person.Address("","", ""));
 }
