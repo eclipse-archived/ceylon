@@ -3,7 +3,9 @@ class Person(shared String name)
     shared void say(String saying) {
         print(name + saying);
     }
-    shared class Address(String x, String y, String z) {}
+    shared class Address(String x, String y, String z) {
+        shared String format() => x+y+z;
+    }
     
     Person.Address(String,String,String)(Person) addy = Person.Address;
 }
@@ -21,4 +23,5 @@ void funrefs() {
     String?(Integer)(Singleton<String>) get = Singleton<String>.get;
     Person.Address(String,String,String)(Person) addFunFun = Person.Address;
     Person.Address(String,String,String) addFun = Person.Address(person);
+    String()(Person.Address) format = Person.Address.format;
 }
