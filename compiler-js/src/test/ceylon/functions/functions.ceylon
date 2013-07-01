@@ -238,5 +238,6 @@ shared void test() {
     testAnonymous();
     testNamedArguments();
     testLazyExpressions();
+    testStaticMethodReferences();
     results();
 }
