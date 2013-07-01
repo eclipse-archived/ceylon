@@ -1869,6 +1869,13 @@ public class GenerateJsVisitor extends Visitor
             //we need to filter somehow to only use this pattern when the result is supposed to be a callable
             //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
             generateCallable(that, null);
+        } else if (that.getStaticMethodReference()) {
+            out("function($O$) {return ");
+            if (that.getDeclaration() instanceof Method) {
+                out(clAlias, "JsCallable($O$,$O$.", that.getIdentifier().getText(), ");}");
+            } else {
+                out("$O$.", that.getIdentifier().getText(), ";}");
+            }
         } else {
             final String lhs = generateToString(new GenerateCallback() {
                 @Override public void generateValue() {
@@ -2081,7 +2088,7 @@ public class GenerateJsVisitor extends Visitor
             @Override public void generateValue() { out(strValue); }
         }, lhs);
     }
-    
+
     @Override
     public void visit(BaseTypeExpression that) {
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
