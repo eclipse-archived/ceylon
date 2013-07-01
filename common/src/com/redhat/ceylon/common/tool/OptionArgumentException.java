@@ -14,7 +14,8 @@ public abstract class OptionArgumentException extends ToolError {
             msg += t.getLocalizedMessage();
         }
         if (t.getCause() instanceof IllegalArgumentException
-                && t.getCause().getLocalizedMessage() != null) {
+                && t.getCause().getLocalizedMessage() != null
+                && !t.getMessage().endsWith(t.getCause().getLocalizedMessage())) {
             msg += ": " + t.getCause().getLocalizedMessage();
         }
         return msg;
