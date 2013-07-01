@@ -3604,10 +3604,12 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
-        //boolean check = packageQualified || !isTypeUnknown(pt);
+        boolean check = packageQualified ||
+                that.getStaticMethodReference() ||
+                pt!=null && !pt.getType().isUnknown(); //account for dynamic blocks
         boolean nameNonempty = that.getIdentifier()!=null && 
                         !that.getIdentifier().getText().equals("");
-        if (nameNonempty) {
+        if (nameNonempty && check) {
             TypedDeclaration member;
             String name = name(that.getIdentifier());
             String container;
@@ -3878,7 +3880,10 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
-        if (pt!=null || packageQualified) {
+        boolean check = packageQualified || 
+                that.getStaticMethodReference() || 
+                pt!=null && !pt.isUnknown();
+        if (check) {
             TypeDeclaration type;
             String name = name(that.getIdentifier());
             String container;
@@ -3965,7 +3970,8 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
             ProducedType pt) {
         if (that.getStaticMethodReference()) {
-            return (TypeDeclaration) ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            TypeDeclaration td = (TypeDeclaration) ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            return td==null ? new UnknownType(unit) : td;
         }
         else {
             return unwrap(pt, that).getDeclaration();
