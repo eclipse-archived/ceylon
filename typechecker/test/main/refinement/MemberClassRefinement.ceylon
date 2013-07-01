@@ -89,4 +89,21 @@ class OuterClass() satisfies OuterInter<String> {
     @error shared class BrokenClass2() extends OuterInter<String>.SuperClass {}
     @error shared class BrokenClass3() extends OuterInter<String>.SuperClass(this)() {}
     @error shared class BrokenClass4() extends OuterInter<String>.SuperClass(super)(1) {}
-} 
+}
+
+void memberClassRefinementWithAliases() {
+    interface Super1 {
+        shared default class Member() {}
+    }
+    class Sub1() satisfies Super1 {
+        shared class Alias() => Super1.Member(super)();
+        shared actual class Member() extends Alias() {}
+    }
+    class Super2() {
+        shared default class Member() {}
+    }
+    class Sub2() extends Super2() {
+        shared class Alias() => super.Member();
+        shared actual class Member() extends Alias() {}
+    }
+}

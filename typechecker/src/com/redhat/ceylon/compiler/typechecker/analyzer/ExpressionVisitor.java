@@ -4732,41 +4732,54 @@ public class ExpressionVisitor extends Visitor {
         return false;
     }
 
-    @Override 
-    public void visit(Tree.ExtendedType that) {
-        Tree.SimpleType et = that.getType();
-        if (et!=null) {
+    private void visitExtendedOrAliasedType(Tree.SimpleType et,
+            Tree.InvocationExpression ie) {
+        if (et!=null && ie!=null) {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
-                Tree.InvocationExpression ie = that.getInvocationExpression();
-                if (ie!=null) {
-                    Tree.Primary pr = ie.getPrimary();
-                    if (pr instanceof Tree.InvocationExpression) {
-                        Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
-                        pr = iie.getPrimary();
+                Tree.Primary pr = ie.getPrimary();
+                if (pr instanceof Tree.InvocationExpression) {
+                    Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
+                    pr = iie.getPrimary();
+                }
+                if (pr instanceof Tree.ExtendedTypeExpression) {
+                    Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
+                    ete.setDeclaration(et.getDeclarationModel());
+                    ete.setTarget(type);
+                    ProducedType qt = type.getQualifyingType();
+                    ProducedType ft = type.getFullType();
+                    if (ete.getStaticMethodReference()) {
+                        ft = producedType(unit.getCallableDeclaration(), ft, 
+                                producedType(unit.getTupleDeclaration(), qt, qt, 
+                                        unit.getEmptyDeclaration().getType()));
                     }
-                    if (pr instanceof Tree.ExtendedTypeExpression) {
-                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-                        ete.setDeclaration(et.getDeclarationModel());
-                        ete.setTarget(type);
-                        ProducedType qt = type.getQualifyingType();
-                        ProducedType ft = type.getFullType();
-                        if (ete.getStaticMethodReference()) {
-                            ft = producedType(unit.getCallableDeclaration(), ft, 
-                                    producedType(unit.getTupleDeclaration(), qt, qt, 
-                                            unit.getEmptyDeclaration().getType()));
-                        }
-                        pr.setTypeModel(ft);
-                    }
+                    pr.setTypeModel(ft);
                 }
             }
         }
+    }
+    
+    @Override 
+    public void visit(Tree.ClassSpecifier that) {
+        visitExtendedOrAliasedType(that.getType(), 
+                that.getInvocationExpression());
+        
+        inExtendsClause = true;
+        super.visit(that);
+        inExtendsClause = false;
+    }
+
+    @Override 
+    public void visit(Tree.ExtendedType that) {
+        visitExtendedOrAliasedType(that.getType(), 
+                that.getInvocationExpression());
 
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
 
         TypeDeclaration td = (TypeDeclaration) that.getScope();
+        Tree.SimpleType et = that.getType();
         if (et!=null) {
             ProducedType type = et.getTypeModel();
             if (type!=null) {

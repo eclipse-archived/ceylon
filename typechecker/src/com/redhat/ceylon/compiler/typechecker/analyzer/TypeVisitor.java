@@ -779,15 +779,23 @@ public class TypeVisitor extends Visitor {
                     }
                     Tree.InvocationExpression ie = cs.getInvocationExpression();
                     if (ie!=null) {
-                        //TODO: it would probably be better to leave
-                        //      all this following  stuff to 
-                        //ExpressionVisitor.visit(ExtendedTypeExpression)
                         Tree.Primary pr = ie.getPrimary();
+                        boolean stc = ct instanceof Tree.QualifiedType && 
+                                !(((Tree.QualifiedType) ct).getOuterType() instanceof Tree.SuperType);
+                        if (stc) {
+                            if (pr instanceof Tree.InvocationExpression) {
+                                Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
+                                handleSuperinterfaceReference(iie, true);
+                                pr = iie.getPrimary();
+                            }
+                            else {
+                                handleSuperinterfaceReference(ie, true);
+                                ie.addError("missing argument list");
+                            }
+                        }
                         if (pr instanceof Tree.ExtendedTypeExpression) {
-                            pr.setTypeModel(type);
                             Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-                            ete.setDeclaration(etd);
-                            ete.setTarget(type);
+                            ete.setStaticMethodReference(stc);
                         }
                     }
                 }
@@ -973,8 +981,6 @@ public class TypeVisitor extends Visitor {
                     if (pr instanceof Tree.ExtendedTypeExpression) {
                         Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
                         ete.setStaticMethodReference(stc);
-                        //ete.setDeclaration(etd);
-                        //ete.setTarget(type);
                     }
                 }
             }
