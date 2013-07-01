@@ -65,7 +65,7 @@ import com.sun.tools.javac.util.Options;
 		"When `<moduleOrFile>` specifies a source file just that file is compiled and " +
 		"the module archive is created or updated with the .class files produced." +
 		"The source file is " +
-		"treated as relative to the current directory (so any `--source` " +
+		"treated as relative to the current directory (so any `--src` " +
 		"options are ignored)."+
 		"\n\n"+
         "All program elements imported by a compilation unit must belong to the " +
