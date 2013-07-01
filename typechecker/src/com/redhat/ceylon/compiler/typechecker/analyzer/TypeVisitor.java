@@ -754,9 +754,9 @@ public class TypeVisitor extends Visitor {
             else if (!(ct instanceof Tree.StaticType)) {
             	cs.addError("aliased type must be a class");
             }
-            else if (ct instanceof Tree.QualifiedType) {
+            /*else if (ct instanceof Tree.QualifiedType) {
             	cs.addError("aliased class may not be a qualified type");
-        	}
+        	}*/
             else {
                 ProducedType type = ct.getTypeModel();
                 if (type!=null) {
@@ -931,35 +931,53 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }*/
-        	if (!(et instanceof Tree.SimpleType)) {
-        		et.addError("extended type must be a class"); //actually this case never occurs due to grammar
-        	}
-        	else {
-        		ProducedType type = et.getTypeModel();
-        		if (type!=null) {
-        			TypeDeclaration etd = ((Tree.SimpleType) et).getDeclarationModel();
-        			if (etd==td) {
-        				//TODO: handle indirect circularities!
-        				et.addError("directly extends itself: " + td.getName());
-        				return;
-        			}
-        			if (etd instanceof TypeParameter) {
-        				et.addError("directly extends a type parameter: " + 
-        						type.getDeclaration().getName(unit));
-        			}
-        			else if (etd instanceof Interface) {
-        				et.addError("extends an interface: " + 
-        						type.getDeclaration().getName(unit));
-        			}
-        			else if (etd instanceof TypeAlias) {
-        				et.addError("extends a type alias: " + 
-        						type.getDeclaration().getName(unit));
-        			}
-        			else {
-        				td.setExtendedType(type);
-        			}
-        		}
-        	}
+            ProducedType type = et.getTypeModel();
+            if (type!=null) {
+                TypeDeclaration etd = et.getDeclarationModel();
+                if (etd==td) {
+                    //TODO: handle indirect circularities!
+                    et.addError("directly extends itself: " + td.getName());
+                    return;
+                }
+                if (etd instanceof TypeParameter) {
+                    et.addError("directly extends a type parameter: " + 
+                            type.getDeclaration().getName(unit));
+                }
+                else if (etd instanceof Interface) {
+                    et.addError("extends an interface: " + 
+                            type.getDeclaration().getName(unit));
+                }
+                else if (etd instanceof TypeAlias) {
+                    et.addError("extends a type alias: " + 
+                            type.getDeclaration().getName(unit));
+                }
+                else {
+                    td.setExtendedType(type);
+                }
+                Tree.InvocationExpression ie = that.getInvocationExpression();
+                if (ie!=null) {
+                    Tree.Primary pr = ie.getPrimary();
+                    boolean stc = et instanceof Tree.QualifiedType && 
+                            !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType);
+                    if (stc) {
+                        if (pr instanceof Tree.InvocationExpression) {
+                            Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
+                            handleSuperinterfaceReference(iie, true);
+                            pr = iie.getPrimary();
+                        }
+                        else {
+                            handleSuperinterfaceReference(ie, true);
+                            ie.addError("missing argument list");
+                        }
+                    }
+                    if (pr instanceof Tree.ExtendedTypeExpression) {
+                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
+                        ete.setStaticMethodReference(stc);
+                        //ete.setDeclaration(etd);
+                        //ete.setTarget(type);
+                    }
+                }
+            }
         }
     }
     
@@ -1226,4 +1244,40 @@ public class TypeVisitor extends Visitor {
         }
         super.visit(that);
     }
+
+    @Override public void visit(Tree.InvocationExpression that) {
+        super.visit(that);
+        Tree.Primary p = that.getPrimary();
+        boolean directlyInvoked = p instanceof Tree.MemberOrTypeExpression;
+        if (directlyInvoked) {
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
+            mte.setDirectlyInvoked(true);
+            if (mte.getStaticMethodReference()) {
+                handleSuperinterfaceReference(that, false);
+            }
+        }
+    }
+    
+    private void handleSuperinterfaceReference(Tree.InvocationExpression ie,
+            boolean isInterfaceExtension) {
+        Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
+        if (pal!=null) {
+            for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
+                if (pa instanceof Tree.ListedArgument) {
+                    Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
+                    if (e!=null) {
+                        Tree.Term t = e.getTerm();
+                        if (t instanceof Tree.Super) {
+                            ((Tree.Super) t).setSuperinterface(true);
+                            ie.setSuperInvocation(true);
+                        }
+                        else if (isInterfaceExtension) {
+                            e.addError("illegal argument");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }

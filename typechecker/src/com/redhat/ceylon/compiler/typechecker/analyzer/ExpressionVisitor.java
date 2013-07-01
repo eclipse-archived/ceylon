@@ -1530,20 +1530,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    /*@Override public void visit(Tree.OuterExpression that) {
-        that.getPrimary().visit(this);
-        ProducedType pt = that.getPrimary().getTypeModel();
-        if (pt!=null) {
-            if (pt.getDeclaration() instanceof ClassOrInterface) {
-                that.setTypeModel(getOuterType(that, (ClassOrInterface) pt.getDeclaration()));
-                //TODO: some kind of MemberReference
-            }
-            else {
-                that.addError("can't use outer on a type parameter");
-            }
-        }
-    }*/
-    
     ProducedType unwrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
         ProducedType result;
         Tree.MemberOperator op = mte.getMemberOperator();
@@ -1592,22 +1578,11 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.InvocationExpression that) {
-        boolean superInvocation = false;
-        
         Tree.Primary p = that.getPrimary();
-        boolean directlyInvoked = p instanceof Tree.MemberOrTypeExpression;
-        if (directlyInvoked) {
-            Tree.MemberOrTypeExpression dime = (Tree.MemberOrTypeExpression) p;
-            dime.setDirectlyInvoked(true);
-            if (dime.getStaticMethodReference()) {
-                superInvocation = handleSuperinterfaceReference(that, false);
-            }
-        }
-        
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pal!=null) {
             pal.visit(this);
-            if (directlyInvoked) {
+            if (p instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
                 //set up the "signature" on the primary
                 //so that we can resolve the correct 
@@ -1629,7 +1604,7 @@ public class ExpressionVisitor extends Visitor {
         
         p.visit(this);
         
-        if (superInvocation) {
+        if (that.getSuperInvocation()) {
             checkSuperinterfaceInvocation(that, p);
         }
         
@@ -4192,9 +4167,6 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(ci.getType());
             }
         }
-        /*if (defaultArgument) {
-            that.addWarning("references to this from default argument expressions not yet supported");
-        }*/
     }
     
     private ProducedType getTupleType(List<Tree.PositionalArgument> es, 
@@ -4762,38 +4734,29 @@ public class ExpressionVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.ExtendedType that) {
-        Tree.InvocationExpression ie = that.getInvocationExpression();
         Tree.SimpleType et = that.getType();
         if (et!=null) {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
-                TypeDeclaration etd = ((Tree.SimpleType) et).getDeclarationModel();
+                Tree.InvocationExpression ie = that.getInvocationExpression();
                 if (ie!=null) {
                     Tree.Primary pr = ie.getPrimary();
-                    ProducedType ft = type.getFullType();
-                    boolean stc = et instanceof Tree.QualifiedType && 
-                            !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType);
-                    if (stc) {
-                        ProducedType qt = type.getQualifyingType();
-                        ft = producedType(unit.getCallableDeclaration(), ft, 
-                                producedType(unit.getTupleDeclaration(), qt, qt, 
-                                        unit.getEmptyDeclaration().getType()));
-                        if (pr instanceof Tree.InvocationExpression) {
-                            Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
-                            handleSuperinterfaceReference(iie, true);
-                            pr = iie.getPrimary();
-                        }
-                        else {
-                            handleSuperinterfaceReference(ie, true);
-                            ie.addError("missing argument list");
-                        }
+                    if (pr instanceof Tree.InvocationExpression) {
+                        Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
+                        pr = iie.getPrimary();
                     }
                     if (pr instanceof Tree.ExtendedTypeExpression) {
-                        pr.setTypeModel(ft);
                         Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-                        ete.setStaticMethodReference(stc);
-                        ete.setDeclaration(etd);
+                        ete.setDeclaration(et.getDeclarationModel());
                         ete.setTarget(type);
+                        ProducedType qt = type.getQualifyingType();
+                        ProducedType ft = type.getFullType();
+                        if (ete.getStaticMethodReference()) {
+                            ft = producedType(unit.getCallableDeclaration(), ft, 
+                                    producedType(unit.getTupleDeclaration(), qt, qt, 
+                                            unit.getEmptyDeclaration().getType()));
+                        }
+                        pr.setTypeModel(ft);
                     }
                 }
             }
@@ -4834,30 +4797,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private boolean handleSuperinterfaceReference(Tree.InvocationExpression iie,
-            boolean isInterfaceExtension) {
-        boolean found = false;
-        Tree.PositionalArgumentList pal = iie.getPositionalArgumentList();
-        if (pal!=null) {
-            for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
-                if (pa instanceof Tree.ListedArgument) {
-                    Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
-                    if (e!=null) {
-                        Tree.Term t = e.getTerm();
-                        if (t instanceof Tree.Super) {
-                            ((Tree.Super) t).setSuperinterface(true);
-                            found = true;
-                        }
-                        else if (isInterfaceExtension) {
-                            e.addError("illegal argument");
-                        }
-                    }
-                }
-            }
-        }
-        return found;
-    }
-    
     @Override 
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
