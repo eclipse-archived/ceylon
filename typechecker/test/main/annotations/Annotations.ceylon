@@ -38,11 +38,13 @@ class Annotations() {
     annotation class SequencedDescription(String desc) 
         satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
 
-    //temporary errors until we got metatypes done 
-    Class<Annotations,[]> at = `Annotations`;
-    Class<TypeDescription,[String]> tdt = `TypeDescription`;
-    Class<SequencedDescription,[String]> sdt = `SequencedDescription`;
-    
-    TypeDescription? d = annotations<TypeDescription,TypeDescription?,Annotated>(tdt, at.declaration);
-    SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt, at.declaration);
+    void getMeOutOfTheInitialiserSection(){
+
+        Class<Annotations,[]> at = `Annotations`;
+        Member<Annotations,Class<TypeDescription,[String]>> tdt = `TypeDescription`;
+        Member<Annotations,Class<SequencedDescription,[String]>> sdt = `SequencedDescription`;
+
+        TypeDescription? d = annotations<TypeDescription,TypeDescription?,Annotated>(tdt(this), at.declaration);
+        SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt(this), at.declaration);
+    }
 }

@@ -2403,6 +2403,10 @@ metaLiteral returns [MetaLiteral meta]
       m1=memberName
       { ml.setIdentifier($m1.identifier); 
         ml.setEndToken(null); }
+      (
+        ta1=typeArguments
+        { ml.setTypeArgumentList($ta1.typeArgumentList); }
+      )?
     | (groupedType MEMBER_OP) =>
       { ml = new MemberLiteral($d1);
         $meta = ml; }
@@ -2413,6 +2417,10 @@ metaLiteral returns [MetaLiteral meta]
       m2=memberName
       { ml.setIdentifier($m2.identifier); 
         ml.setEndToken(null); }
+      (
+        ta2=typeArguments
+        { ml.setTypeArgumentList($ta2.typeArgumentList); }
+      )?
     | t=type
       { tl = new TypeLiteral($d1);
         $meta = tl;
@@ -2421,6 +2429,10 @@ metaLiteral returns [MetaLiteral meta]
       { ml = new MemberLiteral($d1);
         $meta = ml;
         ml.setIdentifier($m3.identifier); }
+      (
+        ta3=typeArguments
+        { ml.setTypeArgumentList($ta3.typeArgumentList); }
+      )?
     )
       d2=BACKTICK
       { $meta.setEndToken($d2); }
