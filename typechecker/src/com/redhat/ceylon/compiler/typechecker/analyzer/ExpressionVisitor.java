@@ -1630,16 +1630,40 @@ public class ExpressionVisitor extends Visitor {
         p.visit(this);
         
         if (superInvocation) {
-            Tree.MemberOrTypeExpression dime = (Tree.MemberOrTypeExpression) p;
-            Declaration d = dime.getDeclaration();
-            if (d.isFormal() && !(dime instanceof Tree.ExtendedTypeExpression)) {
-                that.addError("member is declared formal: " + d.getName(unit));
-            }
+            checkSuperinterfaceInvocation(that, p);
         }
         
         visitInvocation(that);
     }
-
+    
+    private void checkSuperinterfaceInvocation(Tree.InvocationExpression that,
+            Tree.Primary p) {
+        Tree.MemberOrTypeExpression dime = (Tree.MemberOrTypeExpression) p;
+        Declaration member = dime.getDeclaration();
+        if (member.isFormal() && !(dime instanceof Tree.ExtendedTypeExpression)) {
+            that.addError("supertype member is declared formal: " + member.getName() + 
+                    " of " + ((TypeDeclaration) member.getContainer()).getName());
+        }
+        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+        Declaration etm = ci.getExtendedTypeDeclaration()
+                .getMember(member.getName(), null, false);
+        if (etm!=null && !etm.equals(member) && etm.refines(member)) {
+            that.addError("inherited member is refined by intervening superclass: " + 
+                    ((TypeDeclaration) etm.getContainer()).getName() + 
+                    " refines " + member.getName() + " declared by " + 
+                    ci.getName());
+        }
+        for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
+            Declaration stm = td.getMember(member.getName(), null, false);
+            if (stm!=null && !stm.equals(member) && stm.refines(member)) {
+                that.addError("inherited member is refined by intervening superinterface: " + 
+                        ((TypeDeclaration) stm.getContainer()).getName() + 
+                        " refines " + member.getName() + " declared by " + 
+                        ci.getName());
+            }
+        }
+    }
+    
     private void visitInvocation(Tree.InvocationExpression that) {
         Tree.Primary pr = that.getPrimary();
         if (pr==null) {
@@ -3952,7 +3976,9 @@ public class ExpressionVisitor extends Visitor {
             }*/
             if (!inExtendsClause && p instanceof Tree.Super) {
                 if (type!=null && type.isFormal()) {
-                    that.addError("superclass member class is formal");
+                    that.addError("superclass member class is formal: " + 
+                            type.getName() + " declared by " + 
+                            ((Declaration) type.getContainer()).getName());
                 }
             }
         }
