@@ -1592,11 +1592,16 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.InvocationExpression that) {
+        boolean superInvocation = false;
         
         Tree.Primary p = that.getPrimary();
         boolean directlyInvoked = p instanceof Tree.MemberOrTypeExpression;
         if (directlyInvoked) {
-            ((Tree.MemberOrTypeExpression) p).setDirectlyInvoked(true);
+            Tree.MemberOrTypeExpression dime = (Tree.MemberOrTypeExpression) p;
+            dime.setDirectlyInvoked(true);
+            if (dime.getStaticMethodReference()) {
+                superInvocation = handleSuperinterfaceReference(that, false);
+            }
         }
         
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
@@ -1623,6 +1628,14 @@ public class ExpressionVisitor extends Visitor {
         }
         
         p.visit(this);
+        
+        if (superInvocation) {
+            Tree.MemberOrTypeExpression dime = (Tree.MemberOrTypeExpression) p;
+            Declaration d = dime.getDeclaration();
+            if (d.isFormal() && !(dime instanceof Tree.ExtendedTypeExpression)) {
+                that.addError("member is declared formal: " + d.getName(unit));
+            }
+        }
         
         visitInvocation(that);
     }
@@ -3842,24 +3855,9 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
-        Tree.Primary p = that.getPrimary();
-        boolean checkStatic = p instanceof Tree.MemberOrTypeExpression;
-        if (checkStatic) {
-            if (p instanceof Tree.BaseTypeExpression || 
-                p instanceof Tree.QualifiedTypeExpression) {
-                that.setStaticMethodReference(true);
-                ((Tree.MemberOrTypeExpression) p).setStaticMethodReferencePrimary(true);
-                if (p instanceof Tree.QualifiedTypeExpression) {
-                    Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
-                    if (!(pp instanceof Tree.BaseTypeExpression)
-                            && !(pp instanceof Tree.QualifiedTypeExpression)) {
-                        that.getPrimary().addError("non-static type expression in static member reference");
-                    }
-                }
-            }
-        }
         super.visit(that);
-        if (checkStatic) {
+        Tree.Primary p = that.getPrimary();
+        if (p instanceof Tree.MemberOrTypeExpression) {
             Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
             if (!(pd instanceof TypeDeclaration) && 
                     pd instanceof Functional) {
@@ -4120,7 +4118,7 @@ public class ExpressionVisitor extends Visitor {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface s = (ClassOrInterface) ci.getContainer();
                     if (that.getSuperinterface()) {
-                        //do nothing! already handled
+                        that.setTypeModel(s.getType());
                     }
                     else {
                         //TODO: type arguments??
@@ -4136,6 +4134,9 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (!(ci instanceof Class)) {
                 that.addError("super appears inside an interface definition");
+            }
+            else if (that.getSuperinterface()) {
+                that.setTypeModel(ci.getType());
             }
             else {
                 //TODO: type arguments
@@ -4753,11 +4754,11 @@ public class ExpressionVisitor extends Visitor {
                                         unit.getEmptyDeclaration().getType()));
                         if (pr instanceof Tree.InvocationExpression) {
                             Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
-                            handleSuperinterfaceReference(qt, iie);
+                            handleSuperinterfaceReference(iie, true);
                             pr = iie.getPrimary();
                         }
                         else {
-                            handleSuperinterfaceReference(qt, ie);
+                            handleSuperinterfaceReference(ie, true);
                             ie.addError("missing argument list");
                         }
                     }
@@ -4807,24 +4808,28 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void handleSuperinterfaceReference(ProducedType qt,
-            Tree.InvocationExpression iie) {
-        for (Tree.PositionalArgument pa: iie.getPositionalArgumentList()
-                .getPositionalArguments()) {
-            if (pa instanceof Tree.ListedArgument) {
-                Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
-                if (e!=null) {
-                    Tree.Term t = e.getTerm();
-                    if (t instanceof Tree.Super) {
-                        t.setTypeModel(qt);
-                        ((Tree.Super) t).setSuperinterface(true);
-                    }
-                    else {
-                        e.addError("illegal argument");
+    private boolean handleSuperinterfaceReference(Tree.InvocationExpression iie,
+            boolean isInterfaceExtension) {
+        boolean found = false;
+        Tree.PositionalArgumentList pal = iie.getPositionalArgumentList();
+        if (pal!=null) {
+            for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
+                if (pa instanceof Tree.ListedArgument) {
+                    Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
+                    if (e!=null) {
+                        Tree.Term t = e.getTerm();
+                        if (t instanceof Tree.Super) {
+                            ((Tree.Super) t).setSuperinterface(true);
+                            found = true;
+                        }
+                        else if (isInterfaceExtension) {
+                            e.addError("illegal argument");
+                        }
                     }
                 }
             }
         }
+        return found;
     }
     
     @Override 

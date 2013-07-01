@@ -1207,4 +1207,23 @@ public class TypeVisitor extends Visitor {
     		that.getType().addError("function type may not be variadic");
     	}
     }
+    
+    @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+        Tree.Primary p = that.getPrimary();
+        if (p instanceof Tree.MemberOrTypeExpression) {
+            if (p instanceof Tree.BaseTypeExpression || 
+                p instanceof Tree.QualifiedTypeExpression) {
+                that.setStaticMethodReference(true);
+                ((Tree.MemberOrTypeExpression) p).setStaticMethodReferencePrimary(true);
+                if (p instanceof Tree.QualifiedTypeExpression) {
+                    Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
+                    if (!(pp instanceof Tree.BaseTypeExpression)
+                            && !(pp instanceof Tree.QualifiedTypeExpression)) {
+                        that.getPrimary().addError("non-static type expression in static member reference");
+                    }
+                }
+            }
+        }
+        super.visit(that);
+    }
 }
