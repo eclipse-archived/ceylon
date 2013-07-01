@@ -1,14 +1,18 @@
-doc "The `Integer` value of the given string representation 
-     of an integer, or `null` if the string does not represent 
-     an integer or if the mathematical integer it represents 
-     is too large in magnitude to be represented by an 
-     `Integer`.
-     
-     The syntax accepted by this method is the same as the 
-     syntax for an `Integer` literal in the Ceylon language 
-     except that it may optionally begin with a sign 
-     character (`+` or `-`)."
+Integer minRadix = 2;
+Integer maxRadix = 36;
+
+"The `Integer` value of the given string representation 
+ of an integer, or `null` if the string does not represent 
+ an integer or if the mathematical integer it represents 
+ is too large in magnitude to be represented by an 
+ `Integer`.
+ 
+ The syntax accepted by this method is the same as the 
+ syntax for an `Integer` literal in the Ceylon language 
+ except that it may optionally begin with a sign 
+ character (`+` or `-`)."
 shared Integer? parseInteger(String string, Integer radix = 10) {
+    assert (minRadix >= 2, maxRadix <= 36); 
     Integer length = string.size;
     if (length == 0) {
         return null;
@@ -130,7 +134,15 @@ shared Integer? parseInteger(String string, Integer radix = 10) {
     return result * magnitude;
 }
 
-Map<Character,Integer> digitCharacters = LazyMap {
+Integer? parseDigit(Character digit, Integer radix) {
+    Integer? figure = digitToCharacterMap.get(digit.lowercased);
+    if (exists figure, figure < radix) {
+        return figure;
+    }
+    return null;
+}
+ 
+Map<Character, Integer> digitToCharacterMap = LazyMap {
     '0' -> 0,
     '1' -> 1,
     '2' -> 2,
@@ -168,11 +180,3 @@ Map<Character,Integer> digitCharacters = LazyMap {
     'y' -> 34,
     'z' -> 35
 };
-
-Integer? parseDigit(Character digit, Integer radix) {
-    Integer? figure = digitCharacters.get(digit.lowercased);
-    if (exists figure, figure < radix) {
-        return figure;
-    }
-    return null;
-}
