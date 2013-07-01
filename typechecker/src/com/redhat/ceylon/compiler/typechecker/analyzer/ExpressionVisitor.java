@@ -5285,13 +5285,16 @@ public class ExpressionVisitor extends Visitor {
         }else if(result instanceof Value){
             Value value = (Value) result;
             Declaration attributeDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "Variable" : "Attribute");
-            // FIXME: reject type arguments
 
-            ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
-            that.setTarget(pr);
+            if(that.getTypeArgumentList() != null){
+                that.addError("does not accept type arguments: " + result.getName(unit));
+            }else{
+                ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
+                that.setTarget(pr);
 
-            ProducedType attributeType = attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
-            that.setTypeModel(memberise(pr, attributeType));
+                ProducedType attributeType = attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
+                that.setTypeModel(memberise(pr, attributeType));
+            }
         }
     }
 
