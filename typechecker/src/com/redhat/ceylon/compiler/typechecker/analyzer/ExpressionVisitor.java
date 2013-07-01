@@ -4158,7 +4158,7 @@ public class ExpressionVisitor extends Visitor {
             if (ci==null) {
                 that.addError("super appears outside a class definition");
             }
-            else if (!(ci instanceof Class)) {
+            else if (!(ci instanceof Class) && !(that.getSuperinterface())) {
                 that.addError("super appears inside an interface definition");
             }
             else if (that.getSuperinterface()) {
