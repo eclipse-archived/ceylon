@@ -30,9 +30,13 @@ void test<T>() {
     @type:"Member<ParameterisedContainer<String>,Interface<ParameterisedContainer<String>.InnerInterface<Integer>>>"
     value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
 
-    // toplevel methods    
+    // toplevel methods
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelMethod = `method`;
+    @error:"does not accept type arguments: method"
+    value toplevelMethodErr = `method<String>`;
+    @error:"function or value does not exist: method"
+    value toplevelMethodErr2 = `missingMethod`;
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
     @error:"missing type arguments to: parameterisedMethod"
@@ -43,12 +47,16 @@ void test<T>() {
     // qualified methods
     @type:"Member<Container,Function<Anything,Empty>>"
     value containerMethod = `Container.method`;
+    @error:"member method or attribute is ambiguous: missing"
+    value containerMethodErr = `Container.missing`;
     @type:"Member<ParameterisedContainer<String>,Function<Anything,Tuple<Integer,Integer,Empty>>>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
     
     // toplevel attributes
     @type:"Attribute<Integer>"
     value toplevelAttribute = `attribute`;
+    @error:"does not accept type arguments: attribute"
+    value toplevelAttributeErr = `attribute<String>`;
     @type:"Variable<Integer>"
     value toplevelVariableAttribute = `variableAttribute`;
 
