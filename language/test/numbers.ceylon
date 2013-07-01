@@ -345,7 +345,15 @@ shared void numbers() {
     check(-1G==(parseInteger("-1G") else ""), "parseInteger(-1G)");
     check(-1T==(parseInteger("-1T") else ""), "parseInteger(-1T)");
     check(-1P==(parseInteger("-1P") else ""), "parseInteger(-1P)");
-
+    
+    check(127 == (parseInteger("01111111", 2) else ""), "parseInteger(01111111, 2)");
+    check(128 == (parseInteger("10000000", 2) else ""), "parseInteger(10000000, 2)");
+    check(-48 == (parseInteger("-110000", 2) else ""), "parseInteger(-110000, 2)");
+    
+    check(1193046 == (parseInteger("123456", 16) else ""), "parseInteger(123456, 16)");
+    check(255 == (parseInteger("ff", 16) else ""), "parseInteger(ff, 16)");
+    check(!parseInteger("fk", 16) exists, "parseInteger(fk, 16)");
+    
     print("Testing `` 0.size ``-bit integers");
     if (0.size == 64) {
         check(9223372036854775807==(parseInteger("9223372036854775807") else ""), "parseInteger(9223372036854775807)");
@@ -354,6 +362,16 @@ shared void numbers() {
         check(-9_223_372_036_854_775_808==(parseInteger("-9_223_372_036_854_775_808") else ""), "parseInteger(-9_223_372_036_854_775_808)");
         check(!parseInteger("9223372036854775808") exists, "parseInteger(9223372036854775808)");
         check(!parseInteger("-9223372036854775809") exists, "parseInteger(-9223372036854775809)");
+        
+        check(-9223372036854775808 == (parseInteger("-1000000000000000000000000000000000000000000000000000000000000000", 2) else ""),
+          "parseInteger(-1000000000000000000000000000000000000000000000000000000000000000, 2)");
+        check(!parseInteger("-1000000000000000000000000000000000000000000000000000000000000001", 2) exists,
+          "parseInteger(-1000000000000000000000000000000000000000000000000000000000000001, 2)");
+        check(9223372036854775807 == (parseInteger("111111111111111111111111111111111111111111111111111111111111111", 2) else ""),
+          "parseInteger(111111111111111111111111111111111111111111111111111111111111111, 2)");
+        check(!parseInteger("1000000000000000000000000000000000000000000000000000000000000000", 2) exists,
+          "parseInteger(1000000000000000000000000000000000000000000000000000000000000000, 2)");
+        
     } else if (0.size == 53) {
         check(9007199254740992==(parseInteger("9007199254740992") else ""), "parseInteger(9007199254740992)");
         check(9_007_199_254_740_992==(parseInteger("9_007_199_254_740_992") else ""), "parseInteger(9_007_199_254_740_992)");
