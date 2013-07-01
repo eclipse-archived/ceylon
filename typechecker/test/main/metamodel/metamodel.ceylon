@@ -39,12 +39,28 @@ void test<T>() {
     value toplevelParameterisedMethodErr = `parameterisedMethod`;
     @type:"Function<Callable<Integer,Tuple<Boolean,Boolean,Empty>>,Tuple<String,String,Empty>>"
     value toplevelMPLMethod = `mplMethod`;
+
+    // qualified methods
+    @type:"Member<Container,Function<Anything,Empty>>"
+    value containerMethod = `Container.method`;
+    @type:"Member<ParameterisedContainer<String>,Function<Anything,Tuple<Integer,Integer,Empty>>>"
+    value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
     
     // toplevel attributes
     @type:"Attribute<Integer>"
     value toplevelAttribute = `attribute`;
     @type:"Variable<Integer>"
     value toplevelVariableAttribute = `variableAttribute`;
+
+    // qualified attributes
+    @type:"Member<Container,Attribute<Integer>>"
+    value containerAttribute = `Container.attribute`;
+    @type:"Member<Container,Variable<Integer>>"
+    value containerVariableAttribute = `Container.variableAttribute`;
+    @type:"Member<ParameterisedContainer<String>,Attribute<String>>"
+    value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
+    @type:"Member<ParameterisedContainer<String>,Variable<String>>"
+    value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
 }
 
 
@@ -72,10 +88,10 @@ class Container(){
     shared variable Integer variableAttribute = 2;
 }
 
-class ParameterisedContainer<Outer>(){
+class ParameterisedContainer<Outer>(Outer a){
     shared interface InnerInterface<Inner>{}
     shared class InnerClass<Inner>(){}
-    shared void method<Inner>(){}
-    shared Integer attribute = 2;
-    shared variable Integer variableAttribute = 2;
+    shared void method<Inner>(Inner p){}
+    shared Outer attribute = a;
+    shared variable Outer variableAttribute = a;
 }
