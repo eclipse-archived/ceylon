@@ -59,8 +59,13 @@ public class InvocationGenerator {
         }
         else {
             Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            Tree.TypeArguments targs = that.getPrimary() instanceof Tree.StaticMemberOrTypeExpression
-                    ? ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+            Tree.Primary typeArgSource = that.getPrimary();
+            //In nested invocation expressions, use the first invocation as source for type arguments
+            while (typeArgSource instanceof Tree.InvocationExpression) {
+                typeArgSource = ((Tree.InvocationExpression)typeArgSource).getPrimary();
+            }
+            Tree.TypeArguments targs = typeArgSource instanceof Tree.StaticMemberOrTypeExpression
+                    ? ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments() : null;
             if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.BaseTypeExpression
                     && ((Tree.BaseTypeExpression)that.getPrimary()).getDeclaration() == null) {
                 gen.out("(");
@@ -98,7 +103,7 @@ public class InvocationGenerator {
                 if (argList.getPositionalArguments().size() > 0) {
                     gen.out(",");
                 }
-                Declaration bmed = ((Tree.StaticMemberOrTypeExpression)that.getPrimary()).getDeclaration();
+                Declaration bmed = ((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration();
                 if (bmed instanceof Functional) {
                     if (((Functional) bmed).getParameterLists().get(0).getParameters().size() > argList.getPositionalArguments().size()
                             // has no comprehension
@@ -110,7 +115,7 @@ public class InvocationGenerator {
                         Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
                                 ((Functional) bmed).getTypeParameters(), targs.getTypeModels());
                         if (invargs != null) {
-                            TypeUtils.printTypeArguments(that, invargs, gen);
+                            TypeUtils.printTypeArguments(typeArgSource, invargs, gen);
                         } else {
                             gen.out("/*TARGS != TPARAMS!!!! WTF?????*/");
                         }
