@@ -15,7 +15,7 @@ interface Ambiguous1 satisfies AmbiguousParent {
     shared actual default Integer whatever { return 1; }
     shared actual default String somethingElse(Integer x) {
         if (x%2==0) {
-            return AmbiguousParent::somethingElse(x);
+            return (super of AmbiguousParent).somethingElse(x);
         }
         return "Ambiguous1 something ``x`` else";
     }
@@ -33,16 +33,16 @@ interface Ambiguous2 satisfies AmbiguousParent {
 class QualifyAmbiguousSupertypes(Boolean one)
         satisfies Ambiguous1 & Ambiguous2 {
     shared actual String doSomething() {
-        return one then Ambiguous1::doSomething() else Ambiguous2::doSomething();
+        return one then (super of Ambiguous1).doSomething() else (super of Ambiguous2).doSomething();
     }
     shared actual Integer whatever {
         if (one) {
-            return Ambiguous1::whatever;
+            return (super of Ambiguous1).whatever;
         }
-        return Ambiguous2::whatever;
+        return (super of Ambiguous2).whatever;
     }
     shared actual String somethingElse(Integer x) {
-        return one then Ambiguous1::somethingElse(x) else Ambiguous2::somethingElse(x);
+        return one then (super of Ambiguous1).somethingElse(x) else (super of Ambiguous2).somethingElse(x);
     }
 }
 
@@ -52,12 +52,12 @@ class QualifiedA() {
 class QualifiedB() extends QualifiedA() {
   shared actual variable Integer a=0;
   shared void f() {
-    QualifiedA::a++;
+    (super of QualifiedA).a++;
   }
   shared Integer g() {
-    return ++QualifiedA::a;
+    return ++(super of QualifiedA).a;
   }
-  shared Integer supera { return QualifiedA::a; }
+  shared Integer supera { return (super of QualifiedA).a; }
 }
 
 class TestList() satisfies List<String> {
@@ -71,8 +71,8 @@ class TestList() satisfies List<String> {
     shared actual List<String> spanTo(Integer to) { return {}; }
     shared actual List<String> spanFrom(Integer from) { return {}; }
     shared actual Iterator<String> iterator() => emptyIterator;
-    shared actual Boolean equals(Object that) { return List::equals(that); }
-    shared actual Integer hash { return List::hash; }
+    shared actual Boolean equals(Object that) { return (super of List<String>).equals(that); }
+    shared actual Integer hash { return (super of List<String>).hash; }
 }
 
 void testQualified() {
@@ -92,6 +92,6 @@ void testQualified() {
     check(++qb.a == qb.supera, "Qualified attribute [2]");
     check(++qb.a == qb.g(), "Qualified attribute [3]");
     value tl = TestList();
-    check(tl.hash=={}.hash, "List::hash");
-    check(tl=={}, "List::equals");
+    check(tl.hash=={}.hash, "super of List.hash");
+    check(tl=={}, "super of List.equals");
 }
