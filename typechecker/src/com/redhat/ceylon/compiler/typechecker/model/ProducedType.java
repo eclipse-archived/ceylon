@@ -719,7 +719,7 @@ public class ProducedType extends ProducedReference {
                     
                     Unit unit = getDeclaration().getUnit();
 					if (d!=null) {
-						return principalInstantiation(d, possibleResult, result, unit);
+						result = principalInstantiation(d, possibleResult, result, unit);
                     }
                     else {
                         //ambiguous! we can't decide between the two 
