@@ -228,6 +228,15 @@ public class SelfReferenceVisitor extends Visitor {
     }
     
     private void checkSelfReference(Node that, Tree.Term term) {
+        while (term instanceof Tree.OfOp ||
+               term instanceof Tree.Expression) {
+            if (term instanceof Tree.OfOp) {
+                term = ((Tree.OfOp) term).getTerm();
+            }
+            else if (term instanceof Tree.Expression) {
+                term = ((Tree.Expression) term).getTerm();
+            }
+        }
         if (directlyInBody() && term instanceof Tree.Super) {
             that.addError("leaks super reference in body: " + 
                     typeDeclaration.getName());
@@ -244,6 +253,15 @@ public class SelfReferenceVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Return that) {
+        super.visit(that);
+        Tree.Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
+        }
+    }
+
+    @Override
+    public void visit(Tree.Throw that) {
         super.visit(that);
         Tree.Expression e = that.getExpression();
         if ( e!=null && inBody() ) {
@@ -320,8 +338,35 @@ public class SelfReferenceVisitor extends Visitor {
         if ( inBody() ) {
             Tree.Expression e = that.getExpression();
             if (e!=null) {
-            	checkSelfReference(that, e.getTerm());
+                checkSelfReference(that, e.getTerm());
             }
+        }
+    }
+
+    @Override
+    public void visit(Tree.BinaryOperatorExpression that) {
+        super.visit(that);
+        if ( inBody() && !(that instanceof Tree.AssignmentOp) ) {
+            checkSelfReference(that, that.getLeftTerm());
+            checkSelfReference(that, that.getRightTerm());
+        }
+    }
+
+    @Override
+    public void visit(Tree.UnaryOperatorExpression that) {
+        super.visit(that);
+        if ( inBody() && !(that instanceof Tree.OfOp) ) {
+            checkSelfReference(that, that.getTerm());
+        }
+    }
+
+    @Override
+    public void visit(Tree.WithinOp that) {
+        super.visit(that);
+        if ( inBody() ) {
+            checkSelfReference(that, that.getTerm());
+            checkSelfReference(that, that.getLowerBound());
+            checkSelfReference(that, that.getUpperBound());
         }
     }
 
