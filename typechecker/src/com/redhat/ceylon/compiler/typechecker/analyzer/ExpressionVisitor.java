@@ -61,6 +61,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -3651,10 +3654,12 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
-        //boolean check = packageQualified || !isTypeUnknown(pt);
+        boolean check = packageQualified ||
+                that.getStaticMethodReference() ||
+                pt!=null && !pt.getType().isUnknown(); //account for dynamic blocks
         boolean nameNonempty = that.getIdentifier()!=null && 
                         !that.getIdentifier().getText().equals("");
-        if (nameNonempty) {
+        if (nameNonempty && check) {
             TypedDeclaration member;
             String name = name(that.getIdentifier());
             String container;
@@ -3951,7 +3956,10 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         boolean packageQualified = p instanceof Tree.Package;
-        if (pt!=null || packageQualified) {
+        boolean check = packageQualified || 
+                that.getStaticMethodReference() || 
+                pt!=null && !pt.isUnknown();
+        if (check) {
             TypeDeclaration type;
             String name = name(that.getIdentifier());
             String container;
@@ -4036,7 +4044,8 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
             ProducedType pt) {
         if (that.getStaticMethodReference()) {
-            return (TypeDeclaration) ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            TypeDeclaration td = (TypeDeclaration) ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
+            return td==null ? new UnknownType(unit) : td;
         }
         else {
             return unwrap(pt, that).getDeclaration();
@@ -5175,10 +5184,24 @@ public class ExpressionVisitor extends Visitor {
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
             ParameterList parameterList = ((Class) declaration).getParameterList();
             ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType());
+            ProducedType classType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType();
+            if(declaration.isMember()){
+                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+                ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), classType)).getType();
+                that.setTypeModel(memberType);
+            }else{
+                that.setTypeModel(classType);
+            }
         }else if(declaration instanceof Interface){
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType());
+            ProducedType interfaceType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType();
+            if(declaration.isMember()){
+                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+                ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), interfaceType)).getType();
+                that.setTypeModel(memberType);
+            }else{
+                that.setTypeModel(interfaceType);
+            }
         }else if(declaration instanceof UnionType){
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("UnionType");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
@@ -5215,22 +5238,76 @@ public class ExpressionVisitor extends Visitor {
             qualifyingType = qualifyingType.resolveAliases();
             TypeDeclaration d = qualifyingType.getDeclaration();
             String container = "type " + d.getName(unit);
-            TypedDeclaration member = (TypedDeclaration) d.getMember(name, unit, null, false);
-            if(member == null)
+            Declaration member = d.getMember(name, unit, null, false);
+            if(member instanceof TypedDeclaration){
+                that.setDeclaration(member);
+                setMetamodelType(that, member, qualifyingType);
+            }else{
                 that.addError("member method or attribute is ambiguous: " +
                               name + " for " + container);
-            else
-                that.setDeclaration(member);
+            }
         }else{
             Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
             if (result instanceof TypedDeclaration) {
                 that.setDeclaration(result);
+                setMetamodelType(that, result, that.getScope().getDeclaringType(result));
             }else{
                 that.addError("function or value does not exist: " +
                               name(that.getIdentifier()), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
-        // FIXME: deal with type arguments and stuff
+    }
+
+    private void setMetamodelType(MemberLiteral that, Declaration result, ProducedType outerType) {
+        if(result instanceof Method){
+            Method method = (Method) result;
+            Declaration functionDecl = unit.getLanguageModuleMetamodelDeclaration("Function");
+            ParameterList parameterList = method.getParameterLists().get(0);
+
+            TypeArgumentList tal = that.getTypeArgumentList();
+            if (explicitTypeArguments(method, tal, null)) {
+                List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method));
+                if(tal != null)
+                    tal.setTypeModels(ta);
+                
+                if (acceptsTypeArguments(method, ta, tal, that)) {
+                    ProducedTypedReference pr = method.getProducedTypedReference(outerType, ta);
+                    that.setTarget(pr);
+
+                    ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
+                    ProducedType ct = pr.getFullType();
+                    if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
+                        //pull the return type out of the Callable
+                        ProducedType returnType = ct.getTypeArgumentList().get(0);
+                        ProducedType methodType = functionDecl.getProducedReference(null, Arrays.<ProducedType>asList(returnType, parameterTuple)).getType();
+                        that.setTypeModel(memberise(pr, methodType));
+                    }
+                }
+            }
+            else {
+                that.addError("missing type arguments to: " + method.getName(unit));
+            }
+        }else if(result instanceof Value){
+            Value value = (Value) result;
+            Declaration attributeDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "Variable" : "Attribute");
+
+            if(that.getTypeArgumentList() != null){
+                that.addError("does not accept type arguments: " + result.getName(unit));
+            }else{
+                ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
+                that.setTarget(pr);
+
+                ProducedType attributeType = attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
+                that.setTypeModel(memberise(pr, attributeType));
+            }
+        }
+    }
+
+    private ProducedType memberise(ProducedTypedReference pr, ProducedType metamodelType) {
+        if(pr.getQualifyingType() == null)
+            return metamodelType;
+        Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+        return memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getQualifyingType(), metamodelType)).getType();
     }
 }
