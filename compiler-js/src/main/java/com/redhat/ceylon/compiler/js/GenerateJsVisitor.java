@@ -1872,9 +1872,9 @@ public class GenerateJsVisitor extends Visitor
         } else if (that.getStaticMethodReference()) {
             out("function($O$) {return ");
             if (that.getDeclaration() instanceof Method) {
-                out(clAlias, "JsCallable($O$,$O$.", that.getIdentifier().getText(), ");}");
+                out(clAlias, "JsCallable($O$,$O$.", names.name(that.getDeclaration()), ");}");
             } else {
-                out("$O$.", that.getIdentifier().getText(), ";}");
+                out("$O$.", names.name(that.getDeclaration()), ";}");
             }
         } else {
             final String lhs = generateToString(new GenerateCallback() {
