@@ -29,7 +29,7 @@ interface Interfaces {
     String uppercase(String x) => upper(x);
     
     String str {
-        @error return super.string;
+        return super.string;
     }
     
     @error printLine("Hi!");
