@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getSuper;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -229,7 +229,7 @@ public class SelfReferenceVisitor extends Visitor {
     }
     
     private void checkSelfReference(Node that, Tree.Term term) {
-        Tree.Term t = getSuper(term);
+        Tree.Term t = eliminateParensAndWidening(term);
         if (directlyInBody() && t instanceof Tree.Super) {
             that.addError("leaks super reference in body: " + 
                     typeDeclaration.getName());

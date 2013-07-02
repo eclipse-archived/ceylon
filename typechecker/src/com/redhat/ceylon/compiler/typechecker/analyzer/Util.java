@@ -499,7 +499,7 @@ public class Util {
                 firstDefaulted);
     }
 
-    public static Tree.Term getSuper(Tree.Term term) {
+    public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
         while (term instanceof Tree.OfOp ||
                term instanceof Tree.Expression) {
             if (term instanceof Tree.OfOp) {
