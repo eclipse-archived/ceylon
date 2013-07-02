@@ -776,27 +776,6 @@ public class TypeVisitor extends Visitor {
                         ct.addError("directly aliases itself: " + td.getName());
                         return;
                     }
-                    Tree.InvocationExpression ie = cs.getInvocationExpression();
-                    if (ie!=null) {
-                        Tree.Primary pr = ie.getPrimary();
-                        boolean stc = ct instanceof Tree.QualifiedType && 
-                                !(((Tree.QualifiedType) ct).getOuterType() instanceof Tree.SuperType);
-                        if (stc) {
-                            if (pr instanceof Tree.InvocationExpression) {
-                                Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
-                                handleSuperinterfaceReference(iie, true);
-                                pr = iie.getPrimary();
-                            }
-                            else {
-                                handleSuperinterfaceReference(ie, true);
-                                ie.addError("missing argument list");
-                            }
-                        }
-                        if (pr instanceof Tree.ExtendedTypeExpression) {
-                            Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-                            ete.setStaticMethodReference(stc);
-                        }
-                    }
                 }
             }
         }
@@ -960,27 +939,6 @@ public class TypeVisitor extends Visitor {
                 }
                 else {
                     td.setExtendedType(type);
-                }
-                Tree.InvocationExpression ie = that.getInvocationExpression();
-                if (ie!=null) {
-                    Tree.Primary pr = ie.getPrimary();
-                    boolean stc = et instanceof Tree.QualifiedType && 
-                            !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType);
-                    if (stc) {
-                        if (pr instanceof Tree.InvocationExpression) {
-                            Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
-                            handleSuperinterfaceReference(iie, true);
-                            pr = iie.getPrimary();
-                        }
-                        else {
-                            handleSuperinterfaceReference(ie, true);
-                            ie.addError("missing argument list");
-                        }
-                    }
-                    if (pr instanceof Tree.ExtendedTypeExpression) {
-                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-                        ete.setStaticMethodReference(stc);
-                    }
                 }
             }
         }
@@ -1257,32 +1215,7 @@ public class TypeVisitor extends Visitor {
         if (directlyInvoked) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             mte.setDirectlyInvoked(true);
-            if (mte.getStaticMethodReference()) {
-                handleSuperinterfaceReference(that, false);
-            }
         }
     }
-    
-    private void handleSuperinterfaceReference(Tree.InvocationExpression ie,
-            boolean isInterfaceExtension) {
-        Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
-        if (pal!=null) {
-            for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
-                if (pa instanceof Tree.ListedArgument) {
-                    Tree.Expression e = ((Tree.ListedArgument) pa).getExpression();
-                    if (e!=null) {
-                        Tree.Term t = e.getTerm();
-                        if (t instanceof Tree.Super) {
-                            ((Tree.Super) t).setSuperinterface(true);
-                            ie.setSuperInvocation(true);
-                        }
-                        else if (isInterfaceExtension) {
-                            e.addError("illegal argument");
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
+        
 }

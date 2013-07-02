@@ -25,7 +25,7 @@ interface Multiple {
             return (super of Y).name;
         }
         shared actual class Inner() 
-                extends X.Inner(super)() {
+                extends super.Inner() {
             //@type:"Multiple.X.Inner" X::Inner();
         }
     }
@@ -53,16 +53,16 @@ interface Multiple {
     }
     abstract class MyList() satisfies List<Integer> {
         shared actual String string {
-            return List<Integer>.string(super);
+            return super.string;
         }
         shared actual Integer hash {
-            return List<Integer>.hash(super);
+            return (super of List<Integer>).hash;
         }
         shared actual Boolean equals(Object that) {
-            return List<Integer>.equals(super)(that);
+            return (super of List<Integer>).equals(that);
         }
     }
-    abstract class MyAltList() satisfies List<Integer> {
+    abstract class MyAltList1() satisfies List<Integer> {
         shared actual String string {
             @error return (super of Basic).string;
         }
@@ -71,6 +71,17 @@ interface Multiple {
         }
         shared actual Boolean equals(Object that) {
             return (super of Identifiable).equals(that);
+        }
+    }
+    abstract class MyAltList2() satisfies List<Integer> {
+        shared actual String string {
+            return super.string;
+        }
+        shared actual Integer hash {
+            @error return super.hash;
+        }
+        shared actual Boolean equals(Object that) {
+            @error return super.equals(that);
         }
     }
 }

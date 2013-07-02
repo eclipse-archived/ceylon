@@ -683,19 +683,23 @@ classSpecifier returns [ClassSpecifier classSpecifier]
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
     @init { Primary p=null; }
     : (
-        qualifiedType
-        { $type=$qualifiedType.type;
+        t1=typeNameWithArguments
+        { BaseType bt = new BaseType(null);
+          bt.setIdentifier($t1.identifier);
+          if ($t1.typeArgumentList!=null)
+              bt.setTypeArgumentList($t1.typeArgumentList);
+          $type=bt; 
           ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
           ete.setExtendedType($type); 
           p = ete; }
       | SUPER MEMBER_OP 
-        typeReference 
+        t2=typeNameWithArguments 
         { QualifiedType qt=new QualifiedType(null);
           SuperType st = new SuperType($SUPER);
           qt.setOuterType(st);
-          qt.setIdentifier($typeReference.identifier);
-          if ($typeReference.typeArgumentList!=null)
-              qt.setTypeArgumentList($typeReference.typeArgumentList);
+          qt.setIdentifier($t2.identifier);
+          if ($t2.typeArgumentList!=null)
+              qt.setTypeArgumentList($t2.typeArgumentList);
           $type=qt;
           ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
           ete.setExtendedType($type); 
@@ -708,7 +712,7 @@ classInstantiation returns [SimpleType type, InvocationExpression invocationExpr
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
           $invocationExpression=ie; 
           p = ie; }
-      )*
+      )?
     ;
 
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]

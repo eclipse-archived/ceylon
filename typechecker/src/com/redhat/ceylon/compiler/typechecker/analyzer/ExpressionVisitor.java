@@ -1607,10 +1607,6 @@ public class ExpressionVisitor extends Visitor {
         
         p.visit(this);
         
-        if (that.getSuperInvocation()) {
-            checkSuperInvocation((Tree.MemberOrTypeExpression) p);
-        }
-        
         visitInvocation(that);
     }
     

@@ -54,21 +54,21 @@ void testSin() {
     Singleton.Iterator i2 = Singleton("goodbye").Alias();
 }
 
-@error class SingletonAlias() => Singleton.Iterator();
-@error class Alias() => Many<Integer>.Iterator();
+//@error class SingletonAlias() => Singleton.Iterator();
+//@error class Alias() => Many<Integer>.Iterator();
 
 interface InterfaceFormalMemberClass {
     shared formal class Member() {}
 }
 
 class InterfaceFormalMemberClass1() satisfies InterfaceFormalMemberClass {
-    shared actual default class Member() extends InterfaceFormalMemberClass.Member(super)() {}
+    shared actual default class Member() extends super.Member() {}
 }
 class InterfaceFormalMemberClass2() extends InterfaceFormalMemberClass1() {
-    @error shared actual class Member() extends InterfaceFormalMemberClass.Member(super)() {}
+    shared actual class Member() extends super.Member() {}
 }
 class InterfaceFormalMemberClass3() extends InterfaceFormalMemberClass1() {
-    shared actual class Member() extends InterfaceFormalMemberClass1.Member(super)() {}
+    shared actual class Member() extends super.Member() {}
 }
 
 interface OuterInter<T> {
@@ -76,19 +76,15 @@ interface OuterInter<T> {
     shared class SuperClass() {}
 }
 
-@error class BrokenToplevelClass() extends OuterInter<Integer>.SuperClass() {}
-@error interface BrokenToplevelInterface satisfies OuterInter<Integer>.SuperInter {}
+//@error class BrokenToplevelClass() extends OuterInter<Integer>.SuperClass() {}
+//@error interface BrokenToplevelInterface satisfies OuterInter<Integer>.SuperInter {}
 
 class OuterClass() satisfies OuterInter<String> {
     shared interface SubInter satisfies OuterInter<String>.SuperInter {}
     @error shared interface BrokenInter satisfies OuterInter<Integer>.SuperInter {}
-    shared class SubClass() extends OuterInter<String>.SuperClass(super)() {}
-    @error shared class BrokenClass() extends OuterInter<Integer>.SuperClass(super)() {}
-    @error shared class BrokenClass0() extends OuterInter<String>.SuperClass() {}
-    @error shared class BrokenClass1() extends OuterInter<String>.SuperClass(super) {}
-    @error shared class BrokenClass2() extends OuterInter<String>.SuperClass {}
-    @error shared class BrokenClass3() extends OuterInter<String>.SuperClass(this)() {}
-    @error shared class BrokenClass4() extends OuterInter<String>.SuperClass(super)(1) {}
+    shared class SubClass() extends super.SuperClass() {}
+    @error shared class BrokenClass1() extends super.SuperClass(1) {}
+    @error shared class BrokenClass2() extends super.SuperClass {}
 }
 
 void memberClassRefinementWithAliases() {
@@ -96,7 +92,7 @@ void memberClassRefinementWithAliases() {
         shared default class Member() {}
     }
     class Sub1() satisfies Super1 {
-        shared class Alias() => Super1.Member(super)();
+        shared class Alias() => super.Member();
         shared actual class Member() extends Alias() {}
     }
     class Super2() {

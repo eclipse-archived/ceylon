@@ -596,8 +596,7 @@
 "An invocation expression."
 ^(INVOCATION_EXPRESSION:POSTFIX_EXPRESSION
     POSITIONAL_ARGUMENT_LIST? 
-    NAMED_ARGUMENT_LIST?
-    boolean superInvocation;)
+    NAMED_ARGUMENT_LIST?)
 
 ^(PARAMETERIZED_EXPRESSION:PRIMARY
     PRIMARY
@@ -758,8 +757,7 @@
 "A reference to the current instance."
 ^(abstract SELF_EXPRESSION:ATOM)
 ^(THIS:SELF_EXPRESSION)
-^(SUPER:SELF_EXPRESSION
-    boolean superinterface;)
+^(SUPER:SELF_EXPRESSION)
 
 "Enumerated elements of an iterable."
 ^(SEQUENCE_ENUMERATION:ATOM 
