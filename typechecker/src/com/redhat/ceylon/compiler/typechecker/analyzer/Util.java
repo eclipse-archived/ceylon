@@ -22,10 +22,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.OfOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -353,7 +349,7 @@ public class Util {
 
     static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
         if (al!=null) {
-            AnonymousAnnotation aa = al.getAnonymousAnnotation();
+            Tree.AnonymousAnnotation aa = al.getAnonymousAnnotation();
             if (aa!=null) {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
@@ -367,7 +363,7 @@ public class Util {
                 if (a.getNamedArgumentList()!=null) {
                     for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
                         if (na instanceof Tree.SpecifiedArgument) {
-                            Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
+                            Tree.Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
                                 String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();

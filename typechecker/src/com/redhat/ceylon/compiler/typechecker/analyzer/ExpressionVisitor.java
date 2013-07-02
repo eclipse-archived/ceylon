@@ -4,8 +4,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
