@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclar
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -550,10 +551,8 @@ public class TypeVisitor extends Visitor {
             ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
-                    ProducedType t = s.getExtendedType();
-                    //TODO: type arguments
-                    that.setTypeModel(t);
+                    ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                    that.setTypeModel(intersectionOfSupertypes(oci));
                 }
                 else {
                     that.addError("super appears in extends for non-member class");

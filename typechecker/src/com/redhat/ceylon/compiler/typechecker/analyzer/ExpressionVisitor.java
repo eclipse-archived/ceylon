@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
@@ -4145,16 +4146,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedType intersectionOfSupertypes(ClassOrInterface ci) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        list.add(ci.getExtendedType());
-        list.addAll(ci.getSatisfiedTypes());
-        IntersectionType it = new IntersectionType(unit);
-        it.setSatisfiedTypes(list);
-        ProducedType type = it.getType();
-        return type;
-    }
-    
     @Override public void visit(Tree.This that) {
         ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {

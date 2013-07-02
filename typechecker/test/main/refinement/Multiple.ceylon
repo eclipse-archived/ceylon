@@ -7,7 +7,7 @@ interface Multiple {
     interface X satisfies Top {
         shared actual default String name { return "X"; }
         shared actual default class Inner() 
-                extends Top.Inner(super)() {}
+                extends super.Inner() {}
         shared actual String getName() { return "X"; }
     }
     interface Y satisfies Top {
@@ -15,14 +15,14 @@ interface Multiple {
     }
     class C() satisfies X & Y {
         X.Inner inner() {
-            X.Inner inn = X.Inner(super)();
+            X.Inner inn = super.Inner();
             return inn;
         }
         shared actual String name {
-            return X.name(super);
+            return (super of X).name;
         }
         shared actual String string {
-            return Y.name(super);
+            return (super of Y).name;
         }
         shared actual class Inner() 
                 extends X.Inner(super)() {
@@ -32,23 +32,23 @@ interface Multiple {
     interface Silly { shared String name { return "Gavin"; }  }
     class Broken() satisfies X & Y {
         void method() {
-            X.getName(super)();
-            @error Y.getName(super)();
-            @error Top.getName(super)();
+            @type:"String" (super of X).getName();
+            @error (super of Y).getName();
+            @error (super of Top).getName();
         }
         shared actual String name {
-            @error return Top.name(super);
+            @error return (super of Top).name;
         }
         shared actual String string {
-            @error return Silly.name(super);
+            @error return (super of Silly).name;
         }
         @error shared actual class Inner() 
-                extends Top.Inner() {}
+                extends super.Inner() {}
         class My() {
-            @error X.Inner(super)();
-            @error print(Y.name(super));
-            @error print(Top.name(super));
-            @error print(Silly.name(super));
+            @error (super of X).Inner();
+            @error print((super of Y).name);
+            @error print((super of Top).name);
+            @error print((super of Silly).name);
         }
     }
     abstract class MyList() satisfies List<Integer> {
@@ -64,13 +64,13 @@ interface Multiple {
     }
     abstract class MyAltList() satisfies List<Integer> {
         shared actual String string {
-            @error return Basic.string(super);
+            @error return (super of Basic).string;
         }
         shared actual Integer hash {
-            @error return Object.hash(super);
+            @error return (super of Object).hash;
         }
         shared actual Boolean equals(Object that) {
-            return Identifiable.equals(super)(that);
+            return (super of Identifiable).equals(that);
         }
     }
 }
