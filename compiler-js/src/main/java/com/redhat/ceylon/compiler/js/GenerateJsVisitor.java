@@ -37,6 +37,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.*;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
+
 public class GenerateJsVisitor extends Visitor
         implements NaturalVisitor {
 
@@ -59,18 +61,11 @@ public class GenerateJsVisitor extends Visitor
 
         @Override
         public void visit(QualifiedMemberOrTypeExpression qe) {
-            if (qe.getPrimary() instanceof Super) {
+            Term primary = eliminateParensAndWidening(qe.getPrimary());
+            if (primary instanceof Super) {
                 decs.add(qe.getDeclaration());
             }
             super.visit(qe);
-        }
-        
-        @Override
-        public void visit(BaseMemberOrTypeExpression that) {
-            if (that.getSupertypeQualifier() != null) {
-                decs.add(that.getDeclaration());
-            }
-            super.visit(that);
         }
 
         @Override
@@ -1946,17 +1941,11 @@ public class GenerateJsVisitor extends Visitor
      */
     Scope getSuperMemberScope(Node node) {
         Scope scope = null;
-        if (node instanceof BaseMemberOrTypeExpression) {
-            // Check for "Supertype::member"
-            BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) node;
-            if (bmte.getSupertypeQualifier() != null) {
-                scope = bmte.getDeclaration().getContainer();
-            }
-        }
-        else if (node instanceof QualifiedMemberOrTypeExpression) {
+        if (node instanceof QualifiedMemberOrTypeExpression) {
             // Check for "super.member"
             QualifiedMemberOrTypeExpression qmte = (QualifiedMemberOrTypeExpression) node;
-            if (qmte.getPrimary() instanceof Super) {
+            final Term primary = eliminateParensAndWidening(qmte.getPrimary());
+            if (primary instanceof Super) {
                 scope = qmte.getDeclaration().getContainer();
             }
         }
