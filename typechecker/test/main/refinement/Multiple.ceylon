@@ -42,7 +42,7 @@ interface Multiple {
         shared actual String string {
             @error return (super of Silly).name;
         }
-        @error shared actual class Inner() 
+        shared actual class Inner() 
                 extends super.Inner() {}
         class My() {
             @error (super of X).Inner();
