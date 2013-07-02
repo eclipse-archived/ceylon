@@ -24,6 +24,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.OfOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -495,6 +497,19 @@ public class Util {
         }
         return unit.getTupleType(paramTypes, sequenced, false, 
                 firstDefaulted);
+    }
+
+    public static Tree.Term getSuper(Tree.Term term) {
+        while (term instanceof Tree.OfOp ||
+               term instanceof Tree.Expression) {
+            if (term instanceof Tree.OfOp) {
+                term = ((Tree.OfOp) term).getTerm();
+            }
+            else if (term instanceof Tree.Expression) {
+                term = ((Tree.Expression) term).getTerm();
+            }
+        }
+        return term;
     }
 
 }

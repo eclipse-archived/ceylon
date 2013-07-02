@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getSuper;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
@@ -3672,13 +3673,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSuperMember(Tree.QualifiedMemberOrTypeExpression that) {
-        Tree.Term t = that.getPrimary();
-        if (t instanceof Tree.Expression) {
-            t = ((Tree.Expression) t).getTerm();
-            if (t instanceof Tree.OfOp) {
-                t = ((Tree.OfOp) t).getTerm();
-            }
-        }
+        Tree.Term t = getSuper(that.getPrimary());
         if (t instanceof Tree.Super) {
             checkSuperInvocation(that);
         }

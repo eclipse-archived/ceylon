@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getSuper;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -228,24 +229,16 @@ public class SelfReferenceVisitor extends Visitor {
     }
     
     private void checkSelfReference(Node that, Tree.Term term) {
-        while (term instanceof Tree.OfOp ||
-               term instanceof Tree.Expression) {
-            if (term instanceof Tree.OfOp) {
-                term = ((Tree.OfOp) term).getTerm();
-            }
-            else if (term instanceof Tree.Expression) {
-                term = ((Tree.Expression) term).getTerm();
-            }
-        }
-        if (directlyInBody() && term instanceof Tree.Super) {
+        Tree.Term t = getSuper(term);
+        if (directlyInBody() && t instanceof Tree.Super) {
             that.addError("leaks super reference in body: " + 
                     typeDeclaration.getName());
         }    
-        if (mayNotLeakThis() && term instanceof Tree.This) {
+        if (mayNotLeakThis() && t instanceof Tree.This) {
             that.addError("leaks this reference in initializer: " + 
                     typeDeclaration.getName());
         }    
-        if (mayNotLeakOuter() && term instanceof Tree.Outer) {
+        if (mayNotLeakOuter() && t instanceof Tree.Outer) {
             that.addError("leaks outer reference in initializer: " + 
                     typeDeclaration.getName());
         }
