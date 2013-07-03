@@ -32,7 +32,7 @@ interface InterfaceAliasedFormalMemberClass {
 }
 @noanno
 class InterfaceAliasedFormalMemberClass_sub() satisfies InterfaceAliasedFormalMemberClass {
-    shared class Alias() => InterfaceAliasedFormalMemberClass::Member();
+    shared class Alias() => super.Member();
     shared actual class Member() extends Alias() {
     }
     shared void m2(InterfaceAliasedFormalMemberClass_sub qual) {

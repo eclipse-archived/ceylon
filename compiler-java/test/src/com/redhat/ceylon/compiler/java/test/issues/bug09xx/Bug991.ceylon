@@ -29,12 +29,12 @@ interface Bug991List satisfies Bug991Iterable {
 
 @noanno
 interface Bug991Sequence satisfies Bug991List {
-    shared default actual void f() => Bug991List::f();
+    shared default actual void f() => super.f();
 }
 
 @noanno
 class Bug991SequenceClass() satisfies Bug991List {
-    shared default actual void f() => Bug991List::f();
+    shared default actual void f() => super.f();
     
     void m(){
         // make sure comprehensions are correctly generated too, because they need to use

@@ -25,9 +25,9 @@ interface SuperInterfaceTypeMember {
 
 @noanno
 class SuperInterfaceTypeMember_Sub() satisfies SuperInterfaceTypeMember {
-    shared actual class Inner() extends SuperInterfaceTypeMember::Inner() {
+    shared actual class Inner() extends super.Inner() {
     }
     void m() {
-        SuperInterfaceTypeMember::Inner();
+        super.Inner();
     }
 }

@@ -30,7 +30,7 @@ interface InterfaceDefaultMemberClass {
 }
 @noanno
 class InterfaceMemberDefaultClass_sub() satisfies InterfaceDefaultMemberClass {
-    shared actual class Member() extends InterfaceDefaultMemberClass::Member() {
+    shared actual class Member() extends super.Member() {
     }
     shared void m2(InterfaceMemberDefaultClass_sub qual) {
         Member{};

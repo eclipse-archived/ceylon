@@ -37,17 +37,17 @@ abstract class SuperClass() {
 @noanno
 abstract class SuperClass_Sub() extends SuperClass() {
     shared actual Integer m() {
-        SuperClass::a++;
-        return SuperClass::i + SuperClass::m();
+        super.a++;
+        return super.i + super.m();
     }
     shared Integer m2() {
-        SuperClass::a++;
-        return SuperClass::i + SuperClass::m();
+        super.a++;
+        return super.i + super.m();
     }
     shared void m3() {
-        SuperClass::Local();
-        SuperClass::Default();
-        //SuperClass::Formal();
+        super.Local();
+        super.Default();
+        //super.Formal();
     }
     
 }

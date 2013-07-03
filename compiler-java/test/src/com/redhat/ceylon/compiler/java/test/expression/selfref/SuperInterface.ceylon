@@ -33,27 +33,27 @@ interface SuperInterface {
 @noanno
 class SuperInterface_Sub() satisfies SuperInterface {
     shared actual Integer m() {
-        SuperInterface::i++;
-        return SuperInterface::i + SuperInterface::m();
+        super.i++;
+        return super.i + super.m();
     }
     shared Integer m2() {
-        return SuperInterface::i + SuperInterface::m();
+        return super.i + super.m();
     }
     shared actual String string {
-        return Object::string;
+        return super.string;
     }
 }
 
 @noanno
 interface SuperInterface_SubInterface satisfies SuperInterface {
     shared actual Integer m() {
-        SuperInterface::i++;
-        return SuperInterface::i + SuperInterface::m();
+        super.i++;
+        return super.i + super.m();
     }
     shared Integer m2() {
-        return SuperInterface::i + SuperInterface::m();
+        return super.i + super.m();
     }
     shared actual String string {
-        return Object::string;
+        return super.string;
     }
 }

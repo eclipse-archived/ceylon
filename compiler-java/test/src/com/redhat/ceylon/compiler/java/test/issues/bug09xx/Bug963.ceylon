@@ -20,5 +20,5 @@
 @noanno
 shared interface Bug963<out Element>
         satisfies List<Element> {
-    shared actual default Integer size => List::size;
+    shared actual default Integer size => super.size;
 }

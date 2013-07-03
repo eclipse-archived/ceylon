@@ -32,7 +32,7 @@ interface InterfaceFormalMemberClass {
 }
 @noanno
 class InterfaceFormalMemberClass_sub() satisfies InterfaceFormalMemberClass {
-    shared actual class Member() extends InterfaceFormalMemberClass::Member() {
+    shared actual class Member() extends super.Member() {
     }
     shared void m2(InterfaceFormalMemberClass_sub qual) {
         Member{};

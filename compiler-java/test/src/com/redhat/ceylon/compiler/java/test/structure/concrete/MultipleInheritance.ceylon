@@ -40,13 +40,13 @@ class MultipleInheritanceSubImpl() satisfies MultipleInheritanceSub {
 class MultipleInheritanceImplSub() extends MultipleInheritanceImpl() satisfies MultipleInheritanceSub {
     shared actual variable Integer a = 1;
     shared actual void m() {
-        MultipleInheritanceSub::m();
+        (super of MultipleInheritanceSub).m();
     }
 }
 @noanno
 class MultipleInheritanceSubImplSub() extends MultipleInheritanceSubImpl() satisfies MultipleInheritance {
     shared actual variable Integer a = 1;
     shared actual void m() {
-        MultipleInheritance::m();
+        (super of MultipleInheritance).m();
     }    
 }
