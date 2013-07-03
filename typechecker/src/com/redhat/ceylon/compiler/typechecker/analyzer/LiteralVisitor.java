@@ -53,7 +53,7 @@ public class LiteralVisitor extends Visitor {
         StringBuilder result = new StringBuilder();
         boolean allTrimmed = stripIndent(text, indent, result);
         if (!allTrimmed) {
-            that.addError("multiline string content should align with start of string: string begins at character position " + indent);
+            that.addError("multiline string content should align with start of string: string begins at character position " + indent, 6000);
         }
         if (type!=VERBATIM_STRING && type!=AVERBATIM_STRING) {
             interpolateEscapes(result, that);
@@ -128,7 +128,7 @@ public class LiteralVisitor extends Visitor {
                 .replace("P", "000000000000000"));
     }
     
-    private static boolean stripIndent(final String text, final int start, 
+    private static boolean stripIndent(final String text, final int indention, 
             final StringBuilder result) {
         boolean correctlyIndented = true;
         int num = 0;
@@ -137,14 +137,17 @@ public class LiteralVisitor extends Visitor {
                 result.append(line);
             }
             else {
-                for (int i=0; i<line.length()&&i<start; i++) {
-                    if (!isWhitespace(line.charAt(i))) {
-                        correctlyIndented = false;
+                for (int i = 0; i < line.length(); i++) {
+                    if (i < indention) {
+                        if (!isWhitespace(line.charAt(i))) {
+                            correctlyIndented = false;
+                            result.append(line.substring(i));
+                            break;
+                        }
+                    } else {
+                        result.append(line.substring(indention));
                         break;
                     }
-                }
-                if (line.length()>=start) {
-                    result.append(line.substring(start));
                 }
             }
             result.append("\n");
