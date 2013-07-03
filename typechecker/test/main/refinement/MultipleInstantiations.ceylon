@@ -15,7 +15,10 @@ class SuperCo() satisfies Co<Object> {
 class SubCo() extends SuperCo() satisfies Co<String> {
     default shared actual String get() { return ""; }
     void m() {
-        @type:"Object" super.get();
+        @type:"Object" (super of SuperCo).get();
+        @error @type:"String" super.get();
+        @error @type:"String" (super of Co<String>).get();
+        @error (super of Object).get();
     }
 } 
 @error class SubCoBroken() extends SuperCo() satisfies Co<String> {}
@@ -47,7 +50,9 @@ class SuperCoGood() satisfies Co<G> {
 class SubCoGood() extends SuperCoGood() satisfies Co<H> {
     default shared actual H&G get() { return nothing; }
     void m() {
-        @type:"G" super.get();
+        @type:"G&H" @error super.get();
+        @type:"G" (super of SuperCoGood).get();
+        @type:"H" @error (super of Co<H>).get();
     }
 }
 void testSubCoGood() {

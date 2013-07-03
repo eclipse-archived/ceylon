@@ -13,7 +13,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -23,8 +22,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnonymousAnnotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -71,21 +68,6 @@ public class Util {
         }
     }
     
-    static void checkTypeBelongsToContainingScope(ProducedType type,
-            Scope scope, Node that) {
-        //TODO: this does not account for types 
-        //      inherited by a containing scope!
-        //TODO: what if the type arguments don't match?!
-        while (scope!=null) {
-            if (type.getDeclaration().getContainer()==scope) {
-                return;
-            }
-            scope=scope.getContainer();
-        }
-        that.addError("illegal use of qualified type outside scope of qualifying type: " + 
-                type.getProducedTypeName(that.getUnit()));
-    }
-
     static List<ProducedType> getTypeArguments(Tree.TypeArguments tal,
     		List<TypeParameter> typeParameters) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
@@ -367,7 +349,7 @@ public class Util {
 
     static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
         if (al!=null) {
-            AnonymousAnnotation aa = al.getAnonymousAnnotation();
+            Tree.AnonymousAnnotation aa = al.getAnonymousAnnotation();
             if (aa!=null) {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
@@ -381,7 +363,7 @@ public class Util {
                 if (a.getNamedArgumentList()!=null) {
                     for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
                         if (na instanceof Tree.SpecifiedArgument) {
-                            Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
+                            Tree.Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
                                 String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
@@ -511,6 +493,19 @@ public class Util {
         }
         return unit.getTupleType(paramTypes, sequenced, false, 
                 firstDefaulted);
+    }
+
+    public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
+        while (term instanceof Tree.OfOp ||
+               term instanceof Tree.Expression) {
+            if (term instanceof Tree.OfOp) {
+                term = ((Tree.OfOp) term).getTerm();
+            }
+            else if (term instanceof Tree.Expression) {
+                term = ((Tree.Expression) term).getTerm();
+            }
+        }
+        return term;
     }
 
 }

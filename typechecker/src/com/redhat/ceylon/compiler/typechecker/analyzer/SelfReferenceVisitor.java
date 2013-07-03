@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -228,15 +229,16 @@ public class SelfReferenceVisitor extends Visitor {
     }
     
     private void checkSelfReference(Node that, Tree.Term term) {
-        if (directlyInBody() && term instanceof Tree.Super) {
+        Tree.Term t = eliminateParensAndWidening(term);
+        if (directlyInBody() && t instanceof Tree.Super) {
             that.addError("leaks super reference in body: " + 
                     typeDeclaration.getName());
         }    
-        if (mayNotLeakThis() && term instanceof Tree.This) {
+        if (mayNotLeakThis() && t instanceof Tree.This) {
             that.addError("leaks this reference in initializer: " + 
                     typeDeclaration.getName());
         }    
-        if (mayNotLeakOuter() && term instanceof Tree.Outer) {
+        if (mayNotLeakOuter() && t instanceof Tree.Outer) {
             that.addError("leaks outer reference in initializer: " + 
                     typeDeclaration.getName());
         }
@@ -244,6 +246,15 @@ public class SelfReferenceVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Return that) {
+        super.visit(that);
+        Tree.Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
+        }
+    }
+
+    @Override
+    public void visit(Tree.Throw that) {
         super.visit(that);
         Tree.Expression e = that.getExpression();
         if ( e!=null && inBody() ) {
@@ -301,18 +312,43 @@ public class SelfReferenceVisitor extends Visitor {
         }
     }
 
-    /*@Override
-    public void visit(Tree.PositionalArgumentList that) {
+    @Override
+    public void visit(Tree.BinaryOperatorExpression that) {
+        super.visit(that);
+        if ( inBody() && !(that instanceof Tree.AssignmentOp) ) {
+            checkSelfReference(that, that.getLeftTerm());
+            checkSelfReference(that, that.getRightTerm());
+        }
+    }
+
+    @Override
+    public void visit(Tree.UnaryOperatorExpression that) {
+        super.visit(that);
+        if ( inBody() && !(that instanceof Tree.OfOp) ) {
+            checkSelfReference(that, that.getTerm());
+        }
+    }
+
+    @Override
+    public void visit(Tree.WithinOp that) {
         super.visit(that);
         if ( inBody() ) {
-            for (Tree.PositionalArgument arg: that.getPositionalArguments()) {
-                Expression e = arg.getExpression();
-                if (e!=null) {
-                    checkSelfReference(arg, e.getTerm());
-                }
+            checkSelfReference(that, that.getTerm());
+            checkSelfReference(that, that.getLowerBound());
+            checkSelfReference(that, that.getUpperBound());
+        }
+    }
+
+    @Override
+    public void visit(Tree.ExpressionComprehensionClause that) {
+        super.visit(that);
+        if ( inBody() ) {
+            Tree.Expression e = that.getExpression();
+            if (e!=null) {
+                checkSelfReference(that, e.getTerm());
             }
         }
-    }*/
+    }
 
     @Override
     public void visit(Tree.ListedArgument that) {
@@ -320,7 +356,7 @@ public class SelfReferenceVisitor extends Visitor {
         if ( inBody() ) {
             Tree.Expression e = that.getExpression();
             if (e!=null) {
-            	checkSelfReference(that, e.getTerm());
+                checkSelfReference(that, e.getTerm());
             }
         }
     }
@@ -332,22 +368,6 @@ public class SelfReferenceVisitor extends Visitor {
             Tree.Expression e = that.getExpression();
             if (e!=null) {
             	checkSelfReference(that, e.getTerm());
-            }
-        }
-    }
-
-    @Override
-    public void visit(Tree.NamedArgumentList that) {
-        super.visit(that);
-        if ( inBody() ) {
-            for (Tree.NamedArgument arg: that.getNamedArguments()) {
-                if (arg instanceof Tree.SpecifiedArgument) {
-                    Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
-                    Tree.Expression e = se.getExpression();
-                    if (e!=null) {
-                        checkSelfReference(se, e.getTerm());
-                    }
-                }
             }
         }
     }

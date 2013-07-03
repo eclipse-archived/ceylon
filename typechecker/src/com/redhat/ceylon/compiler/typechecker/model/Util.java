@@ -888,4 +888,14 @@ public class Util {
         return !intersectionType(st1, st2, unit).isNothing();
     }
 
+    public static ProducedType intersectionOfSupertypes(ClassOrInterface ci) {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        list.add(ci.getExtendedType());
+        list.addAll(ci.getSatisfiedTypes());
+        IntersectionType it = new IntersectionType(ci.getUnit());
+        it.setSatisfiedTypes(list);
+        ProducedType type = it.getType();
+        return type;
+    }
+
 }

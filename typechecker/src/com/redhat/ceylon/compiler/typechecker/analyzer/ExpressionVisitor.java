@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
@@ -14,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
@@ -62,7 +64,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -1533,20 +1534,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    /*@Override public void visit(Tree.OuterExpression that) {
-        that.getPrimary().visit(this);
-        ProducedType pt = that.getPrimary().getTypeModel();
-        if (pt!=null) {
-            if (pt.getDeclaration() instanceof ClassOrInterface) {
-                that.setTypeModel(getOuterType(that, (ClassOrInterface) pt.getDeclaration()));
-                //TODO: some kind of MemberReference
-            }
-            else {
-                that.addError("can't use outer on a type parameter");
-            }
-        }
-    }*/
-    
     ProducedType unwrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
         ProducedType result;
         Tree.MemberOperator op = mte.getMemberOperator();
@@ -1595,17 +1582,11 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.InvocationExpression that) {
-        
         Tree.Primary p = that.getPrimary();
-        boolean directlyInvoked = p instanceof Tree.MemberOrTypeExpression;
-        if (directlyInvoked) {
-            ((Tree.MemberOrTypeExpression) p).setDirectlyInvoked(true);
-        }
-        
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pal!=null) {
             pal.visit(this);
-            if (directlyInvoked) {
+            if (p instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
                 //set up the "signature" on the primary
                 //so that we can resolve the correct 
@@ -1629,7 +1610,33 @@ public class ExpressionVisitor extends Visitor {
         
         visitInvocation(that);
     }
-
+    
+    private void checkSuperInvocation(Tree.MemberOrTypeExpression qmte) {
+        Declaration member = qmte.getDeclaration();
+        if (member.isFormal() && !inExtendsClause) {
+            qmte.addError("supertype member is declared formal: " + member.getName() + 
+                    " of " + ((TypeDeclaration) member.getContainer()).getName());
+        }
+        ClassOrInterface ci = getContainingClassOrInterface(qmte.getScope());
+        Declaration etm = ci.getExtendedTypeDeclaration()
+                .getMember(member.getName(), null, false);
+        if (etm!=null && !etm.equals(member) && etm.refines(member)) {
+            qmte.addError("inherited member is refined by intervening superclass: " + 
+                    ((TypeDeclaration) etm.getContainer()).getName() + 
+                    " refines " + member.getName() + " declared by " + 
+                    ci.getName());
+        }
+        for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
+            Declaration stm = td.getMember(member.getName(), null, false);
+            if (stm!=null && !stm.equals(member) && stm.refines(member)) {
+                qmte.addError("inherited member is refined by intervening superinterface: " + 
+                        ((TypeDeclaration) stm.getContainer()).getName() + 
+                        " refines " + member.getName() + " declared by " + 
+                        ci.getName());
+            }
+        }
+    }
+    
     private void visitInvocation(Tree.InvocationExpression that) {
         Tree.Primary pr = that.getPrimary();
         if (pr==null) {
@@ -3538,61 +3545,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private static Declaration getSupertypeDeclaration(Tree.BaseMemberOrTypeExpression that, 
-            Tree.SupertypeQualifier sq) {
-        String typeName = name(sq.getIdentifier());
-        Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null, false);
-        if (dec instanceof TypeDeclaration) {
-            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
-            if (ci.getType().getSupertype((TypeDeclaration) dec)==null) {
-                sq.addError("not a supertype of containing class or interface: " +
-                        ci.getName() + " does not inherit " + dec.getName());
-            }
-            Declaration member = dec.getMember(name(that.getIdentifier()), that.getSignature(), 
-                    that.getEllipsis());
-            if (member!=null && member.isFormal()) {
-                that.addError("supertype member is declared formal: " + 
-                        typeName + "::" + member.getName());
-            }
-            Declaration etm = ci.getExtendedTypeDeclaration()
-                    .getMember(member.getName(), that.getSignature(), that.getEllipsis());
-            if (etm!=null && !etm.equals(member) && etm.refines(member)) {
-                that.addError("inherited member is refined by intervening superclass: " + 
-                        ((TypeDeclaration) etm.getContainer()).getName() + 
-                        " refines " + member.getName() + " declared by " + 
-                        ((TypeDeclaration) member.getContainer()).getName());
-            }
-            for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
-                Declaration stm = td.getMember(member.getName(), that.getSignature(), 
-                        that.getEllipsis());
-                if (stm!=null && !stm.equals(member) && stm.refines(member)) {
-                    that.addError("inherited member is refined by intervening superinterface: " + 
-                            ((TypeDeclaration) stm.getContainer()).getName() + 
-                            " refines " + member.getName() + " declared by " + 
-                            ((TypeDeclaration) member.getContainer()).getName());
-                }
-            }
-            return member;
-        }
-        else {
-            sq.addError("qualifying supertype does not exist: " + typeName);
-            return null;
-        }
-    }
-
     @Override public void visit(Tree.BaseMemberExpression that) {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
-        TypedDeclaration member;
-        Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
-        if (sq==null) {
-            member = getBaseDeclaration(that, that.getSignature(), 
-                    that.getEllipsis());
-        }
-        else {
-            member = getSupertypeMemberDeclaration(that, sq);
-        }
+        TypedDeclaration member = getBaseDeclaration(that, that.getSignature(), 
+                that.getEllipsis());
         if (member==null) {
             if (!dynamic) {
                 that.addError("function or value does not exist: " +
@@ -3625,19 +3583,6 @@ public class ExpressionVisitor extends Visitor {
             }*/
             checkOverloadedReference(that);
         }
-    }
-    
-    private static TypedDeclaration getSupertypeMemberDeclaration(
-            Tree.BaseMemberExpression that, Tree.SupertypeQualifier sq) {
-        TypedDeclaration member;
-        Declaration dec = getSupertypeDeclaration(that, sq);
-        if (dec instanceof TypedDeclaration) {
-            member = (TypedDeclaration) dec;
-        }
-        else {
-            member = null;
-        }
-        return member;
     }
     
     private List<TypeParameter> getTypeParameters(Declaration member) {
@@ -3723,13 +3668,14 @@ public class ExpressionVisitor extends Visitor {
                 }
                 checkOverloadedReference(that);
             }
-            if (p instanceof Tree.Super) {
-                if (member!=null && member.isFormal()) {
-                    that.addError("superclass member is formal: " + 
-                            member.getName() + " declared by " + 
-                            ((Declaration) member.getContainer()).getName());
-                }
-            }
+            checkSuperMember(that);
+        }
+    }
+
+    private void checkSuperMember(Tree.QualifiedMemberOrTypeExpression that) {
+        Tree.Term t = eliminateParensAndWidening(that.getPrimary());
+        if (t instanceof Tree.Super) {
+            checkSuperInvocation(that);
         }
     }
 
@@ -3775,7 +3721,8 @@ public class ExpressionVisitor extends Visitor {
             ProducedType receivingType) {
         if (that.getStaticMethodReference()) {
 //            return receivingType.getTypeArgumentList().get(0);
-            return ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget().getType();
+            ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
+            return target==null ? new UnknownType(unit).getType() : target.getType();
         }
         else {
             return receivingType;
@@ -3785,11 +3732,17 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType accountForStaticReferenceType(Tree.QualifiedMemberOrTypeExpression that, 
             ProducedType type) {
         if (that.getStaticMethodReference()) {
-            ProducedType rt = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget().getType();
-//            ProducedType rt = receivingType.getTypeArgumentList().get(0);
-            return producedType(unit.getCallableDeclaration(), type,
-                    producedType(unit.getTupleDeclaration(), 
-                            rt, rt, unit.getEmptyDeclaration().getType()));
+            ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
+            if (target==null) {
+                return new UnknownType(unit).getType();
+            }
+            else {
+                ProducedType rt = target.getType();
+                //            ProducedType rt = receivingType.getTypeArgumentList().get(0);
+                return producedType(unit.getCallableDeclaration(), type,
+                        producedType(unit.getTupleDeclaration(), 
+                                rt, rt, unit.getEmptyDeclaration().getType()));
+            }
         }
         else {
             return type;
@@ -3819,15 +3772,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
-        Tree.SupertypeQualifier sq = that.getSupertypeQualifier();
-        TypeDeclaration type;
-        if (sq==null) {
-            type = getBaseDeclaration(that, that.getSignature(), 
-                    that.getEllipsis());
-        }
-        else {
-            type = getSupertypeTypeDeclaration(that, sq);
-        }
+        TypeDeclaration type = getBaseDeclaration(that, that.getSignature(), 
+                that.getEllipsis());
         if (type==null) {
             if (!dynamic) {
                 that.addError("type does not exist: " + 
@@ -3885,18 +3831,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
-    static TypeDeclaration getSupertypeTypeDeclaration(Tree.BaseTypeExpression that, 
-            Tree.SupertypeQualifier sq) {
-        Declaration dec = getSupertypeDeclaration(that, sq);
-        if (dec instanceof TypeDeclaration) {
-            return (TypeDeclaration) dec;
-        }
-        else {
-            return null;
-        }
-    }
-        
+    
     @Override public void visit(Tree.ExtendedTypeExpression that) {
         super.visit(that);
         Declaration dec = that.getDeclaration();
@@ -3920,24 +3855,9 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.QualifiedMemberOrTypeExpression that) {
-        Tree.Primary p = that.getPrimary();
-        boolean checkStatic = p instanceof Tree.MemberOrTypeExpression;
-        if (checkStatic) {
-            if (p instanceof Tree.BaseTypeExpression || 
-                p instanceof Tree.QualifiedTypeExpression) {
-                that.setStaticMethodReference(true);
-                ((Tree.MemberOrTypeExpression) p).setStaticMethodReferencePrimary(true);
-                if (p instanceof Tree.QualifiedTypeExpression) {
-                    Tree.Primary pp = ((Tree.QualifiedTypeExpression) p).getPrimary();
-                    if (!(pp instanceof Tree.BaseTypeExpression)
-                            && !(pp instanceof Tree.QualifiedTypeExpression)) {
-                        that.getPrimary().addError("non-static type expression in static member reference");
-                    }
-                }
-            }
-        }
         super.visit(that);
-        if (checkStatic) {
+        Tree.Primary p = that.getPrimary();
+        if (p instanceof Tree.MemberOrTypeExpression) {
             Declaration pd = ((Tree.MemberOrTypeExpression) p).getDeclaration();
             if (!(pd instanceof TypeDeclaration) && 
                     pd instanceof Functional) {
@@ -4033,10 +3953,8 @@ public class ExpressionVisitor extends Visitor {
                             that.getScope(), that);
                 }
             }*/
-            if (!inExtendsClause && p instanceof Tree.Super) {
-                if (type!=null && type.isFormal()) {
-                    that.addError("superclass member class is formal");
-                }
+            if (!inExtendsClause) {
+                checkSuperMember(that);
             }
         }
     }
@@ -4196,48 +4114,47 @@ public class ExpressionVisitor extends Visitor {
     private boolean inExtendsClause = false;
 
     @Override public void visit(Tree.Super that) {
+        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {
-            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
-                    ProducedType t = s.getExtendedType();
-                    //TODO: type arguments??
-                    that.setTypeModel(t);
+                    ClassOrInterface oci = (ClassOrInterface) ci.getContainer();
+                    that.setTypeModel(intersectionOfSupertypes(oci));
                 }
             }
         }
         else {
-            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             //TODO: for consistency, move these errors to SelfReferenceVisitor
             if (ci==null) {
-                that.addError("super appears outside a class definition");
-            }
-            else if (!(ci instanceof Class)) {
-                that.addError("super appears inside an interface definition");
+                that.addError("super occurs outside any type definition");
             }
             else {
-                ProducedType t = ci.getExtendedType();
-                //TODO: type arguments
-                that.setTypeModel(t);
+                that.setTypeModel(intersectionOfSupertypes(ci));
             }
         }
         if (defaultArgument) {
             that.addError("reference to super from default argument expression");
         }
     }
-    
+
     @Override public void visit(Tree.This that) {
         ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
-        if (ci==null) {
-            that.addError("this appears outside a class or interface definition");
+        if (inExtendsClause) {
+            if (ci!=null) {
+                if (ci.isClassOrInterfaceMember()) {
+                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
+                    that.setTypeModel(s.getType());
+                }
+            }
         }
         else {
-            that.setTypeModel(ci.getType());
+            if (ci==null) {
+                that.addError("this appears outside a class or interface definition");
+            }
+            else {
+                that.setTypeModel(ci.getType());
+            }
         }
-        /*if (defaultArgument) {
-            that.addWarning("references to this from default argument expressions not yet supported");
-        }*/
     }
     
     private ProducedType getTupleType(List<Tree.PositionalArgument> es, 
@@ -4803,8 +4720,48 @@ public class ExpressionVisitor extends Visitor {
         return false;
     }
 
+    private void visitExtendedOrAliasedType(Tree.SimpleType et,
+            Tree.InvocationExpression ie) {
+        if (et!=null && ie!=null) {
+            ProducedType type = et.getTypeModel();
+            if (type!=null) {
+                Tree.Primary pr = ie.getPrimary();
+                if (pr instanceof Tree.InvocationExpression) {
+                    Tree.InvocationExpression iie = (Tree.InvocationExpression) pr;
+                    pr = iie.getPrimary();
+                }
+                if (pr instanceof Tree.ExtendedTypeExpression) {
+                    Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
+                    ete.setDeclaration(et.getDeclarationModel());
+                    ete.setTarget(type);
+                    ProducedType qt = type.getQualifyingType();
+                    ProducedType ft = type.getFullType();
+                    if (ete.getStaticMethodReference()) {
+                        ft = producedType(unit.getCallableDeclaration(), ft, 
+                                producedType(unit.getTupleDeclaration(), qt, qt, 
+                                        unit.getEmptyDeclaration().getType()));
+                    }
+                    pr.setTypeModel(ft);
+                }
+            }
+        }
+    }
+    
+    @Override 
+    public void visit(Tree.ClassSpecifier that) {
+        visitExtendedOrAliasedType(that.getType(), 
+                that.getInvocationExpression());
+        
+        inExtendsClause = true;
+        super.visit(that);
+        inExtendsClause = false;
+    }
+
     @Override 
     public void visit(Tree.ExtendedType that) {
+        visitExtendedOrAliasedType(that.getType(), 
+                that.getInvocationExpression());
+
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
@@ -4814,6 +4771,9 @@ public class ExpressionVisitor extends Visitor {
         if (et!=null) {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
+                /*if (ie!=null && !ie.getTypeModel().isExactly(type)) {
+                    ie.addError("OOOOOOOOPS");
+                }*/
                 checkSelfTypes(et, td, type);
                 checkExtensionOfMemberType(et, td, type);
                 //checkCaseOfSupertype(et, td, type);
@@ -4837,7 +4797,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-    
+
     @Override 
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
@@ -4981,10 +4941,10 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            that.addError("containing type " + qt.getDeclaration().getName(unit) + 
-                    " of supertype " + type.getDeclaration().getName(unit) + 
+            that.addError("qualifying type " + qt.getProducedTypeName(unit) + 
+                    " of supertype " + type.getProducedTypeName(unit) + 
                     " is not an outer type or supertype of any outer type of " +
-                    td.getName());
+                    td.getName(unit));
         }
     }
     

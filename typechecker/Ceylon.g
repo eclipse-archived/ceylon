@@ -681,30 +681,38 @@ classSpecifier returns [ClassSpecifier classSpecifier]
     ;
 
 classInstantiation returns [SimpleType type, InvocationExpression invocationExpression]
+    @init { Primary p=null; }
     : (
-        qualifiedType
-        { $type=$qualifiedType.type; }
+        t1=typeNameWithArguments
+        { BaseType bt = new BaseType(null);
+          bt.setIdentifier($t1.identifier);
+          if ($t1.typeArgumentList!=null)
+              bt.setTypeArgumentList($t1.typeArgumentList);
+          $type=bt; 
+          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
+          ete.setExtendedType($type); 
+          p = ete; }
       | SUPER MEMBER_OP 
-        typeReference 
+        t2=typeNameWithArguments 
         { QualifiedType qt=new QualifiedType(null);
           SuperType st = new SuperType($SUPER);
           qt.setOuterType(st);
-          qt.setIdentifier($typeReference.identifier);
-          if ($typeReference.typeArgumentList!=null)
-              qt.setTypeArgumentList($typeReference.typeArgumentList);
-          $type=qt; }
+          qt.setIdentifier($t2.identifier);
+          if ($t2.typeArgumentList!=null)
+              qt.setTypeArgumentList($t2.typeArgumentList);
+          $type=qt;
+          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
+          ete.setExtendedType($type); 
+          p = ete; }
       )
       (
         positionalArguments
         { InvocationExpression ie = new InvocationExpression(null);
-          ExtendedTypeExpression ete = new ExtendedTypeExpression(null);
-          ie.setPrimary(ete);
-          ete.setExtendedType($type);
+          ie.setPrimary(p);
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
-          $invocationExpression=ie; }
-      | /*{ displayRecognitionError(getTokenNames(),
-            new MismatchedTokenException(LPAREN, input)); }*/
-      )
+          $invocationExpression=ie; 
+          p = ie; }
+      )?
     ;
 
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
@@ -1197,8 +1205,6 @@ base returns [Primary primary]
             be = new BaseMemberExpression(null);
         else
             be = new BaseTypeExpression(null);
-        if ($baseReference.qualifier!=null)
-            be.setSupertypeQualifier($baseReference.qualifier);
         be.setIdentifier($baseReference.identifier);
         be.setTypeArguments( new InferredTypeArguments(null) );
         if ($baseReference.typeArgumentList!=null)
@@ -1206,16 +1212,9 @@ base returns [Primary primary]
         $primary=be; }
     ;
 
-baseReference returns [Identifier identifier, SupertypeQualifier qualifier,
-                       TypeArgumentList typeArgumentList, boolean isMember]
+baseReference returns [Identifier identifier, TypeArgumentList typeArgumentList, 
+                       boolean isMember]
     : 
-    (
-      supertypeQualifier
-      { $qualifier = $supertypeQualifier.qualifier; 
-        $identifier = new Identifier($supertypeQualifier.qualifier.getToken());
-        $identifier.setText("");
-        $isMember=true; }
-    )?
     (
       memberReference
       { $identifier = $memberReference.identifier;
@@ -1226,12 +1225,6 @@ baseReference returns [Identifier identifier, SupertypeQualifier qualifier,
         $typeArgumentList = $typeReference.typeArgumentList;
         $isMember = false; }
     )
-    ;
-
-supertypeQualifier returns [SupertypeQualifier qualifier]
-    : typeName SUPER_OP
-      { $qualifier = new SupertypeQualifier($SUPER_OP);
-        $qualifier.setIdentifier($typeName.identifier); }
     ;
 
 primary returns [Primary primary]
@@ -2575,14 +2568,11 @@ abbreviatedType returns [StaticType type]
     ;
     
 qualifiedType returns [SimpleType type]
-    : supertypeQualifier?
-      ot=typeNameWithArguments
+    : ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
         bt.setIdentifier($ot.identifier);
         if ($ot.typeArgumentList!=null)
             bt.setTypeArgumentList($ot.typeArgumentList);
-        if ($supertypeQualifier.qualifier!=null)
-            bt.setSupertypeQualifier($supertypeQualifier.qualifier);
         $type=bt; }
       (
         MEMBER_OP 
@@ -3667,10 +3657,6 @@ AND_SPECIFY
 
 OR_SPECIFY
     :   '||='
-    ;
-
-SUPER_OP
-    :   '::'
     ;
 
 COMPILER_ANNOTATION
