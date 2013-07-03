@@ -83,10 +83,26 @@ abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expr
         (
             let
             {
-                long $ceylontmpop0 = super.getA();
-                super.setA($ceylontmpop0 + 1);
+                long $ceylontmpopV1 = super.getA();
+                super.setA($ceylontmpopV1 + 1);
             }
-            returning $ceylontmpop0;
+            returning $ceylontmpopV1;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV3 = super.getA() + 1;
+                super.setA($ceylontmpopV3);
+            }
+            returning $ceylontmpopV3;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV5 = super.getA() + 1L;
+                super.setA($ceylontmpopV5);
+            }
+            returning $ceylontmpopV5;
         );
         return super.getI() + super.m();
     }
@@ -95,17 +111,33 @@ abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expr
         (
             let
             {
-                long $ceylontmpop1 = super.getA();
-                super.setA($ceylontmpop1 + 1);
+                long $ceylontmpopV7 = super.getA();
+                super.setA($ceylontmpopV7 + 1);
             }
-            returning $ceylontmpop1;
+            returning $ceylontmpopV7;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV9 = super.getA() + 1;
+                super.setA($ceylontmpopV9);
+            }
+            returning $ceylontmpopV9;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV11 = super.getA() + 1L;
+                super.setA($ceylontmpopV11);
+            }
+            returning $ceylontmpopV11;
         );
         return super.getI() + super.m();
     }
     
     public final void m3() {
-        Local$new();
-        Default$new();
+        super.Local$new();
+        super.Default$new();
     }
     
     @.java.lang.Override

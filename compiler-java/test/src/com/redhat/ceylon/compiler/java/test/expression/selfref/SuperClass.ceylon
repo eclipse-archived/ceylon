@@ -38,10 +38,14 @@ abstract class SuperClass() {
 abstract class SuperClass_Sub() extends SuperClass() {
     shared actual Integer m() {
         super.a++;
+        ++super.a;
+        super.a+=1;
         return super.i + super.m();
     }
     shared Integer m2() {
         super.a++;
+        ++super.a;
+        super.a+=1;
         return super.i + super.m();
     }
     shared void m3() {

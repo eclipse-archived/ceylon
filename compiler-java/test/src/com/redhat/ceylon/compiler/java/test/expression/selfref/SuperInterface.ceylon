@@ -34,6 +34,8 @@ interface SuperInterface {
 class SuperInterface_Sub() satisfies SuperInterface {
     shared actual Integer m() {
         super.i++;
+        ++super.i;
+        super.i+=1;
         return super.i + super.m();
     }
     shared Integer m2() {
@@ -48,6 +50,8 @@ class SuperInterface_Sub() satisfies SuperInterface {
 interface SuperInterface_SubInterface satisfies SuperInterface {
     shared actual Integer m() {
         super.i++;
+        ++super.i;
+        super.i+=1;
         return super.i + super.m();
     }
     shared Integer m2() {
