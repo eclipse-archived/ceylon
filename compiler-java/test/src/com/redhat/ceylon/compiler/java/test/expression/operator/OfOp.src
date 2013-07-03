@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> {
+    
+    OfOp() {
+        this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp>(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$impl() {
+        return $ceylon$language$Comparable$this;
+    }
+    
+    private final void m$priv() {
+        final .ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> comp = (.ceylon.language.Comparable).ceylon.language.nothing_.$get();
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp foo = (.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp)comp;
+        final .java.lang.Object v = .ceylon.language.nothing_.$get();
+        final .java.lang.Object x = v;
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp o = (.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp).ceylon.language.nothing_.$get();
+        final .java.lang.Object z = o;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.class);
+}
+abstract class OfOpA extends .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp {
+    
+    OfOpA() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.OfOpA.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOpA.class);
+}
+abstract class OfOpB extends .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp {
+    
+    OfOpB() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.OfOpB.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOpB.class);
+}

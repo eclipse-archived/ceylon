@@ -403,6 +403,16 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testOprOf(){
+        compareWithJavaSource("operator/OfOp");
+    }
+    
+    @Test
+    public void testOprSuperOf(){
+        compareWithJavaSource("operator/SuperOfOp");
+    }
+    
+    @Test
     public void testStpStringTemplate(){
         compareWithJavaSource("stringtemp/StringTemplate");
     }
