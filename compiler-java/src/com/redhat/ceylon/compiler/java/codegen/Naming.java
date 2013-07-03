@@ -1059,6 +1059,17 @@ public class Naming implements LocalId {
     final String getCompanionAccessorName(Interface def) {
         return getCompanionClassName(def).replace('.', '$');
     }
+    
+    JCExpression makeCompanionAccessorName(JCExpression qualExpr, Interface def) {
+        return makeQualIdent(qualExpr, getCompanionAccessorName(def));
+    }
+    
+    JCExpression makeCompanionAccessorCall(JCExpression qualExpr, Interface def) {
+        return make().Apply(null, 
+                makeCompanionAccessorName(qualExpr, def), 
+                com.sun.tools.javac.util.List.<JCExpression>nil());
+    }
+    
     /** Generates an ident for the getter method of a Value */
     JCExpression makeLanguageValue(String string) {
         Declaration decl = gen().typeFact().getLanguageModuleDeclaration(string);

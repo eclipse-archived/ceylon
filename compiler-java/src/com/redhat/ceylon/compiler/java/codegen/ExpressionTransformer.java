@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -81,9 +82,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Flags;
@@ -1120,8 +1119,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.Super expr) {
-        at(expr);
-        return naming.makeSuper();
+        throw Assert.fail("Unreachable");
     }
 
     public JCTree transform(Tree.Outer expr) {
@@ -1149,6 +1147,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.OfOp op) {
+        if (op.getTerm() instanceof Tree.Super) {
+            // This should be unreachable
+            Assert.fail("Unreachable");
+        } 
         ProducedType expectedType = op.getType().getTypeModel();
         return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType, EXPR_DOWN_CAST);
     }
@@ -1655,7 +1657,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // e.attr++
             // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
             Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
-            boolean isSuper = qualified.getPrimary() instanceof Super;
+            boolean isSuper = isSuperOrSuperOf(qualified.getPrimary());
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
             at(expr);
@@ -1668,7 +1670,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = $tmpE.attr
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = naming.tempName("opV");
-            JCExpression getter = transformMemberExpression(qualified, isSuper ? naming.makeSuper() : make().Ident(varEName), null);
+            JCExpression getter = transformMemberExpression(qualified, isSuper ? transformSuper(qualified) : make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, getter);
@@ -1693,7 +1695,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //  make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
-            JCExpression assignment = transformAssignment(expr, term, isSuper ? naming.makeSuper() : make().Ident(varEName), successor);
+            JCExpression assignment = transformAssignment(expr, term, isSuper ? transformSuper(qualified) : make().Ident(varEName), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
             
             // $tmpV
@@ -1795,7 +1797,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // e.attr
             // (let $tmpE = e, $tmpV = OP($tmpE.attr); $tmpE.attr = $tmpV; $tmpV;)
             Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
-            boolean isSuper = qualified.getPrimary() instanceof Super;
+            boolean isSuper = isSuperOrSuperOf(qualified.getPrimary());
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
             at(operator);
@@ -1808,7 +1810,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = OP($tmpE.attr)
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = naming.tempName("opV");
-            JCExpression getter = transformMemberExpression(qualified, isSuper ? naming.makeSuper() : make().Ident(varEName), null);
+            JCExpression getter = transformMemberExpression(qualified, isSuper ? transformSuper(qualified) : make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.getNewValue(getter);
@@ -1825,7 +1827,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make sure $tmpV is unboxed if necessary
             JCExpression value = make().Ident(varVName);
             value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
-            JCExpression assignment = transformAssignment(operator, term, isSuper ? naming.makeSuper() : make().Ident(varEName), value);
+            JCExpression assignment = transformAssignment(operator, term, isSuper ? transformSuper(qualified) : make().Ident(varEName), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmpV
@@ -2804,10 +2806,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
-            return makeErroneous();
+            return makeErroneous(expr);
         // consider package qualifiers as non-prefixed, we always qualify them anyways, this is
         // only useful for the typechecker resolving
-        if(expr.getPrimary() instanceof Tree.Package)
+        Primary primary = expr.getPrimary();
+        if(primary instanceof Tree.Package)
             return null;
         ProducedType type = expr.getTarget().getQualifyingType();
         if(expr.getMemberOperator() instanceof Tree.SafeMemberOp && !isOptional(type)){
@@ -2816,12 +2819,112 @@ public class ExpressionTransformer extends AbstractTransformer {
             type = optionalType;
         }
         BoxingStrategy boxing = expr.getMemberOperator() instanceof Tree.SafeMemberOp == false 
-                && Decl.isValueTypeDecl(expr.getPrimary())
-                && CodegenUtil.isUnBoxed(expr.getPrimary())
+                && Decl.isValueTypeDecl(primary)
+                && CodegenUtil.isUnBoxed(primary)
                 ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-        JCExpression result = transformExpression(expr.getPrimary(), boxing, type);
+        JCExpression result;
+        if (isSuper(primary)) {
+            result = transformSuper(expr);
+        } else if (isSuperOf(primary)) {
+            result = transformSuperOf(expr);
+        } else {
+            result = transformExpression(primary, boxing, type);
+        }
         
         return result;
+    }
+
+    /**
+     * Removes the parentheses from the given term
+     */
+    static Tree.Term eliminateParens(Tree.Term term) {
+        while (term instanceof Tree.Expression) {
+            term = ((Tree.Expression) term).getTerm();
+        }
+        return term;
+    }
+    
+    /** 
+     * Is the given primary a {@code super of Foo}
+     * expression (modulo parentheses and multiple {@code of} 
+     */
+    private static boolean isSuperOf(Tree.Primary primary) {
+        return primary instanceof Tree.Expression
+                && Util.eliminateParensAndWidening(((Tree.Expression)primary).getTerm()) instanceof Tree.Super;
+    }
+    
+    /** 
+     * Is the given primary a {@code super} expression
+     * (modulo parentheses)
+     */
+    private static boolean isSuper(Tree.Primary primary) {
+        return eliminateParens(primary) instanceof Tree.Super;
+    }
+    
+    /** 
+     * Is the given primary a {@code super} or {@code super of Foo} 
+     * expression (modulo parentheses and multiple {@code of}
+     */
+    private static boolean isSuperOrSuperOf(Tree.Primary primary) {
+        return isSuper(primary) || isSuperOf(primary);
+    }
+    
+    private JCExpression transformSuperOf(Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr) {
+        Tree.Term superOf = eliminateParens(superOfQualifiedExpr.getPrimary());
+        Assert.that(superOf instanceof Tree.OfOp);
+        Tree.Type superType = ((Tree.OfOp)superOf).getType();
+        Assert.that(eliminateParens(((Tree.OfOp)superOf).getTerm()) instanceof Tree.Super);
+        Declaration member = superOfQualifiedExpr.getDeclaration();
+        TypeDeclaration inheritedFrom = superType.getTypeModel().getDeclaration();
+        if (inheritedFrom instanceof Interface) {
+            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(member.getName(), null, false).getContainer();
+        }
+        return widen(superOfQualifiedExpr, inheritedFrom);
+    }
+
+    private JCExpression widen(
+            Tree.QualifiedMemberOrTypeExpression superOfQualifiedExpr,
+            TypeDeclaration inheritedFrom) {
+        JCExpression result;
+        if (inheritedFrom instanceof Class) {
+            result = naming.makeSuper();
+        } else if (inheritedFrom instanceof Interface) {
+            Interface iface = (Interface)inheritedFrom;
+            JCExpression qualifier = null;
+            if (needDollarThis(superOfQualifiedExpr.getScope())) {
+                qualifier = naming.makeQuotedThis();
+                result = naming.makeCompanionAccessorCall(qualifier, iface);
+            } else {
+                result = naming.makeCompanionFieldName(iface);
+            }
+        } else {
+            result = makeErroneous(superOfQualifiedExpr);
+        }
+        return result;
+    }
+
+    public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression superQualifiedExpr) {
+        Declaration member = superQualifiedExpr.getDeclaration();
+        TypeDeclaration inheritedFrom = (TypeDeclaration)member.getContainer();
+        return widen(superQualifiedExpr, inheritedFrom);
+        /*
+        JCExpression result;
+        if (inheritedFrom instanceof Class) {
+            result = naming.makeSuper();
+        } else if (inheritedFrom instanceof Interface) {
+            Interface iface = (Interface)inheritedFrom;
+            JCExpression qualifier = null;
+            
+            if (needDollarThis(superQualifiedExpr.getScope())) {
+                qualifier = naming.makeQuotedThis();
+                result = naming.makeCompanionAccessorCall(qualifier, iface);
+            } else {
+                result = naming.makeCompanionFieldName(iface);
+            }
+        } else {
+            result = makeErroneous(superQualifiedExpr.getPrimary());
+        }
+        return result;*/
     }
     
     // Base members
@@ -2831,31 +2934,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transform(Tree.BaseMemberOrTypeExpression expr, TermTransformer transformer) {
-        JCExpression primaryExpr = makeSuperQualifier(expr);
-        return transformMemberExpression(expr, primaryExpr, transformer);
+        return transformMemberExpression(expr, null, transformer);
     }
 
-    private JCExpression makeSuperQualifier(Tree.BaseMemberOrTypeExpression expr) {
-        JCExpression primaryExpr = null;
-        if (expr.getSupertypeQualifier() != null) {
-            ClassOrInterface supertype = (ClassOrInterface)expr.getDeclaration().getContainer();
-            if (supertype instanceof Interface) {
-                if (needDollarThis(expr.getScope())) {
-                    // we're in an interface $impl class
-                    // have to prefix it with $this and invoke it
-                    primaryExpr = makeQualIdent(naming.makeQuotedThis(), getCompanionAccessorName((Interface) supertype));
-                    primaryExpr = make().Apply(null, primaryExpr, List.<JCExpression>nil());
-                }else{
-                    // we're in a regular class
-                    primaryExpr = naming.makeCompanionFieldName((Interface)supertype);
-                }
-            } else { // class
-                primaryExpr = naming.makeSuper();
-            }
-        }
-        return primaryExpr;
-    }
-    
     // Type members
     
     public JCExpression transform(Tree.QualifiedTypeExpression expr) {
@@ -3081,8 +3162,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !decl.isShared()){
             Interface declaration = (Interface) declContainer;
             // access the interface $impl instance
-            qualExpr = makeQualIdent(qualExpr, getCompanionAccessorName(declaration));
-            qualExpr = make().Apply(null, qualExpr, List.<JCExpression>nil());
+            qualExpr = naming.makeCompanionAccessorCall(qualExpr, declaration);
             // When the interface is local the accessor returns Object
             // so we need to cast it to the type of the companion
             if (Decl.isAncestorLocal(declaration)) {
@@ -3315,12 +3395,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(leftTerm instanceof Tree.BaseMemberExpression) {
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
                 expr = naming.makeQuotedThis();
-            } else {
-                expr = makeSuperQualifier((Tree.BaseMemberExpression)leftTerm);
             }
         } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
-            expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+            if (isSuper(qualified.getPrimary())) {
+                expr = transformSuper(qualified);
+            } else if (isSuperOf(qualified.getPrimary())) {
+                expr = transformSuperOf(qualified);
+            } else {
+                expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+            }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
             // Nothing to do here
             expr = null;
