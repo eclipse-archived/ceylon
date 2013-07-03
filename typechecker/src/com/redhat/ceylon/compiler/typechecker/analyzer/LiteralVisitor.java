@@ -128,7 +128,7 @@ public class LiteralVisitor extends Visitor {
                 .replace("P", "000000000000000"));
     }
     
-    private static boolean stripIndent(final String text, final int indention, 
+    private static boolean stripIndent(final String text, final int indentation, 
             final StringBuilder result) {
         boolean correctlyIndented = true;
         int num = 0;
@@ -138,14 +138,14 @@ public class LiteralVisitor extends Visitor {
             }
             else {
                 for (int i = 0; i < line.length(); i++) {
-                    if (i < indention) {
+                    if (i < indentation) {
                         if (!isWhitespace(line.charAt(i))) {
                             correctlyIndented = false;
                             result.append(line.substring(i));
                             break;
                         }
                     } else {
-                        result.append(line.substring(indention));
+                        result.append(line.substring(indentation));
                         break;
                     }
                 }
