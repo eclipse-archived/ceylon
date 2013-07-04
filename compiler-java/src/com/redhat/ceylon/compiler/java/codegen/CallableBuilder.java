@@ -47,23 +47,23 @@ import com.sun.tools.javac.util.Name;
 public class CallableBuilder {
 
     private final AbstractTransformer gen;
-    private ProducedType typeModel;
+    private final ProducedType typeModel;
     private List<JCStatement> body;
     private ParameterList paramLists;
     private Term forwardCallTo;
     private boolean noDelegates;
     
-    private CallableBuilder(CeylonTransformer gen) {
+    private CallableBuilder(CeylonTransformer gen, ProducedType typeModel) {
         this.gen = gen;
+        this.typeModel = typeModel;
     }
     
     /**
      * Constructs an {@code AbstractCallable} suitable for wrapping a method reference.
      */
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
-        CallableBuilder cb = new CallableBuilder(gen);
+        CallableBuilder cb = new CallableBuilder(gen, expr.getTypeModel());
         cb.paramLists = parameterList;
-        cb.typeModel = expr.getTypeModel();
         cb.forwardCallTo = expr;
         return cb;
     }
@@ -88,9 +88,8 @@ public class CallableBuilder {
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
         
-        CallableBuilder cb = new CallableBuilder(gen);
+        CallableBuilder cb = new CallableBuilder(gen, callableTypeModel);
         cb.paramLists = parameterList;
-        cb.typeModel = callableTypeModel;
         cb.body = stmts;
         cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
@@ -107,9 +106,8 @@ public class CallableBuilder {
             Tree.ParameterList parameterListTree,
             List<JCStatement> body) {
 
-        CallableBuilder cb = new CallableBuilder(gen);
+        CallableBuilder cb = new CallableBuilder(gen, typeModel);
         cb.paramLists = parameterList;
-        cb.typeModel = typeModel;
         if (body == null) {
             body = List.<JCStatement>nil();
         }
