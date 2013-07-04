@@ -80,8 +80,8 @@ public class CallableBuilder {
      */
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
         CallableBuilder cb = new CallableBuilder(gen, expr.getTypeModel(), parameterList);
-        cb.forwardCallTo = expr;
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
+        cb.forwardTo(expr);
         return cb;
     }
     
@@ -115,10 +115,10 @@ public class CallableBuilder {
             List<JCStatement> stmts, boolean noDelegates) {
         
         CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterList);
-        cb.body = stmts;
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
         cb.noDelegates = noDelegates;
+        cb.useBody(stmts);
         return cb;
     }
     
@@ -137,13 +137,64 @@ public class CallableBuilder {
         if (body == null) {
             body = List.<JCStatement>nil();
         }
-        cb.body = body;
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
+        cb.useBody(body);
         return cb;
     }
     
     private ListBuffer<JCTree> parameterDefaultValueMethods;
+    
+    private ListBuffer<JCTree> callMethods = new ListBuffer<JCTree>();
+    
+    public CallableBuilder forwardTo(Tree.Term forwardCallTo) {
+        if (forwardCallTo == null) {
+            throw new RuntimeException();
+        }
+        this.forwardCallTo = forwardCallTo;
+       
+        // now generate a method for each supported minimum number of parameters below 4
+        // which delegates to the $call$typed method if required
+        for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+            makeDefaultedCall(i, stmts);
+            stmts.append(gen.make().Return(makeInvocation(i)));
+            callMethods.append(makeCallMethod(stmts.toList(), i));
+        }
+   
+        // generate the $call method for the max number of parameters,
+        // which delegates to the $call$typed method if required
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+        makeDefaultedCall(numParams, stmts);
+        stmts.append(gen.make().Return(makeInvocation(numParams)));
+        callMethods.append(makeCallMethod(stmts.toList(), numParams));
+        
+        return this;
+    }
+    
+    public CallableBuilder useBody(List<JCStatement> body) {
+        this.body = body;
+        if (!noDelegates) {
+            // now generate a method for each supported minimum number of parameters below 4
+            // which delegates to the $call$typed method if required
+            for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
+                ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+                makeDefaultedCall(i, stmts);
+                makeCallTypedCallOrBody(i, stmts, body);
+                callMethods.append(makeCallMethod(stmts.toList(), i));
+            }
+        }
+        // generate the $call method for the max number of parameters,
+        // which delegates to the $call$typed method if required
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
+        makeDefaultedCall(numParams, stmts);
+        makeCallTypedCallOrBody(numParams, stmts, body);
+        callMethods.append(makeCallMethod(stmts.toList(), numParams));
+        // generate the $call$typed method if required
+        if(hasOptionalParameters)
+            callMethods.append(makeCallTypedMethod(body));
+        return this;
+    }
     
     public CallableBuilder parameterDefaultValueMethods(Tree.ParameterList parameterListTree) {
         if (parameterDefaultValueMethods == null) {
@@ -165,20 +216,8 @@ public class CallableBuilder {
         if (parameterDefaultValueMethods != null) {
             classBody.appendList(parameterDefaultValueMethods);
         }
-            
-        if (!noDelegates) {
-            // now generate a method for each supported minimum number of parameters below 4
-            // which delegates to the $call$typed method if required
-            for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-                classBody.append(makeDefaultedCall(i));
-            }
-        }
-        // generate the $call method for the max number of parameters,
-        // which delegates to the $call$typed method if required
-        classBody.append(makeDefaultedCall(numParams));
-        // generate the $call$typed method if required
-        if(hasOptionalParameters && forwardCallTo == null)
-            classBody.append(makeCallTypedMethod(body));
+        
+        classBody.appendList(callMethods);
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
@@ -242,10 +281,9 @@ public class CallableBuilder {
         return argExpr;
     }
     
-    private JCTree makeDefaultedCall(int i) {
+    private void makeDefaultedCall(final int i, ListBuffer<JCStatement> stmts) {
         // collect every parameter
         int a = 0;
-        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         for(Parameter param : paramLists.getParameters()){
             // don't read default parameter values for forwarded calls
             if(forwardCallTo != null && i == a)
@@ -253,14 +291,13 @@ public class CallableBuilder {
             stmts.append(makeArgumentVar(param, a, i));
             a++;
         }
-        if(forwardCallTo != null){
-            JCExpression invocation = makeInvocation(i);
-            stmts.append(gen.make().Return(invocation));
-        }else if(hasOptionalParameters){
+    }
+    private void makeCallTypedCallOrBody(final int i, ListBuffer<JCStatement> stmts, List<JCStatement> body) {
+        if(hasOptionalParameters){
             // chain to n param typed method
             List<JCExpression> args = List.nil();
             // pass along the parameters
-            for(a=paramLists.getParameters().size()-1;a>=0;a--){
+            for(int a=paramLists.getParameters().size()-1;a>=0;a--){
                 Parameter param = paramLists.getParameters().get(a);
                 args = args.prepend(gen.makeUnquotedIdent(getCallableTempVarName(param)));
             }
@@ -268,10 +305,9 @@ public class CallableBuilder {
             stmts.append(gen.make().Return(chain));
         }else{
             // insert the method body directly
-            stmts.appendList(this.body);
+            stmts.appendList(body);
         }
-        List<JCStatement> body = stmts.toList();
-        return makeCallMethod(body, i);
+        return;
     }
 
     /**
