@@ -40,6 +40,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -237,43 +238,7 @@ public class CallableBuilder {
             // don't read default parameter values for forwarded calls
             if(forwardCallTo != null && i == a)
                 break;
-            // read the value
-            JCExpression paramExpression = getTypedParameter(param, a, i>3, parameterTypes);
-            JCExpression varInitialExpression;
-            if(param.isDefaulted() || param.isSequenced()){
-                if(i > 3){
-                    // must check if it's defined
-                    JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
-                    JCExpression elseBranch = makeDefaultValueCall(param, a);
-                    varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
-                }else if(a >= i){
-                    // get its default value because we don't have it
-                    varInitialExpression = makeDefaultValueCall(param, a);
-                }else{
-                    // we must have it
-                    varInitialExpression = paramExpression;
-                }
-            }else{
-                varInitialExpression = paramExpression;
-            }
-            // store it in a local var
-            int flags = 0;
-            if(!CodegenUtil.isUnBoxed(param)){
-                flags |= AbstractTransformer.JT_NO_PRIMITIVES;
-            }
-            // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
-            // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
-            // the proper erasure is done when we read from the Callable.call Object param, but since we store it in a variable defined here,
-            // we'd need to duplicate some of the erasure logic here to make or not the type raw, and that would be worse.
-            // Besides, named parameter invocation does the same.
-            // See https://github.com/ceylon/ceylon-compiler/issues/1005
-            if(forwardCallTo != null)
-                flags |= AbstractTransformer.JT_RAW;
-            JCStatement var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
-                    gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
-                    gen.makeJavaType(parameterTypes.get(a), flags),
-                    varInitialExpression);
-            stmts.append(var);
+            stmts.append(makeArgumentVar(param, a, i, parameterTypes));
             a++;
         }
         if(forwardCallTo != null){
@@ -295,6 +260,60 @@ public class CallableBuilder {
         }
         List<JCStatement> body = stmts.toList();
         return makeCallMethod(body, i);
+    }
+
+    /**
+     * <p>Makes a variable declaration for variable which will be used as an 
+     * argument to a call. The variable is initialized to either the 
+     * corresponding parameter,</p> 
+     * <pre>
+     *     Foo foo = (Foo)arg0;
+     * </pre>
+     * <p>or the default value for the corresponding parameter</p>
+     * <pre>
+     *     Bar bar = $$bar(**previous-args**);
+     * </pre>
+     */
+    private JCVariableDecl makeArgumentVar(final Parameter param, 
+            final int a, final int i, 
+            final java.util.List<ProducedType> parameterTypes) {
+        // read the value
+        JCExpression paramExpression = getTypedParameter(param, a, i>3, parameterTypes);
+        JCExpression varInitialExpression;
+        if(param.isDefaulted() || param.isSequenced()){
+            if(i > 3){
+                // must check if it's defined
+                JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
+                JCExpression elseBranch = makeDefaultValueCall(param, a);
+                varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
+            }else if(a >= i){
+                // get its default value because we don't have it
+                varInitialExpression = makeDefaultValueCall(param, a);
+            }else{
+                // we must have it
+                varInitialExpression = paramExpression;
+            }
+        }else{
+            varInitialExpression = paramExpression;
+        }
+        // store it in a local var
+        int flags = 0;
+        if(!CodegenUtil.isUnBoxed(param)){
+            flags |= AbstractTransformer.JT_NO_PRIMITIVES;
+        }
+        // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
+        // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
+        // the proper erasure is done when we read from the Callable.call Object param, but since we store it in a variable defined here,
+        // we'd need to duplicate some of the erasure logic here to make or not the type raw, and that would be worse.
+        // Besides, named parameter invocation does the same.
+        // See https://github.com/ceylon/ceylon-compiler/issues/1005
+        if(forwardCallTo != null)
+            flags |= AbstractTransformer.JT_RAW;
+        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
+                gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
+                gen.makeJavaType(parameterTypes.get(a), flags),
+                varInitialExpression);
+        return var;
     }
 
     private JCExpression makeInvocation(int i) {
