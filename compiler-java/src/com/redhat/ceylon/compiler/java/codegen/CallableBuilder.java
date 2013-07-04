@@ -50,7 +50,6 @@ public class CallableBuilder {
     private ProducedType typeModel;
     private List<JCStatement> body;
     private ParameterList paramLists;
-    private Tree.ParameterList parameterListTree;
     private Term forwardCallTo;
     private boolean noDelegates;
     
@@ -93,7 +92,7 @@ public class CallableBuilder {
         cb.paramLists = parameterList;
         cb.typeModel = callableTypeModel;
         cb.body = stmts;
-        cb.parameterListTree = parameterListTree;
+        cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
     }
     
@@ -115,7 +114,7 @@ public class CallableBuilder {
             body = List.<JCStatement>nil();
         }
         cb.body = body;
-        cb.parameterListTree = parameterListTree;
+        cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
     }
 
@@ -127,6 +126,21 @@ public class CallableBuilder {
      */
     public CallableBuilder noDelegates(boolean noDelegates) {
         this.noDelegates = noDelegates;
+        return this;
+    }
+    
+    private ListBuffer<JCTree> parameterDefaultValueMethods;
+    
+    public CallableBuilder parameterDefaultValueMethods(Tree.ParameterList parameterListTree) {
+        if (parameterDefaultValueMethods == null) {
+            parameterDefaultValueMethods = ListBuffer.lb();
+        }
+        for(Tree.Parameter p : parameterListTree.getParameters()){
+            if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
+                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
+                this.parameterDefaultValueMethods.append(methodBuilder.build());
+            }
+        }
         return this;
     }
     
@@ -142,14 +156,8 @@ public class CallableBuilder {
         }
         boolean isVariadic = numParams > 0 && paramLists.getParameters().get(numParams-1).isSequenced();
         boolean hasOptionalParameters = minimumParams != numParams;
-        if(parameterListTree != null){
-            // generate a method for each defaulted param
-            for(Tree.Parameter p : parameterListTree.getParameters()){
-                if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
-                    MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
-                    classBody.append(methodBuilder.build());
-                }
-            }
+        if (parameterDefaultValueMethods != null) {
+            classBody.appendList(parameterDefaultValueMethods);
         }
 
         // collect each parameter type from the callable type model rather than the declarations to get them all bound
