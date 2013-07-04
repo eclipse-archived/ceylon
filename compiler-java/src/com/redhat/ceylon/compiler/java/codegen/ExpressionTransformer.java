@@ -3085,24 +3085,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration member = superQualifiedExpr.getDeclaration();
         TypeDeclaration inheritedFrom = (TypeDeclaration)member.getContainer();
         return widen(superQualifiedExpr, inheritedFrom);
-        /*
-        JCExpression result;
-        if (inheritedFrom instanceof Class) {
-            result = naming.makeSuper();
-        } else if (inheritedFrom instanceof Interface) {
-            Interface iface = (Interface)inheritedFrom;
-            JCExpression qualifier = null;
-            
-            if (needDollarThis(superQualifiedExpr.getScope())) {
-                qualifier = naming.makeQuotedThis();
-                result = naming.makeCompanionAccessorCall(qualifier, iface);
-            } else {
-                result = naming.makeCompanionFieldName(iface);
-            }
-        } else {
-            result = makeErroneous(superQualifiedExpr.getPrimary());
-        }
-        return result;*/
     }
     
     // Base members
