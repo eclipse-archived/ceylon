@@ -55,7 +55,6 @@ class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.jav
         $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this.m1(qual);
     }
     
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub.Member Member$new() {
         return new Member();
     }

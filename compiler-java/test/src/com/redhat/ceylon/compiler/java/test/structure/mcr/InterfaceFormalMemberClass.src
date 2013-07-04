@@ -53,7 +53,6 @@ class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java
         $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this.m1(qual);
     }
     
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.Member Member$new() {
         return new Member();
     }

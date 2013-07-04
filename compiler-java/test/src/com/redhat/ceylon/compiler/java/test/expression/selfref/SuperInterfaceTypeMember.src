@@ -41,7 +41,6 @@ class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.r
         return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this;
     }
     
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.Inner Inner$new() {
         return new Inner();
     }
