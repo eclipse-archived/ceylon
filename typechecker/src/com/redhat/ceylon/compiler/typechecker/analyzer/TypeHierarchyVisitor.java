@@ -176,7 +176,7 @@ public class TypeHierarchyVisitor extends Visitor {
     private void checkForDoubleMemberInheritanceNotOverridden(Tree.StatementOrArgument that, List<Type> orderedTypes) {
         Type aggregateType = new Type();
         int size = orderedTypes.size();
-        for(int index = size -1;index>=0;index--) {
+        for(int index = size-1;index>=0;index--) {
             Type currentType = orderedTypes.get(index);
             for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
                 String name = currentTypeMembers.name;
@@ -192,7 +192,8 @@ public class TypeHierarchyVisitor extends Visitor {
                     boolean currentMemberIsShared = !currentTypeMembers.shared.isEmpty();
                     if (subtypeMemberIsShared && currentMemberIsShared) {
                         boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
-                        if (!isMemberRefined) {
+                        boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
+                        if (!isMemberRefined && isMemberNameOnAncestor) {
                         	if ( currentType.declaration.getUnit()==that.getUnit() ) {
                         		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
                         		sb.append(name).append(" is defined by supertypes ")

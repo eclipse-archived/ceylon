@@ -645,13 +645,20 @@ public class RefinementVisitor extends Visitor {
     		}
     	}
     }
+    
+    private static String containerName(ProducedReference member) {
+        return ((Declaration) member.getDeclaration().getContainer()).getName();
+    }
 
     private void checkParameterTypes(Tree.Declaration that, Tree.ParameterList pl,
             ProducedReference member, ProducedReference refinedMember,
             ParameterList params, ParameterList refinedParams) {
         if (params.getParameters().size()!=refinedParams.getParameters().size()) {
            that.addError("member does not have the same number of parameters as the member it refines: " + 
-        		   member.getDeclaration().getName());
+        		   member.getDeclaration().getName() + 
+        		   " declared by " + containerName(member) +
+        		   " refining " + refinedMember.getDeclaration().getName() +
+        		   " declared by " + containerName(refinedMember));
         }
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
@@ -665,7 +672,10 @@ public class RefinementVisitor extends Visitor {
                     if (type!=null) {
                         if (refinedParameterType==null || parameterType==null) {
                             type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
-                            		param.getName() + " of " + member.getDeclaration().getName());
+                            		param.getName() + " of " + member.getDeclaration().getName() + 
+                            		" declared by " + containerName(member) +
+                                    " refining " + refinedMember.getDeclaration().getName() +
+                                    " declared by " + containerName(refinedMember));
                         }
                         else {
                             //TODO: consider type parameter substitution!!!
@@ -674,8 +684,11 @@ public class RefinementVisitor extends Visitor {
                                     parameterType, refinedParameterType, type,
                                     "type of parameter " + param.getName() + " of " + 
                                     member.getDeclaration().getName() +
+                                    " declared by " + containerName(member) +
                                     " is different to type of corresponding parameter " +
-                                    rparam.getName() + " of refined member");
+                                    rparam.getName() + " of refined member " + 
+                                    refinedMember.getDeclaration().getName() + " of " +
+                                    containerName(refinedMember));
                         }
                     }
                 }
