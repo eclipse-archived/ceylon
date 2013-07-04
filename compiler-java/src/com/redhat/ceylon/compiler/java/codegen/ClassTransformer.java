@@ -2634,8 +2634,8 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.ignoreModelAnnotations();
             if (!klass.isAlias() 
                     && Strategy.generateInstantiator(klass.getExtendedTypeDeclaration())
-                    && klass.isActual()){
-                    //&& ((Class)model).getExtendedTypeDeclaration().getContainer() instanceof Class) {
+                    && klass.isActual()
+                    && klass.getExtendedTypeDeclaration().getContainer() instanceof Class) {
                 overloadBuilder.isOverride(true);
             }
             /**/
