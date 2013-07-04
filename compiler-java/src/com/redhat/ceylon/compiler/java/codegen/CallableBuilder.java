@@ -58,6 +58,7 @@ public class CallableBuilder {
     private int minimumParams;
     private boolean isVariadic;
     private boolean hasOptionalParameters;
+    private java.util.List<ProducedType> parameterTypes;
     
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
@@ -80,6 +81,7 @@ public class CallableBuilder {
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
         CallableBuilder cb = new CallableBuilder(gen, expr.getTypeModel(), parameterList);
         cb.forwardCallTo = expr;
+        cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         return cb;
     }
     
@@ -105,6 +107,7 @@ public class CallableBuilder {
         
         CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterList);
         cb.body = stmts;
+        cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
     }
@@ -125,6 +128,7 @@ public class CallableBuilder {
             body = List.<JCStatement>nil();
         }
         cb.body = body;
+        cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
     }
@@ -162,37 +166,20 @@ public class CallableBuilder {
         if (parameterDefaultValueMethods != null) {
             classBody.appendList(parameterDefaultValueMethods);
         }
-
-        // collect each parameter type from the callable type model rather than the declarations to get them all bound
-        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
-        if(forwardCallTo != null){
-            for(int i=0;i<numParams;i++)
-                parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
-        }else{
-            // get them from our declaration
-            for(Parameter p : paramLists.getParameters()){
-                ProducedType pt;
-                if(p instanceof FunctionalParameter)
-                    pt = gen.getTypeForFunctionalParameter((FunctionalParameter) p);
-                else
-                    pt = p.getType();
-                parameterTypes.add(pt);
-            }
-        }
             
         if (!noDelegates) {
             // now generate a method for each supported minimum number of parameters below 4
             // which delegates to the $call$typed method if required
             for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-                classBody.append(makeDefaultedCall(i, hasOptionalParameters, parameterTypes));
+                classBody.append(makeDefaultedCall(i, hasOptionalParameters));
             }
         }
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
-        classBody.append(makeDefaultedCall(numParams, hasOptionalParameters, parameterTypes));
+        classBody.append(makeDefaultedCall(numParams, hasOptionalParameters));
         // generate the $call$typed method if required
         if(hasOptionalParameters && forwardCallTo == null)
-            classBody.append(makeCallTypedMethod(body, parameterTypes));
+            classBody.append(makeCallTypedMethod(body));
         
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0), classBody.toList());
         
@@ -207,8 +194,30 @@ public class CallableBuilder {
                 classDef);
         return instance;
     }
+
+    private java.util.List<ProducedType> getParameterTypesFromCallableModel() {
+        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
+        for(int i=0;i<numParams;i++) {
+            parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
+        }
+        return parameterTypes;
+    }
+
+    private java.util.List<ProducedType> getParameterTypesFromParameterModels() {
+        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
+        // get them from our declaration
+        for(Parameter p : paramLists.getParameters()){
+            ProducedType pt;
+            if(p instanceof FunctionalParameter)
+                pt = gen.getTypeForFunctionalParameter((FunctionalParameter) p);
+            else
+                pt = p.getType();
+            parameterTypes.add(pt);
+        }
+        return parameterTypes;
+    }
     
-    private JCExpression getTypedParameter(Parameter param, int argIndex, boolean varargs, java.util.List<ProducedType> parameterTypes){
+    private JCExpression getTypedParameter(Parameter param, int argIndex, boolean varargs){
         JCExpression argExpr;
         if (!varargs) {
             // The Callable has overridden one of the non-varargs call() 
@@ -234,7 +243,7 @@ public class CallableBuilder {
         return argExpr;
     }
     
-    private JCTree makeDefaultedCall(int i, boolean hasOptionalParameters, java.util.List<ProducedType> parameterTypes) {
+    private JCTree makeDefaultedCall(int i, boolean hasOptionalParameters) {
         // collect every parameter
         int a = 0;
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
@@ -242,7 +251,7 @@ public class CallableBuilder {
             // don't read default parameter values for forwarded calls
             if(forwardCallTo != null && i == a)
                 break;
-            stmts.append(makeArgumentVar(param, a, i, parameterTypes));
+            stmts.append(makeArgumentVar(param, a, i));
             a++;
         }
         if(forwardCallTo != null){
@@ -279,10 +288,9 @@ public class CallableBuilder {
      * </pre>
      */
     private JCVariableDecl makeArgumentVar(final Parameter param, 
-            final int a, final int i, 
-            final java.util.List<ProducedType> parameterTypes) {
+            final int a, final int i) {
         // read the value
-        JCExpression paramExpression = getTypedParameter(param, a, i>3, parameterTypes);
+        JCExpression paramExpression = getTypedParameter(param, a, i>3);
         JCExpression varInitialExpression;
         if(param.isDefaulted() || param.isSequenced()){
             if(i > 3){
@@ -393,7 +401,7 @@ public class CallableBuilder {
         return callMethod.build();
     }
 
-    private JCTree makeCallTypedMethod(List<JCStatement> body, java.util.List<ProducedType> parameterTypes) {
+    private JCTree makeCallTypedMethod(List<JCStatement> body) {
         // make the method
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableTypedMethodName());
         methodBuilder.noAnnotations();
