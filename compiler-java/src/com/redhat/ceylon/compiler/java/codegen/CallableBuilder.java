@@ -279,28 +279,8 @@ public class CallableBuilder {
             a++;
         }
         if(forwardCallTo != null){
-            final Tree.MemberOrTypeExpression primary;
-            if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
-                primary = (Tree.MemberOrTypeExpression)forwardCallTo;
-            } else {
-                throw new RuntimeException(forwardCallTo+"");
-            }
-            TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
-            CallableInvocation invocationBuilder = new CallableInvocation (
-                    gen,
-                    primary,
-                    primaryDeclaration,
-                    primary.getTarget(),
-                    gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
-                    forwardCallTo, 
-                    paramLists,
-                    i);
-            boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
-            try {
-                stmts.append(gen.make().Return(gen.expressionGen().transformInvocation(invocationBuilder)));
-            } finally {
-                gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
-            }
+            JCExpression invocation = makeInvocation(i);
+            stmts.append(gen.make().Return(invocation));
         }else if(hasOptionalParameters){
             // chain to n param typed method
             List<JCExpression> args = List.nil();
@@ -317,6 +297,33 @@ public class CallableBuilder {
         }
         List<JCStatement> body = stmts.toList();
         return makeCallMethod(body, i);
+    }
+
+    private JCExpression makeInvocation(int i) {
+        final Tree.MemberOrTypeExpression primary;
+        if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
+            primary = (Tree.MemberOrTypeExpression)forwardCallTo;
+        } else {
+            throw new RuntimeException(forwardCallTo+"");
+        }
+        TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
+        CallableInvocation invocationBuilder = new CallableInvocation (
+                gen,
+                primary,
+                primaryDeclaration,
+                primary.getTarget(),
+                gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
+                forwardCallTo, 
+                paramLists,
+                i);
+        boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+        JCExpression invocation;
+        try {
+            invocation = gen.expressionGen().transformInvocation(invocationBuilder);
+        } finally {
+            gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
+        }
+        return invocation;
     }
 
     private String getCallableTempVarName(Parameter param) {
