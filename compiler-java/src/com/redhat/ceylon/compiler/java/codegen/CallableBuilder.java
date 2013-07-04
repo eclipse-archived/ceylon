@@ -32,14 +32,12 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
-import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -50,9 +48,7 @@ public class CallableBuilder {
 
     private final AbstractTransformer gen;
     private final ProducedType typeModel;
-    private List<JCStatement> body;
     private final ParameterList paramLists;
-    private Term forwardCallTo;
     private boolean noDelegates;
     private int numParams;
     private int minimumParams;
@@ -151,35 +147,33 @@ public class CallableBuilder {
         if (forwardCallTo == null) {
             throw new RuntimeException();
         }
-        this.forwardCallTo = forwardCallTo;
        
         // now generate a method for each supported minimum number of parameters below 4
         // which delegates to the $call$typed method if required
         for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-            makeDefaultedCall(i, stmts);
-            stmts.append(gen.make().Return(makeInvocation(i)));
+            makeDefaultedCall(i, stmts, true);
+            makeForwardedInvocation(i, stmts, forwardCallTo);
             callMethods.append(makeCallMethod(stmts.toList(), i));
         }
    
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-        makeDefaultedCall(numParams, stmts);
-        stmts.append(gen.make().Return(makeInvocation(numParams)));
+        makeDefaultedCall(numParams, stmts, true);
+        makeForwardedInvocation(numParams, stmts, forwardCallTo);
         callMethods.append(makeCallMethod(stmts.toList(), numParams));
         
         return this;
     }
     
     public CallableBuilder useBody(List<JCStatement> body) {
-        this.body = body;
         if (!noDelegates) {
             // now generate a method for each supported minimum number of parameters below 4
             // which delegates to the $call$typed method if required
             for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
                 ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-                makeDefaultedCall(i, stmts);
+                makeDefaultedCall(i, stmts, false);
                 makeCallTypedCallOrBody(i, stmts, body);
                 callMethods.append(makeCallMethod(stmts.toList(), i));
             }
@@ -187,7 +181,7 @@ public class CallableBuilder {
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-        makeDefaultedCall(numParams, stmts);
+        makeDefaultedCall(numParams, stmts, false);
         makeCallTypedCallOrBody(numParams, stmts, body);
         callMethods.append(makeCallMethod(stmts.toList(), numParams));
         // generate the $call$typed method if required
@@ -281,14 +275,14 @@ public class CallableBuilder {
         return argExpr;
     }
     
-    private void makeDefaultedCall(final int i, ListBuffer<JCStatement> stmts) {
+    private void makeDefaultedCall(final int i, ListBuffer<JCStatement> stmts, boolean isForwarding) {
         // collect every parameter
         int a = 0;
         for(Parameter param : paramLists.getParameters()){
             // don't read default parameter values for forwarded calls
-            if(forwardCallTo != null && i == a)
+            if(isForwarding && i == a)
                 break;
-            stmts.append(makeArgumentVar(param, a, i));
+            stmts.append(makeArgumentVar(param, a, i, isForwarding));
             a++;
         }
     }
@@ -299,7 +293,7 @@ public class CallableBuilder {
             // pass along the parameters
             for(int a=paramLists.getParameters().size()-1;a>=0;a--){
                 Parameter param = paramLists.getParameters().get(a);
-                args = args.prepend(gen.makeUnquotedIdent(getCallableTempVarName(param)));
+                args = args.prepend(gen.makeUnquotedIdent(getCallableTempVarName(param, false)));
             }
             JCMethodInvocation chain = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableTypedMethodName()), args);
             stmts.append(gen.make().Return(chain));
@@ -323,7 +317,7 @@ public class CallableBuilder {
      * </pre>
      */
     private JCVariableDecl makeArgumentVar(final Parameter param, 
-            final int a, final int i) {
+            final int a, final int i, boolean isForwarding) {
         // read the value
         JCExpression paramExpression = getTypedParameter(param, a, i>3);
         JCExpression varInitialExpression;
@@ -331,11 +325,11 @@ public class CallableBuilder {
             if(i > 3){
                 // must check if it's defined
                 JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
-                JCExpression elseBranch = makeDefaultValueCall(param, a);
+                JCExpression elseBranch = makeDefaultValueCall(param, a, isForwarding);
                 varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
             }else if(a >= i){
                 // get its default value because we don't have it
-                varInitialExpression = makeDefaultValueCall(param, a);
+                varInitialExpression = makeDefaultValueCall(param, a, isForwarding);
             }else{
                 // we must have it
                 varInitialExpression = paramExpression;
@@ -354,16 +348,16 @@ public class CallableBuilder {
         // we'd need to duplicate some of the erasure logic here to make or not the type raw, and that would be worse.
         // Besides, named parameter invocation does the same.
         // See https://github.com/ceylon/ceylon-compiler/issues/1005
-        if(forwardCallTo != null)
+        if(isForwarding)
             flags |= AbstractTransformer.JT_RAW;
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
-                gen.naming.makeUnquotedName(getCallableTempVarName(param)), 
+                gen.naming.makeUnquotedName(getCallableTempVarName(param, isForwarding)), 
                 gen.makeJavaType(parameterTypes.get(a), flags),
                 varInitialExpression);
         return var;
     }
 
-    private JCExpression makeInvocation(int i) {
+    private void makeForwardedInvocation(int i, ListBuffer<JCStatement> stmts, Tree.Term forwardCallTo) {
         final Tree.MemberOrTypeExpression primary;
         if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
             primary = (Tree.MemberOrTypeExpression)forwardCallTo;
@@ -387,21 +381,21 @@ public class CallableBuilder {
         } finally {
             gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
         }
-        return invocation;
+        stmts.append(gen.make().Return(invocation));
     }
 
-    private String getCallableTempVarName(Parameter param) {
+    private String getCallableTempVarName(Parameter param, boolean isForwarding) {
         // prefix them with $$ if we only forward, otherwise we need them to have the proper names
-        return forwardCallTo != null ? Naming.getCallableTempVarName(param) : param.getName();
+        return isForwarding ? Naming.getCallableTempVarName(param) : param.getName();
     }
 
-    private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i){
+    private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i, boolean isForwarding){
         // add the default value
         List<JCExpression> defaultMethodArgs = List.nil();
         // pass all the previous values
         for(int a=i-1;a>=0;a--){
             Parameter param = paramLists.getParameters().get(a);
-            JCExpression previousValue = gen.makeUnquotedIdent(getCallableTempVarName(param));
+            JCExpression previousValue = gen.makeUnquotedIdent(getCallableTempVarName(param, isForwarding));
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method
