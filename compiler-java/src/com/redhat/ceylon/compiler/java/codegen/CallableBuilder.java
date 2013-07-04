@@ -171,12 +171,12 @@ public class CallableBuilder {
             // now generate a method for each supported minimum number of parameters below 4
             // which delegates to the $call$typed method if required
             for(int i=minimumParams,max = Math.min(numParams,4);i<max;i++){
-                classBody.append(makeDefaultedCall(i, hasOptionalParameters));
+                classBody.append(makeDefaultedCall(i));
             }
         }
         // generate the $call method for the max number of parameters,
         // which delegates to the $call$typed method if required
-        classBody.append(makeDefaultedCall(numParams, hasOptionalParameters));
+        classBody.append(makeDefaultedCall(numParams));
         // generate the $call$typed method if required
         if(hasOptionalParameters && forwardCallTo == null)
             classBody.append(makeCallTypedMethod(body));
@@ -243,7 +243,7 @@ public class CallableBuilder {
         return argExpr;
     }
     
-    private JCTree makeDefaultedCall(int i, boolean hasOptionalParameters) {
+    private JCTree makeDefaultedCall(int i) {
         // collect every parameter
         int a = 0;
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
