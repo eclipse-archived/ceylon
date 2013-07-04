@@ -92,10 +92,10 @@ public class CallableBuilder {
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
             Tree.ParameterList parameterListTree, 
-            ProducedType callableTypeModel) {
+            ProducedType callableTypeModel, boolean noDelegates) {
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
-        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts);
+        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, noDelegates);
     }
 
     public static CallableBuilder methodArgument(
@@ -104,11 +104,21 @@ public class CallableBuilder {
             ParameterList parameterList,
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
+        return methodArgument(gen, callableTypeModel, parameterList, parameterListTree, stmts, false);
+    }
+    
+    public static CallableBuilder methodArgument(
+            CeylonTransformer gen,
+            ProducedType callableTypeModel,
+            ParameterList parameterList,
+            Tree.ParameterList parameterListTree, 
+            List<JCStatement> stmts, boolean noDelegates) {
         
         CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterList);
         cb.body = stmts;
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
+        cb.noDelegates = noDelegates;
         return cb;
     }
     
@@ -131,17 +141,6 @@ public class CallableBuilder {
         cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
-    }
-
-    /**
-     * Determines wether or not delegate methods will be generated
-     * for optional parameters. By default they will.
-     * @param noDelegates Passing true will prevent the generation of delegates
-     * @return This object for call chaining
-     */
-    public CallableBuilder noDelegates(boolean noDelegates) {
-        this.noDelegates = noDelegates;
-        return this;
     }
     
     private ListBuffer<JCTree> parameterDefaultValueMethods;

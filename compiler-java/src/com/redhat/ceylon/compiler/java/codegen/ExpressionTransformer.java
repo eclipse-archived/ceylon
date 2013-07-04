@@ -2040,7 +2040,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
                         fp.getParameterLists().get(0),
                         fpTree.getParameterLists().get(0),
-                        getTypeForFunctionalParameter(fp)).build();
+                        getTypeForFunctionalParameter(fp),
+                        false).build();
             } else {
                 expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
             }
@@ -3535,8 +3536,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     (Tree.Expression)rightTerm,
                     decl.getParameterLists().get(0),
                     paramExpr.getParameterLists().get(0),
-                    paramExpr.getPrimary().getTypeModel());
-            callableBuilder.noDelegates(decl.isDeferred());
+                    paramExpr.getPrimary().getTypeModel(),
+                    decl.isDeferred());
             rhs = callableBuilder.build();
         }
 
