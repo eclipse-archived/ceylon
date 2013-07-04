@@ -122,7 +122,7 @@ public abstract class FreeClassOrInterface
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
     public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
-    members(@Ignore TypeDescriptor $reifiedKind) {
+    memberDeclarations(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
         
@@ -136,7 +136,7 @@ public abstract class FreeClassOrInterface
             @TypeParameter("Annotation")
     })
     public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
-    annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
+    annotatedMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate predicate = Predicates.and(
                 Predicates.isDeclarationOfKind($reifiedKind),
@@ -180,7 +180,7 @@ public abstract class FreeClassOrInterface
     @TypeInfo("Kind")
     @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
     public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Kind 
-    getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
+    getMemberDeclaration(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
         Predicates.Predicate predicate = Predicates.and(
                 Predicates.isDeclarationNamed(name),
@@ -192,28 +192,28 @@ public abstract class FreeClassOrInterface
     
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::OpenParameterisedType<ceylon.language.metamodel.declaration::InterfaceDeclaration>>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> getInterfaces() {
+    public Sequential<? extends ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> getInterfaceDeclarations() {
         checkInit();
         return interfaces;
     }
 
     @Override
     @TypeInfo("ceylon.language.metamodel.declaration::OpenParameterisedType<ceylon.language.metamodel.declaration::ClassDeclaration>|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> getSuperclass() {
+    public ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> getSuperclassDeclaration() {
         checkInit();
         return superclass;
     }
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::TypeParameter>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.TypeParameter> getTypeParameters() {
+    public Sequential<? extends ceylon.language.metamodel.declaration.TypeParameter> getTypeParameterDeclarations() {
         checkInit();
         return typeParameters;
     }
 
     @Override
     @TypeInfo("ceylon.language.metamodel.declaration::TypeParameter|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.TypeParameter getTypeParameter(@Name("name") String name) {
+    public ceylon.language.metamodel.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
         checkInit();
         Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> iterator = typeParameters.iterator();
         Object it;

@@ -72,7 +72,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
         java.util.Map<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.declaration.OpenType> typeArguments 
             = new LinkedHashMap<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.declaration.OpenType>();
-        Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
+        Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
             = producedType.getTypeArguments();

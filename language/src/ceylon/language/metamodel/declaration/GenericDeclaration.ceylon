@@ -1,6 +1,6 @@
 shared interface GenericDeclaration {
     
-    shared formal TypeParameter[] typeParameters;
+    shared formal TypeParameter[] typeParameterDeclarations;
     
-    shared formal TypeParameter? getTypeParameter(String name);
+    shared formal TypeParameter? getTypeParameterDeclaration(String name);
 }

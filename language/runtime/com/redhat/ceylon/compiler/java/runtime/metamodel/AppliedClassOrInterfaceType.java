@@ -85,7 +85,7 @@ public class AppliedClassOrInterfaceType<Type>
         this.declaration = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel(decl);
         java.util.Map<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.Type> typeArguments 
             = new LinkedHashMap<ceylon.language.metamodel.declaration.TypeParameter, ceylon.language.metamodel.Type>();
-        Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters = declaration.getTypeParameters().iterator();
+        Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
         Object it;
         java.util.Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, com.redhat.ceylon.compiler.typechecker.model.ProducedType> ptArguments 
             = producedType.getTypeArguments();

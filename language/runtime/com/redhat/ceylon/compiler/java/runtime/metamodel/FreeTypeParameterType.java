@@ -56,7 +56,7 @@ public class FreeTypeParameterType
         // FIXME: support more container sources, such as methods and outer declarations
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface containerMetamodel = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
-            ceylon.language.metamodel.declaration.TypeParameter typeParameter = containerMetamodel.getTypeParameter(wrapped.getName());
+            ceylon.language.metamodel.declaration.TypeParameter typeParameter = containerMetamodel.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else
@@ -64,7 +64,7 @@ public class FreeTypeParameterType
         }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
             // try to find it in the method
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction method = Metamodel.getMetamodel((com.redhat.ceylon.compiler.typechecker.model.Method)container);
-            ceylon.language.metamodel.declaration.TypeParameter typeParameter = method.getTypeParameter(wrapped.getName());
+            ceylon.language.metamodel.declaration.TypeParameter typeParameter = method.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else

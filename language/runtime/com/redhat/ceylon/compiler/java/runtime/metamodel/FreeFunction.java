@@ -94,19 +94,19 @@ public class FreeFunction
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameters(){
+    public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameterDeclarations(){
         return parameterList;
     }
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::TypeParameter>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.TypeParameter> getTypeParameters() {
+    public Sequential<? extends ceylon.language.metamodel.declaration.TypeParameter> getTypeParameterDeclarations() {
         return typeParameters;
     }
 
     @Override
     @TypeInfo("ceylon.language.metamodel.declaration::TypeParameter|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.TypeParameter getTypeParameter(@Name("name") String name) {
+    public ceylon.language.metamodel.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
         Iterator<? extends ceylon.language.metamodel.declaration.TypeParameter> iterator = typeParameters.iterator();
         Object it;
         while((it = iterator.next()) != finished_.$get()){
@@ -206,7 +206,7 @@ public class FreeFunction
     
     @Override
     @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
-    public OpenType getType() {
+    public OpenType getOpenType() {
         return type;
     }
 
