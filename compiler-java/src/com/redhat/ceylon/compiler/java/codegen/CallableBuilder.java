@@ -39,6 +39,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -50,21 +51,34 @@ public class CallableBuilder {
     private final AbstractTransformer gen;
     private final ProducedType typeModel;
     private List<JCStatement> body;
-    private ParameterList paramLists;
+    private final ParameterList paramLists;
     private Term forwardCallTo;
     private boolean noDelegates;
+    private int numParams;
+    private int minimumParams;
+    private boolean isVariadic;
+    private boolean hasOptionalParameters;
     
-    private CallableBuilder(CeylonTransformer gen, ProducedType typeModel) {
+    private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
         this.typeModel = typeModel;
+        this.paramLists = paramLists;
+        this.numParams = paramLists.getParameters().size();
+        this.minimumParams = 0;
+        for(Parameter p : paramLists.getParameters()){
+            if(p.isDefaulted() || p.isSequenced())
+                break;
+            this.minimumParams++;
+        }
+        this.isVariadic = numParams > 0 && paramLists.getParameters().get(numParams-1).isSequenced();
+        this.hasOptionalParameters = minimumParams != numParams;
     }
     
     /**
      * Constructs an {@code AbstractCallable} suitable for wrapping a method reference.
      */
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
-        CallableBuilder cb = new CallableBuilder(gen, expr.getTypeModel());
-        cb.paramLists = parameterList;
+        CallableBuilder cb = new CallableBuilder(gen, expr.getTypeModel(), parameterList);
         cb.forwardCallTo = expr;
         return cb;
     }
@@ -89,8 +103,7 @@ public class CallableBuilder {
             Tree.ParameterList parameterListTree, 
             List<JCStatement> stmts) {
         
-        CallableBuilder cb = new CallableBuilder(gen, callableTypeModel);
-        cb.paramLists = parameterList;
+        CallableBuilder cb = new CallableBuilder(gen, callableTypeModel, parameterList);
         cb.body = stmts;
         cb.parameterDefaultValueMethods(parameterListTree);
         return cb;
@@ -107,8 +120,7 @@ public class CallableBuilder {
             Tree.ParameterList parameterListTree,
             List<JCStatement> body) {
 
-        CallableBuilder cb = new CallableBuilder(gen, typeModel);
-        cb.paramLists = parameterList;
+        CallableBuilder cb = new CallableBuilder(gen, typeModel, parameterList);
         if (body == null) {
             body = List.<JCStatement>nil();
         }
@@ -146,15 +158,7 @@ public class CallableBuilder {
     public JCNewClass build() {
         // Generate a subclass of Callable
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
-        int numParams = paramLists.getParameters().size();
-        int minimumParams = 0;
-        for(Parameter p : paramLists.getParameters()){
-            if(p.isDefaulted() || p.isSequenced())
-                break;
-            minimumParams++;
-        }
-        boolean isVariadic = numParams > 0 && paramLists.getParameters().get(numParams-1).isSequenced();
-        boolean hasOptionalParameters = minimumParams != numParams;
+        
         if (parameterDefaultValueMethods != null) {
             classBody.appendList(parameterDefaultValueMethods);
         }
