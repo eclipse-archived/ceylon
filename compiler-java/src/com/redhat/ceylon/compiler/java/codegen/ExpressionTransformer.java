@@ -2663,7 +2663,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                     if (expr == null) {                    
                         Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
-                        expr = naming.makeQualifiedSuper(naming.makeCompanionFieldName(iface));
+                        JCExpression superQual;
+                        if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition().getDeclarationModel(), false) instanceof Interface) {
+                            superQual = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), iface);
+                        } else {
+                            superQual = naming.makeCompanionFieldName(iface);
+                        }
+                        expr = naming.makeQualifiedSuper(superQual);
                     }
                 } else {
                     expr = naming.makeSuper();
