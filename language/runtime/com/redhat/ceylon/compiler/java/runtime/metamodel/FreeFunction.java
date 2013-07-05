@@ -196,8 +196,9 @@ public class FreeFunction
                                                                     Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                     AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        // FIXME: check this null qualifying type
         final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind, container){
+        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind/*, container*/){
             @Override
             protected Kind bindTo(Object instance) {
                 return (Kind) new AppliedFunction(null, null, appliedFunction, FreeFunction.this, instance);

@@ -20,17 +20,17 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public abstract class AppliedMember<Type, Declaration extends ceylon.language.metamodel.DeclarationType> 
     implements ceylon.language.metamodel.Member<Type, Declaration>, ReifiedType {
 
-    private AppliedClassOrInterfaceType<Type> container;
+//    private AppliedClassOrInterfaceType<Type> container;
     @Ignore
     private TypeDescriptor $reifiedDeclaration;
     @Ignore
     private TypeDescriptor $reifiedType;
 
-    public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedDeclaration,
-                         AppliedClassOrInterfaceType<Type> container){
+    public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedDeclaration/*,
+                         AppliedClassOrInterfaceType<Type> container*/){
         this.$reifiedType = $reifiedType;
         this.$reifiedDeclaration = $reifiedDeclaration;
-        this.container = container;
+//        this.container = container;
     }
     
     @Override
@@ -40,11 +40,11 @@ public abstract class AppliedMember<Type, Declaration extends ceylon.language.me
         return null;
     }
 
-    @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<Type>")
-    public ClassOrInterface<? extends Type> getDeclaringClassOrInterface() {
-        return container;
-    }
+//    @Override
+//    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<Type>")
+//    public ClassOrInterface<? extends Type> getDeclaringClassOrInterface() {
+//        return container;
+//    }
 
     @Override
     public Declaration $call() {

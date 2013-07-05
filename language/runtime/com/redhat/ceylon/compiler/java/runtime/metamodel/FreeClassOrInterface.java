@@ -265,7 +265,7 @@ public abstract class FreeClassOrInterface
                                                                             AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         final ProducedType appliedType = declaration.getProducedReference(container.producedType, producedTypes).getType();
-        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind, container){
+        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind/*, container*/){
             @Override
             protected Kind bindTo(Object instance) {
                 return (Kind) (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface 
