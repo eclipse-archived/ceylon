@@ -83,7 +83,6 @@ public class CallableBuilder {
     
     /**
      * Constructs an {@code AbstractCallable} suitable for an anonymous function.
-     * @param parameterList2 
      */
     public static CallableBuilder anonymous(
             CeylonTransformer gen, Tree.Expression expr, ParameterList parameterList, 
@@ -362,7 +361,7 @@ public class CallableBuilder {
         if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
             primary = (Tree.MemberOrTypeExpression)forwardCallTo;
         } else {
-            throw new RuntimeException(forwardCallTo+"");
+            throw new RuntimeException(forwardCallTo.getNodeType());
         }
         TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
         CallableInvocation invocationBuilder = new CallableInvocation (
