@@ -73,11 +73,9 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     }
 
     private void initParameters(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
-        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
-            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(decl.getUnit(), parameters, producedType);
-        this.$reifiedArguments = Metamodel.getTypeDescriptorForProducedType(tupleType);
+        this.$reifiedArguments = Metamodel.getTypeDescriptorForArguments(decl.getUnit(), decl, producedType);
         
+        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
 
         Object[] defaultedMethods = null;

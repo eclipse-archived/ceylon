@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ import ceylon.language.finished_;
 import ceylon.language.metamodel.Annotated;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ConstrainedAnnotation;
+import ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.metamodel.declaration.Module;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -38,6 +40,8 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -519,5 +523,15 @@ public class Metamodel {
         if(declaration instanceof LazyInterface)
             return ((LazyInterface) declaration).isCeylon();
         throw new RuntimeException("Declaration type not supported: "+declaration);
+    }
+
+    public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.compiler.typechecker.model.Unit unit, 
+            com.redhat.ceylon.compiler.typechecker.model.Functional decl, 
+            ProducedType producedType) {
+        
+        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
+            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(unit, parameters, producedType);
+        return Metamodel.getTypeDescriptorForProducedType(tupleType);
     }
 }
