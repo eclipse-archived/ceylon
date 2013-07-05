@@ -10,8 +10,12 @@ import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.Attribute$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
@@ -20,7 +24,11 @@ import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-// FIXME: ceylonize
+@Ceylon(major = 5)
+@com.redhat.ceylon.compiler.java.metadata.Class
+@TypeParameters({
+    @TypeParameter(value = "Type", variance = Variance.OUT),
+})
 public class AppliedValue<Type> 
         implements ceylon.language.metamodel.Attribute<Type>, ReifiedType {
 

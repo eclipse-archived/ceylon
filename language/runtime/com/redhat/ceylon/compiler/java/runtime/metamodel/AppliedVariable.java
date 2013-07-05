@@ -10,13 +10,22 @@ import java.util.Arrays;
 import ceylon.language.metamodel.Variable$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
+@Ceylon(major = 5)
+@com.redhat.ceylon.compiler.java.metadata.Class
+@TypeParameters({
+    @TypeParameter(value = "Type", variance = Variance.NONE),
+})
 public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.language.metamodel.Variable<Type> {
 
     private MethodHandle setter;
