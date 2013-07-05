@@ -2087,18 +2087,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private boolean needsTypeInfoArgument(Invocation invocation) {
-        if (invocation.getPrimaryDeclaration() instanceof LazyMethod) {
-            if ("ceylon.language".equals(invocation.getPrimaryDeclaration().getContainer().getQualifiedNameString())) {
-                String name = invocation.getPrimaryDeclaration().getName();
+    private boolean needsTypeInfoArgument(Declaration primaryDeclaration) {
+        if (primaryDeclaration instanceof LazyMethod) {
+            if ("ceylon.language".equals(primaryDeclaration.getContainer().getQualifiedNameString())) {
+                String name = primaryDeclaration.getName();
                 return ("array".equals(name) || "arrayOfSize".equals(name));
             }
         }
         return false;
     }
 
-    private JCExpression makeTypeInfoArgument(Invocation invocation) {
-        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) invocation.getPrimary();
+    private JCExpression makeTypeInfoArgument(Primary primary) {
+        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) primary;
         ProducedType type = bme.getTypeArguments().getTypeModels().get(0);
         ProducedType simpleType = simplifyType(type);
         JCExpression typeExpr;
@@ -2118,40 +2118,49 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private final List<ExpressionAndType> transformArguments(Invocation invocation,
             TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
-        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
+        ListBuffer<ExpressionAndType> result = ListBuffer.<ExpressionAndType>lb();
         withinInvocation(false);
-        // Implicit arguments
-        // except for Java array constructors
-        if(invocation.getPrimaryDeclaration() instanceof Class == false
-                || !isJavaArray(((Class) invocation.getPrimaryDeclaration()).getType())){
-            result = invocation.addReifiedArguments(result);
-        }
-        if (needsTypeInfoArgument(invocation)) {
-            result = result.append(new ExpressionAndType(makeTypeInfoArgument(invocation), make().Type(syms().classType)));
-        }
-        if (!(invocation.getPrimary() instanceof Tree.BaseTypeExpression)
-                && !(invocation.getPrimary() instanceof Tree.QualifiedTypeExpression)
-                && invocation.isOnValueType() 
-                && transformedPrimary != null) {
-            result = result.append(new ExpressionAndType(transformedPrimary.expr,
-                    makeJavaType(invocation.getPrimary().getTypeModel())));   
-        }
+        appendImplicitArguments(invocation, transformedPrimary, result);
         // Explicit arguments
         if (invocation instanceof SuperInvocation) {
             withinSuperInvocation(((SuperInvocation)invocation).getSub());
-            result = result.appendList(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
+            result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
             withinSuperInvocation(null);
         } else if (invocation instanceof NamedArgumentInvocation) {
-            result = result.appendList(transformArgumentsForNamedInvocation((NamedArgumentInvocation)invocation));
+            result.addAll(transformArgumentsForNamedInvocation((NamedArgumentInvocation)invocation));
         } else if (invocation instanceof CallableSpecifierInvocation) {
-            result = result.appendList(transformArgumentsForCallableSpecifier((CallableSpecifierInvocation)invocation));
+            result.addAll(transformArgumentsForCallableSpecifier((CallableSpecifierInvocation)invocation));
         } else if (invocation instanceof SimpleInvocation) {
-            result = result.appendList(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
+            result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
         } else {
             throw Assert.fail();
         }
         withinInvocation(true);
-        return result;
+        return result.toList();
+    }
+
+    private void appendImplicitArguments(
+            Invocation invocation,
+            TransformedInvocationPrimary transformedPrimary,
+            ListBuffer<ExpressionAndType> result) {
+        // Implicit arguments
+        // except for Java array constructors
+        Declaration primaryDeclaration = invocation.getPrimaryDeclaration();
+        Primary primary = invocation.getPrimary();
+        if(primaryDeclaration instanceof Class == false
+                || !isJavaArray(((Class) primaryDeclaration).getType())){
+            invocation.addReifiedArguments(result);
+        }
+        if (needsTypeInfoArgument(primaryDeclaration)) {
+            result.add(new ExpressionAndType(makeTypeInfoArgument(primary), make().Type(syms().classType)));
+        }
+        if (!(primary instanceof Tree.BaseTypeExpression)
+                && !(primary instanceof Tree.QualifiedTypeExpression)
+                && Invocation.onValueType(this, primary, primaryDeclaration) 
+                && transformedPrimary != null) {
+            result.add(new ExpressionAndType(transformedPrimary.expr,
+                    makeJavaType(primary.getTypeModel())));   
+        }
     }
     
     private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation, CallBuilder callBuilder) {

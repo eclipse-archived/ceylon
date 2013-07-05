@@ -39,17 +39,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -74,6 +70,24 @@ import com.sun.tools.javac.util.ListBuffer;
 
 abstract class Invocation {
 
+    static boolean onValueType(AbstractTransformer gen, Tree.Primary primary, Declaration primaryDeclaration) {
+        // don't use the value type mechanism for optimised Java arrays get/set invocations
+        if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
+            Tree.Primary qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
+            if(qmePrimary != null 
+                    && gen.isJavaArray(qmePrimary.getTypeModel())
+                    && (primaryDeclaration.getName().equals("get")
+                        || primaryDeclaration.getName().equals("set"))) {
+                return false;
+            } else {
+                return Decl.isValueTypeDecl(qmePrimary)
+                        && (CodegenUtil.isUnBoxed(qmePrimary) || gen.isJavaArray(qmePrimary.getTypeModel()));
+            }
+        } else {
+            return false;
+        }
+    }
+    
     protected final AbstractTransformer gen;
     private final Node node;
     private final Tree.Primary primary;
@@ -96,20 +110,10 @@ abstract class Invocation {
         
         if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
             this.qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
-            // don't use the value type mechanism for optimised Java arrays get/set invocations
-            if(this.qmePrimary != null 
-                    && gen.isJavaArray(this.qmePrimary.getTypeModel())
-                    && (primaryDeclaration.getName().equals("get")
-                        || primaryDeclaration.getName().equals("set"))) {
-                this.onValueType = false;
-            } else {
-                this.onValueType = Decl.isValueTypeDecl(this.qmePrimary)
-                        && (CodegenUtil.isUnBoxed(this.qmePrimary) || gen.isJavaArray(this.qmePrimary.getTypeModel()));
-            }
         } else {
             this.qmePrimary = null;
-            this.onValueType = false;
         }
+        this.onValueType = onValueType(gen, primary, primaryDeclaration);
     }
     
     public String toString() {
@@ -136,7 +140,7 @@ abstract class Invocation {
         return qmePrimary;
     }
 
-    boolean isOnValueType() {
+    final boolean isOnValueType() {
         return onValueType;
     }
     
@@ -150,7 +154,7 @@ abstract class Invocation {
         return gen.hasConstrainedTypeParameters(type);
     }
     
-    protected abstract List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result);
+    protected abstract void addReifiedArguments(ListBuffer<ExpressionAndType> result);
     
     public final void setUnboxed(boolean unboxed) {
         this.unboxed = unboxed;
@@ -355,9 +359,8 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     }
     
     @Override
-    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+    protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
         // can never be parameterised
-        return result;
     }
 
     @Override
@@ -514,11 +517,14 @@ abstract class DirectInvocation extends SimpleInvocation {
     }
     
     @Override
-    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+    protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
+        addReifiedArguments(gen, producedReference, result);
+    }
+    
+    static void addReifiedArguments(AbstractTransformer gen, ProducedReference producedReference, ListBuffer<ExpressionAndType> result) {
         java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(producedReference);
         for(JCExpression reifiedTypeArg : reifiedTypeArgs)
-            result = result.append(new ExpressionAndType(reifiedTypeArg, gen.makeTypeDescriptorType()));
-        return result;
+            result.append(new ExpressionAndType(reifiedTypeArg, gen.makeTypeDescriptorType()));
     }
 }
 
@@ -807,9 +813,8 @@ class CallableSpecifierInvocation extends Invocation {
     }
 
     @Override
-    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+    protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
         // nothing required here
-        return result;
     }
     
     JCExpression getCallable() {
@@ -852,14 +857,13 @@ class NamedArgumentInvocation extends Invocation {
     }
     
     @Override
-    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+    protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
         if(!gen.supportsReified(producedReference.getDeclaration()))
-            return result;
+            return;
         int tpCount = gen.getTypeParameters(producedReference).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
-            result = result.append(new ExpressionAndType(reifiedTypeArgName(tpIndex).makeIdent(), gen.makeTypeDescriptorType()));
+            result.append(new ExpressionAndType(reifiedTypeArgName(tpIndex).makeIdent(), gen.makeTypeDescriptorType()));
         }
-        return result;
     }
     
     ListBuffer<JCStatement> getVars() {
