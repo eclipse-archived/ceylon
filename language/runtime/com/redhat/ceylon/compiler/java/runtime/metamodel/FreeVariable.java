@@ -43,6 +43,7 @@ public class FreeVariable
     @TypeInfo("ceylon.language.metamodel.declaration::SetterDeclaration")
     @Override
     public SetterDeclaration getSetter() {
+        // FIXME: let's not allocate all the time
         return new FreeSetter(this);
     }
     

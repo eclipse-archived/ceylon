@@ -19,6 +19,7 @@ public class AppliedInterfaceType<Type>
     extends AppliedClassOrInterfaceType<Type>
     implements ceylon.language.metamodel.Interface<Type> {
 
+    // FIXME: get rid of duplicate instantiations of AppliedInterfaceType when the type in question has no type parameters
     public AppliedInterfaceType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
         super(null, producedType);
     }

@@ -38,6 +38,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     private int firstDefaulted;
     private MethodHandle[] dispatch;
     
+    // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClassType(@Ignore TypeDescriptor $reifiedType, 
                             @Ignore TypeDescriptor $reifiedArguments,
                             com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {

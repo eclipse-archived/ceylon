@@ -46,6 +46,7 @@ public class FreeFunction
     public FreeFunction(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
         super(declaration);
 
+        // FIXME: make lazy
         // FIXME: share with ClassOrInterface
         List<com.redhat.ceylon.compiler.typechecker.model.TypeParameter> typeParameters = declaration.getTypeParameters();
         ceylon.language.metamodel.declaration.TypeParameter[] typeParametersArray = new ceylon.language.metamodel.declaration.TypeParameter[typeParameters.size()];
