@@ -27,10 +27,12 @@ import java.util.ArrayList;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -46,6 +48,19 @@ import com.sun.tools.javac.util.Name;
 
 public class CallableBuilder {
 
+    static interface DefaultValueMethodTransformation {
+        public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam);
+    }
+    
+    public static final DefaultValueMethodTransformation DEFAULTED_PARAM_METHOD = new DefaultValueMethodTransformation() {
+        @Override
+        public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam) {
+            return gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam));
+        }
+    };
+    
+    DefaultValueMethodTransformation defaultValueCall = DEFAULTED_PARAM_METHOD;
+    
     private final AbstractTransformer gen;
     private final ProducedType typeModel;
     private final ParameterList paramLists;
@@ -79,6 +94,51 @@ public class CallableBuilder {
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         cb.forwardTo(expr);
         return cb;
+    }
+    
+    /**
+     * "static" method references like
+     *     value x = Object.equals;
+     *     value y = Integer.plus;
+     *     value z = Foo.method;
+     * @param gen
+     * @return
+     */
+    public static CallableBuilder unboundMethodReference(CeylonTransformer gen, ProducedType typeModel, final Method method) {
+        final String instanceName = "$instance";
+        final ParameterList parameterList = method.getParameterLists().get(0);
+        final ProducedType type = gen.getReturnTypeOfCallable(typeModel);
+        CallableBuilder inner = new CallableBuilder(gen, type, parameterList);
+        inner.parameterTypes = inner.getParameterTypesFromParameterModels();
+        class InstanceDefaultValueCall implements DefaultValueMethodTransformation {            
+            @Override
+            public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam) {
+                return gen.makeQualIdent(gen.naming.makeUnquotedIdent(instanceName), 
+                        Naming.getDefaultedParamMethodName(method, defaultedParam));
+            }
+        }
+        inner.defaultValueCall = new InstanceDefaultValueCall();
+        CallBuilder callBuilder = CallBuilder.instance(gen);
+        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), method, Naming.NA_MEMBER));
+        for (Parameter parameter : parameterList.getParameters()) {
+            callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
+        }
+        // TODO what about stacking uninitialized?
+        JCExpression innerInvocation = callBuilder.build();
+        innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, method.getType(), !method.getUnboxed(), BoxingStrategy.BOXED, method.getType());
+        inner.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
+        
+        ParameterList outerPl = new ParameterList();
+        ValueParameter instanceParameter = new ValueParameter();
+        instanceParameter.setName(instanceName);
+        instanceParameter.setType(gen.getParameterTypeOfCallable(typeModel, 0));
+        instanceParameter.setUnboxed(false);
+        outerPl.getParameters().add(instanceParameter);
+        CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
+        outer.parameterTypes = outer.getParameterTypesFromParameterModels();
+        outer.useBody(List.<JCStatement>of(gen.make().Return(inner.build())));
+        
+        return outer;
     }
     
     /**
@@ -398,7 +458,9 @@ public class CallableBuilder {
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method
-        return gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam)), defaultMethodArgs);
+        return gen.make().Apply(null, 
+                defaultValueCall.makeDefaultValueMethod(gen, defaultedParam), 
+                defaultMethodArgs);
     }
     
     private JCTree makeCallMethod(List<JCStatement> body, int numParams) {
