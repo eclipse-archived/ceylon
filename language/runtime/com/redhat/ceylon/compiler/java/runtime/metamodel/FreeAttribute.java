@@ -66,7 +66,7 @@ public class FreeAttribute
 
     @Override
     @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
-    public OpenType getType() {
+    public OpenType getOpenType() {
         return type;
     }
 

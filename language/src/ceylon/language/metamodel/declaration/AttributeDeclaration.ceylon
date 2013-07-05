@@ -5,5 +5,5 @@ shared interface AttributeDeclaration
     
     shared formal Attribute<Anything> apply(Anything instance = null);
     
-    shared formal OpenType type;
+    shared formal OpenType openType;
 }
