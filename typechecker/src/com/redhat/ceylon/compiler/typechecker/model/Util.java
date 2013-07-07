@@ -27,6 +27,20 @@ public class Util {
     }
     
     /**
+     * Get the nearest containing scope that is not a
+     * ConditionScope. 
+     */
+    public static Scope getRealScope(Scope scope) {
+        while (!(scope instanceof Package)) {
+            if (!(scope instanceof ConditionScope)) {
+                return scope;
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+    
+    /**
      * Get the class or interface that "this" and "super" 
      * refer to. 
      */

@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
@@ -699,16 +700,16 @@ public class ExpressionVisitor extends Visitor {
             Declaration d = bme.getDeclaration();
             if (d instanceof TypedDeclaration) {
                 that.setDeclaration((TypedDeclaration) d);
-                Scope cs = getContainingClassOrInterface(that.getScope());
+                Scope cs = getRealScope(that.getScope().getContainer());
                 if (cs instanceof ClassOrInterface && 
                         !d.isDefinedInScope(cs)) {
                     //then it must be inherited ... TODO: is this totally correct? 
                     //so it's actually a refinement of a formal declaration!
                     if (d instanceof Value) {
-                        refine((Value) d, bme, that);
+                        refine((Value) d, bme, that, (ClassOrInterface) cs);
                     }
                     else if (d instanceof Method) {
-                        refine((Method) d, bme, that);
+                        refine((Method) d, bme, that, (ClassOrInterface) cs);
                     }
                     else {
                         //TODO!
@@ -821,8 +822,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
-            Tree.SpecifierStatement that) {
-        ClassOrInterface c = getContainingClassOrInterface(that.getScope());
+            Tree.SpecifierStatement that, ClassOrInterface c) {
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
@@ -859,8 +859,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
-            Tree.SpecifierStatement that) {
-        ClassOrInterface c = getContainingClassOrInterface(that.getScope());
+            Tree.SpecifierStatement that, ClassOrInterface c) {
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("inherited method is neither formal nor default so may not be refined: " + 
