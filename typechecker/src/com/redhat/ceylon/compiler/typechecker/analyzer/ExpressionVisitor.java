@@ -699,7 +699,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration d = bme.getDeclaration();
             if (d instanceof TypedDeclaration) {
                 that.setDeclaration((TypedDeclaration) d);
-                Scope cs = that.getScope().getContainer();
+                Scope cs = getContainingClassOrInterface(that.getScope());
                 if (cs instanceof ClassOrInterface && 
                         !d.isDefinedInScope(cs)) {
                     //then it must be inherited ... TODO: is this totally correct? 
@@ -822,7 +822,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Value sv, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
-        ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
+        ClassOrInterface c = getContainingClassOrInterface(that.getScope());
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
@@ -860,7 +860,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void refine(Method sm, Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that) {
-        ClassOrInterface c = (ClassOrInterface) that.getScope().getContainer();
+        ClassOrInterface c = getContainingClassOrInterface(that.getScope());
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("inherited method is neither formal nor default so may not be refined: " + 
