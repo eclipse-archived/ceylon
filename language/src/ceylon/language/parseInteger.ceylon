@@ -7,131 +7,153 @@ Integer maxRadix = 36;
  is too large in magnitude to be represented by an 
  `Integer`.
  
- The syntax accepted by this method is the same as the 
+ The syntax accepted by this function is the same as the 
  syntax for an `Integer` literal in the Ceylon language 
  except that it may optionally begin with a sign 
- character (`+` or `-`)."
+ character (`+` or `-`).
+ 
+ A radix can be given in input to specify what is the base
+ to take in consideration for the parsing. radix has to be
+ between 2 and 36 included.
+ The list of available digits starts from `0` to `9` followed
+ by `a` to `z`.
+ When parsing in a specific base, the first `radix` digits
+ from the available digits list can be used.
+ This function is not case sensitive; `a` and `A` both
+ correspond to the `a` digit which decimal value is `10`.
+  
+ `_` character can be used to separate groups of digits
+ for bases 2, 10 and 16 as for `Integer` literal in the
+ Ceylon language. For any other bases, no grouping is
+ supported."
 shared Integer? parseInteger(String string, Integer radix = 10) {
-    assert (minRadix >= 2, maxRadix <= 36); 
-    Integer length = string.size;
-    if (length == 0) {
-        return null;
-    }
+    assert (radix >= minRadix, radix <= maxRadix); 
     variable Integer ii = 0;
-    variable Character ch;
-    if (exists char = string[ii]) {
-        ch = char;
-    } else {
-        return null;
-    }
-    variable Integer result = 0;
     Integer max = minIntegerValue / radix;
     Boolean negative;
-    if (ch == '-') {
-        negative = true;
-        ii++;
-    } else if (ch == '+') {
-        negative = false;
-        ii++;
+    if (exists char = string[ii]) {
+        if (char == '-') {
+            negative = true;
+            ii++;
+        } else if (char == '+') {
+            negative = false;
+            ii++;
+        } else {
+            negative = false;
+        }
     } else {
-        negative = false;
+        return null;
     }
     Integer limit = negative then minIntegerValue else -maxIntegerValue;
-    
-    // The actual number
+    Integer length = string.size;
+    variable Integer result = 0;
     variable Integer sep = -1;
     variable Integer digitIndex = 0;
+    variable Integer groupingSize = -1;
     while (ii < length) {
+        Character ch;
         if (exists char = string[ii]) {
             ch = char;
         } else {
             return null;
         }
         if (ch == '_') {
-            if (sep != -1 && (digitIndex - sep) % 4 != 0) {
-                return null;
-            }
             if (sep == -1) {
-                // at most three digits before the first _
-                if (digitIndex > 3) {
+                if (exists digitGroupSize = computeDigitGroupingSize(radix, digitIndex, string, ii), digitIndex <= digitGroupSize) {
+                    groupingSize = digitGroupSize;
+                    sep = digitIndex;
+                } else {
                     return null;
                 }
+            } else if ((digitIndex - sep) == groupingSize) {
+                return null;
+            } else {
                 sep = digitIndex;
             }
-        }
-        else {
-            if (sep != -1 && (digitIndex - sep) % 4 == 0) {
-                // missing a _ after the first
+        } else {
+            if (sep != -1 && (digitIndex - sep) == (groupingSize + 1)) {
                 return null;
             }
             if (ii + 1 == length && radix == 10 && ch in ['k','M','G','T','P']) {
-                // base 10 factor
-                break;
-            }
-            Integer digit;
-            if (exists d = parseDigit(ch, radix)) {
-                digit = d;
+                // The magnitude
+                if (exists magnitude = computeMagnitude(radix, string[ii++])) {
+                    if ((limit / magnitude) < result) {
+                        result *= magnitude;
+                        break;
+                    } else { // overflow
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            } else if (exists digit = parseDigit(ch, radix)) {
+                if (result < max) { // overflow
+                    return null;
+                }
+                result *= radix;
+                if (result < limit + digit) { // overflow
+                    return null;
+                }
+                // += would be much more obvious, but it doesn't work for minIntegerValue
+                result -= digit;
             } else { // Invalid digit
                 return null;
             }
-            if (result < max) { // overflow
-                return null;
-            }
-            result *= radix;
-            if (result < limit + digit) { // overflow
-                return null;
-            }
-            // += would be much more obvious, but it doesn't work for minIntegerValue
-            result -= digit;
         }
         ii++;
         digitIndex++;
     }
     // check for insufficient digits after the last _
-    if (sep != -1 && ((digitIndex - sep) % 4) != 0) {
+    if (sep != -1 && (digitIndex - sep) != (groupingSize + 1)) {
         return null;
     }
-    // The magnitude
-    variable Integer magnitude;
-    if (negative) {
-        magnitude = 1;
+    if (digitIndex == 0) {
+        return null;
+    }
+    return negative then result else -result;
+}
+
+Integer? computeDigitGroupingSize(Integer radix, Integer digitIndex, String string, Integer ii) {
+    Integer? groupingSize;
+    if (radix == 2) {
+        groupingSize = 4;
+    } else if (radix == 10) {
+        groupingSize = 3;
+    } else if (radix == 16) {
+        if (digitIndex <= 2, exists char = string[ii + 3], char == '_') {
+            groupingSize = 2;
+        } else {
+            groupingSize = 4;
+        }
     } else {
-        magnitude= -1;
+        groupingSize = null;
     }
-    if (ii < length) {
-        if (radix != 10) {
-            return null;
+    return groupingSize;
+}
+
+Integer? computeMagnitude(Integer radix, Character? char) {
+    Integer? power;
+    if (exists char) {
+        if (char == 'P') {
+            power = 15;
+        } else if (char == 'T') {
+            power = 12; 
+        } else if (char == 'G') {
+            power = 9; 
+        } else if (char == 'M') {
+            power = 6;
+        } else if (char == 'k') {
+            power = 3;
+        } else {
+            power = null;
         }
-        Integer power;
-        if (exists char = string[ii++]) {
-            if (char == 'P') {
-                power = 15;
-            }
-            else if (char == 'T') {
-                power = 12; 
-            }
-            else if (char == 'G') {
-                power = 9; 
-            }
-            else if (char == 'M') {
-                power = 6;
-            }
-            else if (char == 'k') {
-                power = 3;
-            }
-            else {
-                return null;
-            }
-        }
-        else {
-            return null;
-        }
-        magnitude *= radix ^ power;
+    } else {
+        power = null;
     }
-    if (ii < length || digitIndex == 0) {
-        return null;
+    if (exists power) {
+        return radix^power;
     }
-    return result * magnitude;
+    return null;
 }
 
 Integer? parseDigit(Character digit, Integer radix) {
