@@ -118,7 +118,9 @@ shared class Range<Element>(first, last)
         if (is Integer first, is Integer last) {
             return integerRangeByIterable(this, step);
         }
-        return Iterable::by(step);
+        //assert (is {Element+} result = super.by(step));
+        //return result;
+        return super.by(step);
     }
     
     "Determines if the range includes the given object."
@@ -157,7 +159,7 @@ shared class Range<Element>(first, last)
         }
         else {
             //it might be another sort of List
-            return List::equals(that);
+            return super.equals(that);
         }
     }
     

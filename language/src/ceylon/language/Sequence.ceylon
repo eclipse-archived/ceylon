@@ -77,7 +77,7 @@ shared interface Sequence<out Element>
     
     shared actual default [Element+] clone => this;
     
-    shared actual default String string => Sequential::string;
+    shared actual default String string => (super of Sequential<Element>).string;
     
     //disabled because of compiler bug
     /*shared default actual Element? findLast(

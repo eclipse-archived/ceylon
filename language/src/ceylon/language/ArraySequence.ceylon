@@ -27,9 +27,9 @@ shared native class ArraySequence<out Element>({Element+} elements)
     
     shared native actual Boolean defines(Integer key);
     
-    shared actual Boolean equals(Object other) => List::equals(other);
+    shared actual Boolean equals(Object other) => (super of List<Element>).equals(other);
     
-    shared actual Integer hash => List::hash;
+    shared actual Integer hash => (super of List<Element>).hash;
     
     shared native actual ArraySequence<Element> reversed;
 
