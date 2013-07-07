@@ -304,107 +304,7 @@ shared void numbers() {
     } catch (Exception ex) {
         check(true, "ArithmeticException");
     }    
-    // parseInteger()
-    check((parseInteger("-123") else 0)==-123, "parse integer");
-    
-    check(1_000==(parseInteger("1_000") else ""), "parseInteger(1_000)");
-    check(1000==(parseInteger("1000") else ""), "parseInteger(1000)");
-    check(1k==(parseInteger("1k") else ""), "parseInteger(1k)");
-    check(+1_000==(parseInteger("+1_000") else ""), "parseInteger(+1_000)");
-    check(+1000==(parseInteger("+1000") else ""), "parseInteger(+1000)");
-    check(+1k==(parseInteger("+1k") else ""), "parseInteger(+1k)");
-    check(-1_000==(parseInteger("-1_000") else ""), "parseInteger(-1_000)");
-    check(-1000==(parseInteger("-1000") else ""), "parseInteger(-1000)");
-    check(-1k==(parseInteger("-1k") else ""), "parseInteger(-1k)");
-    
-    check(0==(parseInteger("0") else ""), "parseInteger(0)");
-    check(00==(parseInteger("00") else ""), "parseInteger(00)");
-    check(0_000==(parseInteger("0_000") else ""), "parseInteger(0_000)");
-    check(-00==(parseInteger("-00") else ""), "parseInteger(-00)");
-    check(+00==(parseInteger("+00") else ""), "parseInteger(+00)");
-    check(0k==(parseInteger("0k") else ""), "parseInteger(0k)");
-    
-    check(1==(parseInteger("1") else ""), "parseInteger(1)");
-    check(01==(parseInteger("01") else ""), "parseInteger(01)");
-    check(0_001==(parseInteger("0_001") else ""), "parseInteger(0_001)");
-    check(+1==(parseInteger("+1") else ""), "parseInteger(+1)");
-    check(+01==(parseInteger("+01") else ""), "parseInteger(+01)");
-    check(+0_001==(parseInteger("+0_001") else ""), "parseInteger(+0_001)");
-    
-    check(-1==(parseInteger("-1") else ""), "parseInteger(-1)");
-    check(-01==(parseInteger("-01") else ""), "parseInteger(-01)");
-    check(-0_001==(parseInteger("-0_001") else ""), "parseInteger(-0_001)");
-    
-    check(1k==(parseInteger("1k") else ""), "parseInteger(1k)");
-    check(1M==(parseInteger("1M") else ""), "parseInteger(1M)");
-    check(1G==(parseInteger("1G") else ""), "parseInteger(1G)");
-    check(1T==(parseInteger("1T") else ""), "parseInteger(1T)");
-    check(1P==(parseInteger("1P") else ""), "parseInteger(1P)");
-    check(-1k==(parseInteger("-1k") else ""), "parseInteger(-1k)");
-    check(-1M==(parseInteger("-1M") else ""), "parseInteger(-1M)");
-    check(-1G==(parseInteger("-1G") else ""), "parseInteger(-1G)");
-    check(-1T==(parseInteger("-1T") else ""), "parseInteger(-1T)");
-    check(-1P==(parseInteger("-1P") else ""), "parseInteger(-1P)");
-    
-    check(127 == (parseInteger("01111111", 2) else ""), "parseInteger(01111111, 2)");
-    check(128 == (parseInteger("10000000", 2) else ""), "parseInteger(10000000, 2)");
-    check(-48 == (parseInteger("-110000", 2) else ""), "parseInteger(-110000, 2)");
-    
-    check(1193046 == (parseInteger("123456", 16) else ""), "parseInteger(123456, 16)");
-    check(255 == (parseInteger("ff", 16) else ""), "parseInteger(ff, 16)");
-    check(!parseInteger("fk", 16) exists, "parseInteger(fk, 16)");
-    
-    print("Testing `` 0.size ``-bit integers");
-    if (0.size == 64) {
-        check(9223372036854775807==(parseInteger("9223372036854775807") else ""), "parseInteger(9223372036854775807)");
-        check(9_223_372_036_854_775_807==(parseInteger("9_223_372_036_854_775_807") else ""), "parseInteger(9_223_372_036_854_775_807)");
-        check(-9223372036854775808==(parseInteger("-9223372036854775808") else ""), "parseInteger(-9223372036854775808)");
-        check(-9_223_372_036_854_775_808==(parseInteger("-9_223_372_036_854_775_808") else ""), "parseInteger(-9_223_372_036_854_775_808)");
-        check(!parseInteger("9223372036854775808") exists, "parseInteger(9223372036854775808)");
-        check(!parseInteger("-9223372036854775809") exists, "parseInteger(-9223372036854775809)");
-        
-        check(-9223372036854775808 == (parseInteger("-1000000000000000000000000000000000000000000000000000000000000000", 2) else ""),
-          "parseInteger(-1000000000000000000000000000000000000000000000000000000000000000, 2)");
-        check(!parseInteger("-1000000000000000000000000000000000000000000000000000000000000001", 2) exists,
-          "parseInteger(-1000000000000000000000000000000000000000000000000000000000000001, 2)");
-        check(9223372036854775807 == (parseInteger("111111111111111111111111111111111111111111111111111111111111111", 2) else ""),
-          "parseInteger(111111111111111111111111111111111111111111111111111111111111111, 2)");
-        check(!parseInteger("1000000000000000000000000000000000000000000000000000000000000000", 2) exists,
-          "parseInteger(1000000000000000000000000000000000000000000000000000000000000000, 2)");
-        
-    } else if (0.size == 53) {
-        check(9007199254740992==(parseInteger("9007199254740992") else ""), "parseInteger(9007199254740992)");
-        check(9_007_199_254_740_992==(parseInteger("9_007_199_254_740_992") else ""), "parseInteger(9_007_199_254_740_992)");
-        check(-9007199254740992==(parseInteger("-9007199254740992") else ""), "parseInteger(-9007199254740992)");
-        check(-9_007_199_254_740_992==(parseInteger("-9_007_199_254_740_992") else ""), "parseInteger(-9_007_199_254_740_992)");
-        check(!parseInteger("9007199254740993") exists, "parseInteger(9007199254740993)");
-        check(!parseInteger("-9007199254740993") exists, "parseInteger(-9007199254740993)");
-    } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
-    }
-
-    check(!parseInteger("") exists, "parseInteger()");
-    check(!parseInteger("+") exists, "parseInteger(+)");
-    check(!parseInteger("-") exists, "parseInteger(-)");
-    check(!parseInteger("foo") exists, "parseInteger(foo)");
-    check(!parseInteger(" 0") exists, "parseInteger( 0)");
-    check(!parseInteger("0 ") exists, "parseInteger(0 )");
-    check(!parseInteger("0+0") exists, "parseInteger(0+0)");
-    check(!parseInteger("0-0") exists, "parseInteger(0-0)");
-    check(!parseInteger("0+") exists, "parseInteger(0+)");
-    check(!parseInteger("0-") exists, "parseInteger(0-)");
-    check(!parseInteger("k") exists, "parseInteger(k)");
-    check(!parseInteger("k1") exists, "parseInteger(k1)");
-    check(!parseInteger("+k") exists, "parseInteger(+k)");
-    check(!parseInteger("-k") exists, "parseInteger(-k)");
-    check(!parseInteger("1kk") exists, "parseInteger(1kk)");
-    check(!parseInteger("0_") exists, "parseInteger(0_)");
-    check(!parseInteger("_0") exists, "parseInteger(_0)");
-    check(!parseInteger("0_0") exists, "parseInteger(0_0)");
-    check(!parseInteger("0_00") exists, "parseInteger(0_00)");
-    check(!parseInteger("0_0000") exists, "parseInteger(0_0000)");
-    check(!parseInteger("0_000_0") exists, "parseInteger(0_000_0)");
-    check(!parseInteger("0000_000") exists, "parseInteger(0000_000)");
+    checkParseInteger();
     
     // parseFloat
     check((parseFloat("12.34e3") else 0.0)==12.34e3, "parseFloat(12.34e3)");
@@ -517,4 +417,173 @@ shared void numbers() {
     check(!($10).get(0), "b10.get(0) == false");
     check($10.get(1), "b10.get(1) == true");
     check(!($10).get(2), "b10.get(2) == false");
+}
+
+void checkParseInteger() {
+    check((parseInteger("-123") else 0)==-123, "parseInteger(-123)");
+    
+    check(1_000==(parseInteger("1_000") else ""), "parseInteger(1_000)");
+    check(1000==(parseInteger("1000") else ""), "parseInteger(1000)");
+    check(1k==(parseInteger("1k") else ""), "parseInteger(1k)");
+    check(+1_000==(parseInteger("+1_000") else ""), "parseInteger(+1_000)");
+    check(+1000==(parseInteger("+1000") else ""), "parseInteger(+1000)");
+    check(+1k==(parseInteger("+1k") else ""), "parseInteger(+1k)");
+    check(-1_000==(parseInteger("-1_000") else ""), "parseInteger(-1_000)");
+    check(-1000==(parseInteger("-1000") else ""), "parseInteger(-1000)");
+    check(-1k==(parseInteger("-1k") else ""), "parseInteger(-1k)");
+    
+    check(0==(parseInteger("0") else ""), "parseInteger(0)");
+    check(00==(parseInteger("00") else ""), "parseInteger(00)");
+    check(0_000==(parseInteger("0_000") else ""), "parseInteger(0_000)");
+    check(-00==(parseInteger("-00") else ""), "parseInteger(-00)");
+    check(+00==(parseInteger("+00") else ""), "parseInteger(+00)");
+    check(0k==(parseInteger("0k") else ""), "parseInteger(0k)");
+    
+    check(1==(parseInteger("1") else ""), "parseInteger(1)");
+    check(01==(parseInteger("01") else ""), "parseInteger(01)");
+    check(0_001==(parseInteger("0_001") else ""), "parseInteger(0_001)");
+    check(+1==(parseInteger("+1") else ""), "parseInteger(+1)");
+    check(+01==(parseInteger("+01") else ""), "parseInteger(+01)");
+    check(+0_001==(parseInteger("+0_001") else ""), "parseInteger(+0_001)");
+    
+    check(-1==(parseInteger("-1") else ""), "parseInteger(-1)");
+    check(-01==(parseInteger("-01") else ""), "parseInteger(-01)");
+    check(-0_001==(parseInteger("-0_001") else ""), "parseInteger(-0_001)");
+    
+    check(1k==(parseInteger("1k") else ""), "parseInteger(1k)");
+    check(1M==(parseInteger("1M") else ""), "parseInteger(1M)");
+    check(1G==(parseInteger("1G") else ""), "parseInteger(1G)");
+    check(1T==(parseInteger("1T") else ""), "parseInteger(1T)");
+    check(1P==(parseInteger("1P") else ""), "parseInteger(1P)");
+    check(-1k==(parseInteger("-1k") else ""), "parseInteger(-1k)");
+    check(-1M==(parseInteger("-1M") else ""), "parseInteger(-1M)");
+    check(-1G==(parseInteger("-1G") else ""), "parseInteger(-1G)");
+    check(-1T==(parseInteger("-1T") else ""), "parseInteger(-1T)");
+    check(-1P==(parseInteger("-1P") else ""), "parseInteger(-1P)");
+    check(!parseInteger("1k", 2) exists, "!parseInteger(1k, 2) exists");
+    
+    check($1111111 == (parseInteger("1111111", 2) else ""), "parseInteger(1111111, 2)");
+    check($1111111 == (parseInteger("01111111", 2) else ""), "parseInteger(01111111, 2)");
+    check($10000000 == (parseInteger("10000000", 2) else ""), "parseInteger(10000000, 2)");
+    check(-($110000) == (parseInteger("-110000", 2) else ""), "parseInteger(-110000, 2)");
+    check($1010_0011_1111 == (parseInteger("1010_0011_1111", 2) else ""), "parseInteger(1010_0011_1111, 2)");
+    check($11_0110_0100 == (parseInteger("11_0110_0100", 2) else ""), "parseInteger(11_0110_0100, 2)");
+    check(!parseInteger("11_01_00", 2) exists, "!parseInteger(11_01_00, 2) exists");
+    
+    check(1193046 == (parseInteger("123456", 16) else ""), "parseInteger(123456, 16)");
+    check(255 == (parseInteger("ff", 16) else ""), "parseInteger(ff, 16)");
+    check(!parseInteger("fk", 16) exists, "parseInteger(fk, 16)");
+    check(#f_ffff == (parseInteger("f_ffff", 16) else ""), "parseInteger(f_ffff, 16)");
+    check(#ff_ffff == (parseInteger("ff_ffff", 16) else ""), "parseInteger(ff_ffff, 16)");
+    check(#fff_ffff == (parseInteger("fff_ffff", 16) else ""), "parseInteger(fff_ffff, 16)");
+    check(#ffff_ffff == (parseInteger("ffff_ffff", 16) else ""), "parseInteger(ffff_ffff, 16)");
+    check(#ffff_ffff_ffff == (parseInteger("ffff_ffff_ffff", 16) else ""), "parseInteger(ffff_ffff_ffff, 16)");
+    check(#fff_ffff_ffff == (parseInteger("fff_ffff_ffff", 16) else ""), "parseInteger(ffff_ffff_ffff, 16)");
+    check(#ff_ffff_ffff == (parseInteger("ff_ffff_ffff", 16) else ""), "parseInteger(ff_ffff_ffff, 16)");
+    check(#f_ffff_ffff == (parseInteger("f_ffff_ffff", 16) else ""), "parseInteger(f_ffff_ffff, 16)");
+    check(#ff_ff_ff_ff_ff_ff == (parseInteger("ff_ff_ff_ff_ff_ff", 16) else ""), "parseInteger(ff_ff_ff_ff_ff_ff, 16)");
+    check(#f_ff_ff_ff_ff_ff == (parseInteger("f_ff_ff_ff_ff_ff", 16) else ""), "parseInteger(f_ff_ff_ff_ff_ff, 16)");
+    check(!parseInteger("ff_ff_ff_ffff", 16) exists, "!parseInteger(ff_ff_ff_ffff, 16) exists");
+    check(!parseInteger("ffff_ff_ff_ff", 16) exists, "!parseInteger(ffff_ff_ff_ff, 16) exists");
+    
+    check(!parseInteger("12_34", 8) exists, "!parseInteger(12_34, 8) exists");
+    check(!parseInteger("123_456", 8) exists, "!parseInteger(123_456, 8) exists");
+    check(!parseInteger("1234_5678", 8) exists, "!parseInteger(1234_5678, 8) exists");
+    
+    try {
+        parseInteger("0", 1);
+        fail("parseInteger(0, 1)");
+    } catch (AssertionException ex) {
+        // OK
+    }
+    try {
+        parseInteger("0", 37);
+        fail("parseInteger(0, 37)");
+    } catch (AssertionException ex) {
+        // OK
+    }
+    
+    print("Testing `` 0.size ``-bit integers");
+    if (0.size == 64) {
+        check(9223372036854775807==(parseInteger("9223372036854775807") else ""), "parseInteger(9223372036854775807)");
+        check(9_223_372_036_854_775_807==(parseInteger("9_223_372_036_854_775_807") else ""), "parseInteger(9_223_372_036_854_775_807)");
+        check(-9223372036854775808==(parseInteger("-9223372036854775808") else ""), "parseInteger(-9223372036854775808)");
+        check(-9_223_372_036_854_775_808==(parseInteger("-9_223_372_036_854_775_808") else ""), "parseInteger(-9_223_372_036_854_775_808)");
+        check(!parseInteger("9223372036854775808") exists, "parseInteger(9223372036854775808)");
+        check(!parseInteger("-9223372036854775809") exists, "parseInteger(-9223372036854775809)");
+        
+        check(9223372036854775807 == (parseInteger("111111111111111111111111111111111111111111111111111111111111111", 2) else ""),
+          "parseInteger(111111111111111111111111111111111111111111111111111111111111111, 2)");
+        check(!parseInteger("1000000000000000000000000000000000000000000000000000000000000000", 2) exists,
+          "parseInteger(1000000000000000000000000000000000000000000000000000000000000000, 2)");
+        check(-9223372036854775808 == (parseInteger("-1000000000000000000000000000000000000000000000000000000000000000", 2) else ""),
+          "parseInteger(-1000000000000000000000000000000000000000000000000000000000000000, 2)");
+        check(!parseInteger("-1000000000000000000000000000000000000000000000000000000000000001", 2) exists,
+          "parseInteger(-1000000000000000000000000000000000000000000000000000000000000001, 2)");
+        
+        check(9223372036854775807==(parseInteger("7fffffffffffffff", 16) else ""), "parseInteger(7fffffffffffffff, 16)");
+        check(9_223_372_036_854_775_807==(parseInteger("7fff_ffff_ffff_ffff", 16) else ""), "parseInteger(7fff_ffff_ffff_ffff, 16)");
+        check(-9223372036854775808==(parseInteger("-8000000000000000", 16) else ""), "parseInteger(-8000000000000000, 16)");
+        check(-9_223_372_036_854_775_808==(parseInteger("-8000_0000_0000_0000", 16) else ""), "parseInteger(-8000_0000_0000_0000, 16)");
+        check(!parseInteger("8000000000000000", 16) exists, "parseInteger(8000000000000000, 16)");
+        check(!parseInteger("-8000000000000001", 16) exists, "parseInteger(-8000000000000001, 16)");
+        
+        check(9223372036854775807==(parseInteger("1y2p0ij32e8e7", 36) else ""), "parseInteger(1y2p0ij32e8e7, 36)");
+        check(-9223372036854775808==(parseInteger("-1y2p0ij32e8e8", 36) else ""), "parseInteger(-1y2p0ij32e8e8, 36)");
+        check(!parseInteger("1y2p0ij32e8e8", 36) exists, "parseInteger(1y2p0ij32e8e8, 36)");
+        check(!parseInteger("-1y2p0ij32e8e9", 36) exists, "parseInteger(-1y2p0ij32e8e9, 36)");
+    } else if (0.size == 53) {
+        check(9007199254740989==(parseInteger("9007199254740989") else ""), "parseInteger(9007199254740989)");
+        check(9_007_199_254_740_989==(parseInteger("9_007_199_254_740_989") else ""), "parseInteger(9_007_199_254_740_989)");
+        check(-9007199254740991==(parseInteger("-9007199254740991") else ""), "parseInteger(-9007199254740991)");
+        check(-9_007_199_254_740_991==(parseInteger("-9_007_199_254_740_991") else ""), "parseInteger(-9_007_199_254_740_991)");
+        check(!parseInteger("9007199254740990") exists, "parseInteger(9007199254740990)");
+        check(!parseInteger("-9007199254740992") exists, "parseInteger(-9007199254740992)");
+        
+        check(9007199254740989 == (parseInteger("11111111111111111111111111111111111111111111111111101", 2) else ""),
+          "parseInteger(11111111111111111111111111111111111111111111111111101, 2)");
+        check(!parseInteger("11111111111111111111111111111111111111111111111111110", 2) exists,
+          "parseInteger(11111111111111111111111111111111111111111111111111110, 2)");
+        check(-9007199254740991 == (parseInteger("-11111111111111111111111111111111111111111111111111111", 2) else ""),
+          "parseInteger(-11111111111111111111111111111111111111111111111111111, 2)");
+        check(!parseInteger("-100000000000000000000000000000000000000000000000000000", 2) exists,
+          "parseInteger(-100000000000000000000000000000000000000000000000000000, 2)");
+        
+        check(9007199254740989==(parseInteger("1ffffffffffffd", 16) else ""), "parseInteger(1ffffffffffffd, 16)");
+        check(9_007_199_254_740_989==(parseInteger("1f_ffff_ffff_fffd", 16) else ""), "parseInteger(1f_ffff_ffff_fffd, 16)");
+        check(-9007199254740991==(parseInteger("-1fffffffffffff", 16) else ""), "parseInteger(-1fffffffffffff, 16)");
+        check(-9_007_199_254_740_991==(parseInteger("-1f_ffff_ffff_ffff", 16) else ""), "parseInteger(-1f_ffff_ffff_ffff, 16)");
+        check(!parseInteger("1ffffffffffffe", 16) exists, "parseInteger(1ffffffffffffe, 16)");
+        check(!parseInteger("-20000000000000", 16) exists, "parseInteger(-20000000000000, 16)");
+        
+        check(9007199254740989==(parseInteger("399uaj5f5vt", 36) else ""), "parseInteger(399uaj5f5vt, 36)");
+        check(-9007199254740991==(parseInteger("-399uaj5f5vv", 36) else ""), "parseInteger(-399uaj5f5vv, 36)");
+        check(!parseInteger("399uaj5f5vu", 36) exists, "parseInteger(399uaj5f5vu, 36)");
+        check(!parseInteger("-399uaj5f5vw", 36) exists, "parseInteger(-399uaj5f5vw, 36)");
+    } else {
+        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
+    }
+
+    check(!parseInteger("") exists, "parseInteger()");
+    check(!parseInteger("+") exists, "parseInteger(+)");
+    check(!parseInteger("-") exists, "parseInteger(-)");
+    check(!parseInteger("foo") exists, "parseInteger(foo)");
+    check(!parseInteger(" 0") exists, "parseInteger( 0)");
+    check(!parseInteger("0 ") exists, "parseInteger(0 )");
+    check(!parseInteger("0+0") exists, "parseInteger(0+0)");
+    check(!parseInteger("0-0") exists, "parseInteger(0-0)");
+    check(!parseInteger("0+") exists, "parseInteger(0+)");
+    check(!parseInteger("0-") exists, "parseInteger(0-)");
+    check(!parseInteger("k") exists, "parseInteger(k)");
+    check(!parseInteger("k1") exists, "parseInteger(k1)");
+    check(!parseInteger("+k") exists, "parseInteger(+k)");
+    check(!parseInteger("-k") exists, "parseInteger(-k)");
+    check(!parseInteger("1kk") exists, "parseInteger(1kk)");
+    check(!parseInteger("0_") exists, "parseInteger(0_)");
+    check(!parseInteger("_0") exists, "parseInteger(_0)");
+    check(!parseInteger("0_0") exists, "parseInteger(0_0)");
+    check(!parseInteger("0_00") exists, "parseInteger(0_00)");
+    check(!parseInteger("0_0000") exists, "parseInteger(0_0000)");
+    check(!parseInteger("0_000_0") exists, "parseInteger(0_000_0)");
+    check(!parseInteger("0000_000") exists, "parseInteger(0000_000)");
 }
