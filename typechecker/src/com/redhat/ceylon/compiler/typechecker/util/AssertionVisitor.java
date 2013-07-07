@@ -124,7 +124,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(Node that, LexError err) {
         errors++;
         System.err.println(
-            "lex error encountered [" +
+            "lex error [" +
             err.getMessage() + "] at " + 
             err.getHeader() + " of " + 
             file(that));
@@ -133,7 +133,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(Node that, ParseError err) {
         errors++;
         System.err.println(
-            "parse error encountered [" +
+            "parse error [" +
             err.getMessage() + "] at " + 
             err.getHeader() + " of " + 
             file(that));
@@ -142,7 +142,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(UnexpectedError err) {
         errors++;
         System.err.println(
-            "unexpected error encountered [" +
+            "unexpected error [" +
             err.getMessage() + "] at " + 
             loc(err));
     }
@@ -150,7 +150,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(AnalysisError err) {
         errors++;
         System.err.println(
-            "error encountered [" +
+            "error [" +
             err.getMessage() + "] at " + 
             loc(err));
     }
@@ -158,7 +158,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(AnalysisWarning err) {
         warnings++;
         System.out.println(
-            "warning encountered [" + 
+            "warning [" + 
             err.getMessage() + "] at " + 
             loc(err));
     }
@@ -170,7 +170,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
      */
     protected void out(UsageWarning err) {
         System.out.println(
-            "warning encountered [" +
+            "warning [" +
             err.getMessage() + "] at " +
             loc(err));
     }
@@ -201,7 +201,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                     return;
                 }
             }
-            out(that, "no error encountered");
+            out(that, "no errors");
         }
         else {
             for (Message err: foundErrors) {
