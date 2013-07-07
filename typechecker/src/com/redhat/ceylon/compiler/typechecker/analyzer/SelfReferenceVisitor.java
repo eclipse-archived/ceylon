@@ -263,6 +263,15 @@ public class SelfReferenceVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.FunctionArgument that) {
+        super.visit(that);
+        Tree.Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
+        }
+    }
+    
+    @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
         super.visit(that);
         Tree.Expression e = that.getExpression();
