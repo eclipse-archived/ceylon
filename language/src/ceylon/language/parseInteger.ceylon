@@ -14,7 +14,7 @@ Integer maxRadix = 36;
  
  A radix can be given in input to specify what is the base
  to take in consideration for the parsing. radix has to be
- between 2 and 36 included.
+ between `minRadix` and `maxRadix` included.
  The list of available digits starts from `0` to `9` followed
  by `a` to `z`.
  When parsing in a specific base, the first `radix` digits
@@ -26,6 +26,7 @@ Integer maxRadix = 36;
  for bases 2, 10 and 16 as for `Integer` literal in the
  Ceylon language. For any other bases, no grouping is
  supported."
+throws(AssertionException, "if `radix` not in between `minRadix` and `maxRadix`")
 shared Integer? parseInteger(String string, Integer radix = 10) {
     assert (radix >= minRadix, radix <= maxRadix); 
     variable Integer ii = 0;
@@ -202,3 +203,35 @@ Map<Character, Integer> digitToCharacterMap = LazyMap {
     'y' -> 34,
     'z' -> 35
 };
+
+"The string representation of `integer` in the `radix` base.
+ `radix` must be between `minRadix` and `maxRadix` included.
+ 
+ If `integer` is negative, returned string will start by character `-`"
+throws(AssertionException, "if `radix` not in between `minRadix` and `maxRadix`")
+shared String formatInteger(Integer integer, Integer radix = 10) {
+    assert (radix >= minRadix, radix <= maxRadix);
+    if (integer == 0) {
+        return "0";
+    }
+    StringBuilder digits = StringBuilder();
+    variable Integer i = integer < 0 then integer else -integer;
+    while (i != 0) {
+        Integer d = -(i % radix);
+        Character? c = characters[d];
+        assert (exists c);
+        digits.insertCharacter(0, c);
+        i = (i + d) / radix;
+    }
+    if (integer < 0) {
+        digits.insertCharacter(0, '-');
+    }
+    return digits.string;
+}
+
+
+Character[] characters = [
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+    'u', 'v', 'w', 'x', 'y', 'z'];
