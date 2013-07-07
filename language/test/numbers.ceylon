@@ -303,8 +303,9 @@ shared void numbers() {
         fail("0/0 should throw");
     } catch (Exception ex) {
         check(true, "ArithmeticException");
-    }    
+    }
     checkParseInteger();
+    checkFormatInteger();
     
     // parseFloat
     check((parseFloat("12.34e3") else 0.0)==12.34e3, "parseFloat(12.34e3)");
@@ -492,13 +493,13 @@ void checkParseInteger() {
     
     try {
         parseInteger("0", 1);
-        fail("parseInteger(0, 1)");
+        fail("parseInteger(0, 1) should throw");
     } catch (AssertionException ex) {
         // OK
     }
     try {
         parseInteger("0", 37);
-        fail("parseInteger(0, 37)");
+        fail("parseInteger(0, 37) should throw");
     } catch (AssertionException ex) {
         // OK
     }
@@ -561,7 +562,7 @@ void checkParseInteger() {
         check(!parseInteger("399uaj5f5vu", 36) exists, "parseInteger(399uaj5f5vu, 36)");
         check(!parseInteger("-399uaj5f5vw", 36) exists, "parseInteger(-399uaj5f5vw, 36)");
     } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add parseInteger() tests for this platform");
     }
 
     check(!parseInteger("") exists, "parseInteger()");
@@ -586,4 +587,56 @@ void checkParseInteger() {
     check(!parseInteger("0_0000") exists, "parseInteger(0_0000)");
     check(!parseInteger("0_000_0") exists, "parseInteger(0_000_0)");
     check(!parseInteger("0000_000") exists, "parseInteger(0000_000)");
+}
+
+
+void checkFormatInteger() {
+    check("0"==formatInteger(0), "formatInteger(0)");
+    check("1"==formatInteger(1), "formatInteger(1)");
+    check("-1"==formatInteger(-1), "formatInteger(-1)");
+    check("1234567890"==formatInteger(1234567890), "formatInteger(1234567890)");
+    check("-1234567890"==formatInteger(-1234567890), "formatInteger(-1234567890)");
+    try {
+        formatInteger(0, 1);
+        fail("formatInteger(0, 1) should throw");
+    } catch (AssertionException ex) {
+        // OK
+    }
+    try {
+        formatInteger(0, 37);
+        fail("formatInteger(0, 37) should throw");
+    } catch (AssertionException ex) {
+        // OK
+    }
+    if (0.size == 64) {
+        Integer maxIntegerValue = 9_223_372_036_854_775_807;
+        Integer minIntegerValue = -9_223_372_036_854_775_808;
+        check("9223372036854775807"==formatInteger(maxIntegerValue), "formatInteger(``maxIntegerValue``)");
+        check("-9223372036854775808"==formatInteger(minIntegerValue), "formatInteger(``minIntegerValue``)");
+        
+        check("111111111111111111111111111111111111111111111111111111111111111"==formatInteger(maxIntegerValue, 2), "formatInteger(``maxIntegerValue``, 2)");
+        check("-1000000000000000000000000000000000000000000000000000000000000000"==formatInteger(minIntegerValue, 2), "formatInteger(``minIntegerValue``, 2)");
+        
+        check("7fffffffffffffff"==formatInteger(maxIntegerValue, 16), "formatInteger(``maxIntegerValue``, 16)");
+        check("-8000000000000000"==formatInteger(minIntegerValue, 16), "formatInteger(``minIntegerValue``, 16)");
+        
+        check("1y2p0ij32e8e7"==formatInteger(maxIntegerValue, 36), "formatInteger(``maxIntegerValue``, 36)");
+        check("-1y2p0ij32e8e8"==formatInteger(minIntegerValue, 36), "formatInteger(``minIntegerValue``, 36)");
+    } else if (0.size == 53) {
+        Integer maxIntegerValue = 9_007_199_254_740_989;
+        Integer minIntegerValue = -9_007_199_254_740_991;
+        check("9007199254740989"==formatInteger(maxIntegerValue), "formatInteger(``maxIntegerValue``)");
+        check("-9007199254740991"==formatInteger(minIntegerValue), "formatInteger(``minIntegerValue``)");
+        
+        check("11111111111111111111111111111111111111111111111111101"==formatInteger(maxIntegerValue, 2), "formatInteger(``maxIntegerValue``, 2)");
+        check("-11111111111111111111111111111111111111111111111111111"==formatInteger(minIntegerValue, 2), "formatInteger(``minIntegerValue``, 2)");
+        
+        check("1ffffffffffffd"==formatInteger(maxIntegerValue, 16), "formatInteger(``maxIntegerValue``, 16)");
+        check("-1fffffffffffff"==formatInteger(minIntegerValue, 16), "formatInteger(``minIntegerValue``, 16)");
+        
+        check("399uaj5f5vt"==formatInteger(maxIntegerValue, 36), "formatInteger(``maxIntegerValue``, 36)");
+        check("-399uaj5f5vv"==formatInteger(minIntegerValue, 36), "formatInteger(``minIntegerValue``, 36)");
+    } else {
+        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number formatInteger() tests for this platform");
+    }
 }
