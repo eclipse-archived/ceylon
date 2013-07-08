@@ -2107,13 +2107,13 @@ rangeIntervalEntryOperator returns [BinaryOperatorExpression operator]
     ;
 
 additiveExpression returns [Term term]
-    : me1=multiplicativeExpression
+    : me1=scaleExpression
       { $term = $me1.term; }
       (
         additiveOperator 
         { $additiveOperator.operator.setLeftTerm($term);
           $term = $additiveOperator.operator; }
-        me2=multiplicativeExpression
+        me2=scaleExpression
         { $additiveOperator.operator.setRightTerm($me2.term); }
       )*
     ;
@@ -2123,6 +2123,18 @@ additiveOperator returns [BinaryOperatorExpression operator]
       { $operator = new SumOp($SUM_OP); }
     | DIFFERENCE_OP
       { $operator = new DifferenceOp($DIFFERENCE_OP); }
+    ;
+
+scaleExpression returns [Term term]
+    : multiplicativeExpression
+      { $term = $multiplicativeExpression.term; }
+      (
+        scaleOperator
+        { $scaleOperator.operator.setLeftTerm($term);
+          $term = $scaleOperator.operator; }
+        se=scaleExpression
+        { $scaleOperator.operator.setRightTerm($se.term); }
+      )?
     ;
 
 multiplicativeExpression returns [Term term]
@@ -2207,11 +2219,6 @@ exponentiationExpression returns [Term term]
           $term = $exponentiationOperator.operator; }
         ee=exponentiationExpression
         { $exponentiationOperator.operator.setRightTerm($ee.term); }
-      | scaleOperator
-        { $scaleOperator.operator.setLeftTerm($term);
-          $term = $scaleOperator.operator; }
-        ee=exponentiationExpression
-        { $scaleOperator.operator.setRightTerm($ee.term); }
       )?
     ;
 
