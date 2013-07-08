@@ -1,9 +1,12 @@
 import check { ... }
 
+class Carrier() {}
+
 //Test the dynamic annotation
 shared void test() {
     variable Singleton<Object> testSingleton = Singleton(1);
     String zzz;
+    value carrier = Carrier();
     dynamic {
         variable value n = value { x=3; y="hello"; };
         n.a={1};
@@ -116,6 +119,14 @@ shared void test() {
         check(0<=\iMath.random()<=1,  "dynamic a<=b<=c");
         check(0<\iMath.random()+1<=2, "dynamic a< b<=c");
         check(0<=\iMath.random()<1.1, "dynamic a<=b< c");
+        n = carrier;
+        n.test=value {a=3; b="hello";};
+    }
+    print("carrier object ``carrier``");
+    dynamic {
+        value n = value {x=carrier;};
+        check(n.x.test.a == 3, "carrier 1");
+        check(n.x.test.b == "hello", "carrier 2");
     }
     results();
 }
