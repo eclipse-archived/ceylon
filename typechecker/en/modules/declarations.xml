@@ -1474,7 +1474,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A class declaration which specifies a reference to another class type 
         defines a <emphasis>class alias</emphasis> of the specified class type.</para>
         
-        <synopsis>ClassSpecifier: "=>" QualifiedType PositionalArguments</synopsis>
+        <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
         
         <para>The specified type must be a <emphasis>class type</emphasis>, that is,
         a reference to a class with no type parameters, or a produced type formed by 

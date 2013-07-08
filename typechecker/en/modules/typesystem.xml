@@ -934,7 +934,7 @@ Float|Integer num = one;</programlisting></comment>
         <para>A class may extend another class, in which case the first class is a subtype
         of the second class and inherits its members.</para>
         
-        <synopsis>ExtendedType: "extends" ("super" ".")? QualifiedType PositionalArguments</synopsis>
+        <synopsis>ExtendedType: "extends" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
     
         <para>The <literal>extends</literal> clause must specify exactly one superclass.</para>
         
@@ -961,9 +961,6 @@ Float|Integer num = one;</programlisting></comment>
         contains the member class annotated <literal>actual</literal>.</para>
         
         <programlisting>extends super.Buffer()</programlisting>
-        
-        <comment><para>TODO: This doesn't work if the member class being refined belongs
-        to an interface.</para></comment>
         
         <para>
         The root class <literal>Anything</literal> defined in <literal>ceylon.language</literal> 
