@@ -390,3 +390,14 @@ class Operators() {
     @error @type:"Boolean" value within3 = 0<"hello".size<"oops";
     @error @type:"Boolean" value within3 = "oops"<="hello".size<=10;
 }
+
+class Sc() satisfies Scalable<Float,Sc> {
+    scale(Float s) => this;
+}
+void testScale() {
+    @type:"Sc" value s0 = 2.0**Sc();
+    @type:"Sc" value s1 = 2**Sc();
+    @error @type:"Sc" value s2 = 'a'**Sc();
+    @error value s3 = 2.0**"hello";
+}
+

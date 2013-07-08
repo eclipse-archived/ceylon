@@ -2207,12 +2207,22 @@ exponentiationExpression returns [Term term]
           $term = $exponentiationOperator.operator; }
         ee=exponentiationExpression
         { $exponentiationOperator.operator.setRightTerm($ee.term); }
+      | scaleOperator
+        { $scaleOperator.operator.setLeftTerm($term);
+          $term = $scaleOperator.operator; }
+        ee=exponentiationExpression
+        { $scaleOperator.operator.setRightTerm($ee.term); }
       )?
     ;
 
 exponentiationOperator returns [PowerOp operator]
     : POWER_OP 
       { $operator = new PowerOp($POWER_OP); }
+    ;
+
+scaleOperator returns [ScaleOp operator]
+    : SCALE_OP 
+      { $operator = new ScaleOp($SCALE_OP); }
     ;
 
 incrementDecrementExpression returns [Term term]
@@ -3557,6 +3567,10 @@ DIFFERENCE_OP
 
 SPREAD_OP
     :    '*.'
+    ;
+
+SCALE_OP
+    :    '**'
     ;
 
 PRODUCT_OP

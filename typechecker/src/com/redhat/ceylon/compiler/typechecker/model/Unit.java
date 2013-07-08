@@ -249,11 +249,11 @@ public class Unit {
         }
         return null;
     }
-
+    
     public Interface getCorrespondenceDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Correspondence");
     }
-
+    
     public Class getAnythingDeclaration() {
         return (Class) getLanguageModuleDeclaration("Anything");
     }
@@ -261,19 +261,19 @@ public class Unit {
     public Class getNullDeclaration() {
         return (Class) getLanguageModuleDeclaration("Null");
     }
-
+    
     public Value getNullValueDeclaration() {
         return (Value) getLanguageModuleDeclaration("null");
     }
-
+    
     public Interface getEmptyDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Empty");
     }
-
+    
     public Interface getSequenceDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Sequence");
     }
-
+    
     public Class getObjectDeclaration() {
         return (Class) getLanguageModuleDeclaration("Object");
     }
@@ -289,7 +289,7 @@ public class Unit {
     public Class getExceptionDeclaration() {
         return (Class) getLanguageModuleDeclaration("Exception");
     }
-
+    
     public Interface getCategoryDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Category");
     }
@@ -306,66 +306,54 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("List");
     }
     
-    /**
-     * Gets the declaration of {@code Iterator}
-     * @return The declaration
-     */
     public Interface getIteratorDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Iterator");
     }
-
-//    public Interface getFixedSizedDeclaration() {
-//        return (Interface) getLanguageModuleDeclaration("FixedSized");
-//    }
-//
-//    public Interface getSomeDeclaration() {
-//        return (Interface) getLanguageModuleDeclaration("Some");
-//    }
-//
-//    public Interface getNoneDeclaration() {
-//        return (Interface) getLanguageModuleDeclaration("None");
-//    }
-
+    
     public Interface getCallableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Callable");
+    }
+    
+    public Interface getScalableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Scalable");
     }
     
     public Interface getSummableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Summable");
     }
-            
+     
     public Interface getNumericDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Numeric");
     }
-        
+    
     public Interface getIntegralDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Integral");
     }
-        
+    
     public Interface getInvertableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Invertable");
     }
-        
+    
     public Interface getExponentiableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Exponentiable");
     }
-        
+    
     public Interface getSetDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Set");
     }
-        
+    
     public TypeDeclaration getComparisonDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Comparison");
     }
-        
+    
     public TypeDeclaration getBooleanDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Boolean");
     }
-        
+    
     public TypeDeclaration getStringDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("String");
     }
-        
+    
     public TypeDeclaration getFloatDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Float");
     }
@@ -373,19 +361,19 @@ public class Unit {
     public TypeDeclaration getIntegerDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Integer");
     }
-        
+    
     public TypeDeclaration getCharacterDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Character");
     }
-        
+    
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
-        
+    
     public Interface getCloseableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Closeable");
     }
-        
+    
     public Interface getOrdinalDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Ordinal");
     }
@@ -393,15 +381,15 @@ public class Unit {
     public Class getRangeDeclaration() {
         return (Class) getLanguageModuleDeclaration("Range");
     }
-        
+    
     public Class getTupleDeclaration() {
         return (Class) getLanguageModuleDeclaration("Tuple");
     }
-        
+    
     public TypeDeclaration getArrayDeclaration() {
         return (Class) getLanguageModuleDeclaration("Array");
     }
-        
+    
     public Interface getRangedDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Ranged");
     }

@@ -14,8 +14,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
@@ -2926,6 +2926,30 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
 
+    private void visitScaleOperator(Tree.ScaleOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
+            TypeDeclaration sd = unit.getScalableDeclaration();
+            ProducedType st = checkSupertype(rhst, sd, that, 
+                    "operand must be of scalable type");
+            if (st!=null) {
+                ProducedType ta = st.getTypeArgumentList().get(0);
+                ProducedType rt = st.getTypeArgumentList().get(1);
+                //hardcoded implicit type conversion Integer->Float 
+                TypeDeclaration fd = unit.getFloatDeclaration();
+                TypeDeclaration id = unit.getIntegerDeclaration();
+                if (lhst.getSupertype(id)!=null &&
+                        ta.getSupertype(fd)!=null) {
+                    lhst = fd.getType();
+                }
+                checkAssignable(lhst, ta, that, 
+                        "scale factor must be assignable to scale type");
+                that.setTypeModel(rt);
+            }
+        }
+    }
+    
     private void checkComparable(Tree.BinaryOperatorExpression that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -3404,6 +3428,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
         visitSetOperator(that);
+    }
+
+    @Override public void visit(Tree.ScaleOp that) {
+        super.visit(that);
+        visitScaleOperator(that);
     }
 
     @Override public void visit(Tree.LogicalOp that) {
