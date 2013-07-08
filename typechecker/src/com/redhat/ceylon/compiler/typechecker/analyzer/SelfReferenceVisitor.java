@@ -386,7 +386,9 @@ public class SelfReferenceVisitor extends Visitor {
         super.visit(that);
         if ( inBody() ) {
             for (Tree.Expression e: that.getExpressions()) {
-                checkSelfReference(e, e.getTerm());
+                if (e!=null) {
+                    checkSelfReference(e, e.getTerm());
+                }
             }
         }
     }
