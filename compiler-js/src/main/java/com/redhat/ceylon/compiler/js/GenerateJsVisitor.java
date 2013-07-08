@@ -4055,5 +4055,13 @@ public class GenerateJsVisitor extends Visitor
         return dynblock > 0;
     }
 
+    @Override
+    public void visit(TypeLiteral that) {
+        out(clAlias, "typeLiteral$metamodel({Type:");
+        StaticType type = that.getType();
+        TypeUtils.metamodelTypeNameOrList(type.getUnit().getPackage(), type.getTypeModel(), this);
+        out("})");
+    }
+
 }
 
