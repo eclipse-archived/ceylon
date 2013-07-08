@@ -1091,6 +1091,13 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         that.addWarning("comprehensions are not yet supported");
     }*/
+    
+    @Override
+    public void visit(Tree.Assertion that) {
+        Declaration d = beginDeclaration(null);
+        super.visit(that);
+        endDeclaration(d);
+    }    
 
     @Override
     public void visit(Tree.AnnotationList that) {

@@ -27,6 +27,8 @@ void assertions() {
 
 class Assertions(String? nameOrNull) {
     assert (exists nameOrNull);
+    "name \"``nameOrNull``\" must not be empty"
+    assert (nameOrNull.size>0);
     shared String name = nameOrNull;
     shared actual String string {
         return name;

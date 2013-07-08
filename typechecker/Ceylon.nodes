@@ -786,6 +786,7 @@
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 
     ANONYMOUS_ANNOTATION?
+    STRING_TEMPLATE?
     ANNOTATION*)
 
 "An identifier (the name of a program element)."

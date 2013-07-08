@@ -1029,7 +1029,7 @@ annotatedDeclarationStart
     ;
 
 annotatedAssertionStart
-    : stringLiteral? annotation* ASSERT
+    : stringExpression? annotation* ASSERT
     ;
 
 //special rule for syntactic predicates
@@ -2615,14 +2615,17 @@ typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgum
 annotations returns [AnnotationList annotationList]
     : { $annotationList = new AnnotationList(null); }
       (
-          stringLiteral
-          { if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
-                $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
-            else
-                $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL);
-            AnonymousAnnotation aa = new AnonymousAnnotation(null);
-            aa.setStringLiteral($stringLiteral.stringLiteral);
-            $annotationList.setAnonymousAnnotation(aa); }
+        (stringLiteral)=> stringLiteral
+        { if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
+              $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
+          else
+              $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL);
+          AnonymousAnnotation aa = new AnonymousAnnotation(null);
+          aa.setStringLiteral($stringLiteral.stringLiteral);
+          $annotationList.setAnonymousAnnotation(aa); }
+      | 
+        stringExpression
+        { $annotationList.setStringTemplate((StringTemplate) $stringExpression.atom); }
       )?
       (
         annotation 
