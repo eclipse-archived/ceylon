@@ -1093,6 +1093,13 @@ public class DeclarationVisitor extends Visitor {
     }*/
 
     @Override
+    public void visit(Tree.Assertion that) {
+        Declaration d = beginDeclaration(null);
+        super.visit(that);
+        endDeclaration(d);
+    }    
+
+    @Override
     public void visit(Tree.AnnotationList that) {
         Scope s = scope;
         if (declaration instanceof Scope) {
