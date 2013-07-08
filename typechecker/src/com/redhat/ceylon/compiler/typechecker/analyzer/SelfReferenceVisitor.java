@@ -380,5 +380,15 @@ public class SelfReferenceVisitor extends Visitor {
             }
         }
     }
+    
+    @Override
+    public void visit(Tree.StringTemplate that) {
+        super.visit(that);
+        if ( inBody() ) {
+            for (Tree.Expression e: that.getExpressions()) {
+                checkSelfReference(e, e.getTerm());
+            }
+        }
+    }
 
 }
