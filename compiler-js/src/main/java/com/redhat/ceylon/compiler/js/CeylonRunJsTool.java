@@ -226,6 +226,14 @@ public class CeylonRunJsTool implements Tool {
             }
         }
 
+        //Rename func
+        if (func.indexOf('.') > 0) {
+            final StringBuilder fsb = new StringBuilder();
+            final int lastDot = func.lastIndexOf('.');
+            fsb.append(func.substring(lastDot+1)).append('$');
+            fsb.append(func.substring(0,lastDot).replaceAll("\\.", "\\$"));
+            func = fsb.toString();
+        }
         final boolean isDefault = module.equals("default");
         //The timeout is to have enough time to start reading on the process streams
         final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};require('%s%s/%s%s').%s();",
