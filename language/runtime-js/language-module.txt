@@ -27,7 +27,7 @@ Keys,Correspondence,Finished
 
 Binary,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category
 List,Tuple,ChainedIterator
-Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral
+Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral,Scalable
 
 NegativeNumberException,OverflowException,InitializationException
 #Number
