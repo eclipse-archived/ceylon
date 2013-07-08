@@ -2709,6 +2709,19 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
+    public void visit(ScaleOp that) {
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.right();
+                out(".scale(");
+                termgen.left();
+                out(")");
+            }
+        });
+    }
+
+    @Override
     public void visit(DifferenceOp that) {
         binaryOp(that, new BinaryOpGenerator() {
             @Override
