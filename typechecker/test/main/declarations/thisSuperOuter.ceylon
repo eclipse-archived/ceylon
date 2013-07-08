@@ -53,6 +53,8 @@ satisfies Summable<LeaksThis>&Iterable<String> {
     
     @error value x = this+this;
     
+    @error value str = "``this``";
+    
     throw this;
 }
 
@@ -78,5 +80,7 @@ satisfies Summable<LeaksSuper>&Iterable<String> {
     
     @error value x = super+super;
     
+    @error value str = "``super``";
+
     @error throw super;
 }

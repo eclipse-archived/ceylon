@@ -102,4 +102,7 @@ void memberClassRefinementWithAliases() {
         shared class Alias() => super.Member();
         shared actual class Member() extends Alias() {}
     }
+    class Sub3() extends Super2() satisfies Super1 {
+        @error shared class Alias() => super.Member();
+    }
 }
