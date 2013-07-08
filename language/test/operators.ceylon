@@ -8,6 +8,19 @@ class Spread2() satisfies SpreadTest {
     shared actual String x() { return "S2"; }
 }
 
+class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
+    shared Float width;
+    shared Float height;
+    string => "Rectangle ``width`` by ``height``";
+    shared actual Boolean equals(Object other) {
+        if (is Rectangle other) {
+            return other.width==width && other.height==height;
+        }
+        return false;
+    }
+    shared actual Rectangle scale(Float d) => Rectangle(width*d, height*d);
+}
+
 void operators() {
     String? maybe = "hello";
     String? maybeNot = null;
@@ -100,4 +113,5 @@ void operators() {
     check(obj(true then X()) is X, "something");
     check(obj(true then X() else X()) is X, "something");
 
+    check(2.0**Rectangle(2.0, 3.0) == Rectangle(4.0, 6.0), "scaling ``2.0**Rectangle(2.0, 3.0)``");
 }
