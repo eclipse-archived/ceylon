@@ -904,7 +904,7 @@ TypeConstraints?
            </listitem>
         </itemizedlist>
         
-        <para>Nor may the a class pass a self reference to the instance being 
+        <para>Nor may the class pass a self reference to the instance being 
         initialized as an argument of its own <literal>extends</literal> clause 
         expression, if any.</para>
         

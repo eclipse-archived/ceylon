@@ -346,16 +346,33 @@ shared interface Color { ... }</programlisting>
             
         <para>The keyword <literal>super</literal> refers to the current instance 
         (the instance that is being invoked), and has the same members as the 
-        immediate superclass of the class, except for <literal>formal</literal> 
-        members. Any invocation of this reference is processed by the method or 
-        attribute defined or inherited by the superclass, bypassing any method 
-        declaration that refines the method on the current class or any subclass 
-        of the current class. The <literal>super</literal> reference is not assignable 
-        to any type. Nor may not be narrowed to any type using <literal>if (is ...)</literal>.
-        There is no <literal>super</literal> reference in an interface member body.</para>
+        intersection of the immediate superclass and all immediate superinterfaces
+        of the class, except for <literal>formal</literal> members, and except for
+        any member inherited from more than one supertype of the class. Any 
+        invocation of this reference is processed by the member defined or inherited 
+        by the supertype, bypassing any method declaration that refines the method 
+        on the current class or any subclass of the current class. The 
+        <literal>super</literal> reference is not assignable to any type. Nor may 
+        it be narrowed to any type using <literal>if (is ...)</literal>.</para>
         
-        <comment><para>TODO: the syntax for invoking a member of an inherited
-        interface is still in flux.</para></comment>
+        <para>The keyword <literal>super</literal> may accur as the first operand
+        of an <literal>of</literal> operator, in which case the second operand is
+        any supertype of the class. Then the expression <literal>(super of Type)</literal>
+        has the same members as <literal>Type</literal>, except for <literal>formal</literal> 
+        members, except for any member inherited from more than one supertype 
+        of <literal>Type</literal>, and except for any member that is refined by
+        the class or any intermediate supertype of the class. Any invocation of this 
+        expression is processed by the member defined or inherited by 
+        <literal>Type</literal>, bypassing any method declaration that refines the 
+        method on the current class or any subclass of the current class. An 
+        expression of this form is not assignable to any type. Nor may it be narrowed 
+        to any type using <literal>if (is ...)</literal>.</para>
+        
+        <comment><para>TODO: In fact, the compiler treats <literal>super</literal> as
+        a value having the intersection type indicated, and uses separate checks to 
+        prevent the reference from leaking. That is probably a better formulation to
+        use here, and the restrictions would be defined along with the restrictions on
+        use of <literal>this</literal> in initializer/declaration sections.</para></comment>
         
     </section>
         
