@@ -168,8 +168,11 @@ public class DeclarationVisitor extends Visitor {
                 if (member==null) {
                     that.addError("setter with no matching getter: " + model.getName());
                 }
-                else if (!(member instanceof Value && ((Value)member).isTransient())) {
+                else if (!(member instanceof Value)) {
                     that.addError("setter name does not resolve to matching getter: " + model.getName());
+                }
+                else if (!((Value) member).isTransient()) {
+                    that.addError("matching value is a reference or is forward-declared: " + model.getName());
                 }
                 else {
                     Value getter = (Value) member;
