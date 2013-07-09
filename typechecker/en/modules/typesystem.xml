@@ -1898,8 +1898,8 @@ Item item = comp of Item;</programlisting>
             <title>Qualified types</title>
             
             <para>If a class or interface declaration <literal>X&lt;P1,P2,...&gt;</literal> 
-            with type parameters <literal>P1,P2,...</literal> has a member class or interface 
-            declaration <literal>M&lt;Q1,Q2,...&gt;</literal>, then:</para>
+            with type parameters <literal>P1,P2,...</literal> has a nested type declaration 
+            <literal>M&lt;Q1,Q2,...&gt;</literal>, then:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1912,20 +1912,20 @@ Item item = comp of Item;</programlisting>
                     is a subtype of <literal>M&lt;B1,B2,...&gt;</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para><literal>M&lt;A1,A2,...&gt;</literal>
-                    is a subtype of <literal>V.M&lt;B1,B2,...&gt;</literal> if <literal>U</literal> 
-                    is a subtype of <literal>X&lt;C1,C2,...&gt;</literal>and <literal>V</literal> 
-                    is an invariant subtype of <literal>X&lt;P1,P2,...&gt;</literal> and <literal>V</literal> 
+                    <para><literal>M&lt;A1,A2,...&gt;</literal> is a subtype of 
+                    <literal>V.M&lt;B1,B2,...&gt;</literal> if <literal>U</literal> is a subtype 
+                    of <literal>X&lt;C1,C2,...&gt;</literal>and <literal>V</literal> is an 
+                    invariant subtype of <literal>X&lt;P1,P2,...&gt;</literal> and <literal>V</literal> 
                     directly inherits <literal>M</literal> from <literal>X</literal> without 
                     refining <literal>M</literal> and if <literal>M&lt;A1,A2,...&gt;</literal> 
                     is a subtype of <literal>M&lt;B1,B2,...&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note that a type like <literal>M&lt;A1,A2,...&gt;</literal> is only
-            well-formed inside the scope in which <literal>M</literal> is declared or imported.
-            Outside this scope, references to <literal>M</literal> must be qualified by the 
-            containing type.</para></comment>
+            <comment><para>Note that an unqualified type like <literal>M&lt;A1,A2,...&gt;</literal>
+            where <literal>M</literal> is a nested type declaration is only well-formed inside the 
+            scope in which <literal>M</literal> is declared or inherited. Outside this scope, 
+            references to <literal>M</literal> must be qualified by the containing type.</para></comment>
             
         </section>
                 
