@@ -9,8 +9,8 @@ class Spread2() satisfies SpreadTest {
 }
 
 class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
-    shared Float width;
-    shared Float height;
+    shared variable Float width;
+    shared variable Float height;
     string => "Rectangle ``width`` by ``height``";
     shared actual Boolean equals(Object other) {
         if (is Rectangle other) {
@@ -19,6 +19,12 @@ class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
         return false;
     }
     shared actual Rectangle scale(Float d) => Rectangle(width*d, height*d);
+    shared Rectangle invert() {
+        value t = width;
+        width = height;
+        height = t;
+        return this;
+    }
 }
 
 void operators() {
@@ -113,5 +119,7 @@ void operators() {
     check(obj(true then X()) is X, "something");
     check(obj(true then X() else X()) is X, "something");
 
-    check(2.0**Rectangle(2.0, 3.0) == Rectangle(4.0, 6.0), "scaling ``2.0**Rectangle(2.0, 3.0)``");
+    value scaleTestRectangle = Rectangle(2.0, 3.0);
+    check(2.0**scaleTestRectangle == Rectangle(4.0, 6.0), "scaling ``2.0**Rectangle(2.0, 3.0)``");
+    check(scaleTestRectangle.invert().width ** Rectangle(scaleTestRectangle.width, scaleTestRectangle.width) == Rectangle(9.0, 9.0), "scaling: LHS must be evaluated first!");
 }
