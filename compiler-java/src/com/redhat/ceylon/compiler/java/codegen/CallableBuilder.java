@@ -26,12 +26,17 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_
 import java.util.ArrayList;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
@@ -97,35 +102,53 @@ public class CallableBuilder {
     }
     
     /**
-     * "static" method references like
-     *     value x = Object.equals;
-     *     value y = Integer.plus;
-     *     value z = Foo.method;
-     * @param gen
-     * @return
+     * Used for "static" method or class references like
+     *     value x = Integer.plus;
+     *     value y = Foo.method;
+     *     value z = Outer.Inner;
      */
-    public static CallableBuilder unboundMethodReference(CeylonTransformer gen, ProducedType typeModel, final Method method) {
+    public static CallableBuilder unboundFunctionalMemberReference(CeylonTransformer gen, 
+            ProducedType typeModel, 
+            final Functional methodOrClass, 
+            ProducedReference producedReference) {
         final String instanceName = "$instance";
-        final ParameterList parameterList = method.getParameterLists().get(0);
+        final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
         final ProducedType type = gen.getReturnTypeOfCallable(typeModel);
         CallableBuilder inner = new CallableBuilder(gen, type, parameterList);
-        inner.parameterTypes = inner.getParameterTypesFromParameterModels();
+        inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
         class InstanceDefaultValueCall implements DefaultValueMethodTransformation {            
             @Override
             public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam) {
                 return gen.makeQualIdent(gen.naming.makeUnquotedIdent(instanceName), 
-                        Naming.getDefaultedParamMethodName(method, defaultedParam));
+                        Naming.getDefaultedParamMethodName((Declaration)methodOrClass, defaultedParam));
             }
         }
         inner.defaultValueCall = new InstanceDefaultValueCall();
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), method, Naming.NA_MEMBER));
+        if (methodOrClass instanceof Method) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (Method)methodOrClass, Naming.NA_MEMBER));
+        } else if (methodOrClass instanceof Class) {
+            if (Strategy.generateInstantiator((Class)methodOrClass)) {
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(instanceName), (Class)methodOrClass));
+            } else {
+                callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(instanceName), null), 
+                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW));
+            }
+        }
+        ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
+        
+        DirectInvocation.addReifiedArguments(gen, producedReference, reified);
+        for (ExpressionAndType reifiedArgument : reified) {
+            callBuilder.argument(reifiedArgument.expression);
+        }
+        
         for (Parameter parameter : parameterList.getParameters()) {
             callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
         }
-        // TODO what about stacking uninitialized?
         JCExpression innerInvocation = callBuilder.build();
-        innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, method.getType(), !method.getUnboxed(), BoxingStrategy.BOXED, method.getType());
+        if (methodOrClass instanceof Method) {
+            innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, methodOrClass.getType(), !((Method)methodOrClass).getUnboxed(), BoxingStrategy.BOXED, methodOrClass.getType());
+        }
         inner.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
         
         ParameterList outerPl = new ParameterList();
@@ -137,6 +160,35 @@ public class CallableBuilder {
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         outer.useBody(List.<JCStatement>of(gen.make().Return(inner.build())));
+        
+        return outer;
+    }
+    
+    /**
+     * Used for "static" value references like
+     *     value x = Integer.plus;
+     *     value y = Foo.method;
+     *     value z = Outer.Inner;
+     */
+    public static CallableBuilder unboundValueMemberReference(CeylonTransformer gen, 
+            ProducedType typeModel, 
+            final Value value) {
+        final String instanceName = "$instance";
+        
+        CallBuilder callBuilder = CallBuilder.instance(gen);
+        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), value, Naming.NA_MEMBER));
+        JCExpression innerInvocation = callBuilder.build();
+        innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
+        
+        ParameterList outerPl = new ParameterList();
+        ValueParameter instanceParameter = new ValueParameter();
+        instanceParameter.setName(instanceName);
+        instanceParameter.setType(gen.getParameterTypeOfCallable(typeModel, 0));
+        instanceParameter.setUnboxed(false);
+        outerPl.getParameters().add(instanceParameter);
+        CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
+        outer.parameterTypes = outer.getParameterTypesFromParameterModels();
+        outer.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
         
         return outer;
     }

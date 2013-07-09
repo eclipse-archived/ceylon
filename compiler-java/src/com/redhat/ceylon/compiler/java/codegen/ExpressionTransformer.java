@@ -2851,7 +2851,45 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = checkForQualifiedMemberExpressionOptimisation(expr);
         if(ret != null)
             return ret;
+        if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
+            Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
+            return transformMemberReference(expr, primary);            
+        } else if (expr.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+            Tree.QualifiedTypeExpression primary = (Tree.QualifiedTypeExpression)expr.getPrimary();
+            return transformMemberReference(expr, primary);
+        }
         return transform(expr, null);
+    }
+
+    private JCExpression transformMemberReference(
+            Tree.QualifiedMemberOrTypeExpression expr,
+            Tree.MemberOrTypeExpression primary) {
+        Declaration member = expr.getDeclaration();
+        ProducedType qualifyingType = primary.getTypeModel();
+        Tree.TypeArguments typeArguments = expr.getTypeArguments();
+        if (member instanceof Method) {
+            Method method = (Method)member;
+            ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+            return CallableBuilder.unboundFunctionalMemberReference(
+                    gen(), 
+                    expr.getTypeModel(), 
+                    method, 
+                    producedReference).build();
+        } else if (member instanceof Value) {
+            return CallableBuilder.unboundValueMemberReference(
+                    gen(), 
+                    expr.getTypeModel(), 
+                    ((Value)member)).build();
+        } else if (member instanceof Class) {
+            ProducedReference producedReference = expr.getTarget();
+            return CallableBuilder.unboundFunctionalMemberReference(
+                    gen(), 
+                    expr.getTypeModel(), 
+                    (Class)member, 
+                    producedReference).build();
+        } else {
+            return makeErroneous(expr, "Member reference of " + expr + " not supported yet");
+        }
     }
     
     private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
@@ -3116,6 +3154,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Type members
     
     public JCExpression transform(Tree.QualifiedTypeExpression expr) {
+        if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
+            Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
+            return transformMemberReference(expr, primary);            
+        } else if (expr.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+            Tree.QualifiedTypeExpression primary = (Tree.QualifiedTypeExpression)expr.getPrimary();
+            return transformMemberReference(expr, primary);
+        }
         return transform(expr, null);
     }
     
