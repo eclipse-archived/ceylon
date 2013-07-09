@@ -2793,43 +2793,39 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = checkForInvocationExpressionOptimisation(ce);
         if(ret != null)
             return ret;
-        final boolean prevInv = withinInvocation(false);
-        try {
-            Tree.Primary primary = ce.getPrimary();
-            Declaration primaryDeclaration = null;
-            ProducedReference producedReference = null;
-            if (primary instanceof Tree.MemberOrTypeExpression) {
-                producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
-                primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
-            }
-            Invocation invocation;
-            if (ce.getPositionalArgumentList() != null) {
-                if (primaryDeclaration instanceof Functional){
-                    // direct invocation
-                    java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
-                    invocation = new PositionalInvocation(this, 
-                            primary, primaryDeclaration,producedReference,
-                            ce,
-                            parameters);
-                } else {
-                    // indirect invocation
-                    invocation = new IndirectInvocationBuilder(this, 
-                            primary, primaryDeclaration,
-                            ce);
-                }
-            } else if (ce.getNamedArgumentList() != null) {
-                invocation = new NamedArgumentInvocation(this, 
-                        primary, 
-                        primaryDeclaration,
-                        producedReference,
-                        ce);
-            } else {
-                throw new RuntimeException("Illegal State");
-            }
-            return transformInvocation(invocation);
-        } finally {
-            withinInvocation(prevInv);
+        
+        Tree.Primary primary = ce.getPrimary();
+        Declaration primaryDeclaration = null;
+        ProducedReference producedReference = null;
+        if (primary instanceof Tree.MemberOrTypeExpression) {
+            producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
+            primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
         }
+        Invocation invocation;
+        if (ce.getPositionalArgumentList() != null) {
+            if (primaryDeclaration instanceof Functional){
+                // direct invocation
+                java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
+                invocation = new PositionalInvocation(this, 
+                        primary, primaryDeclaration,producedReference,
+                        ce,
+                        parameters);
+            } else {
+                // indirect invocation
+                invocation = new IndirectInvocationBuilder(this, 
+                        primary, primaryDeclaration,
+                        ce);
+            }
+        } else if (ce.getNamedArgumentList() != null) {
+            invocation = new NamedArgumentInvocation(this, 
+                    primary, 
+                    primaryDeclaration,
+                    producedReference,
+                    ce);
+        } else {
+            throw new RuntimeException("Illegal State");
+        }
+        return transformInvocation(invocation);
     }
 
     public JCExpression transformFunctional(Tree.Term expr,
