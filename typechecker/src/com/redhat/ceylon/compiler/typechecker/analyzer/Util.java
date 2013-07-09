@@ -508,4 +508,45 @@ public class Util {
         return term;
     }
 
+    static boolean isAlwaysSatisfied(Tree.ConditionList cl) {
+        if (cl==null) return false;
+        for (Tree.Condition c: cl.getConditions()) {
+            if (c instanceof Tree.BooleanCondition) {
+                Tree.Expression ex = ((Tree.BooleanCondition) c).getExpression();
+                if (ex!=null) {
+                    Tree.Term t = ex.getTerm();
+                    //TODO: eliminate parens
+                    if (t instanceof Tree.BaseMemberExpression) {
+                        Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
+                        if (d!=null && d.getQualifiedNameString().equals("ceylon.language::true")) {
+                            continue;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    static boolean isNeverSatisfied(Tree.ConditionList cl) {
+        if (cl==null) return false;
+        for (Tree.Condition c: cl.getConditions()) {
+            if (c instanceof Tree.BooleanCondition) {
+                Tree.Expression ex = ((Tree.BooleanCondition) c).getExpression();
+                if (ex!=null) {
+                    Tree.Term t = ex.getTerm();
+                    //TODO: eliminate parens
+                    if (t instanceof Tree.BaseMemberExpression) {
+                        Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
+                        if (d!=null && d.getQualifiedNameString().equals("ceylon.language::false")) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

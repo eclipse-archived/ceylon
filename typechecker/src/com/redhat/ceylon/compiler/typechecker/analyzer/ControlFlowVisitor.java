@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -323,6 +325,9 @@ public class ControlFlowVisitor extends Visitor {
         that.getWhileClause().visit(this);
         endDefiniteReturnScope(d);
         endLoop(b);
+        if (isAlwaysSatisfied(that.getWhileClause().getConditionList())) {
+            definitelyReturns = true;
+        }
     }
 
     /*@Override
@@ -339,8 +344,9 @@ public class ControlFlowVisitor extends Visitor {
         checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
         
-        if (that.getIfClause()!=null) {
-            that.getIfClause().visit(this);
+        Tree.IfClause ifClause = that.getIfClause();
+        if (ifClause!=null) {
+            ifClause.visit(this);
         }
         boolean definitelyReturnsFromIf = definitelyReturns;
         endDefiniteReturnScope(d);
@@ -354,7 +360,16 @@ public class ControlFlowVisitor extends Visitor {
             definitelyReturnsFromElse = false;
         }
         
-        definitelyReturns = d || (definitelyReturnsFromIf && definitelyReturnsFromElse);
+        Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
+        if (isAlwaysSatisfied(cl)) {
+            definitelyReturns = d || definitelyReturnsFromIf;
+        } 
+        else if (isNeverSatisfied(cl)) {
+            definitelyReturns = d || definitelyReturnsFromElse;
+        }
+        else {
+            definitelyReturns = d || (definitelyReturnsFromIf && definitelyReturnsFromElse);
+        }
     }
 
     @Override
@@ -476,4 +491,13 @@ public class ControlFlowVisitor extends Visitor {
             }
         }
     }
+    
+    @Override
+    public void visit(Tree.Assertion that) {
+        super.visit(that);
+        if (isNeverSatisfied(that.getConditionList())) {
+            definitelyReturns = true;
+        }
+    }
+    
 }

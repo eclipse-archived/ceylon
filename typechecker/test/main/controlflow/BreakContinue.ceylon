@@ -16,12 +16,12 @@ class BreakContinue() {
         }
     }
     void whileBreak() {
-        while (true) {
+        while (1==1) {
             break;
         }
     }
     void whileContinue() {
-        while (false) {
+        while (1==0) {
             continue;
         }
     }
@@ -47,21 +47,21 @@ class BreakContinue() {
         }
     }
     void whileBadBreak() {
-        while (true) {
+        while (1==1) {
             class Bad() {
                 @error break;
             }
         }
     }
     void whileBadBreak2() {
-        while (true) {
+        while (1==1) {
             object bad {
                 @error break;
             }
         }
     }
     void whileBadContinue() {
-        while (false) {
+        while (1==0) {
             void bad() {
                 @error continue;
             }
