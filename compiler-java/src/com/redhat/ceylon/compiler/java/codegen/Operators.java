@@ -92,6 +92,8 @@ public class Operators {
         BINARY_QUOTIENT(Tree.QuotientOp.class, 2, "divided", JCTree.DIV, IntegerFloat),
         BINARY_POWER(Tree.PowerOp.class, 2, "power"),
         BINARY_REMAINDER(Tree.RemainderOp.class, 2, "remainder", JCTree.MOD, PrimitiveType.INTEGER),
+        
+        BINARY_SCALE(Tree.ScaleOp.class, 2, "scale"),
 
         BINARY_BITWISE_AND("ceylon.language.Integer", 2, "and", JCTree.BITAND, PrimitiveType.INTEGER),
         BINARY_BITWISE_OR("ceylon.language.Integer", 2, "or", JCTree.BITOR, PrimitiveType.INTEGER),

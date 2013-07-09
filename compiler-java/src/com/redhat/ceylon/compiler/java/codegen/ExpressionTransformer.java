@@ -1389,6 +1389,35 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null);
     }
 
+    public JCExpression transform(Tree.ScaleOp op) {
+        OperatorTranslation operator = Operators.getOperator(Tree.ScaleOp.class);
+        Tree.Term scalableTerm = op.getRightTerm();
+        SyntheticName scaleableName = naming.alias("scalable");
+        JCVariableDecl scaleable = makeVar(scaleableName, 
+                makeJavaType(scalableTerm.getTypeModel(), JT_NO_PRIMITIVES), 
+                transformExpression(scalableTerm));
+        
+        Tree.Term scaleTerm = op.getLeftTerm();
+        SyntheticName scaleName = naming.alias("scale");
+        ProducedType scaleType = scalableTerm.getTypeModel().getSupertype(typeFact().getScalableDeclaration()).getTypeArgumentList().get(0);
+        JCExpression scaleValue;
+        if (isCeylonInteger(scaleTerm.getTypeModel())
+                && isCeylonFloat(scaleType)) {
+            // Disgusting coercion
+            scaleValue = transformExpression(scaleTerm, BoxingStrategy.UNBOXED, scalableTerm.getTypeModel());
+            scaleValue = boxType(scaleValue, typeFact().getFloatDeclaration().getType());
+        } else {
+            scaleValue = transformExpression(scaleTerm);
+        }
+        JCVariableDecl scale = makeVar(scaleName, 
+                makeJavaType(scaleType, JT_NO_PRIMITIVES),
+                scaleValue);
+        
+        at(op);
+        return make().LetExpr(List.<JCStatement>of(scale, scaleable), 
+                transformOverridableBinaryOperator(operator, OptimisationStrategy.NONE, scaleableName.makeIdent(), scaleName.makeIdent(), null));
+    }
+    
     // Arithmetic operators
     
     public JCExpression transform(Tree.ArithmeticOp op) {
