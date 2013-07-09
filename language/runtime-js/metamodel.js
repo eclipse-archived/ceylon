@@ -34,12 +34,20 @@ function typeLiteral$metamodel($$targs$$) {
     } else if ($$targs$$.Type.t === 'u' || $$targs$$.Type.t === 'i') {
         //union/intersection type
         console.log("/union type/");
-    } else if ($$targs$$.Type.t.$$ === undefined) {
+    } else if ($$targs$$.Type.t.$$metamodel$$ === undefined) {
         throw Exception("JS Interop not supported");
     } else {
+        var mdl = $$targs$$.Type.t.$$metamodel$$;
+        if (mdl.d['$mt'] === 'cls') {
+            return AppliedClass$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
+        } else if (mdl.d['$mt'] === 'ifc') {
+            return AppliedInterface$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
+        }
         console.log("typeLiteral<" + $$targs$$.Type.t.$$.T$name + ">");
     }
     throw Exception("typeLiteral UNIMPLEMENTED");
 }
 typeLiteral$metamodel.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language.metamodel']['typeLiteral']};
 exports.typeLiteral$metamodel=typeLiteral$metamodel;
+
+
