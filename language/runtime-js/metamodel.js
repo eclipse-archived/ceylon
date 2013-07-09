@@ -31,8 +31,17 @@ exports.type$metamodel=type$metamodel;
 function typeLiteral$metamodel($$targs$$) {
     if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
         throw Exception("JS Interop not supported");
+    } else if (typeof($$targs$$.Type) === 'string') {
+    } else if ($$targs$$.Type.t === undefined) {
+        throw Exception("JS Interop not supported");
+    } else if ($$targs$$.Type.t === 'u' || $$targs$$.Type.t === 'i') {
+        //union/intersection type
+        console.log("/union type/");
+    } else if ($$targs$$.Type.t.$$ === undefined) {
+        throw Exception("JS Interop not supported");
+    } else {
+        console.log("typeLiteral<" + $$targs$$.Type.t.$$.T$name + ">");
     }
-console.log("typeLiteral<" + className($$targs$$.Type) + ">");
     throw Exception("typeLiteral UNIMPLEMENTED");
 }
 typeLiteral$metamodel.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language.metamodel']['typeLiteral']};
