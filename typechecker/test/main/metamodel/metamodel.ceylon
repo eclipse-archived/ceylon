@@ -1,13 +1,19 @@
 
 void test<T>() {
-    @type:"Class<NoParams,Empty>" 
+    @type:"ClassDeclaration&Class<NoParams,Empty>" 
     value noParamsType = `NoParams`;
-    @type:"Class<Params,Tuple<Integer|String,Integer,Tuple<String,String,Empty>>>" 
+    @type:"ClassDeclaration&Class<Params,Tuple<Integer|String,Integer,Tuple<String,String,Empty>>>" 
     value paramsType = `Params`;
     @type:"Class<ParameterisedClass<Integer>,Empty>" 
     value parameterisedType = `ParameterisedClass<Integer>`;
-    @type:"Interface<Interface1>" 
+    @type:"ClassDeclaration" 
+    value parameterisedTypeDecl = `ParameterisedClass`;
+    @type:"InterfaceDeclaration&Interface<Interface1>" 
     value interfaceType = `Interface1`;
+    @type:"Interface<ParameterisedInterface<Integer>>" 
+    value parameterisedInterfaceType = `ParameterisedInterface<Integer>`;
+    @type:"InterfaceDeclaration" 
+    value parameterisedInterfaceDecl = `ParameterisedInterface`;
     @type:"UnionType" 
     value unionType = `Interface1|Interface2`;
     @type:"IntersectionType" 
@@ -17,21 +23,35 @@ void test<T>() {
     // couldn't find a way to assert that its type is really nothingType since it's an anonymous type
     @type:"Basic&Type" 
     value nothingType = `String&Integer`;
-    @type:"Class<NoParams,Empty>" 
+    @type:"ClassDeclaration&Class<NoParams,Empty>" 
     value aliasType = `Alias`;
     
     // members
-    @type:"Member<Container,Class<Container.InnerClass,Empty>>"
+    @type:"ClassDeclaration&Member<Container,Class<Container.InnerClass,Empty>>"
     value memberClassType = `Container.InnerClass`;
-    @type:"Member<Container,Interface<Container.InnerInterface>>"
+    @type:"InterfaceDeclaration&Member<Container,Interface<Container.InnerInterface>>"
     value memberInterfaceType = `Container.InnerInterface`;
+    
     @type:"Member<ParameterisedContainer<String>,Class<ParameterisedContainer<String>.InnerClass<Integer>,Empty>>"
     value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
+    @type:"ClassDeclaration"
+    value memberParameterisedClassDecl = `ParameterisedContainer.InnerClass`;
+    @error:"mixed type and declaration literal"
+    value memberParameterisedClassTypeErr1 = `ParameterisedContainer<String>.InnerClass`;
+    @error:"mixed type and declaration literal"
+    value memberParameterisedClassTypeErr2 = `ParameterisedContainer.InnerClass<Integer>`;
+
     @type:"Member<ParameterisedContainer<String>,Interface<ParameterisedContainer<String>.InnerInterface<Integer>>>"
     value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
+    @type:"InterfaceDeclaration"
+    value memberParameterisedInterfaceDecl = `ParameterisedContainer.InnerInterface`;
+    @error:"mixed type and declaration literal"
+    value memberParameterisedInterfaceTypeErr1 = `ParameterisedContainer<String>.InnerInterface`;
+    @error:"mixed type and declaration literal"
+    value memberParameterisedInterfaceTypeErr2 = `ParameterisedContainer.InnerInterface<Integer>`;
 
     // toplevel methods
-    @type:"Function<Integer,Tuple<String,String,Empty>>"
+    @type:"FunctionDeclaration&Function<Integer,Tuple<String,String,Empty>>"
     value toplevelMethod = `method`;
     @error:"does not accept type arguments: method"
     value toplevelMethodErr = `method<String>`;
@@ -39,36 +59,46 @@ void test<T>() {
     value toplevelMethodErr2 = `missingMethod`;
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
-    @error:"missing type arguments to: parameterisedMethod"
+    @type:"FunctionDeclaration"
     value toplevelParameterisedMethodErr = `parameterisedMethod`;
-    @type:"Function<Callable<Integer,Tuple<Boolean,Boolean,Empty>>,Tuple<String,String,Empty>>"
+    @type:"FunctionDeclaration&Function<Callable<Integer,Tuple<Boolean,Boolean,Empty>>,Tuple<String,String,Empty>>"
     value toplevelMPLMethod = `mplMethod`;
 
     // qualified methods
-    @type:"Member<Container,Function<Anything,Empty>>"
+    @type:"FunctionDeclaration&Member<Container,Function<Anything,Empty>>"
     value containerMethod = `Container.method`;
     @error:"member method or attribute is ambiguous: missing"
     value containerMethodErr = `Container.missing`;
     @type:"Member<ParameterisedContainer<String>,Function<Anything,Tuple<Integer,Integer,Empty>>>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
+    @type:"FunctionDeclaration"
+    value parameterisedContainerMethodDecl = `ParameterisedContainer.method`;
+    @error
+    value parameterisedContainerMethodErr1 = `ParameterisedContainer<String>.method`;
+    @error
+    value parameterisedContainerMethodErr2 = `ParameterisedContainer.method<Integer>`;
     
     // toplevel attributes
-    @type:"Attribute<Integer>"
+    @type:"AttributeDeclaration&Attribute<Integer>"
     value toplevelAttribute = `attribute`;
     @error:"does not accept type arguments: attribute"
     value toplevelAttributeErr = `attribute<String>`;
-    @type:"Variable<Integer>"
+    @type:"VariableDeclaration&Variable<Integer>"
     value toplevelVariableAttribute = `variableAttribute`;
 
     // qualified attributes
-    @type:"Member<Container,Attribute<Integer>>"
+    @type:"AttributeDeclaration&Member<Container,Attribute<Integer>>"
     value containerAttribute = `Container.attribute`;
-    @type:"Member<Container,Variable<Integer>>"
+    @type:"VariableDeclaration&Member<Container,Variable<Integer>>"
     value containerVariableAttribute = `Container.variableAttribute`;
     @type:"Member<ParameterisedContainer<String>,Attribute<String>>"
     value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
+    @type:"AttributeDeclaration"
+    value parameterisedContainerAttributeDecl = `ParameterisedContainer.attribute`;
     @type:"Member<ParameterisedContainer<String>,Variable<String>>"
     value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
+    @type:"VariableDeclaration"
+    value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
 }
 
 
@@ -78,6 +108,7 @@ class NoParams(){}
 class Params(Integer i, String s){}
 class ParameterisedClass<T>(){}
 interface Interface1{}
+interface ParameterisedInterface<T>{}
 interface Interface2{}
 alias Alias => NoParams;
 
