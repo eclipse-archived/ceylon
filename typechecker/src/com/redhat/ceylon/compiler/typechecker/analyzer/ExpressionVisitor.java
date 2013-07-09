@@ -5280,27 +5280,37 @@ public class ExpressionVisitor extends Visitor {
         if(declaration == null)
             return;
         if(declaration instanceof Class){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
-            ParameterList parameterList = ((Class) declaration).getParameterList();
-            ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
-            ProducedType classType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType();
-            if(declaration.isMember()){
-                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
-                ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), classType)).getType();
-                that.setTypeModel(memberType);
-            }else{
+            boolean isParameterised = isParameterised(declaration);
+            if(!isParameterised){
+                ProducedType classType = getTypeLiteralClassType(declaration, literalType);
+                ProducedType classDeclarationType = getTypeLiteralDeclarationType("ClassDeclaration");
+                IntersectionType it = new IntersectionType(unit);
+                it.getSatisfiedTypes().add(classDeclarationType);
+                it.getSatisfiedTypes().add(classType);
+                that.setTypeModel(it.getType());
+            }else if(typeLiteralMode == TypeLiteralMode.Declaration){
+                ProducedType classDeclarationType = getTypeLiteralDeclarationType("ClassDeclaration");
+                that.setTypeModel(classDeclarationType);
+            }else if(typeLiteralMode == TypeLiteralMode.Type){
+                ProducedType classType = getTypeLiteralClassType(declaration, literalType);
                 that.setTypeModel(classType);
-            }
+            }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
         }else if(declaration instanceof Interface){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
-            ProducedType interfaceType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType();
-            if(declaration.isMember()){
-                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
-                ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), interfaceType)).getType();
-                that.setTypeModel(memberType);
-            }else{
+            boolean isParameterised = isParameterised(declaration);
+            if(!isParameterised){
+                ProducedType interfaceType = getTypeLiteralInterfaceType(declaration, literalType);
+                ProducedType interfaceDeclarationType = getTypeLiteralDeclarationType("InterfaceDeclaration");
+                IntersectionType it = new IntersectionType(unit);
+                it.getSatisfiedTypes().add(interfaceDeclarationType);
+                it.getSatisfiedTypes().add(interfaceType);
+                that.setTypeModel(it.getType());
+            }else if(typeLiteralMode == TypeLiteralMode.Declaration){
+                ProducedType interfaceDeclarationType = getTypeLiteralDeclarationType("InterfaceDeclaration");
+                that.setTypeModel(interfaceDeclarationType);
+            }else if(typeLiteralMode == TypeLiteralMode.Type){
+                ProducedType interfaceType = getTypeLiteralInterfaceType(declaration, literalType);
                 that.setTypeModel(interfaceType);
-            }
+            }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
         }else if(declaration instanceof UnionType){
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("UnionType");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
@@ -5322,6 +5332,44 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private ProducedType getTypeLiteralDeclarationType(String name) {
+        return unit.getLanguageModuleMetamodelDeclarationDeclaration(name).getProducedReference(null, Collections.<ProducedType>emptyList()).getType();
+    }
+
+    private ProducedType getTypeLiteralClassType(TypeDeclaration declaration, ProducedType literalType) {
+        Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
+        ParameterList parameterList = ((Class) declaration).getParameterList();
+        ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
+        ProducedType classType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType();
+        if(declaration.isMember()){
+            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+            ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), classType)).getType();
+            return memberType;
+        }else{
+            return classType;
+        }
+    }
+    
+    private ProducedType getTypeLiteralInterfaceType(TypeDeclaration declaration, ProducedType literalType) {
+        Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
+        ProducedType interfaceType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType();
+        if(declaration.isMember()){
+            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Member");
+            ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), interfaceType)).getType();
+            return memberType;
+        }else{
+            return interfaceType;
+        }
+    }
+
+    private boolean isParameterised(Declaration declaration) {
+        if(declaration instanceof Generic && !((Generic)declaration).getTypeParameters().isEmpty())
+            return true;
+        if(declaration.isClassOrInterfaceMember())
+            return isParameterised((ClassOrInterface) declaration.getContainer());
+        return false;
+    }
+
     public void visit(Tree.MemberLiteral that) {
         inTypeLiteral = true;
         typeLiteralMode = TypeLiteralMode.Unknown;
@@ -5365,9 +5413,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void setMetamodelType(MemberLiteral that, Declaration result, ProducedType outerType) {
+        boolean isParameterised = isParameterised(result);
         if(result instanceof Method){
             Method method = (Method) result;
-            Declaration functionDecl = unit.getLanguageModuleMetamodelDeclaration("Function");
             ParameterList parameterList = method.getParameterLists().get(0);
 
             TypeArgumentList tal = that.getTypeArgumentList();
@@ -5380,22 +5428,30 @@ public class ExpressionVisitor extends Visitor {
                     ProducedTypedReference pr = method.getProducedTypedReference(outerType, ta);
                     that.setTarget(pr);
 
-                    ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
-                    ProducedType ct = pr.getFullType();
-                    if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
-                        //pull the return type out of the Callable
-                        ProducedType returnType = ct.getTypeArgumentList().get(0);
-                        ProducedType methodType = functionDecl.getProducedReference(null, Arrays.<ProducedType>asList(returnType, parameterTuple)).getType();
-                        that.setTypeModel(memberise(pr, methodType));
-                    }
+                    if(!isParameterised){
+                        ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
+                        ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
+                        IntersectionType it = new IntersectionType(unit);
+                        it.getSatisfiedTypes().add(functionDeclarationType);
+                        it.getSatisfiedTypes().add(functionType);
+                        that.setTypeModel(it.getType());
+                    }else if(typeLiteralMode == TypeLiteralMode.Declaration){
+                        ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
+                        that.setTypeModel(functionDeclarationType);
+                    }else if(typeLiteralMode == TypeLiteralMode.Type){
+                        ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
+                        that.setTypeModel(functionType);
+                    }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
                 }
-            }
-            else {
+            } else if(typeLiteralMode == TypeLiteralMode.Declaration
+                    || typeLiteralMode == TypeLiteralMode.Unknown) {
+                ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
+                that.setTypeModel(functionDeclarationType);
+            } else {
                 that.addError("missing type arguments to: " + method.getName(unit));
             }
         }else if(result instanceof Value){
             Value value = (Value) result;
-            Declaration attributeDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "Variable" : "Attribute");
 
             if(that.getTypeArgumentList() != null){
                 that.addError("does not accept type arguments: " + result.getName(unit));
@@ -5403,10 +5459,43 @@ public class ExpressionVisitor extends Visitor {
                 ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
                 that.setTarget(pr);
 
-                ProducedType attributeType = attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
-                that.setTypeModel(memberise(pr, attributeType));
+                if(!isParameterised){
+                    ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
+                    ProducedType attributeDeclarationType = getTypeLiteralDeclarationType(value.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
+                    IntersectionType it = new IntersectionType(unit);
+                    it.getSatisfiedTypes().add(attributeDeclarationType);
+                    it.getSatisfiedTypes().add(attributeType);
+                    that.setTypeModel(it.getType());
+                }else if(typeLiteralMode == TypeLiteralMode.Declaration){
+                    ProducedType attributeDeclarationType = getTypeLiteralDeclarationType(value.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
+                    that.setTypeModel(attributeDeclarationType);
+                }else if(typeLiteralMode == TypeLiteralMode.Type){
+                    ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
+                    that.setTypeModel(attributeType);
+                }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
+
             }
         }
+    }
+
+    private ProducedType getTypeLiteralAttributeType(ProducedTypedReference pr, Value value) {
+        Declaration attributeDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "Variable" : "Attribute");
+        ProducedType attributeType = attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
+        return memberise(pr, attributeType);
+    }
+
+    private ProducedType getTypeLiteralFunctionType(ProducedTypedReference pr, ParameterList parameterList) {
+        ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
+        ProducedType ct = pr.getFullType();
+        if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
+            //pull the return type out of the Callable
+            ProducedType returnType = ct.getTypeArgumentList().get(0);
+            
+            Declaration functionDecl = unit.getLanguageModuleMetamodelDeclaration("Function");
+            ProducedType methodType = functionDecl.getProducedReference(null, Arrays.<ProducedType>asList(returnType, parameterTuple)).getType();
+            return memberise(pr, methodType);
+        }
+        return null;
     }
 
     private ProducedType memberise(ProducedTypedReference pr, ProducedType metamodelType) {
