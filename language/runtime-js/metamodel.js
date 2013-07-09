@@ -29,10 +29,7 @@ type$metamodel.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()]
 exports.type$metamodel=type$metamodel;
 
 function typeLiteral$metamodel($$targs$$) {
-    if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
-        throw Exception("JS Interop not supported");
-    } else if (typeof($$targs$$.Type) === 'string') {
-    } else if ($$targs$$.Type.t === undefined) {
+    if ($$targs$$ === undefined || $$targs$$.Type === undefined || $$targs$$.Type.t === undefined) {
         throw Exception("JS Interop not supported");
     } else if ($$targs$$.Type.t === 'u' || $$targs$$.Type.t === 'i') {
         //union/intersection type
