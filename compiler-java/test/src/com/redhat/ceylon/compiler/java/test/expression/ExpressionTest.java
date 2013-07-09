@@ -413,6 +413,11 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testOprScale(){
+        compareWithJavaSource("operator/ScaleOp");
+    }
+    
+    @Test
     public void testStpStringTemplate(){
         compareWithJavaSource("stringtemp/StringTemplate");
     }

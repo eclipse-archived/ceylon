@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Scalable<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> {
+    
+    ScaleOp() {
+        this.$ceylon$language$Scalable$this = new .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp>(.ceylon.language.Float.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$impl() {
+        return $ceylon$language$Scalable$this;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp scale(final .ceylon.language.Float other) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp).ceylon.language.nothing_.$get();
+    }
+    
+    private final void m$priv() {
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp twice = (
+            let
+            {
+                .ceylon.language.Float $scale$1 = .ceylon.language.Float.instance(2.0);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp $scalable$0 = this;
+            }
+            returning $scalable$0.scale($scale$1);
+        );
+        final .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp thrice = (
+            let
+            {
+                .ceylon.language.Float $scale$3 = .ceylon.language.Float.instance(2L + 2L);
+                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp $scalable$2 = this;
+            }
+            returning $scalable$2.scale($scale$3);
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.class);
+}
