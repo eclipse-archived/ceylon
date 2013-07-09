@@ -82,6 +82,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class ExpressionVisitor extends Visitor {
     
+    public enum TypeLiteralMode {
+        Unknown, Type, Declaration;
+    }
+
     private Tree.Type returnType;
     private Tree.Expression switchExpression;
     private Declaration returnDeclaration;
@@ -4211,6 +4215,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean inExtendsClause = false;
+    private boolean inTypeLiteral;
+    private TypeLiteralMode typeLiteralMode;
 
     @Override public void visit(Tree.Super that) {
         ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
@@ -4699,6 +4705,23 @@ public class ExpressionVisitor extends Visitor {
             }
             int max = params.size();
             int args = typeArguments.size();
+            if(inTypeLiteral){
+                if(args > 0){
+                    if(typeLiteralMode == TypeLiteralMode.Unknown)
+                        typeLiteralMode = TypeLiteralMode.Type;
+                    else if(typeLiteralMode != TypeLiteralMode.Type){
+                        tal.addError("mixed type and declaration literal");
+                    }
+                }else{
+                    // FIXME: check how that works with all-defaulted type parameters or inference
+                    if(typeLiteralMode == TypeLiteralMode.Unknown)
+                        typeLiteralMode = TypeLiteralMode.Declaration;
+                    else if(typeLiteralMode != TypeLiteralMode.Declaration){
+                        // can't put it on tal since it may be null if we have no type arguments
+                        parent.addError("mixed type and declaration literal");
+                    }
+                }
+            }
             if (args<=max && args>=min) {
                 for (int i=0; i<args; i++) {
                     TypeParameter param = params.get(i);
@@ -4757,7 +4780,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 if (tal==null || tal instanceof Tree.InferredTypeArguments) {
-                    parent.addError("requires type arguments: " + dec.getName(unit));
+                    if(!inTypeLiteral || typeLiteralMode == TypeLiteralMode.Type)
+                        parent.addError("requires type arguments: " + dec.getName(unit));
                 }
                 else {
                     String help="";
@@ -5236,7 +5260,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeLiteral that) {
-        super.visit(that);
+        inTypeLiteral = true;
+        typeLiteralMode = TypeLiteralMode.Unknown;
+        try{
+            super.visit(that);
+        }finally{
+            inTypeLiteral = false;
+        }
         // grammar will catch that error
         if(that.getType() == null)
             return;
@@ -5293,38 +5323,44 @@ public class ExpressionVisitor extends Visitor {
     }
     
     public void visit(Tree.MemberLiteral that) {
-        super.visit(that);
-        
-        if(that.getIdentifier() == null)
-            return;
-        String name = that.getIdentifier().getText();
+        inTypeLiteral = true;
+        typeLiteralMode = TypeLiteralMode.Unknown;
+        try{
+            super.visit(that);
 
-        if(that.getType() != null){
-            ProducedType qualifyingType = that.getType().getTypeModel();
-            if(qualifyingType == null)
+            if(that.getIdentifier() == null)
                 return;
+            String name = that.getIdentifier().getText();
 
-            qualifyingType = qualifyingType.resolveAliases();
-            TypeDeclaration d = qualifyingType.getDeclaration();
-            String container = "type " + d.getName(unit);
-            Declaration member = d.getMember(name, unit, null, false);
-            if(member instanceof TypedDeclaration){
-                that.setDeclaration(member);
-                setMetamodelType(that, member, qualifyingType);
+            if(that.getType() != null){
+                ProducedType qualifyingType = that.getType().getTypeModel();
+                if(qualifyingType == null)
+                    return;
+
+                qualifyingType = qualifyingType.resolveAliases();
+                TypeDeclaration d = qualifyingType.getDeclaration();
+                String container = "type " + d.getName(unit);
+                Declaration member = d.getMember(name, unit, null, false);
+                if(member instanceof TypedDeclaration){
+                    that.setDeclaration(member);
+                    setMetamodelType(that, member, qualifyingType);
+                }else{
+                    that.addError("member method or attribute is ambiguous: " +
+                            name + " for " + container);
+                }
             }else{
-                that.addError("member method or attribute is ambiguous: " +
-                              name + " for " + container);
+                Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
+                if (result instanceof TypedDeclaration) {
+                    that.setDeclaration(result);
+                    setMetamodelType(that, result, that.getScope().getDeclaringType(result));
+                }else{
+                    that.addError("function or value does not exist: " +
+                            name(that.getIdentifier()), 100);
+                    unit.getUnresolvedReferences().add(that.getIdentifier());
+                }
             }
-        }else{
-            Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
-            if (result instanceof TypedDeclaration) {
-                that.setDeclaration(result);
-                setMetamodelType(that, result, that.getScope().getDeclaringType(result));
-            }else{
-                that.addError("function or value does not exist: " +
-                              name(that.getIdentifier()), 100);
-                unit.getUnresolvedReferences().add(that.getIdentifier());
-            }
+        }finally{
+            inTypeLiteral = false;
         }
     }
 
