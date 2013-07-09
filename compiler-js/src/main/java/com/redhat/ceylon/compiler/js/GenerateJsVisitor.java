@@ -2713,10 +2713,12 @@ public class GenerateJsVisitor extends Visitor
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
-                termgen.right();
-                out(".scale(");
+                final String lhs = names.createTempVariable();
+                out("function(){var ", lhs, "=");
                 termgen.left();
-                out(")");
+                out(";return ");
+                termgen.right();
+                out(".scale(", lhs, ");}()");
             }
         });
     }
