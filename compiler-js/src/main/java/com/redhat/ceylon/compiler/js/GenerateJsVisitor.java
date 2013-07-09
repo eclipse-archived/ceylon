@@ -4059,8 +4059,8 @@ public class GenerateJsVisitor extends Visitor
     public void visit(TypeLiteral that) {
         out(clAlias, "typeLiteral$metamodel({Type:");
         final StaticType type = that.getType();
-        TypeUtils.metamodelTypeNameOrList(type.getUnit().getPackage(),
-                type.getTypeModel().resolveAliases(), this);
+        final ProducedType pt = type.getTypeModel().resolveAliases();
+        TypeUtils.typeNameOrList(that, pt, this, true);
         out("})");
     }
 
