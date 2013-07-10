@@ -516,6 +516,7 @@ public class Util {
                 if (ex!=null) {
                     Tree.Term t = ex.getTerm();
                     //TODO: eliminate parens
+                    //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
                         Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
                         if (d!=null && d.getQualifiedNameString().equals("ceylon.language::true")) {
@@ -537,6 +538,7 @@ public class Util {
                 if (ex!=null) {
                     Tree.Term t = ex.getTerm();
                     //TODO: eliminate parens
+                    //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
                         Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
                         if (d!=null && d.getQualifiedNameString().equals("ceylon.language::false")) {
