@@ -1153,10 +1153,13 @@ TypeConstraints?
         </section>
         
     <section id="abstractandformalclasses">
-        <title>Abstract, formal, and default classes</title>
+        <title>Abstract, final, formal, and default classes</title>
         
         <para>A toplevel or nested class may be annotated <literal>abstract</literal>
         and is called an <literal>abstract</literal> class.</para>
+                
+        <para>A toplevel or nested class may be annotated <literal>final</literal>
+        and is called an <literal>final</literal> class.</para>
                 
         <para>If a class annotated <literal>shared</literal> is a member of a containing 
         class or interface, then the class may be annotated <literal>formal</literal>
@@ -1174,6 +1177,11 @@ TypeConstraints?
         <literal>abstract</literal> is called a <emphasis>concrete</emphasis> class.</para>
                 
         <para>A concrete class may not have <literal>formal</literal> members.</para>
+        
+        <para>A class annotated <literal>final</literal> must be a concrete class.</para>
+        
+        <para>A class annotated <literal>final</literal> may not have <literal>default</literal> 
+        members.</para>
         
         <para>If a concrete class annotated <literal>shared</literal> is a member of a 
         containing class or interface, then the class may be annotated 
@@ -2617,12 +2625,10 @@ shared deprecated</programlisting>
                 warning when compiling code that depends upon a deprecated
                 program element.</para>
             </listitem>
-            <!-- 
             <listitem>
                 <para><literal>final</literal> specifies that a class may not 
                 be extended.</para>
             </listitem>
-             -->
         </itemizedlist>
         
         <para>The following annotation is a hint to the compiler that lets 
@@ -2638,9 +2644,6 @@ shared deprecated</programlisting>
         
         <para>By default, <literal>Integer</literal> and <literal>Float</literal> 
         are assumed to represent 64-bit values.</para>
-        
-        <comment><para>TODO: should we have <literal>final</literal> to specify 
-        that a class may not be extended?</para></comment>
         
         <!--
         <comment><para>TODO: should we make <literal>actual</literal> a keyword, 

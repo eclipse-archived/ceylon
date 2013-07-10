@@ -282,6 +282,10 @@ public class DeclarationVisitor extends Visitor {
             that.addError("class may not be both abstract and final: " + 
                     name(that.getIdentifier()));
         }
+        if (c.isFormal() && c.isFinal()) {
+            that.addError("class may not be both formal and final: " + 
+                    name(that.getIdentifier()));
+        }
         /*if (c.isActual()) {
         	that.addWarning("member class refinement not yet supported");
         }*/

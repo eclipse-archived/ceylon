@@ -585,6 +585,12 @@
                 <literal>X&amp;Null</literal> is equivalent to <literal>Nothing</literal>.</para>
             </listitem>
             <listitem>
+                <para>If <literal>X</literal> is an interface, and <literal>Y</literal>
+                is a <literal>final</literal> class, and <literal>Y</literal> is not a
+                subtype of <literal>X</literal>, then the intersection type 
+                <literal>X&amp;Y</literal> is equivalent to <literal>Nothing</literal>.</para>
+            </listitem>
+            <listitem>
                 <para>If <literal>X&lt;T&gt;</literal> is invariant in its type parameter
                 <literal>T</literal>, and the distinct types <literal>A</literal> and 
                 <literal>B</literal> do not involve type parameters, then 
