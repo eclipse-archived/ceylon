@@ -8,9 +8,12 @@ import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.metamodel.declaration.Declaration$impl;
 import ceylon.language.metamodel.declaration.Module$impl;
+import ceylon.language.metamodel.declaration.Package;
+import ceylon.language.metamodel.declaration.Import;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -24,8 +27,8 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeModule.class);
     protected com.redhat.ceylon.compiler.typechecker.model.Module declaration;
-    private Sequential<FreePackage> packages;
-    private Sequential<FreeImport> dependencies;
+    private Sequential<Package> packages;
+    private Sequential<Import> dependencies;
     
     public FreeModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
         this.declaration = declaration;
@@ -74,27 +77,27 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Package>")
-    public Sequential<? extends FreePackage> getMembers() {
+    public Sequential<? extends Package> getMembers() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.packages == null){
             List<com.redhat.ceylon.compiler.typechecker.model.Package> modelPackages = declaration.getPackages();
-            FreePackage[] packages = new FreePackage[modelPackages.size()];
+            Package[] packages = new Package[modelPackages.size()];
             for(int i=0;i<packages.length;i++){
                 packages[i] = Metamodel.getOrCreateMetamodel(modelPackages.get(i));
             }
-            this.packages = Util.sequentialInstance(FreePackage.$TypeDescriptor, packages);
+            this.packages = Util.sequentialInstance(Package.$TypeDescriptor, packages);
         }
         return this.packages;
     }
     
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Import>")
-    public Sequential<? extends FreeImport> getDependencies() {
+    public Sequential<? extends Import> getDependencies() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.dependencies == null){
             List<com.redhat.ceylon.compiler.typechecker.model.ModuleImport> modelImports = declaration.getImports();
             //FreeImport[] imports = new FreeImport[modelImports.size()];
-            SequenceBuilder sb = new SequenceBuilder<>(FreeImport.$TypeDescriptor, modelImports.size()-1);
+            SequenceBuilder sb = new SequenceBuilder<>(Import.$TypeDescriptor, modelImports.size()-1);
             for(com.redhat.ceylon.compiler.typechecker.model.ModuleImport moduleImport : modelImports){
                 if ("ceylon.language".equals(moduleImport.getModule().getNameAsString())) {
                     continue;
