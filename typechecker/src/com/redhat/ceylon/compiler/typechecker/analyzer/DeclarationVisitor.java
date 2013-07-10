@@ -278,6 +278,10 @@ public class DeclarationVisitor extends Visitor {
                 c.getContainer() instanceof TypedDeclaration) {
             that.addWarning("nested classes of inner classes are not yet supported");
         }
+        if (c.isAbstract() && c.isFinal()) {
+            that.addError("class may not be both abstract and final: " + 
+                    name(that.getIdentifier()));
+        }
         /*if (c.isActual()) {
         	that.addWarning("member class refinement not yet supported");
         }*/
@@ -839,6 +843,12 @@ public class DeclarationVisitor extends Visitor {
         Declaration d = beginDeclaration(model);
         super.visit(that);
         endDeclaration(d);
+        if (model.isClassOrInterfaceMember() &&
+                ((ClassOrInterface) model.getContainer()).isFinal()) {
+            if (model.isDefault()) {
+                that.addError("member of final class may not be annotated default");
+            }
+        }
     }
 
     private static void handleDeclarationAnnotations(Tree.Declaration that,
