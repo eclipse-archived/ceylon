@@ -542,11 +542,11 @@ public class Metamodel {
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.compiler.typechecker.model.Unit unit, 
             com.redhat.ceylon.compiler.typechecker.model.Functional decl, 
-            ProducedType producedType) {
+            ProducedReference producedReference) {
         
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
-            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(unit, parameters, producedType);
+            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(unit, parameters, producedReference);
         return Metamodel.getTypeDescriptorForProducedType(tupleType);
     }
 }
