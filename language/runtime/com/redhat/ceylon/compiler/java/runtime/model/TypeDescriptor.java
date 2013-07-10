@@ -79,6 +79,7 @@ public abstract class TypeDescriptor {
         }
         
         public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager){
+            // FIXME: is this really enough?
             String typeName = klass.getName();
             Module module = moduleManager.findModuleForClass(klass);
             TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
