@@ -11,6 +11,10 @@ function $init$Number$() {
     return Number$;
 }
 
+var toInt = function(float) {
+    return (float >= 0) ? Math.floor(float) : Math.ceil(float);
+}
+
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 JSNumber.$$metamodel$$={$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Number']};
@@ -62,7 +66,7 @@ JSNum$proto.divided = function(other) {
     if (other == 0) {
         throw Exception(String$("Division by Zero"));
     }
-    return (this/other)|0;
+    return toInt(this/other);
 }
 JSNum$proto.remainder = function(other) { return this%other; }
 JSNum$proto.power = function(exp) {
@@ -70,7 +74,7 @@ JSNum$proto.power = function(exp) {
     if (exp<0 && this!=1 && this!=-1) {
         throw Exception(String$("Negative exponent"));
     }
-    return Math.pow(this, exp)|0;
+    return toInt(Math.pow(this, exp));
 }
 defineAttr(JSNum$proto, 'negativeValue', function() {
     return this.float$ ? Float(-this) : -this;
@@ -84,8 +88,8 @@ JSNum$proto.compare = function(other) {
     return value==other ? equal : (value<other ? smaller:larger);
 }
 defineAttr(JSNum$proto, '$float', function(){ return Float(this.valueOf()); });
-defineAttr(JSNum$proto, 'integer', function(){ return this|0; });
-defineAttr(JSNum$proto, 'integerValue', function(){ return this|0; });
+defineAttr(JSNum$proto, 'integer', function(){ return toInt(this); });
+defineAttr(JSNum$proto, 'integerValue', function(){ return toInt(this); });
 defineAttr(JSNum$proto, 'character', function(){ return Character(this.valueOf()); });
 defineAttr(JSNum$proto, 'successor', function(){ return this+1; });
 defineAttr(JSNum$proto, 'predecessor', function(){ return this-1; });
