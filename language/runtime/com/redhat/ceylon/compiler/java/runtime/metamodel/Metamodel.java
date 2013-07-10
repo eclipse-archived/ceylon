@@ -549,4 +549,14 @@ public class Metamodel {
             = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(unit, parameters, producedReference);
         return Metamodel.getTypeDescriptorForProducedType(tupleType);
     }
+    
+    public static ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
+        // FIXME: is this really enough?
+        String typeName = klass.getName();
+        com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
+        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = 
+                (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) 
+                    moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
+        return (ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration) getOrCreateMetamodel(decl);
+    }
 }
