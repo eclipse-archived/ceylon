@@ -240,7 +240,9 @@ public class AppliedClassOrInterfaceType<Type>
         return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind/*, (AppliedClassOrInterfaceType<SubType>) this*/){
             @Override
             protected Kind bindTo(Object instance) {
-                return (Kind) (decl.isVariable() ? new AppliedVariable(value, valueType, instance) : new AppliedValue(value, valueType, instance));
+                return (Kind) (decl.isVariable() 
+                    ? new AppliedVariable(null, value, valueType, instance) 
+                    : new AppliedValue(null, value, valueType, instance));
             }
         };
     }
