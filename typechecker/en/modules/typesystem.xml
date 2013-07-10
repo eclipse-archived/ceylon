@@ -582,7 +582,7 @@
             </listitem>
             <listitem>
                 <para>If <literal>X</literal> is an interface, the intersection type 
-                <literal>X&amp;Nothing</literal> is equivalent to <literal>Nothing</literal>.</para>
+                <literal>X&amp;Null</literal> is equivalent to <literal>Nothing</literal>.</para>
             </listitem>
             <listitem>
                 <para>If <literal>X&lt;T&gt;</literal> is invariant in its type parameter
