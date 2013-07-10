@@ -5279,6 +5279,7 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration declaration = literalType.getDeclaration();
         if(declaration == null)
             return;
+        that.setDeclaration(declaration);
         if(declaration instanceof Class){
             boolean isParameterised = isParameterised(declaration);
             if(!isParameterised){
@@ -5290,6 +5291,7 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(it.getType());
             }else if(typeLiteralMode == TypeLiteralMode.Declaration){
                 ProducedType classDeclarationType = getTypeLiteralDeclarationType("ClassDeclaration");
+                that.setWantsDeclaration(true);
                 that.setTypeModel(classDeclarationType);
             }else if(typeLiteralMode == TypeLiteralMode.Type){
                 ProducedType classType = getTypeLiteralClassType(declaration, literalType);
@@ -5306,6 +5308,7 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(it.getType());
             }else if(typeLiteralMode == TypeLiteralMode.Declaration){
                 ProducedType interfaceDeclarationType = getTypeLiteralDeclarationType("InterfaceDeclaration");
+                that.setWantsDeclaration(true);
                 that.setTypeModel(interfaceDeclarationType);
             }else if(typeLiteralMode == TypeLiteralMode.Type){
                 ProducedType interfaceType = getTypeLiteralInterfaceType(declaration, literalType);
@@ -5438,6 +5441,7 @@ public class ExpressionVisitor extends Visitor {
                     }else if(typeLiteralMode == TypeLiteralMode.Declaration){
                         ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
                         that.setTypeModel(functionDeclarationType);
+                        that.setWantsDeclaration(true);
                     }else if(typeLiteralMode == TypeLiteralMode.Type){
                         ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
                         that.setTypeModel(functionType);
@@ -5447,6 +5451,7 @@ public class ExpressionVisitor extends Visitor {
                     || typeLiteralMode == TypeLiteralMode.Unknown) {
                 ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
                 that.setTypeModel(functionDeclarationType);
+                that.setWantsDeclaration(true);
             } else {
                 that.addError("missing type arguments to: " + method.getName(unit));
             }
@@ -5469,6 +5474,7 @@ public class ExpressionVisitor extends Visitor {
                 }else if(typeLiteralMode == TypeLiteralMode.Declaration){
                     ProducedType attributeDeclarationType = getTypeLiteralDeclarationType(value.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
                     that.setTypeModel(attributeDeclarationType);
+                    that.setWantsDeclaration(true);
                 }else if(typeLiteralMode == TypeLiteralMode.Type){
                     ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
                     that.setTypeModel(attributeType);
