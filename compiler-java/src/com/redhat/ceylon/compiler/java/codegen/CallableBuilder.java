@@ -63,9 +63,14 @@ public class CallableBuilder {
                 Parameter defaultedParam, 
                 Tree.Term forwardCallTo) {
             if (forwardCallTo != null) {
-                return gen.makeQualIdent(
-                        gen.expressionGen().transformPrimary(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getPrimary(), null),  
-                        Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
+                if (forwardCallTo instanceof Tree.BaseMemberOrTypeExpression) {
+                    return gen.makeUnquotedIdent(  
+                            Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
+                } else if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    return gen.makeQualIdent(
+                            gen.expressionGen().transformPrimary(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getPrimary(), null),  
+                            Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
+                }
             }
             return gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam));
         }
