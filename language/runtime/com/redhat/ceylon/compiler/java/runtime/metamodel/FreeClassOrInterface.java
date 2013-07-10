@@ -247,13 +247,18 @@ public abstract class FreeClassOrInterface
                                                  this.<Container, Kind>memberApply$types($reifiedContainer, $reifiedKind));
     }
 
+    @TypeInfo("ceylon.language.metamodel::Member<Container,Kind>")
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    })
     @Override
     public <Container, 
             Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
         ceylon.language.metamodel.Member<Container, Kind> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedKind,
-                @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
+                @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: check this
         AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
         return getAppliedClassOrInterface($reifiedContainer, $reifiedKind, types, containerType);
