@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle method;
         try {
+            if(!Modifier.isPublic(found.getModifiers()));
+                found.setAccessible(true);
             method = MethodHandles.lookup().unreflect(found);
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
