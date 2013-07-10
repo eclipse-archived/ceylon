@@ -11,6 +11,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Class {
-    /** The Ceylon superclass of the {@code @Class}-annotated Ceylon type */
-    String extendsType() default "ceylon.language::Basic";
+    /** 
+     * The Ceylon superclass of the {@code @Class}-annotated Ceylon type.
+     * Defaults to your Java super class, or ceylon.language::Basic if it is java.lang.Object
+     */
+    String extendsType() default "";
 }
