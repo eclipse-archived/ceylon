@@ -13,6 +13,9 @@ shared interface Module
     
     "The modules this module depends on."
     shared formal Import[] dependencies;
+    
+    "Finds a package by name"
+    shared formal Package? findPackage(String name);
 }
 
 "Model of an `import` declaration 

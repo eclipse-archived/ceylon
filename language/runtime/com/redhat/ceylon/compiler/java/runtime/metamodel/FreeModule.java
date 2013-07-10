@@ -89,7 +89,14 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
         }
         return this.packages;
     }
-    
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language.metamodel.declaration::Package")
+    public Package findPackage(@Name("name") String name) {
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getDirectPackage(name);
+        return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
+    }
+
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Import>")
     public Sequential<? extends Import> getDependencies() {
