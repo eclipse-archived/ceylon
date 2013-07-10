@@ -14,7 +14,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeImport implements ceylon.language.metamodel.declaration.Import,
+public class FreeImport 
+    implements ceylon.language.metamodel.declaration.Import,
         ceylon.language.metamodel.Annotated, AnnotationBearing,
         ReifiedType {
     @Ignore
