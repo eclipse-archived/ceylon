@@ -1956,27 +1956,50 @@ public class ExpressionVisitor extends Visitor {
                 //      constraint upon the type parameters, but our
                 //      algorithm doesn't know how to deal with compound
                 //      constraints
-                ProducedType typeParamType = null;
+                /*ProducedType typeParamType = null;
+                boolean found = false;
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
                     TypeDeclaration ctd = ct.getDeclaration();
-                    if (ctd instanceof TypeParameter /*&& 
-                            tp.getDeclaration().equals(((TypeParameter) ctd).getDeclaration())*/) {                        
-                        if (typeParamType!=null) {
+                    if (ctd instanceof TypeParameter) {
+                        typeParamType = ct;
+                    }
+                    if (ct.containsTypeParameters()) { //TODO: check that they are "free" type params                        
+                        if (found) {
                             //the parameter type involves two type
                             //parameters which are being inferred
                             return null;
                         }
-                        typeParamType = ct;
+                        else {
+                            found = true;
+                        }
+                    }
+                }*/
+                boolean commonElementOfUnions=false;
+                if (argType.getDeclaration() instanceof UnionType) {
+                    ProducedType pt = paramType;
+                    ProducedType apt = argType;
+                    for (ProducedType act: argType.getDeclaration().getCaseTypes()) {
+                        //some element of the argument union is already a subtype
+                        //of the parameter union, so throw it away from both unions
+                        if (act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
+                            pt = pt.minus(act);
+                            apt = apt.minus(act);
+                            commonElementOfUnions=true;
+                        }
+                    }
+                    if (commonElementOfUnions) {
+                        addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
+                                pt, apt, visited));
                     }
                 }
-                if (typeParamType==null) {
+                else if (!commonElementOfUnions) {//if (typeParamType==null) {
                     for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
                         addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
                                 ct.substitute(paramType.getTypeArguments()), 
                                 argType, visited));
                     }
                 } 
-                else {
+                /*else {
                     //if the param type is of form T|A1 and the arg type is
                     //of form A2|B then constrain T by B and A1 by A2
                     ProducedType pt = paramType.minus(typeParamType);
@@ -1985,7 +2008,7 @@ public class ExpressionVisitor extends Visitor {
                     addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
                             paramType.minus(typeParamType), pt, visited));
                     //return null;
-                }
+                }*/
                 return unionOrIntersection(tp, list);
             }
             else if (paramType.getDeclaration() instanceof IntersectionType) {
