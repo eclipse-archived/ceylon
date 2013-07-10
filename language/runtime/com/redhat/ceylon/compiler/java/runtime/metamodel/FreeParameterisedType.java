@@ -37,7 +37,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
     protected ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.ClassDeclaration> superclass;
     protected Sequential<ceylon.language.metamodel.declaration.OpenParameterisedType<ceylon.language.metamodel.declaration.InterfaceDeclaration>> interfaces;
     
-    FreeParameterisedType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
+    FreeParameterisedType(@Ignore TypeDescriptor $reifiedDeclarationType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
     }
 

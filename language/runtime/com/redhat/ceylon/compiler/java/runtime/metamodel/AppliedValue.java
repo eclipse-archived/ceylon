@@ -38,7 +38,7 @@ public class AppliedValue<Type>
     protected FreeAttribute declaration;
     private MethodHandle getter;
 
-    public AppliedValue(FreeAttribute value, ProducedType valueType, Object instance) {
+    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedType valueType, Object instance) {
         this.type = Metamodel.getAppliedMetamodel(valueType);
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(valueType);
         this.declaration = value;

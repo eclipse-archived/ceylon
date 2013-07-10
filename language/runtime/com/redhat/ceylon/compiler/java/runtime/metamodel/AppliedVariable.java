@@ -26,12 +26,14 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.NONE),
 })
-public class AppliedVariable<Type> extends AppliedValue<Type> implements ceylon.language.metamodel.Variable<Type> {
+public class AppliedVariable<Type> 
+    extends AppliedValue<Type> 
+    implements ceylon.language.metamodel.Variable<Type> {
 
     private MethodHandle setter;
 
-    public AppliedVariable(FreeAttribute value, ProducedType valueType, Object instance) {
-        super(value, valueType, instance);
+    public AppliedVariable(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedType valueType, Object instance) {
+        super($reifiedType, value, valueType, instance);
     }
 
     @Override

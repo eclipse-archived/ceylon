@@ -61,7 +61,9 @@ public class FreeAttribute
     public ceylon.language.metamodel.Attribute<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
         // FIXME: validate that instance is null for toplevels and not null for memberss
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        return modelDecl.isVariable() ? new AppliedVariable(this, modelDecl.getType(), instance) : new AppliedValue(this, modelDecl.getType(), instance);
+        return modelDecl.isVariable() 
+            ? new AppliedVariable(null, this, modelDecl.getType(), instance) 
+            : new AppliedValue(null, this, modelDecl.getType(), instance);
     }
 
     @Override
