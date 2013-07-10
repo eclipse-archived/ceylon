@@ -32,4 +32,9 @@ public final class modules_ {
     public Module find(@Name("name") String name, @Name("version") String version){
         return Metamodel.findLoadedModule(name, version);
     }
+
+    @TypeInfo("ceylon.language.metamodel.declaration::Module|ceylon.language::Null")
+    public Module getDefault(){
+        return Metamodel.getDefaultModule();
+    }
 }

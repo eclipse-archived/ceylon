@@ -508,6 +508,11 @@ public class Metamodel {
         return module != null ? getOrCreateMetamodel(module) : null;
     }
 
+    public static Module getDefaultModule() {
+        com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.getContext().getModules().getDefaultModule();
+        return module != null ? getOrCreateMetamodel(module) : null;
+    }
+
     public static List<ProducedType> getParameterProducedTypes(List<Parameter> parameters, ProducedReference producedReference) {
         List<ProducedType> parameterProducedTypes = new ArrayList<ProducedType>(parameters.size());
         for(Parameter parameter : parameters){
