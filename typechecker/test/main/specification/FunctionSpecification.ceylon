@@ -12,7 +12,7 @@ void specFunction() {
     @error g1 => () => 1;
     
     Integer x;
-    if (true) {
+    if (1==1) {
         x=>100;
     }
     else {
@@ -21,7 +21,7 @@ void specFunction() {
     print(x);
 
     Integer y();
-    if (true) {
+    if (1==1) {
         y()=>100;
     }
     else {
@@ -30,13 +30,13 @@ void specFunction() {
     print(y());
     
     Integer z;
-    if (true) {
+    if (1==1) {
         z=>100;
     }
     @error print(z);
 
     Integer w();
-    if (true) {
+    if (1==1) {
     }
     else {
         w()=>100^100;

@@ -2,9 +2,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -656,16 +657,16 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.IfStatement that) {
         
-        if (that.getIfClause()!=null) {
-        	if (that.getIfClause().getConditionList()!=null) {
-        		that.getIfClause().getConditionList().visit(this);
-        	}
+        Tree.IfClause ifClause = that.getIfClause();
+        Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
+        if (cl!=null) {
+            cl.visit(this);
         }
         
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
-        if (that.getIfClause()!=null) {
-            that.getIfClause().visit(this);
+        if (ifClause!=null) {
+            ifClause.visit(this);
         }
         boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
         boolean possiblyAssignedByIfClause = specified.possibly;
@@ -688,8 +689,18 @@ public class SpecificationVisitor extends Visitor {
             possiblyAssignedByElseClause = false;
         }
         
-        specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
-        specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+        if (isAlwaysSatisfied(cl)) {
+            specified.definitely = specified.definitely || definitelyAssignedByIfClause;
+            specified.possibly = specified.possibly || possiblyAssignedByIfClause;
+        } 
+        else if (isNeverSatisfied(cl)) {
+            specified.definitely = specified.definitely || definitelyAssignedByElseClause;
+            specified.possibly = specified.possibly || possiblyAssignedByElseClause;
+        }
+        else {
+            specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
+            specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+        }
         
         checkDeclarationSection(that);
     }
@@ -799,7 +810,9 @@ public class SpecificationVisitor extends Visitor {
         endDeclarationScope(d);
         endSpecificationScope(as);
         
-        specified.possibly = specified.possibly || possiblyAssignedByWhileClause;
+        specified.possibly = specified.possibly || 
+                (possiblyAssignedByWhileClause && 
+                 !isNeverSatisfied(that.getWhileClause().getConditionList()));
         
         checkDeclarationSection(that);
     }
