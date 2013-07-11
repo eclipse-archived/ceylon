@@ -235,6 +235,7 @@
 
         <para>The default module has no version, its module archive name is <literal>default.car</literal></para>
         
+        <!--
         <para>Finally, a <emphasis>legacy archive name</emphasis> is of the 
         following standard form:</para>
         
@@ -243,6 +244,7 @@
         <para>For example:</para>
         
         <screen>org.h2-1.2.141.jar</screen>
+        -->
         
     </section>
     
@@ -348,7 +350,7 @@
                 
         <para>A module archive may not contain multiple modules.</para>
         
-        <comment>
+        <!--comment>
         <para>TODO: should we support the following?</para>
         <para>A module archive may be accompanied by a <emphasis>legacy 
         archive</emphasis>. A legacy archive is a standard Java <literal>jar</literal>
@@ -356,7 +358,7 @@
         adheres to the standard for legacy archive names. At runtime there 
         is no difference between a class packaged in a legacy archive and a 
         class packaged directly in the module archive.</para>
-        </comment>
+        </comment-->
         
     </section>
     
