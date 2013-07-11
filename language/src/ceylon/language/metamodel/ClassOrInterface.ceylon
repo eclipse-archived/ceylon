@@ -27,6 +27,6 @@ shared interface ClassOrInterface<out Type>
         given Kind satisfies Function<Anything, Nothing>;
     
     shared formal Member<SubType, Kind>? getAttribute<SubType, Kind>(String name)
-        given Kind satisfies Attribute<Anything>;
+        given Kind satisfies Value<Anything>;
 }
 

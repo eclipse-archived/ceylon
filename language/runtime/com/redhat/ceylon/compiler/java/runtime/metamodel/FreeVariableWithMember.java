@@ -41,7 +41,7 @@ public class FreeVariableWithMember<Type, Declaration extends ceylon.language.me
         final ProducedType appliedType = declaration.getProducedReference(container.getType(), producedTypes).getType();
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(container.getType());
         TypeDescriptor attributeType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        this.$reifiedDeclaration = TypeDescriptor.klass(ceylon.language.metamodel.Attribute.class, attributeType);
+        this.$reifiedDeclaration = TypeDescriptor.klass(ceylon.language.metamodel.Value.class, attributeType);
         memberDelegate = new AppliedMember<Type, Declaration>($reifiedType, $reifiedDeclaration){
             @Override
             protected Declaration bindTo(Object instance) {

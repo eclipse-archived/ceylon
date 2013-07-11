@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.Attribute;
-import ceylon.language.metamodel.Attribute$impl;
+import ceylon.language.metamodel.Value;
+import ceylon.language.metamodel.Value$impl;
 import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.Variable;
 import ceylon.language.metamodel.Variable$impl;
@@ -15,7 +15,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -28,7 +27,7 @@ public class FreeVariableWithType<Type>
 
     private AppliedVariable<Type> typeDelegate;
 
-    protected FreeVariableWithType(Value declaration) {
+    protected FreeVariableWithType(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
         super(declaration);
         // FIXME: container?
         typeDelegate = new AppliedVariable<Type>(null, this, declaration.getType(), null);
@@ -43,7 +42,7 @@ public class FreeVariableWithType<Type>
 
     @Override
     @Ignore
-    public Attribute$impl<Type> $ceylon$language$metamodel$Attribute$impl() {
+    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -78,8 +77,8 @@ public class FreeVariableWithType<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Attribute<ceylon.language::Anything>")
-    public Attribute<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
+    @TypeInfo("ceylon.language.metamodel::Value<ceylon.language::Anything>")
+    public Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
         return this;
     }
 

@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import ceylon.language.metamodel.DeclarationType$impl;
-import ceylon.language.metamodel.Attribute$impl;
+import ceylon.language.metamodel.Value$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Type", variance = Variance.OUT),
 })
 public class AppliedValue<Type> 
-        implements ceylon.language.metamodel.Attribute<Type>, ReifiedType {
+        implements ceylon.language.metamodel.Value<Type>, ReifiedType {
 
     private ceylon.language.metamodel.Type type;
     @Ignore
@@ -120,7 +120,7 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public Attribute$impl<Type> $ceylon$language$metamodel$Attribute$impl() {
+    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }

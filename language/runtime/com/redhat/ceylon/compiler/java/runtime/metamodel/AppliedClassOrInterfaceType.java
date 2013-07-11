@@ -222,10 +222,10 @@ public class AppliedClassOrInterfaceType<Type>
     @Override
     @TypeParameters({
         @TypeParameter(value = "SubType"),
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Attribute<ceylon.language::Anything>")
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Value<ceylon.language::Anything>")
     })
     @TypeInfo("ceylon.language.metamodel::Member<SubType,Kind>|ceylon.language::Null")
-    public <SubType, Kind extends ceylon.language.metamodel.Attribute<? extends Object>>
+    public <SubType, Kind extends ceylon.language.metamodel.Value<? extends Object>>
         ceylon.language.metamodel.Member<SubType, Kind> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
                                                                      @Ignore TypeDescriptor $reifiedKind, 
                                                                      String name) {

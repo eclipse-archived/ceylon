@@ -6,7 +6,6 @@ import java.util.List;
 import ceylon.language.Callable;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Attribute;
 import ceylon.language.metamodel.Class$impl;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
@@ -15,6 +14,7 @@ import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Interface;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Type$impl;
+import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.declaration.ClassDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -87,9 +87,9 @@ public class FreeClassWithType<Type, Arguments extends Sequential<? extends Obje
     @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Member<SubType,Kind>")
     @TypeParameters({ 
         @TypeParameter(value = "SubType"), 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Attribute<ceylon.language::Anything>")
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Value<ceylon.language::Anything>")
     })
-    public <SubType, Kind extends Attribute<? extends Object>> Member<SubType, Kind> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
+    public <SubType, Kind extends Value<? extends Object>> Member<SubType, Kind> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
             @Ignore TypeDescriptor $reifiedKind, 
             @Name("name") @TypeInfo("ceylon.language::String") String name) {
         checkInit();

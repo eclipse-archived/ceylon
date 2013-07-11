@@ -5,7 +5,7 @@ import ceylon.language.metamodel.declaration {
 // FIXME: change to DeclaredType?
 shared interface DeclarationType of ClassOrInterface<Anything>
                                   | Function<Anything, Nothing> 
-                                  | Attribute<Anything> {
+                                  | Value<Anything> {
     
     shared formal TopLevelOrMemberDeclaration declaration;
 }

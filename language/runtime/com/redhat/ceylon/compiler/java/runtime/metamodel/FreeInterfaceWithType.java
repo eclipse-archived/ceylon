@@ -5,7 +5,7 @@ import java.util.List;
 
 import ceylon.language.Map;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Attribute;
+import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.Class;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
@@ -83,9 +83,9 @@ public class FreeInterfaceWithType<Type>
     @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Member<SubType,Kind>")
     @TypeParameters({ 
         @TypeParameter(value = "SubType"), 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Attribute<ceylon.language::Anything>") 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Value<ceylon.language::Anything>") 
     })
-    public <SubType, Kind extends Attribute<? extends Object>> Member<SubType, Kind> getAttribute(@Ignore TypeDescriptor $reifiedSubType,
+    public <SubType, Kind extends Value<? extends Object>> Member<SubType, Kind> getAttribute(@Ignore TypeDescriptor $reifiedSubType,
             @Ignore TypeDescriptor $reifiedKind, 
             @Name("name") @TypeInfo("ceylon.language::String") String name) {
         checkInit();

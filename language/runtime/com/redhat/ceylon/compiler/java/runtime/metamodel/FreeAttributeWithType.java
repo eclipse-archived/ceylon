@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.Attribute;
-import ceylon.language.metamodel.Attribute$impl;
+import ceylon.language.metamodel.Value;
+import ceylon.language.metamodel.Value$impl;
 import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 })
 public class FreeAttributeWithType<Type> 
     extends FreeAttribute 
-    implements Attribute<Type> {
+    implements Value<Type> {
 
     private AppliedValue<Type> typeDelegate;
 
@@ -42,7 +42,7 @@ public class FreeAttributeWithType<Type>
 
     @Override
     @Ignore
-    public Attribute$impl<Type> $ceylon$language$metamodel$Attribute$impl() {
+    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -65,8 +65,8 @@ public class FreeAttributeWithType<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Attribute<ceylon.language::Anything>")
-    public Attribute<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
+    @TypeInfo("ceylon.language.metamodel::Value<ceylon.language::Anything>")
+    public Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
         return this;
     }
     

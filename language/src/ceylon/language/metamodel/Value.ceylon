@@ -5,7 +5,7 @@ import ceylon.language.metamodel {
     ClosedType = Type
 }
 
-shared interface Attribute<out Type>
+shared interface Value<out Type>
         satisfies DeclarationType {
 
     shared formal actual AttributeDeclaration declaration;
