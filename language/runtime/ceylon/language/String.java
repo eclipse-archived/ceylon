@@ -1387,7 +1387,7 @@ public final class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return instance(string_.string(instance(value).by(step).getSequence()));
+            return instance(new String(instance(value).by(step).getSequence()));
         }
     }
 
