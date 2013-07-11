@@ -216,7 +216,8 @@
                 <include name="ceylon/language/identityHash_.java"/>
                 <exclude name="ceylon/language/Integer.ceylon"/>
                 <include name="ceylon/language/Integer.java"/>
-                <include name="ceylon/language/parseInteger_.java"/>
+                <include name="ceylon/language/minIntegerValue_.java"/>
+                <include name="ceylon/language/maxIntegerValue_.java"/>
                 <exclude name="ceylon/language/language.ceylon"/>
                 <include name="ceylon/language/language_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>

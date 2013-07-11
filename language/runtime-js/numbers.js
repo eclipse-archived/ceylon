@@ -137,35 +137,13 @@ JSNum$proto.clear = function(index) {
 defineAttr(JSNum$proto, 'size', function(){ return 53; });
 defineAttr(JSNum$proto, 'magnitude', function(){ return Math.abs(this); });
 
-function $parseInteger(s) {
-    //xkcd.com/208/
-    if (s.match(/^[+-]?\d+(_\d+)*[kMGPT]?$/g) === null) {
-        return null;
-    }
-    s = s.replace(/_/g, "");
-    var mag = null;
-    if (s.match(/[kMGTP]$/g) !== null) {
-        mag = s[s.length-1];
-        s = s.slice(0,-1);
-    }
-    var i = parseInt(s);
-    if (s[0]=='+') s = s.substring(1);
-    if (s[0]=='-') {
-        while (s[1]=='0') s='-'+s.substring(2);
-    } else {
-        while (s[0]=='0') s=s.substring(1);
-    }
-    if (i.toString()!==s) return null;
-    var factor=1;
-    switch(mag) {
-        case 'P':factor*=1000;
-        case 'T':factor*=1000;
-        case 'G':factor*=1000;
-        case 'M':factor*=1000;
-        case 'k':factor*=1000;
-    }
-    return isNaN(i) ? null : i*factor;
-}
+//-(2^53-1)
+var $minIntegerValue = Integer(-9007199254740991);
+function getMinIntegerValue() { return $minIntegerValue; }
+//(2^53-3) => ((2^53)-2 is NaN)
+var $maxIntegerValue = Integer(9007199254740989);
+function getMaxIntegerValue() { return $maxIntegerValue; }
+
 function $parseFloat(s) { return Float(parseFloat(s)); }
 
 defineAttr(JSNum$proto, 'undefined', function(){ return isNaN(this); });
@@ -183,5 +161,6 @@ getInfinity.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language'][
 exports.Integer=Integer;
 exports.Float=Float;
 exports.getInfinity=getInfinity;
-exports.parseInteger=$parseInteger;
+exports.getMinIntegerValue=getMinIntegerValue;
+exports.getMaxIntegerValue=getMaxIntegerValue;
 exports.parseFloat=$parseFloat;
