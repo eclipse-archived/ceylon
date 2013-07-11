@@ -6,14 +6,15 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
-    @TypeParameter(value = "Type"),
-    @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::DeclarationType")
+    @TypeParameter(value = "Type", variance = Variance.IN),
+    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.metamodel::DeclarationType")
 })
 public abstract class AppliedMember<Type, Declaration extends ceylon.language.metamodel.DeclarationType> 
     implements ceylon.language.metamodel.Member<Type, Declaration>, ReifiedType {
