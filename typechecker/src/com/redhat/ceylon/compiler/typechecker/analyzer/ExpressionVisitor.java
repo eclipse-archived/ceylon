@@ -3343,7 +3343,7 @@ public class ExpressionVisitor extends Visitor {
                 if (tt!=null) {
                     if (tt!=null) {
                         ProducedType pt = tt.getTypeModel();
-                        if (pt!=null) {
+                        if (!isTypeUnknown(pt)) {
                             if (!t.covers(pt)) {
                                 that.addError("specified type does not cover the cases of the operand expression: " +
                                         t.getProducedTypeName(unit) + " does not cover " + pt.getProducedTypeName(unit));
