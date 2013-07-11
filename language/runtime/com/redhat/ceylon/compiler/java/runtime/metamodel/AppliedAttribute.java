@@ -6,11 +6,21 @@ import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
+@Ceylon(major = 5)
+@com.redhat.ceylon.compiler.java.metadata.Class
+@TypeParameters({
+    @TypeParameter(value = "Container", variance = Variance.IN),
+    @TypeParameter(value = "Type", variance = Variance.OUT),
+})
 public class AppliedAttribute<Container, Type> 
     extends AppliedMember<Container, ceylon.language.metamodel.Value<? extends Type>>
     implements ceylon.language.metamodel.Attribute<Container, Type> {
@@ -18,13 +28,16 @@ public class AppliedAttribute<Container, Type>
     private FreeAttribute declaration;
     private ProducedType type;
     private ceylon.language.metamodel.Type closedType;
+    @Ignore
+    protected final TypeDescriptor $reifiedType;
 
-    public AppliedAttribute(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind,
+    public AppliedAttribute(TypeDescriptor $reifiedContainer, TypeDescriptor $reifiedType,
                             FreeAttribute declaration, ProducedType type) {
-        super($reifiedType, $reifiedKind);
+        super($reifiedContainer, TypeDescriptor.klass(ceylon.language.metamodel.Value.class, $reifiedType));
         this.declaration = declaration;
         this.type = type;
         this.closedType = Metamodel.getAppliedMetamodel(type);
+        this.$reifiedType = $reifiedType;
     }
 
     @Override
@@ -66,5 +79,10 @@ public class AppliedAttribute<Container, Type>
         return (((com.redhat.ceylon.compiler.typechecker.model.Value)declaration.declaration).isVariable() 
                 ? new AppliedVariable(null, declaration, type, instance) 
                 : new AppliedValue(null, declaration, type, instance));
+    }
+    
+    @Override
+    public TypeDescriptor $getType() {
+        return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
     }
 }

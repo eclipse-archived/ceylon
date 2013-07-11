@@ -21,9 +21,9 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel
 
 //    private AppliedClassOrInterfaceType<Type> container;
     @Ignore
-    private TypeDescriptor $reifiedKind;
+    protected final TypeDescriptor $reifiedKind;
     @Ignore
-    private TypeDescriptor $reifiedType;
+    protected final TypeDescriptor $reifiedType;
 
     public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind/*,
                          AppliedClassOrInterfaceType<Type> container*/){
