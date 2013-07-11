@@ -167,14 +167,17 @@ Integer? computeMagnitude(Integer radix, Character? char) {
     return null;
 }
 
+Integer aInt = 'a'.integer;
+Integer zeroInt = '0'.integer;
+
 Integer? parseDigit(Character digit, Integer radix) {
     Integer figure;
     Integer digitInt = digit.integer;
-    if (48<=digitInt<=57) {
-        figure=digitInt-48;
+    if (0<=digitInt-zeroInt<10) {
+        figure=digitInt-zeroInt;
     }
-    else if (97<=digitInt<=122) {
-        figure=digitInt-87;
+    else if (0<=digitInt-aInt<26) {
+        figure=digitInt-aInt+10;
     }
     else {
         return null;
@@ -207,11 +210,11 @@ shared String formatInteger(Integer integer, Integer radix = 10) {
     while (i != 0) {
         Integer d = -(i % radix);
         Character c;
-        if (0<=d<=9) {
-            c = (d+48).character;
+        if (0<=d<10) {
+            c = (d+zeroInt).character;
         }
-        else if (10<=d<=35) {
-            c = (d+87).character;
+        else if (10<=d<36) {
+            c = (d-10+aInt).character;
         }
         else {
             assert (false);
