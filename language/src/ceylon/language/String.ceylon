@@ -31,10 +31,9 @@
    string `""` if `index` refers to a position outside the
    string.
    
-   The `string()` function makes it possible to use 
-   comprehensions to transform strings:
+   It is easy to use comprehensions to transform strings:
    
-       string(for (s in "hello world") if (s.letter) s.uppercased)
+       String { for (s in "hello world") if (s.letter) s.uppercased }
    
    Since a `String` has an underlying UTF-16 encoding, 
    certain operations are expensive, requiring iteration
@@ -44,16 +43,13 @@
    beginning of the string to the given index."""
 by ("Gavin")
 //see (`string`)
-shared native final class String(String val)
+shared native final class String(shared {Character*} characters)
         extends Object()
         satisfies List<Character> & 
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,String> &
                   Cloneable<String> {
-    
-    "The characters in this string."
-    shared native Character[] characters;
     
     "This string, with all characters in lowercase."
     shared native String lowercased;
@@ -293,6 +289,3 @@ shared native final class String(String val)
     shared actual String coalesced => this;
     
 }
-
-"Create a new string containing the given characters."
-shared native String string({Character*} characters);

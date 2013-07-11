@@ -26,7 +26,7 @@ void misc() {
     check(!x exists, "while exists");
     
     variable value s = "hello";
-    while (nonempty chars = s.characters) { 
+    while (nonempty chars = s.sequence) { 
         s=""; 
     }
     check(s=="", "while nonempty");

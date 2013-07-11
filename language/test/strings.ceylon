@@ -23,8 +23,8 @@ shared void strings() {
     
     check(hello.size==5, "string size 1");
     check("".size==0, "empty string size 2");
-    check(!"".characters nonempty);
-    check("a".characters nonempty);
+    check(!"".sequence nonempty);
+    check("a".sequence nonempty);
     check(!"".lastIndex exists, "empty string last index");
     check(!""[0] exists, "empty string first element exists");
     check(!(hello of Object) is Identifiable, "string is Identifiable");
@@ -166,7 +166,7 @@ shared void strings() {
         fail("string last occurrence 2");
     }
         
-    value chars = hello.characters;
+    value chars = hello.sequence;
     if (exists char = chars[0]) {
         check(char=='h', "string characters 1");
     }
@@ -195,7 +195,7 @@ shared void strings() {
     else {
         fail("string characters nonempty");
     }
-    if (nonempty nochars = "".characters) {
+    if (nonempty nochars = "".sequence) {
         fail("string characters empty");
     }
     
@@ -299,8 +299,8 @@ shared void strings() {
     compareIterables({"", "", "a", "", "b", "", ""}, "//a//b//".split((Character c) => c=='/', true, false), "//a//b//");
     compareIterables({"", "", "a", "", "b", "", ""}, "/?a/&b#/".split((Character c) => c in "/&#?", true, false), "/?a/&b#/ no tokens");
     compareIterables({"", "/", "", "?", "a", "/", "", "&", "b", "#", "", "/", ""}, "/?a/&b#/".split((Character c) => c in "/&#?", false, false), "/?a/&b#/ with tokens");
-    compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) => c==' ', true), "High-surrogate Unicode string");
-    compareIterables({"𐒄", "𐒁", ""}, "𐒄𐒅𐒁𐒕".split((Character c) => c in "𐒅𐒕", true), "High-surrogate Unicode delimiters");
+    compareIterables({"��������", "����"}, "�������� ����".split((Character c) => c==' ', true), "High-surrogate Unicode string");
+    compareIterables({"����", "����", ""}, "����������������".split((Character c) => c in "��������", true), "High-surrogate Unicode delimiters");
     
     check("".reversed=="", "string reversed 1");
     check("x".reversed=="x", "string reversed 2");

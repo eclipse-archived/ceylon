@@ -54,7 +54,9 @@ public final class String
     @Ignore
     public final java.lang.String value;
 
-    public String(@Name("val") java.lang.String val) {
+    public String(@Name("characters") 
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
+    final Iterable<? extends Character, ? extends java.lang.Object> characters) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
@@ -65,7 +67,32 @@ public final class String
         this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor, String.$TypeDescriptor,(Ranged)this);
         this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor, this);
-        value = val;
+        if (characters instanceof String) {
+            value = ((String)characters).value;
+        } else {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder();
+            java.lang.Object $tmp;
+            for (Iterator<? extends Character> $val$iter$0 = characters.iterator(); 
+                    !(($tmp = $val$iter$0.next()) instanceof Finished);) {
+                sb.append($tmp);
+            }
+            value = sb.toString();
+        }
+    }
+
+    @Ignore
+    public String(final java.lang.String string) {
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this);
+        this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor, Character.$TypeDescriptor, this);
+        this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor, this);
+        this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Character>(Character.$TypeDescriptor, this);
+        this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor, this);
+        this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor, this);
+        this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor, String.$TypeDescriptor,(Ranged)this);
+        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor, this);
+        value = string;
     }
 
     @Ignore
@@ -482,13 +509,13 @@ public final class String
         return new StringIterator();
     }
 
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Character>")
-    public Sequential<? extends Character> getCharacters() {
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
+    public Iterable<? extends Character, ?> getCharacters() {
         return getCharacters(value);
     }
 
     @Ignore
-    public static Sequential<? extends Character> getCharacters(java.lang.String value) {
+    public static Iterable<? extends Character,?> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
             return (Sequential)empty_.$get();

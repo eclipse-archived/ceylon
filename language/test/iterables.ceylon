@@ -9,7 +9,7 @@ void testIterables() {
     //Filter
     check(s1.filter((Integer i) => i%2==0).sequence == { 2, 4 }, "Iterable.filter 1");
     check(s2.filter((String s) => "e" in s).sequence == { "Hello" }, "Iterable.filter 2");
-    check(string("h o l a".filter((Character c) => c.letter)) == "hola", "String.filter");
+    check(String("h o l a".filter((Character c) => c.letter)) == "hola", "String.filter");
 
     //Collect (like map, but it's already T[])
     check(s1.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
@@ -163,7 +163,7 @@ void testIterables() {
     //coalesced
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
-    check(string({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
+    check(String({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
     check(array{1,2,3,null,5}.coalesced.sequence=={1,2,3,5}, "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
