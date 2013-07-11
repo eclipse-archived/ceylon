@@ -1,6 +1,7 @@
 void test() {
     dynamic {
         value x = value { y="hello"; };
+        x.w = "goodbye";
         function f(value z) => x.y + " " + z;
         value s = f(name);
         print(s.uppercased);
