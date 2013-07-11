@@ -4303,7 +4303,12 @@ public class ExpressionVisitor extends Visitor {
         else {
             tt = unit.getEmptyDeclaration().getType();
         }
-        if (tt!=null) that.setTypeModel(tt);
+        if (tt!=null) {
+            that.setTypeModel(tt);
+            if (tt.containsUnknowns()) {
+                that.addError("tuple element type could not be inferred");
+            }
+        }
     }
 
     @Override public void visit(Tree.SequenceEnumeration that) {
@@ -4319,7 +4324,12 @@ public class ExpressionVisitor extends Visitor {
             st = unit.getEmptyDeclaration().getType();
         }
         
-        if (st!=null) that.setTypeModel(st);
+        if (st!=null) {
+            that.setTypeModel(st);
+            if (st.containsUnknowns()) {
+                that.addError("iterable element type could not be inferred");
+            }
+        }
     }
 
     /*private ProducedType getGenericElementType(List<Tree.Expression> es,
