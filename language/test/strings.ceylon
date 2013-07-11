@@ -369,8 +369,8 @@ shared void strings() {
     check("\{#0022}"=="\"", "Unicode escape 9");
     check("\{#0027}"=="\'", "Unicode escape 10");
 
-    check(string ([]) == "", "string()");
-    check(string {'h', 'i'}=="hi", "string(h,i)");
+    check(String ([]) == "", "string()");
+    check(String {'h', 'i'}=="hi", "string(h,i)");
     
     //check("123" == StringBuilder("1", "2", "3").string, "StringBuilder(1, 2, 3)");
     //check("" == StringBuilder{}.appendAll{}.string, "StringBuilder{}");
