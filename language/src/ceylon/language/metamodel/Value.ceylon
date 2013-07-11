@@ -23,3 +23,7 @@ shared interface Value<out Type>
 shared interface Attribute<in Container, out Type>
         satisfies AttributeType<Type> & Member<Container, Value<Type>> {
 }
+
+shared interface VariableAttribute<in Container, Type>
+        satisfies Attribute<Container, Type> & Member<Container, Variable<Type>> {
+}

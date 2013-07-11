@@ -237,7 +237,7 @@ public class AppliedClassOrInterfaceType<Type>
         com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
         ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(valueType);
-        return new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType);
+        return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, valueType, decl);
     }
     
     @Override

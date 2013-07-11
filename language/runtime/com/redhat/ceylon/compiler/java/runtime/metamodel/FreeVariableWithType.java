@@ -43,7 +43,7 @@ public class FreeVariableWithType<Type>
 
     @Override
     @Ignore
-    public AttributeType$impl $ceylon$language$metamodel$AttributeType$impl() {
+    public AttributeType$impl<Type> $ceylon$language$metamodel$AttributeType$impl() {
         // TODO Auto-generated method stub
         return null;
     }

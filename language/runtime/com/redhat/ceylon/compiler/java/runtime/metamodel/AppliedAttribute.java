@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.metamodel.Attribute$impl;
 import ceylon.language.metamodel.AttributeType$impl;
 import ceylon.language.metamodel.DeclarationType$impl;
+import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
@@ -25,8 +26,8 @@ public class AppliedAttribute<Container, Type>
     extends AppliedMember<Container, ceylon.language.metamodel.Value<? extends Type>>
     implements ceylon.language.metamodel.Attribute<Container, Type> {
 
-    private FreeAttribute declaration;
-    private ProducedType type;
+    protected FreeAttribute declaration;
+    protected ProducedType type;
     private ceylon.language.metamodel.Type closedType;
     @Ignore
     protected final TypeDescriptor $reifiedType;
@@ -75,14 +76,19 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     protected Value<? extends Type> bindTo(Object instance) {
-        // FIXME: add AttributeDeclaration.isVariable or something
-        return (((com.redhat.ceylon.compiler.typechecker.model.Value)declaration.declaration).isVariable() 
-                ? new AppliedVariable(null, declaration, type, instance) 
-                : new AppliedValue(null, declaration, type, instance));
+        return new AppliedValue(null, declaration, type, instance);
     }
     
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
+    }
+
+    public static Member instance(TypeDescriptor $reifiedSubType, TypeDescriptor reifiedValueType, 
+                                  FreeAttribute value, ProducedType valueType, 
+                                  com.redhat.ceylon.compiler.typechecker.model.Value decl) {
+        return decl.isVariable()
+                ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueType)
+                : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType);
     }
 }
