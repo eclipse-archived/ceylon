@@ -90,7 +90,8 @@ shared native final class String(String val)
     shared native String join({String*} strings);
     
     "Split the string into lines of text."
-    shared native {String*} lines;
+    shared native {String*} lines => 
+            split((Character c) => c=='\n');
 
     "This string, after discarding 
      [[whitespace|Character.whitespace]] from the 
