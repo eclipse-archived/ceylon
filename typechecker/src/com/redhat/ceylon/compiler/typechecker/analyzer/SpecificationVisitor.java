@@ -643,6 +643,14 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Assertion that) {
+        super.visit(that);
+        if (isNeverSatisfied(that.getConditionList())) {
+            exit();
+        }
+    }
+    
+    @Override
     public void visit(Tree.Break that) {
         super.visit(that);
         exit();

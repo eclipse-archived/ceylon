@@ -13,6 +13,26 @@ class ConstantConditions() {
         }
         print(s);
     }
+    void ifElseAssert() {
+        String s;
+        if (1==1) {
+            s = "definitely";
+        }
+        else {
+            assert (false);
+        }
+        print(s);
+    }
+    void ifAssertElse() {
+        String s;
+        if (1==1) {
+            assert (false);
+        }
+        else {
+            s = "definitely";
+        }
+        print(s);
+    }
     void whileFalse() {
         variable String s;
         while (false) {
