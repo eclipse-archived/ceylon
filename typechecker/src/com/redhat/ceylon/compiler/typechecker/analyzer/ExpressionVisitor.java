@@ -1683,9 +1683,14 @@ public class ExpressionVisitor extends Visitor {
         if (!dec.getParameterLists().isEmpty()) {
             ParameterList parameters = dec.getParameterLists().get(0);
             for (TypeParameter tp: dec.getTypeParameters()) {
-                typeArgs.add(constrainInferredType(dec, tp, 
+                ProducedType it = constrainInferredType(dec, tp, 
                         inferTypeArgument(that, that.getPrimary().getTypeModel(), 
-                                tp, parameters)));
+                                tp, parameters));
+                if (it.containsUnknowns()) {
+                    that.addError("could not infer type argument from given arguments: " + 
+                            tp.getName());
+                }
+                typeArgs.add(it);
             }
         }
         return typeArgs;

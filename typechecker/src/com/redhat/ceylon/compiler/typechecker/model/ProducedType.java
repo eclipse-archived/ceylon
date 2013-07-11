@@ -1023,9 +1023,20 @@ public class ProducedType extends ProducedReference {
      * unknowns?
      */
     public boolean containsUnknowns() {
-		if (getDeclaration() instanceof UnknownType) {
+		TypeDeclaration d = getDeclaration();
+        if (d instanceof UnknownType) {
 			return true;
 		}
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                if (ct.containsUnknowns()) return true;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getSatisfiedTypes()) {
+                if (st.containsUnknowns()) return true;
+            }
+        }
 		ProducedType qt = getQualifyingType();
 		if (qt!=null && qt.containsUnknowns()) {
 			return true;
