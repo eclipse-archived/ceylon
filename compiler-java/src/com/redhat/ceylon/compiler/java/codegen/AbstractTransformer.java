@@ -2650,6 +2650,12 @@ public abstract class AbstractTransformer implements Transformation {
 
     }
     
+    /**
+     * @deprecated 
+     * This should be avoided because it means the IDE can't the location of 
+     * the error.
+     */
+    @Deprecated
     JCExpression makeErroneous() {
         return makeErroneous(null);
     }
