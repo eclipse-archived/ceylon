@@ -1,14 +1,3 @@
-function string(/*Iterable<Character>*/chars) {
-    if (chars === undefined) return String$('',0);
-    var s = StringBuilder();
-    var iter = chars.iterator();
-    var c; while ((c = iter.next()) !== getFinished()) {
-        s.appendCharacter(c);
-    }
-    return s.string;
-}
-string.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['string']};
-
 function internalSort(comp, elems, $$$mptypes) {
     if (elems===undefined) {return getEmpty();}
     var arr = [];
