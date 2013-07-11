@@ -19,8 +19,8 @@
  */
 @noanno
 class MethodIf(){
-   shared Integer m(){
-       if(true){
+   shared Integer m(Boolean b){
+       if(b){
            return 1;
        }
        return 0;

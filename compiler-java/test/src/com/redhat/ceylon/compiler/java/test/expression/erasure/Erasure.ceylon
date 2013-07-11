@@ -152,7 +152,7 @@ class Test(Integer&EmptyInterface n) {
         // entry
         value entry = p1 -> p1;
         
-        if(true){
+        if(true||true){
             Exception&EmptyInterface x = MyException(null, null);
             x.printStackTrace();
             value cause = x.cause;

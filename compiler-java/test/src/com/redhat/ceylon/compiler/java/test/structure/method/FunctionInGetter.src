@@ -10,7 +10,7 @@ class FunctionInGetter implements .com.redhat.ceylon.compiler.java.runtime.model
             }
             
             public .java.lang.String $get() {
-                if (true) {
+                if (true || true) {
                     final long i = 1L;
                     
                     final class bar_ {

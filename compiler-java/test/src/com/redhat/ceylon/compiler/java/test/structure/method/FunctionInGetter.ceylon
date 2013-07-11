@@ -20,7 +20,7 @@
 @noanno
 class FunctionInGetter() {
     String foo {
-        if (true) {
+        if (true||true) {
             Integer i = 1;
             String bar() {
                 return i.string;

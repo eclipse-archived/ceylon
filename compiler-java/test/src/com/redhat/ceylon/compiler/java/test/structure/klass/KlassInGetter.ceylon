@@ -20,7 +20,7 @@
 @noanno
 class KlassInGetter() {
     String foo {
-        if (true) {
+        if (true||true) {
             Integer i = 1;
             @noanno
             class Bar() {

@@ -5,8 +5,8 @@ class MethodIf implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     MethodIf() {
     }
     
-    public final long m() {
-        if (true) {
+    public final long m(final boolean b) {
+        if (b) {
             return 1L;
         }
         return 0L;

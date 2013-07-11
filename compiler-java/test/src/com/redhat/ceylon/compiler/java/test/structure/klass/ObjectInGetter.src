@@ -10,7 +10,7 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
             
             public .java.lang.String $get() {
-                if (true) {
+                if (true || true) {
                     final long i = 1L;
                     
                     final class bar_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
