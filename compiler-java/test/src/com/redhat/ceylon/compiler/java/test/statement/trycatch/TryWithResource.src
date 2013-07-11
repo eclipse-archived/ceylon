@@ -35,6 +35,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
                 if ($ceylontmpex1 != null) try {
                     $ceylontmptry0.close($ceylontmpex1);
                 } catch (final .java.lang.Exception $ceylontmpclosex3) {
+                    $ceylontmpex1.addSuppressed($ceylontmpclosex3);
                 } else $ceylontmptry0.close($ceylontmpex1);
             }
         }
@@ -58,6 +59,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
                         if ($ceylontmpex5 != null) try {
                             $ceylontmptry4.close($ceylontmpex5);
                         } catch (final .java.lang.Exception $ceylontmpclosex7) {
+                            $ceylontmpex5.addSuppressed($ceylontmpclosex7);
                         } else $ceylontmptry4.close($ceylontmpex5);
                     }
                 } catch (final .java.lang.Exception $ceylontmpex10) {
@@ -67,6 +69,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
                     if ($ceylontmpex9 != null) try {
                         $ceylontmptry8.close($ceylontmpex9);
                     } catch (final .java.lang.Exception $ceylontmpclosex11) {
+                        $ceylontmpex9.addSuppressed($ceylontmpclosex11);
                     } else $ceylontmptry8.close($ceylontmpex9);
                 }
             } catch (final .java.lang.Exception $ceylontmpex14) {
@@ -76,6 +79,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
                 if ($ceylontmpex13 != null) try {
                     $ceylontmptry12.close($ceylontmpex13);
                 } catch (final .java.lang.Exception $ceylontmpclosex15) {
+                    $ceylontmpex13.addSuppressed($ceylontmpclosex15);
                 } else $ceylontmptry12.close($ceylontmpex13);
             }
         }
