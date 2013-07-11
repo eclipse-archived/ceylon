@@ -234,17 +234,10 @@ public class AppliedClassOrInterfaceType<Type>
         final FreeAttribute value = declaration.findValue(name);
         if(value == null)
             return null;
-        final com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
-        final ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
-        
-        return new AppliedMember<SubType, Kind>($reifiedSubType, $reifiedKind/*, (AppliedClassOrInterfaceType<SubType>) this*/){
-            @Override
-            protected Kind bindTo(Object instance) {
-                return (Kind) (decl.isVariable() 
-                    ? new AppliedVariable(null, value, valueType, instance) 
-                    : new AppliedValue(null, value, valueType, instance));
-            }
-        };
+        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
+        ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
+        TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(valueType);
+        return new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType);
     }
     
     @Override
