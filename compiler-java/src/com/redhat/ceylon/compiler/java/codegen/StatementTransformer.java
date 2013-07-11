@@ -1743,11 +1743,13 @@ public class StatementTransformer extends AbstractTransformer {
                 JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "close"), List.<JCExpression>of(exarg));
                 JCBlock closeTryBlock = make().Block(0, List.<JCStatement>of(make().Exec(closeCall)));
                 
-                // try { $var.close() } catch (Exception ex) { }
+                // try { $var.close() } catch (Exception closex) { $tmpex.addSuppressed(closex); }
                 Name closeCatchVarName = naming.tempName("closex");
                 JCExpression closeCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
                 JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
-                JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>nil()));
+                JCExpression addarg = make().Ident(closeCatchVarName);
+                JCMethodInvocation addSuppressedCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(innerExTmpVarName), "addSuppressed"), List.<JCExpression>of(addarg));
+                JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>of(make().Exec(addSuppressedCall))));
                 JCTry closeTry = at(res).Try(closeTryBlock, List.<JCCatch>of(closeCatch), null);
                 
                 // $var.close() /// ((Closeable)$var).close()
