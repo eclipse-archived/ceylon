@@ -11,10 +11,18 @@ class ConstantConditions() {
     }
     String whileTrue() {
         while (true) {
-            if (false) {
+            if (1==0) {
                 return "definitely";
             }
         }
+    }
+    String whileTrueBreak() {
+        while (true) {
+            if (1==0) {
+                break;
+            }
+        }
+        return "definitely";
     }
     String assertFalse() {
         assert (false);

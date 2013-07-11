@@ -323,9 +323,11 @@ public class ControlFlowVisitor extends Visitor {
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         that.getWhileClause().visit(this);
+        boolean definitelyDoesNotExitFromWhile = !exitedFromLoop;
         endDefiniteReturnScope(d);
         endLoop(b);
-        if (isAlwaysSatisfied(that.getWhileClause().getConditionList())) {
+        if (definitelyDoesNotExitFromWhile &&
+                isAlwaysSatisfied(that.getWhileClause().getConditionList())) {
             definitelyReturns = true;
         }
     }
