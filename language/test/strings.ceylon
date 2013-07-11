@@ -389,4 +389,6 @@ shared void strings() {
     check("cc" == "abccba".trimCharacters("ab"), "trimCharacters(ab) ``"abccba".trimCharacters("ab")``");
     check("bccb" == "abccba".trimCharacters("ac"), "trimCharacters(ac) ``"abccba".trimCharacters("ac")``");
     check("abccba" == "abccba".trimCharacters("x"), "trimCharacters(x) ``"abccba".trimCharacters("x")``");
+    
+    check(String({'a', 'b', 'c'})=="abc", "String() of Character iterable");
 }
