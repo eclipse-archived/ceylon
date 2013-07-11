@@ -299,8 +299,8 @@ shared void strings() {
     compareIterables({"", "", "a", "", "b", "", ""}, "//a//b//".split((Character c) => c=='/', true, false), "//a//b//");
     compareIterables({"", "", "a", "", "b", "", ""}, "/?a/&b#/".split((Character c) => c in "/&#?", true, false), "/?a/&b#/ no tokens");
     compareIterables({"", "/", "", "?", "a", "/", "", "&", "b", "#", "", "/", ""}, "/?a/&b#/".split((Character c) => c in "/&#?", false, false), "/?a/&b#/ with tokens");
-    compareIterables({"��������", "����"}, "�������� ����".split((Character c) => c==' ', true), "High-surrogate Unicode string");
-    compareIterables({"����", "����", ""}, "����������������".split((Character c) => c in "��������", true), "High-surrogate Unicode delimiters");
+    compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) => c==' ', true), "High-surrogate Unicode string");
+    compareIterables({"𐒄", "𐒁", ""}, "𐒄𐒅𐒁𐒕".split((Character c) => c in "𐒅𐒕", true), "High-surrogate Unicode delimiters");
     
     check("".reversed=="", "string reversed 1");
     check("x".reversed=="x", "string reversed 2");
