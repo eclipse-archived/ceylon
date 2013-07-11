@@ -176,6 +176,11 @@
         namespace <literal>java</literal> is reserved for modules 
         belonging to the Java SDK.</para>
         
+        <para>It is highly recommended, but not required, that every 
+        user-written module have at least three identifiers in its name. 
+        Therefore, <literal>org.hibernate.orm</literal> is strongly
+        preferred to <literal>org.hibernate</literal>.</para>
+        
         <para>Any package whose name begins with the module name belongs
         to the module, for example, the packages:</para>
 
