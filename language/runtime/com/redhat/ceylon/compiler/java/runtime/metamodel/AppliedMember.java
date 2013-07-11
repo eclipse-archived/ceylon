@@ -16,25 +16,25 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     @TypeParameter(value = "Type", variance = Variance.IN),
     @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.metamodel::DeclarationType")
 })
-public abstract class AppliedMember<Type, Declaration extends ceylon.language.metamodel.DeclarationType> 
-    implements ceylon.language.metamodel.Member<Type, Declaration>, ReifiedType {
+public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel.DeclarationType> 
+    implements ceylon.language.metamodel.Member<Type, Kind>, ReifiedType {
 
 //    private AppliedClassOrInterfaceType<Type> container;
     @Ignore
-    private TypeDescriptor $reifiedDeclaration;
+    private TypeDescriptor $reifiedKind;
     @Ignore
     private TypeDescriptor $reifiedType;
 
-    public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedDeclaration/*,
+    public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind/*,
                          AppliedClassOrInterfaceType<Type> container*/){
         this.$reifiedType = $reifiedType;
-        this.$reifiedDeclaration = $reifiedDeclaration;
+        this.$reifiedKind = $reifiedKind;
 //        this.container = container;
     }
     
     @Override
     @Ignore
-    public Member$impl<Type, Declaration> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Type, Kind> $ceylon$language$metamodel$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -46,29 +46,29 @@ public abstract class AppliedMember<Type, Declaration extends ceylon.language.me
 //    }
 
     @Override
-    public Declaration $call() {
+    public Kind $call() {
         throw new UnsupportedOperationException();
     }
 
-    protected abstract Declaration bindTo(Object instance);
+    protected abstract Kind bindTo(Object instance);
     
     @Override
-    public Declaration $call(Object instance) {
+    public Kind $call(Object instance) {
         return bindTo(instance);
     }
 
     @Override
-    public Declaration $call(Object arg0, Object arg1) {
+    public Kind $call(Object arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Declaration $call(Object arg0, Object arg1, Object arg2) {
+    public Kind $call(Object arg0, Object arg1, Object arg2) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Declaration $call(Object... args) {
+    public Kind $call(Object... args) {
         throw new UnsupportedOperationException();
     }
 
@@ -79,6 +79,6 @@ public abstract class AppliedMember<Type, Declaration extends ceylon.language.me
 
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(AppliedMember.class, $reifiedType, $reifiedDeclaration);
+        return TypeDescriptor.klass(AppliedMember.class, $reifiedType, $reifiedKind);
     }
 }
