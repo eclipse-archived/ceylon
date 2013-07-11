@@ -48,6 +48,7 @@ import com.sun.tools.javac.util.ListBuffer;
 
 class AnnotationInvocationVisitor extends Visitor {
 
+    private final Node errorNode;
     private final ExpressionTransformer exprGen;
     private final Class annotationClass;
     private final Method annotationConstructor;
@@ -59,6 +60,7 @@ class AnnotationInvocationVisitor extends Visitor {
 
     public AnnotationInvocationVisitor(
             ExpressionTransformer expressionTransformer, Tree.InvocationExpression invocation) {
+        this.errorNode = invocation;
         exprGen = expressionTransformer;
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof Method) {
@@ -233,7 +235,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 memberName = exprGen.naming.makeUnquotedIdent(
                 exprGen.naming.selector(this.parameter, Naming.NA_ANNOTATION_MEMBER));
             } else {
-                memberName = exprGen.makeErroneous();
+                memberName = exprGen.makeErroneous(errorNode);
             }
             annotationArguments.append(exprGen.make().Assign(
                     memberName, expr));

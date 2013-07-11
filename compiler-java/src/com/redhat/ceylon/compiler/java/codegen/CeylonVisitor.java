@@ -614,7 +614,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     /**
-     * Asserts that there's a single result, and returns it
+     * Returns the single result, or null if there was more than one result
      * @return The result
      * 
      * @see #getResult()
@@ -622,7 +622,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     @SuppressWarnings("unchecked")
     public <K extends JCTree> K getSingleResult() {
         if (defs.size() != 1) {
-            return (K) gen.makeErroneous();
+            return null;
         }
         return (K) defs.first();
     }

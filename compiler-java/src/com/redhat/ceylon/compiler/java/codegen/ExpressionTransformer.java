@@ -319,8 +319,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 term.visit(v);
                 if (v.hasResult()) {
                     result = v.getSingleResult();
+                    if (result == null) {
+                        result = makeErroneous(term, "Visitor yielded multiple results");
+                    }
                 } else {
-                    result = makeErroneous();
+                    result = makeErroneous(term, "Visitor didn't yield a result");
                 }
             } finally {
                 v.classBuilder = prevClassBuilder;
@@ -1496,7 +1499,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (loseComparison) {
             actualOperator = Operators.OperatorTranslation.BINARY_COMPARE;
             if (actualOperator == null) {
-                return makeErroneous();
+                return makeErroneous(rightTerm, "Null OperatorTranslation");
             }
         }
 
@@ -3009,7 +3012,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // do not throw, an error will already have been reported
         Declaration decl = expr.getDeclaration();
         if (decl == null) {
-            return makeErroneous();
+            return makeErroneous(expr, "Null declaration");
         }
         
         // Try to find the original declaration, in case we have conditionals that refine the type of objects without us
@@ -3337,7 +3340,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 args = List.of(start, end);
             } else {
                 method = "unknown";
-                args = List.<JCExpression>of(makeErroneous());
+                args = List.<JCExpression>of(makeErroneous(range, "unhandled range"));
             }
 
             // Because tuple open span access has the type of the indexed element
