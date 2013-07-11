@@ -432,7 +432,7 @@ public class Util {
                                 for (ProducedType t: list) {
                                     if (t.getSupertype(ct)!=null) {
                                         list.clear();
-                                        list.add( new NothingType(unit).getType() );
+                                        list.add(new NothingType(unit).getType());
                                         return;
                                     }
                                 }
@@ -460,7 +460,9 @@ public class Util {
                     }
                     else if (pt.getDeclaration() instanceof ClassOrInterface && 
                             t.getDeclaration() instanceof ClassOrInterface && 
-                            pt.getDeclaration().equals(t.getDeclaration()) ) {
+                            pt.getDeclaration().equals(t.getDeclaration()) &&
+                            !pt.containsUnknowns() &&
+                            !t.containsUnknowns()) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         ProducedType pi = principalInstantiation(pt.getDeclaration(), pt, t, unit);
                         if (!pi.containsUnknowns()) {
@@ -556,7 +558,8 @@ public class Util {
         if (pd.isFinal()|!pd.isExtendable()) {
             if (pd.getTypeParameters().isEmpty() &&
                     !q.containsTypeParameters() &&
-                    !p.isSubtypeOf(q)) {
+                    !p.isSubtypeOf(q) &&
+                    !(qd instanceof UnknownType)) {
             	return true;
             }
             if (qd instanceof ClassOrInterface &&
@@ -567,7 +570,8 @@ public class Util {
         if (qd.isFinal()|!qd.isExtendable()) { 
             if (qd.getTypeParameters().isEmpty() &&
                     !p.containsTypeParameters() &&
-                    !q.isSubtypeOf(p)) {
+                    !q.isSubtypeOf(p) &&
+                    !(pd instanceof UnknownType)) {
             	return true;
             }
             if (pd instanceof ClassOrInterface &&
