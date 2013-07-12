@@ -370,6 +370,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                         }
                     }
                 }
+                setAnnotations(param, (Map<String,List<String>>)p.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 plist.getParameters().add(param);
             }
         }
