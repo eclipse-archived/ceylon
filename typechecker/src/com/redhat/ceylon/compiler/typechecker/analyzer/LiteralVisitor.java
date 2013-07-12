@@ -176,7 +176,16 @@ public class LiteralVisitor extends Visitor {
                         node.addError("illegal unicode escape sequence: '" + 
                                 hex + "' is not a hexadecimal number");
                     }
-                    result.replace(m.start(), m.end(), new String(toChars(codePoint)));
+                    char[] chars;
+                    try {
+                        chars = toChars(codePoint);
+                    }
+                    catch (IllegalArgumentException iae) {
+                        node.addError("illegal unicode escape sequence: '" + 
+                                hex + "' is not a valid Unicode code point");
+                        continue;
+                    }
+                    result.replace(m.start(), m.end(), new String(chars));
                 }
             }
             else {
