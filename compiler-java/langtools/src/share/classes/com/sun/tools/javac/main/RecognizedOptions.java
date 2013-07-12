@@ -422,6 +422,7 @@ public class RecognizedOptions {
             public boolean process(Options options, String option, String operand) {
                 try {
                     Charset.forName(operand);
+                    options.put(option, operand);
                     return false;
                 } catch (UnsupportedCharsetException e) {
                     helper.error("err.unsupported.encoding", operand);
