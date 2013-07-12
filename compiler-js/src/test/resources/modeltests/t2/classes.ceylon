@@ -1,6 +1,6 @@
 //Test classes for metamodel generation
 class SimpleClass1() {}
-shared abstract class SimpleClass2(String name) {}
+shared abstract class SimpleClass2(shared String name) {}
 class SimpleClass3() extends Object() {
     shared actual Boolean equals(Object other) { return false; }
     shared actual Integer hash { return 0; }
@@ -11,9 +11,7 @@ shared class Satisfy1() satisfies Comparable<Satisfy1> {
     shared actual Comparison compare(Satisfy1 other) { return equal; }
 }
 shared class Satisfy2() satisfies Iterable<Integer> & Cloneable<Satisfy2> {
-	shared actual Iterator<Integer> iterator {
-		return {1}.iterator;
-	}
+	iterator() => {1}.iterator();
 	shared actual Satisfy2 clone { return this; }
 }
 class ParmTypes1<Element>(Element x) {}
@@ -26,9 +24,7 @@ class ParmTypes3<Type1,Type2>(Type1 a1, Type2 a2)
 }
 class ParmTypes4<out Element>(Element* elems) satisfies Iterable<Element> {
 	shared Element? primero = elems.first;
-	shared actual Iterator<Element> iterator {
-		return elems.iterator;
-	}
+	iterator() => elems.iterator();
 }
 shared class Nested1() {
   shared class Nested2() {
@@ -49,12 +45,8 @@ shared abstract class Algebraic2(name)
     shared String name;
 }
 shared object algobj1 extends Algebraic2("one") satisfies Iterable<Integer> {
-    shared actual Iterator<Integer> iterator {
-        return {1,2,3}.iterator;
-    }
+    iterator() => {1,2,3}.iterator();
 }
 shared object algobj2 extends Algebraic2("two") satisfies Iterable<Integer> {
-    shared actual Iterator<Integer> iterator {
-        return {4,5,6}.iterator;
-    }
+    shared actual Iterator<Integer> iterator() => {4,5,6}.iterator();
 }
