@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.DeclarationType$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.FunctionType$impl;
 import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Function$impl;
@@ -45,7 +45,7 @@ public class FreeFunctionWithType<Type, Arguments extends Sequential<? extends O
 
     @Override
     @Ignore
-    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
+    public Model$impl $ceylon$language$metamodel$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }

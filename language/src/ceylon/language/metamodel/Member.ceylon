@@ -1,6 +1,6 @@
 shared interface Member<in Type, out Kind> 
         satisfies Kind(Type)
-        given Kind satisfies DeclarationType {
+        given Kind satisfies Model {
     
 //    shared formal ClassOrInterface<Type> declaringClassOrInterface;
 }

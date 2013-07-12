@@ -5,7 +5,7 @@ import java.util.List;
 
 import ceylon.language.metamodel.Attribute$impl;
 import ceylon.language.metamodel.AttributeType$impl;
-import ceylon.language.metamodel.DeclarationType$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
@@ -70,7 +70,7 @@ public class FreeAttributeWithMember<Container, Type>
 
     @Override
     @Ignore
-    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
+    public Model$impl $ceylon$language$metamodel$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }

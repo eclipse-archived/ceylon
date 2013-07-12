@@ -14,9 +14,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.IN),
-    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.metamodel::DeclarationType")
+    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.metamodel::Model")
 })
-public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel.DeclarationType> 
+public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel.Model> 
     implements ceylon.language.metamodel.Member<Type, Kind>, ReifiedType {
 
 //    private AppliedClassOrInterfaceType<Type> container;

@@ -7,7 +7,7 @@ import ceylon.language.metamodel {
 
 // FIXME it's not a type so let's find a better name
 shared interface FunctionType<out Type, in Arguments>
-        satisfies DeclarationType
+        satisfies Model
         given Arguments satisfies Anything[] {
     
     shared formal actual FunctionDeclaration declaration;

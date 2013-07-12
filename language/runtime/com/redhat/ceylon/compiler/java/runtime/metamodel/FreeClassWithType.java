@@ -10,7 +10,7 @@ import ceylon.language.metamodel.Class$impl;
 import ceylon.language.metamodel.ClassType$impl;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
-import ceylon.language.metamodel.DeclarationType$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Interface;
 import ceylon.language.metamodel.Member;
@@ -65,7 +65,7 @@ public class FreeClassWithType<Type, Arguments extends Sequential<? extends Obje
 
     @Override
     @Ignore
-    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
+    public Model$impl $ceylon$language$metamodel$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }

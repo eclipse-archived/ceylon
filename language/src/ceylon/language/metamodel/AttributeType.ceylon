@@ -7,7 +7,7 @@ import ceylon.language.metamodel {
 
 // FIXME it's not a type so let's find a better name
 shared interface AttributeType<out Type>
-        satisfies DeclarationType {
+        satisfies Model {
 
     shared formal actual AttributeDeclaration declaration;
     
