@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.metamodel.Interface$impl;
+import ceylon.language.metamodel.InterfaceType$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -27,6 +28,13 @@ public class AppliedInterfaceType<Type>
     @Override
     @Ignore
     public Interface$impl<Type> $ceylon$language$metamodel$Interface$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public InterfaceType$impl<Type> $ceylon$language$metamodel$InterfaceType$impl() {
         // TODO Auto-generated method stub
         return null;
     }

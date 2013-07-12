@@ -12,6 +12,7 @@ import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.DeclarationType$impl;
 import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Interface$impl;
+import ceylon.language.metamodel.InterfaceType$impl;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Type$impl;
 import ceylon.language.metamodel.declaration.InterfaceDeclaration;
@@ -59,6 +60,13 @@ public class FreeInterfaceWithType<Type>
     @Override
     @Ignore
     public Type$impl $ceylon$language$metamodel$Type$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public InterfaceType$impl<Type> $ceylon$language$metamodel$InterfaceType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
