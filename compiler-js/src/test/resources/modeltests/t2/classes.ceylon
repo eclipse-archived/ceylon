@@ -3,7 +3,7 @@ class SimpleClass1() {}
 shared abstract class SimpleClass2(shared String name) {}
 class SimpleClass3() extends Object() {
     shared actual Boolean equals(Object other) { return false; }
-    shared actual Integer hash { return 0; }
+    hash => 0;
 }
 shared class SimpleClass4(Integer x=1) extends SimpleClass2("simple4") {
 }
