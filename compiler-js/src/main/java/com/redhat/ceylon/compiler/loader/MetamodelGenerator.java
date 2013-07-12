@@ -288,6 +288,7 @@ public class MetamodelGenerator {
                     //This could be compiled to JS...
                     pm.put(ANN_DEFAULT, parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
                 }*/
+                encodeAnnotations(parm, pm);
                 p.add(pm);
             }
             return p;
