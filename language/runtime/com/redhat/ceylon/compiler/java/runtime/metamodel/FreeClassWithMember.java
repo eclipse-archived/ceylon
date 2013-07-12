@@ -1,12 +1,20 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.Collections;
-import java.util.List;
-
+import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.ClassOrInterface;
+import ceylon.language.metamodel.ClassOrInterface$impl;
+import ceylon.language.metamodel.ClassType$impl;
+import ceylon.language.metamodel.DeclarationType$impl;
+import ceylon.language.metamodel.Function;
+import ceylon.language.metamodel.Interface;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Member$impl;
+import ceylon.language.metamodel.MemberClass;
+import ceylon.language.metamodel.MemberClass$impl;
+import ceylon.language.metamodel.Type$impl;
+import ceylon.language.metamodel.Value;
+import ceylon.language.metamodel.declaration.ClassDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -15,36 +23,77 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
-    @TypeParameter(value = "Type"),
-    @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::DeclarationType")
+    @TypeParameter(value = "Container", variance = Variance.IN),
+    @TypeParameter(value = "Type", variance = Variance.OUT),
+    @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
 })
-public class FreeClassWithMember<Type, Declaration extends ceylon.language.metamodel.DeclarationType> 
+public class FreeClassWithMember<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends FreeClass
-    implements ceylon.language.metamodel.Member<Type, Declaration> {
+    implements ceylon.language.metamodel.MemberClass<Container, Type, Arguments> {
 
-    private AppliedMember<Type, Declaration> memberDelegate;
+    private MemberClass<Container, Type, Arguments> memberDelegate;
+    @Ignore
+    private TypeDescriptor $reifiedContainer;
     @Ignore
     private TypeDescriptor $reifiedType;
     @Ignore
-    private TypeDescriptor $reifiedDeclaration;
+    private TypeDescriptor $reifiedArguments;
 
-    public FreeClassWithMember(@Ignore TypeDescriptor $reifiedType,
-            @Ignore TypeDescriptor $reifiedDeclaration,
+    public FreeClassWithMember(@Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedType,
+            @Ignore TypeDescriptor $reifiedArguments,
             Class declaration) {
         super(declaration);
+        this.$reifiedContainer = $reifiedContainer;
+        this.$reifiedType = $reifiedType;
+        this.$reifiedArguments = $reifiedArguments;
     }
 
     @Override
     @Ignore
-    public Member$impl<Type, Declaration> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Container, ceylon.language.metamodel.Class<? extends Type, ? super Arguments>> $ceylon$language$metamodel$Member$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public ClassType$impl<Type, Arguments> $ceylon$language$metamodel$ClassType$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public Type$impl $ceylon$language$metamodel$Type$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public MemberClass$impl<Container, Type, Arguments> $ceylon$language$metamodel$MemberClass$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public ClassOrInterface$impl<Type> $ceylon$language$metamodel$ClassOrInterface$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -52,52 +101,40 @@ public class FreeClassWithMember<Type, Declaration extends ceylon.language.metam
     @Override
     protected void init() {
         super.init();
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
-        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
-        final ProducedType appliedType = declaration.getProducedReference(container.getType(), producedTypes).getType();
-        this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(container.getType());
-        TypeDescriptor classType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedType);
-        this.$reifiedDeclaration = TypeDescriptor.klass(ceylon.language.metamodel.Class.class, classType, reifiedArguments);
-        memberDelegate = new AppliedMember<Type, Declaration>($reifiedType, $reifiedDeclaration){
-            @Override
-            protected Declaration bindTo(Object instance) {
-                return (Declaration) new AppliedClassType(null, null, appliedType, instance);
-            }
-        };
+        memberDelegate = new AppliedMemberClass($reifiedContainer, $reifiedType, $reifiedArguments, ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getType());
     }
     
     @Override
     @Ignore
-    public Declaration $call() {
+    public ceylon.language.metamodel.Class<? extends Type, ? super Arguments> $call() {
         checkInit();
         return memberDelegate.$call();
     }
 
     @Override
     @Ignore
-    public Declaration $call(Object arg0) {
+    public ceylon.language.metamodel.Class<? extends Type, ? super Arguments> $call(Object arg0) {
         checkInit();
         return memberDelegate.$call(arg0);
     }
 
     @Override
     @Ignore
-    public Declaration $call(Object arg0, Object arg1) {
+    public ceylon.language.metamodel.Class<? extends Type, ? super Arguments> $call(Object arg0, Object arg1) {
         checkInit();
         return memberDelegate.$call(arg0, arg1);
     }
 
     @Override
     @Ignore
-    public Declaration $call(Object arg0, Object arg1, Object arg2) {
+    public ceylon.language.metamodel.Class<? extends Type, ? super Arguments> $call(Object arg0, Object arg1, Object arg2) {
         checkInit();
         return memberDelegate.$call(arg0, arg1, arg2);
     }
 
     @Override
     @Ignore
-    public Declaration $call(Object... args) {
+    public ceylon.language.metamodel.Class<? extends Type, ? super Arguments> $call(Object... args) {
         checkInit();
         return memberDelegate.$call(args);
     }
@@ -128,8 +165,86 @@ public class FreeClassWithMember<Type, Declaration extends ceylon.language.metam
     }
     
     @Override
+    @TypeInfo("ceylon.language.metamodel.declaration::ClassDeclaration")
+    public ClassDeclaration getDeclaration() {
+        return this;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Member<SubType,Kind>")
+    @TypeParameters({ 
+        @TypeParameter(value = "SubType"), 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Value<ceylon.language::Anything>") 
+    })
+    public <SubType, Kind extends Value<? extends Object>> Member<? super SubType, ? extends Kind> getAttribute(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2) {
+        return memberDelegate.getAttribute(arg0, arg1, arg2);
+    }
+
+    @Override
+    @Ignore
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<? super SubType, ? extends Kind> getClassOrInterface(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        return memberDelegate.getClassOrInterface(arg0, arg1, arg2);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Member<SubType,Kind>")
+    @TypeParameters({ 
+        @TypeParameter(value = "SubType"), 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    })
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<? super SubType, ? extends Kind> getClassOrInterface(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2, @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") Sequential<? extends ceylon.language.metamodel.Type> arg3) {
+        return memberDelegate.getClassOrInterface(arg0, arg1, arg2, arg3);
+    }
+
+    @Override
+    @Ignore
+    public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.metamodel.Type> getClassOrInterface$types(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        return memberDelegate.getClassOrInterface$types(arg0, arg1, arg2);
+    }
+
+    @Override
+    @Ignore
+    public <SubType, Kind extends Function> Member<? super SubType, ? extends Kind> getFunction(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        return memberDelegate.getFunction(arg0, arg1, arg2);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Member<SubType,Kind>")
+    @TypeParameters({ 
+        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Function<ceylon.language::Anything,ceylon.language::Nothing>")
+    })
+    public <SubType, Kind extends Function> Member<? super SubType, ? extends Kind> getFunction(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2, @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") Sequential<? extends ceylon.language.metamodel.Type> arg3) {
+        return memberDelegate.getFunction(arg0, arg1, arg2, arg3);
+    }
+
+    @Override
+    @Ignore
+    public <SubType, Kind extends Function> Sequential<? extends ceylon.language.metamodel.Type> getFunction$types(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        return memberDelegate.getFunction$types(arg0, arg1, arg2);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Interface<ceylon.language::Anything>>")
+    public Sequential<? extends Interface<? extends Object>> getInterfaces() {
+        return memberDelegate.getInterfaces();
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Class<ceylon.language::Anything,ceylon.language::Nothing>")
+    public ceylon.language.metamodel.Class getSuperclass() {
+        return memberDelegate.getSuperclass();
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.metamodel.declaration::TypeParameter,ceylon.language.metamodel::Type>")
+    public Map<? extends ceylon.language.metamodel.declaration.TypeParameter, ? extends ceylon.language.metamodel.Type> getTypeArguments() {
+        return memberDelegate.getTypeArguments();
+    }
+
+    @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(FreeClassWithMember.class, $reifiedType, $reifiedDeclaration);
+        return TypeDescriptor.klass(FreeClassWithMember.class, $reifiedContainer, $reifiedType, $reifiedArguments);
     }
 }

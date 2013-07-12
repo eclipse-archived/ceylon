@@ -8,7 +8,7 @@ import ceylon.language.metamodel {
 }
 
 shared interface ClassOrInterface<out Type> 
-    of Class<Type, Nothing> | Interface<Type>
+    of ClassType<Type, Nothing> | Interface<Type>
     satisfies DeclarationType & ClosedType {
     
     shared formal actual ClassOrInterfaceDeclaration declaration;
@@ -16,6 +16,7 @@ shared interface ClassOrInterface<out Type>
     // FIXME: turn that into an interface and add to Function too
     shared formal Map<TypeParameter, ClosedType> typeArguments;
     
+    // FIXME: ClassType probably?
     shared formal Class<Anything, Nothing>? superclass;
     
     shared formal Interface<Anything>[] interfaces;

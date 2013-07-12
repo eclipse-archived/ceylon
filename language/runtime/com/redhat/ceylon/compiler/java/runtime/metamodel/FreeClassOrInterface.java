@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
@@ -269,15 +270,18 @@ public abstract class FreeClassOrInterface
                                                                             Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                             AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        final ProducedType appliedType = declaration.getProducedReference(container.producedType, producedTypes).getType();
-        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind/*, container*/){
-            @Override
-            protected Kind bindTo(Object instance) {
-                return (Kind) (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface 
-                        ? new AppliedInterfaceType(null, appliedType)
-                        : new AppliedClassType(null, null, appliedType, instance));
-            }
-        };
+        ProducedReference producedReference = declaration.getProducedReference(container.producedType, producedTypes);
+        final ProducedType appliedType = producedReference.getType();
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+            // FIXME
+            return null;
+        }else{
+            TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), 
+                    (com.redhat.ceylon.compiler.typechecker.model.Class)declaration, 
+                    producedReference);
+            return new AppliedMemberClass($reifiedType, reifiedType, reifiedArguments, appliedType);
+        }
     }
 
     @Override
