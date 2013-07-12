@@ -6,7 +6,7 @@ import java.util.List;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Function;
-import ceylon.language.metamodel.FunctionType$impl;
+import ceylon.language.metamodel.FunctionModel$impl;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.Method$impl;
@@ -63,7 +63,7 @@ public class FreeFunctionWithMember<Container, Type, Arguments extends Sequentia
 
     @Override
     @Ignore
-    public FunctionType$impl<Type, Arguments> $ceylon$language$metamodel$FunctionType$impl() {
+    public FunctionModel$impl<Type, Arguments> $ceylon$language$metamodel$FunctionModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -3,7 +3,7 @@ import ceylon.language.metamodel.declaration {
 }
 
 shared interface Model of ClassOrInterface<Anything>
-                        | FunctionType<Anything, Nothing> 
+                        | FunctionModel<Anything, Nothing> 
                         | AttributeModel<Anything> {
     
     shared formal TopLevelOrMemberDeclaration declaration;

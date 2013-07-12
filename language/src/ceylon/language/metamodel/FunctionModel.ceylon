@@ -5,8 +5,7 @@ import ceylon.language.metamodel {
     ClosedType = Type
 }
 
-// FIXME it's not a type so let's find a better name
-shared interface FunctionType<out Type, in Arguments>
+shared interface FunctionModel<out Type, in Arguments>
         satisfies Model
         given Arguments satisfies Anything[] {
     
