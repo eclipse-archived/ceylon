@@ -244,6 +244,7 @@ public class FreeClassWithType<Type, Arguments extends Sequential<? extends Obje
 
     @Override
     public TypeDescriptor $getType() {
+        checkInit();
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();
         return TypeDescriptor.klass(FreeClassWithType.class, args[0], args[1]);

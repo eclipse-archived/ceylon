@@ -199,6 +199,7 @@ public class FreeInterfaceWithType<Type>
 
     @Override
     public TypeDescriptor $getType() {
+        checkInit();
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();
         return TypeDescriptor.klass(FreeInterfaceWithType.class, args[0]);

@@ -177,12 +177,14 @@ public class FreeClassWithMember<Container, Type, Arguments extends Sequential<?
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Value<ceylon.language::Anything>") 
     })
     public <SubType, Kind extends Value<? extends Object>> Member<? super SubType, ? extends Kind> getAttribute(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2) {
+        checkInit();
         return memberDelegate.getAttribute(arg0, arg1, arg2);
     }
 
     @Override
     @Ignore
     public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<? super SubType, ? extends Kind> getClassOrInterface(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        checkInit();
         return memberDelegate.getClassOrInterface(arg0, arg1, arg2);
     }
 
@@ -193,18 +195,21 @@ public class FreeClassWithMember<Container, Type, Arguments extends Sequential<?
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
     })
     public <SubType, Kind extends ClassOrInterface<? extends Object>> Member<? super SubType, ? extends Kind> getClassOrInterface(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2, @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") Sequential<? extends ceylon.language.metamodel.Type> arg3) {
+        checkInit();
         return memberDelegate.getClassOrInterface(arg0, arg1, arg2, arg3);
     }
 
     @Override
     @Ignore
     public <SubType, Kind extends ClassOrInterface<? extends Object>> Sequential<? extends ceylon.language.metamodel.Type> getClassOrInterface$types(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        checkInit();
         return memberDelegate.getClassOrInterface$types(arg0, arg1, arg2);
     }
 
     @Override
     @Ignore
     public <SubType, Kind extends Function> Member<? super SubType, ? extends Kind> getFunction(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        checkInit();
         return memberDelegate.getFunction(arg0, arg1, arg2);
     }
 
@@ -215,30 +220,35 @@ public class FreeClassWithMember<Container, Type, Arguments extends Sequential<?
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Function<ceylon.language::Anything,ceylon.language::Nothing>")
     })
     public <SubType, Kind extends Function> Member<? super SubType, ? extends Kind> getFunction(@Ignore TypeDescriptor arg0, @Ignore TypeDescriptor arg1, @Name("name") @TypeInfo("ceylon.language::String") String arg2, @Name("types") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") Sequential<? extends ceylon.language.metamodel.Type> arg3) {
+        checkInit();
         return memberDelegate.getFunction(arg0, arg1, arg2, arg3);
     }
 
     @Override
     @Ignore
     public <SubType, Kind extends Function> Sequential<? extends ceylon.language.metamodel.Type> getFunction$types(TypeDescriptor arg0, TypeDescriptor arg1, String arg2) {
+        checkInit();
         return memberDelegate.getFunction$types(arg0, arg1, arg2);
     }
 
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Interface<ceylon.language::Anything>>")
     public Sequential<? extends Interface<? extends Object>> getInterfaces() {
+        checkInit();
         return memberDelegate.getInterfaces();
     }
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language.metamodel::Class<ceylon.language::Anything,ceylon.language::Nothing>")
     public ceylon.language.metamodel.Class getSuperclass() {
+        checkInit();
         return memberDelegate.getSuperclass();
     }
 
     @Override
     @TypeInfo("ceylon.language::Map<ceylon.language.metamodel.declaration::TypeParameter,ceylon.language.metamodel::Type>")
     public Map<? extends ceylon.language.metamodel.declaration.TypeParameter, ? extends ceylon.language.metamodel.Type> getTypeArguments() {
+        checkInit();
         return memberDelegate.getTypeArguments();
     }
 
