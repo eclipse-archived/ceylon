@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.Value$impl;
 import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.AttributeType$impl;
+import ceylon.language.metamodel.AttributeModel$impl;
 import ceylon.language.metamodel.Variable;
 import ceylon.language.metamodel.Variable$impl;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
@@ -43,7 +43,7 @@ public class FreeVariableWithType<Type>
 
     @Override
     @Ignore
-    public AttributeType$impl<Type> $ceylon$language$metamodel$AttributeType$impl() {
+    public AttributeModel$impl<Type> $ceylon$language$metamodel$AttributeModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }

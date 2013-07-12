@@ -1,6 +1,6 @@
 
 shared interface Value<out Type>
-        satisfies AttributeType<Type> {
+        satisfies AttributeModel<Type> {
 
     shared formal Type get();
 }
