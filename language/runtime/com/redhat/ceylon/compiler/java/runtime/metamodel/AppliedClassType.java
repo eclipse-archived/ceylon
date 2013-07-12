@@ -10,7 +10,7 @@ import java.util.List;
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Class$impl;
-import ceylon.language.metamodel.ClassType$impl;
+import ceylon.language.metamodel.ClassModel$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -56,7 +56,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
 
     @Override
     @Ignore
-    public ClassType$impl<Type, Arguments> $ceylon$language$metamodel$ClassType$impl() {
+    public ClassModel$impl<Type, Arguments> $ceylon$language$metamodel$ClassModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }

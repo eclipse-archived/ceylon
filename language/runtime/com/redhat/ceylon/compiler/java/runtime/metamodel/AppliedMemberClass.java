@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Class;
-import ceylon.language.metamodel.ClassType$impl;
+import ceylon.language.metamodel.ClassModel$impl;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.MemberClass$impl;
 import ceylon.language.metamodel.declaration.ClassDeclaration;
@@ -32,7 +32,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
 
     @Override
     @Ignore
-    public ClassType$impl<Type, Arguments> $ceylon$language$metamodel$ClassType$impl() {
+    public ClassModel$impl<Type, Arguments> $ceylon$language$metamodel$ClassModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
