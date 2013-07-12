@@ -6,7 +6,7 @@ import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
 import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Function;
-import ceylon.language.metamodel.InterfaceType$impl;
+import ceylon.language.metamodel.InterfaceModel$impl;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.MemberInterface;
@@ -59,7 +59,7 @@ public class FreeInterfaceWithMember<Container, Type>
 
     @Override
     @Ignore
-    public InterfaceType$impl<Type> $ceylon$language$metamodel$InterfaceType$impl() {
+    public InterfaceModel$impl<Type> $ceylon$language$metamodel$InterfaceModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
