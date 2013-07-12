@@ -8,6 +8,7 @@ public abstract class Parameter extends TypedDeclaration {
     private Declaration declaration;
     private boolean captured = false;
     private Parameter aliasedParameter = this;
+    private boolean atLeastOne = false;
     
     @Override
     public boolean isCaptured() {
@@ -32,6 +33,14 @@ public abstract class Parameter extends TypedDeclaration {
     
     public void setSequenced(boolean sequenced) {
         this.sequenced = sequenced;
+    }
+    
+    public boolean isAtLeastOne() {
+        return atLeastOne;
+    }
+    
+    public void setAtLeastOne(boolean atLeastOne) {
+        this.atLeastOne = atLeastOne;
     }
     
     public Declaration getDeclaration() {

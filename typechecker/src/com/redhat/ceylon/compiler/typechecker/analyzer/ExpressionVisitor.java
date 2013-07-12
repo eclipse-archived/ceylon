@@ -656,6 +656,7 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType tupleType = ct.getTypeArgumentList().get(1);
                         List<ProducedType> argTypes = unit.getTupleElementTypes(tupleType);
                         boolean variadic = unit.isTupleLengthUnbounded(tupleType);
+                        boolean atLeastOne = unit.isTupleVariantAtLeastOne(tupleType);
                         List<Tree.Parameter> params = pl.getParameters();
                         if (argTypes.size()!=params.size()) {
                             pl.addError("wrong number of declared parameters: must have " + argTypes.size() + " parameters");
@@ -671,11 +672,18 @@ public class ExpressionVisitor extends Visitor {
                         if (!params.isEmpty()) {
                             Tree.Parameter lastParam = params.get(params.size()-1);
                             boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
+                            boolean refAtLeastOne = lastParam.getDeclarationModel().isAtLeastOne();
                             if (refSequenced && !variadic) {
                                 lastParam.addError("parameter list in referenced declaration does not have a variadic parameter");
                             }
-                            if (!refSequenced && variadic) {
+                            else if (!refSequenced && variadic) {
                                 lastParam.addError("parameter list in referenced declaration has a variadic parameter");                            
+                            }
+                            else if (refAtLeastOne && !atLeastOne) {
+                                lastParam.addError("variadic parameter of referenced declaration is optional");
+                            }
+                            else if (!refAtLeastOne && atLeastOne) {
+                                lastParam.addError("variadic parameter of referenced declaration is non-optional");
                             }
                         }
                         pt = ct.getTypeArgumentList().get(0);
@@ -894,6 +902,7 @@ public class ExpressionVisitor extends Visitor {
                 if (tpl==null || tpl.getParameters().size()<=j) {
                     Parameter vp = new ValueParameter();
                     vp.setSequenced(p.isSequenced());
+                    vp.setAtLeastOne(p.isAtLeastOne());
                     vp.setDefaulted(p.isDefaulted());
                     vp.setName(p.getName());
                     vp.setType(pt);
@@ -2097,6 +2106,7 @@ public class ExpressionVisitor extends Visitor {
                         checkIndirectInvocationArguments(that, tt,
                                 unit.getTupleElementTypes(tt),
                                 unit.isTupleLengthUnbounded(tt),
+                                unit.isTupleVariantAtLeastOne(tt),
                                 unit.getTupleMinimumLength(tt));
                     }
                 }
@@ -2201,7 +2211,7 @@ public class ExpressionVisitor extends Visitor {
             
         for (Parameter p: pl.getParameters()) {
             if (!foundParameters.contains(p) && 
-                    !p.isDefaulted() && !p.isSequenced()) {
+                    !p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
                 nal.addError("missing named argument to parameter " + 
                         p.getName() + " of " + pr.getDeclaration().getName(unit));
             }
@@ -2382,7 +2392,7 @@ public class ExpressionVisitor extends Visitor {
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
             if (i>=args.size()) {
-                if (!p.isDefaulted() && !p.isSequenced()) {
+                if (!p.isDefaulted() && (!p.isSequenced() || p.isAtLeastOne())) {
                     pal.addError("missing argument to required parameter " + 
                             p.getName() + " of " + pr.getDeclaration().getName(unit));
                 }
@@ -2402,7 +2412,7 @@ public class ExpressionVisitor extends Visitor {
                 else if (a instanceof Tree.Comprehension) {
                     if (p.isSequenced()) {
                         checkComprehensionPositionalArgument(p, pr, 
-                                (Tree.Comprehension) a);
+                                (Tree.Comprehension) a, p.isAtLeastOne());
                     }
                     else {
                         a.addError("not a variadic parameter: parameter " + 
@@ -2457,7 +2467,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
             ProducedType tt, List<ProducedType> paramTypes, boolean sequenced, 
-            int firstDefaulted) {
+            boolean atLeastOne, int firstDefaulted) {
         
         if (that.getNamedArgumentList()!=null) {
             that.addError("named arguments not supported for indirect invocations");
@@ -2485,7 +2495,7 @@ public class ExpressionVisitor extends Visitor {
             
             for (int i=0; i<paramTypes.size(); i++) {
                 if (i>=args.size()) {
-                    if (i<firstDefaulted && (!sequenced || i!=paramTypes.size()-1)) {
+                    if (i<firstDefaulted && (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
                         pal.addError("missing argument for required parameter " + i);
                     }
                 }
@@ -2495,14 +2505,14 @@ public class ExpressionVisitor extends Visitor {
                     if (arg instanceof Tree.SpreadArgument) {
                         checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
                                 paramTypes.subList(i, paramTypes.size()), 
-                                sequenced, firstDefaulted-i, at);
+                                sequenced, atLeastOne, firstDefaulted-i, at);
                         break;
                     }
                     else if (arg instanceof Tree.Comprehension) {
                         ProducedType paramType = paramTypes.get(i);
                         if (sequenced && i==paramTypes.size()-1) {
-                            checkSequencedIndirectArgument((Tree.Comprehension) arg, 
-                                paramType);
+                            checkComprehensionIndirectArgument((Tree.Comprehension) arg, 
+                                paramType, atLeastOne);
                         }
                         else {
                             arg.addError("not a variadic parameter: parameter " + i);
@@ -2534,8 +2544,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
-            List<ProducedType> psl, boolean sequenced, int firstDefaulted,
-            ProducedType at) {
+            List<ProducedType> psl, boolean sequenced, 
+            boolean atLeastOne, int firstDefaulted, ProducedType at) {
         //checkSpreadArgumentSequential(sa, at);
         if (!isTypeUnknown(at)) {
             if (!unit.isIterableType(at)) {
@@ -2554,7 +2564,7 @@ public class ExpressionVisitor extends Visitor {
                     pts.set(pts.size()-1, 
                             unit.getIteratedType(pts.get(pts.size()-1)));
                 }
-                ProducedType ptt = unit.getTupleType(pts, sequenced, false, 
+                ProducedType ptt = unit.getTupleType(pts, sequenced, atLeastOne, 
                         firstDefaulted);
                 if (!isTypeUnknown(sat) && !isTypeUnknown(ptt)) {
                     checkAssignable(sat, ptt, sa, 
@@ -2587,8 +2597,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkSequencedIndirectArgument(Tree.Comprehension c, 
-            ProducedType paramType) {
+    private void checkComprehensionIndirectArgument(Tree.Comprehension c, 
+            ProducedType paramType, boolean atLeastOne) {
+        Tree.ForComprehensionClause fcc = ((Tree.Comprehension) c).getForComprehensionClause();
+        if (fcc.getPossiblyEmpty() && atLeastOne) {
+            c.addError("variadic parameter is required but comprehension is possibly empty");
+        }
         ProducedType at = c.getTypeModel();
         ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
         if (!isTypeUnknown(at) && !isTypeUnknown(set)) {
@@ -2628,7 +2642,11 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
-            Tree.Comprehension c) {
+            Tree.Comprehension c, boolean atLeastOne) {
+        Tree.ForComprehensionClause fcc = ((Tree.Comprehension) c).getForComprehensionClause();
+        if (fcc.getPossiblyEmpty() && atLeastOne) {
+            c.addError("variadic parameter is required but comprehension is possibly empty");
+        }
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
         c.setParameter(p);
         ProducedType at = c.getTypeModel();
@@ -2636,7 +2654,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType set = paramType==null ? null : unit.getIteratedType(paramType);
             checkAssignable(at, set, c, 
                     "argument must be assignable to variadic parameter " + 
-                            p.getName()+ " of " + pr.getDeclaration().getName(unit) + 
+                            p.getName() + " of " + pr.getDeclaration().getName(unit) + 
                             (pr.getQualifyingType()==null ? "" : 
                                 " in " + pr.getQualifyingType().getProducedTypeName(unit)), 
                             2101);

@@ -409,6 +409,7 @@ public class Unit {
     	    List<ParameterList> pls = ((Functional) ref.getDeclaration()).getParameterLists();
             for (int i=pls.size()-1; i>=0; i--) {
         	    boolean hasSequenced = false;
+        	    boolean atLeastOne = false;
         	    int firstDefaulted = -1;
     	        List<ProducedType> args = new ArrayList<ProducedType>();
     	    	List<Parameter> ps = pls.get(i).getParameters();
@@ -430,6 +431,7 @@ public class Unit {
     	    			else if (p.isSequenced()) {
     	    				args.add(getIteratedType(npt));
     	    				hasSequenced = true;
+    	    				atLeastOne = p.isAtLeastOne();
     	    			}
     	    			else {
     	    				args.add(npt);
@@ -437,7 +439,7 @@ public class Unit {
     	    		}
     	    	}
     	    	result = producedType(getCallableDeclaration(), result,
-    	    			getTupleType(args, hasSequenced, false, firstDefaulted));
+    	    			getTupleType(args, hasSequenced, atLeastOne, firstDefaulted));
     	    }
     	}
     	return result;
@@ -804,6 +806,9 @@ public class Unit {
             }
             else if (isEmptyType(args)) {
                 return 0;
+            }
+            else if (isSequenceType(args)) {
+                return 1;
             }
             else if (isSequentialType(args)) {
                 return 0;

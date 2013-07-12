@@ -658,7 +658,8 @@ public class DeclarationVisitor extends Visitor {
         	    .addError("variadic parameter may not specify default argument");
         }
         if (p.isSequenced() && ((Tree.SequencedType) that.getType()).getAtLeastOne()) {
-            that.getType().addWarning("nonempty variadic parameters are not yet supported");
+//            that.getType().addWarning("nonempty variadic parameters are not yet supported");
+            p.setAtLeastOne(true);
         }
     }
 
