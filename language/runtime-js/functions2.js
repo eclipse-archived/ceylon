@@ -12,7 +12,6 @@ function internalSort(comp, elems, $$$mptypes) {
     return ArraySequence(arr, $$$mptypes);
 }
 internalSort.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['internalSort']};
-exports.string=string;
 
 function flatten(tf, $$$mptypes) {
     var rf = function() {
