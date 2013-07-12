@@ -4,7 +4,11 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -118,6 +122,26 @@ public class MetamodelVisitor extends Visitor {
             }
         }
         return true;
+    }
+
+    @Override
+    public void visit(Tree.SpecifierStatement st) {
+        TypedDeclaration d = ((Tree.SpecifierStatement) st).getDeclaration();
+        //Just add shared and actual annotations to this declaration
+        Annotation ann = new Annotation();
+        ann.setName("shared");
+        d.getAnnotations().add(ann);
+        ann = new Annotation();
+        ann.setName("actual");
+        d.getAnnotations().add(ann);
+        if (d instanceof Method) {
+            gen.encodeMethod((Method)d);
+        } else if (d instanceof Value) {
+            gen.encodeAttribute((Value)d);
+        } else {
+            throw new RuntimeException("JS compiler doesn't know how to encode " +
+                    d.getClass().getName() + " into model");
+        }
     }
 
 }

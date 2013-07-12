@@ -1961,7 +1961,7 @@ public class GenerateJsVisitor extends Visitor
     
     private String memberAccessBase(Node node, Declaration decl, boolean setter,
                 String lhs) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         
         if (lhs != null) {
             if (lhs.length() > 0) {
