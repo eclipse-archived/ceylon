@@ -1,4 +1,4 @@
-function String$(value,size) {
+function String$(/*{Character*}*/value,size) {
     if (value && value.getT$name && value.getT$name() == 'ceylon.language::String') {
         return value;
     }
@@ -489,7 +489,7 @@ String$proto.occurrences = function(sub) {
 }
 String$proto.$filter = function(f) {
     var r = Iterable.$$.prototype.$filter.apply(this, [f]);
-    return string(r);
+    return String$(r);
 }
 String$proto.skipping = function(skip) {
     if (skip==0) return this;
@@ -501,11 +501,11 @@ String$proto.taking = function(take) {
 }
 String$proto.by = function(step) {
     var r = Iterable.$$.prototype.by.apply(this, [step]);
-    return string(r);
+    return String$(r);
 }
 String$proto.$sort = function(f) {
     var r = Iterable.$$.prototype.$sort.apply(this, [f]);
-    return string(r);
+    return String$(r);
 }
 defineAttr(String$proto, 'coalesced', function(){ return this; });
 
