@@ -11,6 +11,7 @@ import java.util.Map;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.DeclarationType$impl;
+import ceylon.language.metamodel.FunctionType$impl;
 import ceylon.language.metamodel.Function$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -161,6 +162,13 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     @Ignore
     public DeclarationType$impl $ceylon$language$metamodel$DeclarationType$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    @Ignore
+    public FunctionType$impl $ceylon$language$metamodel$FunctionType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
