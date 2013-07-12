@@ -78,7 +78,7 @@ class TypeArgInference() {
     @type:"Null|String" firstElt(*["hello", "world"]);
     @type:"Null|String" firstElt0 { "hello", "world" };
     @type:"Null|Sequence<String>" firstElt0 {["hello", "world"].sequence};
-    firstElt { args = "hello".characters; @error args="world".characters; };
+    firstElt { args = "hello".sequence; @error args="world".sequence; };
     @type:"Null|String" firstElt { args = ["hello","world"]; };
     @type:"Null|String" firstElt0 { args = {"hello", "world"}; };
     

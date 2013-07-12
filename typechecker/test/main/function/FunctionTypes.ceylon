@@ -272,7 +272,7 @@ Sequence<String()> singletonStringFunc = Singleton<String()>(()=>"hello");
 Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()=>s=="hello");
 
 void sequencedParams() {
-    function string1(Character* chars) => string(chars);
+    function string1(Character* chars) => String(chars);
     value str = string1;
     Anything(Character*) str0 = str;
     Anything(Character*) str0p = string1;

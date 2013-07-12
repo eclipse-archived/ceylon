@@ -59,13 +59,13 @@ class Optional() {
     }
     
     Sequence<String> stuff = [ "foo" ];
-    Character[][] chars = stuff*.characters;
+    Character[][] chars = stuff*.sequence;
 
     String[] nostuff = {};
-    Character[][] nochars = nostuff*.characters;
+    Character[][] nochars = nostuff*.sequence;
     
     String? maybestuff = null;
-    Character[]? maybechars = maybestuff?.characters;
+    Character[]? maybechars = maybestuff?.sequence;
     
     Character[] somechars = {};
     Integer scs = somechars.size;
