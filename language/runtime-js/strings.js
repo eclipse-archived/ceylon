@@ -1,9 +1,20 @@
 function String$(/*{Character*}*/value,size) {
     if (value && value.getT$name && value.getT$name() == 'ceylon.language::String') {
+        //if it's already a String just return it
         return value;
     }
-    var that = new String(value);
-    that.codePoints = size;
+    else if (typeof(value) === 'string') {
+        var that = new String(value);
+        that.codePoints = size;
+        return that;
+    }
+    var _sb = StringBuilder();
+    var _iter = value.iterator();
+    var _c; while ((_c = _iter.next()) !== getFinished()) {
+        _sb.appendCharacter(_c);
+    }
+    var that = _sb.string;
+    if (size !== undefined) that.codePoints=size;
     return that;
 }
 String$.$$metamodel$$={$ps:[],$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']};
@@ -308,7 +319,7 @@ String$proto.lastCharacterOccurrence = function(subc) {
     return null;
 }
 defineAttr(String$proto, 'characters', function() {
-    return this.length>0 ? this:getEmpty();
+    return this.size>0 ? this:getEmpty();
 });
 defineAttr(String$proto, 'first', function() { return this.get(0); });
 defineAttr(String$proto, 'last', function(){ return this.size>0?this.get(this.size.predecessor):null; });
