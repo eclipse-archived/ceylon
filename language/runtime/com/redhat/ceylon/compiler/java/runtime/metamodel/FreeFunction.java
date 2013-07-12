@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -194,13 +195,12 @@ public class FreeFunction
                                                                     AppliedClassOrInterfaceType<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: check this null qualifying type
+        // this is most likely wrong as it doesn't seem to substitute the containing type parameters
         final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        return new AppliedMember<Type, Kind>($reifiedType, $reifiedKind/*, container*/){
-            @Override
-            protected Kind bindTo(Object instance) {
-                return (Kind) new AppliedFunction(null, null, appliedFunction, FreeFunction.this, instance);
-            }
-        };
+        // FIXME: check with MPL
+        TypeDescriptor reifiedFunctionType = Metamodel.getTypeDescriptorForProducedType(appliedFunction.getType());
+        TypeDescriptor reifiedFunctionArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
+        return new AppliedMethod($reifiedType, reifiedFunctionType, reifiedFunctionArguments, appliedFunction, this);
     }
     
     @Override
