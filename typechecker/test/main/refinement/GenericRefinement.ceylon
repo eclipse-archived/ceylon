@@ -103,7 +103,7 @@ class GenericRefinement() {
     }
 
     interface MoreConstraints {
-        interface Baz<X> {}
+        interface Baz<out X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
 		            given T satisfies Baz<T&S>;
@@ -141,7 +141,7 @@ class GenericRefinement() {
 
     interface BrokenConstraints {
         interface I {} interface J {}
-        interface Baz<X> {}
+        interface Baz<out X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
 		            given T satisfies Baz<T&S>;
@@ -155,7 +155,7 @@ class GenericRefinement() {
     
     interface UnBrokenConstraints {
         interface I {} interface J {}
-        interface Baz<X> {}
+        interface Baz<out X> {}
         interface Foo<S> {
             shared formal void accept<T>(T t) 
                     given T satisfies Baz<T&S>&J;

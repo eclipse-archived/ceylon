@@ -936,7 +936,7 @@ public class TypeVisitor extends Visitor {
                     et.addError("extends a type alias: " + 
                             type.getDeclaration().getName(unit));
                 }
-                else if (occursDeeply(type, td)) {
+                else if (isUndecidableSupertype(type)) {
                     et.addError("extends a type illegally involving itself");
                 }
                 else {
@@ -1018,7 +1018,7 @@ public class TypeVisitor extends Visitor {
             			continue;
             		}
                 }
-                if (occursDeeply(type, td)) {
+                if (isUndecidableSupertype(type)) {
                     st.addError("satisfies a type illegally involving itself");
                     continue;
                 }
@@ -1027,34 +1027,34 @@ public class TypeVisitor extends Visitor {
         }
         td.setSatisfiedTypes(list);
     }
-
-    private static boolean occursDeeply(ProducedType st, TypeDeclaration td) {
-        for (ProducedType at: st.getTypeArgumentList()) {
-            if (at!=null) {
-                //at = at.resolveAliases();
-                if (occursAsArgument(at, td)) return true;
+    
+    private static boolean isUndecidableSupertype(ProducedType st) {
+        List<ProducedType> tal = st.getTypeArgumentList();
+        List<TypeParameter> tpl = st.getDeclaration().getTypeParameters();
+        for (int i=0; i<tal.size() && i<tpl.size(); i++) {
+            TypeParameter tp = tpl.get(i);
+            ProducedType at = tal.get(i);
+            if (!tp.isCovariant() && !tp.isContravariant()) {
+                if (containsIntersection(at)) {
+                    return true;
+                }
+            }
+            if (isUndecidableSupertype(at)) {
+                return true;
             }
         }
         return false;
     }
 
-    private static boolean occursAsArgument(ProducedType at, TypeDeclaration td) {
-        TypeDeclaration atd = at.getDeclaration();
-        if (atd instanceof TypeAlias) return true;
-        if (atd instanceof UnionType) {
-            for (ProducedType t: atd.getCaseTypes()) {
-                if (occursAsArgument(t, td)) return true;
-            }
+    private static boolean containsIntersection(ProducedType at) {
+        TypeDeclaration d = at.getDeclaration();
+        if (d instanceof IntersectionType) {
+            return true;
         }
-        else if (atd instanceof IntersectionType) {
-            for (ProducedType t: atd.getSatisfiedTypes()) {
-                if (occursAsArgument(t, td)) return true;
-            }
-        }
-        else {
-            for (ProducedType aat: at.getTypeArgumentList()) {
-                if (aat!=null) {
-                    if (aat.contains(td)) return true;
+        if (d instanceof UnionType) {
+            for (ProducedType ct: d.getCaseTypes()) {
+                if (containsIntersection(ct)) {
+                    return true;
                 }
             }
         }

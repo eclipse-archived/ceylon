@@ -969,7 +969,8 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
     : { $typeConstraintList=new TypeConstraintList(null); }
       (
         typeConstraint
-        { $typeConstraintList.addTypeConstraint($typeConstraint.typeConstraint); }
+        { if ($typeConstraint.typeConstraint!=null)
+            $typeConstraintList.addTypeConstraint($typeConstraint.typeConstraint); }
       )+
     ;
 

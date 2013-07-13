@@ -84,7 +84,7 @@ class Intersection() {
     Consumer<X|Y> consxy = Consumer<X|Y>();
     Consumer<X>&Consumer<Y> ucons = consxy;
     
-    interface WithParam<T> {
+    interface WithParam<out T> {
     	shared T get() { throw; }
     }
     class WithUnionArg<U,V>() satisfies WithParam<U|V> {}

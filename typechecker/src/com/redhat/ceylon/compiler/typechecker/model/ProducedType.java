@@ -1050,38 +1050,6 @@ public class ProducedType extends ProducedReference {
         return false;
     }
 
-    public boolean contains(TypeDeclaration td) {
-        TypeDeclaration d = getDeclaration();
-        if (d instanceof TypeAlias) return true;
-        if (d instanceof UnknownType) {
-            return false;
-        }
-        else if (d instanceof UnionType) {
-            for (ProducedType ct: getCaseTypes()) {
-                if (ct.contains(td)) return true;
-            }
-        }
-        else if (d instanceof IntersectionType) {
-            for (ProducedType st: getSatisfiedTypes()) {
-                if (st.contains(td)) return true;
-            }
-        }
-        else if (d.equals(td)) {
-            return true;
-        }
-        ProducedType qt = getQualifyingType();
-        if (qt!=null && qt.contains(td)) {
-            return true;
-        }
-        List<ProducedType> tas = getTypeArgumentList();
-        for (ProducedType at: tas) {
-            if (at!=null && at.contains(td)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private List<ProducedType> getInternalSatisfiedTypes() {
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
         for (ProducedType st: getDeclaration().getSatisfiedTypes()) {
