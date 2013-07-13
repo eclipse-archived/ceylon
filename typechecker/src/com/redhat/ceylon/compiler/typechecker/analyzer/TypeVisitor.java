@@ -936,9 +936,6 @@ public class TypeVisitor extends Visitor {
                     et.addError("extends a type alias: " + 
                             type.getDeclaration().getName(unit));
                 }
-                else if (isUndecidableSupertype(type)) {
-                    et.addError("extends an illegal supertype");
-                }
                 else {
                     td.setExtendedType(type);
                 }
@@ -1018,51 +1015,10 @@ public class TypeVisitor extends Visitor {
             			continue;
             		}
                 }
-                if (isUndecidableSupertype(type)) {
-                    st.addError("satisfies an illegal supertype");
-                    continue;
-                }
                 list.add(type);
             }
         }
         td.setSatisfiedTypes(list);
-    }
-    
-    private static boolean isUndecidableSupertype(ProducedType st) {
-        TypeDeclaration std = st.getDeclaration();
-        if (std instanceof TypeAlias) {
-            return true;
-        }
-        List<ProducedType> tal = st.getTypeArgumentList();
-        List<TypeParameter> tpl = std.getTypeParameters();
-        for (int i=0; i<tal.size() && i<tpl.size(); i++) {
-            TypeParameter tp = tpl.get(i);
-            ProducedType at = tal.get(i);
-            if (!tp.isCovariant() && !tp.isContravariant()) {
-                if (containsIntersection(at)) {
-                    return true;
-                }
-            }
-            if (isUndecidableSupertype(at)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean containsIntersection(ProducedType at) {
-        TypeDeclaration d = at.getDeclaration();
-        if (d instanceof IntersectionType) {
-            return true;
-        }
-        if (d instanceof UnionType) {
-            for (ProducedType ct: d.getCaseTypes()) {
-                if (containsIntersection(ct)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     
     /*@Override 

@@ -16,7 +16,7 @@ void undecidable() {
     alias ZIntZ => Z&Int<Z>;
     
     interface Invar<P> {}
-    interface G satisfies In<H> {}
-    @error interface H satisfies In<G&H> {}
+    interface G satisfies Invar<H> {}
+    @error interface H satisfies Invar<G&H> {}
     
 }
