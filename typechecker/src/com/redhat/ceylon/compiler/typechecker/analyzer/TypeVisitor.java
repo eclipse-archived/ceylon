@@ -923,9 +923,8 @@ public class TypeVisitor extends Visitor {
                 if (etd==td) {
                     //TODO: handle indirect circularities!
                     et.addError("directly extends itself: " + td.getName());
-                    return;
                 }
-                if (etd instanceof TypeParameter) {
+                else if (etd instanceof TypeParameter) {
                     et.addError("directly extends a type parameter: " + 
                             type.getDeclaration().getName(unit));
                 }
@@ -936,6 +935,9 @@ public class TypeVisitor extends Visitor {
                 else if (etd instanceof TypeAlias) {
                     et.addError("extends a type alias: " + 
                             type.getDeclaration().getName(unit));
+                }
+                else if (occursDeeply(type, td)) {
+                    et.addError("extends a type illegally involving itself");
                 }
                 else {
                     td.setExtendedType(type);
@@ -1016,13 +1018,46 @@ public class TypeVisitor extends Visitor {
             			continue;
             		}
                 }
+                if (occursDeeply(type, td)) {
+                    st.addError("satisfies a type illegally involving itself");
+                    continue;
+                }
                 list.add(type);
             }
         }
         td.setSatisfiedTypes(list);
     }
 
-    
+    private static boolean occursDeeply(ProducedType st, TypeDeclaration td) {
+        for (ProducedType at: st.getTypeArgumentList()) {
+            if (at!=null) {
+                if (occursAsArgument(at, td)) return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean occursAsArgument(ProducedType at, TypeDeclaration td) {
+        TypeDeclaration atd = at.getDeclaration();
+        if (atd instanceof UnionType) {
+            for (ProducedType t: atd.getCaseTypes()) {
+                if (occursAsArgument(t, td)) return true;
+            }
+        }
+        else if (atd instanceof IntersectionType) {
+            for (ProducedType t: atd.getSatisfiedTypes()) {
+                if (occursAsArgument(t, td)) return true;
+            }
+        }
+        else {
+            for (ProducedType aat: at.getTypeArgumentList()) {
+                if (aat!=null) {
+                    if (aat.contains(td)) return true;
+                }
+            }
+        }
+        return false;
+    }
     
     /*@Override 
     public void visit(Tree.TypeConstraint that) {
