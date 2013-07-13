@@ -1031,6 +1031,7 @@ public class TypeVisitor extends Visitor {
     private static boolean occursDeeply(ProducedType st, TypeDeclaration td) {
         for (ProducedType at: st.getTypeArgumentList()) {
             if (at!=null) {
+                //at = at.resolveAliases();
                 if (occursAsArgument(at, td)) return true;
             }
         }
@@ -1039,6 +1040,7 @@ public class TypeVisitor extends Visitor {
 
     private static boolean occursAsArgument(ProducedType at, TypeDeclaration td) {
         TypeDeclaration atd = at.getDeclaration();
+        if (atd instanceof TypeAlias) return true;
         if (atd instanceof UnionType) {
             for (ProducedType t: atd.getCaseTypes()) {
                 if (occursAsArgument(t, td)) return true;

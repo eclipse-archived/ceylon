@@ -1052,6 +1052,7 @@ public class ProducedType extends ProducedReference {
 
     public boolean contains(TypeDeclaration td) {
         TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeAlias) return true;
         if (d instanceof UnknownType) {
             return false;
         }

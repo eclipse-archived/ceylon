@@ -9,4 +9,9 @@ interface Co<out T> {}
 class Inv<T>() {}
 @error Inv<A&B&Co<Inv<A>>> foo(Inv<A&B> bar) => bar;
 
+interface Int<P> {}
+@error interface Y satisfies Int<Y&IntY> {}
+alias IntY => Int<Y>;
+
+
 }
