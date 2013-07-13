@@ -553,4 +553,8 @@ public class Util {
         return false;
     }
 
+    static boolean declaredInPackage(Declaration member, Unit unit) {
+        return member.getUnit().getPackage().equals(unit.getPackage());
+    }
+
 }

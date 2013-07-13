@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
@@ -3700,11 +3701,11 @@ public class ExpressionVisitor extends Visitor {
             }
             if (member==null) {
                 if (ambiguous) {
-                    that.addError("member method or attribute is ambiguous: " +
+                    that.addError("method or attribute is ambiguous: " +
                             name + " for " + container);
                 }
                 else {
-                    that.addError("member method or attribute does not exist: " +
+                    that.addError("method or attribute does not exist: " +
                             name + " in " + container, 100);
                     unit.getUnresolvedReferences().add(that.getIdentifier());
                 }
@@ -3712,13 +3713,20 @@ public class ExpressionVisitor extends Visitor {
             else {
                 that.setDeclaration(member);
                 if (!member.isVisible(that.getScope())) {
-                    that.addError("member method or attribute is not visible: " +
+                    that.addError("method or attribute is not visible: " +
                             name + " of " + container, 400);
                 }
                 boolean selfReference = p instanceof Tree.This ||
                         p instanceof Tree.Super;
-                if (member.isProtectedVisibility() && !selfReference) {
-                    that.addError("member method or attribute is not visible: " +
+                if (member.isProtectedVisibility() && 
+                        !selfReference && 
+                        !declaredInPackage(member, unit)) {
+                    that.addError("protected method or attribute is not visible: " +
+                            name + " of " + container);
+                }
+                if (member.isPackageVisibility() && 
+                        !declaredInPackage(member, unit)) {
+                    that.addError("package private method or attribute is not visible: " +
                             name + " of " + container);
                 }
                 if (!selfReference && !member.isShared()) {
@@ -3992,8 +4000,15 @@ public class ExpressionVisitor extends Visitor {
                 }
                 boolean selfReference = p instanceof Tree.This &&
                                         p instanceof Tree.Super;
-                if (type.isProtectedVisibility() && !selfReference) {
-                    that.addError("member type is not visible: " +
+                if (type.isProtectedVisibility() && 
+                        !selfReference &&
+                        !declaredInPackage(type, unit)) {
+                    that.addError("protected member type is not visible: " +
+                            name + " of " + container);
+                }
+                if (type.isPackageVisibility() && 
+                        !declaredInPackage(type, unit)) {
+                    that.addError("package private member type is not visible: " +
                             name + " of " + container);
                 }
                 if (!selfReference && !type.isShared()) {

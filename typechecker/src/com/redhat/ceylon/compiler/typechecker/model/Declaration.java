@@ -28,6 +28,7 @@ public abstract class Declaration
     private Declaration refinedDeclaration = this;
     private boolean staticallyImportable;
     private boolean protectedVisibility;
+    private boolean packageVisibility;
     private String qualifiedNameAsStringCache;
 	private boolean nat;
 	private boolean otherInstanceAccess;
@@ -224,6 +225,14 @@ public abstract class Declaration
     
     public void setProtectedVisibility(boolean protectedVisibility) {
         this.protectedVisibility = protectedVisibility;
+    }
+    
+    public boolean isPackageVisibility() {
+        return packageVisibility;
+    }
+    
+    public void setPackageVisibility(boolean packageVisibility) {
+        this.packageVisibility = packageVisibility;
     }
 
     /**

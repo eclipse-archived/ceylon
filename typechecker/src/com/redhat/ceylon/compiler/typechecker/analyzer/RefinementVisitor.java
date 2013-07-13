@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -403,6 +404,13 @@ public class RefinementVisitor extends Visitor {
                 Declaration refined = declaringType.getRefinedMember(dec.getName(), 
                 		getSignature(dec), false);
                 dec.setRefinedDeclaration(refined);
+                if (refined!=null) {
+                    if (refined.isPackageVisibility() && 
+                            !declaredInPackage(refined, that.getUnit())) {
+                        that.addError("refined declaration is not visible: " + 
+                                message(refined));
+                    }
+                }
             }
             
         }
