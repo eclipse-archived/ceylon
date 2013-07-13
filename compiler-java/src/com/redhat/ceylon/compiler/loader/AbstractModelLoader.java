@@ -100,7 +100,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  * Abstract class of a model loader that can load a model from a compiled Java representation,
  * while being agnostic of the reflection API used to load the compiled Java representation.
  *
- * @author Stéphane Épardaud <stef@epardaud.fr>
+ * @author St��phane ��pardaud <stef@epardaud.fr>
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
@@ -1723,8 +1723,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String nameAnnotation = getAnnotationStringValue(fieldMirror, CEYLON_NAME_ANNOTATION);
         value.setName(nameAnnotation != null ? nameAnnotation : fieldMirror.getName());
         value.setUnit(klass.getUnit());
-        value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected());
+        value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected() || fieldMirror.isDefaultAccess());
         value.setProtectedVisibility(fieldMirror.isProtected());
+        value.setPackageVisibility(fieldMirror.isDefaultAccess());
         value.setStaticallyImportable(fieldMirror.isStatic());
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
@@ -1837,8 +1838,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
-        decl.setShared(methodMirror.isPublic() || methodMirror.isProtected());
+        decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
         decl.setProtectedVisibility(methodMirror.isProtected());
+        decl.setPackageVisibility(methodMirror.isDefaultAccess());
         if(// for class members we rely on abstract bit
            (klass instanceof Class 
                    && methodMirror.isAbstract())

@@ -42,7 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 /**
  * Represents a lazy type alias
  *
- * @author Stéphane Épardaud <stef@epardaud.fr>
+ * @author St��phane ��pardaud <stef@epardaud.fr>
  */
 public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
@@ -398,6 +398,12 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     public boolean isProtectedVisibility() {
         load();
         return super.isProtectedVisibility();
+    }
+
+    @Override
+    public boolean isPackageVisibility() {
+        load();
+        return super.isPackageVisibility();
     }
 
     @Override
