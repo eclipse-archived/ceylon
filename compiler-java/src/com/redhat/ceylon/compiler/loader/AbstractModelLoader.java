@@ -100,7 +100,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  * Abstract class of a model loader that can load a model from a compiled Java representation,
  * while being agnostic of the reflection API used to load the compiled Java representation.
  *
- * @author St��phane ��pardaud <stef@epardaud.fr>
+ * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 

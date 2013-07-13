@@ -42,7 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 /**
  * Represents a lazy type alias
  *
- * @author St��phane ��pardaud <stef@epardaud.fr>
+ * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
