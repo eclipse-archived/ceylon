@@ -34,11 +34,17 @@ public class AliasVisitor extends Visitor {
 		}
 	}
 	
-    private static boolean isUndecidableSupertype(ProducedType st) {
+    private static boolean isUndecidableSupertype(ProducedType st,
+            Node node) {
         if (st==null) return false;
         TypeDeclaration std = st.getDeclaration();
         if (std instanceof TypeAlias) {
-            if (isUndecidableSupertype(std.getExtendedType())) {
+            ProducedType et = std.getExtendedType();
+            if (et.isRecursiveTypeAliasDefinition(std)) {
+                node.addError("supertype contains reference to circularly defined type alias");
+                return true;
+            }
+            else if (isUndecidableSupertype(et, node)) {
                 return true;
             }
         }
@@ -48,29 +54,39 @@ public class AliasVisitor extends Visitor {
             TypeParameter tp = tpl.get(i);
             ProducedType at = tal.get(i);
             if (!tp.isCovariant() && !tp.isContravariant()) {
-                if (containsIntersection(at)) {
+                if (containsIntersection(at, node)) {
                     return true;
                 }
             }
-            if (isUndecidableSupertype(at)) {
+            if (isUndecidableSupertype(at, node)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean containsIntersection(ProducedType at) {
+    private static boolean containsIntersection(ProducedType at,
+            Node node) {
         if (at==null) return false;
-        TypeDeclaration d = at.getDeclaration();
-        if (d instanceof TypeAlias) {
-            return containsIntersection(d.getExtendedType());
+        TypeDeclaration atd = at.getDeclaration();
+        if (atd instanceof TypeAlias) {
+            ProducedType et = atd.getExtendedType();
+            if (et.isRecursiveTypeAliasDefinition(atd)) {
+                node.addError("supertype contains reference to circularly defined type alias");
+                return true;
+            }
+            else if (containsIntersection(et, node)) {
+                return true;
+            }
         }
-        if (d instanceof IntersectionType) {
+        if (atd instanceof IntersectionType) {
+            node.addError("supertype contains intersection as argument to invariant type parameter: " +
+                    at.getProducedTypeName(node.getUnit()));
             return true;
         }
-        if (d instanceof UnionType) {
-            for (ProducedType ct: d.getCaseTypes()) {
-                if (containsIntersection(ct)) {
+        if (atd instanceof UnionType) {
+            for (ProducedType ct: atd.getCaseTypes()) {
+                if (containsIntersection(ct, node)) {
                     return true;
                 }
             }
@@ -121,8 +137,7 @@ public class AliasVisitor extends Visitor {
         if (that!=null) {
             int i=0;
             for (Tree.StaticType st: that.getTypes()) {
-                if (isUndecidableSupertype(st.getTypeModel())) {
-                    st.addError("satisfied type contains intersecton as argument to invariant type parameter");
+                if (isUndecidableSupertype(st.getTypeModel(), st)) {
                     d.getSatisfiedTypes().set(i, new UnknownType(that.getUnit()).getType());
                 }
                 i++;
@@ -133,8 +148,7 @@ public class AliasVisitor extends Visitor {
     private void checkForUndecidability(Tree.ExtendedType that, Class d) {
         if (that!=null) {
             Tree.StaticType et = that.getType();
-            if (isUndecidableSupertype(et.getTypeModel())) {
-                et.addError("extended type contains intersecton as argument to invariant type parameter");
+            if (isUndecidableSupertype(et.getTypeModel(), et)) {
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
             }
         }

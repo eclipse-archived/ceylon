@@ -19,4 +19,9 @@ void undecidable() {
     interface G satisfies Invar<H> {}
     @error interface H satisfies Invar<G&H> {}
     
+    @error interface Sub satisfies In<E> {}
+    @error interface SubList satisfies List<E> {}
+    @error alias E=>D;
+    alias D=>E;
+    
 }
