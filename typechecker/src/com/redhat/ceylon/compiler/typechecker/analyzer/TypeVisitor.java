@@ -937,7 +937,7 @@ public class TypeVisitor extends Visitor {
                             type.getDeclaration().getName(unit));
                 }
                 else if (isUndecidableSupertype(type)) {
-                    et.addError("extends a type illegally involving itself");
+                    et.addError("extends an illegal supertype");
                 }
                 else {
                     td.setExtendedType(type);
@@ -1019,7 +1019,7 @@ public class TypeVisitor extends Visitor {
             		}
                 }
                 if (isUndecidableSupertype(type)) {
-                    st.addError("satisfies a type illegally involving itself");
+                    st.addError("satisfies an illegal supertype");
                     continue;
                 }
                 list.add(type);
@@ -1029,8 +1029,12 @@ public class TypeVisitor extends Visitor {
     }
     
     private static boolean isUndecidableSupertype(ProducedType st) {
+        TypeDeclaration std = st.getDeclaration();
+        if (std instanceof TypeAlias) {
+            return true;
+        }
         List<ProducedType> tal = st.getTypeArgumentList();
-        List<TypeParameter> tpl = st.getDeclaration().getTypeParameters();
+        List<TypeParameter> tpl = std.getTypeParameters();
         for (int i=0; i<tal.size() && i<tpl.size(); i++) {
             TypeParameter tp = tpl.get(i);
             ProducedType at = tal.get(i);

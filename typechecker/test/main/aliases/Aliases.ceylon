@@ -133,12 +133,12 @@ void inheritsAlias() {
     class Z() satisfies K {}
     class W() satisfies M {}
     alias N=>M;
-    class V() satisfies I<I<N>> {}
+    @error class V() satisfies I<I<N>> {}
     I<J> x = X();
     I<L> y = Y();
     J z = Z();
     M w = W();
-    I<I<L>> v = V();
+    @error I<I<L>> v = V();
 }
 
 abstract class AbstractClass() {}
