@@ -15,7 +15,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
- * Detects recursive type aliases.
+ * Detects recursive type aliases and potentially 
+ * undecidable supertypes (supertypes containing
+ * intersections in arguments to invariant type
+ * parameters).
  * 
  * @author Gavin King
  *
