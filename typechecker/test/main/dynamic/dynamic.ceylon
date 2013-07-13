@@ -38,3 +38,16 @@ void run() {
         @error value seq = [x];
     }
 }
+
+void newit() {
+    dynamic {
+        value new = value {
+            x="hello";
+            y="world";
+            bar(value name) => "oops ``name``";
+        };
+        print(new.x + " " + new.y);
+        print(new.bar("dynamic"));
+        value aa = value { a=1; b=2; 5,6,7,8 };
+    }
+}
