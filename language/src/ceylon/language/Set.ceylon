@@ -3,8 +3,8 @@
  A `Set` is a `Collection` of its elements.
  
  Sets may be the subject of the binary union, 
- intersection, exclusive union, and complement operators 
- `|`, `&`, `^`, and `~`."
+ intersection, and complement operators `|`, `&`, and 
+ `~`."
 shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
