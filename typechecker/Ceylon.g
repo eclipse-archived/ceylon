@@ -61,11 +61,34 @@ compilationUnit returns [CompilationUnit compilationUnit]
           { if ($declaration.declaration!=null)
                 $compilationUnit.addDeclaration($declaration.declaration); 
             if ($declaration.declaration!=null)
-                $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
+                $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); }
+        | dynamicSection
+          { $compilationUnit.addDeclaration($dynamicSection.statement); }
         )*
       )
       EOF
     ;
+    
+dynamicSection returns [DynamicStatement statement]
+    @init { DynamicClause dc = null; Block block = null; }
+    : { $statement=new DynamicStatement(null); }
+      DYNAMIC 
+      { dc = new DynamicClause($DYNAMIC);
+        $statement.setDynamicClause(dc); }
+      LBRACE 
+      { block = new Block($LBRACE); 
+        dc.setBlock(block); }
+      (
+        ca2=compilerAnnotations declaration
+        { if ($declaration.declaration!=null)
+              block.addStatement($declaration.declaration); 
+          if ($declaration.declaration!=null)
+              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
+      )*
+      RBRACE
+      { block.setEndToken($RBRACE); }
+    ;
+
 
 moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
     : compilerAnnotations annotations
