@@ -270,11 +270,13 @@ public class InvocationGenerator {
                     } else {
                         expr = null;
                     }
-                    if (!first) {
+                    if (opened) {
                         gen.closeSequenceWithReifiedType(that,
                                 gen.getTypeUtils().wrapAsIterableArguments(sequencedType));
                         gen.out(".chain(");
                         sequencedType=null;
+                    } else if (!first) {
+                        gen.out(",");
                     }
                     if (arg instanceof Tree.SpreadArgument) {
                         int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
@@ -289,7 +291,7 @@ public class InvocationGenerator {
                     } else {
                         ((Tree.Comprehension)arg).visit(gen);
                     }
-                    if (!first) {
+                    if (opened) {
                         gen.out(",");
                         if (expr == null) {
                             //it's a comprehension
