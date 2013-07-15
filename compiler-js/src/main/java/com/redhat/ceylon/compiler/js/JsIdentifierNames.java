@@ -278,10 +278,12 @@ public class JsIdentifierNames {
         }
         //Fix #204 - same top-level declarations in different packages
         if (decl.isToplevel() && !decl.getUnit().getPackage().equals(decl.getUnit().getPackage().getModule().getRootPackage())) {
-            String rootName = decl.getUnit().getPackage().getModule().getRootPackage().getNameAsString();
+            //rootPackage can be null when compiling from IDE
+            String rootName = decl.getUnit().getPackage().getModule().getRootPackage() == null ?
+                    "":decl.getUnit().getPackage().getModule().getRootPackage().getNameAsString();
             String pkgName = decl.getUnit().getPackage().getNameAsString();
             rootName = pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
-            if (rootName.charAt(0) != '$') {
+            if (rootName.length()>0 && rootName.charAt(0) != '$') {
                 rootName = '$' + rootName;
             }
             name += rootName;
