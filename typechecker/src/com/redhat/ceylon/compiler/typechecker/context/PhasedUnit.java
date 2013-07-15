@@ -184,6 +184,20 @@ public class PhasedUnit {
     public void validateTree() {
         //System.out.println("Validating tree for " + fileName);
         if (!treeValidated) {
+            String fn = unit.getRelativePath();
+            for (int i=0; i<fn.length(); i = fn.offsetByCodePoints(i, 1)) {
+                int cp = fn.codePointAt(i);
+                if (cp>127) {
+                    compilationUnit.addWarning("source file name has non-ASCII characters: " + fn);
+                }
+            }
+            for (Unit u: unit.getPackage().getUnits()) {
+                if (!u.equals(unit) && 
+                        u.getFilename().equalsIgnoreCase(unit.getFilename())) {
+                    compilationUnit.addWarning("source file names differ only by case: " +
+                            unit.getFilename() + " and " + u.getFilename());
+                }
+            }
             compilationUnit.visit(new Validator());
             treeValidated = true;
         }
