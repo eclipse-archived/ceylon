@@ -21,7 +21,7 @@ void visitStringHierarchy(){
     "metamodel class name is String"
     assert(klass.name == "String");
     
-    value st = klass.superclass;
+    value st = klass.superclassDeclaration;
     
     "super class exists"
     assert(exists st);
@@ -95,14 +95,14 @@ void visitDeclaration(Declaration decl){
 
 void visitClass(ClassDeclaration klass){
     output("class ``klass.name``");
-    if(klass.typeParameters nonempty){
+    if(klass.typeParameterDeclarations nonempty){
         output("<");
-        output(",".join(klass.typeParameters.map(function (TypeParameter tp) => tp.name)));
+        output(",".join(klass.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
         output(">");
     }
     output("(");
     variable Boolean onceParameter = true;
-    for(param in klass.parameters){
+    for(param in klass.parameterDeclarations){
         if(onceParameter){
             onceParameter = false;
         }else{
@@ -112,16 +112,16 @@ void visitClass(ClassDeclaration klass){
         output(" ``param.name``");
     }
     output(")");
-    if(exists superType = klass.superclass){
+    if(exists superType = klass.superclassDeclaration){
         output("\n  extends ");
         visitOpenType(superType);
         output("()");
         queueDeclaration(superType.declaration);
     }
-    if(klass.interfaces nonempty){
+    if(klass.interfaceDeclarations nonempty){
         output("\n  satisfies ");
         variable Boolean once = true;
-        for(interf in klass.interfaces){
+        for(interf in klass.interfaceDeclarations){
             if(once){
                 once = false;
             }else{
@@ -137,7 +137,7 @@ void visitClass(ClassDeclaration klass){
 }
 
 void visitMembers(ClassOrInterfaceDeclaration decl){
-    for(m in decl.members<TopLevelOrMemberDeclaration>()){
+    for(m in decl.memberDeclarations<TopLevelOrMemberDeclaration>()){
         switch(m)
         case(is FunctionDeclaration){
             visitFunction(m);
@@ -155,11 +155,11 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
 }
 void visitFunction(FunctionDeclaration func) {
     output(" ");
-    visitOpenType(func.type);
+    visitOpenType(func.openType);
     output(" ``func.name``(");
     variable Boolean onceParameter = true;
     output("(");
-    for(param in func.parameters){
+    for(param in func.parameterDeclarations){
         if(onceParameter){
             onceParameter = false;
         }else{
@@ -173,21 +173,21 @@ void visitFunction(FunctionDeclaration func) {
 
 void visitValue(AttributeDeclaration val) {
     output(" ");
-    visitOpenType(val.type);
+    visitOpenType(val.openType);
     output(" ``val.name``;\n");
 }
 
 void visitInterface(InterfaceDeclaration klass){
     output("interface ``klass.name``");
-    if(klass.typeParameters nonempty){
+    if(klass.typeParameterDeclarations nonempty){
         output("<");
-        output(",".join(klass.typeParameters.map(function (TypeParameter tp) => tp.name)));
+        output(",".join(klass.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
         output(">");
     }
-    if(klass.interfaces nonempty){
+    if(klass.interfaceDeclarations nonempty){
         output("\n satisfies ");
         variable Boolean once = true;
-        for(interf in klass.interfaces){
+        for(interf in klass.interfaceDeclarations){
             if(once){
                 once = false;
             }else{
@@ -206,9 +206,9 @@ void visitOpenType(OpenType pt){
     if(is OpenParameterisedType<ClassOrInterfaceDeclaration> pt){
         output(pt.declaration.name);
         variable Boolean once = true;
-        if(pt.declaration.typeParameters nonempty){
+        if(pt.declaration.typeParameterDeclarations nonempty){
             output("<");
-            for(TypeParameter tp in pt.declaration.typeParameters){
+            for(TypeParameter tp in pt.declaration.typeParameterDeclarations){
                 if(once){
                     once = false;
                 }else{
@@ -256,9 +256,9 @@ void visitType(Type pt){
     if(is ClassOrInterface<Anything> pt){
         output(pt.declaration.name);
         variable Boolean once = true;
-        if(pt.declaration.typeParameters nonempty){
+        if(pt.declaration.typeParameterDeclarations nonempty){
             output("<");
-            for(TypeParameter tp in pt.declaration.typeParameters){
+            for(TypeParameter tp in pt.declaration.typeParameterDeclarations){
                 if(once){
                     once = false;
                 }else{

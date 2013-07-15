@@ -60,60 +60,60 @@ void checkMemberAttributes(){
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
     
-    assert(exists string = noParamsType.getAttribute<NoParams, Attribute<String>>("str"));
+    assert(exists string = noParamsType.getAttribute<NoParams, String>("str"));
     assert(string(noParamsInstance).get() == "a");
     
-    assert(exists integer = noParamsType.getAttribute<NoParams, Attribute<Integer>>("integer"));
+    assert(exists integer = noParamsType.getAttribute<NoParams, Integer>("integer"));
     assert(integer(noParamsInstance).get() == 1);
     
-    assert(exists float = noParamsType.getAttribute<NoParams, Attribute<Float>>("float"));
+    assert(exists float = noParamsType.getAttribute<NoParams, Float>("float"));
     assert(float(noParamsInstance).get() == 1.2);
     
-    assert(exists character = noParamsType.getAttribute<NoParams, Attribute<Character>>("character"));
+    assert(exists character = noParamsType.getAttribute<NoParams, Character>("character"));
     assert(character(noParamsInstance).get() == 'a');
     
-    assert(exists boolean = noParamsType.getAttribute<NoParams, Attribute<Boolean>>("boolean"));
+    assert(exists boolean = noParamsType.getAttribute<NoParams, Boolean>("boolean"));
     assert(boolean(noParamsInstance).get() == true);
     
-    assert(exists obj = noParamsType.getAttribute<NoParams, Attribute<NoParams>>("obj"));
+    assert(exists obj = noParamsType.getAttribute<NoParams, NoParams>("obj"));
     assert(obj(noParamsInstance).get() === noParamsInstance);
 
-    assert(exists string2 = noParamsType.getAttribute<NoParams, Variable<String>>("str2"));
+    assert(exists string2 = noParamsType.getVariableAttribute<NoParams, String>("str2"));
     value string2Bound = string2(noParamsInstance);
     assert(string2Bound.get() == "a");
     string2Bound.set("b");
     assert(string2Bound.get() == "b");
     assert(noParamsInstance.str2 == "b");
     
-    assert(exists integer2 = noParamsType.getAttribute<NoParams, Variable<Integer>>("integer2"));
+    assert(exists integer2 = noParamsType.getVariableAttribute<NoParams, Integer>("integer2"));
     value integer2Bound = integer2(noParamsInstance);
     assert(integer2Bound.get() == 1);
     integer2Bound.set(2);
     assert(integer2Bound.get() == 2);
     assert(noParamsInstance.integer2 == 2);
 
-    assert(exists float2 = noParamsType.getAttribute<NoParams, Variable<Float>>("float2"));
+    assert(exists float2 = noParamsType.getVariableAttribute<NoParams, Float>("float2"));
     value float2Bound = float2(noParamsInstance);
     assert(float2Bound.get() == 1.2);
     float2Bound.set(2.1);
     assert(float2Bound.get() == 2.1);
     assert(noParamsInstance.float2 == 2.1);
     
-    assert(exists character2 = noParamsType.getAttribute<NoParams, Variable<Character>>("character2"));
+    assert(exists character2 = noParamsType.getVariableAttribute<NoParams, Character>("character2"));
     value character2Bound = character2(noParamsInstance);
     assert(character2Bound.get() == 'a');
     character2Bound.set('b');
     assert(character2Bound.get() == 'b');
     assert(noParamsInstance.character2 == 'b');
     
-    assert(exists boolean2 = noParamsType.getAttribute<NoParams, Variable<Boolean>>("boolean2"));
+    assert(exists boolean2 = noParamsType.getVariableAttribute<NoParams, Boolean>("boolean2"));
     value boolean2Bound = boolean2(noParamsInstance);
     assert(boolean2Bound.get() == true);
     boolean2Bound.set(false);
     assert(boolean2Bound.get() == false);
     assert(noParamsInstance.boolean2 == false);
     
-    assert(exists obj2 = noParamsType.getAttribute<NoParams, Variable<Object>>("obj2"));
+    assert(exists obj2 = noParamsType.getVariableAttribute<NoParams, Object>("obj2"));
     value obj2Bound = obj2(noParamsInstance);
     assert(obj2Bound.get() == 2);
     obj2Bound.set(3);
@@ -127,27 +127,27 @@ void checkMemberFunctions(){
     assert(is Class<NoParams, []> noParamsType);
     assert(is Class<String, [String]> stringType = type("foo"));
     
-    assert(exists f1 = noParamsType.getFunction<NoParams, Function<NoParams, []>>("noParams"));
+    assert(exists f1 = noParamsType.getMethod<NoParams, NoParams, []>("noParams"));
     Anything o1 = f1(noParamsInstance)();
     assert(is NoParams o1);
     
-    assert(exists f2 = noParamsType.getFunction<NoParams, Function<NoParams, [String, Integer, Float, Character, Boolean, Object]>>("fixedParams"));
+    assert(exists f2 = noParamsType.getMethod<NoParams, NoParams, [String, Integer, Float, Character, Boolean, Object]>("fixedParams"));
     Anything o3 = f2(noParamsInstance)("a", 1, 1.2, 'a', true, noParamsInstance);
     assert(is NoParams o3);
     
-    assert(exists f3 = noParamsType.getFunction<NoParams, Function<NoParams, [String, Integer]>>("typeParams", stringType));
+    assert(exists f3 = noParamsType.getMethod<NoParams, NoParams, [String, Integer]>("typeParams", stringType));
     Anything o5 = f3(noParamsInstance)("a", 1);
     assert(is NoParams o5);
 
-    assert(exists f4 = noParamsType.getFunction<NoParams, Function<String, []>>("getString"));
+    assert(exists f4 = noParamsType.getMethod<NoParams, String, []>("getString"));
     assert(f4(noParamsInstance)() == "a");
-    assert(exists f5 = noParamsType.getFunction<NoParams, Function<Integer, []>>("getInteger"));
+    assert(exists f5 = noParamsType.getMethod<NoParams, Integer, []>("getInteger"));
     assert(f5(noParamsInstance)() == 1);
-    assert(exists f6 = noParamsType.getFunction<NoParams, Function<Float, []>>("getFloat"));
+    assert(exists f6 = noParamsType.getMethod<NoParams, Float, []>("getFloat"));
     assert(f6(noParamsInstance)() == 1.2);
-    assert(exists f7 = noParamsType.getFunction<NoParams, Function<Character, []>>("getCharacter"));
+    assert(exists f7 = noParamsType.getMethod<NoParams, Character, []>("getCharacter"));
     assert(f7(noParamsInstance)() == 'a');
-    assert(exists f8 = noParamsType.getFunction<NoParams, Function<Boolean, []>>("getBoolean"));
+    assert(exists f8 = noParamsType.getMethod<NoParams, Boolean, []>("getBoolean"));
     assert(f8(noParamsInstance)() == true);
 }
 
@@ -189,7 +189,7 @@ void checkUntypedFunctionToAppliedFunction(){
     
     value stringType = typeLiteral<String>();
         
-    assert(exists appliedFunctionMember1 = noParamsType.getFunction<NoParams, Function<NoParams, [String, Integer]>>("typeParams", stringType));
+    assert(exists appliedFunctionMember1 = noParamsType.getMethod<NoParams, NoParams, [String, Integer]>("typeParams", stringType));
     value appliedFunction1 = appliedFunctionMember1(noParamsInstance);
     Anything o1 = appliedFunction1("a", 1);
     assert(is NoParams o1);
@@ -198,7 +198,7 @@ void checkUntypedFunctionToAppliedFunction(){
     Anything o2 = appliedFunction2("a", 1);
     assert(is NoParams o2);
     
-    value appliedFunctionMember3 = appliedFunction1.declaration.memberApply<NoParams, Function<NoParams, [String, Integer]>>(stringType);
+    value appliedFunctionMember3 = appliedFunction1.declaration.memberApply<NoParams, NoParams, [String, Integer]>(stringType);
     value appliedFunction3 = appliedFunctionMember3(noParamsInstance);
     Anything o3 = appliedFunction3("a", 1);
     assert(is NoParams o3);
@@ -213,25 +213,25 @@ void checkHierarchy(){
     
     assert(noParamsDecl.name == "NoParams");
     
-    value basicType = noParamsDecl.superclass;
+    value basicType = noParamsDecl.superclassDeclaration;
     
     assert(exists basicType);
     
     assert(basicType.declaration.name == "Basic");
 
-    value objectType = basicType.declaration.superclass;
+    value objectType = basicType.declaration.superclassDeclaration;
     
     assert(exists objectType);
     
     assert(objectType.declaration.name == "Object");
     
-    value anythingType = objectType.declaration.superclass;
+    value anythingType = objectType.declaration.superclassDeclaration;
     
     assert(exists anythingType);
     
     assert(anythingType.declaration.name == "Anything");
 
-    assert(!anythingType.declaration.superclass exists);
+    assert(!anythingType.declaration.superclassDeclaration exists);
 }
 
 void checkPackageAndModule(){
@@ -278,27 +278,27 @@ void checkToplevelAttributes(){
     assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
     assert(is AttributeDeclaration toplevelIntegerDecl = pkg.getAttribute("toplevelInteger"));
-    assert(is Attribute<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply());
+    assert(is Value<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply());
     assert(toplevelIntegerAttribute.get() == 1);
 
     assert(is AttributeDeclaration toplevelStringDecl = pkg.getAttribute("toplevelString"));
-    assert(is Attribute<String> toplevelStringAttribute = toplevelStringDecl.apply());
+    assert(is Value<String> toplevelStringAttribute = toplevelStringDecl.apply());
     assert(toplevelStringAttribute.get() == "a");
 
     assert(is AttributeDeclaration toplevelFloatDecl = pkg.getAttribute("toplevelFloat"));
-    assert(is Attribute<Float> toplevelFloatAttribute = toplevelFloatDecl.apply());
+    assert(is Value<Float> toplevelFloatAttribute = toplevelFloatDecl.apply());
     assert(toplevelFloatAttribute.get() == 1.2);
 
     assert(is AttributeDeclaration toplevelCharacterDecl = pkg.getAttribute("toplevelCharacter"));
-    assert(is Attribute<Character> toplevelCharacterAttribute = toplevelCharacterDecl.apply());
+    assert(is Value<Character> toplevelCharacterAttribute = toplevelCharacterDecl.apply());
     assert(toplevelCharacterAttribute.get() == 'a');
 
     assert(is AttributeDeclaration toplevelBooleanDecl = pkg.getAttribute("toplevelBoolean"));
-    assert(is Attribute<Boolean> toplevelBooleanAttribute = toplevelBooleanDecl.apply());
+    assert(is Value<Boolean> toplevelBooleanAttribute = toplevelBooleanDecl.apply());
     assert(toplevelBooleanAttribute.get() == true);
 
     assert(is AttributeDeclaration toplevelObjectDecl = pkg.getAttribute("toplevelObject"));
-    assert(is Attribute<Object> toplevelObjectAttribute = toplevelObjectDecl.apply());
+    assert(is Value<Object> toplevelObjectAttribute = toplevelObjectDecl.apply());
     assert(toplevelObjectAttribute.get() == 2);
 
     //
@@ -417,12 +417,12 @@ void checkToplevelFunctions(){
     f12a(true, -1, -2, -3, -4);
     
     // check its parameters metamodel
-    assert(f12.parameters.size == 5);
-    assert(exists f12p0 = f12.parameters[0], f12p0.name == "set", f12p0.defaulted == false);
-    assert(exists f12p1 = f12.parameters[1], f12p1.name == "a", f12p1.defaulted == true);
-    assert(exists f12p2 = f12.parameters[2], f12p2.name == "b", f12p2.defaulted == true);
-    assert(exists f12p3 = f12.parameters[3], f12p3.name == "c", f12p3.defaulted == true);
-    assert(exists f12p4 = f12.parameters[4], f12p4.name == "d", f12p4.defaulted == true);
+    assert(f12.parameterDeclarations.size == 5);
+    assert(exists f12p0 = f12.parameterDeclarations[0], f12p0.name == "set", f12p0.defaulted == false);
+    assert(exists f12p1 = f12.parameterDeclarations[1], f12p1.name == "a", f12p1.defaulted == true);
+    assert(exists f12p2 = f12.parameterDeclarations[2], f12p2.name == "b", f12p2.defaulted == true);
+    assert(exists f12p3 = f12.parameterDeclarations[3], f12p3.name == "c", f12p3.defaulted == true);
+    assert(exists f12p4 = f12.parameterDeclarations[4], f12p4.name == "d", f12p4.defaulted == true);
 
     assert(exists f13 = pkg.getFunction("variadicParams"));
     assert(is Function<Anything,[Integer=, String*]> f13a = f13.apply());
@@ -431,9 +431,9 @@ void checkToplevelFunctions(){
     f13a(1, "a");
     f13a(2, "a", "a");
     // check its parameters metamodel
-    assert(f13.parameters.size == 2);
-    assert(exists f13p0 = f13.parameters[0], f13p0.name == "count", f13p0.defaulted == true, f13p0.variadic == false);
-    assert(exists f13p1 = f13.parameters[1], f13p1.name == "strings", f13p1.defaulted == false, f13p1.variadic == true);
+    assert(f13.parameterDeclarations.size == 2);
+    assert(exists f13p0 = f13.parameterDeclarations[0], f13p0.name == "count", f13p0.defaulted == true, f13p0.variadic == false);
+    assert(exists f13p1 = f13.parameterDeclarations[1], f13p1.name == "strings", f13p1.defaulted == false, f13p1.variadic == true);
 
     assert(exists f14 = pkg.getFunction("getAndTakeNoParams"));
     assert(is Function<NoParams, [NoParams]> f14a = f14.apply());
@@ -460,7 +460,7 @@ void checkObjectDeclaration(){
     value noParamsClass = type(NoParams());
     value pkg = noParamsClass.declaration.packageContainer;
     assert(exists topLevelObjectDeclarationAttribute = pkg.getAttribute("topLevelObjectDeclaration"));
-    assert(is OpenParameterisedType<ClassDeclaration> topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.type);
+    assert(is OpenParameterisedType<ClassDeclaration> topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.openType);
     value topLevelObjectClassDeclaration = topLevelObjectTypeDeclaration.declaration;
     assert(topLevelObjectClassDeclaration.name == "topLevelObjectDeclaration");
     assert(topLevelObjectClassDeclaration.anonymous);
