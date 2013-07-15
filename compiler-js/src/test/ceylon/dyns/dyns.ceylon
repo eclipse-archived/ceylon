@@ -31,6 +31,11 @@ shared void test() {
         check(n3[0]<="a", "n3[0]<=");
         check(n3[0]!="A", "n3[0]!=");
         check(n3.length==3, "n3.length");
+        check("b" in n3, "n3.contains");
+        for (uu in n3) {
+            print("iterating, ``uu``");
+        }
+        check(n3 is Iterable<Anything>, "array is Iterable<Anything>");
         function f(value z) => z else n;
         check(f(1)==1, "f(1)");
         check(f(null)==n, "f(null)");
@@ -45,7 +50,7 @@ shared void test() {
         } catch (Exception e) {
             check(true);
             try {
-                value poop = Singleton(n);
+                value poop = Singleton<Anything>(n);
                 fail("dynamic should not be passed to typed methods");
             } catch (Exception e2) {
                 check(true);
@@ -69,22 +74,23 @@ shared void test() {
         } catch (Exception e) {
             check(true);
         }
+        /*these now fail at compile time
         try {
-            value tuple = [n, n2];
+            [Anything,Anything] tuple = [n, n2];
             print(tuple[0]);
             fail("cannot create tuples with dynamic types");
         } catch (Exception e) {
             check(true);
         }
         try {
-            value iter = {n, n2};
+            {Anything*} iter = {n, n2};
             print(n.first);
             fail("cannot create sequence enumerations with dynamic types");
         } catch (Exception e) {
             check(true);
-        }
+        }*/
         try {
-            value iter = coalesce{n,null,n2,null,n3};
+            value iter = coalesce<Anything>{n,null,n2,null,n3};
             print(iter.first);
             fail("cannot create sequenced args with dynamic types");
         } catch (Exception e) {
@@ -127,6 +133,13 @@ shared void test() {
         value n = value {x=carrier;};
         check(n.x.test.a == 3, "carrier 1");
         check(n.x.test.b == "hello", "carrier 2");
+        try {
+            switch(n)
+            case (is String) { fail("n is not a string"); }
+            fail("Incomplete dynamic switch should fail at runtime");
+        } catch (Exception ex) {
+            check(true, "OK incomplete switch fails at runtime");
+        }
     }
     results();
 }
