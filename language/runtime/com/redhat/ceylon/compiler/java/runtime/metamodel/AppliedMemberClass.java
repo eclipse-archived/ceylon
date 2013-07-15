@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
-    extends AppliedClassOrInterfaceType<Type>
+    extends AppliedClassOrInterface<Type>
     implements ceylon.language.metamodel.MemberClass<Container, Type, Arguments> {
 
     @Ignore
@@ -60,7 +60,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @Override
     @Ignore
     public Class<? extends Type, ? super Arguments> $call(Object arg0) {
-        return new AppliedClassType(null, null, super.producedType, arg0);
+        return new AppliedClass(null, null, super.producedType, arg0);
     }
 
     @Override

@@ -29,8 +29,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
-public class AppliedClassType<Type, Arguments extends Sequential<? extends Object>> 
-    extends AppliedClassOrInterfaceType<Type>
+public class AppliedClass<Type, Arguments extends Sequential<? extends Object>> 
+    extends AppliedClassOrInterface<Type>
     implements ceylon.language.metamodel.Class<Type, Arguments>, Callable<Type> {
 
     private TypeDescriptor $reifiedArguments;
@@ -40,7 +40,7 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     private MethodHandle[] dispatch;
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
-    public AppliedClassType(@Ignore TypeDescriptor $reifiedType, 
+    public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
                             @Ignore TypeDescriptor $reifiedArguments,
                             com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
         super($reifiedType, producedType);
@@ -301,6 +301,6 @@ public class AppliedClassType<Type, Arguments extends Sequential<? extends Objec
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(AppliedClassType.class, $reifiedType, $reifiedArguments);
+        return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
 }

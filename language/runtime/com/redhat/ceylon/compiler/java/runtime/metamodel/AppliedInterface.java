@@ -16,12 +16,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
-public class AppliedInterfaceType<Type> 
-    extends AppliedClassOrInterfaceType<Type>
+public class AppliedInterface<Type> 
+    extends AppliedClassOrInterface<Type>
     implements ceylon.language.metamodel.Interface<Type> {
 
     // FIXME: get rid of duplicate instantiations of AppliedInterfaceType when the type in question has no type parameters
-    public AppliedInterfaceType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
+    public AppliedInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
         super(null, producedType);
     }
 
@@ -48,6 +48,6 @@ public class AppliedInterfaceType<Type>
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(AppliedInterfaceType.class, $reifiedType);
+        return TypeDescriptor.klass(AppliedInterface.class, $reifiedType);
     }
 }

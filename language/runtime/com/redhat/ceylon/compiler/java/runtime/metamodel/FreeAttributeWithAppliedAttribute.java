@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.OUT),
 })
-public class FreeAttributeWithMember<Container, Type> 
+public class FreeAttributeWithAppliedAttribute<Container, Type> 
     extends FreeAttribute 
     implements ceylon.language.metamodel.Attribute<Container, Type> {
 
@@ -37,7 +37,7 @@ public class FreeAttributeWithMember<Container, Type>
     private ceylon.language.metamodel.Type closedType;
     private AppliedAttribute<Container, Type> memberDelegate;
 
-    protected FreeAttributeWithMember(@Ignore TypeDescriptor $reifiedContainer,
+    protected FreeAttributeWithAppliedAttribute(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             TypedDeclaration declaration) {
         super(declaration);
@@ -132,6 +132,6 @@ public class FreeAttributeWithMember<Container, Type>
     
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(FreeAttributeWithMember.class, $reifiedContainer, $reifiedType);
+        return TypeDescriptor.klass(FreeAttributeWithAppliedAttribute.class, $reifiedContainer, $reifiedType);
     }
 }

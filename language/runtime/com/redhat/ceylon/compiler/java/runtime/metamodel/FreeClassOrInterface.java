@@ -261,14 +261,14 @@ public abstract class FreeClassOrInterface
                 @Ignore TypeDescriptor $reifiedKind,
                 @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: check this
-        AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
+        AppliedClassOrInterface<Container> containerType = (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
         return getAppliedClassOrInterface($reifiedContainer, $reifiedKind, types, containerType);
     }
 
     <Type, Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
     ceylon.language.metamodel.Member<Type, Kind> getAppliedClassOrInterface(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
                                                                             Sequential<? extends ceylon.language.metamodel.Type> types,
-                                                                            AppliedClassOrInterfaceType<Type> container){
+                                                                            AppliedClassOrInterface<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         ProducedReference producedReference = declaration.getProducedReference(container.producedType, producedTypes);
         final ProducedType appliedType = producedReference.getType();

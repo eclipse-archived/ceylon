@@ -28,13 +28,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 
-public class FreeFunctionWithType<Type, Arguments extends Sequential<? extends Object>>
+public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<? extends Object>>
     extends FreeFunction 
     implements ceylon.language.metamodel.Function<Type, Arguments> {
 
     private AppliedFunction<Type,Arguments> typeDelegate;
 
-    public FreeFunctionWithType(@Ignore TypeDescriptor $reifiedType, 
+    public FreeFunctionWithAppliedFunction(@Ignore TypeDescriptor $reifiedType, 
             @Ignore TypeDescriptor $reifiedArguments,
             Method declaration) {
         super(declaration);
@@ -122,6 +122,6 @@ public class FreeFunctionWithType<Type, Arguments extends Sequential<? extends O
     public TypeDescriptor $getType() {
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeFunctionWithType.class, args[0], args[1]);
+        return TypeDescriptor.klass(FreeFunctionWithAppliedFunction.class, args[0], args[1]);
     }
 }

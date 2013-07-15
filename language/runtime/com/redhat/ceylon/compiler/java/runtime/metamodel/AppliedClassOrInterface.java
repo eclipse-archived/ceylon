@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
-public class AppliedClassOrInterfaceType<Type> 
+public class AppliedClassOrInterface<Type> 
     implements ceylon.language.metamodel.ClassOrInterface<Type>, ReifiedType {
 
     private volatile boolean initialised;
@@ -42,7 +42,7 @@ public class AppliedClassOrInterfaceType<Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
-    AppliedClassOrInterfaceType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
+    AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
     }
@@ -179,7 +179,7 @@ public class AppliedClassOrInterfaceType<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        return method.<SubType,Kind>getAppliedFunction($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterfaceType<SubType>)this);
+        return method.<SubType,Kind>getAppliedFunction($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
     }
 
     @Ignore
@@ -216,7 +216,7 @@ public class AppliedClassOrInterfaceType<Type>
         final FreeClassOrInterface type = declaration.findType(name);
         if(type == null)
             return null;
-        return type.getAppliedClassOrInterface($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterfaceType<SubType>)this);
+        return type.getAppliedClassOrInterface($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
     }
 
     @Override
@@ -243,6 +243,6 @@ public class AppliedClassOrInterfaceType<Type>
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(AppliedClassOrInterfaceType.class, $reifiedType);
+        return TypeDescriptor.klass(AppliedClassOrInterface.class, $reifiedType);
     }
 }

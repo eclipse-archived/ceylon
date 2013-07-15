@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberInterface<Container, Type> 
-    extends AppliedClassOrInterfaceType<Type>
+    extends AppliedClassOrInterface<Type>
     implements ceylon.language.metamodel.MemberInterface<Container, Type> {
 
     @Ignore
@@ -55,7 +55,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call(Object arg0) {
-        return new AppliedInterfaceType(null, super.producedType);
+        return new AppliedInterface(null, super.producedType);
     }
 
     @Override

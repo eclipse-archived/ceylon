@@ -74,7 +74,7 @@ public class FreeInterface
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedInterfaceType = declaration.getProducedReference(null, producedTypes).getType();
-        return (AppliedInterfaceType)Metamodel.getAppliedMetamodel(appliedInterfaceType);
+        return (AppliedInterface)Metamodel.getAppliedMetamodel(appliedInterfaceType);
     }
 
     @Override

@@ -140,19 +140,19 @@ public class Metamodel {
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     com.redhat.ceylon.compiler.typechecker.model.Class klass = (com.redhat.ceylon.compiler.typechecker.model.Class) declaration;
                     if(klass.getTypeParameters().isEmpty())
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithType(null, null, klass);
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedClass(null, null, klass);
                     else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClass(klass);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
                     com.redhat.ceylon.compiler.typechecker.model.Interface interf = (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration;
                     if(interf.getTypeParameters().isEmpty())
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceWithType(null, interf);
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceWithAppliedInterface(null, interf);
                     else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
                     com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)declaration;
                     if(method.getTypeParameters().isEmpty())
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithType(null, null, method);
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedFunction(null, null, method);
                     else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
@@ -214,10 +214,10 @@ public class Metamodel {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // FIXME: this null is most likely just wrong
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClassType(null, null, pt, null);
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(null, null, pt, null);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterfaceType(null, pt);
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(null, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
             return new AppliedUnionType(declaration.getCaseTypes());
@@ -341,8 +341,8 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.Type pt) {
-        if(pt instanceof AppliedClassOrInterfaceType)
-            return ((AppliedClassOrInterfaceType)pt).producedType;
+        if(pt instanceof AppliedClassOrInterface)
+            return ((AppliedClassOrInterface)pt).producedType;
         throw new RuntimeException("Unsupported applied produced type: " + pt);
     }
 
@@ -379,7 +379,7 @@ public class Metamodel {
     Class<?> getReflectedAnnotationClass(
             ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType) {
         FreeClassOrInterface freeClass;
-        if (annotationType instanceof AppliedClassOrInterfaceType) {
+        if (annotationType instanceof AppliedClassOrInterface) {
             freeClass = (FreeClassOrInterface)(annotationType.getDeclaration());
         } else {
             freeClass = (FreeClassOrInterface)annotationType;

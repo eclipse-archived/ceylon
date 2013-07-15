@@ -35,13 +35,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
 })
-public class FreeClassWithType<Type, Arguments extends Sequential<? extends Object>> 
+public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? extends Object>> 
     extends FreeClass 
     implements ceylon.language.metamodel.Class<Type, Arguments>, Callable<Type> {
 
-    private AppliedClassType<Type, Arguments> typeDelegate;
+    private AppliedClass<Type, Arguments> typeDelegate;
 
-    public FreeClassWithType(@Ignore TypeDescriptor $reifiedType,
+    public FreeClassWithAppliedClass(@Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             Class declaration) {
         super(declaration);
@@ -53,7 +53,7 @@ public class FreeClassWithType<Type, Arguments extends Sequential<? extends Obje
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        typeDelegate = new AppliedClassType<Type, Arguments>(null, null, appliedClassType, null);
+        typeDelegate = new AppliedClass<Type, Arguments>(null, null, appliedClassType, null);
     }
     
     @Override
@@ -247,6 +247,6 @@ public class FreeClassWithType<Type, Arguments extends Sequential<? extends Obje
         checkInit();
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeClassWithType.class, args[0], args[1]);
+        return TypeDescriptor.klass(FreeClassWithAppliedClass.class, args[0], args[1]);
     }
 }

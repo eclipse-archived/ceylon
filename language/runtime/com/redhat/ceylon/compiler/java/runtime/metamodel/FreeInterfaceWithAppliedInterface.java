@@ -33,13 +33,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     })
-public class FreeInterfaceWithType<Type>
+public class FreeInterfaceWithAppliedInterface<Type>
     extends FreeInterface
     implements ceylon.language.metamodel.Interface<Type> {
 
-    private AppliedInterfaceType<Type> typeDelegate;
+    private AppliedInterface<Type> typeDelegate;
 
-    public FreeInterfaceWithType(@Ignore TypeDescriptor $reifiedType, Interface declaration) {
+    public FreeInterfaceWithAppliedInterface(@Ignore TypeDescriptor $reifiedType, Interface declaration) {
         super(declaration);
     }
 
@@ -84,7 +84,7 @@ public class FreeInterfaceWithType<Type>
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        typeDelegate = new AppliedInterfaceType<Type>(null, appliedClassType);
+        typeDelegate = new AppliedInterface<Type>(null, appliedClassType);
     }
 
     @Override
@@ -202,6 +202,6 @@ public class FreeInterfaceWithType<Type>
         checkInit();
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeInterfaceWithType.class, args[0]);
+        return TypeDescriptor.klass(FreeInterfaceWithAppliedInterface.class, args[0]);
     }
 }

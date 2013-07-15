@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.NONE),
 })
-public class FreeVariableWithMember<Container, Type> 
+public class FreeVariableWithAppliedVariableAttribute<Container, Type> 
     extends FreeVariable 
     implements ceylon.language.metamodel.VariableAttribute<Container, Type> {
 
@@ -37,7 +37,7 @@ public class FreeVariableWithMember<Container, Type>
     private TypeDescriptor $reifiedType;
     private ceylon.language.metamodel.Type closedType;
 
-    protected FreeVariableWithMember(@Ignore TypeDescriptor $reifiedContainer,
+    protected FreeVariableWithAppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             Value declaration) {
         super(declaration);
@@ -140,6 +140,6 @@ public class FreeVariableWithMember<Container, Type>
     
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(FreeAttributeWithMember.class, $reifiedContainer, $reifiedType);
+        return TypeDescriptor.klass(FreeAttributeWithAppliedAttribute.class, $reifiedContainer, $reifiedType);
     }
 }

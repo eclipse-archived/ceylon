@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
 })
-public class FreeFunctionWithMember<Container, Type, Arguments extends Sequential<? extends Object>> 
+public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends FreeFunction 
     implements ceylon.language.metamodel.Method<Container, Type, Arguments> {
 
@@ -43,7 +43,7 @@ public class FreeFunctionWithMember<Container, Type, Arguments extends Sequentia
     @Ignore
     private TypeDescriptor $reifiedArguments;
 
-    public FreeFunctionWithMember(@Ignore TypeDescriptor $reifiedContainer, 
+    public FreeFunctionWithAppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             Method declaration) {
@@ -146,7 +146,7 @@ public class FreeFunctionWithMember<Container, Type, Arguments extends Sequentia
 
     @Override
     public TypeDescriptor $getType() {
-        return TypeDescriptor.klass(FreeFunctionWithMember.class, $reifiedContainer, $reifiedType, $reifiedArguments);
+        return TypeDescriptor.klass(FreeFunctionWithAppliedMethod.class, $reifiedContainer, $reifiedType, $reifiedArguments);
     }
 
 }

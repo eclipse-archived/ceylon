@@ -32,7 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.OUT),
 })
-public class FreeInterfaceWithMember<Container, Type> 
+public class FreeInterfaceWithAppliedMemberInterface<Container, Type> 
     extends FreeInterface
     implements ceylon.language.metamodel.MemberInterface<Container, Type> {
 
@@ -42,7 +42,7 @@ public class FreeInterfaceWithMember<Container, Type>
     @Ignore
     private TypeDescriptor $reifiedType;
 
-    public FreeInterfaceWithMember(@Ignore TypeDescriptor $reifiedContainer,
+    public FreeInterfaceWithAppliedMemberInterface(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             Interface declaration) {
         super(declaration);
@@ -249,6 +249,6 @@ public class FreeInterfaceWithMember<Container, Type>
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(FreeInterfaceWithMember.class, $reifiedContainer, $reifiedType);
+        return TypeDescriptor.klass(FreeInterfaceWithAppliedMemberInterface.class, $reifiedContainer, $reifiedType);
     }
 }

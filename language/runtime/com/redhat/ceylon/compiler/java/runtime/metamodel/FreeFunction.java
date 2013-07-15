@@ -185,14 +185,14 @@ public class FreeFunction
                 @Ignore TypeDescriptor $reifiedKind,
                 @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: check this
-        AppliedClassOrInterfaceType<Container> containerType = (AppliedClassOrInterfaceType<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
+        AppliedClassOrInterface<Container> containerType = (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
         return getAppliedFunction($reifiedContainer, $reifiedKind, types, containerType);
     }
 
     <Type, Kind extends ceylon.language.metamodel.Function>
     ceylon.language.metamodel.Member<Type, Kind> getAppliedFunction(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
                                                                     Sequential<? extends ceylon.language.metamodel.Type> types,
-                                                                    AppliedClassOrInterfaceType<Type> container){
+                                                                    AppliedClassOrInterface<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters

@@ -4,8 +4,6 @@ import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.Value$impl;
 import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.AttributeModel$impl;
-import ceylon.language.metamodel.Variable;
-import ceylon.language.metamodel.Variable$impl;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -16,22 +14,24 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
 })
-public class FreeVariableWithType<Type> 
-    extends FreeVariable 
-    implements Variable<Type> {
+public class FreeAttributeWithAppliedValue<Type> 
+    extends FreeAttribute 
+    implements Value<Type> {
 
-    private AppliedVariable<Type> typeDelegate;
+    private AppliedValue<Type> typeDelegate;
 
-    protected FreeVariableWithType(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
+    protected FreeAttributeWithAppliedValue(@Ignore TypeDescriptor $reifiedType, TypedDeclaration declaration) {
         super(declaration);
+        com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         // FIXME: container?
-        typeDelegate = new AppliedVariable<Type>(null, this, declaration.getType(), null);
+        typeDelegate = new AppliedValue<Type>(null, this, modelDecl.getType(), null);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class FreeVariableWithType<Type>
 
     @Override
     @Ignore
-    public AttributeModel$impl<Type> $ceylon$language$metamodel$AttributeModel$impl() {
+    public AttributeModel$impl $ceylon$language$metamodel$AttributeModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -51,13 +51,6 @@ public class FreeVariableWithType<Type>
     @Override
     @Ignore
     public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Variable$impl<Type> $ceylon$language$metamodel$Variable$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -74,11 +67,6 @@ public class FreeVariableWithType<Type>
     }
 
     @Override
-    public Object set(@Name("newValue") @TypeInfo("Type") Type newValue) {
-        return typeDelegate.set(newValue);
-    }
-
-    @Override
     @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration")
     public AttributeDeclaration getDeclaration() {
         return this;
@@ -89,11 +77,11 @@ public class FreeVariableWithType<Type>
     public Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
         return this;
     }
-
+    
     @Override
     public TypeDescriptor $getType() {
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeVariableWithType.class, args[0]);
+        return TypeDescriptor.klass(FreeAttributeWithAppliedValue.class, args[0]);
     }
 }
