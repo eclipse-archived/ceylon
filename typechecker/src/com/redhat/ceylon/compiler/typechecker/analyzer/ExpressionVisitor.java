@@ -5496,10 +5496,8 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType getTypeLiteralFunctionType(ProducedTypedReference pr, ParameterList parameterList) {
         ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
-        ProducedType ct = pr.getFullType();
-        if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
-            //pull the return type out of the Callable
-            ProducedType returnType = ct.getTypeArgumentList().get(0);
+        ProducedType returnType = unit.getCallableReturnType(pr.getFullType());
+        if (returnType != null) {
             
             if(pr.getQualifyingType() != null){
                 Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Method");

@@ -834,4 +834,15 @@ public class Unit {
         }
         return null;
     }
+    
+    public ProducedType getCallableReturnType(ProducedType t){
+        ProducedType ct = t.getSupertype(getCallableDeclaration());
+        if (ct!=null) {
+            List<ProducedType> typeArgs = ct.getTypeArgumentList();
+            if (typeArgs.size()>=1) {
+                return typeArgs.get(0);
+            }
+        }
+        return null;
+    }
 }
