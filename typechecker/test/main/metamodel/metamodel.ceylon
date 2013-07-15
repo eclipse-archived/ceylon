@@ -27,12 +27,12 @@ void test<T>() {
     value aliasType = `Alias`;
     
     // members
-    @type:"ClassDeclaration&Member<Container,Class<Container.InnerClass,Empty>>"
+    @type:"ClassDeclaration&MemberClass<Container,Container.InnerClass,Empty>"
     value memberClassType = `Container.InnerClass`;
-    @type:"InterfaceDeclaration&Member<Container,Interface<Container.InnerInterface>>"
+    @type:"InterfaceDeclaration&MemberInterface<Container,Container.InnerInterface>"
     value memberInterfaceType = `Container.InnerInterface`;
     
-    @type:"Member<ParameterisedContainer<String>,Class<ParameterisedContainer<String>.InnerClass<Integer>,Empty>>"
+    @type:"MemberClass<ParameterisedContainer<String>,ParameterisedContainer<String>.InnerClass<Integer>,Empty>"
     value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
     @type:"ClassDeclaration"
     value memberParameterisedClassDecl = `ParameterisedContainer.InnerClass`;
@@ -41,7 +41,7 @@ void test<T>() {
     @error:"mixed type and declaration literal"
     value memberParameterisedClassTypeErr2 = `ParameterisedContainer.InnerClass<Integer>`;
 
-    @type:"Member<ParameterisedContainer<String>,Interface<ParameterisedContainer<String>.InnerInterface<Integer>>>"
+    @type:"MemberInterface<ParameterisedContainer<String>,ParameterisedContainer<String>.InnerInterface<Integer>>"
     value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
     @type:"InterfaceDeclaration"
     value memberParameterisedInterfaceDecl = `ParameterisedContainer.InnerInterface`;
@@ -65,11 +65,11 @@ void test<T>() {
     value toplevelMPLMethod = `mplMethod`;
 
     // qualified methods
-    @type:"FunctionDeclaration&Member<Container,Function<Anything,Empty>>"
+    @type:"FunctionDeclaration&Method<Container,Anything,Empty>"
     value containerMethod = `Container.method`;
     @error:"member method or attribute is ambiguous: missing"
     value containerMethodErr = `Container.missing`;
-    @type:"Member<ParameterisedContainer<String>,Function<Anything,Tuple<Integer,Integer,Empty>>>"
+    @type:"Method<ParameterisedContainer<String>,Anything,Tuple<Integer,Integer,Empty>>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
     @type:"FunctionDeclaration"
     value parameterisedContainerMethodDecl = `ParameterisedContainer.method`;
@@ -79,7 +79,7 @@ void test<T>() {
     value parameterisedContainerMethodErr2 = `ParameterisedContainer.method<Integer>`;
     
     // toplevel attributes
-    @type:"AttributeDeclaration&Attribute<Integer>"
+    @type:"AttributeDeclaration&Value<Integer>"
     value toplevelAttribute = `attribute`;
     @error:"does not accept type arguments: attribute"
     value toplevelAttributeErr = `attribute<String>`;
@@ -87,15 +87,15 @@ void test<T>() {
     value toplevelVariableAttribute = `variableAttribute`;
 
     // qualified attributes
-    @type:"AttributeDeclaration&Member<Container,Attribute<Integer>>"
+    @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value containerAttribute = `Container.attribute`;
-    @type:"VariableDeclaration&Member<Container,Variable<Integer>>"
+    @type:"VariableDeclaration&VariableAttribute<Container,Integer>"
     value containerVariableAttribute = `Container.variableAttribute`;
-    @type:"Member<ParameterisedContainer<String>,Attribute<String>>"
+    @type:"Attribute<ParameterisedContainer<String>,String>"
     value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
     @type:"AttributeDeclaration"
     value parameterisedContainerAttributeDecl = `ParameterisedContainer.attribute`;
-    @type:"Member<ParameterisedContainer<String>,Variable<String>>"
+    @type:"VariableAttribute<ParameterisedContainer<String>,String>"
     value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
     @type:"VariableDeclaration"
     value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
