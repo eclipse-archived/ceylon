@@ -576,10 +576,14 @@ public class Metamodel {
             com.redhat.ceylon.compiler.typechecker.model.Functional decl, 
             ProducedReference producedReference) {
         
-        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
+        if(!decl.getParameterLists().isEmpty()){
+            List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+            com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
             = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(unit, parameters, producedReference);
-        return Metamodel.getTypeDescriptorForProducedType(tupleType);
+            return Metamodel.getTypeDescriptorForProducedType(tupleType);
+        }else{
+            return TypeDescriptor.NothingType;
+        }
     }
     
     public static ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
