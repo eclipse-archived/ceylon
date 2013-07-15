@@ -85,9 +85,9 @@ public class AppliedAttribute<Container, Type>
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
     }
 
-    public static Member instance(TypeDescriptor $reifiedSubType, TypeDescriptor reifiedValueType, 
-                                  FreeAttribute value, ProducedType valueType, 
-                                  com.redhat.ceylon.compiler.typechecker.model.Value decl) {
+    public static ceylon.language.metamodel.Attribute instance(TypeDescriptor $reifiedSubType, TypeDescriptor reifiedValueType, 
+                                                               FreeAttribute value, ProducedType valueType, 
+                                                               com.redhat.ceylon.compiler.typechecker.model.Value decl) {
         return decl.isVariable()
                 ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueType)
                 : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType);

@@ -22,13 +22,15 @@ shared interface ClassOrInterface<out Type>
     // FIXME: InterfaceModel probably?
     shared formal Interface<Anything>[] interfaces;
 
+    // FIXME: introduce MemberClassOrInterface?
     shared formal Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
         given Kind satisfies ClassOrInterface<Anything>;
     
-    shared formal Member<SubType, Kind>? getFunction<SubType, Kind>(String name, ClosedType* types)
-        given Kind satisfies Function<Anything, Nothing>;
+    shared formal Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
+        given Arguments satisfies Anything[];
     
-    shared formal Member<SubType, Kind>? getAttribute<SubType, Kind>(String name)
-        given Kind satisfies Value<Anything>;
+    shared formal Attribute<SubType, Type>? getAttribute<SubType, Type>(String name);
+
+    shared formal VariableAttribute<SubType, Type>? getVariableAttribute<SubType, Type>(String name);
 }
 

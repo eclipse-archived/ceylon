@@ -147,39 +147,43 @@ public class AppliedClassOrInterface<Type>
 
     @Ignore
     @Override
-    public Sequential<? extends ceylon.language.metamodel.Type> getFunction$types(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                                         @Ignore TypeDescriptor $reifiedKind, 
-                                                                                         String name){
+    public Sequential<? extends ceylon.language.metamodel.Type> getMethod$types(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                                @Ignore TypeDescriptor $reifiedType, 
+                                                                                @Ignore TypeDescriptor $reifiedArguments, 
+                                                                                String name){
         return (Sequential) empty_.$get();
     }
 
     @Ignore
     @Override
-    public <SubType, Kind extends ceylon.language.metamodel.Function>
-        ceylon.language.metamodel.Member<SubType, Kind> getFunction(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                    @Ignore TypeDescriptor $reifiedKind, 
-                                                                    String name){
+    public <SubType, Type, Arguments extends Sequential<? extends Object>>
+    ceylon.language.metamodel.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                         @Ignore TypeDescriptor $reifiedType, 
+                                                                         @Ignore TypeDescriptor $reifiedArguments, 
+                                                                         String name){
         
-        return getFunction($reifiedSubType, $reifiedKind, name, getFunction$types($reifiedSubType, $reifiedKind, name));
+        return getMethod($reifiedSubType, $reifiedType, $reifiedArguments, name, getMethod$types($reifiedSubType, $reifiedType, $reifiedArguments, name));
     }
 
     @Override
     @TypeParameters({
         @TypeParameter(value = "SubType"),
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Function<ceylon.language::Anything,ceylon.language::Nothing>")
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language.metamodel::Member<SubType,Kind>|ceylon.language::Null")
-    public <SubType, Kind extends ceylon.language.metamodel.Function>
-        ceylon.language.metamodel.Member<SubType, Kind> getFunction(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                    @Ignore TypeDescriptor $reifiedKind, 
-                                                                    String name, 
-                                                                    @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types) {
+    @TypeInfo("ceylon.language.metamodel::Method<SubType,Type,Arguments>|ceylon.language::Null")
+    public <SubType, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.metamodel.Method<SubType, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                             @Ignore TypeDescriptor $reifiedType, 
+                                                                             @Ignore TypeDescriptor $reifiedArguments, 
+                                                                             String name, 
+                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types) {
         
         checkInit();
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        return method.<SubType,Kind>getAppliedFunction($reifiedSubType, $reifiedKind, types, (AppliedClassOrInterface<SubType>)this);
+        return method.<SubType, Type, Arguments>getAppliedMethod($reifiedSubType, $reifiedType, $reifiedArguments, types, (AppliedClassOrInterface<SubType>)this);
     }
 
     @Ignore
@@ -222,13 +226,13 @@ public class AppliedClassOrInterface<Type>
     @Override
     @TypeParameters({
         @TypeParameter(value = "SubType"),
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel::Value<ceylon.language::Anything>")
+        @TypeParameter(value = "Type")
     })
-    @TypeInfo("ceylon.language.metamodel::Member<SubType,Kind>|ceylon.language::Null")
-    public <SubType, Kind extends ceylon.language.metamodel.Value<? extends Object>>
-        ceylon.language.metamodel.Member<SubType, Kind> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
-                                                                     @Ignore TypeDescriptor $reifiedKind, 
-                                                                     String name) {
+    @TypeInfo("ceylon.language.metamodel::Attribute<SubType,Type>|ceylon.language::Null")
+    public <SubType, Type>
+        ceylon.language.metamodel.Attribute<SubType, Type> getAttribute(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                        @Ignore TypeDescriptor $reifiedType, 
+                                                                        String name) {
         
         checkInit();
         final FreeAttribute value = declaration.findValue(name);
@@ -239,7 +243,20 @@ public class AppliedClassOrInterface<Type>
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(valueType);
         return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, valueType, decl);
     }
-    
+
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "SubType"),
+        @TypeParameter(value = "Type")
+    })
+    @TypeInfo("ceylon.language.metamodel::VariableAttribute<SubType,Type>|ceylon.language::Null")
+    public <SubType, Type>
+        ceylon.language.metamodel.VariableAttribute<SubType, Type> getVariableAttribute(@Ignore TypeDescriptor $reifiedSubType, 
+                                                                                        @Ignore TypeDescriptor $reifiedType, 
+                                                                                        String name) {
+        return (ceylon.language.metamodel.VariableAttribute<SubType, Type>)getAttribute($reifiedSubType, $reifiedType, name);
+    }
+
     @Override
     public TypeDescriptor $getType() {
         checkInit();

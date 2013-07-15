@@ -160,49 +160,50 @@ public class FreeFunction
 
     @Ignore
     @Override
-    public <Container, 
-            Kind extends ceylon.language.metamodel.Function>
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
         Sequential<? extends ceylon.language.metamodel.Type> memberApply$types(TypeDescriptor $reifiedContainer,
-                                                                                      TypeDescriptor $reifiedKind){
+                                                                               TypeDescriptor $reifiedType,
+                                                                               TypeDescriptor $reifiedArguments){
         
         return (Sequential) empty_.$get();
     }
 
     @Ignore
     @Override
-    public <Container, 
-            Kind extends ceylon.language.metamodel.Function>
-        ceylon.language.metamodel.Member<Container, Kind> memberApply(TypeDescriptor $reifiedContainer,
-                                                                      TypeDescriptor $reifiedKind){
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.metamodel.Method<Container, Type, Arguments> memberApply(TypeDescriptor $reifiedContainer,
+                                                                                 TypeDescriptor $reifiedType,
+                                                                                 TypeDescriptor $reifiedArguments){
         
-        return this.<Container, Kind>memberApply($reifiedContainer,
-                                                 $reifiedKind,
-                                                 this.<Container, Kind>memberApply$types($reifiedContainer, $reifiedKind));
+        return this.<Container, Type, Arguments>memberApply($reifiedContainer,
+                                                            $reifiedType,
+                                                            $reifiedArguments,
+                                                            this.<Container, Type, Arguments>memberApply$types($reifiedContainer, $reifiedType, $reifiedArguments));
     }
 
     @Override
-    public <Container, 
-            Kind extends ceylon.language.metamodel.Function>
-        ceylon.language.metamodel.Member<Container, Kind> memberApply(
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.metamodel.Method<Container, Type, Arguments> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
-                @Ignore TypeDescriptor $reifiedKind,
+                @Ignore TypeDescriptor $reifiedType,
+                @Ignore TypeDescriptor $reifiedArguments,
                 @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // FIXME: check this
         AppliedClassOrInterface<Container> containerType = (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
-        return getAppliedFunction($reifiedContainer, $reifiedKind, types, containerType);
+        return getAppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, types, containerType);
     }
 
-    <Type, Kind extends ceylon.language.metamodel.Function>
-    ceylon.language.metamodel.Member<Type, Kind> getAppliedFunction(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
-                                                                    Sequential<? extends ceylon.language.metamodel.Type> types,
-                                                                    AppliedClassOrInterface<Type> container){
+    <Container, Type, Arguments extends ceylon.language.Sequential<? extends Object>>
+    ceylon.language.metamodel.Method<Container, Type, Arguments> getAppliedMethod(TypeDescriptor $reifiedContainer, 
+                                                                                  TypeDescriptor $reifiedType, 
+                                                                                  TypeDescriptor $reifiedArguments, 
+                                                                                  Sequential<? extends ceylon.language.metamodel.Type> types,
+                                                                                  AppliedClassOrInterface<Container> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters
         final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        TypeDescriptor reifiedFunctionType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
-        TypeDescriptor reifiedFunctionArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
-        return new AppliedMethod($reifiedType, reifiedFunctionType, reifiedFunctionArguments, appliedFunction, this);
+        return new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this);
     }
     
     @Override

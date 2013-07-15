@@ -127,9 +127,14 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
     }
 
     @Override
-    public <Container, Kind extends Function> Member<Container, Kind> memberApply(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedKind, @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types) {
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.metamodel.Method<Container, Type, Arguments> memberApply(
+            @Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedType,
+            @Ignore TypeDescriptor $reifiedArguments,
+            @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         // TODO: check arguments
-        return (Member)this;
+        return (ceylon.language.metamodel.Method)this;
     }
     
     @Override
