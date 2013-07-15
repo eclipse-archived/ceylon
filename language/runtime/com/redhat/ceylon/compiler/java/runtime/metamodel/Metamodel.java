@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -139,23 +141,37 @@ public class Metamodel {
             if(ret == null){
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     com.redhat.ceylon.compiler.typechecker.model.Class klass = (com.redhat.ceylon.compiler.typechecker.model.Class) declaration;
-                    if(klass.getTypeParameters().isEmpty())
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedClass(null, null, klass);
-                    else
+                    // FIXME: check also every container type
+                    if(klass.getTypeParameters().isEmpty()){
+                        // FIXME: deal with members too!
+                        ProducedReference pr = klass.getProducedReference(null, Collections.<ProducedType>emptyList());
+                        TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
+                        TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedClass(reifiedType, reifiedArguments, klass);
+                    }else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClass(klass);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
                     com.redhat.ceylon.compiler.typechecker.model.Interface interf = (com.redhat.ceylon.compiler.typechecker.model.Interface)declaration;
-                    if(interf.getTypeParameters().isEmpty())
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceWithAppliedInterface(null, interf);
-                    else
+                    // FIXME: check also every container type
+                    if(interf.getTypeParameters().isEmpty()){
+                        // FIXME: deal with members too!
+                        ProducedReference pr = interf.getProducedReference(null, Collections.<ProducedType>emptyList());
+                        TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterfaceWithAppliedInterface(reifiedType, interf);
+                    }else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
+                    // FIXME: make sure this is only for toplevels
                     com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)declaration;
-                    if(method.getTypeParameters().isEmpty())
-                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedFunction(null, null, method);
-                    else
+                    if(method.getTypeParameters().isEmpty()){
+                        ProducedReference pr = method.getProducedReference(null, Collections.<ProducedType>emptyList());
+                        TypeDescriptor reifiedType = getTypeDescriptorForFunction(pr);
+                        TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), method, pr);
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedFunction(reifiedType, reifiedArguments, method);
+                    }else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
+                    // FIXME: make sure this is only for toplevels
                     com.redhat.ceylon.compiler.typechecker.model.Value value = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
                     ret = FreeAttribute.instance(value);
                 }else{
@@ -213,11 +229,27 @@ public class Metamodel {
     public static ceylon.language.metamodel.Type getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
-            // FIXME: this null is most likely just wrong
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(null, null, pt, null);
+            // anonymous classes don't have parameter lists
+            TypeDescriptor reifiedArguments;
+            if(!declaration.isAnonymous())
+                reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration, pt);
+            else
+                reifiedArguments = TypeDescriptor.NothingType;
+            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
+
+            if(declaration.isToplevel())
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(reifiedType, reifiedArguments, pt, null);
+            
+            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(null, pt);
+            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
+            if(declaration.isToplevel())
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt);
+
+            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberInterface(reifiedContainer, reifiedType, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType){
             return new AppliedUnionType(declaration.getCaseTypes());
@@ -559,4 +591,15 @@ public class Metamodel {
                     moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
         return (ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration) getOrCreateMetamodel(decl);
     }
+
+    public static TypeDescriptor getTypeDescriptorForFunction(ProducedReference appliedFunction) {
+        return getTypeDescriptorForProducedType(getFunctionReturnType(appliedFunction));
+    }
+    
+    public static ProducedType getFunctionReturnType(ProducedReference appliedFunction) {
+        // pull the return type out of the Callable
+        ProducedType fullType = appliedFunction.getFullType();
+        return fullType.getTypeArgumentList().get(0);
+    }
+    
 }

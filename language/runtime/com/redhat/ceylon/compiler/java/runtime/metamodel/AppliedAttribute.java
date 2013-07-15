@@ -32,7 +32,8 @@ public class AppliedAttribute<Container, Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
 
-    public AppliedAttribute(TypeDescriptor $reifiedContainer, TypeDescriptor $reifiedType,
+    public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
+                            @Ignore TypeDescriptor $reifiedType,
                             FreeAttribute declaration, ProducedType type) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.metamodel.Value.class, $reifiedType));
         this.declaration = declaration;

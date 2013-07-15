@@ -84,7 +84,8 @@ public class FreeInterfaceWithAppliedInterface<Type>
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        typeDelegate = new AppliedInterface<Type>(null, appliedClassType);
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedClassType);
+        typeDelegate = new AppliedInterface<Type>(reifiedType, appliedClassType);
     }
 
     @Override

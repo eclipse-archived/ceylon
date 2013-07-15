@@ -60,7 +60,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @Override
     @Ignore
     public Class<? extends Type, ? super Arguments> $call(Object arg0) {
-        return new AppliedClass(null, null, super.producedType, arg0);
+        return new AppliedClass($reifiedType, $reifiedArguments, super.producedType, arg0);
     }
 
     @Override

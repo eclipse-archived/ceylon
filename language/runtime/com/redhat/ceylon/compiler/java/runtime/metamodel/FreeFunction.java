@@ -151,8 +151,11 @@ public class FreeFunction
             @Name("instance") @TypeInfo("ceylon.language::Object") Object instance, 
             @Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
+        // FIXME: should have the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        return new AppliedFunction(null, null, appliedFunction, this, instance);
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
+        TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
+        return new AppliedFunction(reifiedType, reifiedArguments, appliedFunction, this, instance);
     }
 
     @Ignore
@@ -197,8 +200,7 @@ public class FreeFunction
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters
         final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        // FIXME: check with MPL
-        TypeDescriptor reifiedFunctionType = Metamodel.getTypeDescriptorForProducedType(appliedFunction.getType());
+        TypeDescriptor reifiedFunctionType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedFunctionArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         return new AppliedMethod($reifiedType, reifiedFunctionType, reifiedFunctionArguments, appliedFunction, this);
     }

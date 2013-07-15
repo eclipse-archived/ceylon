@@ -49,15 +49,11 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
                            ProducedReference appliedFunction, FreeFunction function, Object instance) {
-        ProducedType appliedType = appliedFunction.getType();
+        this.$reifiedType = $reifiedType;
+        this.$reifiedArguments = $reifiedArguments;
         
-        // FIXME: check that this returns a Callable if we have multiple parameter lists
-        this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
-        com.redhat.ceylon.compiler.typechecker.model.ProducedType tupleType 
-            = com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType(decl.getUnit(), parameters, appliedFunction);
         
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
 
@@ -68,9 +64,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
             defaultedMethods = new Method[dispatch.length];
         }
-        this.$reifiedArguments = Metamodel.getTypeDescriptorForProducedType(tupleType);
 
-        this.type = Metamodel.getAppliedMetamodel(appliedType);
+        this.type = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         
         this.declaration = function;
 

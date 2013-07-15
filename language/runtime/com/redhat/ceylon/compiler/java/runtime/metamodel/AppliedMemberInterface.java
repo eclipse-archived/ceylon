@@ -19,8 +19,8 @@ public class AppliedMemberInterface<Container, Type>
     private TypeDescriptor $reifiedContainer;
 
     AppliedMemberInterface(@Ignore TypeDescriptor $reifiedContainer,
-                       @Ignore TypeDescriptor $reifiedType,
-                       ProducedType producedType) {
+                           @Ignore TypeDescriptor $reifiedType,
+                           ProducedType producedType) {
         super($reifiedType, producedType);
         this.$reifiedContainer = $reifiedContainer;
     }
@@ -55,7 +55,7 @@ public class AppliedMemberInterface<Container, Type>
     @Override
     @Ignore
     public Interface<? extends Type> $call(Object arg0) {
-        return new AppliedInterface(null, super.producedType);
+        return new AppliedInterface($reifiedType, super.producedType);
     }
 
     @Override

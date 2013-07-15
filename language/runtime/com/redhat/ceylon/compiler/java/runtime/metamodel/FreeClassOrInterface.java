@@ -274,8 +274,7 @@ public abstract class FreeClassOrInterface
         final ProducedType appliedType = producedReference.getType();
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
-            // FIXME
-            return null;
+            return new AppliedMemberInterface($reifiedType, reifiedType, appliedType);
         }else{
             TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), 
                     (com.redhat.ceylon.compiler.typechecker.model.Class)declaration, 

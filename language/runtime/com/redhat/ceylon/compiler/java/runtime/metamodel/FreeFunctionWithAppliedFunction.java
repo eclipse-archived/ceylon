@@ -33,14 +33,20 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
     implements ceylon.language.metamodel.Function<Type, Arguments> {
 
     private AppliedFunction<Type,Arguments> typeDelegate;
+    @Ignore
+    private TypeDescriptor $reifiedArguments;
+    @Ignore
+    private TypeDescriptor $reifiedType;
 
     public FreeFunctionWithAppliedFunction(@Ignore TypeDescriptor $reifiedType, 
             @Ignore TypeDescriptor $reifiedArguments,
             Method declaration) {
         super(declaration);
+        this.$reifiedType = $reifiedType;
+        this.$reifiedArguments = $reifiedArguments;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        typeDelegate = new AppliedFunction(null, null, appliedFunction, this, null);
+        typeDelegate = new AppliedFunction($reifiedType, $reifiedArguments, appliedFunction, this, null);
     }
 
     @Override
@@ -120,8 +126,6 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
     
     @Override
     public TypeDescriptor $getType() {
-        TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
-        TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeFunctionWithAppliedFunction.class, args[0], args[1]);
+        return TypeDescriptor.klass(FreeFunctionWithAppliedFunction.class, $reifiedType, $reifiedArguments);
     }
 }

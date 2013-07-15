@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 
@@ -148,7 +149,13 @@ public class FreeClass
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        return new AppliedClass(null, null, appliedClassType, instance);
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedClassType);
+        TypeDescriptor reifiedArguments;
+        if(declaration.isAnonymous())
+            reifiedArguments = TypeDescriptor.NothingType;
+        else
+            reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedClassType);
+        return new AppliedClass(reifiedType, reifiedArguments, appliedClassType, instance);
     }
 
     @Override

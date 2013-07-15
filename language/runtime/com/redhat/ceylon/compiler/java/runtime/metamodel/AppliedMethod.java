@@ -45,8 +45,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         this.$reifiedArguments = $reifiedArguments;
         this.appliedFunction = appliedFunction;
         this.declaration = declaration;
-        // FIXME: check MPL
-        this.closedType = Metamodel.getAppliedMetamodel(appliedFunction.getType());
+        this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
     }
 
     @Override
@@ -84,7 +83,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Override
     protected Function<Type, Arguments> bindTo(Object instance) {
-        return new AppliedFunction<>($reifiedType, $reifiedArguments, appliedFunction, declaration, instance);
+        return new AppliedFunction($reifiedType, $reifiedArguments, appliedFunction, declaration, instance);
     }
 
     @Override

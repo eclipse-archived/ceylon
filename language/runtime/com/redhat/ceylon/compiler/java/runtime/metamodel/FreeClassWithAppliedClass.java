@@ -40,11 +40,17 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
     implements ceylon.language.metamodel.Class<Type, Arguments>, Callable<Type> {
 
     private AppliedClass<Type, Arguments> typeDelegate;
+    @Ignore
+    private TypeDescriptor $reifiedArguments;
+    @Ignore
+    private TypeDescriptor $reifiedType;
 
     public FreeClassWithAppliedClass(@Ignore TypeDescriptor $reifiedType,
-            @Ignore TypeDescriptor $reifiedArguments,
+                                     @Ignore TypeDescriptor $reifiedArguments,
             Class declaration) {
         super(declaration);
+        this.$reifiedType = $reifiedType;
+        this.$reifiedArguments = $reifiedArguments;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         // FIXME: this is wrong because it does not include the container type
         com.redhat.ceylon.compiler.typechecker.model.ProducedType appliedClassType = declaration.getProducedReference(null, producedTypes).getType();
-        typeDelegate = new AppliedClass<Type, Arguments>(null, null, appliedClassType, null);
+        typeDelegate = new AppliedClass<Type, Arguments>($reifiedType, $reifiedArguments, appliedClassType, null);
     }
     
     @Override
@@ -244,9 +250,6 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
 
     @Override
     public TypeDescriptor $getType() {
-        checkInit();
-        TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
-        TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeClassWithAppliedClass.class, args[0], args[1]);
+        return TypeDescriptor.klass(FreeClassWithAppliedClass.class, $reifiedType, $reifiedArguments);
     }
 }

@@ -41,9 +41,10 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
-                            @Ignore TypeDescriptor $reifiedArguments,
-                            com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
+                        @Ignore TypeDescriptor $reifiedArguments,
+                        com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType, Object instance) {
         super($reifiedType, producedType);
+        this.$reifiedArguments = $reifiedArguments;
         this.instance = instance;
     }
 
@@ -75,14 +76,10 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // anonymous classes don't have parameter lists
         if(!decl.isAnonymous()){
             initParameters(decl);
-        }else{
-            this.$reifiedArguments = TypeDescriptor.NothingType;
         }
     }
 
     private void initParameters(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
-        this.$reifiedArguments = Metamodel.getTypeDescriptorForArguments(decl.getUnit(), decl, producedType);
-        
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
 
@@ -300,7 +297,6 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     public TypeDescriptor $getType() {
-        checkInit();
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
 }
