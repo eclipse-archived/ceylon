@@ -136,6 +136,11 @@ public class CeylonRunJsTool implements Tool {
     private PrintStream output;
     private boolean offline;
     private boolean debug;
+    private File cwd;
+    
+    public void setCwd(File cwd) {
+        this.cwd = cwd;
+    }
 
     /** Sets the PrintStream to use for output. Default is System.out. */
     public void setOutput(PrintStream value) {
@@ -324,6 +329,7 @@ public class CeylonRunJsTool implements Tool {
                 .systemRepo(sysrep)
                 .userRepos(repos)
                 .offline(offline)
+                .cwd(cwd)
                 .buildManager();
         ArtifactContext ac = new ArtifactContext(modname, version, ".js");
         ac.setFetchSingleArtifact(true);
