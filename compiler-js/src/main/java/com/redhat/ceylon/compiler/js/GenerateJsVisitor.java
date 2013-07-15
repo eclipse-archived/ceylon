@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.*;
@@ -3751,7 +3752,11 @@ public class GenerateJsVisitor extends Visitor
             caseClause(cc, expvar, expr.getTerm());
             first = false;
         }
-        if (that.getSwitchCaseList().getElseClause() != null) {
+        if (that.getSwitchCaseList().getElseClause() == null) {
+            if (dynblock > 0 && expr.getTypeModel().getDeclaration() instanceof UnknownType) {
+                out("else throw ", clAlias, "Exception('Ceylon switch over unknown type does not cover all cases')");
+            }
+        } else {
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
