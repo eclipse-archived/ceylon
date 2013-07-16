@@ -121,7 +121,7 @@ shared abstract class AAbstractClass (
     shared actual class FormalInnerClass (
             "AAbstractClass.FormalInnerClass.parameter"
             String parameter)
-            extends AInterface::FormalInnerClass(parameter) {
+            extends super.FormalInnerClass(parameter) {
         
     }
     
@@ -129,7 +129,7 @@ shared abstract class AAbstractClass (
     shared actual class DefaultInnerClass (
             "AAbstractClass.DefaultInnerClass.parameter"
             String parameter)
-            extends AInterface::DefaultInnerClass(parameter)  {
+            extends super.DefaultInnerClass(parameter)  {
     }
     
     "AAbstractClass.formalAttributeGetter"
