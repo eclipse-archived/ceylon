@@ -146,7 +146,7 @@ public class Metamodel {
                         if(klass.isToplevel()){
                             ProducedReference pr = klass.getProducedReference(null, Collections.<ProducedType>emptyList());
                             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
-                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
+                            TypeDescriptor reifiedArguments = klass.isAnonymous() ? TypeDescriptor.NothingType : getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
                             ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedClass(reifiedType, reifiedArguments, klass);
                         }else{
                             // FIXME: other types of containers?
@@ -154,7 +154,7 @@ public class Metamodel {
                             ProducedReference pr = klass.getProducedReference(container.getType(), Collections.<ProducedType>emptyList());
                             TypeDescriptor containerType = getTypeDescriptorForProducedType(container.getType());
                             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pr.getType());
-                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
+                            TypeDescriptor reifiedArguments = klass.isAnonymous() ? TypeDescriptor.NothingType : getTypeDescriptorForArguments(klass.getUnit(), klass, pr);
                             ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithAppliedMemberClass(containerType, reifiedType, reifiedArguments, klass);
                         }
                     }else
