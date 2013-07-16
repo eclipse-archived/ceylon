@@ -31,7 +31,7 @@ public class FreeAttributeWithAppliedValue<Type>
         super(declaration);
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         // FIXME: container?
-        typeDelegate = new AppliedValue<Type>(null, this, modelDecl.getType(), null);
+        typeDelegate = new AppliedValue<Type>($reifiedType, this, modelDecl.getType(), null);
     }
 
     @Override

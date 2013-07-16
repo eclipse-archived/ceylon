@@ -41,7 +41,7 @@ public class AppliedValue<Type>
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedType valueType, Object instance) {
         this.type = Metamodel.getAppliedMetamodel(valueType);
-        this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(valueType);
+        this.$reifiedType = $reifiedType;
         this.declaration = value;
         
         initField(instance, valueType);

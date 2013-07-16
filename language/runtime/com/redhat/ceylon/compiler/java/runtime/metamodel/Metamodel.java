@@ -203,7 +203,7 @@ public class Metamodel {
                         TypeDescriptor reifiedType = getTypeDescriptorForProducedType(value.getType());
                         if(value.isToplevel()){
                             if(value.isVariable())
-                                ret = new FreeVariableWithAppliedVariable(value);
+                                ret = new FreeVariableWithAppliedVariable(reifiedType, value);
                             else
                                 ret = new FreeAttributeWithAppliedValue(reifiedType, value);
                         }else{

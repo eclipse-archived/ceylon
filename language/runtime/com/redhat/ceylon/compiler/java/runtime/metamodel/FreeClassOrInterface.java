@@ -147,7 +147,7 @@ public abstract class FreeClassOrInterface
     }
 
     private <Kind> Sequential<? extends Kind> filteredMembers(
-            TypeDescriptor $reifiedKind,
+            @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
         if (predicate == Predicates.false_()) {
             return (Sequential<? extends Kind>)empty_.$get();
@@ -163,7 +163,7 @@ public abstract class FreeClassOrInterface
     }
     
     private <Kind> Kind filteredMember(
-            TypeDescriptor $reifiedKind,
+            @Ignore TypeDescriptor $reifiedKind,
             Predicates.Predicate predicate) {
         if (predicate == Predicates.false_()) {
             return null;
@@ -266,7 +266,8 @@ public abstract class FreeClassOrInterface
     }
 
     <Type, Kind extends ceylon.language.metamodel.ClassOrInterface<? extends Object>>
-    ceylon.language.metamodel.Member<Type, Kind> getAppliedClassOrInterface(TypeDescriptor $reifiedType, TypeDescriptor $reifiedKind, 
+    ceylon.language.metamodel.Member<Type, Kind> getAppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, 
+                                                                            @Ignore TypeDescriptor $reifiedKind, 
                                                                             Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                             AppliedClassOrInterface<Type> container){
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
@@ -289,19 +290,19 @@ public abstract class FreeClassOrInterface
     }
 
     FreeFunction findMethod(String name) {
-        return this.<FreeFunction>findDeclaration(name);
+        return this.<FreeFunction>findDeclaration(null, name);
     }
 
     FreeAttribute findValue(String name) {
-        return this.<FreeAttribute>findDeclaration(name);
+        return this.<FreeAttribute>findDeclaration(null, name);
     }
 
 
     FreeClassOrInterface findType(String name) {
-        return this.<FreeClassOrInterface>findDeclaration(name);
+        return this.<FreeClassOrInterface>findDeclaration(null, name);
     }
 
-    <T extends FreeTopLevelOrMemberDeclaration> T findDeclaration(String name) {
+    <T extends FreeTopLevelOrMemberDeclaration> T findDeclaration(@Ignore TypeDescriptor $reifiedT, String name) {
         checkInit();
         for(ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration decl : declarations){
             // in theory we can't have several members with the same name so no need to check the type

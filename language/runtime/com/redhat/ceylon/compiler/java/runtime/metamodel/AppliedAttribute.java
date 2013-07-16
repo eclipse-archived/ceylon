@@ -77,7 +77,7 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     protected Value<? extends Type> bindTo(Object instance) {
-        return new AppliedValue(null, declaration, type, instance);
+        return new AppliedValue($reifiedType, declaration, type, instance);
     }
     
     @Override

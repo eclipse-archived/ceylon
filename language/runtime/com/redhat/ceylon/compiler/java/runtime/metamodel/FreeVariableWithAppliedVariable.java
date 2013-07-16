@@ -27,11 +27,14 @@ public class FreeVariableWithAppliedVariable<Type>
     implements Variable<Type> {
 
     private AppliedVariable<Type> typeDelegate;
+    @Ignore
+    private TypeDescriptor $reifiedType;
 
-    protected FreeVariableWithAppliedVariable(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
+    protected FreeVariableWithAppliedVariable(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
         super(declaration);
+        this.$reifiedType = $reifiedType;
         // FIXME: container?
-        typeDelegate = new AppliedVariable<Type>(null, this, declaration.getType(), null);
+        typeDelegate = new AppliedVariable<Type>($reifiedType, this, declaration.getType(), null);
     }
 
     @Override
@@ -92,8 +95,6 @@ public class FreeVariableWithAppliedVariable<Type>
 
     @Override
     public TypeDescriptor $getType() {
-        TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
-        TypeDescriptor[] args = type.getTypeArguments();
-        return TypeDescriptor.klass(FreeVariableWithAppliedVariable.class, args[0]);
+        return TypeDescriptor.klass(FreeVariableWithAppliedVariable.class, $reifiedType);
     }
 }
