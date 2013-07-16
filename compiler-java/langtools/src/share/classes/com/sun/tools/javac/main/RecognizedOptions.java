@@ -25,6 +25,7 @@
 
 package com.sun.tools.javac.main;
 
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.code.Lint;
 import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.code.Type;
@@ -742,6 +743,12 @@ public class RecognizedOptions {
                 }
                 else {
                     // Should be a module name
+                    // the default module is always allowed, it doesn't need to have any folder
+                    if(s.equals(Module.DEFAULT_MODULE_NAME)){
+                        helper.addClassName(s);
+                        return false;
+                    }
+                    // find a corresponding physical module in the source path
                     List<String> sourcePaths = options.getMulti("-sourcepath");
                     if(sourcePaths.isEmpty())
                         sourcePaths = Arrays.asList("source");// default value
