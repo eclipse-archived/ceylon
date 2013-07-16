@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
@@ -124,6 +125,7 @@ public class JsCompiler {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
             pu.getCompilationUnit().visit(unitVisitor);
+            //Perform capture analysis
             for (com.redhat.ceylon.compiler.typechecker.model.Declaration d : pu.getDeclarations()) {
                 if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.compiler.typechecker.model.Setter == false) {
                     pu.getCompilationUnit().visit(new ValueVisitor((TypedDeclaration)d));
@@ -252,18 +254,13 @@ public class JsCompiler {
         return errCount == 0;
     }
 
-    /** Creates a new instance of JsOutput for the specified module. */
-    protected JsOutput newJsOutput(Module module) throws IOException {
-        return new JsOutput(module);
-    }
-
     /** Creates a JsOutput if needed, for the PhasedUnit.
      * Right now it's one file per module. */
     private JsOutput getOutput(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
-            jsout = newJsOutput(mod);
+            jsout = new JsOutput(mod, opts.getEncoding());
             output.put(mod, jsout);
             if (opts.isModulify()) {
                 beginWrapper(jsout.getWriter());
