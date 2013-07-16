@@ -118,3 +118,64 @@ void m4(Person[] people) {
         minors = false;
     }
 }
+
+void m5(Person[] people) {
+    Boolean minors;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                minors = true;
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+}
+
+void m6(Person[] people) {
+    Boolean minors;
+    String name;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                minors = true;
+            }
+            else {
+                @error name = p.string;
+                continue;
+            }
+            //@error minors = false;
+            age = p.age;
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+}
+
+void m7(Person[] people) {
+    Boolean minors;
+    String name;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                @error name = p.string;
+                continue;
+            }
+            else {
+                minors = true;
+            }
+            @error minors = false;
+            age = p.age;
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+}
