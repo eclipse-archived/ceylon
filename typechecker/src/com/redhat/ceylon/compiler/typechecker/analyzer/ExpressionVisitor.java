@@ -3639,6 +3639,11 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("function or value is not visible: " +
                         name(that.getIdentifier()), 400);
             }
+            if (member.isPackageVisibility() && 
+                    !declaredInPackage(member, unit)) {
+                that.addError("package private function or value is not visible: " +
+                        name(that.getIdentifier()));
+            }
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal, 
@@ -3868,6 +3873,11 @@ public class ExpressionVisitor extends Visitor {
             if (!type.isVisible(that.getScope())) {
                 that.addError("type is not visible: " +
                         name(that.getIdentifier()), 400);
+            }
+            if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private type is not visible: " +
+                        name(that.getIdentifier()));
             }
             checkConcreteClass(type, that);
             Tree.TypeArguments tal = that.getTypeArguments();
