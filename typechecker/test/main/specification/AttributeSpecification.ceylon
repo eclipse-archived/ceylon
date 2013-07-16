@@ -248,11 +248,11 @@ void m10(Person[] people) {
 }
 
 void n1(Person[] people) {
-    variable Boolean minors;
+    Boolean minors;
     Integer age;
     for (p in people) {
         if (p.age<18) {
-            if (false) {
+            if (1==1) {
                 minors = true;
             }
             break;
@@ -265,11 +265,11 @@ void n1(Person[] people) {
 }
 
 void n2(Person[] people) {
-    variable Boolean minors;
+    Boolean minors;
     Integer age;
     for (p in people) {
         if (p.age<18) {
-            if (false) {
+            if (1==1) {
                 //minors = true;
             }
             //break;
@@ -281,12 +281,76 @@ void n2(Person[] people) {
     print(minors);
 }
 
-void n3(Person[] people) {
-    variable Boolean minors;
+void n0(Person[] people) {
+    Boolean minors;
     Integer age;
     for (p in people) {
         if (p.age<18) {
-            if (false) {
+            if (1==1) {
+                return;
+            }
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n10(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                break;
+            }
+        }
+    }
+    else {
+        minors = false;
+    }
+    @error print(minors);
+}
+
+void n11(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                continue;
+            }
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n12(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                throw;
+            }
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n3(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
                 minors = true;
                 break;
             }
@@ -298,3 +362,135 @@ void n3(Person[] people) {
     print(minors);
 }
 
+void n4(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (1==1) {
+                minors = true;
+            }
+            else {
+                minors = true;
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n5(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            switch (1==1) 
+            case (true) {
+                minors = true;
+            }
+            case (false) {
+                minors = true;
+            }
+            else {
+                minors = true;
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n6(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            switch (1==1) 
+            case (true) {
+                minors = true;
+            }
+            case (false) {
+            }
+            else {
+                minors = true;
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    @error print(minors);
+}
+
+void n7(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            switch (1==1) 
+            case (true) {
+                minors = true;
+            }
+            case (false) {
+                minors = true;
+            }
+            else {
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    @error print(minors);
+}
+
+void n8(Person[] people) {
+    variable Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            try {
+                minors = true;
+            }
+            catch (e) {
+                minors = true;
+            }
+            finally {
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n9(Person[] people) {
+    Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            try {
+            }
+            catch (e) {
+            }
+            finally {
+                minors = true;
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
