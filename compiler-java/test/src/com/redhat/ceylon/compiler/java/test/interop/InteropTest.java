@@ -215,12 +215,9 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopCallsProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
-        assertErrors("access/CallsProtectedAccessMethod",
-                new CompilerError(23, "member method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"));
     }
     
     @Test
-    @Ignore("M5: depends on spec #226")
     public void testIopRefinesAndCallsProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
         compareWithJavaSource("access/RefinesAndCallsProtectedAccessMethod");
@@ -232,13 +229,11 @@ public class InteropTest extends CompilerTest {
         compile("access/RefinesDefaultAccessMethod.ceylon");
     }
     
-    @Ignore("M6: https://github.com/ceylon/ceylon-spec/issues/625")
     @Test
-    public void testIopRefinesDefaultAccessMethodWithShared_fail(){
+    public void testIopRefinesDefaultAccessMethodWithShared(){
         compile("access/JavaAccessModifiers.java");
-        // XXX This error comes from javac rather than the ceylon typechecker
         assertErrors("access/RefinesDefaultAccessMethodWithShared",
-                new CompilerError(22, "I don't know what the error message is yet, but I expect there to be one."));
+                new CompilerError(22, "non-actual member refines an inherited member: defaultAccessMethod in JavaAccessModifiers"));
     }
 
     @Test
@@ -251,15 +246,11 @@ public class InteropTest extends CompilerTest {
     @Test
     public void testIopRefinesDefaultAccessMethodWithSharedActual(){
         compile("access/JavaAccessModifiers.java");
-        assertErrors("access/RefinesDefaultAccessMethodWithSharedActual",
-                new CompilerError(22, "actual member does not refine any inherited member"));
     }
     
     @Test
     public void testIopCallsDefaultAccessMethod(){
         compile("access/JavaAccessModifiers.java");
-        assertErrors("access/CallsDefaultAccessMethod",
-                new CompilerError(23, "member method or attribute does not exist: packageAccessMethod in type JavaAccessModifiers"));
     }
     
     @Test
@@ -274,6 +265,22 @@ public class InteropTest extends CompilerTest {
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(20, "imported declaration is not shared: JavaDefaultAccessClass"),
                 new CompilerError(23, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"));
+    }
+
+    @Ignore("See https://github.com/ceylon/ceylon-spec/issues/625")
+    @Test
+    public void testIopCallsDefaultAccessMethodInAnotherPkg(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("CallsDefaultAccessMethodInAnotherPkg",
+                new CompilerError(24, "protected method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"),
+                new CompilerError(25, "package private method or attribute is not visible: defaultAccessMethod of type JavaAccessModifiers"));
+    }
+
+    @Test
+    public void testIopRefinesDefaultAccessMethodInAnotherPkg(){
+        compile("access/JavaAccessModifiers.java");
+        assertErrors("RefinesDefaultAccessMethodInAnotherPkg",
+                new CompilerError(27, "refined declaration is not visible: defaultAccessMethod in JavaAccessModifiers"));
     }
 
     @Test
