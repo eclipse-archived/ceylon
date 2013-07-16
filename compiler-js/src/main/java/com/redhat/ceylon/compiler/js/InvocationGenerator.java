@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -217,7 +216,7 @@ public class InvocationGenerator {
                     expr = ((Tree.ListedArgument) arg).getExpression();
                     ProducedType exprType = expr.getTypeModel();
                     boolean dyncheck = gen.isInDynamicBlock() && !TypeUtils.isUnknown(arg.getParameter())
-                            && exprType.getDeclaration() instanceof UnknownType;
+                            && exprType.containsUnknowns();
                     if (forceSequenced || (arg.getParameter() != null && arg.getParameter().isSequenced())) {
                         if (dyncheck) {
                             //We don't have a real type so get the one declared in the parameter

@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
@@ -59,10 +60,40 @@ public class JsCompiler {
     private final Visitor unitVisitor = new Visitor() {
         @Override
         public void visitAny(Node that) {
+            super.visitAny(that);
             for (Message err: that.getErrors()) {
                 unitErrors.add(err);
             }
-            super.visitAny(that);
+        }
+        @Override
+        public void visit(Tree.Import that) {
+            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (that.getImportPath() != null && that.getImportPath().getUnit() != null
+                    && that.getImportPath().getUnit().getFilename() != null
+                    && that.getImportPath().getUnit().getFilename().endsWith(".java")) {
+                that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+            }
+            super.visit(that);
+        }
+        @Override
+        public void visit(Tree.BaseMemberOrTypeExpression that) {
+            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null
+                    && that.getDeclaration().getUnit().getFilename() != null
+                    && that.getDeclaration().getUnit().getFilename().endsWith(".java")) {
+                that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+            }
+            super.visit(that);
+        }
+        @Override
+        public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null
+                    && that.getDeclaration().getUnit().getFilename() != null
+                    && that.getDeclaration().getUnit().getFilename().endsWith(".java")) {
+                that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+            }
+            super.visit(that);
         }
     };
 
@@ -124,7 +155,6 @@ public class JsCompiler {
             if (opts.isVerbose()) {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
-            pu.getCompilationUnit().visit(unitVisitor);
             //Perform capture analysis
             for (com.redhat.ceylon.compiler.typechecker.model.Declaration d : pu.getDeclarations()) {
                 if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.compiler.typechecker.model.Setter == false) {
@@ -332,7 +362,12 @@ public class JsCompiler {
         }
         return count;
     }
-    
+
+    /** Returns the list of errors found during compilation. */
+    public List<Message> getErrors() {
+        return Collections.unmodifiableList(errors);
+    }
+
     public void printErrorsAndCount(PrintStream out) {
         int count = printErrors(out);
         out.printf("%d errors.%n", count);
