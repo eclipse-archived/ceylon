@@ -31,9 +31,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -66,11 +66,9 @@ public class JsCompiler {
             }
         }
         @Override
-        public void visit(Tree.Import that) {
+        public void visit(Tree.ImportMemberOrType that) {
             if (that.getErrors() != null && !that.getErrors().isEmpty())return;
-            if (that.getImportPath() != null && that.getImportPath().getUnit() != null
-                    && that.getImportPath().getUnit().getFilename() != null
-                    && that.getImportPath().getUnit().getFilename().endsWith(".java")) {
+            if (that.getImportModel().getDeclaration().getUnit().getPackage().getModule().isJava()) {
                 that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
             }
             super.visit(that);
@@ -78,20 +76,24 @@ public class JsCompiler {
         @Override
         public void visit(Tree.BaseMemberOrTypeExpression that) {
             if (that.getErrors() != null && !that.getErrors().isEmpty())return;
-            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null
-                    && that.getDeclaration().getUnit().getFilename() != null
-                    && that.getDeclaration().getUnit().getFilename().endsWith(".java")) {
-                that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
+                Unit u = that.getDeclaration().getUnit();
+                if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
+                        || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
+                    that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+                }
             }
             super.visit(that);
         }
         @Override
         public void visit(Tree.QualifiedMemberOrTypeExpression that) {
             if (that.getErrors() != null && !that.getErrors().isEmpty())return;
-            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null
-                    && that.getDeclaration().getUnit().getFilename() != null
-                    && that.getDeclaration().getUnit().getFilename().endsWith(".java")) {
-                that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
+                Unit u = that.getDeclaration().getUnit();
+                if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
+                        || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
+                    that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+                }
             }
             super.visit(that);
         }
