@@ -235,6 +235,7 @@ public class Symtab {
     public final Type ceylonAtTypeAliasType;
 
     public final Type ceylonUtilType;
+    public final Type ceylonMetamodelType;
     public final Type ceylonTypeDescriptorType;
     public final Type ceylonReifiedTypeType;
 
@@ -609,6 +610,7 @@ public class Symtab {
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
+        ceylonMetamodelType = enterClass("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel");
         ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
         ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
 

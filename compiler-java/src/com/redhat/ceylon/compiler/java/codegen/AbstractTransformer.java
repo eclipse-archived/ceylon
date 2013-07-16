@@ -2628,6 +2628,20 @@ public abstract class AbstractTransformer implements Transformation {
                             arguments);
     }
 
+    /**
+     * Invokes a static method of the Metamodel helper class
+     * @param methodName name of the method
+     * @param arguments The arguments to the invocation
+     * @param typeArguments The arguments to the method
+     * @return the invocation AST
+     */
+    public JCExpression makeMetamodelInvocation(String methodName, List<JCExpression> arguments, List<JCExpression> typeArguments) {
+        return make().Apply(typeArguments, 
+                            make().Select(make().QualIdent(syms().ceylonMetamodelType.tsym), 
+                                          names().fromString(methodName)), 
+                            arguments);
+    }
+
     public JCExpression makeTypeDescriptorType(){
         return makeJavaType(syms().ceylonTypeDescriptorType.tsym);
     }
