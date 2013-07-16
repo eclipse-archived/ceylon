@@ -27,7 +27,7 @@ public class Options {
     private boolean version;
     private boolean stdin;
     private boolean gensrc = true;
-    private String encoding;
+    private String encoding = System.getProperty("file.encoding");
     private boolean offline;
 
     public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
