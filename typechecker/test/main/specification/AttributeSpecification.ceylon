@@ -246,3 +246,55 @@ void m10(Person[] people) {
         minors = false;
     }
 }
+
+void n1(Person[] people) {
+    variable Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (false) {
+                minors = true;
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    @error print(minors);
+}
+
+void n2(Person[] people) {
+    variable Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (false) {
+                //minors = true;
+            }
+            //break;
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+
+void n3(Person[] people) {
+    variable Boolean minors;
+    Integer age;
+    for (p in people) {
+        if (p.age<18) {
+            if (false) {
+                minors = true;
+                break;
+            }
+        }
+    }
+    else {
+        minors = false;
+    }
+    print(minors);
+}
+

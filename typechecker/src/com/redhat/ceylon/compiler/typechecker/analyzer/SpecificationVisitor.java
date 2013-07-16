@@ -810,36 +810,43 @@ public class SpecificationVisitor extends Visitor {
         }
         boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
         boolean possiblyAssignedByIfClause = specified.possibly;
+        boolean possiblyExitedFromIfClause = specified.exited;
         endDeclarationScope(d);
         endSpecificationScope(as);
         
         boolean definitelyAssignedByElseClause;
         boolean possiblyAssignedByElseClause;
+        boolean possiblyExitedFromElseClause;
         if (that.getElseClause()!=null) {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             that.getElseClause().visit(this);
             definitelyAssignedByElseClause = specified.definitely || specified.exited;
             possiblyAssignedByElseClause = specified.possibly;
+            possiblyExitedFromElseClause = specified.exited;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
         else {
             definitelyAssignedByElseClause = false;
             possiblyAssignedByElseClause = false;
+            possiblyExitedFromElseClause = false;
         }
         
         if (isAlwaysSatisfied(cl)) {
             specified.definitely = specified.definitely || definitelyAssignedByIfClause;
             specified.possibly = specified.possibly || possiblyAssignedByIfClause;
+            specified.exited = specified.exited || possiblyExitedFromIfClause;
         } 
         else if (isNeverSatisfied(cl)) {
             specified.definitely = specified.definitely || definitelyAssignedByElseClause;
             specified.possibly = specified.possibly || possiblyAssignedByElseClause;
+            specified.exited = specified.exited || possiblyExitedFromElseClause;
         }
         else {
             specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
             specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+            specified.exited = specified.exited || possiblyExitedFromIfClause || possiblyExitedFromElseClause;
         }
         
         checkDeclarationSection(that);
@@ -858,42 +865,51 @@ public class SpecificationVisitor extends Visitor {
         }
         boolean definitelyAssignedByTryClause = specified.definitely || specified.exited;
         boolean possiblyAssignedByTryClause = specified.possibly;
+        boolean possiblyExitedFromTryClause = specified.exited;
         endDeclarationScope(d);
         endSpecificationScope(as);
         specified.possibly = specified.possibly || possiblyAssignedByTryClause;
+        specified.exited = specified.exited || possiblyExitedFromTryClause;
         
         boolean definitelyAssignedByEveryCatchClause = true;
         boolean possiblyAssignedBySomeCatchClause = false;
+        boolean possiblyExitedFromSomeCatchClause = false;
         for (Tree.CatchClause cc: that.getCatchClauses()) {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             cc.visit(this);
             definitelyAssignedByEveryCatchClause = definitelyAssignedByEveryCatchClause && (specified.definitely || specified.exited);
             possiblyAssignedBySomeCatchClause = possiblyAssignedBySomeCatchClause || specified.possibly;
+            possiblyExitedFromSomeCatchClause = possiblyExitedFromSomeCatchClause || specified.exited;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
         specified.possibly = specified.possibly || possiblyAssignedBySomeCatchClause;
+        specified.exited = specified.exited || possiblyExitedFromSomeCatchClause;
         
         boolean definitelyAssignedByFinallyClause;
         boolean possiblyAssignedByFinallyClause;
+        boolean possiblyExitedFromFinallyClause;
         if (that.getFinallyClause()!=null) {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             that.getFinallyClause().visit(this);
             definitelyAssignedByFinallyClause = specified.definitely || specified.exited;
             possiblyAssignedByFinallyClause = specified.possibly;
+            possiblyExitedFromFinallyClause = specified.exited;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
         else {
             definitelyAssignedByFinallyClause = false;
             possiblyAssignedByFinallyClause = false;
+            possiblyExitedFromFinallyClause = false;
         }
         specified.possibly = specified.possibly || possiblyAssignedByFinallyClause;
         specified.definitely = specified.definitely || definitelyAssignedByFinallyClause
                 || (definitelyAssignedByTryClause && definitelyAssignedByEveryCatchClause);
-        
+        specified.exited = specified.exited || possiblyExitedFromFinallyClause;
+
         checkDeclarationSection(that);
     }
     
@@ -908,6 +924,7 @@ public class SpecificationVisitor extends Visitor {
         }
         boolean definitelyAssignedByEveryCaseClause = true;
         boolean possiblyAssignedBySomeCaseClause = false;
+        boolean possiblyExitedFromSomeCaseClause = false;
         
         for (Tree.CaseClause cc: that.getSwitchCaseList().getCaseClauses()) {
             boolean d = beginDeclarationScope();
@@ -915,6 +932,7 @@ public class SpecificationVisitor extends Visitor {
             cc.visit(this);
             definitelyAssignedByEveryCaseClause = definitelyAssignedByEveryCaseClause && (specified.definitely || specified.exited);
             possiblyAssignedBySomeCaseClause = possiblyAssignedBySomeCaseClause || specified.possibly;
+            possiblyExitedFromSomeCaseClause = possiblyExitedFromSomeCaseClause || specified.exited;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
@@ -925,12 +943,14 @@ public class SpecificationVisitor extends Visitor {
             that.getSwitchCaseList().getElseClause().visit(this);
             definitelyAssignedByEveryCaseClause = definitelyAssignedByEveryCaseClause && (specified.definitely || specified.exited);
             possiblyAssignedBySomeCaseClause = possiblyAssignedBySomeCaseClause || specified.possibly;
+            possiblyExitedFromSomeCaseClause = possiblyExitedFromSomeCaseClause || specified.exited;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
 
         specified.possibly = specified.possibly || possiblyAssignedBySomeCaseClause;
         specified.definitely = specified.definitely || definitelyAssignedByEveryCaseClause;
+        specified.exited = specified.exited || possiblyExitedFromSomeCaseClause;
         
         checkDeclarationSection(that);
     }
