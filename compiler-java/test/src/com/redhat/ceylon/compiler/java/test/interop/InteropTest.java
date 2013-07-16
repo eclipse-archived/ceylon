@@ -267,13 +267,13 @@ public class InteropTest extends CompilerTest {
                 new CompilerError(23, "com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass is not public in com.redhat.ceylon.compiler.java.test.interop.access; cannot be accessed from outside package"));
     }
 
-    @Ignore("See https://github.com/ceylon/ceylon-spec/issues/625")
     @Test
     public void testIopCallsDefaultAccessMethodInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("CallsDefaultAccessMethodInAnotherPkg",
-                new CompilerError(24, "protected method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"),
-                new CompilerError(25, "package private method or attribute is not visible: defaultAccessMethod of type JavaAccessModifiers"));
+                new CompilerError(25, "protected method or attribute is not visible: protectedAccessMethod of type JavaAccessModifiers"),
+                new CompilerError(27, "package private method or attribute is not visible: defaultAccessMethod of type JavaAccessModifiers"),
+                new CompilerError(36, "package private function or value is not visible: defaultAccessMethod"));
     }
 
     @Test
