@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -199,6 +200,9 @@ public class FreeFunction
                                                                                   TypeDescriptor $reifiedArguments, 
                                                                                   Sequential<? extends ceylon.language.metamodel.Type> types,
                                                                                   AppliedClassOrInterface<Container> container){
+        // if we don't have any TP our declaration will also be a Method
+        if(!Metamodel.hasTypeParameters((Generic) declaration))
+            return (ceylon.language.metamodel.Method)Metamodel.getOrCreateMetamodel(declaration);
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters

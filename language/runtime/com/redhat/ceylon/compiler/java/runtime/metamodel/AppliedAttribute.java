@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.metamodel.Attribute$impl;
 import ceylon.language.metamodel.AttributeModel$impl;
 import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
@@ -14,6 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 @Ceylon(major = 5)
@@ -88,6 +88,9 @@ public class AppliedAttribute<Container, Type>
     public static ceylon.language.metamodel.Attribute instance(TypeDescriptor $reifiedSubType, TypeDescriptor reifiedValueType, 
                                                                FreeAttribute value, ProducedType valueType, 
                                                                com.redhat.ceylon.compiler.typechecker.model.Value decl) {
+        // if the container has no TP, the declaration will also be an Attribute
+        if(!Metamodel.hasTypeParameters((Generic) decl.getContainer()))
+            return (ceylon.language.metamodel.Attribute) Metamodel.getOrCreateMetamodel(decl);
         return decl.isVariable()
                 ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueType)
                 : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType);

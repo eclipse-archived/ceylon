@@ -226,7 +226,7 @@ public class Metamodel {
         }
     }
 
-    private static boolean hasTypeParameters(com.redhat.ceylon.compiler.typechecker.model.Generic model) {
+    public static boolean hasTypeParameters(com.redhat.ceylon.compiler.typechecker.model.Generic model) {
         if(!model.getTypeParameters().isEmpty())
             return true;
         Object container = ((com.redhat.ceylon.compiler.typechecker.model.Declaration)model).getContainer();
