@@ -171,9 +171,11 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         java.lang.Class<?>[] parameterTypes;
         try {
             if(found instanceof java.lang.reflect.Constructor){
+                ((java.lang.reflect.Constructor) found).setAccessible(true);
                 constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
                 parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
             }else{
+                ((Method)found).setAccessible(true);
                 constructor = MethodHandles.lookup().unreflect((Method) found);
                 parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
             }
