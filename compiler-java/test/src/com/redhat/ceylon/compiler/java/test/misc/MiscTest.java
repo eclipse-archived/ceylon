@@ -111,7 +111,7 @@ public class MiscTest extends CompilerTest {
         };
         String[] extras = new String[]{
                 "array", "arrayOfSize", "false", "infinity",
-                "parseFloat", "string", "true", "integerRangeByIterable", "unflatten"
+                "parseFloat", "true", "integerRangeByIterable", "unflatten"
         };
         
         for(String pkg : ceylonPackages){
