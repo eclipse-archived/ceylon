@@ -36,14 +36,16 @@ public class SpecificationVisitor extends Visitor {
     private boolean hasParameter = false;
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
-    private boolean endsInBreakReturnOrThrow = false;
+    private boolean endsInBreakReturnThrow = false;
     
     private final class ContinueVisitor extends Visitor {
         Tree.Continue node;
-        boolean found = false;
+        boolean found;
         Tree.Statement lastContinue;
-        public ContinueVisitor(Tree.Statement lastContinue) {
+        ContinueVisitor(Tree.Statement lastContinue) {
            this.lastContinue = lastContinue;
+           node = null;
+           found = false;
         }
         @Override
         public void visit(Tree.Declaration that) {}
@@ -325,62 +327,82 @@ public class SpecificationVisitor extends Visitor {
         }
     }
     
-    private Tree.Statement lastContinue;
+    private Tree.Continue lastContinue;
+    private Tree.Statement lastContinueStatement;
     
     @Override
     public void visit(Tree.Block that) {
-        boolean oe = endsInBreakReturnOrThrow;
-        Tree.Statement olc = lastContinue;
+        boolean oe = endsInBreakReturnThrow;
+        Tree.Continue olc = lastContinue;
+        Tree.Statement olcs = lastContinueStatement;
+        //rather nasty way of detecting that the continue
+        //occurs in another conditional branch of the
+        //statement containing this block, even though we
+        //did not find it in _this_ branch
+        boolean continueInSomeBranchOfCurrentConditional = 
+                lastContinue!=null && 
+                lastContinueStatement==null;
+        boolean blockEndsInBreakReturnThrow;
+        blockEndsInBreakReturnThrow = blockEndsInBreakReturnThrow(that);
+        endsInBreakReturnThrow = endsInBreakReturnThrow || 
+                blockEndsInBreakReturnThrow;
+        Tree.Continue last = null;
+        Tree.Statement lastStatement = null;
+        for (Tree.Statement st: that.getStatements()) {
+            ContinueVisitor cv = new ContinueVisitor(olc);
+            st.visit(cv);
+            if (cv.node!=null) {
+                last = cv.node;
+                lastStatement = st;
+            }
+            if (cv.found) {
+                olc = null;
+                olcs = null;
+            }
+        }
+        if (blockEndsInBreakReturnThrow || 
+                continueInSomeBranchOfCurrentConditional) {
+            lastContinue = last;
+            lastContinueStatement = lastStatement;
+        }
+        super.visit(that);
+        endsInBreakReturnThrow = oe;
+        lastContinue = olc;
+        lastContinueStatement = olcs;
+    }
+
+    private boolean blockEndsInBreakReturnThrow(Tree.Block that) {
         int size = that.getStatements().size();
-        boolean ebrt;
         if (size>0) {
             Tree.Statement s = that.getStatements().get(size-1);
-            ebrt = s instanceof Tree.Break ||
+            return s instanceof Tree.Break ||
                     s instanceof Tree.Return ||
                     s instanceof Tree.Throw;
         }
         else {
-            ebrt = false;
+            return false;
         }
-        endsInBreakReturnOrThrow = endsInBreakReturnOrThrow || ebrt;
-        Tree.Continue last = null;
-        ContinueVisitor cv = new ContinueVisitor(olc);
-        for (Tree.Statement st: that.getStatements()) {
-            st.visit(cv);
-            if (cv.node!=null) {
-                last = cv.node;
-            }
-            if (cv.found) {
-                olc = null;
-            }
-        }
-        if (ebrt) {
-            lastContinue = last;
-        }
-        super.visit(that);
-        endsInBreakReturnOrThrow = oe;
-        lastContinue = olc;
     }
     
     @Override
     public void visit(Tree.ForClause that) {
-        boolean oe = endsInBreakReturnOrThrow;
-        Tree.Statement olc = lastContinue;
+        boolean oe = endsInBreakReturnThrow;
+        Tree.Continue olc = lastContinue;
         lastContinue = null;
-        endsInBreakReturnOrThrow = false;
+        endsInBreakReturnThrow = false;
         super.visit(that);
-        endsInBreakReturnOrThrow = oe;
+        endsInBreakReturnThrow = oe;
         lastContinue = olc;
     }
     
     @Override
     public void visit(Tree.WhileClause that) {
-        boolean oe = endsInBreakReturnOrThrow;
-        Tree.Statement olc = lastContinue;
+        boolean oe = endsInBreakReturnThrow;
+        Tree.Continue olc = lastContinue;
         lastContinue = null;
-        endsInBreakReturnOrThrow = false;
+        endsInBreakReturnThrow = false;
         super.visit(that);
-        endsInBreakReturnOrThrow = oe;
+        endsInBreakReturnThrow = oe;
         lastContinue = olc;
     }
     
@@ -407,7 +429,7 @@ public class SpecificationVisitor extends Visitor {
                             member.getName());
 	            }
 	            else if (inLoop && constant && 
-	                    !(endsInBreakReturnOrThrow && lastContinue==null)) {
+	                    !(endsInBreakReturnThrow && lastContinue==null)) {
 	                that.addError("specified non-variable value is not definitely unspecified in loop: " + 
 	                        member.getName(), 803);
 	            }
@@ -436,10 +458,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Declaration that) {
-        boolean oe = endsInBreakReturnOrThrow;
-        Tree.Statement olc = lastContinue;
+        boolean oe = endsInBreakReturnThrow;
+        Tree.Continue olc = lastContinue;
         lastContinue = null;
-        endsInBreakReturnOrThrow = false;
+        endsInBreakReturnThrow = false;
         if (that.getDeclarationModel()==declaration) {
             inLoop = false;
             beginDisabledSpecificationScope();
@@ -460,7 +482,7 @@ public class SpecificationVisitor extends Visitor {
             endSpecificationScope(as);
             inLoop = l;
         }
-        endsInBreakReturnOrThrow = oe;
+        endsInBreakReturnThrow = oe;
         lastContinue = olc;
     }
 
@@ -771,6 +793,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.IfStatement that) {        
+        if (that==lastContinueStatement) {
+            lastContinueStatement=null;
+        }
+        
         Tree.IfClause ifClause = that.getIfClause();
         Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
         if (cl!=null) {
@@ -821,6 +847,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TryCatchStatement that) {
+        if (that==lastContinueStatement) {
+            lastContinueStatement=null;
+        }
+        
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
         if( that.getTryClause()!=null ) {
@@ -869,6 +899,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
+        if (that==lastContinueStatement) {
+            lastContinueStatement=null;
+        }
+        
         if (that.getSwitchClause()!=null) {
             that.getSwitchClause().visit(this);
         }

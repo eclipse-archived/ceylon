@@ -147,7 +147,7 @@ void m6(Person[] people) {
                 @error name = p.string;
                 continue;
             }
-            //@error minors = false;
+            @error minors = false;
             age = p.age;
             break;
         }
