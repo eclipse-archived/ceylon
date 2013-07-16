@@ -67,6 +67,9 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
+        <comment><para>Note: it is recommended that source file names contain only characters
+        from the ASCII character set.</para></comment>
+        
         <para>Any compilation unit may begin with a list of imported types, values, 
         and functions.</para>
         
@@ -118,6 +121,9 @@ TypeConstraints?
         all-lowercase identifiers.</para>
         
         <synopsis>FullPackageName: PackageName ("." PackageName)*</synopsis>
+        
+        <comment><para>Note: it is recommended that package names contain only characters
+        from the ASCII character set.</para></comment>
         
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
