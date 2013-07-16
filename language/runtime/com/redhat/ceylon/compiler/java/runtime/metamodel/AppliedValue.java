@@ -98,6 +98,7 @@ public class AppliedValue<Type>
             String fieldName = fieldDecl.getRealName();
             try {
                 Field f = javaClass.getField(fieldName);
+                f.setAccessible(true);
                 getter = MethodHandles.lookup().unreflectGetter(f);
                 java.lang.Class<?> getterType = f.getType();
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);

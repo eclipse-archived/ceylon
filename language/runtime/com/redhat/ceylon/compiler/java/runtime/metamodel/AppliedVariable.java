@@ -43,6 +43,7 @@ public class AppliedVariable<Type>
             String setterName = ((JavaBeanValue) decl).getSetterName();
             try {
                 Method m = javaClass.getMethod(setterName, getterReturnType);
+                m.setAccessible(true);
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
@@ -59,6 +60,7 @@ public class AppliedVariable<Type>
             String setterName = Naming.getSetterName(decl);
             try {
                 Method m = javaClass.getMethod(setterName, getterReturnType);
+                m.setAccessible(true);
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
@@ -73,6 +75,7 @@ public class AppliedVariable<Type>
             String fieldName = ((FieldValue) decl).getRealName();
             try {
                 Field f = javaClass.getField(fieldName);
+                f.setAccessible(true);
                 setter = MethodHandles.lookup().unreflectSetter(f);
                 setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
