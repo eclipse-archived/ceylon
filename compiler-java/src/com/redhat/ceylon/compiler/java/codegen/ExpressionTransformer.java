@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -47,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -960,23 +962,167 @@ public class ExpressionTransformer extends AbstractTransformer {
         throw Assert.fail();
     }
 
-    public JCTree transform(Tree.TypeLiteral expr) {
+    public JCTree transform(Tree.MemberLiteral expr) {
         at(expr);
-        // construct a call to typeLiteral<T>() and cast if required
+        
+        Declaration declaration = expr.getDeclaration();
+        if(declaration == null)
+            return makeErroneous(expr, "Missing declaration");
+        if(declaration.isToplevel()){
+            // toplevel method or attribute: we need to fetch them from their module/package
+            Package pkg = Decl.getPackageContainer(declaration.getContainer());
+
+            // get the module
+            Module module = pkg.getModule();
+            JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "metamodel", "modules_", "$get");
+            JCExpression modulesGet = make().Apply(null, modulesGetIdent, List.<JCExpression>nil());
+            JCExpression moduleCall;
+            if(module.isDefault()){
+                moduleCall = make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());
+            }else{
+                moduleCall = make().Apply(null, makeSelect(modulesGet, "find"), 
+                                          List.<JCExpression>of(ceylonLiteral(module.getNameAsString()),
+                                                                ceylonLiteral(module.getVersion())));
+            }
+            
+            // now get the package
+            JCExpression packageCall = make().Apply(null, makeSelect(moduleCall, "findPackage"), 
+                                                    List.<JCExpression>of(ceylonLiteral(pkg.getNameAsString())));
+            
+            // now get the toplevel
+            String getter = Decl.isMethod(declaration) ? "getFunction" : "getAttribute";
+            JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
+                                                     List.<JCExpression>of(ceylonLiteral(declaration.getName())));
+            
+            if(Decl.isMethod(declaration) && expr.getTypeArgumentList() != null){
+                JCExpression closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
+                // must apply it
+                return make().Apply(null, makeSelect(toplevelCall, "apply"), List.of(closedTypesExpr));
+            }
+            return toplevelCall;
+        }else if(expr.getWantsDeclaration()){
+            // it's a member we get from its container declaration
+            // FIXME: other containers?
+            ClassOrInterface container = (ClassOrInterface) declaration.getContainer();
+            // use the generated class to get to the declaration literal
+            JCExpression classLiteral = makeUnerasedClassLiteral(container);
+            JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
+            String memberClassName;
+            if(declaration instanceof Class)
+                memberClassName = "ClassDeclaration";
+            else if(declaration instanceof Interface)
+                memberClassName = "InterfaceDeclaration";
+            else if(declaration instanceof Method)
+                memberClassName = "FunctionDeclaration";
+            else if(declaration instanceof Value){
+                if(((Value) declaration).isVariable())
+                    memberClassName = "VariableDeclaration";
+                else
+                    memberClassName = "AttributeDeclaration";
+            }else{
+                return makeErroneous(expr, "declaration type not supported yet: "+declaration);
+            }
+            TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleMetamodelDeclarationDeclaration(memberClassName);
+            JCExpression memberType = makeJavaType(metamodelDecl.getType());
+            JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
+            JCExpression memberCall = make().Apply(List.of(memberType), 
+                                                   makeSelect(metamodelCall, "getMemberDeclaration"), 
+                                                   List.of(reifiedMemberType, ceylonLiteral(declaration.getName())));
+            return memberCall;
+        }else{
+            // it's a member we get from its container type
+            JCExpression typeCall = makeTypeLiteralCall(expr, expr.getType(), false);
+            // make sure we cast it to ClassOrInterface
+            JCExpression classOrInterfaceTypeExpr = makeJavaType(typeFact().getLanguageModuleMetamodelDeclaration("ClassOrInterface")
+                        .getProducedReference(null, Arrays.asList(expr.getType().getTypeModel())).getType());
+            typeCall = make().TypeCast(classOrInterfaceTypeExpr, typeCall);
+            // get its produced ref
+            ProducedReference producedReference = expr.getTarget();
+            // we will need a TD for the container
+            JCExpression reifiedContainerExpr = makeReifiedTypeArgument(expr.getType().getTypeModel());
+            // make a raw call and cast
+            JCExpression memberCall;
+            if(declaration instanceof Method){
+                // we need to get types for each type argument
+                JCExpression closedTypesExpr;
+                if(expr.getTypeArgumentList() != null)
+                    closedTypesExpr = getClosedTypesSequential(expr.getTypeArgumentList().getTypeModels());
+                else
+                    closedTypesExpr = null;
+                // we also need type descriptors for ret and args
+                ProducedType callableType = producedReference.getFullType();
+                JCExpression reifiedReturnTypeExpr = makeReifiedTypeArgument(typeFact().getCallableReturnType(callableType));
+                JCExpression reifiedArgumentsExpr = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
+                List<JCExpression> arguments;
+                if(closedTypesExpr != null)
+                    arguments = List.of(reifiedContainerExpr, reifiedReturnTypeExpr, reifiedArgumentsExpr, 
+                                        ceylonLiteral(declaration.getName()), closedTypesExpr);
+                else
+                    arguments = List.of(reifiedContainerExpr, reifiedReturnTypeExpr, reifiedArgumentsExpr, 
+                            ceylonLiteral(declaration.getName()));
+                memberCall = make().Apply(null, makeSelect(typeCall, "getMethod"), arguments);
+            }else if(declaration instanceof Value){
+                JCExpression reifiedTypeExpr = makeReifiedTypeArgument(producedReference.getType());
+                String getterName = ((Value) declaration).isVariable() ? "getVariableAttribute" : "getAttribute";
+                memberCall = make().Apply(null, makeSelect(typeCall, getterName), List.of(reifiedContainerExpr, reifiedTypeExpr, 
+                                                                                          ceylonLiteral(declaration.getName())));
+            }else{
+                return makeErroneous(expr, "Unsupported member type: "+declaration);
+            }
+            return memberCall;
+        }
+    }
+    
+    private JCExpression getClosedTypesSequential(java.util.List<ProducedType> typeModels) {
+        ListBuffer<JCExpression> closedTypes = new ListBuffer<JCExpression>();
+        for (ProducedType producedType : typeModels) {
+            closedTypes.add(makeTypeLiteralCall(producedType));
+        }
+        ProducedType elementType = typeFact().getMetamodelTypeDeclaration().getType();
+        // now wrap into a sequential
+        return makeSequence(closedTypes.toList(), elementType, CeylonTransformer.JT_CLASS_NEW);
+    }
+
+    private JCExpression makeTypeLiteralCall(ProducedType producedType) {
         JCExpression typeLiteralIdent = naming.makeFQIdent("ceylon", "language", "metamodel", "typeLiteral_", "typeLiteral");
-        JCExpression reifiedTypeArgument = makeReifiedTypeArgument(expr.getType().getTypeModel().resolveAliases());
+        JCExpression reifiedTypeArgument = makeReifiedTypeArgument(producedType.resolveAliases());
         // note that we don't pass it a Java type argument since it's not used
-        JCMethodInvocation call = make().Apply(null, typeLiteralIdent, List.of(reifiedTypeArgument));
+        return make().Apply(null, typeLiteralIdent, List.of(reifiedTypeArgument));
+    }
+
+    private JCExpression makeTypeLiteralCall(Tree.MetaLiteral expr, Tree.StaticType type, boolean addCast) {
+        // construct a call to typeLiteral<T>() and cast if required
+        JCExpression call = makeTypeLiteralCall(type.getTypeModel());
         // if we have a type that is not nothingType and not Type, we need to cast
         ProducedType exprType = expr.getTypeModel().resolveAliases();
         TypeDeclaration typeDeclaration = exprType.getDeclaration();
-        if(typeDeclaration instanceof UnionType == false
+        if(addCast
+                && typeDeclaration instanceof UnionType == false
                 && !exprType.isExactly(typeFact().getMetamodelNothingTypeDeclaration().getType())
                 && !exprType.isExactly(typeFact().getMetamodelTypeDeclaration().getType())){
-            JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
-            return make().TypeCast(type, call);
+            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
+            return make().TypeCast(typeClass, call);
         }
         return call;
+    }
+
+    public JCTree transform(Tree.TypeLiteral expr) {
+        at(expr);
+        if(!expr.getWantsDeclaration()){
+            return makeTypeLiteralCall(expr, expr.getType(), true);
+        }else{
+            // use the generated class to get to the declaration literal
+            // FIXME: other types of declarations?
+            JCExpression classLiteral = makeUnerasedClassLiteral((TypeDeclaration) expr.getDeclaration());
+            JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
+            ProducedType exprType = expr.getTypeModel().resolveAliases();
+            // now cast if required
+            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())){
+                JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
+                return make().TypeCast(type, metamodelCall);
+            }
+            return metamodelCall;
+        }
     }
 
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
