@@ -54,6 +54,7 @@ public class AppliedValue<Type>
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
                 Method m = javaClass.getMethod(getterName);
+                m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
@@ -76,6 +77,7 @@ public class AppliedValue<Type>
             String getterName = Naming.getGetterName(lazyDecl);
             try {
                 Method m = javaClass.getMethod(getterName);
+                m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
