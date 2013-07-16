@@ -51,6 +51,11 @@ public class MetamodelTest extends CompilerTest {
     }
 
     @Test
+    public void testTypeLiteralRuntime() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.literalsRuntime", "Literals.ceylon", "literalsRuntime.ceylon");
+    }
+
+    @Test
     public void testBug238() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug238", "bug238.ceylon");
     }
