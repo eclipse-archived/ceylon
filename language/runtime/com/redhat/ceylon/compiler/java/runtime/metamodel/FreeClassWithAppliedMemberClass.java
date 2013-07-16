@@ -34,7 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
     @TypeParameter(value = "Type", variance = Variance.OUT),
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
 })
-public class FreeClassWithAppliedClassMember<Container, Type, Arguments extends Sequential<? extends Object>> 
+public class FreeClassWithAppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends FreeClass
     implements ceylon.language.metamodel.MemberClass<Container, Type, Arguments> {
 
@@ -46,7 +46,7 @@ public class FreeClassWithAppliedClassMember<Container, Type, Arguments extends 
     @Ignore
     private TypeDescriptor $reifiedArguments;
 
-    public FreeClassWithAppliedClassMember(@Ignore TypeDescriptor $reifiedContainer,
+    public FreeClassWithAppliedMemberClass(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             Class declaration) {
@@ -285,6 +285,6 @@ public class FreeClassWithAppliedClassMember<Container, Type, Arguments extends 
     @Override
     public TypeDescriptor $getType() {
         checkInit();
-        return TypeDescriptor.klass(FreeClassWithAppliedClassMember.class, $reifiedContainer, $reifiedType, $reifiedArguments);
+        return TypeDescriptor.klass(FreeClassWithAppliedMemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);
     }
 }
