@@ -28,7 +28,7 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
         if (!referenced(that)) {
-    		that.addUsageWarning("Import is never used: " + 
+    		that.addUsageWarning("import is never used: " + 
     				that.getDeclarationModel().getName());
     	}
     }
