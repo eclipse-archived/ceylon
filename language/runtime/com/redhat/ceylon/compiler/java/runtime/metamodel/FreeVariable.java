@@ -32,6 +32,7 @@ public class FreeVariable
         return $TypeDescriptor;
     }
     
+    @Ignore
     @Override
     public VariableDeclaration$impl $ceylon$language$metamodel$declaration$VariableDeclaration$impl() {
         // TODO Auto-generated method stub
