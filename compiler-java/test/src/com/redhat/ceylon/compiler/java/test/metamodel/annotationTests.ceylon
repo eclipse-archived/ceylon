@@ -45,16 +45,16 @@ ClassDeclaration aClassDecl {
     return type(AClass("")).declaration;
 }
 ClassDeclaration aAbstractClassDecl {
-    assert(exists sup=aClassDecl.superclass);
+    assert(exists sup=aClassDecl.superclassDeclaration);
     return sup.declaration;
 }
 InterfaceDeclaration aInterfaceDecl {
-    assert(exists sup=aClassDecl.superclass);
+    assert(exists sup=aClassDecl.superclassDeclaration);
     assert(exists iface0=sup.interfaces[0]);
     return iface0.declaration;
 }
 ClassDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
-    for (ClassDeclaration cDecl in outerClass.members<ClassDeclaration>()) {
+    for (ClassDeclaration cDecl in outerClass.memberDeclarations<ClassDeclaration>()) {
         if (cDecl.name == memberName) {
             return cDecl;
         }
@@ -62,7 +62,7 @@ ClassDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String 
     throw;
 }
 InterfaceDeclaration memberInterfaceDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
-    for (InterfaceDeclaration iDecl in outerClass.members<InterfaceDeclaration>()) {
+    for (InterfaceDeclaration iDecl in outerClass.memberDeclarations<InterfaceDeclaration>()) {
         if (iDecl.name == memberName) {
             return iDecl;
         }
@@ -173,7 +173,7 @@ void checkAToplevelFunctionAnnotations() {
             seq2.first.seq == "aToplevelFunction 1");
     
     // parameter
-    assert(exists parameter = aToplevelFunctionDecl.parameters[0]);
+    assert(exists parameter = aToplevelFunctionDecl.parameterDeclarations[0]);
     // parameter doc
     assert(exists pdoc = annotations(docAnnotation, parameter),
             pdoc.description == "aToplevelFunction.parameter");
@@ -234,7 +234,7 @@ void checkAClass() {
         seq3.first.seq == "AClass 1");
     
     // parameter
-    assert(exists parameter = aClassDecl.parameters[0]);
+    assert(exists parameter = aClassDecl.parameterDeclarations[0]);
     // parameter doc
     assert(exists pdoc = annotations(docAnnotation, parameter),
             pdoc.description == "AClass.parameter");
@@ -267,7 +267,7 @@ void checkAAbstractClass() {
     assert(sequencedAnnotations(seqAnnotation, aAbstractClassDecl).size == 2);
     
     // parameter
-    assert(exists parameter = aAbstractClassDecl.parameters[0]);
+    assert(exists parameter = aAbstractClassDecl.parameterDeclarations[0]);
     // parameter doc
     assert(exists pdoc = annotations(docAnnotation, parameter),
             pdoc.description == "AAbstractClass.parameter");
@@ -277,7 +277,7 @@ void checkAAbstractClass() {
     
     // Members of abstract class
     // formalAttribute
-    assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, Attribute<String>>("formalAttribute"));
+    assert(exists fam=aAbstractClassDecl.apply().getAttribute<AAbstractClass, String>("formalAttribute"));
     assert(is VariableDeclaration fa=fam(AClass("")).declaration);
     assert(annotations(sharedAnnotation, fa) exists);
     assert(annotations(actualAnnotation, fa) exists);
@@ -287,7 +287,7 @@ void checkAAbstractClass() {
             fasdoc.description == "AAbstractClass.formalAttributeSetter");
     
     // formalMethod
-    assert(exists fmm=aAbstractClassDecl.apply().getFunction<AAbstractClass, Function<Anything, [String]>>("formalMethod"));
+    assert(exists fmm=aAbstractClassDecl.apply().getMethod<AAbstractClass, Anything, [String]>("formalMethod"));
     value fm=fmm(AClass("")).declaration;
     // shared
     assert(annotations(sharedAnnotation, fm) exists);
@@ -299,7 +299,7 @@ void checkAAbstractClass() {
     assert(exists fmdoc = annotations(docAnnotation, fm),
             fmdoc.description == "AAbstractClass.formalMethod");
     // parameter
-    assert(exists fmp = fm.parameters[0]);
+    assert(exists fmp = fm.parameterDeclarations[0]);
     // parameter doc
     assert(exists fmpdoc = annotations(docAnnotation, fmp),
             fmpdoc.description == "AAbstractClass.formalMethod.parameter");
@@ -313,7 +313,7 @@ void checkAAbstractClass() {
     assert(exists icdoc = annotations(docAnnotation, ic));
     assert(icdoc.description == "AAbstractClass.InnerClass");
     // InnerClass parameter
-    assert(exists icparameter = ic.parameters[0]);
+    assert(exists icparameter = ic.parameterDeclarations[0]);
     // InnerClass parameter doc
     assert(exists icpdoc = annotations(docAnnotation, icparameter),
             icpdoc.description == "AAbstractClass.InnerClass.parameter");
@@ -357,14 +357,14 @@ void checkAInterface() {
     
     // Members of interface
     // formalAttribute
-    assert(exists fam=iface.getAttribute<AInterface, Attribute<String>>("formalAttribute"));
+    assert(exists fam=iface.getAttribute<AInterface, String>("formalAttribute"));
     value fa = fam(AClass("")).declaration;
     assert(annotations(sharedAnnotation, fa) exists);
     assert(exists fadoc = annotations(docAnnotation, fa),
             fadoc.description == "AInterface.formalAttribute");
     
     // defaultGetterSetter
-    assert(exists dgsm=iface.getAttribute<AInterface, Attribute<String>>("defaultGetterSetter"));
+    assert(exists dgsm=iface.getAttribute<AInterface, String>("defaultGetterSetter"));
     assert(is VariableDeclaration dgs = dgsm(AClass("")).declaration);
     assert(annotations(sharedAnnotation, dgs) exists);
     assert(annotations(defaultAnnotation, dgs) exists);
@@ -374,7 +374,7 @@ void checkAInterface() {
             dsdoc.description == "AInterface.defaultSetter");
     
     // getterSetter
-    assert(exists gsm=iface.getAttribute<AInterface, Attribute<String>>("getterSetter"));
+    assert(exists gsm=iface.getAttribute<AInterface, String>("getterSetter"));
     assert(is VariableDeclaration gs = gsm(AClass("")).declaration);
     assert(annotations(sharedAnnotation, gs) exists);
     assert(exists gsdoc = annotations(docAnnotation, gs),
@@ -392,16 +392,16 @@ void checkAInterface() {
     // TODO Test the setter annotations
     
     // TODO formalMethod
-    assert(exists fm=iface.getFunction<AInterface, Function<Anything,[String]>>("formalMethod"));
+    assert(exists fm=iface.getMethod<AInterface, Anything,[String]>("formalMethod"));
     value fmd = fm(AClass("")).declaration;
     // TODO defaultMethod
-    assert(exists dm=iface.getFunction<AInterface, Function<Anything,[String]>>("defaultMethod"));
+    assert(exists dm=iface.getMethod<AInterface, Anything,[String]>("defaultMethod"));
     value dmd = dm(AClass("")).declaration;
     // TODO method
-    assert(exists m=iface.getFunction<AInterface, Function<Anything,[String]>>("method"));
+    assert(exists m=iface.getMethod<AInterface, Anything,[String]>("method"));
     value md = m(AClass("")).declaration;
     // TODO nonsharedMethod
-    //assert(exists nsm=iface.getFunction<AInterface, Function<Anything,[String]>>("nonsharedMethod"));
+    //assert(exists nsm=iface.getFunction<AInterface, Anything,[String]>("nonsharedMethod"));
     //value nsmd = nsm(AClass("")).declaration;
     
     // TODO Class & interface members
@@ -412,7 +412,7 @@ void checkAInterface() {
     // TODO Object members
     
     // Tests for annotatedMembers()
-    value sharedClasses = aInterfaceDecl.annotatedMembers<ClassDeclaration, Shared>();
+    value sharedClasses = aInterfaceDecl.annotatedMemberDeclarations<ClassDeclaration, Shared>();
     assert(ficd in sharedClasses);
     assert(dicd in sharedClasses);
     assert(! iid in sharedClasses);
@@ -426,7 +426,7 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedClasses);
     // TODO test with an object declaration
     
-    value sharedInterfaces = aInterfaceDecl.annotatedMembers<InterfaceDeclaration, Shared>();
+    value sharedInterfaces = aInterfaceDecl.annotatedMemberDeclarations<InterfaceDeclaration, Shared>();
     assert(!ficd in sharedInterfaces);
     assert(!dicd in sharedInterfaces);
     assert(iid in sharedInterfaces);
@@ -440,7 +440,7 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedInterfaces);
     // TODO test with an object declaration
     
-    value sharedClassesAndInterfaces = aInterfaceDecl.annotatedMembers<ClassOrInterfaceDeclaration, Shared>();
+    value sharedClassesAndInterfaces = aInterfaceDecl.annotatedMemberDeclarations<ClassOrInterfaceDeclaration, Shared>();
     assert(ficd in sharedClassesAndInterfaces);
     assert(dicd in sharedClassesAndInterfaces);
     assert(iid in sharedClassesAndInterfaces);
@@ -454,7 +454,7 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedInterfaces);
     // TODO test with an object declaration
     
-    value sharedAttributes = aInterfaceDecl.annotatedMembers<AttributeDeclaration, Shared>();
+    value sharedAttributes = aInterfaceDecl.annotatedMemberDeclarations<AttributeDeclaration, Shared>();
     assert(! ficd in sharedAttributes);
     assert(! dicd in sharedAttributes);
     assert(! iid in sharedAttributes);
@@ -468,7 +468,7 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedAttribute);
     // TODO test with an object declaration
     
-    value sharedVariables = aInterfaceDecl.annotatedMembers<VariableDeclaration, Shared>();
+    value sharedVariables = aInterfaceDecl.annotatedMemberDeclarations<VariableDeclaration, Shared>();
     assert(! ficd in sharedVariables);
     assert(! dicd in sharedVariables);
     assert(! iid in sharedVariables);
@@ -482,7 +482,7 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedVariables);
     // TODO test with an object declaration
     
-    value sharedMethods = aInterfaceDecl.annotatedMembers<FunctionDeclaration, Shared>();
+    value sharedMethods = aInterfaceDecl.annotatedMemberDeclarations<FunctionDeclaration, Shared>();
     assert(! ficd in sharedMethods);
     assert(! dicd in sharedMethods);
     assert(! iid in sharedMethods);
@@ -496,7 +496,7 @@ void checkAInterface() {
     // TODO assert(nsmd in sharedMethods);
     // TODO test with an object declaration
     
-    value sharedAndDocdMethodsAndAttributes = aInterfaceDecl.annotatedMembers<FunctionDeclaration|AttributeDeclaration, Shared|Doc>();
+    value sharedAndDocdMethodsAndAttributes = aInterfaceDecl.annotatedMemberDeclarations<FunctionDeclaration|AttributeDeclaration, Shared|Doc>();
     assert(! ficd in sharedAndDocdMethodsAndAttributes);
     assert(! dicd in sharedAndDocdMethodsAndAttributes);
     assert(! iid in sharedAndDocdMethodsAndAttributes);
