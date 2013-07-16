@@ -125,14 +125,17 @@ public class ReflectionMethod implements MethodMirror {
         int annotationsOffset = annotations.length - parameterCount;
         int start = 0;
         if(method instanceof Constructor){
-            // inner classes will always add a synthetic parameter to the constructor
-            // FIXME: local classes may add more but we don't know how to find out
-            if(method.getDeclaringClass().isMemberClass()
-                    || method.getDeclaringClass().isLocalClass())
-                start = 1;
-            // enums will always add two synthetic parameters (string and int)
-            else if(method.getDeclaringClass().isEnum())
+            // enums will always add two synthetic parameters (string and int) and always be static so none more
+            Class<?> declaringClass = method.getDeclaringClass();
+            if(declaringClass.isEnum())
                 start = 2;
+            // inner classes will always add a synthetic parameter to the constructor, unless they are static
+            // FIXME: local and anonymous classes may add more but we don't know how to find out
+            else if((declaringClass.isMemberClass()
+                        || declaringClass.isAnonymousClass()
+                        || declaringClass.isLocalClass())
+                    && !Modifier.isStatic(declaringClass.getModifiers()))
+                start = 1;
         }
         // skip synthetic parameters
         for(int i=start;i<parameterCount;i++){
