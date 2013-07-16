@@ -281,6 +281,9 @@ public class Metamodel {
     public static ceylon.language.metamodel.Type getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            // if there are no TP the declaration model will also be an applied type
+            if(!hasTypeParameters(declaration))
+                return (ceylon.language.metamodel.Type)getOrCreateMetamodel(declaration);
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
             if(!declaration.isAnonymous())
@@ -296,6 +299,9 @@ public class Metamodel {
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
+            // if there are no TP the declaration model will also be an applied type
+            if(!hasTypeParameters(declaration))
+                return (ceylon.language.metamodel.Type)getOrCreateMetamodel(declaration);
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel())
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt);
