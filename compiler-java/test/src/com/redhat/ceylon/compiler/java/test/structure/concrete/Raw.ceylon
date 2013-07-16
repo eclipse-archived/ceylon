@@ -33,21 +33,22 @@ interface RawInv<T,U> {
     
     shared formal U a2;
 }
-@noanno
-class RawInvImplementor<X,Y>() satisfies RawInv<X&Y, Y> {
-    shared actual X&Y a {
-        throw;
-    }
-    shared actual Y a2 {
-        throw;
-    }
-    shared actual X&Y m(X&Y t) {
-        throw;
-    }
-    shared actual X&Y mDefaulted(X?&Y? t) {
-        throw;
-    }
-}
+// This is now disallowed by https://github.com/ceylon/ceylon-spec/issues/596
+//@noanno
+//class RawInvImplementor<X,Y>() satisfies RawInv<X&Y, Y> {
+//    shared actual X&Y a {
+//        throw;
+//    }
+//    shared actual Y a2 {
+//        throw;
+//    }
+//    shared actual X&Y m(X&Y t) {
+//        throw;
+//    }
+//    shared actual X&Y mDefaulted(X?&Y? t) {
+//        throw;
+//    }
+//}
 
 
 @noanno
