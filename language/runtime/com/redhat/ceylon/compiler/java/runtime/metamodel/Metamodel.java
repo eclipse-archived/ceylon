@@ -433,6 +433,15 @@ public class Metamodel {
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.Type pt) {
         if(pt instanceof AppliedClassOrInterface)
             return ((AppliedClassOrInterface)pt).producedType;
+        if(pt instanceof FreeClassWithAppliedClass)
+            return ((TypeDeclaration)((FreeClassWithAppliedClass) pt).declaration).getType();
+        if(pt instanceof FreeClassWithAppliedMemberClass)
+            return ((TypeDeclaration)((FreeClassWithAppliedMemberClass) pt).declaration).getType();
+        if(pt instanceof FreeInterfaceWithAppliedInterface)
+            return ((TypeDeclaration)((FreeInterfaceWithAppliedInterface) pt).declaration).getType();
+        if(pt instanceof FreeInterfaceWithAppliedMemberInterface)
+            return ((TypeDeclaration)((FreeInterfaceWithAppliedMemberInterface) pt).declaration).getType();
+            
         throw new RuntimeException("Unsupported applied produced type: " + pt);
     }
 
