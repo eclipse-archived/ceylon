@@ -4,15 +4,13 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.InterfaceModel$impl;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.MemberInterface;
 import ceylon.language.metamodel.MemberInterface$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Type$impl;
-import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.declaration.InterfaceDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -95,7 +93,7 @@ public class FreeInterfaceWithAppliedMemberInterface<Container, Type>
     @Override
     protected void init() {
         super.init();
-        memberDelegate = new AppliedMemberInterface($reifiedContainer, $reifiedType, ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getType());
+        memberDelegate = new AppliedMemberInterface($reifiedContainer, $reifiedType, ((com.redhat.ceylon.compiler.typechecker.model.Interface)declaration).getType());
     }
 
     @Override
