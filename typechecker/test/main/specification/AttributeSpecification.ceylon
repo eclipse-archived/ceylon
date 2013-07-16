@@ -77,3 +77,44 @@ void m2(Person[] people) {
         minors = false;
     }
 }
+
+void m3(Person[] people) {
+    Boolean minors;
+    for (p in people) {
+        if (p.age<18) {
+            String s;
+            s = "hello";
+            if (1==1) {
+                continue;
+            }
+            minors = true;
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+}
+
+void m4(Person[] people) {
+    Boolean minors;
+    for (p in people) {
+        if (p.age<18) {
+            String s;
+            minors = true;
+            s = "hello";
+            if (1==1) {
+                print(s);
+            }
+            else {
+                for (c in s) {
+                    continue;
+                }
+            }
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+}

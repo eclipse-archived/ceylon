@@ -38,6 +38,18 @@ public class SpecificationVisitor extends Visitor {
     private boolean declarationSection = false;
     private boolean endsInBreakReturnOrThrow = false;
     
+    private final class ContinueVisitor extends Visitor {
+        boolean found = false;
+        @Override
+        public void visit(Tree.WhileStatement that) {}
+        @Override
+        public void visit(Tree.ForStatement that) {}
+        @Override
+        public void visit(Tree.Continue that) {
+            found = true;
+        }
+    }
+
     class SpecificationState {
         boolean definitely;
         boolean possibly;
@@ -303,10 +315,14 @@ public class SpecificationVisitor extends Visitor {
         }
     }
     
+    Tree.Statement lastContinue;
+    
     @Override
     public void visit(Tree.Body that) {
         boolean oe = endsInBreakReturnOrThrow;
         endsInBreakReturnOrThrow = false;
+        Tree.Statement olc = lastContinue;
+        lastContinue = null;
         int size = that.getStatements().size();
         if (size>0) {
             Tree.Statement s = that.getStatements().get(size-1);
@@ -315,27 +331,18 @@ public class SpecificationVisitor extends Visitor {
                     s instanceof Tree.Return ||
                     s instanceof Tree.Throw;
             if (endsInBreakReturnOrThrow) {
-                //TODO: The following is just lame and rejects
-                //      lots of perfectly good code.
-                boolean found=false;
                 for (Tree.Statement st: that.getStatements()) {
-                    if (st instanceof Tree.SpecifierStatement) {
-                        found = true;
-                    }
-                    if (found &&
-                            st instanceof Tree.IfStatement ||
-                            st instanceof Tree.SwitchStatement ||
-                            st instanceof Tree.TryCatchStatement ||
-                            st instanceof Tree.DynamicStatement) {
-                        //could potentially contain a continue
-                        endsInBreakReturnOrThrow = false;
-                        break;
+                    ContinueVisitor cv = new ContinueVisitor();
+                    cv.visit(st);
+                    if (cv.found) {
+                        lastContinue = st;
                     }
                 }
             }
         }
         super.visit(that);
         endsInBreakReturnOrThrow = oe;
+        lastContinue = olc;
     }
     
     @Override
@@ -360,7 +367,8 @@ public class SpecificationVisitor extends Visitor {
                     that.addError("specified value is not yet declared: " + 
                             member.getName());
 	            }
-	            else if (inLoop && !endsInBreakReturnOrThrow && constant) {
+	            else if (inLoop && constant && 
+	                    !(endsInBreakReturnOrThrow && lastContinue==null)) {
 	                that.addError("specified non-variable value is not definitely unspecified in loop: " + 
 	                        member.getName(), 803);
 	            }
@@ -640,6 +648,9 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Statement that) {
+        if (that==lastContinue) {
+            lastContinue=null;
+        }
         super.visit(that);
         checkDeclarationSection(that);
     }
@@ -715,6 +726,9 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.IfStatement that) {
+        if (that==lastContinue) {
+            lastContinue=null;
+        }
         
         Tree.IfClause ifClause = that.getIfClause();
         Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
@@ -766,6 +780,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TryCatchStatement that) {
+        if (that==lastContinue) {
+            lastContinue=null;
+        }
+        
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
         if( that.getTryClause()!=null ) {
@@ -814,6 +832,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SwitchStatement that) {
+        if (that==lastContinue) {
+            lastContinue=null;
+        }
+
         if (that.getSwitchClause()!=null) {
             that.getSwitchClause().visit(this);
         }
