@@ -1,0 +1,108 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1184() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String narySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = narySequenced$s(s1, s2, s3, s4);
+            }
+            returning narySequenced(s1, s2, s3, s4, $ceylontmp$s$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Sequential<? extends .ceylon.language.String> narySequenced$s(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String narySequenced(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s1, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s2, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s3, @.com.redhat.ceylon.compiler.java.metadata.Name("s4")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s4, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+        return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug11xx::Bug1184")
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184 self$priv() {
+        return this;
+    }
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void bug(@.com.redhat.ceylon.compiler.java.metadata.Name("bug")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug11xx::Bug1184")
+    final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184 bug) {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))))), "String(String, String, String, String, String*)", (short)4){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
+                final .ceylon.language.Sequential $$s = $param$0.length > 4 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[4] : narySequenced$s($$s1, $$s2, $$s3, $$s4);
+                return .ceylon.language.String.instance(narySequenced($$s1, $$s2, $$s3, $$s4, $$s));
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.String> r2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))))), "String(String, String, String, String, String*)", (short)4){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
+                final .ceylon.language.Sequential $$s = $param$0.length > 4 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[4] : bug.narySequenced$s($$s1, $$s2, $$s3, $$s4);
+                return .ceylon.language.String.instance(bug.narySequenced($$s1, $$s2, $$s3, $$s4, $$s));
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.String> r3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor))))), "String(String, String, String, String, String*)", (short)4){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call(final .java.lang.Object... $param$0) {
+                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0[0]).toString();
+                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$0[1]).toString();
+                final .java.lang.String $$s3 = ((.ceylon.language.String)$param$0[2]).toString();
+                final .java.lang.String $$s4 = ((.ceylon.language.String)$param$0[3]).toString();
+                final .ceylon.language.Sequential $$s = $param$0.length > 4 ? (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0[4] : self$priv().narySequenced$s($$s1, $$s2, $$s3, $$s4);
+                return .ceylon.language.String.instance(self$priv().narySequenced($$s1, $$s2, $$s3, $$s4, $$s));
+            }
+        };
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184.class);
+}
