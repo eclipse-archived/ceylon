@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import ceylon.language.Array;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
@@ -15,14 +14,9 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator$impl;
-import ceylon.language.List;
-import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.Map$impl;
 import ceylon.language.Null;
-import ceylon.language.Ranged$impl;
-import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.Set;
 
@@ -475,5 +469,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(InternalMap.class, $reifiedKey, $reifiedItem);
+    }
+    
+    @Override
+    public String toString() {
+        return $ceylon$language$Collection$this.toString();
     }
 }
