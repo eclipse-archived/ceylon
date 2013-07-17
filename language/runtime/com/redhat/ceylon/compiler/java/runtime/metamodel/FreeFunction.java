@@ -193,9 +193,9 @@ public class FreeFunction
     }
 
     <Container, Type, Arguments extends ceylon.language.Sequential<? extends Object>>
-    ceylon.language.metamodel.Method<Container, Type, Arguments> getAppliedMethod(TypeDescriptor $reifiedContainer, 
-                                                                                  TypeDescriptor $reifiedType, 
-                                                                                  TypeDescriptor $reifiedArguments, 
+    ceylon.language.metamodel.Method<Container, Type, Arguments> getAppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                                  @Ignore TypeDescriptor $reifiedType, 
+                                                                                  @Ignore TypeDescriptor $reifiedArguments, 
                                                                                   Sequential<? extends ceylon.language.metamodel.Type> types){
         // if we don't have any TP our declaration will also be a Method
         if(!Metamodel.hasTypeParameters((Generic) declaration))
