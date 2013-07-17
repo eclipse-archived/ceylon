@@ -68,8 +68,18 @@ public class JsCompiler {
         @Override
         public void visit(Tree.ImportMemberOrType that) {
             if (that.getErrors() != null && !that.getErrors().isEmpty())return;
-            if (that.getImportModel().getDeclaration().getUnit().getPackage().getModule().isJava()) {
-                that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+            Unit u = that.getImportModel().getDeclaration().getUnit();
+            if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
+                    || u.getPackage().getModule().isJava()) {
+                that.addUnexpectedError("cannot import Java declarations in Javascript");
+            }
+            super.visit(that);
+        }
+        @Override
+        public void visit(Tree.ImportModule that) {
+            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (((Module)that.getImportPath().getModel()).isJava()) {
+                that.addUnexpectedError("cannot import Java modules in Javascript");
             }
             super.visit(that);
         }
@@ -80,7 +90,7 @@ public class JsCompiler {
                 Unit u = that.getDeclaration().getUnit();
                 if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
                         || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
-                    that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+                    that.addUnexpectedError("cannot call Java declarations in Javascript");
                 }
             }
             super.visit(that);
@@ -92,7 +102,7 @@ public class JsCompiler {
                 Unit u = that.getDeclaration().getUnit();
                 if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
                         || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
-                    that.addUnexpectedError("Cannot compile Java declarations to Javascript.");
+                    that.addUnexpectedError("cannot call Java declarations in Javascript");
                 }
             }
             super.visit(that);
@@ -228,10 +238,14 @@ public class JsCompiler {
                         String name = pu.getUnitFile().getName();
                         if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                             compileUnit(pu, names);
-                            if (stopOnError()) {
-                                System.err.println("Errors found. Compilation stopped.");
-                                break;
-                            }
+                        }
+                        else {
+                            unitErrors.clear();
+                            pu.getCompilationUnit().visit(unitVisitor);
+                        }
+                        if (stopOnError()) {
+                            System.err.println("Errors found. Compilation stopped.");
+                            break;
                         }
                         getOutput(pu).addSource(pu.getUnit().getFullPath());
                     } else {
@@ -268,10 +282,14 @@ public class JsCompiler {
                                 String name = pu.getUnitFile().getName();
                                 if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                                     compileUnit(pu, names);
-                                    if (stopOnError()) {
-                                        System.err.println("Errors found. Compilation stopped.");
-                                        break;
-                                    }
+                                }
+                                else {
+                                    unitErrors.clear();
+                                    pu.getCompilationUnit().visit(unitVisitor);
+                                }
+                                if (stopOnError()) {
+                                    System.err.println("Errors found. Compilation stopped.");
+                                    break;
                                 }
                                 getOutput(pu).addSource(pu.getUnit().getFullPath());
                                 lastUnit = pu;
