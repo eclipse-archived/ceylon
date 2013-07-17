@@ -189,17 +189,14 @@ public class FreeFunction
                 @Ignore TypeDescriptor $reifiedType,
                 @Ignore TypeDescriptor $reifiedArguments,
                 @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
-        // FIXME: check this
-        AppliedClassOrInterface<Container> containerType = (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel($reifiedContainer);
-        return getAppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, types, containerType);
+        return getAppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, types);
     }
 
     <Container, Type, Arguments extends ceylon.language.Sequential<? extends Object>>
     ceylon.language.metamodel.Method<Container, Type, Arguments> getAppliedMethod(TypeDescriptor $reifiedContainer, 
                                                                                   TypeDescriptor $reifiedType, 
                                                                                   TypeDescriptor $reifiedArguments, 
-                                                                                  Sequential<? extends ceylon.language.metamodel.Type> types,
-                                                                                  AppliedClassOrInterface<Container> container){
+                                                                                  Sequential<? extends ceylon.language.metamodel.Type> types){
         // if we don't have any TP our declaration will also be a Method
         if(!Metamodel.hasTypeParameters((Generic) declaration))
             return (ceylon.language.metamodel.Method)Metamodel.getOrCreateMetamodel(declaration);

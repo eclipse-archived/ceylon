@@ -183,7 +183,7 @@ public class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        return method.<SubType, Type, Arguments>getAppliedMethod($reifiedSubType, $reifiedType, $reifiedArguments, types, (AppliedClassOrInterface<SubType>)this);
+        return method.<SubType, Type, Arguments>getAppliedMethod($reifiedSubType, $reifiedType, $reifiedArguments, types);
     }
 
     @Ignore
