@@ -246,6 +246,13 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1156() {
         compile("bug11xx/Bug1156.java", "bug11xx/Bug1156.ceylon");
     }
+
+    @Test
+    public void testBug1155() {
+        //compareWithJavaSource("bug11xx/Bug1155");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1155", 
+                "bug11xx/Bug1155.ceylon");
+    }
     
     @Ignore("To resolve for M6: https://github.com/ceylon/ceylon-compiler/issues/1157")
     @Test
@@ -278,4 +285,5 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1184() {
         compareWithJavaSource("bug11xx/Bug1184");
     }
+    
 }
