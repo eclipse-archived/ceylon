@@ -10,4 +10,8 @@ void bug1155() {
     String(String, String, String*) r = b.narySequenced;
     print(r("nary1", "rest1"));
     print(r("nary1", "rest1", "rest2"));
+    
+    String(String, String, String*)(Bug1155) staticRef = Bug1155.narySequenced;
+    print(staticRef(b)("nary1", "rest1"));
+    print(staticRef(b)("nary1", "rest1", "rest2"));
 }

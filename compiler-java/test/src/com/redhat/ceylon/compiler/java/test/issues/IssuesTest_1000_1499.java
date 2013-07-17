@@ -247,6 +247,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
         compile("bug11xx/Bug1156.java", "bug11xx/Bug1156.ceylon");
     }
 
+    @Ignore("To resolve for M6: https://github.com/ceylon/ceylon-compiler/issues/1155")
     @Test
     public void testBug1155() {
         //compareWithJavaSource("bug11xx/Bug1155");
