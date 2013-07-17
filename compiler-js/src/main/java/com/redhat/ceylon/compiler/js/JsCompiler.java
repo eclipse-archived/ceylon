@@ -58,6 +58,14 @@ public class JsCompiler {
     private TypeUtils types;
 
     private final Visitor unitVisitor = new Visitor() {
+        private boolean hasErrors(Node that) {
+            for (Message m: that.getErrors()) {
+                if (m instanceof AnalysisError) {
+                    return true;
+                }
+            }
+            return false;
+        }
         @Override
         public void visitAny(Node that) {
             super.visitAny(that);
@@ -67,7 +75,7 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.ImportMemberOrType that) {
-            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (hasErrors(that)) return;
             Unit u = that.getImportModel().getDeclaration().getUnit();
             if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
                     || u.getPackage().getModule().isJava()) {
@@ -77,7 +85,7 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.ImportModule that) {
-            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (hasErrors(that)) return;
             if (((Module)that.getImportPath().getModel()).isJava()) {
                 that.addUnexpectedError("cannot import Java modules in Javascript");
             }
@@ -85,7 +93,7 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.BaseMemberOrTypeExpression that) {
-            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (hasErrors(that)) return;
             if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
                 Unit u = that.getDeclaration().getUnit();
                 if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
@@ -97,7 +105,7 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.QualifiedMemberOrTypeExpression that) {
-            if (that.getErrors() != null && !that.getErrors().isEmpty())return;
+            if (hasErrors(that)) return;
             if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
                 Unit u = that.getDeclaration().getUnit();
                 if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
