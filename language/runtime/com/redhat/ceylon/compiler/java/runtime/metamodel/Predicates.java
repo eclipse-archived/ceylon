@@ -314,10 +314,10 @@ class Predicates {
             implements Predicate<Declaration> {
 
         private final TypeDescriptor annotation;
-        private final AppliedClassOrInterface<A> at;
+        private final ClassOrInterface<A> at;
 
         public AnnotatedWith(TypeDescriptor annotation,
-                AppliedClassOrInterface<A> at) {
+                             ClassOrInterface<A> at) {
             this.annotation = annotation;
             this.at = at;
         }
@@ -348,8 +348,8 @@ class Predicates {
     isDeclarationAnnotatedWith(TypeDescriptor annotation, Type at) {
         if (at instanceof nothingType_) {
             return false_();
-        } else if (at instanceof AppliedClassOrInterface) {
-            return new AnnotatedWith<A>(annotation, (AppliedClassOrInterface)at);
+        } else if (at instanceof ClassOrInterface) {
+            return new AnnotatedWith<A>(annotation, (ClassOrInterface)at);
         } else if (at instanceof AppliedUnionType) {
             Sequential<? extends Type> caseTypes = ((AppliedUnionType)at).getCaseTypes();
             return or(mapTypesToDeclarationAnnotatedWith(annotation, caseTypes));
@@ -357,7 +357,7 @@ class Predicates {
             Sequential<? extends Type> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
             return and(mapTypesToDeclarationAnnotatedWith(annotation, satisfiedTypes));
         } else {
-            throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+            throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive: "+at);
         }
     }
     
@@ -396,12 +396,12 @@ class Predicates {
         } else if (at instanceof AppliedIntersectionType) {
             Sequential<? extends Type> satisfiedTypes = ((AppliedIntersectionType)at).getSatisfiedTypes();
             return and(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, satisfiedTypes));
-        } else if (at instanceof AppliedClassOrInterface) {
+        } else if (at instanceof ClassOrInterface) {
             // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation?
-            AnnotationPredicate<A> predicate = annotationPredicate($reifiedAnnotation, (AppliedClassOrInterface)at);
+            AnnotationPredicate<A> predicate = annotationPredicate($reifiedAnnotation, (ClassOrInterface)at);
             return predicate;
         } else {
-            throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");            
+            throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive: "+at);
         }
     }
     
