@@ -79,6 +79,10 @@ public class Util {
         	//      extends a Ceylon class
         	return true;
         }
+        return classExtendsClass(getCeylonSuperClass(klass), className);
+    }
+    
+    private static java.lang.Class<?> getCeylonSuperClass(java.lang.Class<?> klass) {
         Class classAnnotation = klass.getAnnotation(Class.class);
         // only consider Class.extendsType() if non-empty
         if (classAnnotation != null && !classAnnotation.extendsType().isEmpty()) {
@@ -88,19 +92,24 @@ public class Util {
                 superclassName = superclassName.substring(0, i);
             }
             if (superclassName.isEmpty()) {
-                return false;
+                throw new RuntimeException("Malformed @Class.extendsType() annotation value: "+classAnnotation.extendsType());
             }
             try {
-                return classExtendsClass(
-                        java.lang.Class.forName(superclassName, true, klass.getClassLoader()), 
-                        className);
+                return java.lang.Class.forName(superclassName, true, klass.getClassLoader()); 
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
-        return classExtendsClass(klass.getSuperclass(), className);
+        // we consider that subclasses of Object that do not have any @Ceylon.extendsType() are in fact subclasses of Basic
+        if(klass.getSuperclass() != java.lang.Object.class)
+            return klass.getSuperclass();
+        // Anything has no super class
+        if(klass == ceylon.language.Anything.class)
+            return null;
+        // The default super class is Basic
+        return ceylon.language.Basic.class;
     }
-    
+
     /**
      * Returns true if the given object satisfies the given interface
      */
@@ -131,30 +140,7 @@ public class Util {
         if(lookForInterface(klass, className, alreadyVisited))
             return true;
         // try its superclass
-        Class classAnnotation = klass.getAnnotation(Class.class);
-        String superclassName;
-        // only consider non-empty Class.extendsType()
-        if (classAnnotation!=null && !classAnnotation.extendsType().isEmpty()) {
-            superclassName = declClassName(classAnnotation.extendsType());
-            int i = superclassName.indexOf('<');
-            if (i>0) {
-                superclassName = superclassName.substring(0, i);
-            }
-            
-        } else {
-            // Maybe the class didn't have an extends, so implictly Basic
-            superclassName = "ceylon.language.Basic";
-        }
-        if (!superclassName.isEmpty()) {
-            try {
-                return classSatisfiesInterface(
-                        java.lang.Class.forName(superclassName, true, klass.getClassLoader()), 
-                        className, alreadyVisited);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return classSatisfiesInterface(klass.getSuperclass(), className, alreadyVisited);
+        return classSatisfiesInterface(getCeylonSuperClass(klass), className, alreadyVisited);
     }
 
     private static boolean lookForInterface(java.lang.Class<?> klass, String className, 
@@ -183,11 +169,12 @@ public class Util {
                     throw new RuntimeException(e);
                 }
             }
-        }
-        // now look at this class's interfaces
-        for (java.lang.Class<?> intrface : klass.getInterfaces()){
-            if (lookForInterface(intrface, className, alreadyVisited))
-                return true;
+        }else{
+            // otherwise look at this class's interfaces
+            for (java.lang.Class<?> intrface : klass.getInterfaces()){
+                if (lookForInterface(intrface, className, alreadyVisited))
+                    return true;
+            }
         }
         // no luck
         return false;
