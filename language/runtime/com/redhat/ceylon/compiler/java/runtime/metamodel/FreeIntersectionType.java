@@ -2,7 +2,10 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
+import ceylon.language.Finished;
+import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.Type;
 import ceylon.language.metamodel.declaration.OpenType$impl;
 import ceylon.language.metamodel.declaration.OpenIntersection$impl;
 
@@ -23,6 +26,18 @@ public class FreeIntersectionType
     
     protected Sequential<ceylon.language.metamodel.declaration.OpenType> satisfiedTypes;
     
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<? extends ceylon.language.metamodel.declaration.OpenType> iterator = satisfiedTypes.iterator();
+        Object next=iterator.next();
+        sb.append(next);
+        while (!((next=iterator.next()) instanceof Finished)) {
+            sb.append('&').append(next);
+        }
+        return sb.toString();
+    }
+
     FreeIntersectionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
         ceylon.language.metamodel.declaration.OpenType[] types = new ceylon.language.metamodel.declaration.OpenType[satisfiedTypes.size()];
         int i=0;

@@ -24,7 +24,7 @@ public class AppliedInterface<Type>
     public AppliedInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType) {
         super(null, producedType);
     }
-
+    
     @Override
     @Ignore
     public Interface$impl<Type> $ceylon$language$metamodel$Interface$impl() {

@@ -2,7 +2,10 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
+import ceylon.language.Finished;
+import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.Type;
 import ceylon.language.metamodel.Type$impl;
 import ceylon.language.metamodel.IntersectionType$impl;
 
@@ -23,6 +26,18 @@ public class AppliedIntersectionType
     
     protected Sequential<ceylon.language.metamodel.Type> satisfiedTypes;
     
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<? extends Type> iterator = satisfiedTypes.iterator();
+        Object next=iterator.next();
+        sb.append(next);
+        while (!((next=iterator.next()) instanceof Finished)) {
+            sb.append('&').append(next);
+        }
+        return sb.toString();
+    }
+
     AppliedIntersectionType(List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> satisfiedTypes){
         ceylon.language.metamodel.Type[] types = new ceylon.language.metamodel.Type[satisfiedTypes.size()];
         int i=0;

@@ -1,1 +1,3 @@
-shared object nothingType satisfies OpenType {}
+shared object nothingType satisfies OpenType {
+    string=>"Nothing";
+}

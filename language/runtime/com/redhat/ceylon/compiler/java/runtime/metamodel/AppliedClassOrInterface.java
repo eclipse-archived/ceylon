@@ -42,6 +42,11 @@ public class AppliedClassOrInterface<Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
+    @Override
+    public String toString() {
+        return producedType.getProducedTypeName();
+    }
+
     AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);

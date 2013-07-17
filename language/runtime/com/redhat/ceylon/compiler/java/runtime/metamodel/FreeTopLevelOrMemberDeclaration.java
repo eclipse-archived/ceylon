@@ -14,6 +14,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -27,6 +29,17 @@ public class FreeTopLevelOrMemberDeclaration
     protected com.redhat.ceylon.compiler.typechecker.model.Declaration declaration;
     
     private Package pkg;
+
+    @Override
+    public String toString() {
+        String string = declaration.getName();
+        Scope container = declaration.getContainer();
+        while (container instanceof TypeDeclaration) {
+            string = ((TypeDeclaration) container).getName() + '.' + string;
+            container = container.getContainer();
+        }
+        return string;
+    }
 
     public FreeTopLevelOrMemberDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;

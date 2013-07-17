@@ -34,6 +34,11 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
 
     private Sequential<FreeTopLevelOrMemberDeclaration> members;
 
+    @Override
+    public String toString() {
+        return declaration.getNameAsString();
+    }
+    
     public FreePackage(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
         this.declaration = declaration;
     }

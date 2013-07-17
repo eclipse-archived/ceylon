@@ -30,6 +30,11 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
     private Sequential<Package> packages;
     private Sequential<Import> dependencies;
     
+    @Override
+    public String toString() {
+        return declaration.getNameAsString();
+    }
+    
     public FreeModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
         this.declaration = declaration;
     }
