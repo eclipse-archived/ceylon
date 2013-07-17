@@ -72,7 +72,6 @@ public class Util {
             return true;
         if ((className.equals("ceylon.language.Basic"))
                 && klass!=java.lang.Object.class
-                && !isSubclassOfString(klass)
                 //&& klass!=java.lang.String.class
         		&& !klass.isAnnotationPresent(Class.class)
         		&& (!klass.isInterface() || !klass.isAnnotationPresent(Ceylon.class))) {
@@ -127,10 +126,6 @@ public class Util {
             //      extends a Ceylon class
             return true;
         }
-        if (className.equals("ceylon.language.Identifiable")
-            && isSubclassOfString(klass)) {
-            return false;
-        }
         // try the interfaces
         if(lookForInterface(klass, className, alreadyVisited))
             return true;
@@ -158,10 +153,6 @@ public class Util {
             }
         }
         return classSatisfiesInterface(klass.getSuperclass(), className, alreadyVisited);
-    }
-
-    private static boolean isSubclassOfString(java.lang.Class<?> klass) {
-        return klass.getName().equals("com.redhat.ceylon.compiler.java.language.EmptyString") || klass.getName().equals("com.redhat.ceylon.compiler.java.language.SequenceString");
     }
 
     private static boolean lookForInterface(java.lang.Class<?> klass, String className, 
