@@ -241,7 +241,7 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
     @Ignore
     public Type $call(Object arg0, Object arg1, Object arg2) {
         checkInit();
-        return typeDelegate.$call(arg0, arg1, arg1);
+        return typeDelegate.$call(arg0, arg1, arg2);
     }
 
     @Override
