@@ -27,18 +27,6 @@ public class FreeAttribute
         this.type = Metamodel.getMetamodel(declaration.getType());
     }
     
-    /** 
-     * Instantiates a {@code FreeVariable} if the given value is variable 
-     * otherwise a {@code FreeValue}.
-     */
-    public static FreeAttribute instance(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
-        if (declaration.isVariable()) {
-            return new FreeVariable(declaration);
-        } else {
-            return new FreeAttribute(declaration);
-        }
-    }
-
     @Override
     @Ignore
     public AttributeDeclaration$impl $ceylon$language$metamodel$declaration$AttributeDeclaration$impl() {

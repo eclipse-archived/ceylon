@@ -41,15 +41,13 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
             @Ignore TypeDescriptor $reifiedType,
             TypedDeclaration declaration) {
         super(declaration);
-        com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        final FreeAttribute attributeDecl = FreeAttribute.instance(modelDecl);
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
         final ProducedType appliedType = declaration.getProducedReference(container.getType(), producedTypes).getType();
         this.$reifiedContainer = Metamodel.getTypeDescriptorForProducedType(container.getType());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        memberDelegate = new AppliedAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, attributeDecl, appliedType);
+        memberDelegate = new AppliedAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, this, appliedType);
         
         this.closedType = Metamodel.getAppliedMetamodel(appliedType);
     }

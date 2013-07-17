@@ -215,7 +215,11 @@ public class Metamodel {
                                 ret = new FreeAttributeWithAppliedAttribute(reifiedContainer, reifiedType, value);
                         }
                     }else{
-                        ret = FreeAttribute.instance(value);
+                        if (value.isVariable()) {
+                            ret = new FreeVariable(value);
+                        } else {
+                            ret = new FreeAttribute(value);
+                        }
                     }
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);

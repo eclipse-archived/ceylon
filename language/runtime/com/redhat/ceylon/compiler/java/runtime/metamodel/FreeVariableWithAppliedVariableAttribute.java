@@ -41,8 +41,6 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
             @Ignore TypeDescriptor $reifiedType,
             Value declaration) {
         super(declaration);
-        com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        final FreeAttribute attributeDecl = FreeAttribute.instance(modelDecl);
 
         // FIXME: same code in FreeAttributeWithMember
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
@@ -50,7 +48,7 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
         final ProducedType appliedType = declaration.getProducedReference(container.getType(), producedTypes).getType();
         this.$reifiedContainer = Metamodel.getTypeDescriptorForProducedType(container.getType());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        memberDelegate = new AppliedVariableAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, attributeDecl, appliedType);
+        memberDelegate = new AppliedVariableAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, this, appliedType);
         
         this.closedType = Metamodel.getAppliedMetamodel(appliedType);
     }

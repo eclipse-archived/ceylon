@@ -49,13 +49,12 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
             Method declaration) {
         super(declaration);
         
-        final FreeFunction method = new FreeFunction(declaration);
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
 
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
         // in theory this works because we only get instantiated if the method and containers have no TP
         final ProducedReference appliedFunction = declaration.getProducedReference(container.getType(), producedTypes);
-        memberDelegate = new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, method);
+        memberDelegate = new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this);
         this.$reifiedContainer = $reifiedContainer;
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;

@@ -97,13 +97,10 @@ public abstract class FreeClassOrInterface
         i=0;
         this.declarations = new LinkedList<ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration>();
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
-            if(memberModelDeclaration instanceof Method){
-                declarations.add(new FreeFunction((Method) memberModelDeclaration));
-            }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                declarations.add(FreeAttribute.instance((com.redhat.ceylon.compiler.typechecker.model.Value)memberModelDeclaration));
-            }else if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
+            if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
+                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
+                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
                 declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
-            }
         }
     }
     
