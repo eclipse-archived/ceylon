@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.FunctionModel$impl;
 import ceylon.language.metamodel.Method$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -35,6 +35,11 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Ignore
     private TypeDescriptor $reifiedArguments;
 
+    @Override
+    public String toString() {
+        return declaration.toString();
+    }
+    
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                          @Ignore TypeDescriptor $reifiedType, 
                          @Ignore TypeDescriptor $reifiedArguments, 

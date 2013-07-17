@@ -31,7 +31,12 @@ public class AppliedAttribute<Container, Type>
     private ceylon.language.metamodel.Type closedType;
     @Ignore
     protected final TypeDescriptor $reifiedType;
-
+    
+    @Override
+    public String toString() {
+        return declaration.toString();
+    }
+    
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedType,
                             FreeAttribute declaration, ProducedType type) {
