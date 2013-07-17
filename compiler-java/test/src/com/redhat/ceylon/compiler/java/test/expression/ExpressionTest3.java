@@ -192,5 +192,26 @@ public class ExpressionTest3 extends CompilerTest {
     public void testComprehensionEmptiness() {
         compareWithJavaSource("comprehensions/Emptiness");
     }
+    
+    @Test
+    public void testRefAttributeRef() {
+        compareWithJavaSource("ref/AttributeRef");
+        //compile("ref/AttributeRef.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.attributeRef");
+    }
+    
+    @Test
+    public void testRefMethodRef() {
+        compareWithJavaSource("ref/MethodRef");
+        //compile("ref/MethodRef.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.methodRef");
+    }
+    
+    @Test
+    public void testRefMemberClassRef() {
+        compareWithJavaSource("ref/MemberClassRef");
+        //compile("ref/MemberClassRef.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.memberClassRef");
+    }
 
 }
