@@ -80,7 +80,8 @@ public class Util {
         	return true;
         }
         Class classAnnotation = klass.getAnnotation(Class.class);
-        if (classAnnotation != null) {
+        // only consider Class.extendsType() if non-empty
+        if (classAnnotation != null && !classAnnotation.extendsType().isEmpty()) {
             String superclassName = declClassName(classAnnotation.extendsType());
             int i = superclassName.indexOf('<');
             if (i>0) {
@@ -132,7 +133,8 @@ public class Util {
         // try its superclass
         Class classAnnotation = klass.getAnnotation(Class.class);
         String superclassName;
-        if (classAnnotation!=null) {
+        // only consider non-empty Class.extendsType()
+        if (classAnnotation!=null && !classAnnotation.extendsType().isEmpty()) {
             superclassName = declClassName(classAnnotation.extendsType());
             int i = superclassName.indexOf('<');
             if (i>0) {
