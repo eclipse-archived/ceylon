@@ -143,7 +143,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            return new NothingType(moduleManager.getContext().getModules().getLanguageModule().getUnit()).getType();
+            return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
         }
     }
     
@@ -203,7 +203,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            UnionType ret = new UnionType(moduleManager.getContext().getModules().getLanguageModule().getUnit());
+            UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
             ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>(members.length);
             for(TypeDescriptor member : members)
                 caseTypes.add(member.toProducedType(moduleManager));
@@ -234,7 +234,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            IntersectionType ret = new IntersectionType(moduleManager.getContext().getModules().getLanguageModule().getUnit());
+            IntersectionType ret = new IntersectionType(moduleManager.getModelLoader().getUnit());
             for(TypeDescriptor member : members)
                 ret.getSatisfiedTypes().add(member.toProducedType(moduleManager));
             return ret.getType();

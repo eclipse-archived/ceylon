@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class RuntimeModelLoader extends ReflectionModelLoader {
 
@@ -95,6 +96,10 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         if(name.equals(Module.DEFAULT_MODULE_NAME))
             return name + "/"; // no version
         return name + "/" + version;
+    }
+
+    public Unit getUnit() {
+        return typeFactory;
     }
 
 }
