@@ -156,8 +156,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration.getUnboxed() != null)
             return;
         
-        // functional parameter return values are always boxed
-        if(declaration instanceof FunctionalParameter){
+        // functional parameter return values are always boxed if we're not creating a method for them
+        if(declaration instanceof FunctionalParameter && !Strategy.createMethod((FunctionalParameter)declaration)){
             declaration.setUnboxed(false);
             return;
         }
