@@ -1,6 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
@@ -34,11 +40,12 @@ public class TypeChecker {
     private final boolean verifyDependencies;
     private final AssertionVisitor assertionVisitor;
     private final StatisticsVisitor statsVisitor;
+    private final boolean parallel;
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, RepositoryManager repositoryManager, boolean verifyDependencies,
             AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose, boolean statistics,
-            List<String> moduleFilters) {
+            List<String> moduleFilters, boolean parallel) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
@@ -51,6 +58,7 @@ public class TypeChecker {
         phasedUnits.setModuleFilters(moduleFilters);
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
+        this.parallel = parallel;
         if(statistics)
         	System.out.println("Parsed in " + time/1000000 + " ms");
     }
@@ -146,6 +154,87 @@ public class TypeChecker {
         }
         phasedUnitsOfDependencies = moduleValidator.getPhasedUnitsOfDependencies();
 
+        if(parallel)
+            justDoItInParallel(listOfUnits, forceSilence);
+        else
+            justDoIt(listOfUnits, forceSilence);
+    }
+
+    private void justDoItInParallel(List<PhasedUnit> listOfUnits, boolean forceSilence) {
+        // we divide by 2 to discard HT
+        ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()/2);
+        List<Callable<Void>> callables = new ArrayList<Callable<Void>>(listOfUnits.size());
+        for (final PhasedUnit pu : listOfUnits) {
+            callables.add(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    pu.validateTree();
+                    pu.scanDeclarations();
+                    return null;
+                }});
+        }
+        execute(callables, threadPool);
+        for (final PhasedUnit pu : listOfUnits) {
+            callables.add(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    pu.scanTypeDeclarations();
+                    return null;
+                }});
+        }
+        execute(callables, threadPool);
+        for (final PhasedUnit pu: listOfUnits) {
+            callables.add(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    pu.validateRefinement();
+                    return null;
+                }});
+        }
+        execute(callables, threadPool);
+        for (final PhasedUnit pu : listOfUnits) {
+            callables.add(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    pu.analyseTypes();
+                    return null;
+                }});
+        }
+        execute(callables, threadPool);
+        for (final PhasedUnit pu: listOfUnits) {
+            callables.add(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    pu.analyseFlow();
+                    return null;
+                }});
+        }
+        execute(callables, threadPool);
+        for (final PhasedUnit pu: listOfUnits) {
+            callables.add(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    pu.analyseUsage();
+                    return null;
+                }});
+        }
+        execute(callables, threadPool);
+
+        if (!forceSilence) {
+            for (final PhasedUnit pu : listOfUnits) {
+                if (verbose) {
+                    pu.display();
+                }
+                pu.generateStatistics(statsVisitor);
+                pu.runAssertions(assertionVisitor);
+            }
+            if(verbose||statistics)
+                statsVisitor.print();
+            assertionVisitor.print(verbose);
+        }
+    }
+
+    private void justDoIt(List<PhasedUnit> listOfUnits, boolean forceSilence) {
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
@@ -175,12 +264,25 @@ public class TypeChecker {
                 pu.runAssertions(assertionVisitor);
             }
             if(verbose||statistics)
-            	statsVisitor.print();
+                statsVisitor.print();
             assertionVisitor.print(verbose);
         }
-        
     }
-    
+
+    private void execute(List<Callable<Void>> callables, ExecutorService threadPool) {
+        try {
+            List<Future<Void>> futures = threadPool.invokeAll(callables);
+            for (Future<Void> future : futures) {
+                future.get();
+            }
+            callables.clear();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
     public int getErrors(){
     	return assertionVisitor.getErrors();
     }
