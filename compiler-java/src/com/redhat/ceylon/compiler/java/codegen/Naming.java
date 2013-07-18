@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -979,7 +980,8 @@ public class Naming implements LocalId {
             } else {
                 return getGetterName(decl);
             }
-        } else if (Decl.isMethod(decl)) {
+        } else if (Decl.isMethod(decl)
+                || decl instanceof FunctionalParameter) {
             if (decl.isClassMember()) {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
