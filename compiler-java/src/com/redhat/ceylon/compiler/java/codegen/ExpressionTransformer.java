@@ -2792,25 +2792,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return superArguments;
     }
-
-    private boolean isIndirectInvocation(Tree.InvocationExpression that) {
-        // Copied/gleaned from ExpressionVisitor.visitInvocation()
-        // TODO Persuade Gavin to put this in a Util class!
-        Tree.Primary p = that.getPrimary();
-        ProducedReference prf;
-        if (p instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) p;
-            prf = mte.getTarget();
-        } else {
-            prf = null;
-        }
-        boolean isStaticMethodRef = p instanceof Tree.MemberOrTypeExpression &&
-                ((Tree.MemberOrTypeExpression) p).getStaticMethodReference();
-        return (isStaticMethodRef || 
-                prf==null || !prf.isFunctional() || 
-                //type parameters are not really callable even though they are Functional
-                prf.getDeclaration() instanceof TypeParameter);
-    }
     
     public JCExpression transform(Tree.InvocationExpression ce) {
         JCExpression ret = checkForInvocationExpressionOptimisation(ce);
@@ -2826,7 +2807,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if (isIndirectInvocation(ce)){
+            if (Util.isIndirectInvocation(ce)){
                 // indirect invocation
                 invocation = new IndirectInvocationBuilder(this, 
                         primary, primaryDeclaration,
