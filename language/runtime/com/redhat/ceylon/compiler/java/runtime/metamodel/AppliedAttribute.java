@@ -39,8 +39,9 @@ public class AppliedAttribute<Container, Type>
     
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedType,
-                            FreeAttribute declaration, ProducedType type) {
-        super($reifiedContainer, TypeDescriptor.klass(ceylon.language.metamodel.Value.class, $reifiedType));
+                            FreeAttribute declaration, ProducedType type,
+                            ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
+        super($reifiedContainer, TypeDescriptor.klass(ceylon.language.metamodel.Value.class, $reifiedType), container);
         this.declaration = declaration;
         this.type = type;
         this.closedType = Metamodel.getAppliedMetamodel(type);
@@ -90,14 +91,15 @@ public class AppliedAttribute<Container, Type>
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
     }
 
-    public static ceylon.language.metamodel.Attribute instance(TypeDescriptor $reifiedSubType, TypeDescriptor reifiedValueType, 
+    public static ceylon.language.metamodel.Attribute instance(@Ignore TypeDescriptor $reifiedSubType, @Ignore TypeDescriptor reifiedValueType, 
                                                                FreeAttribute value, ProducedType valueType, 
-                                                               com.redhat.ceylon.compiler.typechecker.model.Value decl) {
+                                                               com.redhat.ceylon.compiler.typechecker.model.Value decl,
+                                                               ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
         // if the container has no TP, the declaration will also be an Attribute
         if(!Metamodel.hasTypeParameters((Generic) decl.getContainer()))
             return (ceylon.language.metamodel.Attribute) Metamodel.getOrCreateMetamodel(decl);
         return decl.isVariable()
-                ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueType)
-                : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType);
+                ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueType, container)
+                : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType, container);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import ceylon.language.metamodel.Attribute$impl;
 import ceylon.language.metamodel.AttributeModel$impl;
+import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.VariableAttribute$impl;
@@ -45,10 +46,11 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
         // FIXME: same code in FreeAttributeWithMember
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
+        ceylon.language.metamodel.ClassOrInterface<? extends Object> appliedContainer = (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(container.getType());
         final ProducedType appliedType = declaration.getProducedReference(container.getType(), producedTypes).getType();
         this.$reifiedContainer = Metamodel.getTypeDescriptorForProducedType(container.getType());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        memberDelegate = new AppliedVariableAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, this, appliedType);
+        memberDelegate = new AppliedVariableAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, this, appliedType, appliedContainer);
         
         this.closedType = Metamodel.getAppliedMetamodel(appliedType);
     }
@@ -92,6 +94,12 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
     @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration")
     public AttributeDeclaration getDeclaration() {
         return this;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+        return memberDelegate.getDeclaringClassOrInterface();
     }
 
     @Override

@@ -44,8 +44,9 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
                          @Ignore TypeDescriptor $reifiedType, 
                          @Ignore TypeDescriptor $reifiedArguments, 
                          ProducedReference appliedFunction, 
-                         FreeFunction declaration) {
-        super($reifiedType, TypeDescriptor.klass(ceylon.language.metamodel.Function.class, $reifiedType, $reifiedArguments));
+                         FreeFunction declaration,
+                         ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
+        super($reifiedType, TypeDescriptor.klass(ceylon.language.metamodel.Function.class, $reifiedType, $reifiedArguments), container);
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
         this.appliedFunction = appliedFunction;

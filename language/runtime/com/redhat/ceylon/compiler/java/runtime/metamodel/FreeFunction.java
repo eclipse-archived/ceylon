@@ -189,14 +189,16 @@ public class FreeFunction
                 @Ignore TypeDescriptor $reifiedType,
                 @Ignore TypeDescriptor $reifiedArguments,
                 @Name("types") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
-        return getAppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, types);
+        // FIXME: container?
+        return getAppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, types, null);
     }
 
     <Container, Type, Arguments extends ceylon.language.Sequential<? extends Object>>
     ceylon.language.metamodel.Method<Container, Type, Arguments> getAppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                                   @Ignore TypeDescriptor $reifiedType, 
                                                                                   @Ignore TypeDescriptor $reifiedArguments, 
-                                                                                  Sequential<? extends ceylon.language.metamodel.Type> types){
+                                                                                  Sequential<? extends ceylon.language.metamodel.Type> types,
+                                                                                  ceylon.language.metamodel.ClassOrInterface<? extends Object> container){
         // if we don't have any TP our declaration will also be a Method
         if(!Metamodel.hasTypeParameters((Generic) declaration))
             return (ceylon.language.metamodel.Method)Metamodel.getOrCreateMetamodel(declaration);
@@ -204,7 +206,7 @@ public class FreeFunction
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters
         final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
-        return new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this);
+        return new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this, container);
     }
     
     @Override

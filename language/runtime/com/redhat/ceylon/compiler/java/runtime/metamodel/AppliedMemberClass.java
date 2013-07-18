@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.Class;
 import ceylon.language.metamodel.ClassModel$impl;
+import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.MemberClass$impl;
 import ceylon.language.metamodel.declaration.ClassDeclaration;
@@ -93,6 +94,12 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return (ClassDeclaration) super.getDeclaration();
     }
     
+    @Override
+    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+        return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
+    }
+
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);

@@ -188,7 +188,7 @@ public class AppliedClassOrInterface<Type>
         final FreeFunction method = declaration.findMethod(name);
         if(method == null)
             return null;
-        return method.<SubType, Type, Arguments>getAppliedMethod($reifiedSubType, $reifiedType, $reifiedArguments, types);
+        return method.<SubType, Type, Arguments>getAppliedMethod($reifiedSubType, $reifiedType, $reifiedArguments, types, this);
     }
 
     @Ignore
@@ -246,7 +246,7 @@ public class AppliedClassOrInterface<Type>
         com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
         ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(valueType);
-        return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, valueType, decl);
+        return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, valueType, decl, this);
     }
 
     @Override

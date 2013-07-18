@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.FunctionModel$impl;
@@ -52,9 +53,10 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
 
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
+        ceylon.language.metamodel.ClassOrInterface<? extends Object> appliedContainer = (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(container.getType());
         // in theory this works because we only get instantiated if the method and containers have no TP
         final ProducedReference appliedFunction = declaration.getProducedReference(container.getType(), producedTypes);
-        memberDelegate = new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this);
+        memberDelegate = new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this, appliedContainer);
         this.$reifiedContainer = $reifiedContainer;
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
@@ -118,7 +120,6 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
         return memberDelegate.$call(args);
     }
 
-
     @Override
     @Ignore
     public short $getVariadicParameterIndex() {
@@ -140,6 +141,12 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
     @TypeInfo("ceylon.language.metamodel.declaration::FunctionDeclaration")
     public FunctionDeclaration getDeclaration() {
         return memberDelegate.getDeclaration();
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+        return memberDelegate.getDeclaringClassOrInterface();
     }
 
     @Override

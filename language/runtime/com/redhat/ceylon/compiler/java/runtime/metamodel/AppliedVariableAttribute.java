@@ -15,8 +15,10 @@ public class AppliedVariableAttribute<Container, Type>
     extends AppliedAttribute<Container, Type>
     implements ceylon.language.metamodel.VariableAttribute<Container, Type> {
 
-    public AppliedVariableAttribute(TypeDescriptor $reifiedContainer, TypeDescriptor $reifiedType, FreeAttribute declaration, ProducedType type) {
-        super($reifiedContainer, $reifiedType, declaration, type);
+    public AppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedType, 
+                                    FreeAttribute declaration, ProducedType type,
+                                    ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
+        super($reifiedContainer, $reifiedType, declaration, type, container);
     }
 
     @Override

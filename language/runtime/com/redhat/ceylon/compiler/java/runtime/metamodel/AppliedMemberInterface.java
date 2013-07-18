@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.Interface;
 import ceylon.language.metamodel.InterfaceModel$impl;
 import ceylon.language.metamodel.Member$impl;
@@ -88,6 +89,12 @@ public class AppliedMemberInterface<Container, Type>
         return (InterfaceDeclaration) super.getDeclaration();
     }
     
+    @Override
+    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+        return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
+    }
+
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMemberInterface.class, $reifiedContainer, $reifiedType);

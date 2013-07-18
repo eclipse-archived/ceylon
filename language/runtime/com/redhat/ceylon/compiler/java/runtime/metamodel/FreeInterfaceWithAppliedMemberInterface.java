@@ -138,12 +138,12 @@ public class FreeInterfaceWithAppliedMemberInterface<Container, Type>
         return memberDelegate.$getVariadicParameterIndex();
     }
 
-//    @Override
-//    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<Type>")
-//    public ClassOrInterface<? extends Type> getDeclaringClassOrInterface() {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
+    @Override
+    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+        checkInit();
+        return memberDelegate.getDeclaringClassOrInterface();
+    }
 
     @Override
     @TypeInfo("ceylon.language.metamodel::Member<Container,Kind>")
