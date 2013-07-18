@@ -565,7 +565,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void initParam(ClassDefinitionBuilder classBuilder, Parameter decl) {
+    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Parameter decl) {
         if ((decl instanceof ValueParameter && (decl.isShared() || decl.isCaptured()))) {
             makeFieldForParameter(classBuilder, decl);
             
@@ -611,7 +611,6 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.modelAnnotations(param.getAnnotations());
         pdb.userAnnotations(annotations);
         classBuilder.parameter(pdb);
-        initParam(classBuilder, param);
     }
     
     private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Class model, ClassDefinitionBuilder classBuilder, 
@@ -631,10 +630,9 @@ public class ClassTransformer extends AbstractTransformer {
 
             transformParameter(classBuilder, param.getDeclarationModel(),
             expressionGen().transform(param.getAnnotationList()));
-            if (Strategy.createMethod(paramModel)) {
-                // Generate a method which delegates to the Callable
-                makeMethodForFunctionalParameter(classBuilder, (FunctionalParameter)paramModel);
-            }
+            makeAttributeForValueParameter(classBuilder, paramModel);
+            makeMethodForFunctionalParameter(classBuilder, paramModel);
+            
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
                     || (generateInstantiator
@@ -695,28 +693,31 @@ public class ClassTransformer extends AbstractTransformer {
     /**
      * Generate a method for a shared FunctionalParameter which delegates to the Callable */
     private void makeMethodForFunctionalParameter(
-            ClassDefinitionBuilder classBuilder, FunctionalParameter paramModel) {
-        makeFieldForParameter(classBuilder, paramModel);
-        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel));
-        mdb.modifiers(transformMethodDeclFlags(paramModel));
-        // Functional parameters can't have type parameters 
-        CallBuilder callBuilder = CallBuilder.instance(this).invoke(
-                naming.makeQualIdent(naming.makeName(paramModel, Naming.NA_IDENT), 
-                        Naming.getCallableMethodName()));
-        for (Parameter parameter : paramModel.getParameterLists().get(0).getParameters()) {
-            callBuilder.argument(naming.makeName(parameter, Naming.NA_IDENT));
-            mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
+            ClassDefinitionBuilder classBuilder, Parameter paramModel) {
+        if (Strategy.createMethod(paramModel)) {
+            // Generate a method which delegates to the Callable
+            makeFieldForParameter(classBuilder, paramModel);
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel));
+            mdb.modifiers(transformMethodDeclFlags(paramModel));
+            // Functional parameters can't have type parameters 
+            CallBuilder callBuilder = CallBuilder.instance(this).invoke(
+                    naming.makeQualIdent(naming.makeName(paramModel, Naming.NA_IDENT), 
+                            Naming.getCallableMethodName()));
+            for (Parameter parameter : ((FunctionalParameter)paramModel).getParameterLists().get(0).getParameters()) {
+                callBuilder.argument(naming.makeName(parameter, Naming.NA_IDENT));
+                mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
+            }
+            JCExpression expr = callBuilder.build();
+            if (Decl.isUnboxedVoid(paramModel)) {
+                mdb.resultType(make().Type(syms().voidType), paramModel);
+                mdb.body(make().Exec(expr));
+            } else {
+                mdb.resultType(makeJavaType(paramModel.getType()), paramModel);
+                expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, BoxingStrategy.UNBOXED, paramModel.getType());
+                mdb.body(make().Return(expr));
+            }
+            classBuilder.method(mdb);
         }
-        JCExpression expr = callBuilder.build();
-        if (Decl.isUnboxedVoid(paramModel)) {
-            mdb.resultType(make().Type(syms().voidType), paramModel);
-            mdb.body(make().Exec(expr));
-        } else {
-            mdb.resultType(makeJavaType(paramModel.getType()), paramModel);
-            expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, BoxingStrategy.UNBOXED, paramModel.getType());
-            mdb.body(make().Return(expr));
-        }
-        classBuilder.method(mdb);
     }
     
     private void addReifiedTypeInterface(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
