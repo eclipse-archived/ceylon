@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.expression;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -212,6 +213,14 @@ public class ExpressionTest3 extends CompilerTest {
         compareWithJavaSource("ref/MethodRef");
         //compile("ref/MethodRef.ceylon");
         run("com.redhat.ceylon.compiler.java.test.expression.ref.methodRef");
+    }
+    
+    @Test
+    @Ignore("For M6, but requires fix for https://github.com/ceylon/ceylon-compiler/issues/1200")
+    public void testRefFunctionalParameterRef() {
+        compareWithJavaSource("ref/FunctionalParameterRef");
+        //compile("ref/FunctionalParameterRef.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.functionalParameterRef");
     }
     
     @Test
