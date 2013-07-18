@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -193,6 +194,24 @@ class Strategy {
     
     public static boolean createField(Parameter p, Value v) {
         return !Decl.withinInterface(v) && ((p == null) || (useField(v) && !p.isCaptured()));
+    }
+    
+    /**
+     * Determines whether a method wrapping the Callable should be generated 
+     * for a FunctionalParameter 
+     */
+    static boolean createMethod(Tree.Parameter parameter) {
+        return createMethod(parameter.getDeclarationModel());
+    }
+    
+    /**
+     * Determines whether a method wrapping the Callable should be generated 
+     * for a FunctionalParameter 
+     */
+    static boolean createMethod(Parameter parameter) {
+        return parameter instanceof FunctionalParameter 
+                && parameter.isClassMember()
+                && (parameter.isCaptured() || parameter.isShared());
     }
     
     /**
