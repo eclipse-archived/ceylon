@@ -226,7 +226,8 @@ abstract class Invocation {
                         gen.naming.makeQualIdent(primaryExpr, selector), 
                         List.<JCExpression>nil());
                 selector = Naming.getCallableMethodName();
-            } else if (getPrimaryDeclaration() instanceof FunctionalParameter
+            } else if ((getPrimaryDeclaration() instanceof FunctionalParameter 
+                        && !Strategy.createMethod((FunctionalParameter)getPrimaryDeclaration()))
                     || (this instanceof IndirectInvocationBuilder)) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
