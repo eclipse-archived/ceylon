@@ -181,7 +181,7 @@ abstract class Invocation {
             String selector) {
             
         if (isMemberRefInvocation()) {
-            JCExpression callable = gen.expressionGen().transformMemberReference((Tree.QualifiedMemberOrTypeExpression)getPrimary(), (Tree.BaseMemberOrTypeExpression)getQmePrimary());
+            JCExpression callable = gen.expressionGen().transformMemberReference((Tree.QualifiedMemberOrTypeExpression)getPrimary(), (Tree.MemberOrTypeExpression)getQmePrimary());
             selector = Naming.getCallableMethodName();
             handleBoxing(true);
             return new TransformedInvocationPrimary(callable, selector);
@@ -246,7 +246,8 @@ abstract class Invocation {
     boolean isMemberRefInvocation() {
         return this instanceof IndirectInvocationBuilder
                 && getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
-                && getQmePrimary() instanceof Tree.BaseTypeExpression;
+                && (getQmePrimary() instanceof Tree.BaseTypeExpression
+                  || getQmePrimary() instanceof Tree.QualifiedTypeExpression);
     }
 
 }
