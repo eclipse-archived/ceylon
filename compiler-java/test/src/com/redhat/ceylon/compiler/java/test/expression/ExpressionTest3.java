@@ -229,5 +229,12 @@ public class ExpressionTest3 extends CompilerTest {
         //compile("ref/MemberClassRef.ceylon");
         run("com.redhat.ceylon.compiler.java.test.expression.ref.memberClassRef");
     }
+    
+    @Test
+    public void testRefFunrefs() {
+        compareWithJavaSource("ref/funrefs");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.funrefs");
+        
+    }
 
 }
