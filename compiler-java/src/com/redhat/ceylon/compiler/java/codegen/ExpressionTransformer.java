@@ -2789,6 +2789,25 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return superArguments;
     }
+
+    private boolean isIndirectInvocation(Tree.InvocationExpression that) {
+        // Copied/gleaned from ExpressionVisitor.visitInvocation()
+        // TODO Persuade Gavin to put this in a Util class!
+        Tree.Primary p = that.getPrimary();
+        ProducedReference prf;
+        if (p instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) p;
+            prf = mte.getTarget();
+        } else {
+            prf = null;
+        }
+        boolean isStaticMethodRef = p instanceof Tree.MemberOrTypeExpression &&
+                ((Tree.MemberOrTypeExpression) p).getStaticMethodReference();
+        return (isStaticMethodRef || 
+                prf==null || !prf.isFunctional() || 
+                //type parameters are not really callable even though they are Functional
+                prf.getDeclaration() instanceof TypeParameter);
+    }
     
     public JCExpression transform(Tree.InvocationExpression ce) {
         JCExpression ret = checkForInvocationExpressionOptimisation(ce);
@@ -2804,18 +2823,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if (primaryDeclaration instanceof Functional){
+            if (isIndirectInvocation(ce)){
+                // indirect invocation
+                invocation = new IndirectInvocationBuilder(this, 
+                        primary, primaryDeclaration,
+                        ce);
+            } else {
                 // direct invocation
                 java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
                 invocation = new PositionalInvocation(this, 
                         primary, primaryDeclaration,producedReference,
                         ce,
                         parameters);
-            } else {
-                // indirect invocation
-                invocation = new IndirectInvocationBuilder(this, 
-                        primary, primaryDeclaration,
-                        ce);
             }
         } else if (ce.getNamedArgumentList() != null) {
             invocation = new NamedArgumentInvocation(this, 
