@@ -696,6 +696,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Generate a method for a shared FunctionalParameter which delegates to the Callable */
     private void makeMethodForFunctionalParameter(
             ClassDefinitionBuilder classBuilder, FunctionalParameter paramModel) {
+        makeFieldForParameter(classBuilder, paramModel);
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel));
         mdb.modifiers(transformMethodDeclFlags(paramModel));
         // Functional parameters can't have type parameters 
