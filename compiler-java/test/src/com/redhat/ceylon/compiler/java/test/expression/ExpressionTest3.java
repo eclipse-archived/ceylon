@@ -216,7 +216,6 @@ public class ExpressionTest3 extends CompilerTest {
     }
     
     @Test
-    @Ignore("For M6, but requires fix for https://github.com/ceylon/ceylon-compiler/issues/1200")
     public void testRefFunctionalParameterRef() {
         compareWithJavaSource("ref/FunctionalParameterRef");
         //compile("ref/FunctionalParameterRef.ceylon");

@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class FunctionalParameterActual<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    FunctionalParameterActual(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    
+    public T m(final T t) {
+        return t;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual.class, $reifiedT);
+    }
+}
+class FunctionalParameterActualString extends .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual<.ceylon.language.String> {
+    
+    FunctionalParameterActualString(final .ceylon.language.Callable<? extends .ceylon.language.String> m) {
+        super(.ceylon.language.String.$TypeDescriptor);
+        this.m = m;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
+    
+    public final .ceylon.language.String m(final .ceylon.language.String t) {
+        return m.$call(t);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActualString.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActualString.class);
+}

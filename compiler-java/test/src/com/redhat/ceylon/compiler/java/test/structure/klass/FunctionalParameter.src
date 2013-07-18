@@ -1,0 +1,131 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    FuctionalParameter(final .ceylon.language.Callable<? extends .java.lang.Object> voidFp, final .ceylon.language.Callable<? extends .ceylon.language.String> stringFp, final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidFp, final .ceylon.language.Callable<? extends .ceylon.language.String> sharedStringFp) {
+        this.voidFp = voidFp;
+        this.stringFp = stringFp;
+        this.sharedVoidFp = sharedVoidFp;
+        this.sharedStringFp = sharedStringFp;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> voidFp;
+    
+    private final void voidFp(final .java.lang.String arg) {
+        voidFp.$call(.ceylon.language.String.instance(arg));
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> stringFp;
+    
+    private final .java.lang.String stringFp(final .java.lang.String arg) {
+        return stringFp.$call(.ceylon.language.String.instance(arg)).toString();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidFp;
+    
+    public final void sharedVoidFp(final .java.lang.String arg) {
+        sharedVoidFp.$call(.ceylon.language.String.instance(arg));
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> sharedStringFp;
+    
+    public final .java.lang.String sharedStringFp(final .java.lang.String arg) {
+        return sharedStringFp.$call(.ceylon.language.String.instance(arg)).toString();
+    }
+    
+    public final void callClassFps() {
+        voidFp("");
+        (
+            let
+            {
+                .java.lang.String $arg$0$0 = "";
+                voidFp($arg$0$0);
+            }
+            returning null;
+        );
+        sharedVoidFp("");
+        (
+            let
+            {
+                .java.lang.String $arg$1$0 = "";
+                sharedVoidFp($arg$1$0);
+            }
+            returning null;
+        );
+        .java.lang.String s = null;
+        s = stringFp("");
+        s = (
+            let
+            {
+                .java.lang.String $arg$2$0 = "";
+            }
+            returning stringFp($arg$2$0);
+        );
+        s = sharedStringFp("");
+        s = (
+            let
+            {
+                .java.lang.String $arg$3$0 = "";
+            }
+            returning sharedStringFp($arg$3$0);
+        );
+    }
+    
+    public final void callMethodFps(final .ceylon.language.Callable<? extends .java.lang.Object> voidFp1, final .ceylon.language.Callable<? extends .ceylon.language.String> stringFp1) {
+        voidFp1.$call(.ceylon.language.String.instance(""));
+        (
+            let
+            {
+                .ceylon.language.String $arg$4$0 = .ceylon.language.String.instance("");
+                voidFp1.$call($arg$4$0);
+            }
+            returning null;
+        );
+        .java.lang.String s = null;
+        s = stringFp1.$call(.ceylon.language.String.instance("")).toString();
+        s = (
+            let
+            {
+                .ceylon.language.String $arg$5$0 = .ceylon.language.String.instance("");
+            }
+            returning stringFp1.$call($arg$5$0);
+        ).toString();
+    }
+    
+    private final void methodRefsFromInside$priv(final .com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter instance) {
+        final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidRef = instance.sharedVoidFp;
+        final .ceylon.language.Callable<? extends .ceylon.language.String> sharedStringRef = instance.sharedStringFp;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter.class);
+}
+final class methodRefsFromOutside_ {
+    
+    private methodRefsFromOutside_() {
+    }
+    
+    static void methodRefsFromOutside(final .com.redhat.ceylon.compiler.java.test.structure.klass.FuctionalParameter instance) {
+        final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Anything(String)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .java.lang.String $$arg = ((.ceylon.language.String)$param$0).toString();
+                return (
+                    let
+                    {
+                        instance.sharedVoidFp($$arg);
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.String> sharedStringRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String $$arg = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(instance.sharedStringFp($$arg));
+            }
+        };
+    }
+}

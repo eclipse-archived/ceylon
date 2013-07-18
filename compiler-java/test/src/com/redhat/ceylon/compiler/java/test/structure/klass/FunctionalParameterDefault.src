@@ -1,0 +1,70 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    FunctionalParameterDefault() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$m$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$init$m();
+                this($ceylontmp$m$0);
+            }
+            returning null;
+        );
+    }
+    
+    FunctionalParameterDefault(final .ceylon.language.Callable<? extends .ceylon.language.String> m) {
+        this.m = m;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
+    
+    public .java.lang.String m(final .java.lang.String arg) {
+        return m.$call(.ceylon.language.String.instance(arg)).toString();
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.String> $init$m() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String arg = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(arg);
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.class);
+}
+class FunctionalParameterDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault {
+    
+    FunctionalParameterDefaultSub() {
+        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "String(String)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String arg = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(arg + "!");
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.class);
+}
