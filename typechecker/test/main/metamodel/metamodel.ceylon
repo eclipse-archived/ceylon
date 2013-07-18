@@ -99,6 +99,47 @@ void test<T>() {
     value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
     @type:"VariableDeclaration"
     value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
+    
+    // class parameters
+    @type:"ParameterDeclaration"
+    value classParameter = `Container.parameter`;
+    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
+    @type:"ParameterDeclaration"
+    value classParameterMethod = `Container.parameterAndMethod`;
+    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    value classParameterAndSharedMethod = `Container.parameterAndSharedMethod`;
+
+    @type:"ParameterDeclaration"
+    value parameterisedClassParameter = `ParameterisedContainer.parameter`;
+    @error
+    value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
+    @type:"Attribute<ParameterisedContainer<String>,Integer>"
+    value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
+    @type:"ParameterDeclaration&AttributeDeclaration"
+    value parameterisedClassParameterAndSharedAttributeDecl = `ParameterisedContainer.parameterAndSharedAttribute`;
+    
+    // class attributes that are parameters too
+    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
+    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    value classAttributeAndParameter = `Container.attributeAndParameter`;
+
+    @type:"Attribute<ParameterisedContainer<String>,Integer>"
+    value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
+    @type:"ParameterDeclaration&AttributeDeclaration"
+    value parameterisedClassSharedAttributeAndParameterDecl = `ParameterisedContainer.sharedAttributeAndParameter`;
+
+    @type:"Attribute<ParameterisedContainer<String>,Integer>"
+    value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
+    @type:"ParameterDeclaration&AttributeDeclaration"
+    value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
+
+    // class methods that are parameters too
+    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    value classSharedMethodAndParameter = `Container.sharedMethodAndParameter`;
+    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    value classMethodAndParameter = `Container.methodAndParameter`;
 }
 
 
@@ -119,7 +160,18 @@ Integer method(String p){ return 1; }
 Integer mplMethod(String p)(Boolean b){ return 1; }
 Ret parameterisedMethod<Ret, Arg>(Arg a){ return nothing; }
 
-class Container(){
+class Container(shared Integer parameterAndSharedAttribute,
+                Integer parameter,
+                sharedAttributeAndParameter,
+                attributeAndParameter,
+                shared Integer parameterAndSharedMethod(),
+                Integer parameterAndMethod(),
+                sharedMethodAndParameter,
+                methodAndParameter){
+    shared Integer sharedAttributeAndParameter;
+    Integer attributeAndParameter;
+    shared Integer sharedMethodAndParameter();
+    Integer methodAndParameter();
     shared interface InnerInterface{}
     shared class InnerClass(){}
     shared void method(){}
@@ -127,7 +179,13 @@ class Container(){
     shared variable Integer variableAttribute = 2;
 }
 
-class ParameterisedContainer<Outer>(Outer a){
+class ParameterisedContainer<Outer>(Outer a,
+                                    shared Integer parameterAndSharedAttribute,
+                                    Integer parameter,
+                                    sharedAttributeAndParameter,
+                                    attributeAndParameter){
+    shared Integer sharedAttributeAndParameter;
+    Integer attributeAndParameter;
     shared interface InnerInterface<Inner>{}
     shared class InnerClass<Inner>(){}
     shared void method<Inner>(Inner p){}
