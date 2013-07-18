@@ -1513,7 +1513,7 @@ public class ClassTransformer extends AbstractTransformer {
         return transformClassDeclFlags(cdecl.getDeclarationModel());
     }
     
-    private int transformMethodDeclFlags(Method def) {
+    private int transformMethodDeclFlags(TypedDeclaration def) {
         int result = 0;
 
         if (def.isToplevel()) {
