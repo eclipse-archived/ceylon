@@ -72,8 +72,9 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 .ceylon.language.Sequential<? extends .java.lang.Object> $arg$4$0 = .ceylon.language.empty_.$get();
+                p.$call($arg$4$0);
             }
-            returning p.$call($arg$4$0);
+            returning null;
         );
         final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor), .ceylon.language.Empty.$TypeDescriptor), "Anything({Nothing*})", (short)-1){
             

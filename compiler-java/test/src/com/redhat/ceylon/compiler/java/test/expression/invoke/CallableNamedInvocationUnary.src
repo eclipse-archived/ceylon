@@ -10,8 +10,9 @@ final class callableNamedInvocationUnary_f_ {
             let
             {
                 .ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("");
+                foo.$call($arg$0$0);
             }
-            returning foo.$call($arg$0$0);
+            returning null;
         );
     }
 }
