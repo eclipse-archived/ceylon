@@ -140,6 +140,8 @@ public class CallableBuilder {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (methodOrClass instanceof Method) {
             callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (Method)methodOrClass, Naming.NA_MEMBER));
+        } else if (methodOrClass instanceof FunctionalParameter) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (FunctionalParameter)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Class) {
             if (Strategy.generateInstantiator((Class)methodOrClass)) {
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(instanceName), (Class)methodOrClass));
@@ -147,6 +149,8 @@ public class CallableBuilder {
                 callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(instanceName), null), 
                         gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW));
             }
+        } else {
+            Assert.fail("Unhandled functional type " + methodOrClass.getClass().getSimpleName());
         }
         ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
         

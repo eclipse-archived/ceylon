@@ -2872,6 +2872,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     expr.getTypeModel(), 
                     method, 
                     producedReference).build();
+        } else if (member instanceof FunctionalParameter) {
+            FunctionalParameter method = (FunctionalParameter)member;
+            ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+            return CallableBuilder.unboundFunctionalMemberReference(
+                    gen(), 
+                    expr.getTypeModel(), 
+                    method, 
+                    producedReference).build();
         } else if (member instanceof Value
                 || member instanceof ValueParameter) {
             return CallableBuilder.unboundValueMemberReference(
