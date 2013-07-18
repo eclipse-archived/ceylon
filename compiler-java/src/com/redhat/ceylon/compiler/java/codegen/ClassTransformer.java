@@ -630,6 +630,10 @@ public class ClassTransformer extends AbstractTransformer {
 
             transformParameter(classBuilder, param.getDeclarationModel(),
             expressionGen().transform(param.getAnnotationList()));
+            if (Strategy.createMethod(paramModel)) {
+                // Generate a method which delegates to the Callable
+                makeMethodForFunctionalParameter(classBuilder, (FunctionalParameter)paramModel);
+            }
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
                     || (generateInstantiator
@@ -685,6 +689,32 @@ public class ClassTransformer extends AbstractTransformer {
         addAtMembers(classBuilder, model);
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(classBuilder, model);
+    }
+
+    /**
+     * Generate a method for a shared FunctionalParameter which delegates to the Callable */
+    private void makeMethodForFunctionalParameter(
+            ClassDefinitionBuilder classBuilder, FunctionalParameter paramModel) {
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel));
+        mdb.modifiers(transformMethodDeclFlags(paramModel));
+        // Functional parameters can't have type parameters 
+        CallBuilder callBuilder = CallBuilder.instance(this).invoke(
+                naming.makeQualIdent(naming.makeName(paramModel, Naming.NA_IDENT), 
+                        Naming.getCallableMethodName()));
+        for (Parameter parameter : paramModel.getParameterLists().get(0).getParameters()) {
+            callBuilder.argument(naming.makeName(parameter, Naming.NA_IDENT));
+            mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
+        }
+        JCExpression expr = callBuilder.build();
+        if (Decl.isUnboxedVoid(paramModel)) {
+            mdb.resultType(make().Type(syms().voidType), paramModel);
+            mdb.body(make().Exec(expr));
+        } else {
+            mdb.resultType(makeJavaType(paramModel.getType()), paramModel);
+            expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, BoxingStrategy.UNBOXED, paramModel.getType());
+            mdb.body(make().Return(expr));
+        }
+        classBuilder.method(mdb);
     }
     
     private void addReifiedTypeInterface(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
