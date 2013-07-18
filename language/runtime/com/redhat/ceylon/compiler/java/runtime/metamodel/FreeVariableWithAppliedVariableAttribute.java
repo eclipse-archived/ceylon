@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 @Ceylon(major = 5)
@@ -47,10 +48,11 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
         ceylon.language.metamodel.ClassOrInterface<? extends Object> appliedContainer = (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(container.getType());
-        final ProducedType appliedType = declaration.getProducedReference(container.getType(), producedTypes).getType();
+        ProducedTypedReference typedReference = declaration.getProducedTypedReference(container.getType(), producedTypes);
+        ProducedType appliedType = typedReference.getType();
         this.$reifiedContainer = Metamodel.getTypeDescriptorForProducedType(container.getType());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType);
-        memberDelegate = new AppliedVariableAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, this, appliedType, appliedContainer);
+        memberDelegate = new AppliedVariableAttribute<Container, Type>(this.$reifiedContainer, this.$reifiedType, this, typedReference, appliedContainer);
         
         this.closedType = Metamodel.getAppliedMetamodel(appliedType);
     }

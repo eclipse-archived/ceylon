@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -39,12 +40,13 @@ public class AppliedValue<Type>
     protected FreeAttribute declaration;
     private MethodHandle getter;
 
-    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedType valueType, Object instance) {
-        this.type = Metamodel.getAppliedMetamodel(valueType);
+    public AppliedValue(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, Object instance) {
+        ProducedType producedType = valueTypedReference.getType();
+        this.type = Metamodel.getAppliedMetamodel(producedType);
         this.$reifiedType = $reifiedType;
         this.declaration = value;
         
-        initField(instance, valueType);
+        initField(instance, producedType);
     }
 
     private void initField(Object instance, ProducedType valueType) {

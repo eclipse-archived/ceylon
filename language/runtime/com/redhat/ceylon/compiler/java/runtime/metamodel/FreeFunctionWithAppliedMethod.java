@@ -5,12 +5,10 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.FunctionModel$impl;
-import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.Method$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -23,7 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -55,7 +53,7 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
         ceylon.language.metamodel.ClassOrInterface<? extends Object> appliedContainer = (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(container.getType());
         // in theory this works because we only get instantiated if the method and containers have no TP
-        final ProducedReference appliedFunction = declaration.getProducedReference(container.getType(), producedTypes);
+        final ProducedTypedReference appliedFunction = declaration.getProducedTypedReference(container.getType(), producedTypes);
         memberDelegate = new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this, appliedContainer);
         this.$reifiedContainer = $reifiedContainer;
         this.$reifiedType = $reifiedType;

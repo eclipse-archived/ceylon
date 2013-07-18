@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -32,8 +33,8 @@ public class AppliedVariable<Type>
 
     private MethodHandle setter;
 
-    public AppliedVariable(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedType valueType, Object instance) {
-        super($reifiedType, value, valueType, instance);
+    public AppliedVariable(@Ignore TypeDescriptor $reifiedType, FreeAttribute value, ProducedTypedReference valueTypedReference, Object instance) {
+        super($reifiedType, value, valueTypedReference, instance);
     }
 
     @Override

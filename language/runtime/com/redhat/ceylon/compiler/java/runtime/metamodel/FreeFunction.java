@@ -24,7 +24,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -205,7 +206,11 @@ public class FreeFunction
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
         // FIXME: check this null qualifying type
         // this is most likely wrong as it doesn't seem to substitute the containing type parameters
-        final ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
+        ProducedType containerType = null;
+        if(container != null){
+            containerType = Metamodel.getModel(container);
+        }
+        final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.compiler.typechecker.model.Method)declaration).getProducedTypedReference(containerType, producedTypes);
         return new AppliedMethod($reifiedContainer, $reifiedType, $reifiedArguments, appliedFunction, this, container);
     }
     

@@ -6,6 +6,7 @@ import ceylon.language.metamodel.VariableAttribute$impl;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 /**
  * Most of this class is for working around the fact that on the JVM we're not supposed to inherit the same interface twice with
@@ -16,9 +17,9 @@ public class AppliedVariableAttribute<Container, Type>
     implements ceylon.language.metamodel.VariableAttribute<Container, Type> {
 
     public AppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedType, 
-                                    FreeAttribute declaration, ProducedType type,
+                                    FreeAttribute declaration, ProducedTypedReference typedReference,
                                     ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
-        super($reifiedContainer, $reifiedType, declaration, type, container);
+        super($reifiedContainer, $reifiedType, declaration, typedReference, container);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class AppliedVariableAttribute<Container, Type>
 
     @Override
     protected ceylon.language.metamodel.Variable<Type> bindTo(Object instance) {
-        return new AppliedVariable(null, declaration, type, instance);
+        return new AppliedVariable(null, declaration, typedReference, instance);
     }
     
     @Override

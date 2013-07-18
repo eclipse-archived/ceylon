@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -244,9 +246,9 @@ public class AppliedClassOrInterface<Type>
         if(value == null)
             return null;
         com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
-        ProducedType valueType = decl.getType().substitute(producedType.getTypeArguments());
-        TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(valueType);
-        return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, valueType, decl, this);
+        ProducedTypedReference typedReference = decl.getProducedTypedReference(producedType, Collections.<ProducedType>emptyList());
+        TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
+        return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, typedReference, decl, this);
     }
 
     @Override

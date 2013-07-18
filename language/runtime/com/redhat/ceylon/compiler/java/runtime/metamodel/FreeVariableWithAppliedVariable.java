@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.Collections;
+
 import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.Value$impl;
 import ceylon.language.metamodel.Model$impl;
@@ -16,6 +18,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -33,8 +37,8 @@ public class FreeVariableWithAppliedVariable<Type>
     protected FreeVariableWithAppliedVariable(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
         super(declaration);
         this.$reifiedType = $reifiedType;
-        // FIXME: container?
-        typeDelegate = new AppliedVariable<Type>($reifiedType, this, declaration.getType(), null);
+        ProducedTypedReference typedReference = declaration.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+        typeDelegate = new AppliedVariable<Type>($reifiedType, this, typedReference, null);
     }
 
     @Override

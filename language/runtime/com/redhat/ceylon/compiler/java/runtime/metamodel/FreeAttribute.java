@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.Collections;
+
 import ceylon.language.metamodel.declaration.OpenType;
 import ceylon.language.metamodel.declaration.AttributeDeclaration$impl;
 
@@ -9,6 +11,8 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -51,9 +55,10 @@ public class FreeAttribute
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         // FIXME: this is not valid if the container type has TP
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(modelDecl.getType());
+        ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
         return modelDecl.isVariable() 
-            ? new AppliedVariable(reifiedType, this, modelDecl.getType(), instance) 
-            : new AppliedValue(reifiedType, this, modelDecl.getType(), instance);
+            ? new AppliedVariable(reifiedType, this, typedReference, instance) 
+            : new AppliedValue(reifiedType, this, typedReference, instance);
     }
 
     @Override

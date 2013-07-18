@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -27,7 +27,7 @@ public class AppliedAttribute<Container, Type>
     implements ceylon.language.metamodel.Attribute<Container, Type> {
 
     protected FreeAttribute declaration;
-    protected ProducedType type;
+    protected ProducedTypedReference typedReference;
     private ceylon.language.metamodel.Type closedType;
     @Ignore
     protected final TypeDescriptor $reifiedType;
@@ -39,12 +39,12 @@ public class AppliedAttribute<Container, Type>
     
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedType,
-                            FreeAttribute declaration, ProducedType type,
+                            FreeAttribute declaration, ProducedTypedReference typedReference,
                             ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.metamodel.Value.class, $reifiedType), container);
         this.declaration = declaration;
-        this.type = type;
-        this.closedType = Metamodel.getAppliedMetamodel(type);
+        this.typedReference = typedReference;
+        this.closedType = Metamodel.getAppliedMetamodel(typedReference.getType());
         this.$reifiedType = $reifiedType;
     }
 
@@ -83,7 +83,7 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     protected Value<? extends Type> bindTo(Object instance) {
-        return new AppliedValue($reifiedType, declaration, type, instance);
+        return new AppliedValue($reifiedType, declaration, typedReference, instance);
     }
     
     @Override
@@ -92,14 +92,14 @@ public class AppliedAttribute<Container, Type>
     }
 
     public static ceylon.language.metamodel.Attribute instance(@Ignore TypeDescriptor $reifiedSubType, @Ignore TypeDescriptor reifiedValueType, 
-                                                               FreeAttribute value, ProducedType valueType, 
+                                                               FreeAttribute value, ProducedTypedReference valueTypedReference, 
                                                                com.redhat.ceylon.compiler.typechecker.model.Value decl,
                                                                ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
         // if the container has no TP, the declaration will also be an Attribute
         if(!Metamodel.hasTypeParameters((Generic) decl.getContainer()))
             return (ceylon.language.metamodel.Attribute) Metamodel.getOrCreateMetamodel(decl);
         return decl.isVariable()
-                ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueType, container)
-                : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueType, container);
+                ? new AppliedVariableAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container)
+                : new AppliedAttribute($reifiedSubType, reifiedValueType, value, valueTypedReference, container);
     }
 }

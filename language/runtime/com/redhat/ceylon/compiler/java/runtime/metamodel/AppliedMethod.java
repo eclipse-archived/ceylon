@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -28,7 +28,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     implements ceylon.language.metamodel.Method<Container, Type, Arguments> {
 
     private FreeFunction declaration;
-    private ProducedReference appliedFunction;
+    private ProducedTypedReference appliedFunction;
     private ceylon.language.metamodel.Type closedType;
     @Ignore
     private TypeDescriptor $reifiedType;
@@ -43,7 +43,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                          @Ignore TypeDescriptor $reifiedType, 
                          @Ignore TypeDescriptor $reifiedArguments, 
-                         ProducedReference appliedFunction, 
+                         ProducedTypedReference appliedFunction, 
                          FreeFunction declaration,
                          ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
         super($reifiedType, TypeDescriptor.klass(ceylon.language.metamodel.Function.class, $reifiedType, $reifiedArguments), container);
