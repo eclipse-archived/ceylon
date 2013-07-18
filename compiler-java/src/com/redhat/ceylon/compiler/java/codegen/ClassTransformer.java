@@ -566,19 +566,10 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void initParam(ClassDefinitionBuilder classBuilder, Parameter decl) {
-        boolean impliedAttribute = decl.isDefault()
-                || decl.isActual()
-                || decl.isShared();
-        if (impliedAttribute 
-                || decl.isCaptured()) {
-            classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(decl.getName()), 
-                    classGen().transformClassParameterType(decl), null));
+        if ((decl instanceof ValueParameter && (decl.isShared() || decl.isCaptured()))) {
+            makeFieldForParameter(classBuilder, decl);
             
-            classBuilder.init(make().Exec(make().Assign(
-                    naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
-                    naming.makeName(decl, Naming.NA_IDENT))));
-            
-            if (impliedAttribute) {
+            if (decl instanceof ValueParameter && decl.isShared()) {
                 AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl);
                 adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl, false));
                 classBuilder.attribute(adb);
@@ -596,6 +587,16 @@ public class ClassTransformer extends AbstractTransformer {
                                 makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
             }
         }
+    }
+
+    private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
+            Parameter decl) {
+        classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(decl.getName()), 
+                classGen().transformClassParameterType(decl), null));
+        
+        classBuilder.init(make().Exec(make().Assign(
+                naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
+                naming.makeName(decl, Naming.NA_IDENT))));
     }
     
     private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
