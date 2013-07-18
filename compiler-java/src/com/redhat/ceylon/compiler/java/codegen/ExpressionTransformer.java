@@ -62,6 +62,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -2871,11 +2872,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     expr.getTypeModel(), 
                     method, 
                     producedReference).build();
-        } else if (member instanceof Value) {
+        } else if (member instanceof Value
+                || member instanceof ValueParameter) {
             return CallableBuilder.unboundValueMemberReference(
                     gen(), 
                     expr.getTypeModel(), 
-                    ((Value)member)).build();
+                    ((TypedDeclaration)member)).build();
         } else if (member instanceof Class) {
             ProducedReference producedReference = expr.getTarget();
             return CallableBuilder.unboundFunctionalMemberReference(

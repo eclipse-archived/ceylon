@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -184,11 +185,11 @@ public class CallableBuilder {
      */
     public static CallableBuilder unboundValueMemberReference(CeylonTransformer gen, 
             ProducedType typeModel, 
-            final Value value) {
+            final TypedDeclaration value) {
         final String instanceName = "$instance";
         
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), value, Naming.NA_MEMBER));
+        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), value, Naming.NA_GETTER | Naming.NA_MEMBER));
         JCExpression innerInvocation = callBuilder.build();
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
         
