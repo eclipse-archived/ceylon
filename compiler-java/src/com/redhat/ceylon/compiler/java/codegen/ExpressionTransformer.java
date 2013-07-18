@@ -2858,7 +2858,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transform(expr, null);
     }
 
-    private JCExpression transformMemberReference(
+    JCExpression transformMemberReference(
             Tree.QualifiedMemberOrTypeExpression expr,
             Tree.MemberOrTypeExpression primary) {
         Declaration member = expr.getDeclaration();
