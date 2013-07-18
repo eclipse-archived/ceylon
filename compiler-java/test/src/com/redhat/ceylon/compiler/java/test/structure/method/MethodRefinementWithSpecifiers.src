@@ -88,6 +88,10 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         this.f10$specifier = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.$get();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
+    
+    private final void arg() {
+        arg.$call();
+    }
     protected final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
     
     @.java.lang.Override
@@ -123,27 +127,46 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.Object f2() {
-        return arg.$call();
+        return (
+            let
+            {
+                arg();
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     public final .java.lang.Object f3() {
-        return arg.$call();
+        return (
+            let
+            {
+                arg();
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     public final .java.lang.Object f4() {
-        return arg.$call();
+        return (
+            let
+            {
+                arg();
+            }
+            returning null;
+        );
     }
     
     @.java.lang.Override
     public final .java.lang.Object f5() {
-        return arg.$call();
+        arg();
+        return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f6() {
-        arg.$call();
+        arg();
         return null;
     }
     

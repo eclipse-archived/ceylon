@@ -37,12 +37,16 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return i == j ? f.$call() : null;
+                return i == j ? .ceylon.language.Boolean.instance(f()) : null;
             }
         };
     }
     private final long i;
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
+    
+    private final boolean f() {
+        return f.$call().booleanValue();
+    }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this;
     
     @.java.lang.Override
@@ -52,7 +56,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get1(final .ceylon.language.Integer k) {
-        return .ceylon.language.Integer.instance(i).equals(k) ? f.$call() : null;
+        return .ceylon.language.Integer.instance(i).equals(k) ? .ceylon.language.Boolean.instance(f()) : null;
     }
     
     @.java.lang.Override
@@ -62,7 +66,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return i == j ? f.$call() : null;
+                return i == j ? .ceylon.language.Boolean.instance(f()) : null;
             }
         }.$call(k);
     }
@@ -74,7 +78,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return i == j ? f.$call() : null;
+                return i == j ? .ceylon.language.Boolean.instance(f()) : null;
             }
         };
     }

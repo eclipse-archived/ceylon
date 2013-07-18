@@ -42,9 +42,13 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree branch;
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
+    private final long f(final .ceylon.language.Integer i) {
+        return f.$call(i).longValue();
+    }
+    
     @.java.lang.Override
     public final long evaluate() {
-        return f.$call(.ceylon.language.Integer.instance(branch.evaluate())).longValue();
+        return f(.ceylon.language.Integer.instance(branch.evaluate()));
     }
     
     @.java.lang.Override
@@ -65,9 +69,13 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right;
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
+    private final long f(final .ceylon.language.Integer i, final .ceylon.language.Integer j) {
+        return f.$call(i, j).longValue();
+    }
+    
     @.java.lang.Override
     public final long evaluate() {
-        return f.$call(.ceylon.language.Integer.instance(left.evaluate()), .ceylon.language.Integer.instance(right.evaluate())).longValue();
+        return f(.ceylon.language.Integer.instance(left.evaluate()), .ceylon.language.Integer.instance(right.evaluate()));
     }
     
     @.java.lang.Override

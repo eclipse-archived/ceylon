@@ -29,7 +29,7 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     public final .java.lang.Object next() {
                         if (this.x()) {
                             final .ceylon.language.Integer x = this.x;
-                            return f.$call();
+                            return .ceylon.language.Boolean.instance(f());
                         } else return .ceylon.language.finished_.$get();
                     }
                 };
@@ -37,6 +37,10 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         }.getSequence();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
+    
+    private final boolean f() {
+        return f.$call().booleanValue();
+    }
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> rows;
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> getRows() {
