@@ -201,6 +201,13 @@ public class ExpressionTest3 extends CompilerTest {
     }
     
     @Test
+    public void testRefValueParameterRef() {
+        compareWithJavaSource("ref/ValueParameterRef");
+        //compile("ref/ValueParameterRef.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.valueParameterRef");
+    }
+    
+    @Test
     public void testRefMethodRef() {
         compareWithJavaSource("ref/MethodRef");
         //compile("ref/MethodRef.ceylon");
