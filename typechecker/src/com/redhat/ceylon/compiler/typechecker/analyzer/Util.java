@@ -557,4 +557,20 @@ public class Util {
         return member.getUnit().getPackage().equals(unit.getPackage());
     }
 
+    public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
+        Tree.Primary p = that.getPrimary();
+        if (p instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
+            ProducedReference prf = mte.getTarget();
+            return mte.getStaticMethodReference() ||
+                    prf==null || 
+                    !prf.isFunctional() || 
+                    //type parameters are not really callable even though they are Functional
+                    prf.getDeclaration() instanceof TypeParameter;
+        }
+        else {
+           return true;
+        }
+    }
+
 }

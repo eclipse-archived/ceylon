@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminatePare
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -1595,23 +1596,11 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.InvocationExpression that) {
-        Tree.Primary p = that.getPrimary();
+        
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pal!=null) {
             pal.visit(this);
-            if (p instanceof Tree.MemberOrTypeExpression) {
-                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
-                //set up the "signature" on the primary
-                //so that we can resolve the correct 
-                //overloaded declaration
-                List<ProducedType> sig = new ArrayList<ProducedType>();
-                List<Tree.PositionalArgument> args = pal.getPositionalArguments();
-                for (Tree.PositionalArgument pa: args) {
-                    sig.add(pa.getTypeModel());
-                }
-                mte.setSignature(sig);
-                mte.setEllipsis(hasSpreadArgument(args));
-            }
+            visitInvocationPositionalArgs(that);
         }
         
         Tree.NamedArgumentList nal = that.getNamedArgumentList();
@@ -1619,9 +1608,40 @@ public class ExpressionVisitor extends Visitor {
             nal.visit(this);
         }
         
-        p.visit(this);
+        Tree.Primary p = that.getPrimary();
+        if (p==null) {
+            //TODO: can this actually occur??
+            that.addError("malformed invocation expression");
+        }
+        else {
+            p.visit(this);
+            visitInvocationPrimary(that, p);
+            if (isIndirectInvocation(that)) {
+                visitIndirectInvocation(that);
+            }
+            else {
+                visitDirectInvocation(that);
+            }
+        }
         
-        visitInvocation(that);
+    }
+
+    private void visitInvocationPositionalArgs(Tree.InvocationExpression that) {
+        Tree.Primary p = that.getPrimary();
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+        if (p instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
+            //set up the "signature" on the primary
+            //so that we can resolve the correct 
+            //overloaded declaration
+            List<ProducedType> sig = new ArrayList<ProducedType>();
+            List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+            for (Tree.PositionalArgument pa: args) {
+                sig.add(pa.getTypeModel());
+            }
+            mte.setSignature(sig);
+            mte.setEllipsis(hasSpreadArgument(args));
+        }
     }
     
     private void checkSuperInvocation(Tree.MemberOrTypeExpression qmte) {
@@ -1650,12 +1670,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitInvocation(Tree.InvocationExpression that) {
-        Tree.Primary pr = that.getPrimary();
-        if (pr==null) {
-            that.addError("malformed invocation expression");
-        }
-        else if (pr instanceof Tree.StaticMemberOrTypeExpression) {
+    private void visitInvocationPrimary(Tree.InvocationExpression that,
+            Tree.Primary pr) {
+        if (pr instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
             Declaration dec = mte.getDeclaration();
             if ( mte.getTarget()==null && dec instanceof Functional && 
@@ -1681,16 +1698,9 @@ public class ExpressionVisitor extends Visitor {
                             (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
             }
-            visitInvocation(that, mte.getTarget());
-        }
-        else if (pr instanceof Tree.ExtendedTypeExpression) {
-            visitInvocation(that, ((Tree.ExtendedTypeExpression) pr).getTarget());
-        }
-        else {
-            visitInvocation(that, null);
         }
     }
-
+    
     private List<ProducedType> getInferedTypeArguments(Tree.InvocationExpression that, 
             Functional dec) {
         List<ProducedType> typeArgs = new ArrayList<ProducedType>();
@@ -2088,77 +2098,73 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
+    private void visitDirectInvocation(Tree.InvocationExpression that) {
         Tree.Primary p = that.getPrimary();
-        boolean isStaticMethodRef = p instanceof Tree.MemberOrTypeExpression &&
-                ((Tree.MemberOrTypeExpression) p).getStaticMethodReference();
-        if (isStaticMethodRef || 
-                prf==null || !prf.isFunctional() || 
-                //type parameters are not really callable even though they are Functional
-                prf.getDeclaration() instanceof TypeParameter) {
-            ProducedType pt = p.getTypeModel();
-            if (!isTypeUnknown(pt)) {
-                if (checkCallable(pt, p, 
-                        "invoked expression must be callable")) {
-                    List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
-                            .getTypeArgumentList();
-                    if (!typeArgs.isEmpty()) {
-                        that.setTypeModel(typeArgs.get(0));
-                    }
-                    //typecheck arguments using the type args of Callable
-                    if (typeArgs.size()>=2) {
-                        ProducedType tt = typeArgs.get(1);
-                        checkIndirectInvocationArguments(that, tt,
-                                unit.getTupleElementTypes(tt),
-                                unit.isTupleLengthUnbounded(tt),
-                                unit.isTupleVariantAtLeastOne(tt),
-                                unit.getTupleMinimumLength(tt));
-                    }
-                }
+        Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
+        ProducedReference prf = mte.getTarget();
+        Functional dec = (Functional) mte.getDeclaration();
+        if (!(p instanceof Tree.ExtendedTypeExpression)) {
+            if (dec instanceof Class && ((Class) dec).isAbstract()) {
+                that.addError("abstract class may not be instantiated: " + dec.getName(unit));
             }
         }
+        if (that.getNamedArgumentList()!=null && 
+                dec.isAbstraction()) {
+            //TODO: this is not really right - it's the fact 
+            //      that we're calling Java and don't have
+            //      meaningful parameter names that is the
+            //      real problem, not the overload
+            that.addError("overloaded declarations may not be called using named arguments: " +
+                    dec.getName(unit));
+        }
+        //that.setTypeModel(prf.getType());
+        ProducedType ct = p.getTypeModel();
+        if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
+            //pull the return type out of the Callable
+            that.setTypeModel(ct.getTypeArgumentList().get(0));
+        }
+        if (that.getNamedArgumentList() != null) {
+            List<ParameterList> parameterLists = dec.getParameterLists();
+            if(!parameterLists.isEmpty()
+                    && !parameterLists.get(0).isNamedParametersSupported()) {
+                that.addError("named invocations of Java methods not supported");
+            }
+        }
+        if (dec.isAbstraction()) {
+            //nothing to check the argument types against
+            //that.addError("no matching overloaded declaration");
+        }
         else {
-            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
-            Functional dec = (Functional) mte.getDeclaration();
-            if (!(p instanceof Tree.ExtendedTypeExpression)) {
-                if (dec instanceof Class && ((Class) dec).isAbstract()) {
-                    that.addError("abstract class may not be instantiated: " + dec.getName(unit));
-                }
-            }
-            if (that.getNamedArgumentList()!=null && 
-                    dec.isAbstraction()) {
-                //TODO: this is not really right - it's the fact 
-                //      that we're calling Java and don't have
-                //      meaningful parameter names that is the
-                //      real problem, not the overload
-                that.addError("overloaded declarations may not be called using named arguments: " +
-                        dec.getName(unit));
-            }
-            //that.setTypeModel(prf.getType());
-            ProducedType ct = p.getTypeModel();
-            if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
-                //pull the return type out of the Callable
-                that.setTypeModel(ct.getTypeArgumentList().get(0));
-            }
-            if (that.getNamedArgumentList() != null) {
-                List<ParameterList> parameterLists = dec.getParameterLists();
-                if(!parameterLists.isEmpty()
-                        && !parameterLists.get(0).isNamedParametersSupported()) {
-                    that.addError("named invocations of Java methods not supported");
-                }
-            }
-            if (dec.isAbstraction()) {
-                //nothing to check the argument types against
-                //that.addError("no matching overloaded declaration");
-            }
-            else {
-                //typecheck arguments using the parameter list
-                //of the target declaration
-                checkInvocationArguments(that, prf, dec);
-            }
+            //typecheck arguments using the parameter list
+            //of the target declaration
+            checkInvocationArguments(that, prf, dec);
         }
     }
 
+    private void visitIndirectInvocation(Tree.InvocationExpression that) {
+        Tree.Primary p = that.getPrimary();
+        ProducedType pt = p.getTypeModel();
+        if (!isTypeUnknown(pt)) {
+            if (checkCallable(pt, p, 
+                    "invoked expression must be callable")) {
+                List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
+                        .getTypeArgumentList();
+                if (!typeArgs.isEmpty()) {
+                    that.setTypeModel(typeArgs.get(0));
+                }
+                //typecheck arguments using the type args of Callable
+                if (typeArgs.size()>=2) {
+                    ProducedType tt = typeArgs.get(1);
+                    checkIndirectInvocationArguments(that, tt,
+                            unit.getTupleElementTypes(tt),
+                            unit.isTupleLengthUnbounded(tt),
+                            unit.isTupleVariantAtLeastOne(tt),
+                            unit.getTupleMinimumLength(tt));
+                }
+            }
+        }
+    }
+    
     private void checkInvocationArguments(Tree.InvocationExpression that,
             ProducedReference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
