@@ -565,6 +565,54 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
+    private void initParam(ClassDefinitionBuilder classBuilder, Parameter decl) {
+        boolean impliedAttribute = decl.isDefault()
+                || decl.isActual()
+                || decl.isShared();
+        if (impliedAttribute 
+                || decl.isCaptured()) {
+            classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(decl.getName()), 
+                    classGen().transformClassParameterType(decl), null));
+            
+            classBuilder.init(make().Exec(make().Assign(
+                    naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
+                    naming.makeName(decl, Naming.NA_IDENT))));
+            
+            if (impliedAttribute) {
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl);
+                adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl, false));
+                classBuilder.attribute(adb);
+            }
+            
+        } else if ((decl instanceof ValueParameter) 
+                        && ((ValueParameter)decl).isHidden()
+                        && (decl.getContainer() instanceof TypeDeclaration)) {
+            Declaration member = ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null, false);
+            if (Decl.isValue(member) 
+                    && Strategy.createField((ValueParameter)decl, (Value)member)) {
+                // The field itself is created by the ClassTransformer
+                classBuilder.init(make().Exec(
+                        make().Assign(naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
+                                makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
+            }
+        }
+    }
+    
+    private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
+        String name = param.getName();
+        JCExpression type = classGen().transformClassParameterType(param);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, name);
+        pdb.aliasName(Naming.getAliasedParameterName(param));
+        pdb.sequenced(param.isSequenced());
+        pdb.defaulted(param.isDefaulted());
+        pdb.type(type, makeJavaTypeAnnotations(param));
+        pdb.modifiers(FINAL);
+        pdb.modelAnnotations(param.getAnnotations());
+        pdb.userAnnotations(annotations);
+        classBuilder.parameter(pdb);
+        initParam(classBuilder, param);
+    }
+    
     private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Class model, ClassDefinitionBuilder classBuilder, 
             com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList paramList, boolean generateInstantiator, 
             Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
@@ -579,7 +627,9 @@ public class ClassTransformer extends AbstractTransformer {
             Parameter refinedParam = CodegenUtil.findParamForDecl(
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel()));
             at(param);
-            classBuilder.parameter(param);
+
+            transformParameter(classBuilder, param.getDeclarationModel(),
+            expressionGen().transform(param.getAnnotationList()));
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
                     || (generateInstantiator

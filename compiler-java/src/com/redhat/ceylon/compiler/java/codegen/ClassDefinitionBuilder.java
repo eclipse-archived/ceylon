@@ -417,65 +417,11 @@ public class ClassDefinitionBuilder {
     }
 
     // Create a parameter for the constructor
-    private ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
+    ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
         params.append(pdb);
         return this;
     }
 
-    private void initParam(Parameter decl) {
-        boolean impliedAttribute = decl.isDefault()
-                || decl.isActual()
-                || decl.isShared();
-        if (impliedAttribute 
-                || decl.isCaptured()) {
-            defs.append(gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(decl.getName()), 
-                    gen.classGen().transformClassParameterType(decl), null));
-            
-            init.append(gen.make().Exec(gen.make().Assign(
-                    gen.naming.makeQualifiedName(gen.naming.makeThis(), decl, Naming.NA_IDENT), 
-                    gen.naming.makeName(decl, Naming.NA_IDENT))));
-            
-            if (impliedAttribute) {
-                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(gen, decl.getName(), decl);
-                adb.modifiers(gen.classGen().transformAttributeGetSetDeclFlags(decl, false));
-                attribute(adb);
-            }
-            
-        } else if ((decl instanceof ValueParameter) 
-                        && ((ValueParameter)decl).isHidden()
-                        && (decl.getContainer() instanceof TypeDeclaration)) {
-            Declaration member = ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null, false);
-            if (Decl.isValue(member) 
-                    && Strategy.createField((ValueParameter)decl, (Value)member)) {
-                // The field itself is created by the ClassTransformer
-                init.append(gen.make().Exec(
-                        gen.make().Assign(gen.naming.makeQualifiedName(gen.naming.makeThis(), decl, Naming.NA_IDENT), 
-                                gen.makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
-            }
-        }
-    }
-    
-    public ClassDefinitionBuilder parameter(Tree.Parameter param) {
-        return parameter(param.getDeclarationModel(), 
-                gen.expressionGen().transform(param.getAnnotationList()));
-    }
-    
-    private ClassDefinitionBuilder parameter(Parameter param, List<JCAnnotation> annotations) {
-        String name = param.getName();
-        JCExpression type = gen.classGen().transformClassParameterType(param);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
-        pdb.aliasName(Naming.getAliasedParameterName(param));
-        pdb.sequenced(param.isSequenced());
-        pdb.defaulted(param.isDefaulted());
-        pdb.type(type, gen.makeJavaTypeAnnotations(param));
-        pdb.modifiers(FINAL);
-        pdb.modelAnnotations(param.getAnnotations());
-        pdb.userAnnotations(annotations);
-        parameter(pdb);
-        initParam(param);
-        return this;
-    }
-    
     /**
      * Appends the attribute built by the given builder 
      * (the attribute is built without annotations if necessary).
@@ -512,7 +458,7 @@ public class ClassDefinitionBuilder {
     /**
      * Appends the given tree
      */
-    private ClassDefinitionBuilder defs(JCTree statement) {
+    public ClassDefinitionBuilder defs(JCTree statement) {
         if (statement != null) {
             this.defs.append(statement);
         }
