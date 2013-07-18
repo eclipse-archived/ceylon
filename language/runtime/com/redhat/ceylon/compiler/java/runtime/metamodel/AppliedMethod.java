@@ -37,7 +37,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Override
     public String toString() {
-        return declaration.toString();
+        return Metamodel.getProducedTypedReferenceString(appliedFunction);
     }
     
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 

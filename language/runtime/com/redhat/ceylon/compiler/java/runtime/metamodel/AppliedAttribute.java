@@ -34,7 +34,7 @@ public class AppliedAttribute<Container, Type>
     
     @Override
     public String toString() {
-        return declaration.toString();
+        return Metamodel.getProducedTypedReferenceString(typedReference);
     }
     
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 

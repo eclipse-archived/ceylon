@@ -678,5 +678,32 @@ public class Metamodel {
         ProducedType fullType = appliedFunction.getFullType();
         return fullType.getTypeArgumentList().get(0);
     }
+
+    public static String getProducedTypedReferenceString(ProducedTypedReference typedReference) {
+        StringBuilder sb = new StringBuilder();
+        if(typedReference.getQualifyingType() != null)
+            sb.append(typedReference.getQualifyingType().getProducedTypeName()).append(".");
+        TypedDeclaration modelDeclaration = typedReference.getDeclaration();
+        sb.append(modelDeclaration.getName());
+        if(modelDeclaration instanceof Generic){
+            Map<com.redhat.ceylon.compiler.typechecker.model.TypeParameter, ProducedType> typeArguments = typedReference.getTypeArguments();
+            boolean first = true;
+            for(com.redhat.ceylon.compiler.typechecker.model.TypeParameter tp : ((Generic) modelDeclaration).getTypeParameters()){
+                if(first){
+                    first = false;
+                    sb.append("<");
+                }else
+                    sb.append(",");
+                ProducedType typeArgument = typeArguments.get(tp);
+                if(typeArgument != null)
+                    sb.append(typeArgument.getProducedTypeName());
+                else
+                    sb.append("##MISSING##");
+            }
+            if(!first)
+                sb.append(">");
+        }
+        return sb.toString();
+    }
     
 }
