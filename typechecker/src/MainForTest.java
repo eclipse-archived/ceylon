@@ -21,6 +21,7 @@ public class MainForTest {
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .statistics(true)
                 .verbose(false)
+                .parallel(true)
                 .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
         typeChecker.process();
