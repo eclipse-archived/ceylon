@@ -5441,12 +5441,24 @@ public class ExpressionVisitor extends Visitor {
                         ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
                         ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
                         IntersectionType it = new IntersectionType(unit);
+                        if(method.getInitializerParameter() != null){
+                            ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                            it.getSatisfiedTypes().add(parameterDeclarationType);
+                        }
                         it.getSatisfiedTypes().add(functionDeclarationType);
                         it.getSatisfiedTypes().add(functionType);
                         that.setTypeModel(it.getType());
                     }else if(typeLiteralMode == TypeLiteralMode.Declaration){
                         ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
-                        that.setTypeModel(functionDeclarationType);
+                        if(method.getInitializerParameter() != null){
+                            IntersectionType it = new IntersectionType(unit);
+                            ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                            it.getSatisfiedTypes().add(parameterDeclarationType);
+                            it.getSatisfiedTypes().add(functionDeclarationType);
+                            that.setTypeModel(it.getType());
+                        }else{
+                            that.setTypeModel(functionDeclarationType);
+                        }
                         that.setWantsDeclaration(true);
                     }else if(typeLiteralMode == TypeLiteralMode.Type){
                         ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
@@ -5456,7 +5468,15 @@ public class ExpressionVisitor extends Visitor {
             } else if(typeLiteralMode == TypeLiteralMode.Declaration
                     || typeLiteralMode == TypeLiteralMode.Unknown) {
                 ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
-                that.setTypeModel(functionDeclarationType);
+                if(method.getInitializerParameter() != null){
+                    IntersectionType it = new IntersectionType(unit);
+                    ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                    it.getSatisfiedTypes().add(parameterDeclarationType);
+                    it.getSatisfiedTypes().add(functionDeclarationType);
+                    that.setTypeModel(it.getType());
+                }else{
+                    that.setTypeModel(functionDeclarationType);
+                }
                 that.setWantsDeclaration(true);
             } else {
                 that.addError("missing type arguments to: " + method.getName(unit));
@@ -5472,14 +5492,25 @@ public class ExpressionVisitor extends Visitor {
 
                 if(!isParameterised){
                     ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
-                    ProducedType attributeDeclarationType = getTypeLiteralDeclarationType(value.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
+                    ProducedType attributeDeclarationType = getTypeLiteralValueDeclarationType(value);
                     IntersectionType it = new IntersectionType(unit);
+                    if(value.getInitializerParameter() != null){
+                        ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                        it.getSatisfiedTypes().add(parameterDeclarationType);
+                    }
                     it.getSatisfiedTypes().add(attributeDeclarationType);
                     it.getSatisfiedTypes().add(attributeType);
                     that.setTypeModel(it.getType());
                 }else if(typeLiteralMode == TypeLiteralMode.Declaration){
-                    ProducedType attributeDeclarationType = getTypeLiteralDeclarationType(value.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
-                    that.setTypeModel(attributeDeclarationType);
+                    ProducedType attributeDeclarationType = getTypeLiteralValueDeclarationType(value);
+                    if(value.getInitializerParameter() != null){
+                        IntersectionType it = new IntersectionType(unit);
+                        ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                        it.getSatisfiedTypes().add(parameterDeclarationType);
+                        it.getSatisfiedTypes().add(attributeDeclarationType);
+                        that.setTypeModel(it.getType());
+                    }else
+                        that.setTypeModel(attributeDeclarationType);
                     that.setWantsDeclaration(true);
                 }else if(typeLiteralMode == TypeLiteralMode.Type){
                     ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
@@ -5487,10 +5518,68 @@ public class ExpressionVisitor extends Visitor {
                 }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
 
             }
+        }else if(result instanceof Parameter){
+            Parameter param = (Parameter) result;
+
+            if(that.getTypeArgumentList() != null){
+                that.addError("does not accept type arguments: " + result.getName(unit));
+            }else{
+                ProducedTypedReference pr = param.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
+                that.setTarget(pr);
+
+                if(!isParameterised && param.isShared()){
+                    ProducedType parameterType = getTypeLiteralParameterType(pr, param);
+                    ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                    ProducedType attributeDeclarationType = getTypeLiteralParameterDeclarationType(param);
+                    IntersectionType it = new IntersectionType(unit);
+                    it.getSatisfiedTypes().add(parameterDeclarationType);
+                    it.getSatisfiedTypes().add(attributeDeclarationType);
+                    it.getSatisfiedTypes().add(parameterType);
+                    that.setTypeModel(it.getType());
+                }else if(typeLiteralMode == TypeLiteralMode.Declaration
+                        || (!isParameterised && !param.isShared())){
+                    ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
+                    if(param.isShared()){
+                        IntersectionType it = new IntersectionType(unit);
+                        ProducedType attributeDeclarationType = getTypeLiteralParameterDeclarationType(param);
+                        it.getSatisfiedTypes().add(parameterDeclarationType);
+                        it.getSatisfiedTypes().add(attributeDeclarationType);
+                        that.setTypeModel(it.getType());
+                    }else{
+                        that.setTypeModel(parameterDeclarationType);
+                    }
+                    that.setWantsDeclaration(true);
+                }else if(typeLiteralMode == TypeLiteralMode.Type){
+                    if(param.isShared()){
+                        ProducedType attributeType = getTypeLiteralParameterType(pr, param);
+                        that.setTypeModel(attributeType);
+                    }else{
+                        that.addError("non-shared parameters are not reified in the metamodel: "+ result.getName(unit));
+                    }
+                }
+            }
         }
     }
 
-    private ProducedType getTypeLiteralAttributeType(ProducedTypedReference pr, Value value) {
+    private ProducedType getTypeLiteralParameterDeclarationType(Parameter param) {
+        if(param instanceof FunctionalParameter)
+            return getTypeLiteralDeclarationType("FunctionDeclaration");
+        return getTypeLiteralValueDeclarationType(param);
+    }
+
+    // should really be a Value|Parameter but hey ;)
+    private ProducedType getTypeLiteralValueDeclarationType(TypedDeclaration param) {
+        return getTypeLiteralDeclarationType(param.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
+    }
+
+    private ProducedType getTypeLiteralParameterType(ProducedTypedReference pr, Parameter param) {
+        if(param instanceof FunctionalParameter)
+            return getTypeLiteralFunctionType(pr, ((FunctionalParameter) param).getParameterLists().get(0));
+        return getTypeLiteralAttributeType(pr, param);
+    }
+
+    // should really be a Value|Parameter but hey ;)
+    private ProducedType getTypeLiteralAttributeType(ProducedTypedReference pr, TypedDeclaration value) {
         if(pr.getQualifyingType() != null){
             Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "VariableAttribute" : "Attribute");
             return memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getQualifyingType(), pr.getType())).getType();
