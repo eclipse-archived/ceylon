@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
@@ -45,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
@@ -81,10 +83,22 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         visitMethod(that.getDeclarationModel());
     }
 
-    private void visitMethod(Method method) {
+    private void visitMethod(TypedDeclaration method) {
         boxMethod(method);
         rawTypedDeclaration(method);
         setErasureState(method);
+    }
+    
+    @Override
+    public void visit(FunctionalParameterDeclaration that) {
+        if (Strategy.createMethod(that.getDeclarationModel())) {
+            // Box the functional parameter as if it were a method
+            visitMethod(that.getDeclarationModel());
+            // Visit the parameters of the functional parameter
+            that.visitChildren(this);
+        } else {
+            super.visit(that);
+        }
     }
     
     private void setErasureState(TypedDeclaration decl) {
@@ -110,16 +124,16 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
     }
 
-    private void boxMethod(Method method) {
+    private void boxMethod(TypedDeclaration method) {
         // deal with invalid input
         if(method == null)
             return;
         Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(method, optimisedMethodSpecifiersToMethods);
         // deal with invalid input
         if(refined == null
-                || (!(refined instanceof Method)))
+                || (!(refined instanceof Method || refined instanceof FunctionalParameter)))
             return;
-        Method refinedMethod = (Method)refined;
+        TypedDeclaration refinedMethod = (TypedDeclaration)refined;
         if (method.getName() != null) {
             // A Callable, which never have primitive parameters
             setBoxingState(method, refinedMethod);
@@ -180,7 +194,21 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
            && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)
            && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
             declaration.setUnboxed(true);
-        } else {
+        } else if (declaration instanceof ValueParameter
+                && declaration.getContainer() instanceof FunctionalParameter
+                && Strategy.createMethod((FunctionalParameter)declaration.getContainer())) {
+            FunctionalParameter functionalParameter = (FunctionalParameter)declaration.getContainer();
+            TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
+            if (refinedFrom == functionalParameter) { 
+                declaration.setUnboxed(true);
+            } else {
+                // make sure refined declarations have already been set
+                if(refinedFrom.getUnboxed() == null)
+                    setBoxingState(refinedFrom, refinedFrom);
+                // inherit
+                declaration.setUnboxed(refinedFrom.getUnboxed());
+            }
+        } else {   
             declaration.setUnboxed(false);
         }
     }
