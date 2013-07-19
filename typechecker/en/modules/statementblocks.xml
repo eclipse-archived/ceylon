@@ -1248,8 +1248,7 @@ else {
        
             <para>Assertions and some control structures allow inline declaration of a 
             <emphasis>variable</emphasis>. A variable declared by an assertion is a reference
-            scoped to the body in which the assertion occurs. A variable declared by a control
-            structure is a reference scoped to the control structure body.</para>
+            scoped to the body in which the assertion occurs.</para>
             
             <synopsis>TypedVariable: Type MemberName</synopsis>
             
@@ -1263,25 +1262,55 @@ else {
             <comment><para>TODO: write down the rules for inferring the type of control structure
             variables!</para></comment>
         
+            <para>A variable declared by a control structure is a reference scoped to the block that
+            immediately follows the variable declaration:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>For a variable in an <literal>if</literal> condition, the scope of the
+                    variable is the <literal>if</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>while</literal> condition, the scope of the
+                    variable is the <literal>while</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>for</literal> iterator, the scope of the
+                    variable is the <literal>for</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>try</literal> clause, the scope of the variable 
+                    is the <literal>try</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in a <literal>catch</literal> clause, the scope of the variable 
+                    is the <literal>catch</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>For a variable in an <literal>assert</literal> statement, the scope of the 
+                    variable is the body containing the <literal>assert</literal> statement.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
         
         <section id="iterationvariables">
             <title>Iteration variables</title>
-       
+            
             <para>A <literal>for</literal> loop requires an <emphasis>iteration variable</emphasis> 
             declaration. An iteration variable declaration must specify an iteration variable.</para>
-
+            
             <synopsis>IteratorVariable: Variable | CallableVariable | EntryVariablePair</synopsis>
             
             <para>An iteration variable of type <literal>Entry</literal> may be specified in 
             destructured form.</para>
-        
+            
             <synopsis>EntryVariablePair: Variable "->" Variable</synopsis>
             
             <para>An iteration variable may be callable.</para>
             
             <synopsis>CallableVariable: (Type | "void")? MemberName Parameters+</synopsis>
-        
+            
             <para>If the return type is missing from the declaration, the return type of the 
             callable variable is inferred.</para>
             
