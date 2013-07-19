@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -226,18 +227,22 @@ class CodegenUtil {
             }
             return decl;
         } else if(decl instanceof Parameter 
-                && (decl.getContainer() instanceof Method || decl.getContainer() instanceof Specification)){
+                && (decl.getContainer() instanceof Method 
+                        || decl.getContainer() instanceof Specification
+                        || decl.getContainer() instanceof FunctionalParameter && Strategy.createMethod((FunctionalParameter)decl.getContainer()))){
             // Parameters in a refined method are not considered refinements themselves
             // so we have to look up the corresponding parameter in the container's refined declaration
-            Method func;
-            if(decl.getContainer() instanceof Method)
-                func = (Method)decl.getContainer();
+            Functional func;
+            if(decl.getContainer() instanceof Method
+                    || decl.getContainer() instanceof FunctionalParameter)
+                func = (Functional)decl.getContainer();
             else
                 func = (Method) ((Specification)decl.getContainer()).getDeclaration();
+            
             if(func == null)
                 return decl;
             Parameter param = (Parameter)decl;
-            Method refinedFunc = (Method) getTopmostRefinedDeclaration(func, methodOverrides);
+            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)func, methodOverrides);
             // shortcut if the functional doesn't override anything
             if(refinedFunc == func)
                 return decl;
