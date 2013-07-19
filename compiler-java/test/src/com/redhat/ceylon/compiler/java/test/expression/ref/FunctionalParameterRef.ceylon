@@ -25,32 +25,14 @@ class FunctionalParameterRef(
     shared String binary(String s1, String s2),
     shared String ternary(String s1, String s2, String s3),
     shared String nary(String s1, String s2, String s3, String s4),
-    /*shared String unaryDefaulted(String s="s"),
-    shared String binaryDefaulted(String s1="s1", String s2="s2"),
-    shared String ternaryDefaulted(String s1="s1", String s2="s2", String s3="s3"),
-    shared String naryDefaulted(String s1="s1", String s2="s2", String s3="s3", String s4="s4"),*/
+    // functional parameters defaulted parameters not permitted
     shared String nullarySequenced(String* s),
     shared String unarySequenced(String s1, String* s),
     shared String binarySequenced(String s1, String s2, String* s),
     shared String ternarySequenced(String s1, String s2, String s3, String* s),
     shared String narySequenced(String s1, String s2, String s3, String s4, String* s),
     shared String unaryUnaryMpl(String s)(Integer i)
-    /*shared String nullaryParameterized<T1>()
-            given T1 satisfies Object,
-    shared String unaryParameterized<T1>(T1 s)
-            given T1 satisfies Object,
-    shared String binaryParameterized<T1, T2>(T1 s1, T2 s2)
-            given T1 satisfies Object
-            given T2 satisfies Object,
-    shared String ternaryParameterized<T1, T2, T3>(T1 s1, T2 s2, T3 s3)
-            given T1 satisfies Object
-            given T2 satisfies Object
-            given T3 satisfies Object,
-    shared String naryParameterized<T1,T2,T3,T4>(T1 s1, T2 s2, T3 s3, T4 s4)
-            given T1 satisfies Object
-            given T2 satisfies Object
-            given T3 satisfies Object
-            given T4 satisfies Object*/
+    // functional parameters with type parameters not permitted
     ) {
     
     shared void simple() {
@@ -69,33 +51,6 @@ class FunctionalParameterRef(
         String(String, String, String, String)(FunctionalParameterRef) naryRef = FunctionalParameterRef.nary;
         assert("nary(n1, n2, n3, n4)" == naryRef(this)("n1", "n2", "n3", "n4"));
     }
-
-    /*    
-    shared void defaulted() {
-        // can't have a defaulted nullary
-        
-        String(String=)(FunctionalParameterRef) unaryRef = FunctionalParameterRef.unaryDefaulted;
-        assert("unaryDefaulted(u)" == unaryRef(this)("u"));
-        assert("unaryDefaulted(s)" == unaryRef(this)());
-        
-        String(String=, String=)(FunctionalParameterRef) binaryRef = FunctionalParameterRef.binaryDefaulted;
-        assert("binaryDefaulted(b1, b2)" == binaryRef(this)("b1", "b2"));
-        assert("binaryDefaulted(b1, s2)" == binaryRef(this)("b1"));
-        assert("binaryDefaulted(s1, s2)" == binaryRef(this)());
-        
-        String(String=, String=, String=)(FunctionalParameterRef) ternaryRef = FunctionalParameterRef.ternaryDefaulted;
-        assert("ternaryDefaulted(t1, t2, t3)" == ternaryRef(this)("t1", "t2", "t3"));
-        assert("ternaryDefaulted(t1, t2, s3)" == ternaryRef(this)("t1", "t2"));
-        assert("ternaryDefaulted(t1, s2, s3)" == ternaryRef(this)("t1"));
-        assert("ternaryDefaulted(s1, s2, s3)" == ternaryRef(this)());
-        
-        String(String=, String=, String=, String=)(FunctionalParameterRef) naryRef = FunctionalParameterRef.naryDefaulted;
-        assert("naryDefaulted(n1, n2, n3, n4)" == naryRef(this)("n1", "n2", "n3", "n4"));
-        assert("naryDefaulted(n1, n2, n3, s4)" == naryRef(this)("n1", "n2", "n3"));
-        assert("naryDefaulted(n1, n2, s3, s4)" == naryRef(this)("n1", "n2"));
-        assert("naryDefaulted(n1, s2, s3, s4)" == naryRef(this)("n1"));
-        assert("naryDefaulted(s1, s2, s3, s4)" == naryRef(this)());
-    }*/
     
     shared void sequenced() {
         String(String*)(FunctionalParameterRef) nullaryRef = FunctionalParameterRef.nullarySequenced;
@@ -145,32 +100,7 @@ class FunctionalParameterRef(
         assert(stringEqualsRef("foobar")(stringPlus("foo")("bar")));
     }
  
-    /*
-    shared void parameterizedMethod<X>(X x) 
-            given X satisfies Object {
-        String()(FunctionalParameterRef) nullaryRef = FunctionalParameterRef.nullaryParameterized<String>;
-        assert("nullary()" == nullaryRef(this)());
-        
-        String()(FunctionalParameterRef) nullaryXRef = FunctionalParameterRef.nullaryParameterized<X>;
-        assert("nullary()" == nullaryXRef(this)());
-        
-        String(String)(FunctionalParameterRef) unaryRef = FunctionalParameterRef.unaryParameterized<String>;
-        assert("unary(u)" == unaryRef(this)("u"));
-        
-        String(X)(FunctionalParameterRef) unaryXRef = FunctionalParameterRef.unaryParameterized<X>;
-        assert("unary(foo)" == unaryXRef(this)(x));
-        
-        String(String, String)(FunctionalParameterRef) binaryRef = FunctionalParameterRef.binaryParameterized<String, String>;
-        assert("binary(b1, b2)" == binaryRef(this)("b1", "b2"));
-        
-        String(String, String, String)(FunctionalParameterRef) ternaryRef = FunctionalParameterRef.ternaryParameterized<String, String, String>;
-        assert("ternary(t1, t2, t3)" == ternaryRef(this)("t1", "t2", "t3"));
-        
-        String(String, String, String, String)(FunctionalParameterRef) naryRef = FunctionalParameterRef.naryParameterized<String, String, String, String>;
-        assert("nary(n1, n2, n3, n4)" == naryRef(this)("n1", "n2", "n3", "n4"));
-    }
-    */
-    
+
     // TODO Type parameterized qualifying type
     
     shared class Inner(String s) {
@@ -189,43 +119,16 @@ void functionalParameterRef() {
         function binary(String s1, String s2) => "binary(``s1``, ``s2``)";
         function ternary(String s1, String s2, String s3) => "ternary(``s1``, ``s2``, ``s3``)";
         function nary(String s1, String s2, String s3, String s4) => "nary(``s1``, ``s2``, ``s3``, ``s4``)";
-        /*function unaryDefaulted(String s="s") => "unaryDefaulted(``s``)";
-        function binaryDefaulted(String s1="s1", String s2="s2") => "binaryDefaulted(``s1``, ``s2``)";
-        function ternaryDefaulted(String s1="s1", String s2="s2", String s3="s3") => "ternaryDefaulted(``s1``, ``s2``, ``s3``)";
-        function naryDefaulted(String s1="s1", String s2="s2", String s3="s3", String s4="s4") => "naryDefaulted(``s1``, ``s2``, ``s3``, ``s4``)";*/
         function nullarySequenced(String* s) => "nullarySequenced(``s``)";
         function unarySequenced(String s1, String* s) => "unarySequenced(``s1``; ``s``)";
         function binarySequenced(String s1, String s2, String* s) => "binarySequenced(``s1``, ``s2``; ``s``)";
         function ternarySequenced(String s1, String s2, String s3, String* s) => "ternarySequenced(``s1``, ``s2``, ``s3``; ``s``)";
         function narySequenced(String s1, String s2, String s3, String s4, String* s) => "narySequenced(``s1``, ``s2``, ``s3``, ``s4``; ``s``)";
         function unaryUnaryMpl(String s)(Integer i) => "unaryUnaryMpl(``s``, ``i``)";
-        /*function nullaryParameterized<T1>()
-                given T1 satisfies Object
-            => "nullary()";
-        function unaryParameterized<T1>(T1 s)
-                given T1 satisfies Object 
-            => "unary(``s``)";
-        function binaryParameterized<T1, T2>(T1 s1, T2 s2)
-                given T1 satisfies Object
-                given T2 satisfies Object
-            => "binary(``s1``, ``s2``)";
-        function ternaryParameterized<T1, T2, T3>(T1 s1, T2 s2, T3 s3)
-                given T1 satisfies Object
-                given T2 satisfies Object
-                given T3 satisfies Object
-            => "ternary(``s1``, ``s2``, ``s3``)";
-        function naryParameterized<T1,T2,T3,T4>(T1 s1, T2 s2, T3 s3, T4 s4)
-                given T1 satisfies Object
-                given T2 satisfies Object
-                given T3 satisfies Object
-                given T4 satisfies Object
-            => "nary(``s1``, ``s2``, ``s3``, ``s4``)";*/
     };
     mr.simple();
-    //mr.defaulted();
     mr.sequenced();
     mr.mpl();
     mr.assortedLanguage();
-    //mr.parameterizedMethod("foo");
     mr.innerClass();
 }
