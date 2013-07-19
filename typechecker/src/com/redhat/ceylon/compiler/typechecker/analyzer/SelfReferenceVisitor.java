@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrors;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -174,7 +173,6 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.InterfaceBody that) {
-        if (hasErrors(that)) return;
         if (directlyInBody()) {
             declarationSection = true;
             lastExecutableStatement = null;
@@ -192,7 +190,6 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ClassBody that) {
-        if (hasErrors(that)) return;
         if (directlyInBody()) {
             Tree.Statement les = getLastExecutableStatement(that);
             declarationSection = les==null;

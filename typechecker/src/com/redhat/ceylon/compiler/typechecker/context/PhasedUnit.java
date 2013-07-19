@@ -258,7 +258,7 @@ public class PhasedUnit {
     }
     
     public synchronized void analyseFlow() {
-        if (!flowAnalyzed) {
+        if (! flowAnalyzed) {
             //System.out.println("Validate control flow for " + fileName);
             compilationUnit.visit(new ControlFlowVisitor());
             //System.out.println("Validate self references for " + fileName);

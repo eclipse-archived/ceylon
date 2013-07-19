@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrors;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 
@@ -335,7 +334,6 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Block that) {
-        if (hasErrors(that)) return;
         boolean oe = endsInBreakReturnThrow;
         Tree.Continue olc = lastContinue;
         Tree.Statement olcs = lastContinueStatement;
@@ -687,7 +685,6 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ClassBody that) {
-        if (hasErrors(that)) return;
         Tree.Declaration d = getDeclaration(that);
         if (d!=null) {
             Tree.Statement les = getLastExecutableStatement(that);
