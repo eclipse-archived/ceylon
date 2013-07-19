@@ -76,6 +76,7 @@ public class FreeAttribute
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
+        // FIXME: pretty sure this doesn't work with interop and fields
         return Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration)).getAnnotations();
     }
 }
