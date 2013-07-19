@@ -716,7 +716,13 @@ public class ClassTransformer extends AbstractTransformer {
                 mdb.resultType(make().Type(syms().voidType), paramModel);
                 mdb.body(make().Exec(expr));
             } else {
-                mdb.resultType(makeJavaType(paramModel.getType(), CodegenUtil.isUnBoxed(paramModel) ? 0 : JT_NO_PRIMITIVES), paramModel);
+                ProducedType resultType;
+                if (Decl.isMpl((FunctionalParameter)paramModel)) {
+                    resultType = paramModel.getType().getFullType();
+                } else {
+                    resultType = paramModel.getType();
+                }
+                mdb.resultType(makeJavaType(resultType, CodegenUtil.isUnBoxed(paramModel) ? 0 : JT_NO_PRIMITIVES), paramModel);
                 expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(paramModel), paramModel.getType());
                 mdb.body(make().Return(expr));
             }
