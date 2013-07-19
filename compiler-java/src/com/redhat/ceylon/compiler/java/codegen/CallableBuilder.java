@@ -55,25 +55,32 @@ import com.sun.tools.javac.util.Name;
 public class CallableBuilder {
 
     static interface DefaultValueMethodTransformation {
-        public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, Tree.Term forwardCallTo);
+        public JCExpression makeDefaultValueMethod(AbstractTransformer gen, 
+                Parameter defaultedParam, Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs);
     }
     
     public static final DefaultValueMethodTransformation DEFAULTED_PARAM_METHOD = new DefaultValueMethodTransformation() {
         @Override
         public JCExpression makeDefaultValueMethod(AbstractTransformer gen, 
                 Parameter defaultedParam, 
-                Tree.Term forwardCallTo) {
+                Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs) {
+            JCExpression fn = null;
             if (forwardCallTo != null) {
                 if (forwardCallTo instanceof Tree.BaseMemberOrTypeExpression) {
-                    return gen.makeUnquotedIdent(  
+                    fn  = gen.makeUnquotedIdent(  
                             Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
                 } else if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression) {
-                    return gen.makeQualIdent(
+                    fn = gen.makeQualIdent(
                             gen.expressionGen().transformPrimary(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getPrimary(), null),  
                             Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
                 }
+            } 
+            if (fn == null) {
+                fn = gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam));
             }
-            return gen.makeUnquotedIdent(Naming.getDefaultedParamMethodName(null, defaultedParam));
+            return gen.make().Apply(null, 
+                    fn,
+                    defaultMethodArgs);
         }
     };
     
@@ -131,9 +138,19 @@ public class CallableBuilder {
         inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
         class InstanceDefaultValueCall implements DefaultValueMethodTransformation {            
             @Override
-            public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, Tree.Term forwardCallTo) {
-                return gen.makeQualIdent(gen.naming.makeUnquotedIdent(instanceName), 
+            public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs) {
+                if (methodOrClass instanceof FunctionalParameter) {
+                    // We can't generate a call to the dpm because there isn't one!
+                    // But since FunctionalParameters cannot currently have 
+                    // defaulted parameters this *must* be a variadic parameter
+                    // and it's default is always empty.
+                    return gen.makeEmptyAsSequential(true);
+                }
+                JCExpression fn = gen.makeQualIdent(gen.naming.makeUnquotedIdent(instanceName), 
                         Naming.getDefaultedParamMethodName((Declaration)methodOrClass, defaultedParam));
+                return gen.make().Apply(null, 
+                        fn,
+                        defaultMethodArgs);
             }
         }
         inner.defaultValueCall = new InstanceDefaultValueCall();
@@ -533,9 +550,7 @@ public class CallableBuilder {
             defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
         }
         // now call the default value method
-        return gen.make().Apply(null, 
-                defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo), 
-                defaultMethodArgs);
+        return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, forwardCallTo, defaultMethodArgs);
     }
     
     private JCTree makeCallMethod(List<JCStatement> body, int numParams) {
