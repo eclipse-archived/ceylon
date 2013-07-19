@@ -92,6 +92,26 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfElseIf(){
         compareWithJavaSource("conditional/MethodIfElseIf");
     }
+    
+    @Test
+    public void testConMethodIfTrue(){
+        compareWithJavaSource("conditional/MethodIfTrue");
+    }
+    
+    @Test
+    public void testConMethodIfTrueElse(){
+        compareWithJavaSource("conditional/MethodIfTrueElse");
+    }
+    
+    @Test
+    public void testConMethodIfFalse(){
+        compareWithJavaSource("conditional/MethodIfFalse");
+    }
+    
+    @Test
+    public void testConMethodIfFalseElse(){
+        compareWithJavaSource("conditional/MethodIfFalseElse");
+    }
 
     @Test
     public void testConMethodIfExists(){
@@ -270,6 +290,11 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testLopMethodWhile(){
         compareWithJavaSource("loop/MethodWhile");
+    }
+    
+    @Test
+    public void testLopMethodWhileTrue(){
+        compareWithJavaSource("loop/MethodWhileTrue");
     }
     
     @Test
@@ -676,6 +701,10 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testConAssertVariableScopes(){
         compareWithJavaSource("conditional/AssertVariableScopes");
+    }
+    @Test
+    public void testConAssertFalse(){
+        compareWithJavaSource("conditional/AssertFalse");
     }
 
     //
