@@ -5,6 +5,7 @@ import ceylon.language.metamodel.Annotated$impl;
 import ceylon.language.metamodel.declaration.Package;
 import ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration$impl;
 import ceylon.language.metamodel.declaration.Declaration$impl;
+import ceylon.language.metamodel.declaration.TypedDeclaration$impl;
 import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -19,7 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeTopLevelOrMemberDeclaration 
+public abstract class FreeTopLevelOrMemberDeclaration 
     implements ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration, ReifiedType {
     
     @Ignore
@@ -55,6 +56,13 @@ public class FreeTopLevelOrMemberDeclaration
     @Override
     @Ignore
     public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Ignore
+    public TypedDeclaration$impl $ceylon$language$metamodel$declaration$TypedDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -3,7 +3,7 @@ import ceylon.language.metamodel{Annotated}
 shared interface TopLevelOrMemberDeclaration of AttributeDeclaration |
                                                 FunctionDeclaration |
                                                 ClassOrInterfaceDeclaration
-        satisfies AnnotatedDeclaration {
+        satisfies AnnotatedDeclaration & TypedDeclaration {
     
     // FIXME: that name sucks
     shared formal Package packageContainer;

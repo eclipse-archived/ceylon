@@ -12,6 +12,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration$impl;
 import ceylon.language.metamodel.declaration.GenericDeclaration$impl;
+import ceylon.language.metamodel.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -207,6 +208,11 @@ public abstract class FreeClassOrInterface
     public Sequential<? extends ceylon.language.metamodel.declaration.TypeParameter> getTypeParameterDeclarations() {
         checkInit();
         return typeParameters;
+    }
+
+    @Override
+    public OpenType getOpenType() {
+        return Metamodel.getMetamodel(((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)declaration).getType());
     }
 
     @Override

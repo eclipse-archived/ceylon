@@ -5,6 +5,4 @@ shared interface AttributeDeclaration
     
     shared formal Value<Anything> apply(Anything instance = null);
     // TODO: add memberApply?
-    
-    shared formal OpenType openType;
 }
