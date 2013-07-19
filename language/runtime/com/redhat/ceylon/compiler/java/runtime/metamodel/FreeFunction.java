@@ -11,6 +11,7 @@ import ceylon.language.metamodel.declaration.FunctionDeclaration$impl;
 import ceylon.language.metamodel.declaration.FunctionalDeclaration$impl;
 import ceylon.language.metamodel.declaration.GenericDeclaration$impl;
 import ceylon.language.metamodel.declaration.OpenType;
+import ceylon.language.metamodel.declaration.ParameterDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -96,6 +97,19 @@ public class FreeFunction
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
     public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameterDeclarations(){
         return parameterList;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel.declaration::ParameterDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.ParameterDeclaration getParameterDeclaration(@Name("name") String name){
+        Iterator<?> iterator = parameterList.iterator();
+        Object o;
+        while((o = iterator.next()) != finished_.$get()){
+            ceylon.language.metamodel.declaration.ParameterDeclaration pd = (ParameterDeclaration) o;
+            if(pd.getName().equals(name))
+                return pd;
+        }
+        return null;
     }
 
     @Override

@@ -3,10 +3,13 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.finished_;
 import ceylon.language.metamodel.declaration.ClassDeclaration$impl;
 import ceylon.language.metamodel.declaration.FunctionalDeclaration$impl;
+import ceylon.language.metamodel.declaration.ParameterDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -106,6 +109,20 @@ public class FreeClass
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
     public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameterDeclarations(){
         return parameters;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.metamodel.declaration::ParameterDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.ParameterDeclaration getParameterDeclaration(@Name("name") String name){
+        checkInit();
+        Iterator<?> iterator = parameters.iterator();
+        Object o;
+        while((o = iterator.next()) != finished_.$get()){
+            ceylon.language.metamodel.declaration.ParameterDeclaration pd = (ParameterDeclaration) o;
+            if(pd.getName().equals(name))
+                return pd;
+        }
+        return null;
     }
 
     @Ignore
