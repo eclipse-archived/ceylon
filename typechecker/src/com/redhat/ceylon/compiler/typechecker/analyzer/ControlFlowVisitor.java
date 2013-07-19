@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrors;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -237,6 +238,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Body that) {
+        if (hasErrors(that)) return;
         boolean e = beginStatementScope(!(that instanceof Tree.InterfaceBody));
         super.visit(that);
         endStatementScope(e);
@@ -244,6 +246,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Block that) {
+        if (hasErrors(that)) return;
         super.visit(that);
         that.setDefinitelyReturns(definitelyReturns);
     }

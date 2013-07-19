@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrors;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,6 +58,7 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectDefinition that) {
         super.visit(that);
+        if (hasErrors(that)) return;
         final Value value = that.getDeclarationModel();
         //an object definition is always concrete
         List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
@@ -67,6 +70,7 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ObjectArgument that) {
         super.visit(that);
+        if (hasErrors(that)) return;
         final Value value = that.getDeclarationModel();
         //an object definition is always concrete
         List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
@@ -78,6 +82,7 @@ public class TypeHierarchyVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
+        if (hasErrors(that)) return;
         final ClassOrInterface classOrInterface = that.getDeclarationModel();
         boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal() && !classOrInterface.isNative();
         List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);

@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -575,6 +576,7 @@ public class Util {
     }
     
     public static boolean hasErrors(Tree.Declaration d) {
+        if (TypeChecker.testing) return false;
         class DeclarationErrorVisitor extends Visitor {
             boolean foundError;
             @Override
@@ -593,6 +595,7 @@ public class Util {
     }
 
     public static boolean hasErrors(Tree.TypedArgument d) {
+        if (TypeChecker.testing) return false;
         class ArgErrorVisitor extends Visitor {
             boolean foundError;
             @Override
@@ -611,6 +614,7 @@ public class Util {
     }
 
     public static boolean hasErrors(Tree.Body d) {
+        if (TypeChecker.testing) return false;
         class BodyErrorVisitor extends Visitor {
             boolean foundError;
             @Override

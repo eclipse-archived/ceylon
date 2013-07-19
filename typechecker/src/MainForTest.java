@@ -23,6 +23,7 @@ public class MainForTest {
                 .verbose(false)
                 .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
+        TypeChecker.testing = true;
         typeChecker.process();
         Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Object.ceylon").getCompilationUnit();
         if ( compilationUnit == null ) {
