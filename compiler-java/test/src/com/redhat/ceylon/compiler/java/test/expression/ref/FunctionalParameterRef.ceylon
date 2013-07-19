@@ -53,7 +53,6 @@ class FunctionalParameterRef(
             given T4 satisfies Object*/
     ) {
     
-    
     shared void simple() {
         String()(FunctionalParameterRef) nullaryRef = FunctionalParameterRef.nullary;
         assert("nullary()" == nullaryRef(this)());
@@ -98,9 +97,6 @@ class FunctionalParameterRef(
         assert("naryDefaulted(s1, s2, s3, s4)" == naryRef(this)());
     }*/
     
-    
-
-    
     shared void sequenced() {
         String(String*)(FunctionalParameterRef) nullaryRef = FunctionalParameterRef.nullarySequenced;
         assert("nullarySequenced({})" == nullaryRef(this)());
@@ -128,9 +124,6 @@ class FunctionalParameterRef(
         assert("narySequenced(s1, s2, s3, s4; [r1, r2])" == naryRef(this)("s1", "s2", "s3", "s4", "r1", "r2"));
         
     }
-    
-     
-    
     
     shared void mpl() {
         String(Integer)(String)(FunctionalParameterRef) unaryUnaryRef = FunctionalParameterRef.unaryUnaryMpl;
@@ -189,7 +182,7 @@ class FunctionalParameterRef(
     } 
 }
 
-void methodRef() {
+void functionalParameterRef() {
     value mr = FunctionalParameterRef{
         function nullary() => "nullary()";
         function unary(String s) => "unary(``s``)";
