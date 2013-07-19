@@ -248,6 +248,12 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testLopMethodForBreakElse(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.methodForBreakElse", 
+                "loop/MethodForBreakElse.ceylon");
+    }
+    
+    @Test
     public void testLopRangeOpIterationOptimization(){
         compareWithJavaSource("loop/RangeOpIterationOptimization");
     }
