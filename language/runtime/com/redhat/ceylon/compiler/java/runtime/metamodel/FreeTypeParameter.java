@@ -5,19 +5,22 @@ import ceylon.language.metamodel.declaration.TypeParameter$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameter
-    extends FreeTopLevelOrMemberDeclaration
-    implements ceylon.language.metamodel.declaration.TypeParameter {
+    implements ceylon.language.metamodel.declaration.TypeParameter, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameter.class);
     
+    TypeParameter declaration;
+    
     public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
-        super(declaration);
+        this.declaration = declaration;
     }
 
     @Override
@@ -37,5 +40,10 @@ public class FreeTypeParameter
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
+    }
+
+    @Override
+    public String getName() {
+        return declaration.getName();
     }
 }
