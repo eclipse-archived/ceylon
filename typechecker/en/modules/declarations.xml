@@ -349,6 +349,9 @@ TypeConstraints?
         is variadic. This type is always an subtype of <literal>Anything[]</literal>. The 
         type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
         
+        <para>A parameter may not be annotated <literal>formal</literal>, but it may be
+        annotated <literal>default</literal>.</para>
+        
         <comment><para>TODO: inside a <literal>dynamic</literal> block, a parameter may
         declared using the syntax <literal>value name</literal>, to indicate that it has
         no static type.</para></comment>
