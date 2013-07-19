@@ -3235,7 +3235,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // parameters rather than getter methods
         boolean mustUseField = false;
         if (decl instanceof Functional
-                && !(decl instanceof FunctionalParameter) // A functional parameter will already be Callable-wrapped
+                && (!(decl instanceof FunctionalParameter) 
+                        || functionalParameterRequiresCallable((FunctionalParameter)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl);
         } else if (Decl.isGetter(decl)) {
@@ -3376,6 +3377,32 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         return result;
+    }
+
+    /**
+     * Determines whether we need to generate an AbstractCallable when taking 
+     * a method reference to a method that's declared as a FunctionalParameter
+     */
+    private boolean functionalParameterRequiresCallable(FunctionalParameter functionalParameter, StaticMemberOrTypeExpression expr) {
+        boolean hasMethod = Strategy.createMethod(functionalParameter);
+        if (!hasMethod) {
+            // A functional parameter that's not method wrapped will already be Callable-wrapped
+            return false;
+        }
+        // Optimization: If we're in a scope where the Callable field is visible
+        // we don't need to create a method ref        
+        Scope scope = expr.getScope();
+        while (true) {
+            if (scope instanceof Package) {
+                break;
+            }
+            if (scope.equals(functionalParameter.getContainer())) {
+                return false;
+            }
+            scope = scope.getContainer();
+        }
+        // Otherwise we do require an AbstractCallable.
+        return true;
     }
 
     //
