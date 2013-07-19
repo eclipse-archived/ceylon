@@ -39,7 +39,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -854,8 +853,8 @@ public class TypeVisitor extends Visitor {
             Scope s = dec.getContainer();
             if (s instanceof Functional) {
                 Parameter param = ((Functional) s).getParameter( dec.getName() );
-                if (param instanceof ValueParameter && 
-                        ((ValueParameter) param).isHidden()) {
+                if (param instanceof Parameter && 
+                        ((Parameter) param).isHidden()) {
                     ProducedType ft = dec.getProducedReference(null, 
                             Collections.<ProducedType>emptyList()).getFullType();
                     param.setType(ft);
@@ -877,8 +876,8 @@ public class TypeVisitor extends Visitor {
             Scope s = dec.getContainer();
             if (s instanceof Functional) {
                 Parameter param = ((Functional) s).getParameter( dec.getName() );
-                if (param instanceof ValueParameter && 
-                        ((ValueParameter) param).isHidden()) {
+                if (param instanceof Parameter && 
+                        ((Parameter) param).isHidden()) {
                     param.setType(dec.getType());
                     param.setSequenced(that.getType() instanceof Tree.SequencedType);
                     if (sie!=null) {
@@ -1126,40 +1125,37 @@ public class TypeVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.ValueParameterDeclaration that) {
+    public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        if (that instanceof Tree.InitializerParameter) {
-            //i.e. an attribute initializer parameter
-            ValueParameter d = that.getDeclarationModel();
-            Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
-            if (a==null) {
-                that.addError("parameter declaration does not exist: " + d.getName());
-            }
-            else if (!(a instanceof Value && !((Value)a).isTransient()) && 
-                    !(a instanceof Method)) {
-                that.addError("parameter is not a reference value or function: " + d.getName());
-            }
-            else if (a.isFormal()) {
-                that.addError("parameter is a formal attribute: " + 
-                        d.getName());
-            }
-            /*else if (a.isDefault()) {
-                that.addError("initializer parameter refers to a default attribute: " + 
-                        d.getName());
-            }*/
-            else {
-                ((MethodOrValue) a).setInitializerParameter(d);
-            }
-            /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
-                if (a instanceof Method) {
-                    that.addWarning("initializer parameters for inner methods of methods not yet supported");
-                }
-                if (a instanceof Value && ((Value) a).isVariable()) {
-                    that.addWarning("initializer parameters for variables of methods not yet supported");
-                    
-                }
-            }*/
+        //i.e. an attribute initializer parameter
+        Parameter d = that.getDeclarationModel();
+        Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
+        if (a==null) {
+            that.addError("parameter declaration does not exist: " + d.getName());
         }
+        else if (!(a instanceof Value && !((Value)a).isTransient()) && 
+                !(a instanceof Method)) {
+            that.addError("parameter is not a reference value or function: " + d.getName());
+        }
+        else if (a.isFormal()) {
+            that.addError("parameter is a formal attribute: " + 
+                    d.getName());
+        }
+        /*else if (a.isDefault()) {
+            that.addError("initializer parameter refers to a default attribute: " + 
+                    d.getName());
+        }*/
+        else {
+            ((MethodOrValue) a).setInitializerParameter(d);
+        }
+        /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
+            if (a instanceof Method) {
+                that.addWarning("initializer parameters for inner methods of methods not yet supported");
+            }
+            if (a instanceof Value && ((Value) a).isVariable()) {
+                that.addWarning("initializer parameters for variables of methods not yet supported");
+            }
+        }*/
     }
     
     @Override
@@ -1167,7 +1163,7 @@ public class TypeVisitor extends Visitor {
     	super.visit(that);
     	if (that.getType() instanceof Tree.SequencedType) {
     		Value v = (Value) that.getDeclarationModel();
-			ValueParameter p = v.getInitializerParameter();
+			Parameter p = v.getInitializerParameter();
 			if (p==null) {
 				that.getType().addError("value is not a parameter, so may not be variadic: " +
 						v.getName());
@@ -1208,8 +1204,7 @@ public class TypeVisitor extends Visitor {
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
         Tree.Primary p = that.getPrimary();
-        boolean directlyInvoked = p instanceof Tree.MemberOrTypeExpression;
-        if (directlyInvoked) {
+        if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             mte.setDirectlyInvoked(true);
         }

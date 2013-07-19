@@ -94,8 +94,8 @@ public class Util {
     public static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&
             !(declaration instanceof Setter) && //return getters, not setters
-            !(declaration instanceof ValueParameter && 
-                    ((ValueParameter) declaration).isHidden()) &&
+            !(declaration instanceof Parameter && 
+                    ((Parameter) declaration).isHidden()) &&
             !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     

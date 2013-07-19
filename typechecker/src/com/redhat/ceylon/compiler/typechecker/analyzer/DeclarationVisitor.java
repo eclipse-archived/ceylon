@@ -643,12 +643,23 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.InitializerParameter that) {
+        Parameter p = new Parameter();
+        p.setDeclaration(declaration);
+        p.setDefaulted(that.getDefaultArgument()!=null);
+        p.setHidden(true);
+        that.setDeclarationModel(p);
+        visitDeclaration(that, p);
+        super.visit(that);
+        parameterList.getParameters().add(p);
+    }
+
+    @Override
     public void visit(Tree.ValueParameterDeclaration that) {
         ValueParameter p = new ValueParameter();
         p.setDeclaration(declaration);
         p.setDefaulted(that.getDefaultArgument()!=null);
         p.setSequenced(that.getType() instanceof Tree.SequencedType);
-        p.setHidden(that instanceof Tree.InitializerParameter);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);

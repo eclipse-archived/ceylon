@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 
-public abstract class Parameter extends TypedDeclaration {
+public class Parameter extends TypedDeclaration {
     
 	private boolean defaulted;
 	private boolean sequenced;
@@ -9,6 +9,15 @@ public abstract class Parameter extends TypedDeclaration {
     private boolean captured = false;
     private Parameter aliasedParameter = this;
     private boolean atLeastOne = false;
+    
+    private boolean hidden;
+    
+    public boolean isHidden() {
+        return hidden;
+    }
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
     
     @Override
     public boolean isCaptured() {

@@ -222,7 +222,8 @@
     PARAMETER_LIST*
     FunctionalParameter declarationModel;)
 "A reference to a parameter declared like an ordinary forward value inside the body of the function or class."
-^(INITIALIZER_PARAMETER:VALUE_PARAMETER_DECLARATION)
+^(INITIALIZER_PARAMETER:PARAMETER
+    Parameter declarationModel;)
 
 "A list of type parameters in a generic declaration."
 ^(TYPE_PARAMETER_LIST 

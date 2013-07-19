@@ -4,7 +4,7 @@ public abstract class MethodOrValue extends TypedDeclaration {
     
     private boolean captured;
     private boolean shortcutRefinement;
-    private ValueParameter initializerParameter;
+    private Parameter initializerParameter;
     
     public boolean isShortcutRefinement() {
         return shortcutRefinement;
@@ -19,11 +19,11 @@ public abstract class MethodOrValue extends TypedDeclaration {
         return DeclarationKind.MEMBER;
     }
     
-    public ValueParameter getInitializerParameter() {
+    public Parameter getInitializerParameter() {
         return initializerParameter;
     }
 
-    public void setInitializerParameter(ValueParameter d) {
+    public void setInitializerParameter(Parameter d) {
         initializerParameter = d;
     }
 

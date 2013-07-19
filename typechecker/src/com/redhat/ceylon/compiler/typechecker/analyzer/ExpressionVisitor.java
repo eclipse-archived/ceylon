@@ -976,16 +976,14 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.ValueParameterDeclaration that) {
-        if (that.getType() instanceof Tree.LocalModifier) {
-            ValueParameter d = that.getDeclarationModel();
-            if (d!=null) {
-                that.getType().setTypeModel(d.getType());
-            }
+    public void visit(Tree.InitializerParameter that) {
+        Parameter d = that.getDeclarationModel();
+        if (d!=null) {
+            that.getType().setTypeModel(d.getType());
         }
         super.visit(that);
     }
-    
+        
     private void checkType(ProducedType declaredType, 
             Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null && sie.getExpression()!=null) {

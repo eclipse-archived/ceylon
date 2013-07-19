@@ -15,7 +15,6 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -364,8 +363,8 @@ public class TypeHierarchyVisitor extends Visitor {
                         member.isStaticallyImportable()) {
                     continue;
                 }
-                if (member instanceof ValueParameter) {
-                    if (((ValueParameter) member).isHidden()) {
+                if (member instanceof Parameter) {
+                    if (((Parameter) member).isHidden()) {
                         continue;
                     }
                 }

@@ -628,9 +628,4 @@ public class Util {
         return bev.foundError;
     }
 
-    static boolean isSequenced(Tree.Parameter p) {
-    	return (p.getDeclarationModel() instanceof ValueParameter) &&
-    			((ValueParameter) p.getDeclarationModel()).isSequenced();
-    }
-
 }

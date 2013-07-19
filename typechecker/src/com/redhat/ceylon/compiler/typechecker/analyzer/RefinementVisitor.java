@@ -6,7 +6,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isSequenced;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -752,7 +751,7 @@ public class RefinementVisitor extends Visitor {
                             .addError("only the first parameter list may have defaulted parameters");
                     }
                 }
-                else if (isSequenced(p)) {
+                else if (p.getDeclarationModel().isSequenced()) {
                 	Tree.Type st = p.getType();
                     if (foundSequenced) {
 						st.addError("parameter list may have at most one variadic parameter");

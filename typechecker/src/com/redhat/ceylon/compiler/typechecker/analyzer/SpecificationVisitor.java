@@ -8,9 +8,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisf
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -576,15 +576,13 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ValueParameterDeclaration that) {
+    public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        if (that.getType() instanceof Tree.LocalModifier) {
-            ValueParameter d = that.getDeclarationModel();
-            Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
-            if (a!=null && a==declaration) {
-                specify();
-                hasParameter = true;
-            }
+        Parameter d = that.getDeclarationModel();
+        Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
+        if (a!=null && a==declaration) {
+            specify();
+            hasParameter = true;
         }
     }
     
