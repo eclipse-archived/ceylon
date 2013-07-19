@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class FunctionalParameterNotCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    FunctionalParameterNotCaptured(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        this.string = f.$call().toString();
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterNotCaptured.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterNotCaptured.class);
+}

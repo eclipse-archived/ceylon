@@ -328,6 +328,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsFunctionalParameterDefault(){
         compareWithJavaSource("klass/FunctionalParameterDefault");
     }
+    @Test
+    public void testKlsFunctionalParameterNotCaptured(){
+        compareWithJavaSource("klass/FunctionalParameterNotCaptured");
+    }
     
     @Test
     public void testKlsOverrideDefaultedInitParam(){
