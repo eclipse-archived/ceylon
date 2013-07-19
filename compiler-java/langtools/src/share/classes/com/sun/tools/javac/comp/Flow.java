@@ -393,11 +393,13 @@ public class Flow extends TreeScanner {
                               sym);
                     }
                 } else if (!uninits.isMember(sym.adr)) {
-                    log.error(pos,
-                              loopPassTwo
-                              ? "var.might.be.assigned.in.loop"
-                              : "var.might.already.be.assigned",
-                              sym);
+                    if (!Context.isCeylon()) {
+                        log.error(pos,
+                                  loopPassTwo
+                                  ? "var.might.be.assigned.in.loop"
+                                  : "var.might.already.be.assigned",
+                                  sym);
+                    }
                 } else if (!inits.isMember(sym.adr)) {
                     // reachable assignment
                     uninits.excl(sym.adr);
