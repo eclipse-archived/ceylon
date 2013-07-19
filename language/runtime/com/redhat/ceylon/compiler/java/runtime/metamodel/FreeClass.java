@@ -74,9 +74,11 @@ public class FreeClass
             ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
             List<Parameter> modelParameters = parameterList.getParameters();
             ceylon.language.metamodel.declaration.ParameterDeclaration[] parameters = new ceylon.language.metamodel.declaration.ParameterDeclaration[modelParameters.size()];
+            // FIXME: pretty sure that's wrong because of synthetic params. See ReflectionMethod.getParameters
             Annotation[][] parameterAnnotations = findConstructor(Metamodel.getJavaClass(declaration)).getParameterAnnotations();
             int i=0;
             for(Parameter modelParameter : modelParameters){
+                // FIXME: move to Metamodel
                 parameters[i] = new FreeParameter(modelParameter, parameterAnnotations[i]);
                 i++;
             }
