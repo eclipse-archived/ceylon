@@ -110,6 +110,7 @@ public class FreeClass
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::ParameterDeclaration>")
     public Sequential<? extends ceylon.language.metamodel.declaration.ParameterDeclaration> getParameterDeclarations(){
+        checkInit();
         return parameters;
     }
 
