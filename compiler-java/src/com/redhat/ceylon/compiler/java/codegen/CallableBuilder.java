@@ -163,8 +163,12 @@ public class CallableBuilder {
             callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
         }
         JCExpression innerInvocation = callBuilder.build();
-        if (methodOrClass instanceof Method) {
-            innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, methodOrClass.getType(), !((Method)methodOrClass).getUnboxed(), BoxingStrategy.BOXED, methodOrClass.getType());
+        // Need to worry about boxing for Method and FunctionalParameter 
+        if (methodOrClass instanceof TypedDeclaration) {
+            innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 
+                    methodOrClass.getType(),
+                    !CodegenUtil.isUnBoxed((TypedDeclaration)methodOrClass), 
+                    BoxingStrategy.BOXED, methodOrClass.getType());
         }
         inner.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
         
