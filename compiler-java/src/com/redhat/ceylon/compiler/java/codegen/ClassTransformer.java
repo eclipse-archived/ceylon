@@ -704,7 +704,11 @@ public class ClassTransformer extends AbstractTransformer {
                     naming.makeQualIdent(naming.makeName(paramModel, Naming.NA_IDENT), 
                             Naming.getCallableMethodName()));
             for (Parameter parameter : ((FunctionalParameter)paramModel).getParameterLists().get(0).getParameters()) {
-                callBuilder.argument(naming.makeName(parameter, Naming.NA_IDENT));
+                JCExpression parameterExpr = naming.makeName(parameter, Naming.NA_IDENT);
+                parameterExpr = expressionGen().applyErasureAndBoxing(parameterExpr, parameter.getType(), 
+                        !CodegenUtil.isUnBoxed(parameter), BoxingStrategy.BOXED, 
+                        parameter.getType());
+                callBuilder.argument(parameterExpr);
                 mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
             }
             JCExpression expr = callBuilder.build();
@@ -712,8 +716,8 @@ public class ClassTransformer extends AbstractTransformer {
                 mdb.resultType(make().Type(syms().voidType), paramModel);
                 mdb.body(make().Exec(expr));
             } else {
-                mdb.resultType(makeJavaType(paramModel.getType()), paramModel);
-                expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, BoxingStrategy.UNBOXED, paramModel.getType());
+                mdb.resultType(makeJavaType(paramModel.getType(), CodegenUtil.isUnBoxed(paramModel) ? 0 : JT_NO_PRIMITIVES), paramModel);
+                expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(paramModel), paramModel.getType());
                 mdb.body(make().Return(expr));
             }
             classBuilder.method(mdb);
