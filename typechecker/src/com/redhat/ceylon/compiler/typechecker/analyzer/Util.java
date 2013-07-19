@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -571,6 +572,65 @@ public class Util {
         else {
            return true;
         }
+    }
+    
+    public static boolean hasErrors(Tree.Declaration d) {
+        class DeclarationErrorVisitor extends Visitor {
+            boolean foundError;
+            @Override
+            public void visitAny(Node that) {
+                super.visitAny(that);
+                if (!that.getErrors().isEmpty()) {
+                    foundError = true;
+                }
+            }
+            @Override
+            public void visit(Tree.Body that) {}
+        }
+        DeclarationErrorVisitor dev = new DeclarationErrorVisitor();
+        d.visit(dev);
+        return dev.foundError;
+    }
+
+    public static boolean hasErrors(Tree.TypedArgument d) {
+        class ArgErrorVisitor extends Visitor {
+            boolean foundError;
+            @Override
+            public void visitAny(Node that) {
+                super.visitAny(that);
+                if (!that.getErrors().isEmpty()) {
+                    foundError = true;
+                }
+            }
+            @Override
+            public void visit(Tree.Body that) {}
+        }
+        ArgErrorVisitor dev = new ArgErrorVisitor();
+        d.visit(dev);
+        return dev.foundError;
+    }
+
+    public static boolean hasErrors(Tree.Body d) {
+        class BodyErrorVisitor extends Visitor {
+            boolean foundError;
+            @Override
+            public void visitAny(Node that) {
+                super.visitAny(that);
+                if (!that.getErrors().isEmpty()) {
+                    foundError = true;
+                }
+            }
+            @Override
+            public void visit(Tree.Declaration that) {}
+        }
+        BodyErrorVisitor bev = new BodyErrorVisitor();
+        d.visit(bev);
+        return bev.foundError;
+    }
+
+    static boolean isSequenced(Tree.Parameter p) {
+    	return (p.getDeclarationModel() instanceof ValueParameter) &&
+    			((ValueParameter) p.getDeclarationModel()).isSequenced();
     }
 
 }

@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignab
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isSequenced;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
@@ -46,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -168,7 +168,7 @@ public class RefinementVisitor extends Visitor {
             visited.add(thisModule);
             for(ModuleImport imp : thisModule.getImports()){
                 // now try implicit dependencies
-                if(imp.isExport() && includedImplicitely(imp.getModule(), typeModule, visited)){
+                if(imp.isExport() && includedImplicitly(imp.getModule(), typeModule, visited)){
                     // found it
                     return true;
                 }
@@ -180,7 +180,7 @@ public class RefinementVisitor extends Visitor {
         return true;
     }
 
-    private boolean includedImplicitely(Module importedModule, Module targetModule, Set<Module> visited) {
+    private boolean includedImplicitly(Module importedModule, Module targetModule, Set<Module> visited) {
         // don't visit them twice
         if(!visited.add(importedModule))
             return false;
@@ -188,7 +188,7 @@ public class RefinementVisitor extends Visitor {
             // only consider modules it exported back to us
             if(imp.isExport()
                     && (imp.getModule() == targetModule
-                        || includedImplicitely(imp.getModule(), targetModule, visited)))
+                        || includedImplicitly(imp.getModule(), targetModule, visited)))
                 return true;
         }
         return false;
@@ -345,11 +345,11 @@ public class RefinementVisitor extends Visitor {
 
     private void checkVisibility(Tree.TypedDeclaration that, Declaration td, ProducedType type, String typeName) {
         if (type!=null) {
-            if(!isCompletelyVisible(td, type) ) {
+            if (!isCompletelyVisible(td, type)) {
                 that.getType().addError("type of " + typeName + " is not visible everywhere declaration is visible: " 
                         + td.getName());
             }
-            if(!checkModuleVisibility(td, type) ) {
+            if (!checkModuleVisibility(td, type)) {
                 that.getType().addError("type occurs in a " + typeName + " that is visible outside this module,"
                         +" but comes from an imported module that is not re-exported: "
                         + td.getName());
@@ -707,10 +707,11 @@ public class RefinementVisitor extends Visitor {
 
     private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
             ProducedType parameterType, ProducedType refinedParameterType, Tree.Type type, String message) {
-        if(isCeylon){
+        if (isCeylon){
             // it must be a Ceylon method
             checkIsExactly(parameterType, refinedParameterType, type, message);
-        }else{
+        }
+        else{
             // we're refining a Java method
             ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit().getDefiniteType(refinedParameterType);
             checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, type, message);
@@ -718,17 +719,18 @@ public class RefinementVisitor extends Visitor {
     }
 
     private static Tree.ParameterList getParameterList(Tree.Declaration that, int i) {
-        Tree.ParameterList pl=null;
         if (that instanceof Tree.AnyMethod) {
-            pl = ((Tree.AnyMethod) that).getParameterLists().get(i);
+            return ((Tree.AnyMethod) that).getParameterLists().get(i);
         }
         else if (that instanceof Tree.AnyClass) {
-            pl = ((Tree.AnyClass) that).getParameterList();
+            return ((Tree.AnyClass) that).getParameterList();
         }
         else if (that instanceof Tree.FunctionalParameterDeclaration) {
-            pl = ((Tree.FunctionalParameterDeclaration) that).getParameterLists().get(i);
+            return ((Tree.FunctionalParameterDeclaration) that).getParameterLists().get(i);
         }
-        return pl;
+        else {
+            return null;
+        }
     }
     
     @Override
@@ -771,10 +773,5 @@ public class RefinementVisitor extends Visitor {
             }
         }
     }
-
-	private boolean isSequenced(Tree.Parameter p) {
-		return (p.getDeclarationModel() instanceof ValueParameter) &&
-				((ValueParameter) p.getDeclarationModel()).isSequenced();
-	}
     
 }
