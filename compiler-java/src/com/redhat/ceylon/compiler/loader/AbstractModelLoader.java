@@ -1394,8 +1394,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if (Decl.isValue(m)) {
                     Value v = (Value)m;
                     Parameter p = ((Class)klass).getParameter(v.getName());
-                    if (p instanceof ValueParameter) {
-                        ((ValueParameter)p).setHidden(true);    
+                    if (p != null) {
+                        p.setHidden(true);
                     }
                 }
             }

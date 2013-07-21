@@ -575,13 +575,13 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.attribute(adb);
             }
             
-        } else if ((decl instanceof ValueParameter) 
-                        && ((ValueParameter)decl).isHidden()
+        } else if (decl.isHidden()
                         && (decl.getContainer() instanceof TypeDeclaration)) {
             Declaration member = ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null, false);
             if (Decl.isValue(member) 
-                    && Strategy.createField((ValueParameter)decl, (Value)member)) {
-                // The field itself is created by the ClassTransformer
+                    && Strategy.createField(decl, (Value)member)) {
+                // The field itself is created by 
+                // transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder)
                 classBuilder.init(make().Exec(
                         make().Assign(naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
                                 makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
@@ -1442,8 +1442,7 @@ public class ClassTransformer extends AbstractTransformer {
             // If the attribute is really from a parameter then don't generate a field
             // (The ClassDefinitionBuilder does it in that case)
             if (parameter == null
-                    || ((parameter instanceof ValueParameter) 
-                            && ((ValueParameter)parameter).isHidden())) {
+                    || parameter.isHidden()) {
                 if (concrete) {
                     classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
