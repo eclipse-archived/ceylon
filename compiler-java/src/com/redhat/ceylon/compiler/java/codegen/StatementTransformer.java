@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -357,7 +358,11 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformInnermostThen(Cond transformedCond) {
             List<JCStatement> stmts;
-            if (isDeferred()) {
+            if (definitelyNotSatisfied(conditions)
+                    && !thenPart.getDefinitelyReturns()
+                    && (elsePart != null && elsePart.getDefinitelyReturns())) {
+                stmts = List.<JCStatement>of(makeThrowFlowError(conditions.get(0)));
+            } else if (isDeferred()) {
                 stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
                 thenBlock = makeThenBlock(transformedCond, thenPart, null);
             } else {
@@ -425,6 +430,11 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
+            if (definitelySatisfied(conditions)
+                    && thenPart.getDefinitelyReturns() 
+                    && (elsePart == null || !elsePart.getDefinitelyReturns())) {
+                stmts = stmts.append(makeThrowFlowError(conditions.get(0)));
+            }
             ListBuffer<JCStatement> result = ListBuffer.lb();
             if (isDeferred()) {
                 result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
@@ -435,7 +445,39 @@ public class StatementTransformer extends AbstractTransformer {
                 result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
             }
             return result.toList();   
-        } 
+        }
+
+         
+    }
+    
+    private boolean definitelySatisfiedOrNot(java.util.List<Tree.Condition> conditions, boolean satisfied) {
+        if (conditions.size() != 1) {
+            return false;
+        }
+        Tree.Condition condition = conditions.get(0);
+        if (!(condition instanceof Tree.BooleanCondition)) {
+            return false;
+        }
+        Tree.Term term = ((Tree.BooleanCondition)condition).getExpression().getTerm();
+        if (!(term instanceof Tree.BaseMemberExpression)) {
+            return false;
+        }
+        Declaration declaration = ((Tree.BaseMemberExpression)term).getDeclaration();
+        return declaration instanceof Value
+                && satisfied ? isBooleanTrue(declaration) : isBooleanFalse(declaration);
+    }
+    
+    boolean definitelySatisfied(java.util.List<Tree.Condition> conditions) {
+        return definitelySatisfiedOrNot(conditions, true);
+    }
+    
+    boolean definitelyNotSatisfied(java.util.List<Tree.Condition> conditions) {
+        return definitelySatisfiedOrNot(conditions, false);
+    }
+    
+    JCThrow makeThrowFlowError(Node node) {
+        return at(node).Throw(make().NewClass(
+                null,  null,  make().Type(syms().runtimeExceptionType), List.<JCTree.JCExpression>of(make().Literal("Impossible")), null));
     }
     
     List<JCStatement> transform(Tree.IfStatement stmt) {
@@ -604,6 +646,9 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public List<JCStatement> getResult() {
+            if (definitelyNotSatisfied(conditions)) {
+                return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(conditions.get(0)));
+            }
             List<JCStatement> stmts = transformList(conditions);
             ListBuffer<JCStatement> result = ListBuffer.lb();
             if (isMulti()) {
@@ -652,12 +697,17 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCStatement transformInnermostElse(Cond cond, java.util.List<Condition> rest) {
             if (!isMulti()) {
-                AssertionExceptionMessageBuilder msg = new AssertionExceptionMessageBuilder(null);
-                msg.appendViolatedCondition(cond.getCondition());
-                msg.prependAssertionDoc(ass);
-                return makeThrowAssertionException(msg.build());
+                Condition condition = cond.getCondition();
+                return makeThrowAssertionFailure(condition);
             }
             return transformCommonElse(cond, rest);
+        }
+
+        private JCStatement makeThrowAssertionFailure(Condition condition) {
+            AssertionExceptionMessageBuilder msg = new AssertionExceptionMessageBuilder(null);
+            msg.appendViolatedCondition(condition);
+            msg.prependAssertionDoc(ass);
+            return makeThrowAssertionException(msg.build());
         }
         
         @Override
