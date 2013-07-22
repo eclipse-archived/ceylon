@@ -101,44 +101,44 @@ void test<T>() {
     value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
     
     // class parameters
-    @type:"ParameterDeclaration"
+    @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value classParameter = `Container.parameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
-    @type:"ParameterDeclaration"
+    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classParameterMethod = `Container.parameterAndMethod`;
-    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classParameterAndSharedMethod = `Container.parameterAndSharedMethod`;
 
-    @type:"ParameterDeclaration"
+    @type:"AttributeDeclaration"
     value parameterisedClassParameter = `ParameterisedContainer.parameter`;
-    @error
+    @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
-    @type:"ParameterDeclaration&AttributeDeclaration"
+    @type:"AttributeDeclaration"
     value parameterisedClassParameterAndSharedAttributeDecl = `ParameterisedContainer.parameterAndSharedAttribute`;
     
     // class attributes that are parameters too
-    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value classAttributeAndParameter = `Container.attributeAndParameter`;
 
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration"
+    @type:"AttributeDeclaration"
     value parameterisedClassSharedAttributeAndParameterDecl = `ParameterisedContainer.sharedAttributeAndParameter`;
 
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration"
+    @type:"AttributeDeclaration"
     value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
 
     // class methods that are parameters too
-    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classSharedMethodAndParameter = `Container.sharedMethodAndParameter`;
-    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classMethodAndParameter = `Container.methodAndParameter`;
 }
 
