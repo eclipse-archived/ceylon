@@ -203,3 +203,25 @@ void folding() {
     m.fold(0, (Integer x, String->Integer e) => x+e.item);
     
 }
+
+void inferenceAndAliases() {
+    class Test1<T>(Anything(T) x) {}
+    @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
+    @type:"Test1<Integer>" value test1x = Test1 { x = (Integer x) => x; };
+    alias TestFun<in T> => Anything(T);
+    class Test2<T>(TestFun<T> x) {}
+    @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
+    @type:"Test2<Integer>" value test2x = Test2 { x = (Integer x) => x; };
+}
+
+void inferenceAndSequencedAliases() {
+    class Test1<T>(Anything(T)* x) {}
+    @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
+    @type:"Test1<Integer>" value test1c = Test1(for (i in 1..1) (Integer x) => x);
+    @type:"Test1<Integer>" value test1x = Test1 { x = [(Integer x) => x]; };
+    alias TestFun<in T> => Anything(T);
+    class Test2<T>(TestFun<T>* x) {}
+    @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
+    @type:"Test1<Integer>" value test2c = Test1(for (i in 1..1) (Integer x) => x);
+    @type:"Test2<Integer>" value test2x = Test2 { x = [(Integer x) => x]; };
+}

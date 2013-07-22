@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertyp
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
@@ -1781,7 +1782,7 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> args = sa.getPositionalArguments();
         ProducedType att = getTupleType(args, false);
         ProducedType spt = sp.getType();
-        addToUnionOrIntersection(tp,inferredTypes, inferTypeArg(tp, spt, att,
+        addToUnionOrIntersection(tp, inferredTypes, inferTypeArg(tp, spt, att,
                 new ArrayList<TypeParameter>()));
     }
 
@@ -1828,7 +1829,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType at = a.getTypeModel();
                 if (a instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
-                    ProducedType ptt = Util.getParameterTypesAsTupleType(unit, params.subList(i, params.size()), pr);
+                    ProducedType ptt = getParameterTypesAsTupleType(unit, params.subList(i, params.size()), pr);
                     addToUnionOrIntersection(tp, inferredTypes, inferTypeArg(tp, ptt, at, 
                             new ArrayList<TypeParameter>()));
                 }
@@ -1943,6 +1944,8 @@ public class ExpressionVisitor extends Visitor {
     private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,
             ProducedType argType, List<TypeParameter> visited) {
         if (paramType!=null && argType!=null) {
+            paramType = paramType.resolveAliases();
+            argType = argType.resolveAliases();
             if (paramType.getDeclaration() instanceof TypeParameter &&
                     paramType.getDeclaration().equals(tp)) {
                 return unit.denotableType(argType);
