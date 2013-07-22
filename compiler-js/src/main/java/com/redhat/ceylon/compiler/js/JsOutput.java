@@ -21,7 +21,7 @@ class JsOutput {
     final MetamodelVisitor mmg;
     final String encoding;
     protected JsOutput(Module m, String encoding) throws IOException {
-        this.encoding = encoding;
+        this.encoding = encoding == null ? "UTF-8" : encoding;
         mmg = new MetamodelVisitor(m);
     }
     protected Writer getWriter() throws IOException {
