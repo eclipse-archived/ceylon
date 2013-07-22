@@ -3,6 +3,9 @@ class DefiningClass() {
     void method1(String name = defaultName) {}
     void method2(String name = this.defaultName) {}
     void method3(String name, String nickname = name) {}
+    void method4(@error String name = super.string) {}
+    void method5(String name = this.string) {}
+    void method6(@error String name = 1) {}
 }
 
 class DefaultedAndSequenced() {
