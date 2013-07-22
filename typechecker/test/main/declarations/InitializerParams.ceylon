@@ -169,4 +169,24 @@ interface InitializerParams {
     }
     
     class Qux(@error bar){ void bar<T>(); }
+    
+    shared class BrokenVis(@error baz) {
+        Baz baz;
+    }
+    shared class BrokenVar<out T>() {
+        shared void method(@error t, @error lt) {
+            T t; 
+            List<T> lt;
+        }
+    }
+    class Superclass() {
+        shared default void m(s, o, i) {
+            String s; Object o; Integer i;
+        }
+    }
+    class Subclass() extends Superclass() {
+        shared actual void m(@error s, @error o, i) {
+            Object s; String o; Integer i;
+        }
+    }
 }
