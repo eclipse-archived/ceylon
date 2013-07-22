@@ -561,11 +561,16 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
-            ListBuffer<JCStatement> result = ListBuffer.lb();
-            result.appendList(varDecls);
-            result.appendList(stmts);
-            return List.<JCStatement>of(make().WhileLoop(makeBoolean(true), 
-                    make().Block(0, result.toList())));
+            ListBuffer<JCStatement> loopStmts = ListBuffer.lb();
+            loopStmts.appendList(varDecls);
+            loopStmts.appendList(stmts);
+            List<JCStatement> result = List.nil(); 
+            if (definitelySatisfied(conditions)) {
+                result = result.prepend(makeThrowFlowError(conditions.get(0)));
+            }
+            result = result.prepend(make().WhileLoop(makeBoolean(true), 
+                    make().Block(0, loopStmts.toList())));
+            return result;
         }
 
     }
