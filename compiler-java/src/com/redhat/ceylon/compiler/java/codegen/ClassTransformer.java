@@ -1440,7 +1440,8 @@ public class ClassTransformer extends AbstractTransformer {
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             
             // If the attribute is really from a parameter then don't generate a field
-            // (The ClassDefinitionBuilder does it in that case)
+            // (makeAttributeForValueParameter() or makeMethodForFunctionalParameter() 
+            //  does it in those cases)
             if (parameter == null
                     || parameter.isHidden()) {
                 if (concrete) {
