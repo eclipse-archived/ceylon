@@ -168,4 +168,5 @@ interface InitializerParams {
         shared String name;
     }
     
+    class Qux(@error bar){ void bar<T>(); }
 }

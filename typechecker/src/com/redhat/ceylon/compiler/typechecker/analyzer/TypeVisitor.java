@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -1156,6 +1157,10 @@ public class TypeVisitor extends Visitor {
                 that.addWarning("initializer parameters for variables of methods not yet supported");
             }
         }*/
+        if (a instanceof Generic && !((Generic)a).getTypeParameters().isEmpty()) {
+            that.addError("parameter declaration has type parameters: " + 
+                    d.getName());
+        }
     }
     
     @Override
