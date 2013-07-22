@@ -5,14 +5,14 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
@@ -127,7 +127,8 @@ public class AnnotationVisitor extends Visitor {
         // Ignore statements in parameters
     }
     
-    @Override
+    //TODO!!!!!
+    /*@Override
     public void visit(Tree.DefaultArgument d) {
         if (annotationConstructor != null) {
             Declaration t = d.getUnit().getLanguageModuleDeclaration("true");
@@ -140,7 +141,7 @@ public class AnnotationVisitor extends Visitor {
                 d.addError("Only literal default parameters allowed");
             }
         }
-    }
+    }*/
     
     @Override
     public void visit(Tree.InvocationExpression invocation) {
@@ -200,8 +201,8 @@ public class AnnotationVisitor extends Visitor {
         if (annotationConstructor != null) {
             if (checkingArguments){
                 Declaration declaration = bme.getDeclaration();
-                if (declaration instanceof ValueParameter) {
-                    ValueParameter constructorParameter = (ValueParameter)declaration;
+                if (declaration.isParameter()) {
+                    Parameter constructorParameter = ((MethodOrValue)declaration).getInitializerParameter();
                     ParameterAnnotationArgument a = new ParameterAnnotationArgument();
                     a.setSpread(spread);
                     a.setTargetParameter(classParameter);

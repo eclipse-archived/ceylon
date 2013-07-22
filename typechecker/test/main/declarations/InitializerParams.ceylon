@@ -7,8 +7,8 @@ interface InitializerParams {
         print(bar);
     }
 
-    class Foo(foo, bar, @error fum, qux, fo, fi, fee, lorax,
-            xarol, @error twiddle, @error twaddle) {
+    @error class Foo(foo, bar, fum, qux, fo, fi, fee, lorax,
+            xarol, twiddle, twaddle) {
         String foo;
         shared String bar;
         String qux();
@@ -29,14 +29,14 @@ interface InitializerParams {
         }
     }
 
-    abstract class Bar(foo, bar, @error baz, @error fum) {
+    @error abstract class Bar(foo, bar, baz, fum) {
         String foo;
         shared String bar;
         shared formal String baz;
     }
 
-    void foo(foo, @error fum, qux, fo, fi, fee, lorax,
-            xarol, @error twiddle, @error twaddle) {
+    @error void foo(foo, fum, qux, fo, fi, fee, lorax,
+            xarol, twiddle, twaddle) {
         String foo;
         String qux();
         @error value fo;
@@ -129,7 +129,7 @@ interface InitializerParams {
         print(wsap2.fun(1.0));
     }
     
-    abstract class WithFormalDefaultParams(@error name, count) {
+    @error abstract class WithFormalDefaultParams(name, count) {
         shared formal String name;
         shared default Integer count;
     }
@@ -168,5 +168,5 @@ interface InitializerParams {
         shared String name;
     }
     
-    class Qux(@error bar){ void bar<T>(); }
+    @error class Qux(bar){ void bar<T>(); }
 }

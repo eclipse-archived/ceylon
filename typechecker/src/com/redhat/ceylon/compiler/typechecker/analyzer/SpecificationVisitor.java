@@ -570,7 +570,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
-        if (that.getDeclarationModel()==declaration) {
+        if (that.getParameterModel().getModel()==declaration) {
             specify();
         }
     }
@@ -578,7 +578,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        Parameter d = that.getDeclarationModel();
+        Parameter d = that.getParameterModel();
         Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
         if (a!=null && a==declaration) {
             specify();
@@ -638,7 +638,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
         if (that.getDeclarationModel()==declaration ||
-            that.getDeclarationModel().getParameter()==declaration) {
+            that.getDeclarationModel().getParameter().getModel()==declaration) {
             declare();
             specify();
         }

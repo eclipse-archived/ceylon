@@ -133,19 +133,19 @@ class Capture() {
         }
     }
     
-    class UnsharedDuped(@uncaptured s) {
+    class UnsharedDuped(s) {
         @uncaptured String s;
     }
     
-    class SharedDuped(@uncaptured s) {
+    class SharedDuped(s) {
         @captured shared String s;
     }
     
-    class UnsharedDuped2(@error s) {
+    @error class UnsharedDuped2(s) {
         String s { return s; }
     }
     
-    class SharedDuped2(@error s) {
+    @error class SharedDuped2(s) {
         shared String s { return s; }
     }
     
@@ -249,12 +249,12 @@ class Capture() {
         }
      }
      
-     class Something1(@uncaptured n) {
-         shared Integer n;
+     class Something1(n) {
+         @uncaptured shared Integer n;
      }
      
-     class Something2(@uncaptured n) { //was @captured before*
-         shared Integer n;
+     class Something2(n) { //was @captured before*
+         @uncaptured shared Integer n;
          shared void p() {
              print(n);
          }

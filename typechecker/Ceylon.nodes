@@ -209,21 +209,18 @@
     PARAMETER*
     ParameterList model;)
 "A parameter declaration."
-^(abstract PARAMETER:TYPED_DECLARATION  
-    DEFAULT_ARGUMENT?
-    abstract Parameter declarationModel;)
-"The default argument of a defaulted parameter."
-^(DEFAULT_ARGUMENT SPECIFIER_EXPRESSION)
+^(abstract PARAMETER
+    Parameter parameterModel;)
+^(abstract PARAMETER_DECLARATION:PARAMETER
+    TYPED_DECLARATION)
 "An ordinary (value) parameter."
-^(VALUE_PARAMETER_DECLARATION:PARAMETER
-    ValueParameter declarationModel;)
+^(VALUE_PARAMETER_DECLARATION:PARAMETER_DECLARATION)
 "An (functional) parameter with its own parameter list."
-^(FUNCTIONAL_PARAMETER_DECLARATION:PARAMETER
-    PARAMETER_LIST*
-    FunctionalParameter declarationModel;)
+^(FUNCTIONAL_PARAMETER_DECLARATION:PARAMETER_DECLARATION)
 "A reference to a parameter declared like an ordinary forward value inside the body of the function or class."
 ^(INITIALIZER_PARAMETER:PARAMETER
-    Parameter declarationModel;)
+    IDENTIFIER
+    SPECIFIER_EXPRESSION?)
 
 "A list of type parameters in a generic declaration."
 ^(TYPE_PARAMETER_LIST 

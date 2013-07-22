@@ -15,7 +15,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
@@ -34,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -489,20 +487,18 @@ public class DeclarationVisitor extends Visitor {
         if ( v.isFormal() && sie!=null ) {
             that.addError("formal attributes may not have a value", 1307);
         }
-        if (that.getType() instanceof Tree.ValueModifier) {
+        Tree.Type type = that.getType();
+        if (type instanceof Tree.ValueModifier) {
             if (v.isToplevel()) {
                 if (sie==null) {
-                    that.getType().addError("toplevel values must explicitly specify a type");
+                    type.addError("toplevel values must explicitly specify a type");
                 }
                 else {
-                    that.getType().addError("toplevel value must explicitly specify a type", 200);
+                    type.addError("toplevel value must explicitly specify a type", 200);
                 }
             }
             else if (v.isShared()) {
-                that.getType().addError("shared value must explicitly specify a type", 200);
-            }
-            else if (sie==null) {
-                that.getType().addError("value must specify an explicit type or definition", 200);
+                type.addError("shared value must explicitly specify a type", 200);
             }
         }
     }
@@ -515,17 +511,18 @@ public class DeclarationVisitor extends Visitor {
             that.addError("formal methods may not have a specification", 1307);
         }
         Method m = that.getDeclarationModel();
-        if (that.getType() instanceof Tree.FunctionModifier) {
+        Tree.Type type = that.getType();
+        if (type instanceof Tree.FunctionModifier) {
             if (m.isToplevel()) {
                 if (sie==null) {
-                    that.getType().addError("toplevel function must explicitly specify a return type");
+                    type.addError("toplevel function must explicitly specify a return type");
                 }
                 else {
-                    that.getType().addError("toplevel function must explicitly specify a return type", 200);
+                    type.addError("toplevel function must explicitly specify a return type", 200);
                 }
             }
             else if (m.isShared()) {
-                that.getType().addError("shared function must explicitly specify a return type", 200);
+                type.addError("shared function must explicitly specify a return type", 200);
             }
         }
     }
@@ -578,14 +575,18 @@ public class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(s);
         visitDeclaration(that, s);
         Scope o = enterScope(s);
-        ValueParameter p = new ValueParameter();
-        p.setName(s.getName());
+        Parameter p = new Parameter();
+        p.setHidden(true);
+        Value v = new Value();
+        v.setInitializerParameter(p);
+        p.setModel(v);
+        v.setName(s.getName());
         p.setDeclaration(s);
-        visitElement(that, p);
-        unit.addDeclaration(p);
+        visitElement(that, v);
+        unit.addDeclaration(v);
         Scope sc = getContainer(that);
         if (!(sc instanceof Package)) {
-        	sc.getMembers().add(p);
+        	sc.getMembers().add(v);
         }
         
         s.setParameter(p);
@@ -607,91 +608,78 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.Parameter that) {
-        super.visit(that);
-        if (that.getDefaultArgument()!=null) {
-            Tree.SpecifierExpression se = that.getDefaultArgument().getSpecifierExpression();
-            if (se!=null) {
-            	if (that.getScope() instanceof Specification) {
-            		se.addError("parameter of specification statement may not define default value");
-            	}
-            	else {
-            		Declaration d = that.getDeclarationModel().getDeclaration();
-            		if (d.isActual()) {
-            			se.addError("parameter of actual declaration may not define default value: parameter " +
-            					name(that.getIdentifier()) + " of " + declaration.getName());
-            		}
-            		if (d instanceof Parameter) {
-            			se.addError("parameter of callable parameter may not have default argument");
-            		}
-            	}
-                /*if (declaration instanceof Method &&
-                    !declaration.isToplevel() &&
-                    !(declaration.isClassOrInterfaceMember() && 
-                            ((Declaration) declaration.getContainer()).isToplevel())) {
-                    se.addWarning("default arguments for parameters of inner methods not yet supported");
-                }
-                if (declaration instanceof Class && 
-                        !declaration.isToplevel()) {
-                    se.addWarning("default arguments for parameters of inner classes not yet supported");
-                }*/
-                    /*else {
-                    se.addWarning("parameter default values are not yet supported");
-                }*/
-            }
-        }
-    }
-    
-    @Override
     public void visit(Tree.InitializerParameter that) {
         Parameter p = new Parameter();
         p.setDeclaration(declaration);
-        p.setDefaulted(that.getDefaultArgument()!=null);
+        p.setDefaulted(that.getSpecifierExpression()!=null);
         p.setHidden(true);
-        that.setDeclarationModel(p);
-        visitDeclaration(that, p);
+        p.setName(that.getIdentifier().getText());
+        that.setParameterModel(p);
+//        visitDeclaration(that, p);
         super.visit(that);
         parameterList.getParameters().add(p);
     }
 
+    private static Tree.SpecifierOrInitializerExpression getSpecifier(
+            Tree.ValueParameterDeclaration that) {
+        return ((Tree.AttributeDeclaration) that.getTypedDeclaration())
+                .getSpecifierOrInitializerExpression();
+    }
+
+    private static Tree.SpecifierExpression getSpecifier(
+            Tree.FunctionalParameterDeclaration that) {
+        return ((Tree.MethodDeclaration) that.getTypedDeclaration())
+                .getSpecifierExpression();
+    }
+    
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
-        ValueParameter p = new ValueParameter();
+        Parameter p = new Parameter();
         p.setDeclaration(declaration);
-        p.setDefaulted(that.getDefaultArgument()!=null);
-        p.setSequenced(that.getType() instanceof Tree.SequencedType);
-        that.setDeclarationModel(p);
-        visitDeclaration(that, p);
+        p.setDefaulted(getSpecifier(that)!=null);
+        Tree.Type type = that.getTypedDeclaration().getType();
+        p.setSequenced(type instanceof Tree.SequencedType);
+        that.setParameterModel(p);
         super.visit(that);
+        Value v = (Value) that.getTypedDeclaration().getDeclarationModel();
+        p.setName(v.getName());
+        p.setModel(v);
+        v.setInitializerParameter(p);
         parameterList.getParameters().add(p);
         if (p.isSequenced() && p.isDefaulted()) {
-        	that.getDefaultArgument()
-        	    .addError("variadic parameter may not specify default argument");
+        	getSpecifier(that).addError("variadic parameter may not specify default argument");
         }
-        if (p.isSequenced() && ((Tree.SequencedType) that.getType()).getAtLeastOne()) {
+        if (p.isSequenced() && ((Tree.SequencedType) type).getAtLeastOne()) {
 //            that.getType().addWarning("nonempty variadic parameters are not yet supported");
             p.setAtLeastOne(true);
+        }
+        if (v.isFormal()) {
+            that.addError("parameters may not be annotated formal", 1312);
+        }
+        if (v.isVariable()) {
+            that.addError("parameter may not be annotated variable");
         }
     }
 
     @Override
     public void visit(Tree.FunctionalParameterDeclaration that) {
-        FunctionalParameter p = new FunctionalParameter();
+        Parameter p = new Parameter();
         p.setDeclaration(declaration);
-        Tree.DefaultArgument da = that.getDefaultArgument();
-		p.setDefaulted(da!=null);
-        p.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
-        that.setDeclarationModel(p);
-        visitDeclaration(that, p);
-        Scope o = enterScope(p);
+		p.setDefaulted(getSpecifier(that)!=null);
+        Tree.Type type = that.getTypedDeclaration().getType();
+        p.setDeclaredAnything(type instanceof Tree.VoidModifier);
+        that.setParameterModel(p);
         super.visit(that);
-        exitScope(o);
+        Method m = (Method) that.getTypedDeclaration().getDeclarationModel();
+        p.setModel(m);
+        p.setName(m.getName());
+        m.setInitializerParameter(p);
         parameterList.getParameters().add(p);
-        if (that.getType() instanceof Tree.SequencedType) {
-        	that.getType().addError("functional parameter type may not be variadic");
+        if (type instanceof Tree.SequencedType) {
+        	type.addError("functional parameter type may not be variadic");
         }
-        if (that.getParameterLists().isEmpty()) {
-        	that.addError("missing parameter list");
+        if (m.isFormal()) {
+            that.addError("parameters may not be annotated formal", 1312);
         }
     }
 
@@ -902,9 +890,6 @@ public class DeclarationVisitor extends Visitor {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated formal", 1312);
             }
-            else if (that instanceof Tree.Parameter) {
-            	that.addError("parameters may not be annotated formal", 1312);
-            }
             else {
                 model.setFormal(true);
             }
@@ -937,9 +922,6 @@ public class DeclarationVisitor extends Visitor {
         if (hasAnnotation(al, "variable")) {
             if (model instanceof Value) {
                 ((Value) model).setVariable(true);
-            }
-            else if (model instanceof ValueParameter) {
-                that.addError("parameter may not be annotated variable: " + model.getName());
             }
             else {
                 that.addError("declaration is not a value, and may not be annotated variable", 1500);

@@ -76,7 +76,7 @@ public abstract class ProducedReference {
      */
     public ProducedTypedReference getTypedParameter(Parameter p) {
         ProducedTypedReference ptr = new ProducedTypedReference();
-        ptr.setDeclaration(p);
+        ptr.setDeclaration(p.getModel());
         ptr.setQualifyingType(getQualifyingType());
         ptr.setTypeArguments(getTypeArguments());
         return ptr;

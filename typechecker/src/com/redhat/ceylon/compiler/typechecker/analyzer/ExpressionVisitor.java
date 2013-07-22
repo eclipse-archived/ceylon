@@ -40,7 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -63,7 +62,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
@@ -127,26 +125,6 @@ public class ExpressionVisitor extends Visitor {
             td.setType( returnType.getTypeModel() );
         }
         returnType = t;
-    }
-    
-    @Override public void visit(Tree.DefaultArgument that) {
-        defaultArgument=true;
-        super.visit(that);
-        defaultArgument=false;
-    }
-    
-    @Override public void visit(Tree.FunctionalParameterDeclaration that) {
-        super.visit(that);
-        FunctionalParameter p = that.getDeclarationModel();
-        Tree.DefaultArgument da = that.getDefaultArgument();
-        if (p.isDeclaredVoid() && p.isDefaulted()) { 
-            Tree.SpecifierExpression se = da.getSpecifierExpression();
-            if (se!=null && se.getExpression()!=null &&
-                    !isSatementExpression(se.getExpression())) {
-                da.addError("functional parameter is declared void so specified expression must be a statement: " +
-                        p.getName());
-            }
-        }
     }
     
     @Override public void visit(Tree.FunctionArgument that) {
@@ -234,11 +212,12 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration td = that.getDeclarationModel();
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getDeclarationModel();
+                if (tp instanceof Tree.ParameterDeclaration) {
+                    Parameter p = tp.getParameterModel();
                     if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                                + p.getName());
+                        ((Tree.ParameterDeclaration) tp).getTypedDeclaration().getType()
+                                .addError("type of parameter is not visible everywhere declaration is visible: " 
+                                        + p.getName());
                     }
                 }
             }
@@ -251,11 +230,12 @@ public class ExpressionVisitor extends Visitor {
         Class td = that.getDeclarationModel();
         if (that.getParameterList()!=null) {
             for (Tree.Parameter tp: that.getParameterList().getParameters()) {
-                if (tp!=null) {
-                    Parameter p = tp.getDeclarationModel();
+                if (tp instanceof Tree.ParameterDeclaration) {
+                    Parameter p = tp.getParameterModel();
                     if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
-                                + p.getName());
+                        ((Tree.ParameterDeclaration)tp).getTypedDeclaration().getType()
+                                .addError("type of parameter is not visible everywhere declaration is visible: " 
+                                        + p.getName());
                     }
                 }
             }
@@ -466,7 +446,7 @@ public class ExpressionVisitor extends Visitor {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
             String help=" (assign to a new local value to narrow type)";
-            if (!(d instanceof Value || d instanceof ValueParameter)) {
+            if (!(d instanceof Value)) {
                 ref.addError("referenced declaration is not a value: " + 
                         d.getName(unit), 3100);
             }
@@ -630,10 +610,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
+        Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
         Tree.Type type = that.getType();
+        if (!dynamic && sie==null &&
+                type instanceof Tree.LocalModifier) {
+            type.addError("value must specify an explicit type or definition", 200);
+        }
         inferType(that, sie);
-        Value dec = that.getDeclarationModel();
         if (type!=null) {
             ProducedType t = type.getTypeModel();
             if (!isTypeUnknown(t)) {
@@ -642,7 +626,7 @@ public class ExpressionVisitor extends Visitor {
         }
         Setter setter = dec.getSetter();
         if (setter!=null) {
-            setter.getParameter().setType(dec.getType());
+            setter.getParameter().getModel().setType(dec.getType());
         }
     }
     
@@ -670,15 +654,15 @@ public class ExpressionVisitor extends Visitor {
                         for (int i=0; i<argTypes.size()&&i<params.size(); i++) {
                             ProducedType at = argTypes.get(i);
                             Tree.Parameter param = params.get(i);
-                            ProducedType t = param.getDeclarationModel()
+                            ProducedType t = param.getParameterModel().getModel()
                                     .getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
-                            checkAssignable(at, t, param.getType(), 
+                            checkAssignable(at, t, param, 
                                     "declared parameter type must be a supertype of type declared in function declaration");
                         }
                         if (!params.isEmpty()) {
                             Tree.Parameter lastParam = params.get(params.size()-1);
-                            boolean refSequenced = lastParam.getDeclarationModel().isSequenced();
-                            boolean refAtLeastOne = lastParam.getDeclarationModel().isAtLeastOne();
+                            boolean refSequenced = lastParam.getParameterModel().isSequenced();
+                            boolean refAtLeastOne = lastParam.getParameterModel().isAtLeastOne();
                             if (refSequenced && !variadic) {
                                 lastParam.addError("parameter list in referenced declaration does not have a variadic parameter");
                             }
@@ -906,23 +890,27 @@ public class ExpressionVisitor extends Visitor {
                 //      currently this is handled elsewhere, but we can
                 //      probably do it better right here
                 if (tpl==null || tpl.getParameters().size()<=j) {
-                    Parameter vp = new ValueParameter();
+                    Parameter vp = new Parameter();
+                    Value v = new Value();
+                    vp.setModel(v);
+                    v.setInitializerParameter(vp);
                     vp.setSequenced(p.isSequenced());
                     vp.setAtLeastOne(p.isAtLeastOne());
                     vp.setDefaulted(p.isDefaulted());
                     vp.setName(p.getName());
-                    vp.setType(pt);
+                    v.setName(p.getName());
+                    v.setType(pt);
                     vp.setDeclaration(m);
-                    vp.setContainer(m);
-                    vp.setScope(m);
+                    v.setContainer(m);
+                    v.setScope(m);
                     l.getParameters().add(vp);
                 }
                 else {
                     Tree.Parameter tp = tpl.getParameters().get(j++);
-                    Parameter rp = tp.getDeclarationModel();
-                    ProducedType rpt = rp.getProducedReference(null, 
+                    Parameter rp = tp.getParameterModel();
+                    ProducedType rpt = rp.getModel().getProducedReference(null, 
                             Collections.<ProducedType>emptyList()).getFullType();
-                    checkAssignable(rpt, pt, tp.getType(), 
+                    checkAssignable(rpt, pt, tp, 
                             "declared parameter type must exactly the same as type of parameter of refined method");
                     rp.setDefaulted(p.isDefaulted());
                     l.getParameters().add(rp);
@@ -952,17 +940,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.Parameter that) {
+    @Override public void visit(Tree.ParameterDeclaration that) {
         super.visit(that);
-        Tree.Type type = that.getType();
-        Tree.DefaultArgument da = that.getDefaultArgument();
-        Parameter p = that.getDeclarationModel();
-        if (da!=null && type!=null) {
-            Tree.SpecifierExpression se = da.getSpecifierExpression();
-            checkType(type.getTypeModel(), p.getName(), se, 2100);
-        }
-        if (type instanceof Tree.LocalModifier && 
-                !(that instanceof Tree.InitializerParameter)) {
+        Tree.Type type = that.getTypedDeclaration().getType();
+        if (type instanceof Tree.LocalModifier) {
+            Parameter p = that.getParameterModel();
             type.setTypeModel(new UnknownType(unit).getType());
             if (!dynamic) {
                 type.addError("parameter may not have inferred type: " + 
@@ -974,16 +956,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
-    @Override
-    public void visit(Tree.InitializerParameter that) {
-        Parameter d = that.getDeclarationModel();
-        if (d!=null) {
-            that.getType().setTypeModel(d.getType());
-        }
-        super.visit(that);
-    }
-        
+    
     private void checkType(ProducedType declaredType, 
             Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null && sie.getExpression()!=null) {
@@ -1076,7 +1049,7 @@ public class ExpressionVisitor extends Visitor {
         endReturnDeclaration(od);
         Setter setter = dec.getSetter();
         if (setter!=null) {
-            setter.getParameter().setType(dec.getType());
+            setter.getParameter().getModel().setType(dec.getType());
         }
     }
 
@@ -1223,7 +1196,7 @@ public class ExpressionVisitor extends Visitor {
         Class c = alias.getExtendedTypeDeclaration();
         if (c!=null) {
             if (c.isAbstract()) {
-                if (!alias.isFormal()&&!alias.isAbstract()) {
+                if (!alias.isFormal() && !alias.isAbstract()) {
                     that.addError("alias of abstract class must be annotated abstract"); //TODO: error code
                 }
             }
@@ -1644,26 +1617,28 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkSuperInvocation(Tree.MemberOrTypeExpression qmte) {
         Declaration member = qmte.getDeclaration();
-        if (member.isFormal() && !inExtendsClause) {
-            qmte.addError("supertype member is declared formal: " + member.getName() + 
-                    " of " + ((TypeDeclaration) member.getContainer()).getName());
-        }
-        ClassOrInterface ci = getContainingClassOrInterface(qmte.getScope());
-        Declaration etm = ci.getExtendedTypeDeclaration()
-                .getMember(member.getName(), null, false);
-        if (etm!=null && !etm.equals(member) && etm.refines(member)) {
-            qmte.addError("inherited member is refined by intervening superclass: " + 
-                    ((TypeDeclaration) etm.getContainer()).getName() + 
-                    " refines " + member.getName() + " declared by " + 
-                    ci.getName());
-        }
-        for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
-            Declaration stm = td.getMember(member.getName(), null, false);
-            if (stm!=null && !stm.equals(member) && stm.refines(member)) {
-                qmte.addError("inherited member is refined by intervening superinterface: " + 
-                        ((TypeDeclaration) stm.getContainer()).getName() + 
+        if (member!=null) {
+            if (member.isFormal() && !inExtendsClause) {
+                qmte.addError("supertype member is declared formal: " + member.getName() + 
+                        " of " + ((TypeDeclaration) member.getContainer()).getName());
+            }
+            ClassOrInterface ci = getContainingClassOrInterface(qmte.getScope());
+            Declaration etm = ci.getExtendedTypeDeclaration()
+                    .getMember(member.getName(), null, false);
+            if (etm!=null && !etm.equals(member) && etm.refines(member)) {
+                qmte.addError("inherited member is refined by intervening superclass: " + 
+                        ((TypeDeclaration) etm.getContainer()).getName() + 
                         " refines " + member.getName() + " declared by " + 
                         ci.getName());
+            }
+            for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
+                Declaration stm = td.getMember(member.getName(), null, false);
+                if (stm!=null && !stm.equals(member) && stm.refines(member)) {
+                    qmte.addError("inherited member is refined by intervening superinterface: " + 
+                            ((TypeDeclaration) stm.getContainer()).getName() + 
+                            " refines " + member.getName() + " declared by " + 
+                            ci.getName());
+                }
             }
         }
     }
@@ -2328,8 +2303,7 @@ public class ExpressionVisitor extends Visitor {
                 //      this is really the "shortcut" form
                 if (t instanceof Tree.FunctionModifier && 
                         t.getToken()==null &&
-                    p instanceof FunctionalParameter &&
-                        ((FunctionalParameter) p).isDeclaredVoid() &&
+                    p.isDeclaredVoid() &&
                     !isSatementExpression(se.getExpression())) {
                     ta.addError("functional parameter is declared void so argument may not evaluate to a value: " +
                             p.getName());
@@ -5516,16 +5490,19 @@ public class ExpressionVisitor extends Visitor {
                 }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
 
             }
-        }else if(result instanceof Parameter){
-            Parameter param = (Parameter) result;
+        }
+        else if (result.isParameter()) {
+            MethodOrValue mov = (MethodOrValue) result;
+            Parameter param = mov.getInitializerParameter();
 
             if(that.getTypeArgumentList() != null){
                 that.addError("does not accept type arguments: " + result.getName(unit));
-            }else{
-                ProducedTypedReference pr = param.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
+            }
+            else{
+                ProducedTypedReference pr = mov.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
                 that.setTarget(pr);
 
-                if(!isParameterised && param.isShared()){
+                if (!isParameterised && mov.isShared()){
                     ProducedType parameterType = getTypeLiteralParameterType(pr, param);
                     ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
                     ProducedType attributeDeclarationType = getTypeLiteralParameterDeclarationType(param);
@@ -5534,10 +5511,11 @@ public class ExpressionVisitor extends Visitor {
                     it.getSatisfiedTypes().add(attributeDeclarationType);
                     it.getSatisfiedTypes().add(parameterType);
                     that.setTypeModel(it.getType());
-                }else if(typeLiteralMode == TypeLiteralMode.Declaration
-                        || (!isParameterised && !param.isShared())){
+                }
+                else if(typeLiteralMode == TypeLiteralMode.Declaration
+                        || (!isParameterised && !mov.isShared())){
                     ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                    if(param.isShared()){
+                    if(mov.isShared()){
                         IntersectionType it = new IntersectionType(unit);
                         ProducedType attributeDeclarationType = getTypeLiteralParameterDeclarationType(param);
                         it.getSatisfiedTypes().add(parameterDeclarationType);
@@ -5547,11 +5525,13 @@ public class ExpressionVisitor extends Visitor {
                         that.setTypeModel(parameterDeclarationType);
                     }
                     that.setWantsDeclaration(true);
-                }else if(typeLiteralMode == TypeLiteralMode.Type){
-                    if(param.isShared()){
+                }
+                else if (typeLiteralMode == TypeLiteralMode.Type){
+                    if (mov.isShared()){
                         ProducedType attributeType = getTypeLiteralParameterType(pr, param);
                         that.setTypeModel(attributeType);
-                    }else{
+                    }
+                    else{
                         that.addError("non-shared parameters are not reified in the metamodel: "+ result.getName(unit));
                     }
                 }
@@ -5560,9 +5540,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getTypeLiteralParameterDeclarationType(Parameter param) {
-        if(param instanceof FunctionalParameter)
+        if (param.getModel() instanceof Method)
             return getTypeLiteralDeclarationType("FunctionDeclaration");
-        return getTypeLiteralValueDeclarationType(param);
+        return getTypeLiteralValueDeclarationType(param.getModel());
     }
 
     // should really be a Value|Parameter but hey ;)
@@ -5571,9 +5551,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getTypeLiteralParameterType(ProducedTypedReference pr, Parameter param) {
-        if(param instanceof FunctionalParameter)
-            return getTypeLiteralFunctionType(pr, ((FunctionalParameter) param).getParameterLists().get(0));
-        return getTypeLiteralAttributeType(pr, param);
+        if (param.getModel() instanceof Method)
+            return getTypeLiteralFunctionType(pr, ((Method)param.getModel()).getParameterLists().get(0));
+        return getTypeLiteralAttributeType(pr, param.getModel());
     }
 
     // should really be a Value|Parameter but hey ;)

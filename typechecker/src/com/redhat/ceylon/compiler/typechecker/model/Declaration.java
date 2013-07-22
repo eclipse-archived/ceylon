@@ -321,5 +321,9 @@ public abstract class Declaration
 	public void setOtherInstanceAccess(boolean access) {
 		otherInstanceAccess=access;
 	}
+	
+	public boolean isParameter() {
+	    return false;
+	}
 
 }

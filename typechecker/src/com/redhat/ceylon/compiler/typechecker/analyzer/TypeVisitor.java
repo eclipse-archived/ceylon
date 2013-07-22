@@ -10,7 +10,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +17,6 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
@@ -32,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -845,25 +844,15 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         Tree.SpecifierExpression sie = that.getSpecifierExpression();
-        if (sie==null
-                && that.getType() instanceof Tree.FunctionModifier) {
+        if (sie==null && that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("function must specify an explicit return type or definition");
         }
-        TypedDeclaration dec = that.getDeclarationModel();
-        if (dec!=null) {
-            Scope s = dec.getContainer();
-            if (s instanceof Functional) {
-                Parameter param = ((Functional) s).getParameter( dec.getName() );
-                if (param instanceof Parameter && 
-                        ((Parameter) param).isHidden()) {
-                    ProducedType ft = dec.getProducedReference(null, 
-                            Collections.<ProducedType>emptyList()).getFullType();
-                    param.setType(ft);
-                    if (sie!=null) {
-                        sie.addError("function is an initializer parameter and may not have an initial value: " + 
-                        		dec.getName());
-                    }
-                }
+        Method dec = that.getDeclarationModel();
+        if (dec!=null && dec.isParameter() && 
+                dec.getInitializerParameter().isHidden()) {
+            if (sie!=null) {
+                sie.addError("value is an initializer parameter and may not have an initial value: " + 
+                        dec.getName());
             }
         }
     }
@@ -872,20 +861,14 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        TypedDeclaration dec = that.getDeclarationModel();
-        if (dec!=null) {
-            Scope s = dec.getContainer();
-            if (s instanceof Functional) {
-                Parameter param = ((Functional) s).getParameter( dec.getName() );
-                if (param instanceof Parameter && 
-                        ((Parameter) param).isHidden()) {
-                    param.setType(dec.getType());
-                    param.setSequenced(that.getType() instanceof Tree.SequencedType);
-                    if (sie!=null) {
-                        sie.addError("value is an initializer parameter and may not have an initial value: " + 
-                        		dec.getName());
-                    }
-                }
+        Value dec = that.getDeclarationModel();
+        if (dec!=null && dec.isParameter() && 
+                dec.getInitializerParameter().isHidden()) {
+            Parameter param = dec.getInitializerParameter();
+            param.setSequenced(that.getType() instanceof Tree.SequencedType);
+            if (sie!=null) {
+                sie.addError("value is an initializer parameter and may not have an initial value: " + 
+                        dec.getName());
             }
         }
     }
@@ -1129,25 +1112,26 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.InitializerParameter that) {
         super.visit(that);
         //i.e. an attribute initializer parameter
-        Parameter d = that.getDeclarationModel();
-        Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
+        Parameter p = that.getParameterModel();
+        Declaration a = that.getScope().getDirectMember(p.getName(), null, false);
         if (a==null) {
-            that.addError("parameter declaration does not exist: " + d.getName());
+            that.addError("parameter declaration does not exist: " + p.getName());
         }
         else if (!(a instanceof Value && !((Value)a).isTransient()) && 
                 !(a instanceof Method)) {
-            that.addError("parameter is not a reference value or function: " + d.getName());
+            that.addError("parameter is not a reference value or function: " + p.getName());
         }
         else if (a.isFormal()) {
-            that.addError("parameter is a formal attribute: " + 
-                    d.getName());
+            that.addError("parameter is a formal attribute: " + p.getName());
         }
         /*else if (a.isDefault()) {
             that.addError("initializer parameter refers to a default attribute: " + 
                     d.getName());
         }*/
         else {
-            ((MethodOrValue) a).setInitializerParameter(d);
+            MethodOrValue mov = (MethodOrValue) a;
+            mov.setInitializerParameter(p);
+            p.setModel(mov);
         }
         /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
             if (a instanceof Method) {
@@ -1159,7 +1143,10 @@ public class TypeVisitor extends Visitor {
         }*/
         if (a instanceof Generic && !((Generic)a).getTypeParameters().isEmpty()) {
             that.addError("parameter declaration has type parameters: " + 
-                    d.getName());
+                    p.getName());
+        }
+        if (p.isDefaulted()) {
+            checkDefaultArg(that.getSpecifierExpression(), p);
         }
     }
     
@@ -1214,5 +1201,59 @@ public class TypeVisitor extends Visitor {
             mte.setDirectlyInvoked(true);
         }
     }
-        
+
+    private static Tree.SpecifierOrInitializerExpression getSpecifier(
+            Tree.ParameterDeclaration that) {
+        Tree.TypedDeclaration d = that.getTypedDeclaration();
+        if (d instanceof Tree.AttributeDeclaration) {
+            return ((Tree.AttributeDeclaration) d)
+                    .getSpecifierOrInitializerExpression();
+        }
+        else if (d instanceof Tree.MethodDeclaration) {
+            return ((Tree.MethodDeclaration) that.getTypedDeclaration())
+                    .getSpecifierExpression();
+        }
+        else {
+            return null;
+        }
+    }
+    
+    private void checkDefaultArg(Tree.SpecifierOrInitializerExpression se, Parameter p) {
+        if (se!=null) {
+            if (se.getScope() instanceof Specification) {
+                se.addError("parameter of specification statement may not define default value");
+            }
+            else {
+                Declaration d = p.getDeclaration();
+                if (d.isActual()) {
+                    se.addError("parameter of actual declaration may not define default value: parameter " +
+                            p.getName() + " of " + p.getDeclaration().getName());
+                }
+            }
+            /*if (declaration instanceof Method &&
+                !declaration.isToplevel() &&
+                !(declaration.isClassOrInterfaceMember() && 
+                        ((Declaration) declaration.getContainer()).isToplevel())) {
+                se.addWarning("default arguments for parameters of inner methods not yet supported");
+            }
+            if (declaration instanceof Class && 
+                    !declaration.isToplevel()) {
+                se.addWarning("default arguments for parameters of inner classes not yet supported");
+            }*/
+                /*else {
+                se.addWarning("parameter default values are not yet supported");
+            }*/
+        }
+    }
+    
+    @Override public void visit(Tree.ParameterDeclaration that) {
+        super.visit(that);
+        Parameter p = that.getParameterModel();
+        if (p.isDefaulted()) {
+            if (p.getDeclaration().isParameter()) {
+                getSpecifier(that).addError("parameter of callable parameter may not have default argument");
+            }
+            checkDefaultArg(getSpecifier(that), p);
+        }
+    }
 }

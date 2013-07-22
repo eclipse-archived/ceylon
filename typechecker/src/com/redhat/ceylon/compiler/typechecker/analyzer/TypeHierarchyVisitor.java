@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -358,15 +357,9 @@ public class TypeHierarchyVisitor extends Visitor {
             type.declaration = declaration;
             for (Declaration member : declaration.getMembers()) {
                 if (!(member instanceof MethodOrValue || 
-                      member instanceof Class ||
-                      member instanceof Parameter) || 
+                      member instanceof Class) || 
                         member.isStaticallyImportable()) {
                     continue;
-                }
-                if (member instanceof Parameter) {
-                    if (((Parameter) member).isHidden()) {
-                        continue;
-                    }
                 }
                 final String name = member.getName();
                 Type.Members members = type.membersByName.get(name);

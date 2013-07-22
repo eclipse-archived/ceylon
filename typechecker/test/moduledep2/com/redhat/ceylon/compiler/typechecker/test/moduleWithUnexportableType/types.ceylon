@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.test.moduleWithExportedType { Expo
 shared class SharedTypeInParam(@error ExportedClass a){}
 class TypeInParam(ExportedClass a){}
 
-shared class SharedTypeInParam2(@error a){
+@error shared class SharedTypeInParam2(a){
     @error shared ExportedClass a;
 }
 class TypeInParam2(a){

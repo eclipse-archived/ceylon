@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -40,7 +41,7 @@ public class TypeArgumentVisitor extends Visitor {
             flip();
             if (that.getSatisfiedTypes()!=null) {
                 for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                    check(type, false, null);
+                    check(type.getTypeModel(), type, false, null);
                     checkSupertype(type);
                 }
             }
@@ -52,10 +53,10 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.Parameter that) {
         boolean topLevel = parameterizedDeclaration==null;
         if (topLevel) {
-            parameterizedDeclaration = that.getDeclarationModel().getDeclaration();
+            parameterizedDeclaration = that.getParameterModel().getDeclaration();
         }
         super.visit(that);
-        check(that.getType(), false, parameterizedDeclaration);
+        check(that.getParameterModel().getType(), that, false, parameterizedDeclaration);
         if (topLevel) {
             parameterizedDeclaration = null;
         }
@@ -63,11 +64,14 @@ public class TypeArgumentVisitor extends Visitor {
     
     @Override public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        if (!(that instanceof Tree.Variable) && 
-            !(that instanceof Tree.Parameter)) {
-            check(that.getType(), 
-            		that.getDeclarationModel().isVariable(), 
-            		that.getDeclarationModel());
+        if (!(that instanceof Tree.Variable)) {
+            Type type = that.getType();
+            if (type!=null) {
+                check(type.getTypeModel(), 
+                        type, 
+                        that.getDeclarationModel().isVariable(), 
+                        that.getDeclarationModel());
+            }
         }
     }
     
@@ -75,7 +79,7 @@ public class TypeArgumentVisitor extends Visitor {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
             for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                check(type, false, null);
+                check(type.getTypeModel(), type, false, null);
                 checkSupertype(type);
             }
         }
@@ -84,37 +88,40 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
         if (that.getClassSpecifier()!=null) {
-            check(that.getClassSpecifier().getType(), false, null);
+            Tree.SimpleType type = that.getClassSpecifier().getType();
+            check(type.getTypeModel(), type, false, null);
         }
     }
     
     @Override public void visit(Tree.InterfaceDeclaration that) {
         super.visit(that);
         if (that.getTypeSpecifier()!=null) {
-            check(that.getTypeSpecifier().getType(), false, null);
+            Tree.StaticType type = that.getTypeSpecifier().getType();
+            check(type.getTypeModel(), type, false, null);
         }
     }
     
     @Override public void visit(Tree.TypeAliasDeclaration that) {
         super.visit(that);
         if (that.getTypeSpecifier()!=null) {
-            check(that.getTypeSpecifier().getType(), false, null);
+            Tree.StaticType type = that.getTypeSpecifier().getType();
+            check(type.getTypeModel(), type, false, null);
         }
     }
     
     @Override public void visit(Tree.AnyClass that) {
         super.visit(that);
         if (that.getExtendedType()!=null) {
-            check(that.getExtendedType().getType(), false, null);
-            checkSupertype(that.getExtendedType().getType());
+            Tree.SimpleType type = that.getExtendedType().getType();
+            check(type.getTypeModel(), type, false, null);
+            checkSupertype(type);
         }
     }
     
     @Override public void visit(Tree.FunctionArgument that) {}
 
-    private void check(Tree.Type that, boolean variable, Declaration d) {
+    private void check(ProducedType type, Node that, boolean variable, Declaration d) {
         if (that!=null && (d==null || d.isShared() || d.getOtherInstanceAccess())) {
-            ProducedType type = that.getTypeModel();
 			if (type!=null) {
 				List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
 						contravariant && !variable, parameterizedDeclaration);
@@ -123,7 +130,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
 
-	private void displayErrors(Tree.Type that, ProducedType type,
+	private void displayErrors(Node that, ProducedType type,
 			List<TypeParameter> errors) {
 		for (TypeParameter td: errors) {
 			String var; String loc;

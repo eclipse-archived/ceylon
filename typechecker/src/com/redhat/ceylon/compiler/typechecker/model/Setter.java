@@ -10,7 +10,7 @@ import java.util.List;
 public class Setter extends MethodOrValue implements Scope {
 
 	private Value getter;
-	private ValueParameter parameter;
+	private Parameter parameter;
 
     public Value getGetter() {
         return getter;
@@ -20,11 +20,11 @@ public class Setter extends MethodOrValue implements Scope {
         this.getter = getter;
     }
     
-    public ValueParameter getParameter() {
+    public Parameter getParameter() {
 		return parameter;
 	}
     
-    public void setParameter(ValueParameter parameter) {
+    public void setParameter(Parameter parameter) {
 		this.parameter = parameter;
 	}
 

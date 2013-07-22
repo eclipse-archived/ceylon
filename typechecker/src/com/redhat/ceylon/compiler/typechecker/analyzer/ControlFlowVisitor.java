@@ -180,7 +180,8 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeDeclaration that) {
-        if (that.getSpecifierOrInitializerExpression()!=null &&
+        if (!that.getDeclarationModel().isParameter() &&
+            that.getSpecifierOrInitializerExpression()!=null &&
         		!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
             checkExecutableStatementAllowed(that.getSpecifierOrInitializerExpression());
             super.visit(that);

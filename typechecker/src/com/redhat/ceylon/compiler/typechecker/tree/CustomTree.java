@@ -206,68 +206,6 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class ValueParameterDeclaration 
-            extends Tree.ValueParameterDeclaration {
-        public ValueParameterDeclaration(Token token) {
-            super(token);
-        }
-        @Override
-        public void visit(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visit(visitor);
-            }
-            else {
-                if (getDefaultArgument()!=null)
-                    getDefaultArgument().visit(visitor);
-                super.visit(visitor);
-            }
-        }
-        @Override
-        public void visitChildren(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visitChildren(visitor);
-            }
-            else {
-                Walker.walkTypedDeclaration(visitor, this);
-            }
-        }
-        @Override public String getNodeType() {
-            return ValueParameterDeclaration.class.getSimpleName();
-        }
-    }
-    
-    public static class FunctionalParameterDeclaration 
-            extends Tree.FunctionalParameterDeclaration {
-        public FunctionalParameterDeclaration(Token token) {
-            super(token);
-        }
-        @Override
-        public void visit(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visit(visitor);
-            }
-            else {
-                super.visit(visitor);
-            }
-        }
-        @Override
-        public void visitChildren(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visitChildren(visitor);
-            }
-            else {
-                Walker.walkTypedDeclaration(visitor, this);
-                for (Tree.ParameterList subnode: getParameterLists())
-                    subnode.visit(visitor);
-                if (getDefaultArgument()!=null)
-                    getDefaultArgument().visit(visitor);
-            }
-        }
-        @Override public String getNodeType() {
-            return FunctionalParameterDeclaration.class.getSimpleName();
-        }
-    }
-    
     public static class ExtendedTypeExpression 
             extends Tree.ExtendedTypeExpression {
         public ExtendedTypeExpression(Token token) {

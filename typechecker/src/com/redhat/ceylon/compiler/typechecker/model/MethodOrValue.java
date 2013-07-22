@@ -26,6 +26,11 @@ public abstract class MethodOrValue extends TypedDeclaration {
     public void setInitializerParameter(Parameter d) {
         initializerParameter = d;
     }
+    
+    @Override
+    public boolean isParameter() {
+        return initializerParameter!=null;
+    }
 
     public boolean isTransient() {
         return true;

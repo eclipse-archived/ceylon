@@ -66,6 +66,10 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.StatementOrArgument that) {
+        if (ignore) {
+            super.visit(that);
+            return;
+        }
         if (that instanceof Tree.Variable) {
             if ( ((Tree.Variable) that).getType() instanceof Tree.SyntheticVariable ) {
                 super.visit(that);
@@ -78,6 +82,23 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         foundErrors = new ArrayList<Message>();
         initExpectingError(that.getCompilerAnnotations());
         super.visit(that);
+        checkErrors(that);
+        expectingError = b;
+        foundErrors = f;
+    }
+    
+    boolean ignore;
+    
+    @Override
+    public void visit(Tree.ParameterDeclaration that) {
+        boolean b = expectingError;
+        List<Message> f = foundErrors;
+        expectingError = false;
+        foundErrors = new ArrayList<Message>();
+        initExpectingError(that.getTypedDeclaration().getCompilerAnnotations());
+        ignore=true;
+        super.visit(that);
+        ignore=false;
         checkErrors(that);
         expectingError = b;
         foundErrors = f;

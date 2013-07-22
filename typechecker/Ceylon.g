@@ -798,14 +798,14 @@ parameters returns [ParameterList parameterList]
     : LPAREN
       { $parameterList=new ParameterList($LPAREN); }
       (
-        ap1=parameterDeclaration 
+        ap1=parameterDeclarationOrRef 
         { if ($ap1.parameter!=null)
               $parameterList.addParameter($ap1.parameter); }
         (
           c=COMMA
           { $parameterList.setEndToken($c); }
           (
-            ap2=parameterDeclaration
+            ap2=parameterDeclarationOrRef
             { if ($ap2.parameter!=null) {
                   $parameterList.addParameter($ap2.parameter); 
                   $parameterList.setEndToken(null); } }
@@ -823,44 +823,44 @@ parameters returns [ParameterList parameterList]
 // and varargs arguments can appear in any order.  We'll have to
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
-parameter returns [Parameter parameter]
+parameter returns [ParameterDeclaration parameter]
     @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null); 
-            FunctionalParameterDeclaration fp = new FunctionalParameterDeclaration(null); 
+            FunctionalParameterDeclaration fp = new FunctionalParameterDeclaration(null);
+            AttributeDeclaration a = new AttributeDeclaration(null); 
+            MethodDeclaration m = new MethodDeclaration(null);
+            vp.setTypedDeclaration(a);
+            fp.setTypedDeclaration(m);
             $parameter = vp; }
     : ( 
         variadicType
-        { vp.setType($variadicType.type);
-          fp.setType($variadicType.type); }
+        { a.setType($variadicType.type);
+          m.setType($variadicType.type); }
       | VOID_MODIFIER
-        { fp.setType(new VoidModifier($VOID_MODIFIER));
-          $parameter=fp; }
+        { m.setType(new VoidModifier($VOID_MODIFIER));
+          $parameter=vp; }
       | FUNCTION_MODIFIER
-        { fp.setType(new FunctionModifier($FUNCTION_MODIFIER));
+        { m.setType(new FunctionModifier($FUNCTION_MODIFIER));
           $parameter=fp; }
       | VALUE_MODIFIER
-        { vp.setType(new ValueModifier($VALUE_MODIFIER)); }
+        { a.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
       memberName
-      { vp.setIdentifier($memberName.identifier);
-        fp.setIdentifier($memberName.identifier); }
+      { a.setIdentifier($memberName.identifier);
+        m.setIdentifier($memberName.identifier); }
       (
         (
           specifier
-          { DefaultArgument da = new DefaultArgument(null);
-            $parameter.setDefaultArgument(da);
-            da.setSpecifierExpression($specifier.specifierExpression); }
+          { a.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
         )?
       |
         (
           parameters
-          { fp.addParameterList($parameters.parameterList);
+          { m.addParameterList($parameters.parameterList);
             $parameter=fp; }
         )+
         (
           lazySpecifier
-          { DefaultArgument da = new DefaultArgument(null);
-            $parameter.setDefaultArgument(da);
-            da.setSpecifierExpression($lazySpecifier.specifierExpression); }
+          { m.setSpecifierExpression($lazySpecifier.specifierExpression); }
         )?
       )
     ;
@@ -868,29 +868,24 @@ parameter returns [Parameter parameter]
 parameterRef returns [InitializerParameter parameter]
     : memberName
       { $parameter = new InitializerParameter(null);
-        $parameter.setType(new ValueModifier(null));
         $parameter.setIdentifier($memberName.identifier); }
       (
         specifier
-        { DefaultArgument da = new DefaultArgument(null);
-          da.setSpecifierExpression($specifier.specifierExpression);
-          $parameter.setDefaultArgument(da); }
+        { $parameter.setSpecifierExpression($specifier.specifierExpression); }
       )?
     ;
 
-parameterDeclaration returns [Parameter parameter]
-    : compilerAnnotations
-      (
-        r=parameterRef
-        { $parameter=$r.parameter; }
-      | 
-        annotations 
-        p=parameter
-        { $parameter=$p.parameter;
-          $parameter.setAnnotationList($annotations.annotationList); }
-      )
-      { if ($parameter!=null)
-        $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+parameterDeclarationOrRef returns [Parameter parameter]
+    :
+      r=parameterRef
+      { $parameter=$r.parameter; }
+    | 
+      compilerAnnotations
+      annotations
+      p=parameter
+      { $parameter=$p.parameter;
+        $p.parameter.getTypedDeclaration().setAnnotationList($annotations.annotationList);
+        $p.parameter.getTypedDeclaration().getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
 typeParameters returns [TypeParameterList typeParameterList]

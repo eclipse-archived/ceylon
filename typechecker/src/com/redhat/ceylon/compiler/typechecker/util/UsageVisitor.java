@@ -6,7 +6,6 @@ package com.redhat.ceylon.compiler.typechecker.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
@@ -66,7 +65,7 @@ public class UsageVisitor extends Visitor {
         		!declaration.isShared() && 
         		!declaration.isToplevel() && 
         		!rc.referenced(declaration) &&
-        		!(declaration instanceof Parameter) &&
+        		!declaration.isParameter() &&
         		!(that instanceof Tree.Variable)) {
             that.addUsageWarning("declaration is never used: " + 
         		    declaration.getName());

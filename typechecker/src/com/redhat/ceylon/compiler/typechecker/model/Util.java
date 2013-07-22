@@ -94,16 +94,9 @@ public class Util {
     public static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&
             !(declaration instanceof Setter) && //return getters, not setters
-            !(declaration instanceof Parameter && 
-                    ((Parameter) declaration).isHidden()) &&
             !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     
-    static boolean isParameter(Declaration d) {
-        return d instanceof Parameter
-                || d instanceof TypeParameter;
-    }
-
     public static boolean isAbstraction(Declaration d) {
         return d instanceof Functional && 
                 ((Functional) d).isAbstraction();
@@ -156,13 +149,13 @@ public class Util {
                     for (int i=0; i<size; i++) {
                         //ignore optionality for resolving overloads, since
                         //all Java method params are treated as optional
-                        ProducedType pdt = params.get(i).getType();
+                        ProducedType pdt = params.get(i).getModel().getType();
                         if (pdt==null) return false;
                         ProducedType sdt = signature.get(i);
                         if (!matches(pdt, sdt, d)) return false;
                     }
                     if (hasSeqParam) {
-                        ProducedType pdt = params.get(size).getType();
+                        ProducedType pdt = params.get(size).getModel().getType();
                         if (pdt==null) return false;
                         if (ellipsis){
                             // we must have exactly one spread param
@@ -249,8 +242,8 @@ public class Util {
                     //if all parameters are of more specific
                     //or equal type, prefer it
                     for (int i=0; i<dplSize; i++) {
-                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getType());
-                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getType());
+                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getModel().getType());
+                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getModel().getType());
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
                         if (!erase(paramType.getDeclaration())
                                     .inherits(erase(otherType.getDeclaration())) &&
@@ -260,8 +253,8 @@ public class Util {
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp){
-                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(dplSize).getType());
-                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(dplSize).getType());
+                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(dplSize).getModel().getType());
+                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(dplSize).getModel().getType());
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
                         paramType = d.getUnit().getIteratedType(paramType);
                         otherType = d.getUnit().getIteratedType(otherType);
@@ -796,7 +789,7 @@ public class Util {
         int size = parameterList.getParameters().size();
         List<ProducedType> signature = new ArrayList<ProducedType>(size);
         for(Parameter param : parameterList.getParameters()){
-            signature.add(param.getType());
+            signature.add(param.getModel().getType());
         }
         return signature;
     }

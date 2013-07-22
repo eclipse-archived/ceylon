@@ -12,7 +12,7 @@ public class DeclarationWithProximity {
     }
     
     public DeclarationWithProximity(Parameter parameter, NamedArgumentList nal) {
-        this.declaration = parameter;
+        this.declaration = parameter.getModel();
         this.proximity = 0;
         this.name = declaration.getName();
         this.namedArgumentList = nal;

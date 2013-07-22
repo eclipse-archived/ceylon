@@ -26,7 +26,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -46,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -68,8 +68,10 @@ public class RefinementVisitor extends Visitor {
         for (Tree.ParameterList list: that.getParameterLists()) {
             for (Tree.Parameter tp: list.getParameters()) {
                 if (tp!=null) {
-                    Parameter p = tp.getDeclarationModel();
-                    checkVisibility(tp, td, p.getType(), "declaration");
+                    Parameter p = tp.getParameterModel();
+                    if (p.getModel()!=null) {
+                        checkVisibility(tp, td, p.getModel().getType(), "declaration");
+                    }
                 }
             }
         }
@@ -82,8 +84,10 @@ public class RefinementVisitor extends Visitor {
         if (that.getParameterList()!=null) {
             for (Tree.Parameter tp: that.getParameterList().getParameters()) {
                 if (tp!=null) {
-                    Parameter p = tp.getDeclarationModel();
-                    checkVisibility(tp, td, p.getType(), "declaration");
+                    Parameter p = tp.getParameterModel();
+                    if (p.getModel()!=null) {
+                        checkVisibility(tp, td, p.getModel().getType(), "declaration");
+                    }
                 }
             }
         }
@@ -342,16 +346,19 @@ public class RefinementVisitor extends Visitor {
         super.visit(that);
     }
 
-    private void checkVisibility(Tree.TypedDeclaration that, Declaration td, ProducedType type, String typeName) {
+    private void checkVisibility(Node that, Declaration td, 
+            ProducedType type, String typeName) {
         if (type!=null) {
             if (!isCompletelyVisible(td, type)) {
-                that.getType().addError("type of " + typeName + " is not visible everywhere declaration is visible: " 
-                        + td.getName());
+                that.addError("type of " + typeName + 
+                        " is not visible everywhere declaration is visible: " + 
+                        td.getName());
             }
             if (!checkModuleVisibility(td, type)) {
-                that.getType().addError("type occurs in a " + typeName + " that is visible outside this module,"
-                        +" but comes from an imported module that is not re-exported: "
-                        + td.getName());
+                that.addError("type occurs in a " + typeName + 
+                        " that is visible outside this module," +
+                        " but comes from an imported module that is not re-exported: "+ 
+                        td.getName());
             }
         }
     }
@@ -372,8 +379,7 @@ public class RefinementVisitor extends Visitor {
             boolean mayBeShared = 
                     dec instanceof MethodOrValue || 
                     dec instanceof ClassOrInterface ||
-                    dec instanceof TypeAlias ||
-                    dec instanceof Parameter;
+                    dec instanceof TypeAlias;
             if (!mayBeShared && dec.isShared()) {
                 that.addError("shared declaration is not a function, value, class, interface, or alias", 1200);
             }
@@ -381,8 +387,7 @@ public class RefinementVisitor extends Visitor {
             boolean mayBeRefined =
                     dec instanceof Value || 
                     dec instanceof Method ||
-                    dec instanceof Class ||
-                    dec instanceof Parameter;
+                    dec instanceof Class;
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
             }
@@ -432,10 +437,8 @@ public class RefinementVisitor extends Visitor {
         }
         else {
             for (Declaration refined: others) {
-                if (dec instanceof Method || 
-                		dec instanceof FunctionalParameter) {
-                    if (!(refined instanceof Method) && 
-                    		!(refined instanceof FunctionalParameter)) {
+                if (dec instanceof Method) {
+                    if (!(refined instanceof Method)) {
                         that.addError("refined declaration is not a method: " + 
                                 message(refined));
                     }
@@ -448,8 +451,7 @@ public class RefinementVisitor extends Visitor {
                 }
                 else if (dec instanceof TypedDeclaration) {
                     if (refined instanceof Class || 
-                    	refined instanceof Method ||
-                    	refined instanceof FunctionalParameter) {
+                    	refined instanceof Method) {
                         that.addError("refined declaration is not an attribute: " + 
                                 message(refined));
                     }
@@ -675,28 +677,25 @@ public class RefinementVisitor extends Visitor {
                 ProducedType parameterType = member.getTypedParameter(param).getFullType();
                 Tree.Parameter p = pl.getParameters().get(i);
                 if (p!=null) {
-                    Tree.Type type = p.getType(); //some kind of syntax error
-                    if (type!=null) {
-                        if (refinedParameterType==null || parameterType==null) {
-                            type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
-                            		param.getName() + " of " + member.getDeclaration().getName() + 
-                            		" declared by " + containerName(member) +
-                                    " refining " + refinedMember.getDeclaration().getName() +
-                                    " declared by " + containerName(refinedMember));
-                        }
-                        else {
-                            //TODO: consider type parameter substitution!!!
-                            checkIsExactlyForInterop(refinedMember, 
-                                    refinedParams.isNamedParametersSupported(), 
-                                    parameterType, refinedParameterType, type,
-                                    "type of parameter " + param.getName() + " of " + 
-                                    member.getDeclaration().getName() +
-                                    " declared by " + containerName(member) +
-                                    " is different to type of corresponding parameter " +
-                                    rparam.getName() + " of refined member " + 
-                                    refinedMember.getDeclaration().getName() + " of " +
-                                    containerName(refinedMember));
-                        }
+                    if (refinedParameterType==null || parameterType==null) {
+                        p.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
+                                param.getName() + " of " + member.getDeclaration().getName() + 
+                                " declared by " + containerName(member) +
+                                " refining " + refinedMember.getDeclaration().getName() +
+                                " declared by " + containerName(refinedMember));
+                    }
+                    else {
+                        //TODO: consider type parameter substitution!!!
+                        checkIsExactlyForInterop(refinedMember, 
+                                refinedParams.isNamedParametersSupported(), 
+                                parameterType, refinedParameterType, p,
+                                "type of parameter " + param.getName() + " of " + 
+                                        member.getDeclaration().getName() +
+                                        " declared by " + containerName(member) +
+                                        " is different to type of corresponding parameter " +
+                                        rparam.getName() + " of refined member " + 
+                                        refinedMember.getDeclaration().getName() + " of " +
+                                        containerName(refinedMember));
                     }
                 }
                 param.setDefaulted(rparam.isDefaulted());
@@ -705,15 +704,15 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
-            ProducedType parameterType, ProducedType refinedParameterType, Tree.Type type, String message) {
+            ProducedType parameterType, ProducedType refinedParameterType, Node node, String message) {
         if (isCeylon){
             // it must be a Ceylon method
-            checkIsExactly(parameterType, refinedParameterType, type, message);
+            checkIsExactly(parameterType, refinedParameterType, node, message);
         }
         else{
             // we're refining a Java method
             ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit().getDefiniteType(refinedParameterType);
-            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, type, message);
+            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, node, message);
         }
     }
 
@@ -723,9 +722,6 @@ public class RefinementVisitor extends Visitor {
         }
         else if (that instanceof Tree.AnyClass) {
             return ((Tree.AnyClass) that).getParameterList();
-        }
-        else if (that instanceof Tree.FunctionalParameterDeclaration) {
-            return ((Tree.FunctionalParameterDeclaration) that).getParameterLists().get(i);
         }
         else {
             return null;
@@ -740,25 +736,22 @@ public class RefinementVisitor extends Visitor {
         ParameterList pl = that.getModel();
         for (Tree.Parameter p: that.getParameters()) {
             if (p!=null) {
-                if (p.getDefaultArgument()!=null) {
+                if (p.getParameterModel().isDefaulted()) {
                     if (foundSequenced) {
-                    	p.getDefaultArgument()
-                            .addError("defaulted parameter must occur before variadic parameter");
+                    	p.addError("defaulted parameter must occur before variadic parameter");
                     }
                     foundDefault = true;
                     if (!pl.isFirst()) {
-                        p.getDefaultArgument()
-                            .addError("only the first parameter list may have defaulted parameters");
+                        p.addError("only the first parameter list may have defaulted parameters");
                     }
                 }
-                else if (p.getDeclarationModel().isSequenced()) {
-                	Tree.Type st = p.getType();
+                else if (p.getParameterModel().isSequenced()) {
                     if (foundSequenced) {
-						st.addError("parameter list may have at most one variadic parameter");
+						p.addError("parameter list may have at most one variadic parameter");
                     }
                     foundSequenced = true;
                     if (!pl.isFirst()) {
-                    	st.addError("only the first parameter list may have a variadic parameter");
+                    	p.addError("only the first parameter list may have a variadic parameter");
                     }
                 }
                 else {

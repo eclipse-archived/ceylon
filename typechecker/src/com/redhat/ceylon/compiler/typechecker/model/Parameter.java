@@ -1,17 +1,25 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 
-public class Parameter extends TypedDeclaration {
+public class Parameter {
     
 	private boolean defaulted;
 	private boolean sequenced;
     private Declaration declaration;
-    private boolean captured = false;
+//    private boolean captured = false;
     private Parameter aliasedParameter = this;
     private boolean atLeastOne = false;
+    private boolean declaredAnything = false;
+    private MethodOrValue model;
+    private String name;
     
     private boolean hidden;
     
+    /**
+     * Is this a split-style parameter declaration where
+     * just the name of the parameter appears in the
+     * parameter list?
+     */
     public boolean isHidden() {
         return hidden;
     }
@@ -19,14 +27,21 @@ public class Parameter extends TypedDeclaration {
         this.hidden = hidden;
     }
     
-    @Override
-    public boolean isCaptured() {
-        return captured;
+    public MethodOrValue getModel() {
+        return model;
+    }
+    public void setModel(MethodOrValue model) {
+        this.model = model;
     }
     
-    public void setCaptured(boolean local) {
-        this.captured = local;
-    }
+//    @Override
+//    public boolean isCaptured() {
+//        return captured;
+//    }
+//    
+//    public void setCaptured(boolean local) {
+//        this.captured = local;
+//    }
     
     public boolean isDefaulted() {
         return defaulted;
@@ -68,10 +83,35 @@ public class Parameter extends TypedDeclaration {
         this.aliasedParameter = parameter;
     }
     
-    @Override
+    public boolean isDeclaredAnything() {
+        return declaredAnything;
+    }
+    
+    public void setDeclaredAnything(boolean declaredAnything) {
+        this.declaredAnything = declaredAnything;
+    }
+    
+    public boolean isDeclaredVoid() {
+        return model instanceof Method && 
+                ((Method) model).isDeclaredVoid();
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public ProducedType getType() {
+        return model==null ? null : model.getType();
+    }
+    
+    /*@Override
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.PARAMETER;
-    }
+    }*/
 
     @Override
     public String toString() {
