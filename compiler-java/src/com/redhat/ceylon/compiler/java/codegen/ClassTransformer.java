@@ -577,7 +577,7 @@ public class ClassTransformer extends AbstractTransformer {
             
         } else if (decl.isHidden()
                         && (decl.getContainer() instanceof TypeDeclaration)) {
-            Declaration member = ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null, false);
+            Declaration member = CodegenUtil.findMethodOrValueForParam(decl);
             if (Decl.isValue(member) 
                     && Strategy.createField(decl, (Value)member)) {
                 // The field itself is created by 
