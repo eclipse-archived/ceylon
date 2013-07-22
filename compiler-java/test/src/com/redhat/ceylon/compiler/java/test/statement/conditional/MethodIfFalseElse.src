@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfFalseElse_ {
+    
+    private methodIfFalseElse_() {
+    }
+    
+    static .java.lang.String methodIfFalseElse() {
+        if (false) {
+            while (true) ;
+        } else {
+            return "else branch";
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfFalseElse_.methodIfFalseElse();
+    }
+}
+final class methodIfFalseElse2_ {
+    
+    private methodIfFalseElse2_() {
+    }
+    
+    static .java.lang.String methodIfFalseElse2() {
+        if (false) {
+            return "impossible branch";
+        } else {
+            return "else branch";
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfFalseElse2_.methodIfFalseElse2();
+    }
+}

@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+final class methodWhileTrue_ {
+    
+    private methodWhileTrue_() {
+    }
+    
+    static .java.lang.String methodWhileTrue(final boolean b) {
+        while (true) {
+            if (true) {
+                return "";
+            } else break;
+        }
+        while (true) ;
+    }
+}
+final class methodWhileTrue2_ {
+    
+    private methodWhileTrue2_() {
+    }
+    
+    static .java.lang.String methodWhileTrue2(final boolean b) {
+        while (true) {
+            if (true) {
+                if (b) {
+                    return "";
+                }
+            } else break;
+        }
+        while (true) ;
+    }
+}
+final class methodWhileTrue3_ {
+    
+    private methodWhileTrue3_() {
+    }
+    
+    static .java.lang.String methodWhileTrue3(final boolean b) {
+        while (true) {
+            if (true) {
+                if (b) {
+                    break;
+                }
+            } else break;
+        }
+        return "";
+    }
+}

@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfTrue_ {
+    
+    private methodIfTrue_() {
+    }
+    
+    static .java.lang.String methodIfTrue() {
+        if (true) {
+            return "";
+        }
+        while (true) ;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfTrue_.methodIfTrue();
+    }
+}

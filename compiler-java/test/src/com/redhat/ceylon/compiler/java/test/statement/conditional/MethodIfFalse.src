@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfFalse_ {
+    
+    private methodIfFalse_() {
+    }
+    
+    static .java.lang.String methodIfFalse() {
+        if (false) {
+        }
+        return "";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfFalse_.methodIfFalse();
+    }
+}

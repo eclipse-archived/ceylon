@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class assertFalse_ {
+    
+    private assertFalse_() {
+    }
+    
+    static .java.lang.String assertFalse() {
+        throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertFalse_.assertFalse();
+    }
+}
