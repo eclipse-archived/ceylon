@@ -100,7 +100,10 @@ public abstract class FreeClassOrInterface
         for(com.redhat.ceylon.compiler.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
             if(memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
                     || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
-                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
+                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface
+                    || memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter
+                    || (memberModelDeclaration instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
+                            && !((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)memberModelDeclaration).isHidden()))
                 declarations.add(Metamodel.getOrCreateMetamodel(memberModelDeclaration));
         }
     }

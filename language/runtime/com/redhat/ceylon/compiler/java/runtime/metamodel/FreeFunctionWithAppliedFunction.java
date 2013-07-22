@@ -4,10 +4,10 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.FunctionModel$impl;
 import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Function$impl;
+import ceylon.language.metamodel.FunctionModel$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -19,7 +19,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -40,7 +39,7 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
 
     public FreeFunctionWithAppliedFunction(@Ignore TypeDescriptor $reifiedType, 
             @Ignore TypeDescriptor $reifiedArguments,
-            Method declaration) {
+            com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;

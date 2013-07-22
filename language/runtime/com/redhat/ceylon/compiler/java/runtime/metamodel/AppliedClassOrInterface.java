@@ -245,7 +245,7 @@ public class AppliedClassOrInterface<Type>
         final FreeAttribute value = declaration.findValue(name);
         if(value == null)
             return null;
-        com.redhat.ceylon.compiler.typechecker.model.Value decl = (com.redhat.ceylon.compiler.typechecker.model.Value) value.declaration;
+        com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) value.declaration;
         ProducedTypedReference typedReference = decl.getProducedTypedReference(producedType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedValueType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
         return AppliedAttribute.instance($reifiedSubType, reifiedValueType, value, typedReference, decl, this);

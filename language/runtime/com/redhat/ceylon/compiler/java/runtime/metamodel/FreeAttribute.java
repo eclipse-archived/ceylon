@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
 import java.util.Collections;
+import java.util.List;
 
 import ceylon.language.metamodel.declaration.OpenType;
 import ceylon.language.metamodel.declaration.AttributeDeclaration$impl;
@@ -11,13 +13,15 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeAttribute 
-    extends FreeTopLevelOrMemberDeclaration
+    extends FreeFunctionOrAttribute
     implements ceylon.language.metamodel.declaration.AttributeDeclaration, AnnotationBearing {
 
     @Ignore
@@ -30,7 +34,7 @@ public class FreeAttribute
 
         this.type = Metamodel.getMetamodel(declaration.getType());
     }
-    
+
     @Override
     @Ignore
     public AttributeDeclaration$impl $ceylon$language$metamodel$declaration$AttributeDeclaration$impl() {
@@ -75,8 +79,32 @@ public class FreeAttribute
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
-        Class<?> javaClass = Metamodel.getJavaClass(declaration);
-        // FIXME: pretty sure this doesn't work with interop and fields
-        return Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration)).getAnnotations();
+        if(parameter != null
+                && parameter instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
+                && !((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)parameter).isHidden()){
+            // get the annotations from the parameter itself
+            Annotation[][] parameterAnnotations;
+            Scope container = parameter.getContainer();
+            if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
+                parameterAnnotations = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method)container).getParameterAnnotations();
+            else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+                // FIXME: pretty sure that's wrong because of synthetic params. See ReflectionMethod.getParameters
+                parameterAnnotations = Reflection.findConstructor(Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)container)).getParameterAnnotations();
+            }else{
+                throw new RuntimeException("Unsupported parameter container");
+            }
+            // now find the right parameter
+            List<Parameter> parameters = ((com.redhat.ceylon.compiler.typechecker.model.Functional)container).getParameterLists().get(0).getParameters();
+            int index = parameters.indexOf(parameter);
+            if(index == -1)
+                throw new RuntimeException("Parameter "+parameter+" not found in container "+parameter.getContainer());
+            if(index >= parameterAnnotations.length)
+                throw new RuntimeException("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getContainer());
+            return parameterAnnotations[index];
+        }else{
+            Class<?> javaClass = Metamodel.getJavaClass(declaration);
+            // FIXME: pretty sure this doesn't work with interop and fields
+            return Reflection.getDeclaredGetter(javaClass, Naming.getGetterName(declaration)).getAnnotations();
+        }
     }
 }

@@ -2,7 +2,6 @@ import ceylon.language.metamodel{Annotated}
 import ceylon.language.metamodel{MetamodelAnnotation = Annotation}
 
 shared interface AnnotatedDeclaration of TopLevelOrMemberDeclaration
-                                       | ParameterDeclaration
                                        | Module
                                        | Package
     satisfies Declaration & Annotated {

@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+
 class Reflection {
 
     private Reflection() {} 
@@ -78,5 +80,35 @@ class Reflection {
         }
         return null;
     }
-    
+
+    static java.lang.reflect.Constructor<?> findConstructor(Class<?> javaClass) {
+        // How to find the right Method, just go for the one with the longest parameter list?
+        // OR go via the Method in AppliedFunction?
+        java.lang.reflect.Constructor<?> best = null;
+        int numBestParams = -1;
+        int numBest = 0;
+        for (java.lang.reflect.Constructor<?> meth : javaClass.getDeclaredConstructors()) {
+            if (meth.isSynthetic()
+                    || meth.getAnnotation(Ignore.class) != null) {
+                continue;
+            }
+            
+            Class<?>[] parameterTypes = meth.getParameterTypes();
+            if (parameterTypes.length > numBestParams) {
+                best = meth;
+                numBestParams = parameterTypes.length;
+                numBest = 1;
+            } else if (parameterTypes.length == numBestParams) {
+                numBest++;
+            }
+        }
+        if (best == null) {
+            throw new RuntimeException("Couldn't find method " + javaClass);
+        }
+        if (numBest > 1) {
+            throw new RuntimeException("Method arity ambiguity " + javaClass);
+        }
+        return best;
+    }
+
 }

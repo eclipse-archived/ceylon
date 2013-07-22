@@ -6,8 +6,8 @@ import java.util.List;
 import ceylon.language.metamodel.Attribute$impl;
 import ceylon.language.metamodel.AttributeModel$impl;
 import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Member$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.VariableAttribute$impl;
 import ceylon.language.metamodel.declaration.AttributeDeclaration;
 
@@ -20,7 +20,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -41,7 +40,7 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
 
     protected FreeVariableWithAppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
-            Value declaration) {
+            com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
 
         // FIXME: same code in FreeAttributeWithMember

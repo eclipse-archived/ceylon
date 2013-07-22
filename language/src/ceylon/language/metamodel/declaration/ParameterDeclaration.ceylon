@@ -1,7 +1,4 @@
-import ceylon.language.metamodel{Annotated}
-
-shared interface ParameterDeclaration
-        satisfies AnnotatedDeclaration & TypedDeclaration {
+shared interface ParameterDeclaration {
     
     shared formal Boolean defaulted;
     

@@ -20,7 +20,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 5)
@@ -45,7 +44,7 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
     public FreeFunctionWithAppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
-            Method declaration) {
+            com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();

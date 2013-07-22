@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -178,14 +179,15 @@ public class Metamodel {
                         }
                     }else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
-                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
-                    // FIXME: make sure this is only for toplevels
-                    com.redhat.ceylon.compiler.typechecker.model.Method method = (com.redhat.ceylon.compiler.typechecker.model.Method)declaration;
-                    if(!hasTypeParameters(method)){
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
+                        || declaration instanceof com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter){
+                    com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
+                    if(method.getContainer() instanceof Method == false
+                       && !hasTypeParameters(method)){
                         if(method.isToplevel()){
                             ProducedReference pr = method.getProducedReference(null, Collections.<ProducedType>emptyList());
                             TypeDescriptor reifiedType = getTypeDescriptorForFunction(pr);
-                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), method, pr);
+                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), (Functional)method, pr);
                             ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedFunction(reifiedType, reifiedArguments, method);
                         }else{
                             // FIXME: other types of containers?
@@ -193,15 +195,20 @@ public class Metamodel {
                             ProducedReference pr = method.getProducedReference(container.getType(), Collections.<ProducedType>emptyList());
                             TypeDescriptor containerType = getTypeDescriptorForProducedType(container.getType());
                             TypeDescriptor reifiedType = getTypeDescriptorForFunction(pr);
-                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), method, pr);
+                            TypeDescriptor reifiedArguments = getTypeDescriptorForArguments(method.getUnit(), (Functional)method, pr);
                             ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunctionWithAppliedMethod(containerType, reifiedType, reifiedArguments, method);
                         }
-                    }else
+                    }else{
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
-                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                    com.redhat.ceylon.compiler.typechecker.model.Value value = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
+                    }
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
+                        || (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
+                                && !((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)declaration).isHidden())){
+                    com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration value = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
                     // FIXME: other container types?
-                    if(value.isToplevel() || !hasTypeParameters((Generic) value.getContainer())){
+                    if(value.getContainer() instanceof Method == false
+                       && (value.isToplevel() 
+                          || !hasTypeParameters((Generic) value.getContainer()))){
                         TypeDescriptor reifiedType = getTypeDescriptorForProducedType(value.getType());
                         if(value.isToplevel()){
                             if(value.isVariable())
@@ -211,10 +218,11 @@ public class Metamodel {
                         }else{
                             // FIXME: other container types?
                             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)value.getContainer()).getType());
-                            if(value.isVariable())
+                            if(value.isVariable()){
                                 ret = new FreeVariableWithAppliedVariableAttribute(reifiedContainer, reifiedType, value);
-                            else
+                            }else{
                                 ret = new FreeAttributeWithAppliedAttribute(reifiedContainer, reifiedType, value);
+                            }
                         }
                     }else{
                         if (value.isVariable()) {
@@ -223,6 +231,17 @@ public class Metamodel {
                             ret = new FreeAttribute(value);
                         }
                     }
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter){
+                    // if the declaration is hidden by a member, return that member, which will be a member&parameter
+                    if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
+                            && ((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)declaration).isHidden()){
+                        // we have a corresponding Attribute or Method that is also a ParameterDeclaration, so just get it
+                        Declaration member = declaration.getContainer().getMember(declaration.getName(), null, false);
+                        if(member == null)
+                            throw new RuntimeException("Hidden parameter with no equivalent member: "+declaration);
+                        ret = Metamodel.getOrCreateMetamodel(member);
+                    }else// private non-hidden parameters are not reified as members, just as parameters
+                        throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }
@@ -232,6 +251,14 @@ public class Metamodel {
         }
     }
 
+    public static boolean hasTypeParameters(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration model) {
+        if(model instanceof com.redhat.ceylon.compiler.typechecker.model.Generic)
+            return hasTypeParameters((com.redhat.ceylon.compiler.typechecker.model.Generic)model);
+        if(model.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)
+            return hasTypeParameters((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)model.getContainer());
+        return false;
+    }
+    
     public static boolean hasTypeParameters(com.redhat.ceylon.compiler.typechecker.model.Generic model) {
         if(!model.getTypeParameters().isEmpty())
             return true;
@@ -704,6 +731,12 @@ public class Metamodel {
                 sb.append(">");
         }
         return sb.toString();
+    }
+
+    public static com.redhat.ceylon.compiler.typechecker.model.Parameter getParameterFromTypedDeclaration(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.MethodOrValue)
+            return ((com.redhat.ceylon.compiler.typechecker.model.MethodOrValue) declaration).getInitializerParameter();
+        return (com.redhat.ceylon.compiler.typechecker.model.Parameter)declaration;
     }
     
 }

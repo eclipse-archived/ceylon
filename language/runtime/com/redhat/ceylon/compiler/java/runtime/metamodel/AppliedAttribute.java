@@ -93,7 +93,7 @@ public class AppliedAttribute<Container, Type>
 
     public static ceylon.language.metamodel.Attribute instance(@Ignore TypeDescriptor $reifiedSubType, @Ignore TypeDescriptor reifiedValueType, 
                                                                FreeAttribute value, ProducedTypedReference valueTypedReference, 
-                                                               com.redhat.ceylon.compiler.typechecker.model.Value decl,
+                                                               com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
                                                                ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
         // if the container has no TP, the declaration will also be an Attribute
         if(!Metamodel.hasTypeParameters((Generic) decl.getContainer()))

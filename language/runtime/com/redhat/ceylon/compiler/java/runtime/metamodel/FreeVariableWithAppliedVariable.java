@@ -34,7 +34,7 @@ public class FreeVariableWithAppliedVariable<Type>
     @Ignore
     private TypeDescriptor $reifiedType;
 
-    protected FreeVariableWithAppliedVariable(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
+    protected FreeVariableWithAppliedVariable(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
         this.$reifiedType = $reifiedType;
         ProducedTypedReference typedReference = declaration.getProducedTypedReference(null, Collections.<ProducedType>emptyList());

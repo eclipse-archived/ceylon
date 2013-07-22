@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 
 @Ceylon(major = 5)
@@ -23,7 +22,7 @@ public class FreeVariable
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeVariable.class);
     
-    public FreeVariable(Value value) {
+    public FreeVariable(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration value) {
         super(value);
     }
     
