@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryCatchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
@@ -575,13 +576,38 @@ public class StatementTransformer extends AbstractTransformer {
             loopStmts.appendList(stmts);
             List<JCStatement> result = List.nil(); 
             if (definitelySatisfied(conditions)) {
-                result = result.prepend(makeInfiniteLoop(conditions.get(0)));
+                BreakVisitor v = new BreakVisitor();
+                thenPart.visit(v);
+                if (!v.breaks) {
+                    result = result.prepend(makeInfiniteLoop(conditions.get(0)));
+                }
             }
             result = result.prepend(make().WhileLoop(makeBoolean(true), 
                     make().Block(0, loopStmts.toList())));
             return result;
         }
 
+    }
+    
+    class BreakVisitor extends Visitor {
+        private boolean breaks = false;
+        
+        
+        public void visit(Tree.WhileStatement stmt) {
+            // We're not interested in breaks in that loop
+        }
+        
+        public void visit(Tree.ForStatement stmt) {
+            // We're not interested in breaks in that loop
+        }
+        
+        public void visit(Tree.Declaration stmt) {
+            // We're not interested in breaks in loops within that declaration
+        }
+        
+        public void visit(Tree.Break stmt) {
+            breaks = true;
+        }
     }
     
     List<JCStatement> transform(Tree.Assertion ass) {
