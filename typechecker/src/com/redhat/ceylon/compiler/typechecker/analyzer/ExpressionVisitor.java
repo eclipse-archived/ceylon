@@ -89,7 +89,6 @@ public class ExpressionVisitor extends Visitor {
     private Tree.Type returnType;
     private Tree.Expression switchExpression;
     private Declaration returnDeclaration;
-    private boolean defaultArgument;
     private boolean isCondition;
     private boolean dynamic;
 
@@ -4217,9 +4216,6 @@ public class ExpressionVisitor extends Visitor {
             else {
                 that.setTypeModel(intersectionOfSupertypes(ci));
             }
-        }
-        if (defaultArgument) {
-            that.addError("reference to super from default argument expression");
         }
     }
 

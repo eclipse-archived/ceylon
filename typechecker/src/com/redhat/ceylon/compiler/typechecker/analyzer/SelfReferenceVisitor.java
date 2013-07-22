@@ -9,6 +9,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 /**
  * Validates that the initializer of a class does
  * not leak self-references to the instance being
@@ -23,7 +25,8 @@ public class SelfReferenceVisitor extends Visitor {
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
     private int nestedLevel = -1;
-    
+    private boolean defaultArgument;
+
     public SelfReferenceVisitor(TypeDeclaration td) {
         typeDeclaration = td;
     }
@@ -241,6 +244,22 @@ public class SelfReferenceVisitor extends Visitor {
         if (mayNotLeakOuter() && t instanceof Tree.Outer) {
             that.addError("leaks outer reference in initializer: " + 
                     typeDeclaration.getName());
+        }
+    }
+    
+    @Override
+    public void visit(Parameter that) {
+        boolean oda = defaultArgument;
+        defaultArgument = true;
+        super.visit(that);
+        defaultArgument = oda;
+    }
+    
+    @Override
+    public void visit(Super that) {
+        super.visit(that);
+        if (defaultArgument) {
+            that.addError("reference to super from default argument expression");
         }
     }
 
