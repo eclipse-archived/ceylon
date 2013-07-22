@@ -253,8 +253,9 @@ public class MetamodelGenerator {
                 if (parm.isDefaulted()) {
                     pm.put(KEY_DEFAULT, "1");
                 }
-                if (parm.getTypeDeclaration() != null && parm.getTypeDeclaration().getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
-                    pm.put(KEY_TYPE, parm.getTypeDeclaration().getName());
+                final TypeDeclaration parmtype = parm.getTypeDeclaration();
+                if (parmtype != null && parmtype.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
+                    pm.put(KEY_TYPE, parmtype.getName());
                 } else if (parm.getType() != null) {
                     pm.put(KEY_TYPE, typeMap(parm.getType()));
                 } else {
@@ -281,7 +282,8 @@ public class MetamodelGenerator {
                         pm.put(KEY_PARAMS, _paramLists);
                     }
                 } else {
-                    throw new IllegalStateException("Unknown parameter type " + parm.getClass().getName());
+                    pm.put("$pt", "p");
+                    pm.put("$hdn", "1");
                 }
                 //TODO do these guys need anything else?
                 /*if (parm.getDefaultArgument() != null) {
@@ -367,7 +369,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getSatisfiedTypes(), m, "satisfies");
 
         //Initializer parameters
-        List<Map<String,Object>> inits = parameterListMap(d.getParameterList());
+        final List<Map<String,Object>> inits = parameterListMap(d.getParameterList());
         if (inits != null && !inits.isEmpty()) {
             m.put(KEY_PARAMS, inits);
         }

@@ -326,7 +326,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (params != null) {
             for (Map<String,Object> p : params) {
                 Parameter param = null;
-                String paramtype = (String)p.get("$pt");
+                final String paramtype = (String)p.get("$pt");
                 if ("v".equals(paramtype)) {
                     param = new ValueParameter();
                     ((ValueParameter)param).setHidden(p.containsKey("$hdn"));
@@ -348,6 +348,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                             ((FunctionalParameter)param).addParameterList(_params);
                         }
                     }
+                } else if ("p".equals(paramtype)) {
+                    param = new Parameter();
+                    param.setHidden(true);
                 } else {
                     throw new IllegalArgumentException("Unknown parameter type " + paramtype);
                 }
