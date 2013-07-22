@@ -98,6 +98,7 @@ public class FreeVariableWithAppliedVariable<Type>
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(FreeVariableWithAppliedVariable.class, $reifiedType);
     }

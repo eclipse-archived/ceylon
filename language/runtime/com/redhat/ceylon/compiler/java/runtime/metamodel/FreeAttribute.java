@@ -71,6 +71,7 @@ public class FreeAttribute
         return type;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

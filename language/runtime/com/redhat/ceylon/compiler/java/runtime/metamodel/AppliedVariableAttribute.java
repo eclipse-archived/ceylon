@@ -67,6 +67,7 @@ public class AppliedVariableAttribute<Container, Type>
     }
     
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);
     }

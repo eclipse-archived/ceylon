@@ -124,6 +124,7 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
     }
     
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(FreeFunctionWithAppliedFunction.class, $reifiedType, $reifiedArguments);
     }

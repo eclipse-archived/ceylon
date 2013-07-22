@@ -108,6 +108,7 @@ public abstract class FreeTopLevelOrMemberDeclaration
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

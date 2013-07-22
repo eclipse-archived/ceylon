@@ -23,7 +23,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
@@ -291,6 +290,7 @@ public abstract class FreeClassOrInterface
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

@@ -82,6 +82,7 @@ public class FreeAttributeWithAppliedValue<Type>
     }
     
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();
         TypeDescriptor[] args = type.getTypeArguments();

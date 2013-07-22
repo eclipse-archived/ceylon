@@ -152,6 +152,7 @@ public class FreeFunctionWithAppliedMethod<Container, Type, Arguments extends Se
         return memberDelegate.getType();
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(FreeFunctionWithAppliedMethod.class, $reifiedContainer, $reifiedType, $reifiedArguments);

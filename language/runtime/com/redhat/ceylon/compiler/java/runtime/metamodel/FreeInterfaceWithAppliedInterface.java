@@ -5,15 +5,13 @@ import java.util.List;
 
 import ceylon.language.Map;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.Class;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Interface$impl;
 import ceylon.language.metamodel.InterfaceModel$impl;
 import ceylon.language.metamodel.Member;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Type$impl;
 import ceylon.language.metamodel.declaration.InterfaceDeclaration;
 
@@ -220,6 +218,7 @@ public class FreeInterfaceWithAppliedInterface<Type>
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         checkInit();
         TypeDescriptor.Class type = (TypeDescriptor.Class) typeDelegate.$getType();

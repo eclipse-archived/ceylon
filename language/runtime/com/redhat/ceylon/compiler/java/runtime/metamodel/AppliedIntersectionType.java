@@ -67,6 +67,7 @@ public class AppliedIntersectionType
         return satisfiedTypes;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

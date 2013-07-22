@@ -26,6 +26,7 @@ public class FreeVariable
         super(value);
     }
     
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

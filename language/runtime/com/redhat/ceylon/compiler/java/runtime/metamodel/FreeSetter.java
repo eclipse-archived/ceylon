@@ -12,15 +12,21 @@ import ceylon.language.metamodel.declaration.VariableDeclaration;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @Class
 @SatisfiedTypes({"ceylon.language.metamodel::Annotated", "ceylon.language.metamodel.declaration::SetterDeclaration"})
 public class FreeSetter 
-        implements SetterDeclaration, Annotated, AnnotationBearing {
+        implements SetterDeclaration, Annotated, AnnotationBearing, ReifiedType {
 
+    @Ignore
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeSetter.class);
+    
     private FreeVariable variable;
     
     private Method declaredSetter;
@@ -55,4 +61,9 @@ public class FreeSetter
         return variable;
     }
 
+    @Ignore
+    @Override
+    public TypeDescriptor $getType() {
+        return $TypeDescriptor;
+    }
 }

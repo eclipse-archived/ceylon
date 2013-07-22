@@ -100,6 +100,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);

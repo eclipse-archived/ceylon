@@ -38,6 +38,7 @@ public class FreeTypeParameter
     }
     
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

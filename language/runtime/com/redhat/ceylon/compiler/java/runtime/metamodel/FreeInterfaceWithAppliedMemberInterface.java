@@ -275,6 +275,7 @@ public class FreeInterfaceWithAppliedMemberInterface<Container, Type>
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         checkInit();
         return TypeDescriptor.klass(FreeInterfaceWithAppliedMemberInterface.class, $reifiedContainer, $reifiedType);

@@ -96,6 +96,7 @@ public class AppliedMemberInterface<Container, Type>
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMemberInterface.class, $reifiedContainer, $reifiedType);
     }

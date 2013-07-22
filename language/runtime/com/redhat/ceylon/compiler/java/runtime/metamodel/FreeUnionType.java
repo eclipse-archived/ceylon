@@ -5,7 +5,6 @@ import java.util.List;
 import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Type;
 import ceylon.language.metamodel.declaration.OpenType$impl;
 import ceylon.language.metamodel.declaration.OpenUnion$impl;
 
@@ -68,6 +67,7 @@ public class FreeUnionType
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

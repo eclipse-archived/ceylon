@@ -231,6 +231,7 @@ public class FreeFunction
         return type;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return $TypeDescriptor;

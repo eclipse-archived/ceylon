@@ -175,6 +175,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return null;
     }
 
+    @Ignore
     @Override
     public Type $call() {
         if(method == null)
@@ -189,6 +190,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object arg0) {
         if(method == null)
@@ -203,6 +205,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object arg0, Object arg1) {
         if(method == null)
@@ -217,6 +220,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object arg0, Object arg1, Object arg2) {
         if(method == null)
@@ -231,6 +235,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object... args) {
         if(method == null)
@@ -246,6 +251,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }
     }
 
+    @Ignore
     @Override
     public short $getVariadicParameterIndex() {
         // TODO Auto-generated method stub
@@ -258,6 +264,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return type;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedFunction.class, $reifiedType, $reifiedArguments);

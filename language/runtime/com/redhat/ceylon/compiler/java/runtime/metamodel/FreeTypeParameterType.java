@@ -86,6 +86,7 @@ public class FreeTypeParameterType
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

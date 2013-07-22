@@ -5,9 +5,8 @@ import java.util.List;
 import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Type;
-import ceylon.language.metamodel.declaration.OpenType$impl;
 import ceylon.language.metamodel.declaration.OpenIntersection$impl;
+import ceylon.language.metamodel.declaration.OpenType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -68,6 +67,7 @@ public class FreeIntersectionType
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

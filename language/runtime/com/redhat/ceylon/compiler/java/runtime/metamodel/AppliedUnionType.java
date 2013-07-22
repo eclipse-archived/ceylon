@@ -68,6 +68,7 @@ public class AppliedUnionType
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

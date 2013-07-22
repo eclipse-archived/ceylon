@@ -215,6 +215,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return constructor;
     }
 
+    @Ignore
     @Override
     public Type $call() {
         checkInit();
@@ -230,6 +231,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object arg0) {
         checkInit();
@@ -245,6 +247,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object arg0, Object arg1) {
         checkInit();
@@ -260,6 +263,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object arg0, Object arg1, Object arg2) {
         checkInit();
@@ -275,6 +279,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    @Ignore
     @Override
     public Type $call(Object... args) {
         checkInit();
@@ -291,12 +296,14 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
+    @Ignore
     @Override
     public short $getVariadicParameterIndex() {
         // TODO Auto-generated method stub
         return -1;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);

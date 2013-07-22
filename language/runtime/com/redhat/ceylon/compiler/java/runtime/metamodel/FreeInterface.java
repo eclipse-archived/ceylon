@@ -78,6 +78,7 @@ public class FreeInterface
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return $TypeDescriptor;
     }

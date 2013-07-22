@@ -272,6 +272,7 @@ public class FreeClassWithAppliedClass<Type, Arguments extends Sequential<? exte
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(FreeClassWithAppliedClass.class, $reifiedType, $reifiedArguments);
     }

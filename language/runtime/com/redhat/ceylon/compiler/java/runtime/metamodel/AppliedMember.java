@@ -47,6 +47,7 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel
     }
 
     @Override
+    @Ignore
     public Kind $call() {
         throw new UnsupportedOperationException();
     }
@@ -54,30 +55,36 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel
     protected abstract Kind bindTo(Object instance);
     
     @Override
+    @Ignore
     public Kind $call(Object instance) {
         return bindTo(instance);
     }
 
     @Override
+    @Ignore
     public Kind $call(Object arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @Ignore
     public Kind $call(Object arg0, Object arg1, Object arg2) {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @Ignore
     public Kind $call(Object... args) {
         throw new UnsupportedOperationException();
     }
 
+    @Ignore
     @Override
     public short $getVariadicParameterIndex() {
         return -1;
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMember.class, $reifiedType, $reifiedKind);

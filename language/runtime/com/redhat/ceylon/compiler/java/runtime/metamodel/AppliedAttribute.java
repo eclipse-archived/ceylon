@@ -85,7 +85,8 @@ public class AppliedAttribute<Container, Type>
     protected Value<? extends Type> bindTo(Object instance) {
         return new AppliedValue($reifiedType, declaration, typedReference, instance);
     }
-    
+
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedType, $reifiedType);

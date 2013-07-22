@@ -137,7 +137,8 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
     public short $getVariadicParameterIndex() {
         return memberDelegate.$getVariadicParameterIndex();
     }
-    
+
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(FreeAttributeWithAppliedAttribute.class, $reifiedContainer, $reifiedType);

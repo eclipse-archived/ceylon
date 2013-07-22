@@ -134,6 +134,7 @@ public class FreeParameterisedType<DeclarationType extends ceylon.language.metam
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         checkInit();
         return TypeDescriptor.klass(FreeParameterisedType.class, declaration.$getType());

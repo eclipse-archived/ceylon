@@ -2,18 +2,16 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Map;
 import ceylon.language.Sequential;
+import ceylon.language.metamodel.ClassModel$impl;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.ClassOrInterface$impl;
-import ceylon.language.metamodel.ClassModel$impl;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Function;
 import ceylon.language.metamodel.Interface;
 import ceylon.language.metamodel.Member;
 import ceylon.language.metamodel.Member$impl;
 import ceylon.language.metamodel.MemberClass;
 import ceylon.language.metamodel.MemberClass$impl;
+import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Type$impl;
-import ceylon.language.metamodel.Value;
 import ceylon.language.metamodel.declaration.ClassDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -283,6 +281,7 @@ public class FreeClassWithAppliedMemberClass<Container, Type, Arguments extends 
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         checkInit();
         return TypeDescriptor.klass(FreeClassWithAppliedMemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);

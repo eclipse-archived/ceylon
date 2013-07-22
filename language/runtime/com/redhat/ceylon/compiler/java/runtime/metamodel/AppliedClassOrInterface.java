@@ -264,6 +264,7 @@ public class AppliedClassOrInterface<Type>
         return (ceylon.language.metamodel.VariableAttribute<SubType, Type>)getAttribute($reifiedSubType, $reifiedType, name);
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         checkInit();

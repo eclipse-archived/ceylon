@@ -146,6 +146,7 @@ public class FreeVariableWithAppliedVariableAttribute<Container, Type>
     }
     
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(FreeAttributeWithAppliedAttribute.class, $reifiedContainer, $reifiedType);
     }

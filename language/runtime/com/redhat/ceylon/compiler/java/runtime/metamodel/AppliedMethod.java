@@ -92,6 +92,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         return new AppliedFunction($reifiedType, $reifiedArguments, appliedFunction, declaration, instance);
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedMethod.class, super.$reifiedType, $reifiedType, $reifiedArguments);

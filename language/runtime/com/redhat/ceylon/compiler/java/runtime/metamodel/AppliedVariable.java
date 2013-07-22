@@ -110,6 +110,7 @@ public class AppliedVariable<Type>
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(AppliedVariable.class, $reifiedType);
     }

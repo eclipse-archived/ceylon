@@ -45,6 +45,7 @@ public class AppliedInterface<Type>
         return (FreeInterface) super.getDeclaration();
     }
 
+    @Ignore
     @Override
     public TypeDescriptor $getType() {
         checkInit();
