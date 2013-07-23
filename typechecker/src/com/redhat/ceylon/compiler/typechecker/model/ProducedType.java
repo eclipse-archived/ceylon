@@ -1622,7 +1622,8 @@ public class ProducedType extends ProducedReference {
 			d instanceof ClassAlias||
 			d instanceof InterfaceAlias) {
 			if (d.equals(ad)) return true;
-			if (d.getExtendedType().isRecursiveTypeAliasDefinition(ad)) return true;
+			if (d.getExtendedType()!=null &&
+			        d.getExtendedType().isRecursiveTypeAliasDefinition(ad)) return true;
 		}
 		else if (d instanceof UnionType) {
 			for (ProducedType ct: getCaseTypes()) {
@@ -1654,7 +1655,8 @@ public class ProducedType extends ProducedReference {
             if (d.equals(ad)) {
                 return true;
             }
-            if (d.getExtendedType().isRecursiveTypeDefinition(ad)) return true;
+            if (d.getExtendedType()!=null &&
+                    d.getExtendedType().isRecursiveTypeDefinition(ad)) return true;
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
