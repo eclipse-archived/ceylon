@@ -5338,6 +5338,8 @@ public class ExpressionVisitor extends Visitor {
         }else if(declaration instanceof TypeParameter){
             Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Type");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
+        }else if(declaration instanceof UnknownType){
+            // let it go, we already logged an error for the missing type
         }else{
             // FIXME: we get there for UnknownType too, but I'm not sure if we need to add an error or if getting an UnknownType
             // means we already logged an error?
@@ -5400,6 +5402,10 @@ public class ExpressionVisitor extends Visitor {
 
                 qualifyingType = qualifyingType.resolveAliases();
                 TypeDeclaration d = qualifyingType.getDeclaration();
+                if(d instanceof UnknownType){
+                    // let it go, we already logged an error for the missing type
+                    return;
+                }
                 String container = "type " + d.getName(unit);
                 Declaration member = d.getMember(name, unit, null, false);
                 if(member instanceof TypedDeclaration){
