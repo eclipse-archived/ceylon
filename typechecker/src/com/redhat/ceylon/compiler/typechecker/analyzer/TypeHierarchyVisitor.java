@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -334,8 +335,8 @@ public class TypeHierarchyVisitor extends Visitor {
         for (TypeDeclaration superSatisfiedType : declaration.getSatisfiedTypeDeclarations()) {
             visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
         }
-        for (TypeDeclaration superSatisfiedType : declaration.getBrokenSupertypes()) {
-            visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
+        for (ProducedType superSatisfiedType : declaration.getBrokenSupertypes()) {
+            visitDAGNode(superSatisfiedType.getDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
         }
         stackOfProcessedType.remove(stackOfProcessedType.size()-1);
         sortedDag.add(type);

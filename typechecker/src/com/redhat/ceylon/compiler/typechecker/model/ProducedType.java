@@ -5,6 +5,8 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1610,35 +1612,58 @@ public class ProducedType extends ProducedReference {
 		return false;
     }*/
     
-    public boolean isRecursiveTypeAliasDefinition(TypeDeclaration ad) {
+    public List<TypeDeclaration> isRecursiveTypeAliasDefinition(TypeDeclaration ad) {
         //TODO this method could overflow if one of the referenced
         //     alias definitions is also recursive!
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||
 			d instanceof ClassAlias||
 			d instanceof InterfaceAlias) {
-			if (d.equals(ad)) return true;
-			if (d.getExtendedType()!=null &&
-			        d.getExtendedType().isRecursiveTypeAliasDefinition(ad)) return true;
+			if (d.equals(ad)) {
+			    return new ArrayList<TypeDeclaration>(singletonList(d));
+			}
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveTypeAliasDefinition(ad);
+			    if (!l.isEmpty()) {
+			        l.add(0, d);
+			        return l;
+			    }
+			}
+            for (ProducedType bt: d.getBrokenSupertypes()) {
+                List<TypeDeclaration> l = bt.isRecursiveTypeAliasDefinition(ad);
+                if (!l.isEmpty()) {
+                    l.add(0, d);
+                    return l;
+                }
+            }
 		}
 		else if (d instanceof UnionType) {
 			for (ProducedType ct: getCaseTypes()) {
-				if (ct.isRecursiveTypeAliasDefinition(ad)) return true;
+	            List<TypeDeclaration> l = ct.isRecursiveTypeAliasDefinition(ad);
+	            if (!l.isEmpty()) return l;
 			}
 		}
 		else if (d instanceof IntersectionType) {
 			for (ProducedType st: getSatisfiedTypes()) {
-				if (st.isRecursiveTypeAliasDefinition(ad)) return true;
+                List<TypeDeclaration> l = st.isRecursiveTypeAliasDefinition(ad);
+                if (!l.isEmpty()) return l;
 			}
 		}
 		else {
 			for (ProducedType at: getTypeArgumentList()) {
-				if (at!=null && at.isRecursiveTypeAliasDefinition(ad)) return true;
+				if (at!=null) {
+				    List<TypeDeclaration> l = at.isRecursiveTypeAliasDefinition(ad);
+				    if (!l.isEmpty()) return l;
+				}
 			}
 			ProducedType qt = getQualifyingType();
-			if (qt!=null && qt.isRecursiveTypeAliasDefinition(ad)) return true;
+            if (qt!=null) {
+                List<TypeDeclaration> l = qt.isRecursiveTypeAliasDefinition(ad);
+                if (!l.isEmpty()) return l;
+            }
 		}
-		return false;
+		return emptyList();
     }
     
     public boolean isRecursiveTypeDefinition(TypeDeclaration ad) {

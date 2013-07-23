@@ -21,7 +21,7 @@ public abstract class TypeDeclaration extends Declaration
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = Collections.emptyList();
     private ProducedType selfType;
-    private List<TypeDeclaration> brokenSupertypes = new ArrayList<TypeDeclaration>();
+    private List<ProducedType> brokenSupertypes = new ArrayList<ProducedType>();
     
     @Override
     protected TypeDeclaration clone() {
@@ -111,7 +111,7 @@ public abstract class TypeDeclaration extends Declaration
         this.caseTypes = caseTypes;
     }
     
-    public List<TypeDeclaration> getBrokenSupertypes() {
+    public List<ProducedType> getBrokenSupertypes() {
         return brokenSupertypes;
     }
     

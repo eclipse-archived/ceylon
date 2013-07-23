@@ -31,7 +31,7 @@ public class SupertypeVisitor extends Visitor {
         TypeDeclaration atd = at.getDeclaration();
         if (atd instanceof TypeAlias) {
             ProducedType et = atd.getExtendedType();
-            if (et.isRecursiveTypeAliasDefinition(atd)) {
+            if (!et.isRecursiveTypeAliasDefinition(atd).isEmpty()) {
                 //TODO: we could get rid of this check if
                 //      we introduced and additional
                 //      compilation phase to separate
@@ -82,7 +82,7 @@ public class SupertypeVisitor extends Visitor {
             int i=0;
             for (Tree.StaticType st: that.getTypes()) {
                 ProducedType type = st.getTypeModel();
-                if (type.isRecursiveTypeAliasDefinition(d)) {
+                if (!type.isRecursiveTypeAliasDefinition(d).isEmpty()) {
                     //TODO: we could get rid of this check if
                     //      we introduced and additional
                     //      compilation phase to separate
@@ -109,7 +109,7 @@ public class SupertypeVisitor extends Visitor {
         if (that!=null) {
             Tree.StaticType et = that.getType();
             ProducedType type = et.getTypeModel();
-            if (type.isRecursiveTypeAliasDefinition(d)) {
+            if (!type.isRecursiveTypeAliasDefinition(d).isEmpty()) {
                 //TODO: we could get rid of this check if
                 //      we introduced and additional
                 //      compilation phase to separate
@@ -138,7 +138,7 @@ public class SupertypeVisitor extends Visitor {
                 if (t!=null && t.isRecursiveRawTypeDefinition(d)) {
 //                    st.addError("supertype is circularly defined");
                     d.getSatisfiedTypes().set(i, new UnknownType(that.getUnit()).getType());
-                    d.getBrokenSupertypes().add(t.getDeclaration());
+                    d.getBrokenSupertypes().add(t);
                 }
                 if (isUndecidableSupertype(t, d, st)) {
                     d.getSatisfiedTypes().set(i, new UnknownType(that.getUnit()).getType());
@@ -155,7 +155,7 @@ public class SupertypeVisitor extends Visitor {
             if (t!=null && t.isRecursiveRawTypeDefinition(d)) {
 //                et.addError("supertype is circularly defined");
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
-                d.getBrokenSupertypes().add(t.getDeclaration());
+                d.getBrokenSupertypes().add(t);
             }
             if (isUndecidableSupertype(t, d, et)) {
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
