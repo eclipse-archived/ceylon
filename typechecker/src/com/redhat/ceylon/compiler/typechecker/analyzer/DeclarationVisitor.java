@@ -581,6 +581,7 @@ public class DeclarationVisitor extends Visitor {
         v.setInitializerParameter(p);
         p.setModel(v);
         v.setName(s.getName());
+        p.setName(s.getName());
         p.setDeclaration(s);
         visitElement(that, v);
         unit.addDeclaration(v);
