@@ -133,6 +133,7 @@ void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-resource 2 exception message");
+        check(suppressedExceptions(e).empty, "try-with-resource 2 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -145,6 +146,7 @@ void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="init resource", "try-with-resource 3 exception message");
+        check(suppressedExceptions(e).empty, "try-with-resource 3 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -156,6 +158,7 @@ void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="open resource", "try-with-resource 4 exception message");
+        check(suppressedExceptions(e).empty, "try-with-resource 4 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -168,6 +171,7 @@ void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="close resource", "try-with-resource 5 exception message");
+        check(suppressedExceptions(e).empty, "try-with-resource 5 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -180,6 +184,13 @@ void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-resource 6 exception message");
+        value sups = suppressedExceptions(e);
+        if (nonempty sups) {
+            check(sups.size==1, "try-with-resource 6 wrong suppressed exceptions count");
+            check(sups.first.message=="close resource", "try-with-resource 6 wrong suppressed exception message");
+        } else {
+            fail("try-with-resource 6 missing suppressed exceptions");
+        }
     } finally {
         pass++;
     }
@@ -189,12 +200,37 @@ void exceptions() {
     pass = 0;
     try (r1=MyResource(0), r2=MyResource(2)) {
         fail("try-with-resources 7 unexpected try-block execution");
-    } catch (ResourceException ex) {
+    } catch (ResourceException e) {
         pass++;
-        check(ex.message=="open resource", "try-with-resource 7 exception message");
+        check(e.message=="open resource", "try-with-resource 7 exception message");
+        check(suppressedExceptions(e).empty, "try-with-resource 7 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
     check(pass==2, "try-with-resource 7 pass check");
-    check(sharedState==31, "try-with-resource 7 resource state check gave ``sharedState`` instead of 31");
+    check(sharedState==31, "try-with-resource 7 resource state check");
+    
+    pass = 0;
+    try (r1=MyResource(3), r2=MyResource(3)) {
+        throw MyException();
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="my exception", "try-with-resource 8 exception message");
+        value sups = suppressedExceptions(e);
+        if (nonempty sups) {
+            check(sups.size==2, "try-with-resource 8 wrong suppressed exceptions count");
+            check(sups.first.message=="close resource", "try-with-resource 8 wrong suppressed exception message");
+            if (nonempty r=sups.rest) {
+                check(r.first.message=="close resource", "try-with-resource 8 wrong suppressed exception message");
+            } else {
+                fail("ry-with-resource 8 this should never happen");
+            }
+        } else {
+            fail("try-with-resource 8 missing suppressed exceptions");
+        }
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-resource 8 pass check");
+    check(sharedState==15, "try-with-resource 8 resource state check = ``sharedState``");
 }
