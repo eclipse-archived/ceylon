@@ -39,7 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -348,20 +348,21 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     first = false;
                 }
                 
-                if (param instanceof FunctionalParameter) {
-                    writeFunctionalParameter((FunctionalParameter) param);
+                if (param.getModel() instanceof Method) {
+                    writeFunctionalParameter(param);
                 } else {
                     linkRenderer().to(param.getType()).write();
                     write(" ", param.getName());
                 }
                 
                 if (param.isDefaulted()) {
-                    PhasedUnit pu = tool.getDeclarationUnit(param);
-                    Node paramNode = tool.getDeclarationNode(param);
-                    if (pu != null && paramNode != null && paramNode instanceof Tree.Parameter) {
-                        Tree.DefaultArgument defArg = ((Tree.Parameter) paramNode).getDefaultArgument();
-                        if (defArg != null && defArg.getSpecifierExpression() != null) {
-                            String value = getSourceCode(pu, defArg.getSpecifierExpression());
+                    PhasedUnit pu = tool.getParameterUnit(param);
+                    Node paramNode = tool.getParameterNode(param);
+                    if (pu != null 
+                            && paramNode instanceof Tree.Parameter) {
+                        Tree.SpecifierOrInitializerExpression defArg = getDefaultArgument((Tree.Parameter) paramNode);
+                        if (defArg != null) {
+                            String value = getSourceCode(pu, defArg);
                             int newLineIndex = value.indexOf("\n");
                             String valueFirstLine = newLineIndex != -1 ? value.substring(0, newLineIndex) : value;
                             around("span class='specifier'", valueFirstLine);
@@ -379,8 +380,19 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             write(")");
         }
     }
+    
+    private Tree.SpecifierOrInitializerExpression getDefaultArgument(Tree.Parameter parameter) {
+        if (parameter instanceof Tree.InitializerParameter) {
+            return ((Tree.InitializerParameter)parameter).getSpecifierExpression();
+        } else if (parameter instanceof Tree.ValueParameterDeclaration) {
+            return ((Tree.AttributeDeclaration)((Tree.ValueParameterDeclaration)parameter).getTypedDeclaration()).getSpecifierOrInitializerExpression();
+        } else if (parameter instanceof Tree.FunctionalParameterDeclaration) {
+            return ((Tree.MethodDeclaration)((Tree.FunctionalParameterDeclaration)parameter).getTypedDeclaration()).getSpecifierExpression();
+        }
+        return null;
+    }
 
-    private void writeFunctionalParameter(FunctionalParameter functionParam) throws IOException {
+    private void writeFunctionalParameter(Parameter functionParam) throws IOException {
         if( functionParam.isDeclaredVoid() ) {
             around("span class='void'", "void");
         } else {
@@ -388,7 +400,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         write(" ");
         write(functionParam.getName());
-        writeParameterList(functionParam);
+        writeParameterList((Method)functionParam.getModel());
     }
 
     protected final void writeParameters(Declaration decl) throws IOException {
@@ -397,7 +409,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     		List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
     		for (ParameterList parameterList : parameterLists) {
     			for (Parameter parameter : parameterList.getParameters()) {
-    				String doc = getDoc(parameter, linkRenderer());
+                    String doc = getDoc(parameter.getModel(), linkRenderer());
     				if( !doc.isEmpty() ) {
     					if( first ) {
     						first = false;

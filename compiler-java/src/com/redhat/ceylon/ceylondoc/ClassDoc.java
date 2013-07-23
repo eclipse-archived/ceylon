@@ -114,8 +114,6 @@ public class ClassDoc extends ClassOrPackageDoc {
             if (tool.shouldInclude(m)) {
                 if (m instanceof Value) {
                     attributes.add((Value) m);
-                } else if(m instanceof Parameter ) {
-                    attributes.add((Parameter) m);
                 } else if (m instanceof Method) {
                     methods.add((Method) m);
                 } else if (m instanceof Interface) {

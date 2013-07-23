@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -327,12 +328,8 @@ public class LinkRenderer {
     }
 
     private boolean isParameter(Declaration decl) {
-        if(decl instanceof Parameter)
-            return true;
-        if(Decl.isValue(decl) == false)
-            return false;
-        Value value = (Value)decl;
-        return !value.isToplevel() && !value.isClassOrInterfaceMember();
+        return decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter();
     }
     
     private Declaration resolveDeclaration(Scope scope, String declName, boolean isNested) {

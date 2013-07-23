@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -130,6 +131,8 @@ public class CeylonDocTool implements Tool {
     private boolean includeSourceCode;
     private Map<Declaration, PhasedUnit> declarationUnitMap = new HashMap<Declaration, PhasedUnit>();
     private Map<Declaration, Node> declarationNodeMap = new HashMap<Declaration, Node>();
+    private Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
+    private Map<Parameter, Node> parameterNodeMap = new HashMap<Parameter, Node>();
     private File tempDestDir;
     private CeylondLogger log;
     private List<String> compiledClasses = new LinkedList<String>();
@@ -626,6 +629,11 @@ public class CeylonDocTool implements Tool {
                     declarationNodeMap.put(decl.getDeclarationModel(), decl);
                     super.visit(decl);
                 }
+                public void visit(Tree.Parameter decl) {
+                    parameterUnitMap.put(decl.getParameterModel(), pu);
+                    parameterNodeMap.put(decl.getParameterModel(), decl);
+                    super.visit(decl);
+                }
             }, cu);
         }
     }
@@ -955,6 +963,12 @@ public class CeylonDocTool implements Tool {
     
     protected Node getDeclarationNode(Declaration decl) {
         return declarationNodeMap.get(decl);
+    }
+    protected PhasedUnit getParameterUnit(Parameter parameter) {
+        return parameterUnitMap.get(parameter);
+    }
+    protected Node getParameterNode(Parameter parameter) {
+        return parameterNodeMap.get(parameter);
     }
     
     /**

@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -120,12 +121,15 @@ public class IndexDoc extends CeylonDoc {
         
         if (decl instanceof ClassOrInterface) {
             url = linkRenderer().to(decl).getUrl();
-        } else if (decl instanceof Method || decl instanceof Value || decl instanceof TypeAlias) {
+        } else if ((decl instanceof MethodOrValue && !((MethodOrValue)decl).isParameter()) 
+                || decl instanceof TypeAlias) {
             url = tool.getObjectUrl(module, container, false) + "#" + name;
             if (decl.isMember()) {
                 name = ((ClassOrInterface) container).getName() + "." + name;
             }
-        } else if (decl instanceof Setter || decl instanceof Parameter || decl instanceof TypeParameter) {
+        } else if (decl instanceof Setter
+                || (decl instanceof MethodOrValue && ((MethodOrValue)decl).isParameter())
+                || decl instanceof TypeParameter) {
             return false; // ignore
         } else {
             throw new RuntimeException("Unknown type of object: " + decl);
@@ -209,7 +213,7 @@ public class IndexDoc extends CeylonDoc {
             return "attribute";
         } else if (obj instanceof Method) {
             return "function";
-        } else if (obj instanceof Declaration && Decl.isValue((Declaration)obj)) {
+        } else if (obj instanceof Value) {
             return "value";
         } else if (obj instanceof Package) {
             return "package";
