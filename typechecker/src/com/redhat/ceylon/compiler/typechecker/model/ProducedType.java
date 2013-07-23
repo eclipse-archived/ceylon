@@ -90,7 +90,7 @@ public class ProducedType extends ProducedReference {
                         boolean found = false;
                         for (ProducedType oc: otherTypes) {
                             if (c.getDeclaration().equals(oc.getDeclaration())) {
-                                if (c.isExactly(oc)) {
+                                if (c.isExactlyInternal(oc)) {
                                     found = true;
                                     break;
                                 }
@@ -100,16 +100,9 @@ public class ProducedType extends ProducedReference {
                                 //A&Co<B> is equivalent A&Co<B&Co<A>> as a 
                                 //consequence of principal instantiation 
                                 //inheritance
-                                boolean allSame = true;
-                                List<ProducedType> cstal = getSupertype(c.getDeclaration()).getTypeArgumentList();
-                                List<ProducedType> ocstal = type.getSupertype(oc.getDeclaration()).getTypeArgumentList();
-                                for (int i=0; i<cstal.size()&&i<ocstal.size(); i++) {
-                                    if (!cstal.get(i).isExactlyInternal(ocstal.get(i))) {
-                                        allSame = false;
-                                        break;
-                                    }
-                                }
-                                if (allSame) {
+                                ProducedType cst = getSupertype(c.getDeclaration());
+                                ProducedType ocst = type.getSupertype(oc.getDeclaration());
+                                if (cst.isExactlyInternal(ocst)) {
                                     found = true;
                                     break;
                                 }
