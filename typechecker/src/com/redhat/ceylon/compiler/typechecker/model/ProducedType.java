@@ -89,9 +89,30 @@ public class ProducedType extends ProducedReference {
                     for (ProducedType c: types) {
                         boolean found = false;
                         for (ProducedType oc: otherTypes) {
-                            if (c.isExactlyInternal(oc)) {
-                                found = true;
-                                break;
+                            if (c.getDeclaration().equals(oc.getDeclaration())) {
+                                if (c.isExactly(oc)) {
+                                    found = true;
+                                    break;
+                                }
+                                //given a covariant type Co, and interfaces
+                                //A satisfies Co<B&Co<A>> and 
+                                //B satisfies Co<A&Co<B>>, then
+                                //A&Co<B> is equivalent A&Co<B&Co<A>> as a 
+                                //consequence of principal instantiation 
+                                //inheritance
+                                boolean allSame = true;
+                                List<ProducedType> cstal = getSupertype(c.getDeclaration()).getTypeArgumentList();
+                                List<ProducedType> ocstal = type.getSupertype(oc.getDeclaration()).getTypeArgumentList();
+                                for (int i=0; i<cstal.size()&&i<ocstal.size(); i++) {
+                                    if (!cstal.get(i).isExactlyInternal(ocstal.get(i))) {
+                                        allSame = false;
+                                        break;
+                                    }
+                                }
+                                if (allSame) {
+                                    found = true;
+                                    break;
+                                }
                             }
                         }
                         if (!found) {
@@ -285,12 +306,12 @@ public class ProducedType extends ProducedReference {
                         return false;
                     }
                     else if (p.isCovariant()) {
-                        if (!arg.isSubtypeOf(otherArg)) {
+                        if (!arg.isSubtypeOfInternal(otherArg)) {
                             return false;
                         }
                     }
                     else if (p.isContravariant()) {
-                        if (!otherArg.isSubtypeOf(arg)) {
+                        if (!otherArg.isSubtypeOfInternal(arg)) {
                             return false;
                         }
                     }
