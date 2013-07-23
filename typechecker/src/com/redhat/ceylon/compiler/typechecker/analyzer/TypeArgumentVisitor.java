@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -41,7 +39,6 @@ public class TypeArgumentVisitor extends Visitor {
             if (that.getSatisfiedTypes()!=null) {
                 for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
                     check(type, false, null);
-                    checkSupertype(type);
                 }
             }
             flip();
@@ -76,7 +73,6 @@ public class TypeArgumentVisitor extends Visitor {
         if (that.getSatisfiedTypes()!=null) {
             for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
                 check(type, false, null);
-                checkSupertype(type);
             }
         }
     }
@@ -106,7 +102,6 @@ public class TypeArgumentVisitor extends Visitor {
         super.visit(that);
         if (that.getExtendedType()!=null) {
             check(that.getExtendedType().getType(), false, null);
-            checkSupertype(that.getExtendedType().getType());
         }
     }
     
@@ -143,22 +138,5 @@ public class TypeArgumentVisitor extends Visitor {
 		    		type.getProducedTypeName(that.getUnit()));
 		}
 	}
-    
-    private void checkSupertype(Tree.Type that) {
-        if (that!=null) {
-            checkSupertype(that.getTypeModel(), that);
-        }
-    }
-    
-    private void checkSupertype(ProducedType type, Node that) {
-        if (type!=null) {
-        	List<TypeDeclaration> errors = type.resolveAliases().checkDecidability();
-            for (TypeDeclaration td: errors) {
-                that.addError("type with contravariant type parameter " + td.getName() + 
-                		" appears in contravariant location in supertype: " + 
-                		type.getProducedTypeName(that.getUnit()));
-            }
-        }
-    }
     
 }

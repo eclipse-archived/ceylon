@@ -19,8 +19,8 @@ void undecidable() {
     interface G satisfies Invar<H> {}
     @error interface H satisfies Invar<G&H> {}
     
-    @error interface Sub satisfies In<E> {}
-    @error interface SubList satisfies List<E> {}
+    interface Sub satisfies In<E> {}
+    interface SubList satisfies List<E> {}
     @error alias E=>D;
     alias D=>E;
     
@@ -42,4 +42,21 @@ void decidable() {
     X&Contra<Y|X> sub2(X&Contra<Y> sub) => sub;
     X&Contra<Y> sup2(X&Contra<Y|X> sup) => sup;
     Inv<X&Contra<Y|X>> foo2(Inv<X&Contra<Y>> foo) => foo;
+}
+
+void aliases() {
+    @error interface L1<in T> => List<T>;
+    @error alias L2<in T> => List<T>;
+    @error class S1<in T>(T t) => Singleton<T>(t);
+    @error alias S2<in T> => Singleton<T>;
+}
+
+void broken() {
+    interface Contra<in P> {}
+    interface Inv<P> {}
+    @error interface X satisfies Contra<Contra<X>> {}
+    @error interface Y satisfies Contra<Contra<Y>> {}
+    @error X&Contra<Y|Contra<X>> sub2(X&Contra<Y> sub) => sub;
+    X&Contra<Y> sup2(X&Contra<Y|Contra<X>> sup) => sup;
+    @error Inv<X&Contra<Y|Contra<X>>> foo2(Inv<X&Contra<Y>> foo) => foo;
 }

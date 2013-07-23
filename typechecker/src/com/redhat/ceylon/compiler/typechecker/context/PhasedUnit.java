@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.SupertypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
@@ -242,6 +243,7 @@ public class PhasedUnit {
         if (! refinementValidated) {
             //System.out.println("Validate member refinement for " + fileName);
         	compilationUnit.visit(new AliasVisitor());
+            compilationUnit.visit(new SupertypeVisitor()); //TODO: move to a new phase!
             compilationUnit.visit(new RefinementVisitor());
             refinementValidated = true;
         }
