@@ -720,14 +720,14 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
       { $satisfiedTypes = new SatisfiedTypes($SATISFIES); }
       ( 
         t1=abbreviatedType 
-        { $satisfiedTypes.addType($t1.type); }
+        { if ($t1.type!=null) $satisfiedTypes.addType($t1.type); }
       )
       (
         i=INTERSECTION_OP
         { $satisfiedTypes.setEndToken($i); }
         (
           t2=abbreviatedType
-          { $satisfiedTypes.addType($t2.type); 
+          { if ($t2.type!=null) $satisfiedTypes.addType($t2.type); 
             $satisfiedTypes.setEndToken(null); }
         )
       )*
