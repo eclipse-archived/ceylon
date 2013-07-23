@@ -147,6 +147,10 @@ public class ExpressionTest extends CompilerTest {
     public void testErsErasureCasting(){
         compareWithJavaSource("erasure/ErasureCasting");
     }
+    @Test
+    public void testErsCallableErasure(){
+        compareWithJavaSource("erasure/CallableErasure");
+    }
 
 
     // Literals
