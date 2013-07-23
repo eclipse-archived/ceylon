@@ -71,7 +71,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
@@ -205,7 +204,7 @@ public class ModelLoaderTest extends CompilerTest {
         if(name.startsWith("java."))
             return;
         // only compare parameter names for public methods
-        if(!(validDeclaration instanceof Parameter) || validDeclaration.isShared())
+        if(!(validDeclaration instanceof MethodOrValue) || !((MethodOrValue)validDeclaration).isParameter() || validDeclaration.isShared())
             Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         // if they're not shared, stop at making sure they are the same type of object
@@ -403,11 +402,11 @@ public class ModelLoaderTest extends CompilerTest {
                 // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
                 // class with the same name so we ignore it
                 if(Decl.isValue(referenceMember) && (member instanceof Class
-                                                     || member instanceof ValueParameter))
+                                                     || (member instanceof Value && ((Value)member).isParameter())))
                     continue;
                 // the opposite is also true
                 if((referenceMember instanceof Class
-                    || referenceMember instanceof ValueParameter)
+                    || referenceMember instanceof Value && ((Value)referenceMember).isParameter())
                         && Decl.isValue(member))
                     continue;
                 // otherwise we found it
@@ -442,7 +441,7 @@ public class ModelLoaderTest extends CompilerTest {
                 Assert.assertEquals(name+" [param "+validParameter.getName()+" defaulted]", 
                         validParameter.isDefaulted(), modelParameter.isDefaulted());
                 // make sure they have the same name and type
-                compareDeclarations(validParameter, modelParameter);
+                compareDeclarations(validParameter.getModel(), modelParameter.getModel());
             }
         }
     }
@@ -738,7 +737,7 @@ public class ModelLoaderTest extends CompilerTest {
                 
                 Parameter javaParameter = javaMethod.getParameterLists().get(0).getParameters().get(0);
                 Assert.assertNotNull(javaParameter);
-                Assert.assertEquals(javaParameter.toString(), 1, numDeprecated(javaParameter));
+                Assert.assertEquals(javaParameter.toString(), 1, numDeprecated(javaParameter.getModel()));
                 
                 Value javaField = (Value) javaDep.getDirectMember("s", null, false);
                 Assert.assertNotNull(javaField);
