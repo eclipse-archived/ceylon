@@ -78,10 +78,10 @@ interface Aa {}
 @error interface Cc satisfies Comparable<Cc|Aa> {}
 @error interface Zz satisfies Comparable<Bb|Cc|Aa> {}
 
-interface A satisfies Comparable<C|A> {}
-interface C satisfies Comparable<C|A> {}
+@error interface A satisfies Comparable<C|A> {}
+@error interface C satisfies Comparable<C|A> {}
 
-void testOf(Comparable<C|A> comp, Anything vd) {
+void testOf(@error Comparable<C|A> comp, Anything vd) {
     A|C ac = comp of C|A;
     Object? maybe = vd of Object|Null;
 }

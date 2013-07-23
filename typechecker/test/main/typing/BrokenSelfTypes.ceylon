@@ -1,5 +1,5 @@
 @error abstract class Tree() satisfies Summable<Tree|Integer>{ 
-    shared actual Tree plus(Tree|Integer other) {
+    @error shared actual Tree plus(Tree|Integer other) {
         return Addition(this, other);
     }
     shared formal Integer evaluate();
