@@ -1013,10 +1013,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 memberClassName = "ClassDeclaration";
             else if(declaration instanceof Interface)
                 memberClassName = "InterfaceDeclaration";
-            else if(declaration instanceof Method)
+            else if(declaration instanceof Method
+                    || declaration instanceof FunctionalParameter)
                 memberClassName = "FunctionDeclaration";
-            else if(declaration instanceof Value){
-                if(((Value) declaration).isVariable())
+            else if(declaration instanceof Value
+                    || declaration instanceof ValueParameter){
+                if(((TypedDeclaration) declaration).isVariable())
                     memberClassName = "VariableDeclaration";
                 else
                     memberClassName = "AttributeDeclaration";
@@ -1043,7 +1045,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression reifiedContainerExpr = makeReifiedTypeArgument(expr.getType().getTypeModel());
             // make a raw call and cast
             JCExpression memberCall;
-            if(declaration instanceof Method){
+            if(declaration instanceof Method
+                    || declaration instanceof FunctionalParameter){
                 // we need to get types for each type argument
                 JCExpression closedTypesExpr;
                 if(expr.getTypeArgumentList() != null)
@@ -1062,9 +1065,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     arguments = List.of(reifiedContainerExpr, reifiedReturnTypeExpr, reifiedArgumentsExpr, 
                             ceylonLiteral(declaration.getName()));
                 memberCall = make().Apply(null, makeSelect(typeCall, "getMethod"), arguments);
-            }else if(declaration instanceof Value){
+            }else if(declaration instanceof Value
+                    || declaration instanceof ValueParameter){
                 JCExpression reifiedTypeExpr = makeReifiedTypeArgument(producedReference.getType());
-                String getterName = ((Value) declaration).isVariable() ? "getVariableAttribute" : "getAttribute";
+                String getterName = ((TypedDeclaration) declaration).isVariable() ? "getVariableAttribute" : "getAttribute";
                 memberCall = make().Apply(null, makeSelect(typeCall, getterName), List.of(reifiedContainerExpr, reifiedTypeExpr, 
                                                                                           ceylonLiteral(declaration.getName())));
             }else{
