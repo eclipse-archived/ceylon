@@ -1,6 +1,6 @@
-function Array$() {
+function Array$($$targs$$) {
     var that = new Array$.$$;
-    List(that);
+    List({Element:$$targs$$.Element}, that);
     return that;
 }
 Array$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract(),native()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Array']};

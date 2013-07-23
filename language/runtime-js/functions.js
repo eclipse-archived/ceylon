@@ -237,6 +237,7 @@ function identityHash(obj) {
 identityHash.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['identityHash']};
 
 function set_type_args(obj, targs) {
+    if (obj===undefined)return;
     if (obj.$$targs$$ === undefined) {
         obj.$$targs$$=targs;
     } else {
