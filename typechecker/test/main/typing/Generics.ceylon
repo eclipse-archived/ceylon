@@ -641,6 +641,26 @@ class MoreInvariance() {
     }
 }
 
+void intersectionsAndExtension() {
+    interface A {}
+    interface B {}
+    class Co<out T>() {}
+    class Contra<in T>() {}
+    class X() extends Co<A&B>() {}
+    class Y() extends Contra<A&B>() {}
+    class M() extends Co<A|B>() {}
+    class N() extends Contra<A|B>() {}
+    Co<A> coa = X();
+    @error Contra<A> contraa = Y();
+    Contra<B> cob = N();
+    @error Co<B> contrab = M();
+    class W() extends Co<List<A&B>>() {}
+    Co<List<A>> cola1 = W();
+    Co<List<B>> colb2 = W();
+    Co<List<A&B>> colab3 = W();
+    Co<List<A|B>> colab4 = W();
+}
+
 interface Bound1 {}
 interface Bound2 {}
 abstract class WithConstraint<in T>() 
