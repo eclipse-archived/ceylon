@@ -15,6 +15,10 @@ shared class Container<Outer>(){
     }
 }
 
+interface TestInterface1<T> {}
+class Test1<T>() satisfies TestInterface1<T> {}
+class Test2<T1>() satisfies TestInterface1<T1> {}
+
 String runtimeMethod(Integer param){
     return nothing;
 }
@@ -78,4 +82,17 @@ void testReifiedRuntime(){
     Object rec1 = Singleton<Entry<Integer,Singleton<String>>>(1->Singleton("x"));
     check(rec1 is Singleton<Entry<Integer,Singleton<String>>>, "#188 [1]");
     check(!rec1 is Singleton<Entry<Integer,Singleton<Integer>>>, "#188 [2]");
+
+    //issue #221
+    interface TestInterface2<in T> {}
+    class Test3<in T>() satisfies TestInterface2<T> {}
+    class Test4<in T1>() satisfies TestInterface2<T1> {}
+    Object o1 = Test1<String>();
+    check(o1 is TestInterface1<String>, "Issue #221 [1]");
+    Object o2 = Test2<String>();
+    check(o2 is TestInterface1<String>, "Issue #221 [2]");
+    Object o3 = Test3<String>();
+    check(o3 is TestInterface2<String>, "Issue #221 [3]");
+    Object o4 = Test4<String>();
+    check(o4 is TestInterface2<String>, "Issue #221 [4]");
 }
