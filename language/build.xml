@@ -208,6 +208,8 @@
                 <include name="ceylon/language/className_.java"/>
                 <exclude name="ceylon/language/Exception.ceylon"/>
                 <include name="ceylon/language/Exception.java"/>
+                <exclude name="ceylon/language/suppressedExceptions.ceylon"/>
+                <include name="ceylon/language/suppressedExceptions_.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
                 <include name="ceylon/language/parseFloat_.java"/>
