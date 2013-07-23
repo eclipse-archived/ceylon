@@ -108,7 +108,7 @@ void visitClass(ClassDeclaration klass){
         }else{
             output(", ");
         }
-        visitOpenType(param.type);
+        visitOpenType(param.openType);
         output(" ``param.name``");
     }
     output(")");
@@ -165,7 +165,7 @@ void visitFunction(FunctionDeclaration func) {
         }else{
             output(", ");
         }
-        visitOpenType(param.type);
+        visitOpenType(param.openType);
         output(" ``param.name``");
     }
     output(");\n");
