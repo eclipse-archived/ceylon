@@ -54,4 +54,15 @@ void literalsRuntime(){
 
     assert(`LitParameterisedClass.parameterisedMethod`.name == "parameterisedMethod");
     assert(`LitParameterisedClass<Integer>.parameterisedMethod<Integer>`.declaration.name == "parameterisedMethod");
+    
+    assert(`LitClassWithParameters.parameterAndSharedAttribute`.declaration.name == "parameterAndSharedAttribute"); // on attribute
+    assert(`LitClassWithParameters.parameterAndSharedAttribute`.defaulted == false); // on param decl
+
+    assert(`LitClassWithParameters.parameterAttribute`.declaration.name == "parameterAttribute"); // on attribute
+    assert(`LitClassWithParameters.parameterAttribute`.defaulted == false); // on param decl
+
+    // not supported yet
+    //assert(`LitClassWithParameters.attributeAndParameter`.declaration.name == "attributeAndParameter"); // on function
+    //assert(`LitClassWithParameters.attributeAndParameter`.defaulted == false); // on param decl
+    //assert(`LitClassWithParameters.attributeAndParameter`.parameterDeclarations.size == 0); // on function decl
 }

@@ -98,6 +98,155 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    LitClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("parameterAndSharedAttribute")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    final long parameterAndSharedAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAttribute")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long parameterAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedAttributeAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long sharedAttributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("attributeAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long attributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterMethod")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter$, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$) {
+        this.parameterAndSharedAttribute = parameterAndSharedAttribute;
+        this.sharedAttributeAndParameter = sharedAttributeAndParameter;
+        this.sharedMethodAndParameter = sharedMethodAndParameter$;
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        final class methodAndParameter_ {
+            
+            private methodAndParameter_() {
+                this.methodAndParameter$priv = methodAndParameter$;
+            }
+            private final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$priv;
+            
+            private final long methodAndParameter$priv() {
+                return methodAndParameter$priv.$call().longValue();
+            }
+        }
+        final methodAndParameter_ methodAndParameter = new methodAndParameter_();
+    }
+    private final long parameterAndSharedAttribute;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getParameterAndSharedAttribute() {
+        return parameterAndSharedAttribute;
+    }
+    private final long sharedAttributeAndParameter;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getSharedAttributeAndParameter() {
+        return sharedAttributeAndParameter;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long sharedMethodAndParameter() {
+        return sharedMethodAndParameter.$call().longValue();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    LitParameterisedClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAndSharedAttribute")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    final long parameterAndSharedAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAttribute")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long parameterAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedAttributeAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long sharedAttributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("attributeAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long attributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterMethod")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter$, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$) {
+        this.$reifiedT = $reifiedT;
+        this.parameterAndSharedAttribute = parameterAndSharedAttribute;
+        this.sharedAttributeAndParameter = sharedAttributeAndParameter;
+        this.sharedMethodAndParameter = sharedMethodAndParameter$;
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        final class methodAndParameter_ {
+            
+            private methodAndParameter_() {
+                this.methodAndParameter$priv = methodAndParameter$;
+            }
+            private final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter$priv;
+            
+            private final long methodAndParameter$priv() {
+                return methodAndParameter$priv.$call().longValue();
+            }
+        }
+        final methodAndParameter_ methodAndParameter = new methodAndParameter_();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final long parameterAndSharedAttribute;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getParameterAndSharedAttribute() {
+        return parameterAndSharedAttribute;
+    }
+    private final long sharedAttributeAndParameter;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getSharedAttributeAndParameter() {
+        return sharedAttributeAndParameter;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long sharedMethodAndParameter() {
+        return sharedMethodAndParameter.$call().longValue();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class, $reifiedT);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
         name = "Member",
         javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.Member",
@@ -412,6 +561,20 @@ final class literals_ {
         final .ceylon.language.metamodel.declaration.FunctionDeclaration parameterisedMethodDecl = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class).<.ceylon.language.metamodel.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.FunctionDeclaration.$TypeDescriptor, "parameterisedMethod");
         final .ceylon.language.metamodel.Method<? super .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>, ? extends .ceylon.language.String, ? super .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> parameterisedMethodType2 = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass<.ceylon.language.Integer>>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class, .ceylon.language.Integer.$TypeDescriptor))).getMethod(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class, .ceylon.language.Integer.$TypeDescriptor), .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "parameterisedMethod", .ceylon.language.ArraySequence.<.ceylon.language.metamodel.Type>instance(.ceylon.language.metamodel.Type.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.metamodel.typeLiteral_.typeLiteral(.ceylon.language.String.$TypeDescriptor)}));
         final .ceylon.language.metamodel.declaration.FunctionDeclaration parameterisedMethodDecl2 = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class).<.ceylon.language.metamodel.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.FunctionDeclaration.$TypeDescriptor, "parameterisedMethod");
+        final .java.lang.Object paramAndSharedAttr = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getAttribute(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, "parameterAndSharedAttribute");
+        final .java.lang.Object paramAttr = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getAttribute(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, "parameterAttribute");
+        final .java.lang.Object sharedAttrAndParam = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getAttribute(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, "sharedAttributeAndParameter");
+        final .java.lang.Object attrAndParam = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getAttribute(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, "attributeAndParameter");
+        final .java.lang.Object methodAttr = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getMethod(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "parameterMethod");
+        final .java.lang.Object sharedMethodAndParam = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getMethod(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "sharedMethodAndParameter");
+        final .java.lang.Object methodAndParam = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor)).getMethod(.com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithParameters.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "methodAndParameter");
+        final .ceylon.language.metamodel.declaration.AttributeDeclaration parameterisedParamAndSharedAttr = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.AttributeDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.AttributeDeclaration.$TypeDescriptor, "parameterAndSharedAttribute");
+        final .ceylon.language.metamodel.declaration.AttributeDeclaration parameterisedParamAttr = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.AttributeDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.AttributeDeclaration.$TypeDescriptor, "parameterAttribute");
+        final .ceylon.language.metamodel.declaration.AttributeDeclaration parameterisedSharedAttrAndParam = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.AttributeDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.AttributeDeclaration.$TypeDescriptor, "sharedAttributeAndParameter");
+        final .ceylon.language.metamodel.declaration.AttributeDeclaration parameterisedAttrAndParam = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.AttributeDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.AttributeDeclaration.$TypeDescriptor, "attributeAndParameter");
+        final .ceylon.language.metamodel.declaration.FunctionDeclaration parameterisedMethodAttr = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.FunctionDeclaration.$TypeDescriptor, "parameterMethod");
+        final .ceylon.language.metamodel.declaration.FunctionDeclaration parameterisedSharedMethodAndParam = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.FunctionDeclaration.$TypeDescriptor, "sharedMethodAndParameter");
+        final .ceylon.language.metamodel.declaration.FunctionDeclaration parameterisedMethodAndParam = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClassWithParameters.class).<.ceylon.language.metamodel.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.metamodel.declaration.FunctionDeclaration.$TypeDescriptor, "methodAndParameter");
     }
     
     public static void main(.java.lang.String[] args) {

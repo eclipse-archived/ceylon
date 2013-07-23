@@ -8,6 +8,37 @@ class LitClass(Integer i){
     shared T parameterisedMethod<T>(T s) => s;
     shared class Member(Integer j){}
 }
+
+class LitClassWithParameters(shared Integer parameterAndSharedAttribute,
+                             Integer parameterAttribute,
+                             sharedAttributeAndParameter,
+                             attributeAndParameter,
+                             // not supported yet by the backend? https://github.com/ceylon/ceylon-compiler/issues/1200
+                             //shared Integer parameterAndSharedMethod(),
+                             Integer parameterMethod(),
+                             sharedMethodAndParameter,
+                             methodAndParameter){
+    shared Integer sharedAttributeAndParameter;
+    Integer attributeAndParameter;
+    shared Integer sharedMethodAndParameter();
+    Integer methodAndParameter();
+}
+
+class LitParameterisedClassWithParameters<T>(shared Integer parameterAndSharedAttribute,
+                                             Integer parameterAttribute,
+                                             sharedAttributeAndParameter,
+                                             attributeAndParameter,
+                                             // not supported yet by the backend? https://github.com/ceylon/ceylon-compiler/issues/1200
+                                             //shared Integer parameterAndSharedMethod(),
+                                             Integer parameterMethod(),
+                                             sharedMethodAndParameter,
+                                             methodAndParameter){
+    shared Integer sharedAttributeAndParameter;
+    Integer attributeAndParameter;
+    shared Integer sharedMethodAndParameter();
+    Integer methodAndParameter();
+}
+
 class LitParameterisedClass<T>(T t){
     shared Integer attribute = 1;
     shared variable Integer variableAttribute = 1;
@@ -116,4 +147,28 @@ void literals<T>(){
 
     Method<LitParameterisedClass<Integer>,String,[String]> parameterisedMethodType2 = `LitParameterisedClass<Integer>.parameterisedMethod<String>`;
     FunctionDeclaration parameterisedMethodDecl2 = `LitParameterisedClass.parameterisedMethod`;
+    
+    // Class parameters
+    
+    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> paramAndSharedAttr = `LitClassWithParameters.parameterAndSharedAttribute`;
+    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> paramAttr = `LitClassWithParameters.parameterAttribute`;
+    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> sharedAttrAndParam = `LitClassWithParameters.sharedAttributeAndParameter`;
+    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> attrAndParam = `LitClassWithParameters.attributeAndParameter`;
+
+    // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
+    //FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> paramAndSharedMethod = `LitClassWithParameters.parameterAndSharedMethod`;
+    FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> methodAttr = `LitClassWithParameters.parameterMethod`;
+    FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> sharedMethodAndParam = `LitClassWithParameters.sharedMethodAndParameter`;
+    FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> methodAndParam = `LitClassWithParameters.methodAndParameter`;
+
+    AttributeDeclaration parameterisedParamAndSharedAttr = `LitParameterisedClassWithParameters.parameterAndSharedAttribute`;
+    AttributeDeclaration parameterisedParamAttr = `LitParameterisedClassWithParameters.parameterAttribute`;
+    AttributeDeclaration parameterisedSharedAttrAndParam = `LitParameterisedClassWithParameters.sharedAttributeAndParameter`;
+    AttributeDeclaration parameterisedAttrAndParam = `LitParameterisedClassWithParameters.attributeAndParameter`;
+
+    // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
+    //FunctionDeclaration parameterisedParamAndSharedMethod = `LitParameterisedClassWithParameters.parameterAndSharedMethod`;
+    FunctionDeclaration parameterisedMethodAttr = `LitParameterisedClassWithParameters.parameterMethod`;
+    FunctionDeclaration parameterisedSharedMethodAndParam = `LitParameterisedClassWithParameters.sharedMethodAndParameter`;
+    FunctionDeclaration parameterisedMethodAndParam = `LitParameterisedClassWithParameters.methodAndParameter`;
 }
