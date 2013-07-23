@@ -972,9 +972,6 @@ public class TypeVisitor extends Visitor {
                     		type.getDeclaration().getName(unit));
                     continue;
                 }
-                if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {
-                    st.addError("directly satisfies Callable");
-                }
                 if (td instanceof TypeParameter) {
             		if (foundTypeParam) {
             			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");

@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -85,6 +86,13 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        final TypeParameter typeParameter = that.getDeclarationModel();
+        sortDAGAndBuildMetadata(typeParameter, that);
     }
     
     @Override

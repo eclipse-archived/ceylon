@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
@@ -26,7 +27,8 @@ public class ProducedType extends ProducedReference {
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
-    private Map<TypeDeclaration, ProducedType> superTypesCache = new HashMap<TypeDeclaration, ProducedType>();
+    private Map<TypeDeclaration, ProducedType> superTypesCache = 
+            new HashMap<TypeDeclaration, ProducedType>();
 
     ProducedType() {}
 
@@ -519,7 +521,7 @@ public class ProducedType extends ProducedReference {
                     				}
                     			}
                     			if (include) {
-                    				Util.addToSupertypes(list, st);
+                    				addToSupertypes(list, st);
                     			}
                     		}
                     	}
@@ -570,7 +572,7 @@ public class ProducedType extends ProducedReference {
             	return false;
             }
         };
-        ProducedType superType = getSupertype(c, new ArrayList<ProducedType>());
+        ProducedType superType = getSupertype(c);
         if (!complexType) superTypesCache.put(dec, superType);
         return superType;
     }
@@ -580,9 +582,6 @@ public class ProducedType extends ProducedReference {
      * declaration satisfying the predicate, of which 
      * this type is an invariant subtype. 
      */
-    ProducedType getSupertype(Criteria c) {
-        return getSupertype(c, new ArrayList<ProducedType>());
-    }
     
     static interface Criteria {
         boolean satisfies(TypeDeclaration type);
@@ -593,17 +592,15 @@ public class ProducedType extends ProducedReference {
      * Search for the most-specialized supertype 
      * satisfying the given predicate. 
      */
-    private ProducedType getSupertype(final Criteria c, List<ProducedType> list) {
+    public ProducedType getSupertype(final Criteria c) {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
         }
-        if ( isWellDefined() && (getDeclaration() instanceof UnionType || 
-                                 getDeclaration() instanceof IntersectionType || 
-                                 Util.addToSupertypes(list, this)) ) {
+        if ( isWellDefined() ) {
             //now let's call the two most difficult methods
             //in the whole code base:
-            ProducedType result = getPrincipalInstantiation(c, list);
-            result = getPrincipalInstantiationFromCases(c, list, result);
+            ProducedType result = getPrincipalInstantiation(c);
+            result = getPrincipalInstantiationFromCases(c, result);
             return result;
         }
         else {
@@ -612,7 +609,7 @@ public class ProducedType extends ProducedReference {
     }
     
     private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
-            List<ProducedType> list, ProducedType result) {
+            ProducedType result) {
         if (getDeclaration() instanceof UnionType) {
             //trying to infer supertypes of algebraic
             //types from their cases was resulting in
@@ -670,9 +667,8 @@ public class ProducedType extends ProducedReference {
 		}
 		return stc;
 	}
-
-    private ProducedType getPrincipalInstantiation(Criteria c,
-            List<ProducedType> list) {
+	
+    private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
         //for the given declaration
         
@@ -680,7 +676,7 @@ public class ProducedType extends ProducedReference {
         
         ProducedType extendedType = getInternalExtendedType();
         if (extendedType!=null) {
-            ProducedType possibleResult = extendedType.getSupertype(c, list);
+            ProducedType possibleResult = extendedType.getSupertype(c);
             if (possibleResult!=null) {
                 result = possibleResult;
             }
@@ -688,7 +684,7 @@ public class ProducedType extends ProducedReference {
         
         List<ProducedType> satisfiedTypes = getInternalSatisfiedTypes();
 		for (ProducedType dst: satisfiedTypes) {
-            ProducedType possibleResult = dst.getSupertype(c, list);
+            ProducedType possibleResult = dst.getSupertype(c);
             if (possibleResult!=null) {
                 if (result==null || possibleResult.isSubtypeOfInternal(result)) {
                     result = possibleResult;
@@ -750,7 +746,7 @@ public class ProducedType extends ProducedReference {
                         	caseTypes.add(result);
                         	caseTypes.add(possibleResult);
                         	ut.setCaseTypes(caseTypes);
-                        	result = ut.getType().getSupertype(c, list);
+                        	result = ut.getType().getSupertype(c);
                         	if (result==null) {
                             	return new UnknownType(unit).getType();
                         	}
@@ -1677,6 +1673,42 @@ public class ProducedType extends ProducedReference {
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null && qt.isRecursiveTypeDefinition(ad)) return true;
+        }
+        return false;
+    }
+    
+    public boolean isRecursiveRawTypeDefinition(TypeDeclaration ad) {
+        //TODO this method could overflow if one of the referenced
+        //     alias definitions is also recursive!
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeAlias||
+            d instanceof ClassAlias||
+            d instanceof InterfaceAlias) {
+            if (d.equals(ad)) {
+                return true;
+            }
+            if (d.getExtendedType()!=null &&
+                    d.getExtendedType().isRecursiveRawTypeDefinition(ad)) return true;
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                if (ct.isRecursiveRawTypeDefinition(ad)) return true;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getSatisfiedTypes()) {
+                if (st.isRecursiveRawTypeDefinition(ad)) return true;
+            }
+        }
+        else {
+            if (d.equals(ad)) {
+                return true;
+            }
+            if (d.getExtendedType()!=null &&
+                    d.getExtendedType().isRecursiveRawTypeDefinition(ad)) return true;
+            for (ProducedType st: getSatisfiedTypes()) {
+                if (st.isRecursiveRawTypeDefinition(ad)) return true;
+            }
         }
         return false;
     }

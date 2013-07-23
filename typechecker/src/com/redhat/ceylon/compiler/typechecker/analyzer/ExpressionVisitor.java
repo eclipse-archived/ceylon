@@ -4945,6 +4945,9 @@ public class ExpressionVisitor extends Visitor {
         Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
+            if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {
+                t.addError("directly satisfies Callable");
+            }
             if (type!=null && type.getDeclaration()!=null) {
                 type = type.resolveAliases();
                 if (!set.add(type.getDeclaration())) {

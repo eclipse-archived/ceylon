@@ -134,6 +134,10 @@ public class SupertypeVisitor extends Visitor {
         if (that!=null) {
             int i=0;
             for (Tree.StaticType st: that.getTypes()) {
+                if (st.getTypeModel()!=null && st.getTypeModel().isRecursiveRawTypeDefinition(d)) {
+                    st.addError("supertype is circularly defined");
+                    d.getSatisfiedTypes().set(i, new UnknownType(that.getUnit()).getType());
+                }
                 if (isUndecidableSupertype(st.getTypeModel(), d, st)) {
                     d.getSatisfiedTypes().set(i, new UnknownType(that.getUnit()).getType());
                 }
@@ -145,12 +149,16 @@ public class SupertypeVisitor extends Visitor {
     private void checkForUndecidability(Tree.ExtendedType that, Class d) {
         if (that!=null) {
             Tree.StaticType et = that.getType();
+            if (et.getTypeModel()!=null && et.getTypeModel().isRecursiveRawTypeDefinition(d)) {
+                et.addError("supertype is circularly defined");
+                d.setExtendedType(new UnknownType(that.getUnit()).getType());
+            }
             if (isUndecidableSupertype(et.getTypeModel(), d, et)) {
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
             }
         }
     }
-
+    
     @Override 
     public void visit(Tree.ClassDefinition that) {
         super.visit(that);

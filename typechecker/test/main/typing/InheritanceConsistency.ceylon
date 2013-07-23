@@ -56,12 +56,12 @@ class InheritanceConsistency() {
 
     //avoid cycles in hierarchy
     @error class CycleA() extends CycleB() {}
-    @error class CycleB() extends CycleA() {}
+    class CycleB() extends CycleA() {}
 
     @error interface CycleC satisfies CycleE {}
-    @error interface CycleD satisfies CycleC {}
-    @error interface CycleE satisfies CycleD {}
-    @error class CycleF() satisfies CycleE {}
+    interface CycleD satisfies CycleC {}
+    interface CycleE satisfies CycleD {}
+    class CycleF() satisfies CycleE {}
 
     //avoid parallel member definition in a class hierarchy
     interface ActualA {

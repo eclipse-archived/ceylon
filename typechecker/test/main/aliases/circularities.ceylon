@@ -1,11 +1,11 @@
 
 @error interface Xa satisfies Ya {}
-@error interface Ya => Za;
-@error interface Za satisfies Xa {}
+interface Ya => Za;
+interface Za satisfies Xa {}
 
 @error class Xb() extends Yb() {}
-@error class Yb() => Zb();
-@error class Zb() extends Xb() {}
+class Yb() => Zb();
+class Zb() extends Xb() {}
 
 @error alias Xc => Yc;
 alias Yc => Zc;
