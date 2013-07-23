@@ -404,31 +404,31 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     protected final void writeParameters(Declaration decl) throws IOException {
-    	if( decl instanceof Functional ) {
-    		boolean first = true;
-    		List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
-    		for (ParameterList parameterList : parameterLists) {
-    			for (Parameter parameter : parameterList.getParameters()) {
+        if( decl instanceof Functional ) {
+            boolean first = true;
+            List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
+            for (ParameterList parameterList : parameterLists) {
+                for (Parameter parameter : parameterList.getParameters()) {
                     String doc = getDoc(parameter.getModel(), linkRenderer());
-    				if( !doc.isEmpty() ) {
-    					if( first ) {
-    						first = false;
-    						open("div class='parameters section'");
-    						around("span class='title'", "Parameters: ");
-    						open("ul");
-    					}
-    					open("li");
-    					around("span class='parameter'", parameter.getName());
-    					write(doc);
-    					close("li");
-    				}
-    			}
-    		}    			
-    		if (!first) {
-    			close("ul");
-    			close("div");
-    		}
-    	}
+                    if( !doc.isEmpty() ) {
+                        if( first ) {
+                            first = false;
+                            open("div class='parameters section'");
+                            around("span class='title'", "Parameters: ");
+                            open("ul");
+                        }
+                        open("li");
+                        around("span class='parameter'", parameter.getName());
+                        write(doc);
+                        close("li");
+                    }
+                }
+            }    			
+            if (!first) {
+                close("ul");
+                close("div");
+            }
+        }
     }
 
 	protected final void writeThrows(Declaration decl) throws IOException {
