@@ -536,6 +536,11 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
 
         out(function, names.name(d), "(");
+        final List<TypeParameterDeclaration> tparms = that.getTypeParameterList() == null ? null :
+            that.getTypeParameterList().getTypeParameterDeclarations();
+        if (tparms != null && !tparms.isEmpty()) {
+            out("$$targs$$,");
+        }
         self(d);
         out(")");
         beginBlock();
@@ -546,6 +551,12 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
+        if (tparms != null && !tparms.isEmpty()) {
+            out(clAlias, "set_type_args(");
+            self(d);
+            out(",$$targs$$)");
+            endLine(true);
+        }
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -708,7 +719,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that,
+    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
             final List<Declaration> superDecs) {
         if (satisfiedTypes!=null) {
             for (StaticType st: satisfiedTypes.getTypes()) {
@@ -718,6 +729,14 @@ public class GenerateJsVisitor extends Visitor
                 }
                 qualify(that, typeDecl);
                 out(names.name((ClassOrInterface)typeDecl), "(");
+                if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
+                    if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
+                        self(d);
+                        out(".$$targs$$===undefined?$$targs$$:");
+                    }
+                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this);
+                    out(",");
+                }
                 self(d);
                 out(");");
                 endLine();
