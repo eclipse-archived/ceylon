@@ -1673,6 +1673,11 @@ public class ProducedType extends ProducedReference {
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null && qt.isRecursiveTypeDefinition(ad)) return true;
+            if (d.getExtendedType()!=null &&
+                    d.getExtendedType().isRecursiveRawTypeDefinition(ad)) return true;
+            for (ProducedType st: getSatisfiedTypes()) {
+                if (st.isRecursiveRawTypeDefinition(ad)) return true;
+            }
         }
         return false;
     }
