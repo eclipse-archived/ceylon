@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -182,6 +183,7 @@ abstract class Invocation {
             
         if (isMemberRefInvocation()) {
             JCExpression callable = gen.expressionGen().transformMemberReference((Tree.QualifiedMemberOrTypeExpression)getPrimary(), (Tree.MemberOrTypeExpression)getQmePrimary());
+            // The callable is a Callable we generate ourselves, it can never be erased to Object so there's no need to unerase
             selector = Naming.getCallableMethodName();
             handleBoxing(true);
             return new TransformedInvocationPrimary(callable, selector);
@@ -225,6 +227,7 @@ abstract class Invocation {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 
                         List.<JCExpression>nil());
+                actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
                 selector = Naming.getCallableMethodName();
             } else if ((getPrimaryDeclaration() instanceof FunctionalParameter 
                         && !Strategy.createMethod((FunctionalParameter)getPrimaryDeclaration()))
@@ -234,14 +237,24 @@ abstract class Invocation {
                 } else {
                     actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
                 }
-                if (!gen.isCeylonCallableSubtype(getPrimary().getTypeModel())) {                    
-                    actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
-                }
+                actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
                 selector = Naming.getCallableMethodName();
             }
         }
         
         return new TransformedInvocationPrimary(actualPrimExpr, selector);
+    }
+
+    protected JCExpression unboxCallableIfNecessary(JCExpression actualPrimExpr, Tree.Term primary) {
+        ProducedType primaryModel = primary.getTypeModel();
+        if(!gen.isCeylonCallable(primaryModel)){
+            // if it's not exactly a Callable we may have to unerase it to one
+            ProducedType expectedType = primaryModel.getSupertype(gen.typeFact().getCallableDeclaration());
+            return gen.expressionGen().applyErasureAndBoxing(actualPrimExpr, primaryModel, 
+                                                             primary.getTypeErased(), !primary.getUnboxed(), BoxingStrategy.BOXED, 
+                                                             expectedType, 0);
+        }
+        return actualPrimExpr;
     }
 
     boolean isMemberRefInvocation() {
@@ -814,13 +827,16 @@ class CallableSpecifierInvocation extends Invocation {
     
     private final Method method;
     private final JCExpression callable;
+    private final Term callableTerm;
     public CallableSpecifierInvocation(
             AbstractTransformer gen, 
             Method method,
             JCExpression callableExpr,
+            Tree.Term callableTerm,
             Node node) {
         super(gen, null, null, method.getType(), node);
         this.callable = callableExpr;
+        this.callableTerm = callableTerm;
         this.method = method;
         // Because we're calling a callable, and they always return a 
         // boxed result
@@ -834,6 +850,8 @@ class CallableSpecifierInvocation extends Invocation {
     }
     
     JCExpression getCallable() {
+        if(callableTerm != null)
+            return unboxCallableIfNecessary(callable, callableTerm);
         return callable;
     }
 

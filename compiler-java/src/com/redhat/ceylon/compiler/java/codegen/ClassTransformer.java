@@ -700,6 +700,8 @@ public class ClassTransformer extends AbstractTransformer {
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel));
             mdb.modifiers(transformMethodDeclFlags(paramModel));
             // Functional parameters can't have type parameters 
+            // Functional parameter are always declared literally as "T name()", not as "Callable<T,[]>" so they can't
+            // possibly be of any other type than Callable, so we don't need to unerase them when we call "$call" on them
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
                     naming.makeQualIdent(naming.makeName(paramModel, Naming.NA_IDENT), 
                             Naming.getCallableMethodName()));
@@ -2078,11 +2080,15 @@ public class ClassTransformer extends AbstractTransformer {
                 // The field isn't initialized by a parameter, but later in the block
                 initialValue = makeNull();
             }
-            current().field(mods, fieldName, makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
+            ProducedType callableType = typeFact().getCallableType(model.getType());
+            current().field(mods, fieldName, makeJavaType(callableType), initialValue, false);
             Invocation invocation = new CallableSpecifierInvocation(
                     this,
                     model,
                     makeUnquotedIdent(fieldName),
+                    // we don't have to give a Term here because it's used for casting the Callable in case of callable erasure, 
+                    // but with deferred methods we can't define them so that they are erased so we're good
+                    null,
                     def);
             invocation.handleBoxing(true);
             JCExpression call = expressionGen().transformInvocation(invocation);
@@ -2207,12 +2213,14 @@ public class ClassTransformer extends AbstractTransformer {
                         this, 
                         method, 
                         naming.makeUnquotedIdent(name),
+                        primary,
                         primary);
             } else if (isCeylonCallableSubtype(primary.getTypeModel())) {
                 invocation = new CallableSpecifierInvocation(
                         this, 
                         method, 
                         expressionGen().transformExpression(primary),
+                        primary,
                         primary);
             } else {
                 throw Assert.fail("Unhandled primary " + primary);
