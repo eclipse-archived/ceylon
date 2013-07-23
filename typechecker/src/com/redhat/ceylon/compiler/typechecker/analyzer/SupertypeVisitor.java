@@ -57,6 +57,11 @@ public class SupertypeVisitor extends Visitor {
         }
         else if (atd instanceof UnionType) {
             for (ProducedType ct: atd.getCaseTypes()) {
+                if (ct.isRecursiveTypeDefinition(td)) {
+                    node.addError("supertype contains recursion within union: " +
+                            ct.getProducedTypeName(node.getUnit()));
+                    return true;
+                }
                 if (isUndecidableSupertype(ct, td, node)) {
                     return true;
                 }
