@@ -313,8 +313,9 @@ public class TypeHierarchyVisitor extends Visitor {
         return sortedDag;
     }
 
-    private void visitDAGNode(TypeDeclaration declaration, List<Type> sortedDag, Set<TypeDeclaration> visited,
-            List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
+    private void visitDAGNode(TypeDeclaration declaration, List<Type> sortedDag, 
+            Set<TypeDeclaration> visited, List<TypeDeclaration> stackOfProcessedType, 
+            Node errorReporter) {
         if (declaration == null) {
             return;
         }
@@ -333,11 +334,15 @@ public class TypeHierarchyVisitor extends Visitor {
         for (TypeDeclaration superSatisfiedType : declaration.getSatisfiedTypeDeclarations()) {
             visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
         }
+        for (TypeDeclaration superSatisfiedType : declaration.getBrokenSupertypes()) {
+            visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
+        }
         stackOfProcessedType.remove(stackOfProcessedType.size()-1);
         sortedDag.add(type);
     }
 
-    private boolean checkCyclicInheritance(TypeDeclaration declaration, List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
+    private boolean checkCyclicInheritance(TypeDeclaration declaration, 
+            List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
         final int matchingIndex = stackOfProcessedType.indexOf(declaration);
         if (matchingIndex!=-1) {
             StringBuilder sb = new StringBuilder("cyclical inheritance in ");

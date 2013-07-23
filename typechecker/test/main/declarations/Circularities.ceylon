@@ -1,35 +1,35 @@
 @error class CX() extends CY() {
     shared String hello = "hello";
 }
-class CY() extends CX() {}
+@error class CY() extends CX() {}
 
 @error interface CA satisfies CB {
     shared void noop() {}
 }
-interface CB satisfies CA {}
+@error interface CB satisfies CA {}
 
 class WithCircularTypeParams<S,T>()
     @error given S satisfies T
-    given T satisfies S {}
+    @error given T satisfies S {}
 
 
 class WithCircularTypeParams2<S,T>()
     @error given S satisfies T & WithCircularTypeParams2<S,T>
-    given T satisfies S & WithCircularTypeParams2<S,T> {}
+    @error given T satisfies S & WithCircularTypeParams2<S,T> {}
 
 
 void testMemberResolutionOnCircular() {
     String hi = CY().hello;
     CX cx = CY();
-    object o satisfies CB {}
+    @error object o satisfies CB {}
     o.noop();
     CA ca = o;
 }
 
 interface CircularConstraints<P,Q,R>
         @error given P satisfies Q
-        given Q satisfies R
-        given R satisfies P {}
+        @error given Q satisfies R
+        @error given R satisfies P {}
 
 @error class Good1WithCircularConstraints() satisfies CircularConstraints<String,String,String> {}
 @error class Good2WithCircularConstraints() satisfies CircularConstraints<Object,Object,Object> {}
