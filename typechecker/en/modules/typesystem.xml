@@ -921,16 +921,9 @@ Float|Integer num = one;</programlisting></comment>
             </itemizedlist>
             
             <para>It further follows that if <literal>X</literal> and <literal>Y</literal>
-            are distinct types, and <literal>B&lt;T&gt;</literal> is invariant in 
-            <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
+            are distinct types that do not involve type parameters, and <literal>B&lt;T&gt;</literal> 
+            is invariant in <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
             is the empty type <literal>Nothing</literal>.</para>
-            
-            <comment><para>Note: in fact, the type checker actually enforces an additional
-            condition, that might be strictly stronger than this one: that the intersection
-            between the direct supertypes of a type must not be equivalent to 
-            <literal>Nothing</literal>. However, in order to prove this, it must first prove
-            that the above condition holds, or the simplification algorithm runs the risk of 
-            not terminating.</para></comment>
             
             <para>These identities result from principal instantiation inheritance, for any
             types <literal>X</literal> and <literal>Y</literal>:</para>
@@ -948,6 +941,13 @@ Float|Integer num = one;</programlisting></comment>
                 </listitem>
             </itemizedlist>
         
+            <comment><para>Note: in fact, the type checker actually enforces an additional
+            condition, that might be strictly stronger than this one: that the intersection
+            between the direct supertypes of a type must not be equivalent to 
+            <literal>Nothing</literal>. However, in order to prove this, it must first prove
+            that the above condition holds, or the simplification algorithm runs the risk of 
+            not terminating.</para></comment>
+            
         </section>
         
     <section id="extendedclass">
