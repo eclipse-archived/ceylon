@@ -56,14 +56,16 @@ void aliases() {
     @error alias L2<in T> => List<T>;
     @error class S1<in T>(T t) => Singleton<T>(t);
     @error alias S2<in T> => Singleton<T>;
+    @error class SS<in T>(T t) extends Singleton<T>(t) {}
+    @error interface LS<in T> satisfies List<T> {}
 }
 
-//void broken() {
-//    interface Contra<in P> {}
-//    interface Inv<P> {}
-//    @error interface X satisfies Contra<Contra<X>> {}
-//    @error interface Y satisfies Contra<Contra<Y>> {}
-//    @error X&Contra<Y|Contra<X>> sub2(X&Contra<Y> sub) => sub;
-//    X&Contra<Y> sup2(X&Contra<Y|Contra<X>> sup) => sup;
-//    @error Inv<X&Contra<Y|Contra<X>>> foo2(Inv<X&Contra<Y>> foo) => foo;
-//}
+void broken() {
+    interface Contra<in P> {}
+    interface Inv<P> {}
+    @error interface X satisfies Contra<Contra<X>> {}
+    @error interface Y satisfies Contra<Contra<Y>> {}
+    @error X&Contra<Y|Contra<X>> sub2(X&Contra<Y> sub) => sub;
+    X&Contra<Y> sup2(X&Contra<Y|Contra<X>> sup) => sup;
+    @error Inv<X&Contra<Y|Contra<X>>> foo2(Inv<X&Contra<Y>> foo) => foo;
+}
