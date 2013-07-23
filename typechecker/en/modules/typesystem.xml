@@ -931,6 +931,22 @@ Float|Integer num = one;</programlisting></comment>
             <literal>Nothing</literal>. However, in order to prove this, it must first prove
             that the above condition holds, or the simplification algorithm runs the risk of 
             not terminating.</para></comment>
+            
+            <para>These identities result from principal instantiation inheritance, for any
+            types <literal>X</literal> and <literal>Y</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal> is exactly equivalent 
+                    to <literal>B&lt;X&amp;Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
+                    is covariant in <literal>T</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal> is exactly equivalent
+                    to <literal>B&lt;X|Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
+                    is contravariant in <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
         
         </section>
         
