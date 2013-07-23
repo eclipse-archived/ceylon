@@ -564,7 +564,7 @@ class Invariance() {
     void f2<E>() @error given E satisfies O<E&I> {}
     void f3<E>() @error given E satisfies O<E> & I {}
     @error interface F1<E> satisfies O<E> & O<I> {}
-    @error interface F2<E> satisfies O<E&I> {}
+    interface F2<E> satisfies O<E&I> {}
     @error interface F3<E> satisfies O<E> & I {}
     
     void m<E>(O<E> & O<I> val) 
@@ -578,7 +578,7 @@ class Invariance() {
     
     void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
             given E satisfies O<E> {
-        @error O<E&I> g2 = f2;
+        O<E&I> g2 = f2;
         //fail because F1/F2 are not well-defined
         //and the subtype algo can't calculate
         //the principal type
@@ -595,7 +595,7 @@ class CoVariance() {
     //nothing really wrong with this, 
     //but the spec says it is an error
     void f1<E>() @error given E satisfies O<E> & O<I> {}
-    void f2<E>() given E satisfies O<E&I> {}
+    void f2<E>() @error given E satisfies O<E&I> {}
     void f3<E>() given E satisfies O<E> & I {}
     //nothing really wrong with this, 
     //but the spec says it is an error

@@ -1644,6 +1644,41 @@ public class ProducedType extends ProducedReference {
 		return false;
     }
     
+    public boolean isRecursiveTypeDefinition(TypeDeclaration ad) {
+        //TODO this method could overflow if one of the referenced
+        //     alias definitions is also recursive!
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeAlias||
+            d instanceof ClassAlias||
+            d instanceof InterfaceAlias) {
+            if (d.equals(ad)) {
+                return true;
+            }
+            if (d.getExtendedType().isRecursiveTypeDefinition(ad)) return true;
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                if (ct.isRecursiveTypeDefinition(ad)) return true;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getSatisfiedTypes()) {
+                if (st.isRecursiveTypeDefinition(ad)) return true;
+            }
+        }
+        else {
+            if (d.equals(ad)) {
+                return true;
+            }
+            for (ProducedType at: getTypeArgumentList()) {
+                if (at!=null && at.isRecursiveTypeDefinition(ad)) return true;
+            }
+            ProducedType qt = getQualifyingType();
+            if (qt!=null && qt.isRecursiveTypeDefinition(ad)) return true;
+        }
+        return false;
+    }
+    
     @Deprecated
     public boolean isUnknown() {
         return getDeclaration() instanceof UnknownType;

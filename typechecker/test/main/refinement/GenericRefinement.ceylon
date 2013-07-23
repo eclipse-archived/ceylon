@@ -103,14 +103,14 @@ class GenericRefinement() {
     }
 
     interface MoreConstraints {
-        interface Baz<out X> {}
+        interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies Baz<T&S>;
+		            @error given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
-		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&String> {}
+		    @error shared actual void accept<T>(T t)
+		            @error given T satisfies Baz<T&String> {}
 		}
     }
 
@@ -118,10 +118,10 @@ class GenericRefinement() {
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies List<T&S>;
+		            @error given T satisfies List<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
-		    shared actual void accept<T>(T t)
+		    @error shared actual void accept<T>(T t)
 		            given T satisfies List<String> {}
 		}
     }
@@ -130,7 +130,7 @@ class GenericRefinement() {
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies Comparable<T&S>;
+		            @error given T satisfies Comparable<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
 		    @error
@@ -141,28 +141,28 @@ class GenericRefinement() {
 
     interface BrokenConstraints {
         interface I {} interface J {}
-        interface Baz<out X> {}
+        interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies Baz<T&S>;
+		            @error given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<I> {
 		    @error
 		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&J> {}
+		            @error given T satisfies Baz<T&J> {}
 		}
     }
     
     interface UnBrokenConstraints {
         interface I {} interface J {}
-        interface Baz<out X> {}
+        interface Baz<X> {}
         interface Foo<S> {
             shared formal void accept<T>(T t) 
-                    given T satisfies Baz<T&S>&J;
+                    @error given T satisfies Baz<T&S>&J;
         }
         class Bar() satisfies Foo<I> {
-            shared actual void accept<T>(T t)
-                    given T satisfies Baz<T&I>&J {}
+            @error shared actual void accept<T>(T t)
+                    @error given T satisfies Baz<T&I>&J {}
         }
     }
     

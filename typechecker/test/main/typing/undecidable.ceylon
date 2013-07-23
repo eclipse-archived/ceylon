@@ -5,7 +5,7 @@ void undecidable() {
     
     interface Co<out T> {}
     @error interface A satisfies Co<Inv<A&B&Co<Inv<A&B>>>> {}
-    interface B satisfies Co<Co<B&A>> {}
+    @error interface B satisfies Co<Co<B&A>> {}
     class Inv<T>() {}
     @error Inv<A&B&Co<Inv<A>>> foo(Inv<A&B> bar) => bar;
     
@@ -24,6 +24,13 @@ void undecidable() {
     @error alias E=>D;
     alias D=>E;
     
+}
+
+void moreundecidable() {
+    interface Co<out P> {}
+    @error interface A satisfies Co<B&Co<A>> {}
+    @error interface B satisfies Co<A&Co<B>> {}
+    @error Co<A&B&Co<A&B>> foo(Co<A&B> co) => co;
 }
 
 void decidable() {
@@ -51,12 +58,12 @@ void aliases() {
     @error alias S2<in T> => Singleton<T>;
 }
 
-void broken() {
-    interface Contra<in P> {}
-    interface Inv<P> {}
-    @error interface X satisfies Contra<Contra<X>> {}
-    @error interface Y satisfies Contra<Contra<Y>> {}
-    @error X&Contra<Y|Contra<X>> sub2(X&Contra<Y> sub) => sub;
-    X&Contra<Y> sup2(X&Contra<Y|Contra<X>> sup) => sup;
-    @error Inv<X&Contra<Y|Contra<X>>> foo2(Inv<X&Contra<Y>> foo) => foo;
-}
+//void broken() {
+//    interface Contra<in P> {}
+//    interface Inv<P> {}
+//    @error interface X satisfies Contra<Contra<X>> {}
+//    @error interface Y satisfies Contra<Contra<Y>> {}
+//    @error X&Contra<Y|Contra<X>> sub2(X&Contra<Y> sub) => sub;
+//    X&Contra<Y> sup2(X&Contra<Y|Contra<X>> sup) => sup;
+//    @error Inv<X&Contra<Y|Contra<X>>> foo2(Inv<X&Contra<Y>> foo) => foo;
+//}

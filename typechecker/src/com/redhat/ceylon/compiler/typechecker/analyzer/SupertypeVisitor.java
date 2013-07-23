@@ -7,7 +7,6 @@ import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -26,43 +25,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class SupertypeVisitor extends Visitor {
 
-    private static boolean isUndecidableSupertype(ProducedType st,
-            Node node) {
-        if (st==null) return false;
-        TypeDeclaration std = st.getDeclaration();
-        if (std instanceof TypeAlias) {
-            ProducedType et = std.getExtendedType();
-            if (et.isRecursiveTypeAliasDefinition(std)) { 
-                //TODO: we could get rid of this check if
-                //      we introduced and additional
-                //      compilation phase to separate
-                //      SupertypeVisitor/AliasVisitor
-                node.addError("supertype contains reference to circularly defined type alias");
-                return true;
-            }
-            else if (isUndecidableSupertype(et, node)) {
-                return true;
-            }
-        }
-        List<ProducedType> tal = st.getTypeArgumentList();
-        List<TypeParameter> tpl = std.getTypeParameters();
-        for (int i=0; i<tal.size() && i<tpl.size(); i++) {
-            TypeParameter tp = tpl.get(i);
-            ProducedType at = tal.get(i);
-            if (!tp.isCovariant() && !tp.isContravariant()) {
-                if (containsIntersection(at, node)) {
-                    return true;
-                }
-            }
-            if (isUndecidableSupertype(at, node)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean containsIntersection(ProducedType at,
-            Node node) {
+    private static boolean isUndecidableSupertype(ProducedType at,
+            TypeDeclaration td, Node node) {
         if (at==null) return false;
         TypeDeclaration atd = at.getDeclaration();
         if (atd instanceof TypeAlias) {
@@ -75,18 +39,32 @@ public class SupertypeVisitor extends Visitor {
                 node.addError("supertype contains reference to circularly defined type alias");
                 return true;
             }
-            else if (containsIntersection(et, node)) {
+            else if (isUndecidableSupertype(et, td, node)) {
                 return true;
             }
         }
-        if (atd instanceof IntersectionType) {
-            node.addError("supertype contains intersection as argument to invariant type parameter: " +
-                    at.getProducedTypeName(node.getUnit()));
-            return true;
+        else if (atd instanceof IntersectionType) {
+            for (ProducedType st: atd.getSatisfiedTypes()) {
+                if (st.isRecursiveTypeDefinition(td)) {
+                    node.addError("supertype contains recursion within intersection: " +
+                            st.getProducedTypeName(node.getUnit()));
+                    return true;
+                }
+                if (isUndecidableSupertype(st, td, node)) {
+                    return true;
+                }
+            }
         }
-        if (atd instanceof UnionType) {
+        else if (atd instanceof UnionType) {
             for (ProducedType ct: atd.getCaseTypes()) {
-                if (containsIntersection(ct, node)) {
+                if (isUndecidableSupertype(ct, td, node)) {
+                    return true;
+                }
+            }
+        }
+        else {
+            for (ProducedType t: at.getTypeArgumentList()) {
+                if (isUndecidableSupertype(t, td, node)) {
                     return true;
                 }
             }
@@ -151,7 +129,7 @@ public class SupertypeVisitor extends Visitor {
         if (that!=null) {
             int i=0;
             for (Tree.StaticType st: that.getTypes()) {
-                if (isUndecidableSupertype(st.getTypeModel(), st)) {
+                if (isUndecidableSupertype(st.getTypeModel(), d, st)) {
                     d.getSatisfiedTypes().set(i, new UnknownType(that.getUnit()).getType());
                 }
                 i++;
@@ -162,7 +140,7 @@ public class SupertypeVisitor extends Visitor {
     private void checkForUndecidability(Tree.ExtendedType that, Class d) {
         if (that!=null) {
             Tree.StaticType et = that.getType();
-            if (isUndecidableSupertype(et.getTypeModel(), et)) {
+            if (isUndecidableSupertype(et.getTypeModel(), d, et)) {
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
             }
         }
