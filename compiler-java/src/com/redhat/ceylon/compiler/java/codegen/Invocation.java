@@ -348,7 +348,7 @@ class IndirectInvocationBuilder extends SimpleInvocation {
 
     public IndirectInvocationBuilder(
             AbstractTransformer gen, 
-            Tree.Primary primary,
+            Tree.Term primary,
             Declaration primaryDeclaration,
             Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
@@ -567,7 +567,7 @@ class PositionalInvocation extends DirectInvocation {
 
     public PositionalInvocation(
             AbstractTransformer gen, 
-            Tree.Primary primary,
+            Tree.Term primary,
             Declaration primaryDeclaration,
             ProducedReference producedReference, Tree.InvocationExpression invocation,
             java.util.List<Parameter> parameters) {
@@ -886,7 +886,7 @@ class NamedArgumentInvocation extends Invocation {
     private ProducedReference producedReference;
     
     public NamedArgumentInvocation(
-            AbstractTransformer gen, Tree.Primary primary,
+            AbstractTransformer gen, Tree.Term primary,
             Declaration primaryDeclaration,
             ProducedReference producedReference,
             Tree.InvocationExpression invocation) {

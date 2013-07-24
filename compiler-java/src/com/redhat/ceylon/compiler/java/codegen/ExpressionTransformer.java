@@ -2798,7 +2798,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(ret != null)
             return ret;
         
-        Tree.Primary primary = ce.getPrimary();
+        Tree.Term primary = Decl.unwrapExpressionsUntilTerm(ce.getPrimary());
         Declaration primaryDeclaration = null;
         ProducedReference producedReference = null;
         if (primary instanceof Tree.MemberOrTypeExpression) {
@@ -3194,9 +3194,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (term instanceof Tree.QualifiedTypeExpression) {
             return transform((Tree.QualifiedTypeExpression)term, transformer);
         } else {
-            JCExpression primaryExpr = transformExpression(term);
-            if (transformer != null) {
-                primaryExpr = transformer.transform(primaryExpr, null);
+            // do not consider our term to be part of an invocation, we want it to be a Callable
+            boolean oldWi = withinInvocation;
+            withinInvocation = false;
+            JCExpression primaryExpr;
+            try{
+                primaryExpr = transformExpression(term);
+                if (transformer != null) {
+                    primaryExpr = transformer.transform(primaryExpr, null);
+                }
+            }finally{
+                withinInvocation = oldWi;
             }
             return primaryExpr;
         }
