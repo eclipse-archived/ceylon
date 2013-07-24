@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXT
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -37,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
@@ -508,18 +508,21 @@ public class CallableBuilder {
     }
 
     private void makeForwardedInvocation(int i, ListBuffer<JCStatement> stmts, Tree.Term forwardCallTo) {
-        final Tree.MemberOrTypeExpression primary;
+        ProducedReference target;
         if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
-            primary = (Tree.MemberOrTypeExpression)forwardCallTo;
+            target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
+        } else if (forwardCallTo instanceof Tree.FunctionArgument) {
+            Method method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
+            target = method.getProducedReference(null, Collections.<ProducedType>emptyList());
         } else {
             throw new RuntimeException(forwardCallTo.getNodeType());
         }
         TypeDeclaration primaryDeclaration = forwardCallTo.getTypeModel().getDeclaration();
         CallableInvocation invocationBuilder = new CallableInvocation (
                 gen,
-                primary,
+                forwardCallTo,
                 primaryDeclaration,
-                primary.getTarget(),
+                target,
                 gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
                 forwardCallTo, 
                 paramLists,

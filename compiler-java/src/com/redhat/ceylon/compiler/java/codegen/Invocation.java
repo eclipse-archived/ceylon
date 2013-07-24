@@ -54,8 +54,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -71,7 +69,7 @@ import com.sun.tools.javac.util.ListBuffer;
 
 abstract class Invocation {
 
-    static boolean onValueType(AbstractTransformer gen, Tree.Primary primary, Declaration primaryDeclaration) {
+    static boolean onValueType(AbstractTransformer gen, Tree.Term primary, Declaration primaryDeclaration) {
         // don't use the value type mechanism for optimised Java arrays get/set invocations
         if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
             Tree.Primary qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
@@ -91,7 +89,7 @@ abstract class Invocation {
     
     protected final AbstractTransformer gen;
     private final Node node;
-    private final Tree.Primary primary;
+    private final Tree.Term primary;
     private final Declaration primaryDeclaration;
     private final ProducedType returnType;
     protected boolean handleBoxing;
@@ -101,7 +99,7 @@ abstract class Invocation {
     private final boolean onValueType;
     
     protected Invocation(AbstractTransformer gen, 
-            Tree.Primary primary, Declaration primaryDeclaration,
+            Tree.Term primary, Declaration primaryDeclaration,
             ProducedType returnType, Node node) {
         this.gen = gen;
         this.primary = primary;
@@ -125,7 +123,7 @@ abstract class Invocation {
         return node;
     }
 
-    Tree.Primary getPrimary() {
+    Tree.Term getPrimary() {
         return primary;
     }
 
@@ -198,11 +196,12 @@ abstract class Invocation {
         }
         
         if (getPrimary() instanceof Tree.Expression) {
-            Tree.Primary p = getPrimary();
-            while (p instanceof Tree.Expression) {
-                p = (Tree.Primary)((Expression)getPrimary()).getTerm();
-            }
-            primaryExpr = gen.expressionGen().transformFunctional(p, (Functional)((QualifiedMemberExpression)p).getDeclaration());
+            Tree.Term p = Decl.unwrapExpressionsUntilTerm(getPrimary());
+            if(p instanceof Tree.MemberOrTypeExpression){
+                Functional decl = (Functional)((Tree.MemberOrTypeExpression) p).getDeclaration();
+                primaryExpr = gen.expressionGen().transformFunctional(p, decl);
+            } 
+            // otherwise primaryExpr is already a Callable
             selector = null;
         }
         
@@ -268,7 +267,7 @@ abstract class Invocation {
 
 abstract class SimpleInvocation extends Invocation {
 
-    public SimpleInvocation(AbstractTransformer gen, Primary primary,
+    public SimpleInvocation(AbstractTransformer gen, Tree.Term primary,
             Declaration primaryDeclaration, ProducedType returnType, Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
     }
@@ -487,7 +486,7 @@ abstract class DirectInvocation extends SimpleInvocation {
 
     protected DirectInvocation(
             AbstractTransformer gen,
-            Tree.Primary primary,
+            Tree.Term primary,
             Declaration primaryDeclaration,
             ProducedReference producedReference, ProducedType returnType, 
             Node node) {
@@ -716,11 +715,19 @@ class CallableInvocation extends DirectInvocation {
     private final int parameterCount;
 
     public CallableInvocation(
-            AbstractTransformer gen, Tree.MemberOrTypeExpression primary,
+            AbstractTransformer gen, Tree.Term primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
             Tree.Term expr, ParameterList parameterList, int parameterCount) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
-        callableParameters = ((Functional)primary.getDeclaration()).getParameterLists().get(0).getParameters();
+        Functional functional = null;
+        if(primary instanceof Tree.MemberOrTypeExpression)
+            functional = (Functional) ((Tree.MemberOrTypeExpression) primary).getDeclaration();
+        else if(primary instanceof Tree.FunctionArgument)
+            functional = ((Tree.FunctionArgument) primary).getDeclarationModel();
+        if(functional != null)
+            callableParameters = functional.getParameterLists().get(0).getParameters();
+        else
+            callableParameters = Collections.emptyList();
         functionalParameters = parameterList.getParameters();
         this.parameterCount = parameterCount;
         setUnboxed(expr.getUnboxed());

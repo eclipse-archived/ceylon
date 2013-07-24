@@ -2102,9 +2102,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return false;
     }
 
-    private JCExpression makeTypeInfoArgument(Primary primary) {
-        Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) primary;
-        ProducedType type = bme.getTypeArguments().getTypeModels().get(0);
+    private JCExpression makeTypeInfoArgument(Tree.BaseMemberExpression primary) {
+        ProducedType type = primary.getTypeArguments().getTypeModels().get(0);
         ProducedType simpleType = simplifyType(type);
         JCExpression typeExpr;
         if (simpleType.getDeclaration() instanceof TypeParameter
@@ -2151,13 +2150,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Implicit arguments
         // except for Java array constructors
         Declaration primaryDeclaration = invocation.getPrimaryDeclaration();
-        Primary primary = invocation.getPrimary();
+        Tree.Term primary = invocation.getPrimary();
         if(primaryDeclaration instanceof Class == false
                 || !isJavaArray(((Class) primaryDeclaration).getType())){
             invocation.addReifiedArguments(result);
         }
         if (needsTypeInfoArgument(primaryDeclaration)) {
-            result.add(new ExpressionAndType(makeTypeInfoArgument(primary), make().Type(syms().classType)));
+            result.add(new ExpressionAndType(makeTypeInfoArgument((Tree.BaseMemberExpression) primary), make().Type(syms().classType)));
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
                 && !(primary instanceof Tree.QualifiedTypeExpression)
