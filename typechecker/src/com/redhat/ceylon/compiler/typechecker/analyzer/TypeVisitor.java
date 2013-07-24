@@ -1205,7 +1205,7 @@ public class TypeVisitor extends Visitor {
 
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
-        Tree.Primary p = that.getPrimary();
+        Tree.Term p = Util.unwrapExpressionUntilTerm(that.getPrimary());
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             mte.setDirectlyInvoked(true);

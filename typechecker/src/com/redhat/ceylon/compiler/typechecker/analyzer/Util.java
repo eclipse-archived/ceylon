@@ -557,8 +557,15 @@ public class Util {
         return member.getUnit().getPackage().equals(unit.getPackage());
     }
 
+    public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
+        while (term instanceof Tree.Expression) {
+            term = ((Tree.Expression)term).getTerm();
+        }
+        return term;
+    }
+    
     public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
-        Tree.Primary p = that.getPrimary();
+        Tree.Term p = unwrapExpressionUntilTerm(that.getPrimary());
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             ProducedReference prf = mte.getTarget();

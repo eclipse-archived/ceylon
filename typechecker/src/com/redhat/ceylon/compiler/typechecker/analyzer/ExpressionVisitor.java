@@ -1671,29 +1671,30 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitInvocationPrimary(Tree.InvocationExpression that,
             Tree.Primary pr) {
-        if (pr instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
+        Tree.Term term = Util.unwrapExpressionUntilTerm(pr);
+        if (term instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) term;
             Declaration dec = mte.getDeclaration();
             if ( mte.getTarget()==null && dec instanceof Functional && 
                     mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 mte.getTypeArguments().setTypeModels(typeArgs);
-                if (pr instanceof Tree.BaseTypeExpression) {
-                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr,
+                if (term instanceof Tree.BaseTypeExpression) {
+                    visitBaseTypeExpression((Tree.BaseTypeExpression) term,
                             (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
-                else if (pr instanceof Tree.QualifiedTypeExpression) {
-                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr,
-                            ((Tree.QualifiedTypeExpression) pr).getPrimary().getTypeModel(),
+                else if (term instanceof Tree.QualifiedTypeExpression) {
+                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) term,
+                            ((Tree.QualifiedTypeExpression) term).getPrimary().getTypeModel(),
                             (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
-                else if (pr instanceof Tree.BaseMemberExpression) {
-                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr,
+                else if (term instanceof Tree.BaseMemberExpression) {
+                    visitBaseMemberExpression((Tree.BaseMemberExpression) term,
                             (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
-                else if (pr instanceof Tree.QualifiedMemberExpression) {
-                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr,
-                            ((Tree.QualifiedMemberExpression) pr).getPrimary().getTypeModel(),
+                else if (term instanceof Tree.QualifiedMemberExpression) {
+                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) term,
+                            ((Tree.QualifiedMemberExpression) term).getPrimary().getTypeModel(),
                             (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
             }
@@ -2100,7 +2101,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitDirectInvocation(Tree.InvocationExpression that) {
-        Tree.Primary p = that.getPrimary();
+        Tree.Term p = Util.unwrapExpressionUntilTerm(that.getPrimary());
         Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
         ProducedReference prf = mte.getTarget();
         Functional dec = (Functional) mte.getDeclaration();
