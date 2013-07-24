@@ -444,7 +444,7 @@
         <emphasis>intersection</emphasis>, or <emphasis>conjunction</emphasis>,
         <literal>X&amp;Y</literal>, of the types may be formed. An intersection type is a subtype 
         of both of the given types <literal>X</literal> and <literal>Y</literal>, and any object
-        which is an instance of both types is an instance of the union type.</para>
+        which is an instance of both types is an instance of the intersection type.</para>
         
         <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
         of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
