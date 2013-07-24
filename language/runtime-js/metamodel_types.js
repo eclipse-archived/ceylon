@@ -115,3 +115,53 @@ function $init$AppliedInterface$metamodel(){
 }
 exports.$init$AppliedInterface$metamodel=$init$AppliedInterface$metamodel;
 $init$AppliedInterface$metamodel();
+
+function AppliedUnionType$metamodel(types$2, $$appliedUnionType){
+    $init$AppliedUnionType$metamodel();
+    if ($$appliedUnionType===undefined)$$appliedUnionType=new AppliedUnionType$metamodel.$$;
+    $$appliedUnionType.types$2=types$2;
+    UnionType$metamodel($$appliedUnionType);
+    return $$appliedUnionType;
+}
+AppliedUnionType$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:UnionType$metamodel}],pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AppliedUnionType']};
+function $init$AppliedUnionType$metamodel(){
+    if (AppliedUnionType$metamodel.$$===undefined){
+        initTypeProto(AppliedUnionType$metamodel,'AppliedUnionType',Basic,UnionType$metamodel);
+        (function($$appliedUnionType){
+            
+            defineAttr($$appliedUnionType,'caseTypes',function(){
+                var $$appliedUnionType=this;
+                return $$appliedUnionType.types$2;
+            });
+        })(AppliedUnionType$metamodel.$$.prototype);
+    }
+    return AppliedUnionType$metamodel;
+}
+exports.$init$AppliedUnionType$metamodel=$init$AppliedUnionType$metamodel;
+$init$AppliedUnionType$metamodel();
+
+function AppliedIntersectionType$metamodel(types$3, $$appliedIntersectionType){
+    $init$AppliedIntersectionType$metamodel();
+    if ($$appliedIntersectionType===undefined)$$appliedIntersectionType=new AppliedIntersectionType$metamodel.$$;
+    $$appliedIntersectionType.types$3=types$3;
+    IntersectionType$metamodel($$appliedIntersectionType);
+    
+    return $$appliedIntersectionType;
+}
+AppliedIntersectionType$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:IntersectionType$metamodel}],pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AppliedIntersectionType']};
+function $init$AppliedIntersectionType$metamodel(){
+    if (AppliedIntersectionType$metamodel.$$===undefined){
+        initTypeProto(AppliedIntersectionType$metamodel,'AppliedIntersectionType',Basic,IntersectionType$metamodel);
+        (function($$appliedIntersectionType){
+            
+            defineAttr($$appliedIntersectionType,'satisfiedTypes',function(){
+                var $$appliedIntersectionType=this;
+                return $$appliedIntersectionType.types$3;
+            });
+        })(AppliedIntersectionType$metamodel.$$.prototype);
+    }
+    return AppliedIntersectionType$metamodel;
+}
+exports.$init$AppliedIntersectionType$metamodel=$init$AppliedIntersectionType$metamodel;
+$init$AppliedIntersectionType$metamodel();
+
