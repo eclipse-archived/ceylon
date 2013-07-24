@@ -2,7 +2,7 @@ void undecidable() {
     
     interface In<P> {}
     @error interface X satisfies In<X&In<X>> {}
-    @error interface W satisfies Inv<W|Inv<W>> {}
+    @error interface W satisfies In<W|In<W>> {}
     
     interface Co<out T> {}
     @error interface A satisfies Co<Inv<A&B&Co<Inv<A&B>>>> {}
