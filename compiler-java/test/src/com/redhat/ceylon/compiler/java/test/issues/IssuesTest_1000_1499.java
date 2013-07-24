@@ -293,6 +293,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
         compareWithJavaSource("bug11xx/Bug1188");
     }
     
+    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1203")
     @Test
     public void testBug1203_fail() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1203", "bug11xx/Bug1203.ceylon");
