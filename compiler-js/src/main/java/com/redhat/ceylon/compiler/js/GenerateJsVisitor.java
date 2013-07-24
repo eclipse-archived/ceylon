@@ -3619,6 +3619,13 @@ public class GenerateJsVisitor extends Visitor
                 out(excVar, "$exc=", catchVarName);
                 endLine(true);
             }
+            if (resources != null) {
+                for (String resourceVar : resourceVars) {
+                    out("try{if(",resourceVar, "$cls)", resourceVar, ".close(",
+                            excVar, "$exc);}catch(",resourceVar,"$swallow){",
+                            clAlias, "addSuppressedException(", resourceVar, "$swallow,", catchVarName, ");}");
+                }
+            }
             boolean firstCatch = true;
             for (CatchClause catchClause : that.getCatchClauses()) {
                 Variable variable = catchClause.getCatchVariable().getVariable();
@@ -3647,21 +3654,9 @@ public class GenerateJsVisitor extends Visitor
             endBlockNewLine();
         }
 
-        if (that.getFinallyClause() != null || resources != null) {
+        if (that.getFinallyClause() != null) {
             out("finally");
-            if (resources != null) {
-                out("{");
-                for (String resourceVar : resourceVars) {
-                    out("try{if(",resourceVar, "$cls)", resourceVar, ".close(",
-                            excVar, "$exc);}catch(",resourceVar,"$swallow){}");
-                }
-            }
-            if (that.getFinallyClause() != null) {
-                encloseBlockInFunction(that.getFinallyClause().getBlock());
-            }
-            if (resources != null) {
-                out("}");
-            }
+            encloseBlockInFunction(that.getFinallyClause().getBlock());
         }
     }
 
