@@ -106,6 +106,10 @@ public class StructureTest extends CompilerTest {
     public void testAtrAttributeHiding() {
         compareWithJavaSource("attribute/AttributeHiding");
     }
+    @Test
+    public void testAtrParametersAndMembers(){
+        compareWithJavaSource("attribute/ParametersAndMembers");
+    }
     
     //
     // Classes

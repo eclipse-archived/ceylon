@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class ParametersAndMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ParametersAndMembers(final .java.lang.String unsharedUncapturedHidden, final .java.lang.String unsharedCapturedHidden, final .java.lang.String sharedHidden, final .java.lang.String unsharedUncapturedVpd, final .java.lang.String unsharedCapturedVpd, final .java.lang.String sharedVpd) {
+        this.unsharedCapturedHidden = unsharedCapturedHidden;
+        this.sharedHidden = sharedHidden;
+        this.unsharedCapturedVpd = unsharedCapturedVpd;
+        this.sharedVpd = sharedVpd;
+    }
+    private final .java.lang.String unsharedCapturedVpd;
+    private final .java.lang.String sharedVpd;
+    
+    public final .java.lang.String getSharedVpd() {
+        return sharedVpd;
+    }
+    private final .java.lang.String unsharedCapturedHidden;
+    
+    private final .java.lang.String getUnsharedCapturedHidden$priv() {
+        return unsharedCapturedHidden;
+    }
+    private final .java.lang.String sharedHidden;
+    
+    public final .java.lang.String getSharedHidden() {
+        return sharedHidden;
+    }
+    
+    public final void capture() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getUnsharedCapturedHidden$priv() + unsharedCapturedVpd));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ParametersAndMembers.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ParametersAndMembers.class);
+}
