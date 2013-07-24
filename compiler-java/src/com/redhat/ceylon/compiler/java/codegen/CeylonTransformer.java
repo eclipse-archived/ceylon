@@ -28,6 +28,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -241,7 +242,7 @@ public class CeylonTransformer extends AbstractTransformer {
             block = sdef.getBlock();
             expression = sdef.getSpecifierExpression();
             if (Decl.isLocal(decl) || Decl.isLocalToInitializer(decl)) {
-                declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
+                declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter().getModel();
             }
         } else {
             throw new RuntimeException();
@@ -288,7 +289,8 @@ public class CeylonTransformer extends AbstractTransformer {
             .is(Flags.PUBLIC, declarationModel.isShared());
         
         if (declarationModel instanceof Setter
-                || declarationModel instanceof Parameter) {
+                || (declarationModel instanceof MethodOrValue 
+                    && ((MethodOrValue)declarationModel).isParameter())) {
             // For local setters
             JCBlock setterBlock = makeSetterBlock(declarationModel, block, expression);
             builder.setterBlock(setterBlock);
@@ -327,7 +329,9 @@ public class CeylonTransformer extends AbstractTransformer {
             if(initialValue != null)
                 builder.valueConstructor();
             JCExpression typeExpr;
-            if (declarationModel instanceof Setter || declarationModel instanceof Parameter) {
+            if (declarationModel instanceof Setter 
+                    || (declarationModel instanceof MethodOrValue
+                        && ((MethodOrValue)declarationModel).isParameter())) {
                 typeExpr = makeQuotedIdent(attrClassName);
             } else {
                 typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
@@ -357,7 +361,7 @@ public class CeylonTransformer extends AbstractTransformer {
             } else {
                 Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
                 if (p != null) {
-                    initialValue = naming.makeName(p, Naming.NA_MEMBER | Naming.NA_ALIASED);
+                    initialValue = naming.makeName(p.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED);
                 }
             }
         }

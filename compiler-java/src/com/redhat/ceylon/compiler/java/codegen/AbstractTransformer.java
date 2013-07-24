@@ -47,10 +47,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -842,7 +843,7 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType type = param.getType();
         if (typeFact().isUnion(type) 
                 || typeFact().isIntersection(type)) {
-            final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param)).getType().getDeclaration();
+            final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel())).getType().getDeclaration();
             if (refinedTypeDecl instanceof TypeParameter
                     && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
                 return true;
@@ -1086,8 +1087,9 @@ public abstract class AbstractTransformer implements Transformation {
      * This function is used solely for method return types and parameters 
      */
     JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type, int flags) {
-        if (typeDecl instanceof FunctionalParameter) {
-            FunctionalParameter p = (FunctionalParameter)typeDecl;
+        if (typeDecl instanceof Method
+                && ((Method)typeDecl).isParameter()) {
+            Method p = (Method)typeDecl;
             ProducedType pt = type;
             for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
                 pt = typeFact().getCallableType(pt);
@@ -1648,7 +1650,7 @@ public abstract class AbstractTransformer implements Transformation {
     static final int TP_SEQUENCED_TYPE = 1<<1;
     
     ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
-        boolean functional = parameter instanceof FunctionalParameter;
+        boolean functional = parameter.getModel() instanceof Method;
         if (producedReference == null) {
             return parameter.getType();
         }
@@ -1699,8 +1701,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     private boolean isJavaVariadic(Parameter parameter) {
         return parameter.isSequenced()
-                && parameter.getContainer() instanceof Method
-                && isJavaMethod((Method) parameter.getContainer());
+                && parameter.getDeclaration() instanceof Method
+                && isJavaMethod((Method) parameter.getDeclaration());
     }
 
     boolean isJavaMethod(Method method) {
@@ -1712,7 +1714,7 @@ public abstract class AbstractTransformer implements Transformation {
         return !Decl.isCeylon(cls);
     }
 
-    ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
+    ProducedType getTypeForFunctionalParameter(Method fp) {
         return fp.getProducedTypedReference(null, java.util.Collections.<ProducedType>emptyList()).getFullType();
     }
     
@@ -2081,9 +2083,9 @@ public abstract class AbstractTransformer implements Transformation {
      */
     private boolean needsJavaTypeAnnotations(Declaration decl) {
         Declaration reqdecl = decl;
-        if (reqdecl instanceof Parameter) {
-            Parameter p = (Parameter)reqdecl;
-            reqdecl = p.getDeclaration();
+        if (reqdecl instanceof MethodOrValue
+                && ((MethodOrValue)reqdecl).isParameter()) {
+            reqdecl = CodegenUtil.getParameterized(((MethodOrValue)reqdecl));
         }
         if (reqdecl instanceof TypeDeclaration) {
             return true;
@@ -2096,8 +2098,8 @@ public abstract class AbstractTransformer implements Transformation {
         if(decl == null || decl.getType() == null)
             return List.nil();
         ProducedType type;
-        if (decl instanceof FunctionalParameter) {
-            type = getTypeForFunctionalParameter((FunctionalParameter)decl);
+        if (decl instanceof Method && ((Method)decl).isParameter()) {
+            type = getTypeForFunctionalParameter((Method)decl);
         } else if (decl instanceof Functional && Decl.isMpl((Functional)decl)) {
             type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType());
         } else {
@@ -2944,6 +2946,10 @@ public abstract class AbstractTransformer implements Transformation {
             // Java constructors don't support reified type arguments
             return Decl.isCeylon((TypeDeclaration) declaration);
         }else if(declaration instanceof Method){
+            if (((Method)declaration).isParameter()) {
+                // those can never be parameterised
+                return false;
+            }
             if(Decl.isToplevel(declaration))
                 return true;
             // Java methods don't support reified type arguments
@@ -2955,9 +2961,6 @@ public abstract class AbstractTransformer implements Transformation {
             if(container == null)
                 return true;
             return supportsReified(container);
-        }else if(declaration instanceof FunctionalParameter){
-            // those can never be parameterised
-            return false;
         }else{
             throw new RuntimeException("Unhandled declaration type: " + declaration);
         }

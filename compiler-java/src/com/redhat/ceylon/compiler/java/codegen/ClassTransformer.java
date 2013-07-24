@@ -47,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -65,7 +64,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -79,13 +77,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -250,9 +248,9 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCExpression> args = ListBuffer.lb();
         for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
             at(parameter);
-            Parameter parameterModel = parameter.getDeclarationModel();
+            Parameter parameterModel = parameter.getParameterModel();
             JCExpression annoAttr = make().Apply(null, naming.makeQuotedQualIdent(naming.makeUnquotedIdent("anno"),
-                    parameter.getDeclarationModel().getName()),
+                    parameter.getParameterModel().getName()),
                     List.<JCExpression>nil());
             ProducedType parameterType = parameterModel.getType();
             JCExpression argExpr;
@@ -345,7 +343,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
-            Parameter parameterModel = p.getDeclarationModel();
+            Parameter parameterModel = p.getParameterModel();
             annoBuilder.method(makeAnnotationMethod(p));
         }
         List<JCTree> result;
@@ -412,7 +410,8 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformAnnotationParameterDefault(Tree.Parameter p) {
-        Tree.Expression defaultExpression = p.getDefaultArgument().getSpecifierExpression().getExpression();
+        Tree.SpecifierOrInitializerExpression defaultArgument = Decl.getDefaultArgument(p);
+        Tree.Expression defaultExpression = defaultArgument.getExpression();
         Tree.Term term = defaultExpression.getTerm();
         JCExpression defaultLiteral = null;
         if (term instanceof Tree.Literal
@@ -461,7 +460,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformAnnotationMethodType(Tree.Parameter parameter) {
-        ProducedType parameterType = parameter.getDeclarationModel().getType();
+        ProducedType parameterType = parameter.getParameterModel().getType();
         JCExpression type = null;
         if (isScalarAnnotationParameter(parameterType)) {
             type = makeJavaType(parameterType, JT_ANNOTATION);
@@ -577,21 +576,27 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Parameter decl) {
-        if ((decl instanceof ValueParameter && (decl.isShared() || decl.isCaptured()))) {
+    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Tree.Parameter parameterTree) {
+        Parameter decl = parameterTree.getParameterModel();
+        if (!(decl.getModel() instanceof Value)) {
+            return;
+        }        
+        final Value value = (Value)decl.getModel();
+        if (parameterTree instanceof Tree.ValueParameterDeclaration
+                && (value.isShared() || value.isCaptured())) {
             makeFieldForParameter(classBuilder, decl);
-            AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl);
-            adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl, false));
+            AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
+            adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
             classBuilder.attribute(adb);
         } else if (decl.isHidden()
-                        && (decl.getContainer() instanceof TypeDeclaration)) {
+                        // TODO Isn't this always true here? We know this is a parameter to a Class
+                        && (decl.getDeclaration() instanceof TypeDeclaration)) {
             Declaration member = CodegenUtil.findMethodOrValueForParam(decl);
-            if (Decl.isValue(member) 
-                    && Strategy.createField(decl, (Value)member)) {
-                // The field itself is created by 
-                // transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder)
+            if (Strategy.createField(decl, (Value)member)) {
+                // The field itself is created by when we transform the AttributeDeclaration 
+                // but it has to be initialized here so all the fields are initialized in parameter order
                 classBuilder.init(make().Exec(
-                        make().Assign(naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
+                        make().Assign(naming.makeQualifiedName(naming.makeThis(), value, Naming.NA_IDENT), 
                                 makeUnquotedIdent(Naming.getAliasedParameterName(decl)))));
             }
         }
@@ -599,12 +604,13 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
             Parameter decl) {
+        MethodOrValue model = decl.getModel();
         classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(decl.getName()), 
                 classGen().transformClassParameterType(decl), null));
         
         classBuilder.init(make().Exec(make().Assign(
-                naming.makeQualifiedName(naming.makeThis(), decl, Naming.NA_IDENT), 
-                naming.makeName(decl, Naming.NA_IDENT))));
+                naming.makeQualifiedName(naming.makeThis(), model, Naming.NA_IDENT), 
+                naming.makeName(model, Naming.NA_IDENT))));
     }
     
     private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
@@ -614,9 +620,9 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.aliasName(Naming.getAliasedParameterName(param));
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
-        pdb.type(type, makeJavaTypeAnnotations(param));
+        pdb.type(type, makeJavaTypeAnnotations(param.getModel()));
         pdb.modifiers(FINAL);
-        pdb.modelAnnotations(param.getAnnotations());
+        pdb.modelAnnotations(param.getModel().getAnnotations());
         pdb.userAnnotations(annotations);
         classBuilder.parameter(pdb);
     }
@@ -630,15 +636,17 @@ public class ClassTransformer extends AbstractTransformer {
         
         for (Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
-            expressionGen().transform(param.getAnnotationList());
-            Parameter paramModel = param.getDeclarationModel();
+            if (param instanceof Tree.ParameterDeclaration) {
+                expressionGen().transform(Decl.getAnnotations(param));
+            }
+            Parameter paramModel = param.getParameterModel();
             Parameter refinedParam = CodegenUtil.findParamForDecl(
-                    (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel()));
+                    (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
 
             transformParameter(classBuilder, paramModel,
-                    expressionGen().transform(param.getAnnotationList()));
-            makeAttributeForValueParameter(classBuilder, paramModel);
+                    expressionGen().transform(Decl.getAnnotations(param)));
+            makeAttributeForValueParameter(classBuilder, param);
             makeMethodForFunctionalParameter(classBuilder, paramModel);
             
             if (paramModel.isDefaulted()
@@ -703,37 +711,37 @@ public class ClassTransformer extends AbstractTransformer {
     private void makeMethodForFunctionalParameter(
             ClassDefinitionBuilder classBuilder, Parameter paramModel) {
         if (Strategy.createMethod(paramModel)) {
-            // Generate a method which delegates to the Callable
             makeFieldForParameter(classBuilder, paramModel);
-            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel));
-            mdb.modifiers(transformMethodDeclFlags(paramModel));
+            Method method = (Method)paramModel.getModel();
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel.getModel()));
+            mdb.modifiers(transformMethodDeclFlags(method));
             // Functional parameters can't have type parameters 
             // Functional parameter are always declared literally as "T name()", not as "Callable<T,[]>" so they can't
             // possibly be of any other type than Callable, so we don't need to unerase them when we call "$call" on them
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
-                    naming.makeQualIdent(naming.makeName(paramModel, Naming.NA_IDENT), 
+                    naming.makeQualIdent(naming.makeName(method, Naming.NA_IDENT), 
                             Naming.getCallableMethodName()));
-            for (Parameter parameter : ((FunctionalParameter)paramModel).getParameterLists().get(0).getParameters()) {
-                JCExpression parameterExpr = naming.makeName(parameter, Naming.NA_IDENT);
+            for (Parameter parameter : method.getParameterLists().get(0).getParameters()) {
+                JCExpression parameterExpr = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
                 parameterExpr = expressionGen().applyErasureAndBoxing(parameterExpr, parameter.getType(), 
-                        !CodegenUtil.isUnBoxed(parameter), BoxingStrategy.BOXED, 
+                        !CodegenUtil.isUnBoxed(method), BoxingStrategy.BOXED, 
                         parameter.getType());
                 callBuilder.argument(parameterExpr);
                 mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
             }
             JCExpression expr = callBuilder.build();
-            if (Decl.isUnboxedVoid(paramModel)) {
-                mdb.resultType(make().Type(syms().voidType), paramModel);
+            if (Decl.isUnboxedVoid(method)) {
+                mdb.resultType(make().Type(syms().voidType), method);
                 mdb.body(make().Exec(expr));
             } else {
                 ProducedType resultType;
-                if (Decl.isMpl((FunctionalParameter)paramModel)) {
+                if (Decl.isMpl(method)) {
                     resultType = paramModel.getType().getFullType();
                 } else {
                     resultType = paramModel.getType();
                 }
-                mdb.resultType(makeJavaType(resultType, CodegenUtil.isUnBoxed(paramModel) ? 0 : JT_NO_PRIMITIVES), paramModel);
-                expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(paramModel), paramModel.getType());
+                mdb.resultType(makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : JT_NO_PRIMITIVES), method);
+                expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(method), paramModel.getType());
                 mdb.body(make().Return(expr));
             }
             classBuilder.method(mdb);
@@ -750,7 +758,8 @@ public class ClassTransformer extends AbstractTransformer {
      * @param decl
      * @return
      */
-    JCExpression transformClassParameterType(Parameter decl) {
+    JCExpression transformClassParameterType(Parameter parameter) {
+        MethodOrValue decl = parameter.getModel();
         Assert.that(decl.getContainer() instanceof Class);
         JCExpression type;
         // FIXME: super temporary hack
@@ -760,7 +769,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(isCeylonSequentialMetamodelDeclaration(decl.getType()))
                 return makeJavaType(typeFact().getSequentialType(typeFact().getStringDeclaration().getType()));
         }
-        MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
+        MethodOrValue attr = decl;
         if (Decl.isValue(attr)) {
             ProducedTypedReference typedRef = getTypedReference(attr);
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
@@ -948,7 +957,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter.getType(), 
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    param.getTypeErased());
+                                    param.getModel().getTypeErased());
                             classBuilder.method(defaultValueDelegate);
                             
                             final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
@@ -1052,7 +1061,7 @@ public class ClassTransformer extends AbstractTransformer {
                         typedParameter.getType(),
                         Naming.getDefaultedParamMethodName(klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
-                        param.getTypeErased());
+                        param.getModel().getTypeErased());
                 classBuilder.method(defaultValueDelegate);
                 
                 final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
@@ -1158,7 +1167,7 @@ public class ClassTransformer extends AbstractTransformer {
             else
                 type = typedParameter.getType();
             concreteWrapper.parameter(param, type, FINAL, 0, true);
-            arguments.add(naming.makeName(param, Naming.NA_MEMBER));
+            arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER));
         }
         JCExpression expr = make().Apply(
                 null,  // TODO Type args
@@ -1378,17 +1387,17 @@ public class ClassTransformer extends AbstractTransformer {
                     Tree.ParameterList tpl = new Tree.ParameterList(null);
                     for (Parameter p : pl.getParameters()) {
                         Tree.Parameter tp = null;
-                        if (p instanceof ValueParameter) {
+                        if (p.getModel() instanceof Value) {
                             Tree.ValueParameterDeclaration tvpd = new Tree.ValueParameterDeclaration(null);
-                            tvpd.setDeclarationModel((ValueParameter)p);
+                            tvpd.setParameterModel(p);
                             tp = tvpd;
-                        } else if (p instanceof FunctionalParameter) {
+                        } else if (p.getModel() instanceof Method) {
                             Tree.FunctionalParameterDeclaration tfpd = new Tree.FunctionalParameterDeclaration(null);
-                            tfpd.setDeclarationModel((FunctionalParameter)p);
+                            tfpd.setParameterModel(p);
                             tp = tfpd;
                         }
-                        tp.setScope(p.getContainer());
-                        tp.setIdentifier(makeIdentifier(p.getName()));
+                        tp.setScope(p.getDeclaration().getContainer());
+                        //tp.setIdentifier(makeIdentifier(p.getName()));
                         tpl.addParameter(tp);
                     }
                     methDecl.addParameterList(tpl);
@@ -1426,7 +1435,10 @@ public class ClassTransformer extends AbstractTransformer {
         boolean createField = Strategy.createField(parameter, model) && !lazy;
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
-        if (!lazy && (concrete || (!Decl.isFormal(decl) && createField))) {
+        if (!lazy && 
+                (concrete || 
+                        (!Decl.isFormal(decl) 
+                                && createField))) {
             ProducedTypedReference typedRef = getTypedReference(model);
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
@@ -1574,7 +1586,7 @@ public class ClassTransformer extends AbstractTransformer {
         return transformClassDeclFlags(cdecl.getDeclarationModel());
     }
     
-    private int transformMethodDeclFlags(TypedDeclaration def) {
+    private int transformMethodDeclFlags(Method def) {
         int result = 0;
 
         if (def.isToplevel()) {
@@ -1773,9 +1785,10 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             public void visit(Tree.Parameter p) {
-                if (p.getDefaultArgument() != null) {
+                SpecifierOrInitializerExpression defaultArgument = Decl.getDefaultArgument(p);
+                if (defaultArgument != null) {
                     checkingArguments = true;
-                    parameter = p.getDeclarationModel();
+                    parameter = p.getParameterModel();
                     super.visit(p);
                     checkingArguments = false;
                 }
@@ -1865,8 +1878,8 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
-        Parameter parameterModel = parameter.getDeclarationModel();
-        String name = naming.selector(parameterModel, Naming.NA_ANNOTATION_MEMBER);
+        Parameter parameterModel = parameter.getParameterModel();
+        String name = naming.selector(parameterModel.getModel(), Naming.NA_ANNOTATION_MEMBER);
         JCExpression type = transformAnnotationMethodType(parameter);
         JCExpression defaultValue = parameterModel.isDefaulted() ? transformAnnotationParameterDefault(parameter) : null;
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, name);
@@ -2000,10 +2013,12 @@ public class ClassTransformer extends AbstractTransformer {
         
         Tree.ParameterList parameterList = def.getParameterLists().get(0);
         for (final Tree.Parameter parameter : parameterList.getParameters()) {
-            Parameter parameterModel = parameter.getDeclarationModel();
+            Parameter parameterModel = parameter.getParameterModel();
             List<JCAnnotation> annotations = null;
-            if (includeAnnotations) {
-                annotations = expressionGen().transform(parameter.getAnnotationList());
+            if (includeAnnotations
+                    && parameter instanceof Tree.ParameterDeclaration
+                    && ((Tree.ParameterDeclaration)parameter).getTypedDeclaration() != null) {
+                annotations = expressionGen().transform(((Tree.ParameterDeclaration)parameter).getTypedDeclaration().getAnnotationList());
             }
             
             methodBuilder.parameter(parameterModel, annotations, needsRaw ? JT_RAW_TP_BOUND : 0, true);
@@ -2189,8 +2204,9 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             List<Substitution> substitutions = List.nil();
             for (int ii = 0; ii < lambdaParams.size(); ii++) {
-                substitutions = substitutions.append(naming.addVariableSubst(lambdaParams.get(ii).getDeclarationModel(), 
-                        defParams.get(ii).getIdentifier().getText()));
+                substitutions = substitutions.append(naming.addVariableSubst(
+                        (TypedDeclaration)lambdaParams.get(ii).getParameterModel().getModel(), 
+                        defParams.get(ii).getParameterModel().getName()));
             }
             bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
                             returnNull ? BoxingStrategy.INDIFFERENT : CodegenUtil.getBoxingStrategy(model), 
@@ -2353,7 +2369,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             boolean useDefault = false;
             for (Tree.Parameter parameter : parameterList.getParameters()) {
-                final Parameter parameterModel = parameter.getDeclarationModel();
+                final Parameter parameterModel = parameter.getParameterModel();
                 if (parameter == currentParameter) {
                     useDefault = true;
                 }
@@ -2362,8 +2378,8 @@ public class ClassTransformer extends AbstractTransformer {
                     Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
                     ProducedType paramType = null;
                     // FIXME: super temporary hack
-                    if(parameterModel.getContainer() instanceof Declaration
-                            && Decl.isAnnotationClassOrConstructor((Declaration) parameterModel.getContainer())){
+                    if(parameterModel.getModel().getContainer() instanceof Declaration
+                            && Decl.isAnnotationClassOrConstructor((Declaration) parameterModel.getModel().getContainer())){
                         if(isCeylonMetamodelDeclaration(parameterModel.getType())){
                             paramType = typeFact().getStringDeclaration().getType();
                         }else if(isCeylonSequentialMetamodelDeclaration(parameterModel.getType())){
@@ -2371,7 +2387,7 @@ public class ClassTransformer extends AbstractTransformer {
                         }
                     }
                     if(paramType == null){
-                        if (parameterModel instanceof FunctionalParameter) {
+                        if (parameterModel.getModel() instanceof Method) {
                             paramType = typeFact().getCallableType(parameterModel.getType());
                         } else {
                             paramType = parameterModel.getType();
@@ -2384,7 +2400,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     ListBuffer.<JCExpression>lb().appendList(args).toList())));
                     args.add(varName.makeIdent());
                 } else {
-                    args.add(naming.makeName(parameterModel, Naming.NA_MEMBER | Naming.NA_ALIASED));
+                    args.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
                 }
             }
             makeBody(overloaded, overloadBuilder, args, vars);
@@ -2459,7 +2475,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (parameter == currentParameter) {
                     break;
                 }
-                args.add(naming.makeUnquotedIdent(parameter.getIdentifier().getText()));
+                args.add(naming.makeUnquotedIdent(parameter.getParameterModel().getName()));
             }
             JCExpression superCall = overloaded.makeInvocation(args);
             /*JCMethodInvocation superCall = make().Apply(null,
@@ -2555,7 +2571,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (parameter == currentParameter) {
                     break;
                 }
-                overloadBuilder.parameter(parameter.getDeclarationModel(), null, 0, false);
+                overloadBuilder.parameter(parameter.getParameterModel(), null, 0, false);
             }
             
             // Make the body
@@ -2844,7 +2860,7 @@ public class ClassTransformer extends AbstractTransformer {
     MethodDefinitionBuilder makeParamDefaultValueMethod(boolean noBody, Declaration container, 
             Tree.ParameterList params, Tree.Parameter currentParam, TypeParameterList typeParameterList) {
         at(currentParam);
-        Parameter parameter = currentParam.getDeclarationModel();
+        Parameter parameter = currentParam.getParameterModel();
         String name = Naming.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
         methodBuilder.ignoreModelAnnotations();
@@ -2886,7 +2902,7 @@ public class ClassTransformer extends AbstractTransformer {
                 break;
             }
             at(p);
-            methodBuilder.parameter(p.getDeclarationModel(), null, 0, container instanceof Class);
+            methodBuilder.parameter(p.getParameterModel(), null, 0, container instanceof Class);
         }
 
         // The method's return type is the same as the parameter's type
@@ -2896,7 +2912,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(isCeylonMetamodelDeclaration(parameter.getType())){
                 parameterType = typeFact().getStringDeclaration().getType();
                 // make sure we go unboxed
-                parameter.setUnboxed(true);
+                parameter.getModel().setUnboxed(true);
             }
             else if(isCeylonSequentialMetamodelDeclaration(parameter.getType()))
                 parameterType = typeFact().getSequentialType(typeFact().getStringDeclaration().getType());
@@ -2904,7 +2920,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(parameterType == null)
             parameterType = parameter.getType();
 
-        methodBuilder.resultType(parameter, parameterType, 0);
+        methodBuilder.resultType(parameter.getModel(), parameterType, 0);
 
         // The implementation of the method
         if (noBody) {

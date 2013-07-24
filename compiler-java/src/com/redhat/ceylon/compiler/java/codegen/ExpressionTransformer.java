@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -62,13 +61,11 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
@@ -83,6 +80,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
@@ -2040,22 +2038,25 @@ public class ExpressionTransformer extends AbstractTransformer {
         //needDollarThis  = true;
         JCExpression expr;
         at(param);
-        DefaultArgument defaultArgument = param.getDefaultArgument();
-        if (defaultArgument != null) {
-            SpecifierExpression spec = defaultArgument.getSpecifierExpression();
-            if (spec.getScope() instanceof FunctionalParameter) {
+        
+        Tree.SpecifierOrInitializerExpression spec = Decl.getDefaultArgument(param);
+        if (spec != null) {
+            if (param instanceof FunctionalParameterDeclaration) {
                 Tree.FunctionalParameterDeclaration fpTree = (FunctionalParameterDeclaration) param;
-                FunctionalParameter fp = (FunctionalParameter)spec.getScope();
-                Tree.SpecifierExpression lazy = param.getDefaultArgument().getSpecifierExpression();
+                Tree.SpecifierExpression lazy = (Tree.SpecifierExpression)spec;
+                Method fp = (Method)fpTree.getParameterModel().getModel();
+                
                 expr = CallableBuilder.anonymous(gen(), lazy.getExpression(), 
                         fp.getParameterLists().get(0),
-                        fpTree.getParameterLists().get(0),
+                        ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists().get(0),
                         getTypeForFunctionalParameter(fp),
                         false).build();
             } else {
-                expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
+                expr = expressionGen().transformExpression(spec.getExpression(), 
+                        CodegenUtil.getBoxingStrategy(param.getParameterModel().getModel()), 
+                        param.getParameterModel().getType());
             }
-        } else if (param.getDeclarationModel().isSequenced()) {
+        } else if (param.getParameterModel().isSequenced()) {
             expr = makeEmptyAsSequential(true);
         } else {
             expr = makeErroneous(param, "No default and not sequenced");
@@ -2417,12 +2418,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType exprType = expressionGen().getTypeForParameter(parameter, null, this.TP_TO_BOUND);
             Parameter declaredParameter = invocation.getMethod().getParameterLists().get(0).getParameters().get(argIndex);
             
-            JCExpression arg = naming.makeName(parameter, Naming.NA_MEMBER);
+            JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_MEMBER);
             
             arg = expressionGen().applyErasureAndBoxing(
                     arg, 
                     exprType, 
-                    !parameter.getUnboxed(), 
+                    !parameter.getModel().getUnboxed(), 
                     BoxingStrategy.BOXED,// Callables always have boxed params 
                     declaredParameter.getType());
             result = result.append(new ExpressionAndType(arg, makeJavaType(declaredParameter.getType())));
@@ -2784,7 +2785,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
                 for (Parameter parameter : classParameters) {
-                    argMethodArgs.append(naming.makeName(parameter, Naming.NA_IDENT));
+                    argMethodArgs.append(naming.makeName(parameter.getModel(), Naming.NA_IDENT));
                 }
                 argMethodCalls.append(make().Apply(List.<JCExpression>nil(), 
                         argMethodName.makeIdent(), 
@@ -2874,22 +2875,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
         if (member instanceof Method) {
             Method method = (Method)member;
-            ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
-            return CallableBuilder.unboundFunctionalMemberReference(
-                    gen(), 
-                    expr.getTypeModel(), 
-                    method, 
-                    producedReference).build();
-        } else if (member instanceof FunctionalParameter) {
-            FunctionalParameter method = (FunctionalParameter)member;
-            ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
-            return CallableBuilder.unboundFunctionalMemberReference(
-                    gen(), 
-                    expr.getTypeModel(), 
-                    method, 
-                    producedReference).build();
-        } else if (member instanceof Value
-                || member instanceof ValueParameter) {
+            if (!method.isParameter()) {
+                ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                return CallableBuilder.unboundFunctionalMemberReference(
+                        gen(), 
+                        expr.getTypeModel(), 
+                        method, 
+                        producedReference).build();
+            } else {
+                ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                return CallableBuilder.unboundFunctionalMemberReference(
+                        gen(), 
+                        expr.getTypeModel(), 
+                        method, 
+                        producedReference).build();
+            }
+        } else if (member instanceof Value) {
             return CallableBuilder.unboundValueMemberReference(
                     gen(), 
                     expr.getTypeModel(), 
@@ -3247,8 +3248,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // parameters rather than getter methods
         boolean mustUseField = false;
         if (decl instanceof Functional
-                && (!(decl instanceof FunctionalParameter) 
-                        || functionalParameterRequiresCallable((FunctionalParameter)decl, expr)) 
+                && (!(decl instanceof Method) || !decl.isParameter() 
+                        || functionalParameterRequiresCallable((Method)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl);
         } else if (Decl.isGetter(decl)) {
@@ -3309,7 +3310,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = naming.selector((TypedDeclaration)decl);
                 }
             }
-        } else if (decl instanceof Method) {
+        } else if (decl instanceof Method
+                && !((Method)decl).isParameter()) {
             if (Decl.isLocal(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred())) {
                 primaryExpr = null;
                 int flags = Naming.NA_MEMBER;
@@ -3395,7 +3397,8 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Determines whether we need to generate an AbstractCallable when taking 
      * a method reference to a method that's declared as a FunctionalParameter
      */
-    private boolean functionalParameterRequiresCallable(FunctionalParameter functionalParameter, StaticMemberOrTypeExpression expr) {
+    private boolean functionalParameterRequiresCallable(Method functionalParameter, StaticMemberOrTypeExpression expr) {
+        Assert.that(functionalParameter.isParameter());
         boolean hasMethod = Strategy.createMethod(functionalParameter);
         if (!hasMethod) {
             // A functional parameter that's not method wrapped will already be Callable-wrapped
@@ -4358,6 +4361,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public List<JCAnnotation> transform(Tree.AnnotationList annotationList) {
+        if (annotationList == null) {
+            return List.nil();
+        }
         if ((gen().disableAnnotations & CeylonTransformer.DISABLE_USER_ANNOS) != 0) {
             return List.nil();
         }

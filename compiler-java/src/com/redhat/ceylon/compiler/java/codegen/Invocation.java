@@ -37,7 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -218,8 +217,9 @@ abstract class Invocation {
                         List.<JCExpression>nil());
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
                 selector = Naming.getCallableMethodName();
-            } else if ((getPrimaryDeclaration() instanceof FunctionalParameter 
-                        && !Strategy.createMethod((FunctionalParameter)getPrimaryDeclaration()))
+            } else if ((getPrimaryDeclaration() instanceof Method
+                    && ((Method)getPrimaryDeclaration()).isParameter()
+                        && !Strategy.createMethod((Method)getPrimaryDeclaration()))
                     || (this instanceof IndirectInvocationBuilder)) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
@@ -512,21 +512,21 @@ abstract class DirectInvocation extends SimpleInvocation {
     
     @Override
     protected JCExpression getParameterExpression(int argIndex) {
-        return gen.naming.makeName(getParameter(argIndex), Naming.NA_MEMBER);
+        return gen.naming.makeName(getParameter(argIndex).getModel(), Naming.NA_MEMBER);
     }
     
     @Override
     protected boolean getParameterUnboxed(int argIndex) {
-        return getParameter(argIndex).getUnboxed();
+        return getParameter(argIndex).getModel().getUnboxed();
     }
     
     @Override
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
         Parameter param = getParameter(argIndex);
-        if (isOnValueType() && Decl.isValueTypeDecl(param)) {
+        if (isOnValueType() && Decl.isValueTypeDecl(param.getModel())) {
             return BoxingStrategy.UNBOXED;
         }
-        return CodegenUtil.getBoxingStrategy(param);
+        return CodegenUtil.getBoxingStrategy(param.getModel());
     }
     
     @Override
@@ -791,7 +791,7 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
                 result, 
                 exprType, 
                 !getParameterUnboxed(argIndex), 
-                CodegenUtil.getBoxingStrategy(declaredParameter), 
+                CodegenUtil.getBoxingStrategy(declaredParameter.getModel()), 
                 declaredParameter.getType());
         return result;
     }
@@ -967,7 +967,7 @@ class NamedArgumentInvocation extends Invocation {
 
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
         JCExpression thisExpr = null;
-        switch (Strategy.defaultParameterMethodOwner(param)) {
+        switch (Strategy.defaultParameterMethodOwner(param.getModel())) {
         case SELF:
         case STATIC:
         case OUTER:
@@ -994,7 +994,7 @@ class NamedArgumentInvocation extends Invocation {
     private List<JCExpression> makeVarRefArgumentList(Parameter param) {
         ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
         if (!Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
-                && Strategy.defaultParameterMethodTakesThis(param)) {
+                && Strategy.defaultParameterMethodTakesThis(param.getModel())) {
             names.append(varBaseName.suffixedBy("$this$").makeIdent());
         }
         // put all the required reified type args too
@@ -1034,7 +1034,7 @@ class NamedArgumentInvocation extends Invocation {
     }
 
     private java.util.List<Parameter> parameterList(Parameter param) {
-        Functional functional = (Functional)param.getContainer();
+        Functional functional = (Functional)param.getDeclaration();
         return functional.getParameterLists().get(0).getParameters();
     }
     
@@ -1217,10 +1217,10 @@ class NamedArgumentInvocation extends Invocation {
     
     private BoxingStrategy getNamedParameterBoxingStrategy(Parameter param) {
         if (param != null) {
-            if (isOnValueType() && Decl.isValueTypeDecl(param)) {
+            if (isOnValueType() && Decl.isValueTypeDecl(param.getModel())) {
                 return BoxingStrategy.UNBOXED;
             }
-            return CodegenUtil.getBoxingStrategy(param);
+            return CodegenUtil.getBoxingStrategy(param.getModel());
         } else {
             return BoxingStrategy.UNBOXED;
         }
@@ -1265,7 +1265,8 @@ class NamedArgumentInvocation extends Invocation {
                     }
                 } else if (param.isSequenced()) {
                     // FIXME: this special case is just plain weird, it looks very wrong
-                    if (getPrimaryDeclaration() instanceof FunctionalParameter) {
+                    if (getPrimaryDeclaration() instanceof Method
+                            && ((Method)getPrimaryDeclaration()).isParameter()) {
                         // honestly I don't know if it needs a cast but it can't hurt
                         argExpr = gen.makeEmptyAsSequential(true);
                     } else {

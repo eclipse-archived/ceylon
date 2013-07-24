@@ -50,7 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 
@@ -81,12 +80,15 @@ public class Decl {
     }
     
     /**
-     * Determines whether the declaration's is a getter (a transient value)
+     * Determines whether the declaration is a getter (a transient value 
+     * that is not a parameter)
      * @param decl The declaration
      * @return true if the declaration is a getter
      */
     public static boolean isGetter(Declaration decl) {
-        return (decl instanceof Value) && ((Value)decl).isTransient();
+        return (decl instanceof Value) 
+                && !((Value)decl).isParameter() 
+                && ((Value)decl).isTransient();
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
@@ -102,12 +104,15 @@ public class Decl {
     
     
     /**
-     * Determines whether the declaration's is a non-transient value (not a getter)
+     * Determines whether the declaration is a non-transient non-parameter value 
+     * (not a getter)
      * @param decl The declaration
      * @return true if the declaration is a value
      */
     public static boolean isValue(Declaration decl) {
-        return (decl instanceof Value) && !((Value)decl).isTransient();
+        return (decl instanceof Value)
+                && !((Value)decl).isParameter()
+                && !((Value)decl).isTransient();
     }
 
     /**
@@ -116,11 +121,17 @@ public class Decl {
      * @return true if the declaration is a value or a shared value parameter
      */
     public static boolean isValueOrSharedParam(Declaration decl) {
-        return isValue(decl) || ((decl instanceof ValueParameter) && decl.isShared());
+        return isValue(decl) 
+                || decl instanceof Value 
+                    && ((Value)decl).isParameter() 
+                    && decl.isShared();
     }
     
     public static boolean isValueOrSharedOrCapturedParam(Declaration decl) {
-        return isValue(decl) || ((decl instanceof ValueParameter) && (decl.isShared() || decl.isCaptured()));
+        return isValue(decl) 
+                || decl instanceof Value 
+                    && ((Value)decl).isParameter() 
+                    && (decl.isShared() || decl.isCaptured());
     }
 
     /**
@@ -129,7 +140,8 @@ public class Decl {
      * @return true if the declaration is a method
      */
     public static boolean isMethod(Declaration decl) {
-        return (decl instanceof Method);
+        return (decl instanceof Method)
+                && !((Method)decl).isParameter();
     }
 
     /**
@@ -396,7 +408,8 @@ public class Decl {
 
     public static boolean isClassParameter(Declaration decl) {
         return (withinClassOrInterface(decl))
-                && (decl instanceof ValueParameter)
+                && (decl instanceof Value) 
+                && ((Value)decl).isParameter()
                 && (decl.isCaptured() || decl.isShared());
     }
 
@@ -589,7 +602,7 @@ public class Decl {
         } else if (inlineArgument instanceof ParameterAnnotationArgument) {
             ParameterAnnotationArgument parameterArgument = (ParameterAnnotationArgument)inlineArgument;
             Parameter parameter = parameterArgument.getSourceParameter();
-            int index = ((Functional)parameter.getContainer()).getParameterLists().get(0).getParameters().indexOf(parameter);
+            int index = ((Functional)parameter.getDeclaration()).getParameterLists().get(0).getParameters().indexOf(parameter);
             if (parameterArgument.isSpread()) {
                 index += 256;
             }
@@ -648,5 +661,38 @@ public class Decl {
 
     public static boolean isAnnotationClassOrConstructor(Declaration container) {
         return isAnnotationClass(container) || isAnnotationConstructor(container);
+    }
+    
+    public static Tree.SpecifierOrInitializerExpression getDefaultArgument(Tree.Parameter parameter) {
+        if (parameter instanceof Tree.InitializerParameter) {
+            return ((Tree.InitializerParameter)parameter).getSpecifierExpression();
+        } else if (parameter instanceof Tree.ValueParameterDeclaration) {
+            return ((Tree.AttributeDeclaration)((Tree.ValueParameterDeclaration)parameter).getTypedDeclaration()).getSpecifierOrInitializerExpression();
+        } else if (parameter instanceof Tree.FunctionalParameterDeclaration) {
+            return ((Tree.MethodDeclaration)((Tree.FunctionalParameterDeclaration)parameter).getTypedDeclaration()).getSpecifierExpression();
+        }
+        return null;
+    }
+    
+    public static Tree.AnnotationList getAnnotations(Tree.Parameter parameter) {
+        if (parameter instanceof Tree.ParameterDeclaration) {
+            return ((Tree.ParameterDeclaration)parameter).getTypedDeclaration().getAnnotationList();
+        }
+        return null;
+    }
+    
+    public static boolean isParameter(Declaration decl) {
+        return decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter();
+    }
+    
+    public static boolean isFunctionalParameter(Declaration decl) {
+        return decl instanceof Method
+                && ((Method)decl).isParameter();
+    }
+    
+    public static boolean isValueParameter(Declaration decl) {
+        return decl instanceof Value
+                && ((Value)decl).isParameter();
     }
 }

@@ -39,7 +39,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -167,7 +166,7 @@ public class Naming implements LocalId {
     private static String getErasedGetterName(Declaration decl) {
         String property = decl.getName();
         // ERASURE
-        if (!(decl instanceof Parameter) || ((Parameter)decl).isShared()) {
+        if (!(decl instanceof Value) || ((Value)decl).isShared()) {
             if ("hash".equals(property)) {
                 return "hashCode";
             } else if ("string".equals(property)) {
@@ -514,8 +513,9 @@ public class Naming implements LocalId {
     }
 
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
-        if (decl instanceof Method) {
-            return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param).getName();
+        if (decl instanceof Method
+                && !((Method)decl).isParameter()) {
+            return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName();
         } else if (decl instanceof ClassOrInterface) {
             if (decl.isToplevel() || Decl.isLocal(decl)) {
                 return "$init$" + param.getName();
@@ -540,9 +540,14 @@ public class Naming implements LocalId {
     }
     
     static String getAliasedParameterName(Parameter parameter) {
-        MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(parameter);
+        return getAliasedParameterName(parameter.getModel());
+    }
+    
+    private static String getAliasedParameterName(MethodOrValue parameter) {
+        Assert.that(parameter.isParameter());
+        MethodOrValue mov = parameter;
         if ((mov instanceof Method && ((Method)mov).isDeferred())
-                || (Decl.isValue(mov) && mov.isVariable() && mov.isCaptured())) {
+                || (mov instanceof Value && mov.isVariable() && mov.isCaptured())) {
             return parameter.getName()+"$";
         }
         return parameter.getName();
@@ -711,9 +716,9 @@ public class Naming implements LocalId {
     
     JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
         // TODO Can we merge this into makeName(..., NA_DPM) ?
-        Declaration decl = (Declaration)param.getContainer();
+        Declaration decl = param.getDeclaration();
         String methodName = getDefaultedParamMethodName(decl, param);
-        if (Strategy.defaultParameterMethodOnSelf(param)) {
+        if (Strategy.defaultParameterMethodOnSelf(param.getModel())) {
             // method not within interface
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
@@ -721,9 +726,9 @@ public class Naming implements LocalId {
             }
             JCExpression className = makeDeclName(qualifier, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
             return makeSelect(className, methodName);
-        } else if (Strategy.defaultParameterMethodOnOuter(param)) {
-            return makeQuotedQualIdent(qualifier, methodName);            
-        } else if (Strategy.defaultParameterMethodStatic(param)) {
+        } else if (Strategy.defaultParameterMethodOnOuter(param.getModel())) {
+            return makeQuotedQualIdent(qualifier, methodName);
+        } else if (Strategy.defaultParameterMethodStatic(param.getModel())) {
             // top level method or class
             Assert.that(qualifier == null);
             Declaration container = param.getDeclaration().getRefinedDeclaration();
@@ -834,19 +839,26 @@ public class Naming implements LocalId {
         } else if ((namingOptions & NA_GETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no getter");
             expr = makeQualIdent(expr, getGetterName(decl));
-        } else if (decl instanceof Value) {
-            expr = makeQualIdent(expr, getGetterName(decl));
+        } else if (decl instanceof Value
+                && !((Value)decl).isParameter()) {
+            if (gen().isCeylonCallableSubtype(decl.getType())) {
+                expr = makeQualIdent(expr, decl.getName());
+            } else {
+                expr = makeQualIdent(expr, getGetterName(decl));
+            }
         } else if (decl instanceof Setter) {
             expr = makeQualIdent(expr, getSetterName(decl.getName()));
-        } else if (decl instanceof Method) {
+        } else if (decl instanceof Method
+                && !((Method)decl).isParameter()) {
             expr = makeQualIdent(expr, getMethodName((Method)decl, namingOptions));
-        } else if (decl instanceof Parameter) {
+        } else if (decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter()) {
             if ((namingOptions & NA_ALIASED) != 0) {
-                expr = makeQualIdent(expr, getAliasedParameterName((Parameter)decl));
+                expr = makeQualIdent(expr, getAliasedParameterName((MethodOrValue)decl));
             } else {
                 expr = makeQualIdent(expr, decl.getName());
             }
-        }
+        } 
         return expr;
     }
     
@@ -981,8 +993,7 @@ public class Naming implements LocalId {
             } else {
                 return getGetterName(decl);
             }
-        } else if (Decl.isMethod(decl)
-                || decl instanceof FunctionalParameter) {
+        } else if (decl instanceof Method) {
             if (decl.isClassMember()) {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
@@ -990,7 +1001,8 @@ public class Naming implements LocalId {
                 return getMethodName(decl, namingOptions);
             }
             return quoteMethodName((Method)decl, namingOptions);
-        } else if (decl instanceof Parameter) {
+        } else if (decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter()) {
             return getMethodName(decl, namingOptions);
         }
         Assert.fail();

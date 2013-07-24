@@ -26,14 +26,13 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
@@ -210,39 +209,38 @@ class CodegenUtil {
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Method, Method> methodOverrides){
-        if (decl instanceof Parameter && decl.getContainer() instanceof Class) {
+        if (decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter()
+                && decl.getContainer() instanceof Class) {
             // Parameters in a refined class are not considered refinements themselves
             // We have in find the refined attribute
             Class c = (Class)decl.getContainer();
             if (c.isAlias()) {
-                int index = c.getParameterList().getParameters().indexOf(decl);
+                int index = c.getParameterList().getParameters().indexOf(findParamForDecl(((TypedDeclaration)decl)));
                 while (c.isAlias()) {
                     c = c.getExtendedTypeDeclaration();
                 }
-                decl = c.getParameterList().getParameters().get(index);
+                decl = c.getParameterList().getParameters().get(index).getModel();
             }
             Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
             if(refinedDecl != null && refinedDecl != decl) {
                 return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
             }
             return decl;
-        } else if(decl instanceof Parameter 
-                && (decl.getContainer() instanceof Method 
-                        || decl.getContainer() instanceof Specification
-                        || decl.getContainer() instanceof FunctionalParameter && Strategy.createMethod((FunctionalParameter)decl.getContainer()))){
+        } else if(decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter() // a parameter
+                && ((decl.getContainer() instanceof Method && !(((Method)decl.getContainer()).isParameter())) // that's not parameter of a functional parameter 
+                        || decl.getContainer() instanceof Specification // or is a parameter in a specification
+                        || (decl.getContainer() instanceof Method  
+                            && ((Method)decl.getContainer()).isParameter() 
+                            && Strategy.createMethod((Method)decl.getContainer())))) {// or is a class functional parameter
             // Parameters in a refined method are not considered refinements themselves
             // so we have to look up the corresponding parameter in the container's refined declaration
-            Functional func;
-            if(decl.getContainer() instanceof Method
-                    || decl.getContainer() instanceof FunctionalParameter)
-                func = (Functional)decl.getContainer();
-            else
-                func = (Method) ((Specification)decl.getContainer()).getDeclaration();
-            
+            Functional func = (Functional)getParameterized((MethodOrValue)decl);
             if(func == null)
                 return decl;
-            Parameter param = (Parameter)decl;
-            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)func, methodOverrides);
+            Declaration kk = getTopmostRefinedDeclaration((Declaration)func, methodOverrides);
+            Functional refinedFunc = (Functional) kk;
             // shortcut if the functional doesn't override anything
             if(refinedFunc == func)
                 return decl;
@@ -255,12 +253,16 @@ class CodegenUtil {
                     // invalid input
                     return decl;
                 }
-                // find the index of the parameter
-                int index = func.getParameterLists().get(ii).getParameters().indexOf(param);
-                if (index == -1) {
-                    continue;
+                // find the index of the parameter in the declaration
+                int index = 0;
+                for (Parameter px : func.getParameterLists().get(ii).getParameters()) {
+                    if (px.getModel().equals(decl)) {
+                        // And return the corresponding parameter from the refined declaration
+                        return refinedFunc.getParameterLists().get(ii).getParameters().get(index).getModel();
+                    }
+                    index++;
                 }
-                return refinedFunc.getParameterLists().get(ii).getParameters().get(index);
+                continue;
             }
         }else if(methodOverrides != null
                 && decl instanceof Method
@@ -300,13 +302,7 @@ class CodegenUtil {
     }
     
     static MethodOrValue findMethodOrValueForParam(Parameter param) {
-        MethodOrValue result = null;
-        String attrName = param.getName();
-        Declaration member = param.getContainer().getDirectMember(attrName, null, false);
-        if (member instanceof MethodOrValue) {
-            result = (MethodOrValue)member;
-        }
-        return result;
+        return param.getModel();
     }
 
     static boolean isVoid(ProducedType type) {
@@ -328,11 +324,41 @@ class CodegenUtil {
         if(declaration instanceof Class)
             return true;
         // parameters are constant too
-        if(declaration instanceof Parameter)
+        if(declaration instanceof MethodOrValue
+                && ((MethodOrValue)declaration).isParameter())
             return true;
         // the rest we can't know: we can't trust attributes that could be getters or overridden
         // we can't trust even toplevel attributes that could be made variable in the future because of
         // binary compat.
         return false;
+    }
+    
+    public static Declaration getParameterized(Parameter parameter) {
+        return parameter.getDeclaration();
+    }
+    
+    public static Declaration getParameterized(MethodOrValue methodOrValue) {
+        Assert.that(methodOrValue.isParameter());
+        Scope scope = methodOrValue.getContainer();
+        if (scope instanceof Specification) {
+            return ((Specification)scope).getDeclaration();
+        } else if (scope instanceof Declaration) {
+            return (Declaration)scope;
+        } 
+        throw Assert.fail();
+    }
+    
+    public static boolean isContainerFunctionalParameter(Declaration declaration) {
+        Scope containerScope = declaration.getContainer();
+        Declaration containerDeclaration;
+        if (containerScope instanceof Specification) {
+            containerDeclaration = ((Specification)containerScope).getDeclaration();
+        } else if (containerScope instanceof Declaration) {
+            containerDeclaration = (Declaration)containerScope;
+        } else {
+            throw Assert.fail();
+        }
+        return containerDeclaration instanceof Method
+                && ((Method)containerDeclaration).isParameter();
     }
 }

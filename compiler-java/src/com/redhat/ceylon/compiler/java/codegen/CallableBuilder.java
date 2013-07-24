@@ -30,15 +30,15 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -68,11 +68,11 @@ public class CallableBuilder {
             if (forwardCallTo != null) {
                 if (forwardCallTo instanceof Tree.BaseMemberOrTypeExpression) {
                     fn  = gen.makeUnquotedIdent(  
-                            Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
+                            Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getModel().getScope(), defaultedParam));
                 } else if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression) {
                     fn = gen.makeQualIdent(
                             gen.expressionGen().transformTermForInvocation(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getPrimary(), null),  
-                            Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
+                            Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getModel().getScope(), defaultedParam));
                 }
             } 
             if (fn == null) {
@@ -139,7 +139,8 @@ public class CallableBuilder {
         class InstanceDefaultValueCall implements DefaultValueMethodTransformation {            
             @Override
             public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs) {
-                if (methodOrClass instanceof FunctionalParameter) {
+                if (methodOrClass instanceof Method
+                        && ((Method)methodOrClass).isParameter()) {
                     // We can't generate a call to the dpm because there isn't one!
                     // But since FunctionalParameters cannot currently have 
                     // defaulted parameters this *must* be a variadic parameter
@@ -157,8 +158,9 @@ public class CallableBuilder {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (methodOrClass instanceof Method) {
             callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (Method)methodOrClass, Naming.NA_MEMBER));
-        } else if (methodOrClass instanceof FunctionalParameter) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (FunctionalParameter)methodOrClass, Naming.NA_MEMBER));
+        } else if (methodOrClass instanceof Method
+                && ((Method)methodOrClass).isParameter()) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(instanceName), (Method)methodOrClass, Naming.NA_MEMBER));
         } else if (methodOrClass instanceof Class) {
             if (Strategy.generateInstantiator((Class)methodOrClass)) {
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(instanceName), (Class)methodOrClass));
@@ -190,10 +192,12 @@ public class CallableBuilder {
         inner.useBody(List.<JCStatement>of(gen.make().Return(innerInvocation)));
         
         ParameterList outerPl = new ParameterList();
-        ValueParameter instanceParameter = new ValueParameter();
+        Parameter instanceParameter = new Parameter();
         instanceParameter.setName(instanceName);
-        instanceParameter.setType(gen.getParameterTypeOfCallable(typeModel, 0));
-        instanceParameter.setUnboxed(false);
+        Value valueModel = new Value();
+        instanceParameter.setModel(valueModel);
+        valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
+        valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
@@ -219,10 +223,12 @@ public class CallableBuilder {
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
         
         ParameterList outerPl = new ParameterList();
-        ValueParameter instanceParameter = new ValueParameter();
+        Parameter instanceParameter = new Parameter();
         instanceParameter.setName(instanceName);
-        instanceParameter.setType(gen.getParameterTypeOfCallable(typeModel, 0));
-        instanceParameter.setUnboxed(false);
+        Value valueModel = new Value();
+        instanceParameter.setModel(valueModel);
+        valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
+        valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
@@ -344,7 +350,7 @@ public class CallableBuilder {
             parameterDefaultValueMethods = ListBuffer.lb();
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
-            if(p.getDefaultArgument() != null || p.getDeclarationModel().isSequenced()){
+            if(Decl.getDefaultArgument(p) != null || p.getParameterModel().isSequenced()){
                 MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p, null);
                 this.parameterDefaultValueMethods.append(methodBuilder.build());
             }
@@ -389,8 +395,10 @@ public class CallableBuilder {
         // get them from our declaration
         for(Parameter p : paramLists.getParameters()){
             ProducedType pt;
-            if(p instanceof FunctionalParameter)
-                pt = gen.getTypeForFunctionalParameter((FunctionalParameter) p);
+            MethodOrValue pm = p.getModel();
+            if(pm instanceof Method
+                    && ((Method)pm).isParameter())
+                pt = gen.getTypeForFunctionalParameter((Method) pm);
             else
                 pt = p.getType();
             parameterTypes.add(pt);
@@ -418,7 +426,7 @@ public class CallableBuilder {
                 // is the parameter type because that's how unboxing determines how it has to unbox
                 true, // it's completely erased
                 true, // it came in boxed
-                CodegenUtil.getBoxingStrategy(param), // see if we need to box 
+                CodegenUtil.getBoxingStrategy(param.getModel()), // see if we need to box 
                 parameterTypes.get(argIndex), // see what type we need
                 ExpressionTransformer.EXPR_DOWN_CAST); // we're effectively downcasting it from Object
         return argExpr;
@@ -489,7 +497,7 @@ public class CallableBuilder {
         }
         // store it in a local var
         int flags = 0;
-        if(!CodegenUtil.isUnBoxed(param)){
+        if(!CodegenUtil.isUnBoxed(param.getModel())){
             flags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and

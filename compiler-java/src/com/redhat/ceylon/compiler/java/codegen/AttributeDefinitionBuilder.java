@@ -114,12 +114,21 @@ public class AttributeDefinitionBuilder {
             .isOverride(attrType.isActual())
             .modelAnnotations(attrType.getAnnotations())
             .resultType(this.attrType, attrType);
+        
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(owner, attrName);
+        pdb.modifiers(Flags.FINAL);
+        
+        pdb.aliasName(attrName);
+        pdb.type(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, 0, true), 
+                owner.makeJavaTypeAnnotations(attrType));
+        
+        
         setterBuilder = MethodDefinitionBuilder
             .method2(owner, Naming.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
             .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
-            .parameter(Flags.FINAL, null, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0, true);
+            .parameter(pdb);
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 

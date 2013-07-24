@@ -25,8 +25,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -76,12 +76,15 @@ class Strategy {
     
     public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
         if (decl instanceof Method 
-                && !Decl.withinInterface(decl)) {
+                && !Decl.withinInterface(decl)
+                && !((Method)decl).isParameter()) {
             return DefaultParameterMethodOwner.SELF;
         }
-        if (decl instanceof Parameter) {
-            decl = ((Parameter) decl).getDeclaration();
+        if (decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter()) {
+            decl = (Declaration) ((MethodOrValue)decl).getContainer();
         }
+        
         if ((decl instanceof Method || decl instanceof Class) 
                 && decl.isToplevel()) {
             // Only top-level methods have static default value methods
@@ -103,11 +106,13 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodStatic(Declaration decl) {
-        if (decl instanceof Parameter) {
-            decl = ((Parameter) decl).getDeclaration();
+        if (decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter()) {
+            decl = (Declaration) ((MethodOrValue)decl).getContainer();
         }
         // Only top-level methods have static default value methods
-        return (decl instanceof Method || decl instanceof Class) 
+        return ((decl instanceof Method && !((Method)decl).isParameter())
+                || decl instanceof Class) 
                 && decl.isToplevel();
     }
     
@@ -118,8 +123,9 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodOnOuter(Declaration decl) {
-        if (decl instanceof Parameter) {
-            decl = ((Parameter) decl).getDeclaration();
+        if (decl instanceof MethodOrValue
+                && ((MethodOrValue)decl).isParameter()) {
+            decl = (Declaration) ((MethodOrValue)decl).getContainer();
         }
         // Only inner classes have their default value methods on their outer
         return (decl instanceof Class) 
@@ -132,7 +138,8 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
-        return decl instanceof Method 
+        return decl instanceof Method
+                && !((Method)decl).isParameter()
                 && !Decl.withinInterface(decl);
     }
     
@@ -193,7 +200,9 @@ class Strategy {
     
     
     public static boolean createField(Parameter p, Value v) {
-        return !Decl.withinInterface(v) && ((p == null) || (useField(v) && !p.isCaptured()));
+        return !Decl.withinInterface(v) 
+                && (p == null 
+                        || (useField(v)));
     }
     
     /**
@@ -201,7 +210,7 @@ class Strategy {
      * for a FunctionalParameter 
      */
     static boolean createMethod(Tree.Parameter parameter) {
-        return createMethod(parameter.getDeclarationModel());
+        return createMethod(parameter.getParameterModel());
     }
     
     /**
@@ -209,9 +218,15 @@ class Strategy {
      * for a FunctionalParameter 
      */
     static boolean createMethod(Parameter parameter) {
-        return parameter instanceof FunctionalParameter 
-                && parameter.isClassMember()
-                && (parameter.isCaptured() || parameter.isShared());
+        MethodOrValue model = parameter.getModel();
+        return createMethod(model);
+    }
+
+    static boolean createMethod(MethodOrValue model) {
+        return model instanceof Method
+                && model.isParameter()
+                && model.isClassMember()
+                && (model.isShared() || model.isCaptured());
     }
     
     /**

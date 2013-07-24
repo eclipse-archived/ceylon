@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -137,7 +138,7 @@ class AnnotationInvocationVisitor extends Visitor {
             
             if (argument instanceof ParameterAnnotationArgument) {
                 ParameterAnnotationArgument parameterArgument = (ParameterAnnotationArgument)argument;
-                int argumentIndex = ((Functional)parameterArgument.getSourceParameter().getContainer()).getParameterLists().get(0).getParameters().indexOf(parameterArgument.getSourceParameter());
+                int argumentIndex = ((Functional)parameterArgument.getSourceParameter().getDeclaration()).getParameterLists().get(0).getParameters().indexOf(parameterArgument.getSourceParameter());
                 if (invocation.getPositionalArgumentList() != null) {
                     java.util.List<PositionalArgument> pa = invocation.getPositionalArgumentList().getPositionalArguments();
                     
@@ -233,7 +234,7 @@ class AnnotationInvocationVisitor extends Visitor {
             JCExpression memberName;
             if (this.parameter != null) {
                 memberName = exprGen.naming.makeUnquotedIdent(
-                exprGen.naming.selector(this.parameter, Naming.NA_ANNOTATION_MEMBER));
+                exprGen.naming.selector(this.parameter.getModel(), Naming.NA_ANNOTATION_MEMBER));
             } else {
                 memberName = exprGen.makeErroneous(errorNode);
             }
