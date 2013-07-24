@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.metamodel;
+
+class Bug1205 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1205() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.class);
+}
+final class bug1205_ {
+    
+    private bug1205_() {
+    }
+    
+    static void bug1205() {
+        ((.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205>)(.ceylon.language.Callable)(.java.lang.Object).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor)).$call();
+        ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable).ceylon.language.metamodel.modules_.$get().find("com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getFunction("bug1205")).$call();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.metamodel.bug1205_.bug1205();
+    }
+}
