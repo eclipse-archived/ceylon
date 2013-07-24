@@ -6,15 +6,7 @@ final class bug1029_ {
     }
     
     static void bug1029() {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), "String(String, String)", (short)-1){
-            
-            @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .java.lang.String $$substring = ((.ceylon.language.String)$param$0).toString();
-                final .java.lang.String $$replacement = ((.ceylon.language.String)$param$1).toString();
-                return .ceylon.language.String.instance(.ceylon.language.String.replace("hello", $$substring, $$replacement));
-            }
-        }.$call(.ceylon.language.String.instance("h"), .ceylon.language.String.instance("H")));
+        .ceylon.language.print_.print(.ceylon.language.String.replace("hello", "h", "H"));
     }
     
     public static void main(.java.lang.String[] args) {

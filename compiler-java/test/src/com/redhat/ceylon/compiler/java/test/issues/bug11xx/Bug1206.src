@@ -39,19 +39,7 @@ final class bug1206_ {
                 }
             };
         ).$call().longValue();
-        new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
-            
-            @.java.lang.Override
-            public .java.lang.Object $call() {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1206_.bug1206();
-                    }
-                    returning null;
-                );
-            }
-        }.$call();
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1206_.bug1206();
     }
     
     public static void main(.java.lang.String[] args) {
