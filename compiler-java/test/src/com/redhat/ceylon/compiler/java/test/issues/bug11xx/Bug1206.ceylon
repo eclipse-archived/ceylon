@@ -1,5 +1,3 @@
-import ceylon.language.metamodel{Annotation, Annotated, Type, ConstrainedAnnotation}
-
 @noanno
 void bug1206() {
     value s0 = (function () => 2)();

@@ -1,5 +1,3 @@
-import ceylon.language.metamodel{Annotation, Annotated, Type, ConstrainedAnnotation}
-
 @noanno
 interface Bug1188 {
 
