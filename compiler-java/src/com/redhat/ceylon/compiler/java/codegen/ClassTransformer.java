@@ -2176,10 +2176,8 @@ public class ClassTransformer extends AbstractTransformer {
                 substitutions = substitutions.append(naming.addVariableSubst(lambdaParams.get(ii).getDeclarationModel(), 
                         defParams.get(ii).getIdentifier().getText()));
             }
-            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
-            bodyExpr = gen().expressionGen().applyErasureAndBoxing(bodyExpr, resultType, 
-                    true, 
-                    model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
+            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
+                            returnNull ? BoxingStrategy.INDIFFERENT : CodegenUtil.getBoxingStrategy(model), 
                             resultType);
             for (Substitution subs : substitutions) {
                 subs.close();
