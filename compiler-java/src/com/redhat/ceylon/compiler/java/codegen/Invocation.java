@@ -195,16 +195,6 @@ abstract class Invocation {
             actualPrimExpr = primaryExpr;
         }
         
-        if (getPrimary() instanceof Tree.Expression) {
-            Tree.Term p = Decl.unwrapExpressionsUntilTerm(getPrimary());
-            if(p instanceof Tree.MemberOrTypeExpression){
-                Functional decl = (Functional)((Tree.MemberOrTypeExpression) p).getDeclaration();
-                primaryExpr = gen.expressionGen().transformFunctional(p, decl);
-            } 
-            // otherwise primaryExpr is already a Callable
-            selector = null;
-        }
-        
         if (getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)getPrimary();
             Declaration declaration = type.getDeclaration();
