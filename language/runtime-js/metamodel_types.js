@@ -2,7 +2,7 @@ function AppliedClass$metamodel(tipo,$$targs$$,that){
     $init$AppliedClass$metamodel();
     if (that===undefined)that=new AppliedClass$metamodel.$$;
     set_type_args(that,$$targs$$);
-    Class$metamodel(that);
+    Class$metamodel($$targs$$,that);
     that.tipo=tipo;
     return that;
 }
@@ -60,7 +60,7 @@ function AppliedInterface$metamodel($$targs$$,$$interfaz){
     $init$AppliedInterface$metamodel();
     if ($$interfaz===undefined)$$interfaz=new AppliedInterface$metamodel.$$;
     set_type_args($$interfaz,$$targs$$);
-    Interface$metamodel($$interfaz);
+    Interface$metamodel($$targs$$,$$interfaz);
     
     //AttributeGetterDefinition declaration at test.ceylon (5:4-5:78)
     defineAttr($$interfaz,'declaration',function() {
