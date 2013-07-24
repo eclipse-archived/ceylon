@@ -2161,7 +2161,7 @@ public class ClassTransformer extends AbstractTransformer {
         Tree.Term term = null;
         if (specifierExpression != null
                 && specifierExpression.getExpression() != null) {
-            term = specifierExpression.getExpression().getTerm();
+            term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
         }
         if (!isLazy && term instanceof Tree.FunctionArgument) {
             // Method specified with lambda: Don't bother generating a 
@@ -2187,21 +2187,21 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
             Method method = methodDecl.getDeclarationModel();
-            Tree.Term primary = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
             boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
-            boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(primary, method);
+            boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(term, method);
             Invocation invocation;
-            if (lazy && primary instanceof InvocationExpression) {
-                primary = ((InvocationExpression)primary).getPrimary();
+            if (lazy && term instanceof InvocationExpression) {
+                // unwrap it again
+                term = Decl.unwrapExpressionsUntilTerm(((InvocationExpression)term).getPrimary());
             }
             if ((lazy || inlined)
-                    && primary instanceof Tree.MemberOrTypeExpression
-                    && ((Tree.MemberOrTypeExpression)primary).getDeclaration() instanceof Functional) {
-                Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
-                ProducedReference producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
+                    && term instanceof Tree.MemberOrTypeExpression
+                    && ((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Functional) {
+                Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)term).getDeclaration();
+                ProducedReference producedReference = ((Tree.MemberOrTypeExpression)term).getTarget();
                 invocation = new MethodReferenceSpecifierInvocation(
                         this, 
-                        (Tree.MemberOrTypeExpression)primary, 
+                        (Tree.MemberOrTypeExpression)term, 
                         primaryDeclaration,
                         producedReference,
                         method,
@@ -2213,17 +2213,17 @@ public class ClassTransformer extends AbstractTransformer {
                         this, 
                         method, 
                         naming.makeUnquotedIdent(name),
-                        primary,
-                        primary);
-            } else if (isCeylonCallableSubtype(primary.getTypeModel())) {
+                        term,
+                        term);
+            } else if (isCeylonCallableSubtype(term.getTypeModel())) {
                 invocation = new CallableSpecifierInvocation(
                         this, 
                         method, 
-                        expressionGen().transformExpression(primary),
-                        primary,
-                        primary);
+                        expressionGen().transformExpression(term),
+                        term,
+                        term);
             } else {
-                throw Assert.fail("Unhandled primary " + primary);
+                throw Assert.fail("Unhandled primary " + term);
             }
             invocation.handleBoxing(true);
             bodyExpr = expressionGen().transformInvocation(invocation);

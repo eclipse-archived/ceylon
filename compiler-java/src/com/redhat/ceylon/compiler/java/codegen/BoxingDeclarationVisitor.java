@@ -296,10 +296,10 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration instanceof Method){
             if(that.getSpecifierExpression() != null
                     && that.getSpecifierExpression() instanceof LazySpecifierExpression == false){
-                Tree.Expression expression = that.getSpecifierExpression().getExpression();
-                if(expression != null
-                        && expression.getTerm() instanceof Tree.FunctionArgument){
-                    optimisedDeclaration = ((Tree.FunctionArgument)expression.getTerm()).getDeclarationModel();
+                Tree.Term term = Decl.unwrapExpressionsUntilTerm(that.getSpecifierExpression().getExpression());
+                if(term != null
+                        && term instanceof Tree.FunctionArgument){
+                    optimisedDeclaration = ((Tree.FunctionArgument)term).getDeclarationModel();
                     this.optimisedMethodSpecifiersToMethods.put(optimisedDeclaration, (Method) declaration);
                 }
             }

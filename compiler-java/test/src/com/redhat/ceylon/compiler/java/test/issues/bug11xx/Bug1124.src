@@ -61,14 +61,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get2(final .ceylon.language.Integer k) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .ceylon.language.Boolean.$TypeDescriptor), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), "Boolean?(Integer)", (short)-1){
-            
-            @.java.lang.Override
-            public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
-                final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return i == j ? .ceylon.language.Boolean.instance(f()) : null;
-            }
-        }.$call(k);
+        return .ceylon.language.Integer.instance(i).equals(k) ? .ceylon.language.Boolean.instance(f()) : null;
     }
     
     @.java.lang.Override
