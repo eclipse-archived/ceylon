@@ -2190,10 +2190,6 @@ public class ClassTransformer extends AbstractTransformer {
             boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
             boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(term, method);
             Invocation invocation;
-            if (lazy && term instanceof InvocationExpression) {
-                // unwrap it again
-                term = Decl.unwrapExpressionsUntilTerm(((InvocationExpression)term).getPrimary());
-            }
             if ((lazy || inlined)
                     && term instanceof Tree.MemberOrTypeExpression
                     && ((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Functional) {
