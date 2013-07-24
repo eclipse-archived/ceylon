@@ -129,14 +129,17 @@ function Anything(wat) {
     return wat;
 }
 initType(Anything, 'ceylon.language::Anything');
+Anything.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Anything']};
 function Null(wat) {
     return null;
 }
 initType(Null, 'ceylon.language::Null', Anything);
+Null.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Null']};
 function Nothing(wat) {
     throw "Nothing";
 }
 initType(Nothing, 'ceylon.language::Nothing');
+Nothing.$$metamodel$$={$ps:[],$an:function(){return[shared()]},mod:$$METAMODEL$$,d:{"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"}};
 
 function Object$(wat) {
     return wat;
