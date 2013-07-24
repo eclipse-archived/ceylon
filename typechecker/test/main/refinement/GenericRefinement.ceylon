@@ -109,7 +109,7 @@ class GenericRefinement() {
 		            @error given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
-		    @error shared actual void accept<T>(T t)
+		    shared actual void accept<T>(T t)
 		            @error given T satisfies Baz<T&String> {}
 		}
     }
@@ -147,7 +147,6 @@ class GenericRefinement() {
 		            @error given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<I> {
-		    @error
 		    shared actual void accept<T>(T t)
 		            @error given T satisfies Baz<T&J> {}
 		}
@@ -161,7 +160,7 @@ class GenericRefinement() {
                     @error given T satisfies Baz<T&S>&J;
         }
         class Bar() satisfies Foo<I> {
-            @error shared actual void accept<T>(T t)
+            shared actual void accept<T>(T t)
                     @error given T satisfies Baz<T&I>&J {}
         }
     }

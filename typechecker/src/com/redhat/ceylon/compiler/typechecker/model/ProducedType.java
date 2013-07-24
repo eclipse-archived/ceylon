@@ -10,8 +10,10 @@ import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
@@ -201,6 +203,8 @@ public class ProducedType extends ProducedReference {
         return type.isSubtypeOf(this);
     }
 
+    static int i=0;
+    
     /**
      * Is this type a subtype of the given type? 
      */
@@ -1612,135 +1616,195 @@ public class ProducedType extends ProducedReference {
 		return false;
     }*/
     
-    public List<TypeDeclaration> isRecursiveTypeAliasDefinition(TypeDeclaration ad) {
-        //TODO this method could overflow if one of the referenced
-        //     alias definitions is also recursive!
+    private Set<TypeDeclaration> extend(TypeDeclaration td, Set<TypeDeclaration> visited) {
+        HashSet<TypeDeclaration> set = new HashSet<TypeDeclaration>(visited);
+        set.add(td);
+        return set;
+    }
+    
+    private List<TypeDeclaration> extend(TypeDeclaration td, List<TypeDeclaration> results) {
+        if (!results.contains(td)) {
+            results.add(td);
+        }
+        return results;
+    }
+    
+    public List<TypeDeclaration> isRecursiveTypeAliasDefinition(Set<TypeDeclaration> visited) {
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||
 			d instanceof ClassAlias||
 			d instanceof InterfaceAlias) {
-			if (d.equals(ad)) {
+			if (visited.contains(d)) {
 			    return new ArrayList<TypeDeclaration>(singletonList(d));
 			}
             if (d.getExtendedType()!=null) {
                 List<TypeDeclaration> l = d.getExtendedType()
-                        .isRecursiveTypeAliasDefinition(ad);
+                        .isRecursiveTypeAliasDefinition(extend(d, visited));
 			    if (!l.isEmpty()) {
-			        l.add(0, d);
-			        return l;
+			        return extend(d, l);
 			    }
 			}
             for (ProducedType bt: d.getBrokenSupertypes()) {
-                List<TypeDeclaration> l = bt.isRecursiveTypeAliasDefinition(ad);
+                List<TypeDeclaration> l = bt.isRecursiveTypeAliasDefinition(extend(d, visited));
                 if (!l.isEmpty()) {
-                    l.add(0, d);
-                    return l;
+                    return extend(d, l);
                 }
             }
 		}
 		else if (d instanceof UnionType) {
 			for (ProducedType ct: getCaseTypes()) {
-	            List<TypeDeclaration> l = ct.isRecursiveTypeAliasDefinition(ad);
+	            List<TypeDeclaration> l = ct.isRecursiveTypeAliasDefinition(visited);
 	            if (!l.isEmpty()) return l;
 			}
 		}
 		else if (d instanceof IntersectionType) {
 			for (ProducedType st: getSatisfiedTypes()) {
-                List<TypeDeclaration> l = st.isRecursiveTypeAliasDefinition(ad);
+                List<TypeDeclaration> l = st.isRecursiveTypeAliasDefinition(visited);
                 if (!l.isEmpty()) return l;
 			}
 		}
 		else {
 			for (ProducedType at: getTypeArgumentList()) {
 				if (at!=null) {
-				    List<TypeDeclaration> l = at.isRecursiveTypeAliasDefinition(ad);
+				    List<TypeDeclaration> l = at.isRecursiveTypeAliasDefinition(visited);
 				    if (!l.isEmpty()) return l;
 				}
 			}
 			ProducedType qt = getQualifyingType();
             if (qt!=null) {
-                List<TypeDeclaration> l = qt.isRecursiveTypeAliasDefinition(ad);
+                List<TypeDeclaration> l = qt.isRecursiveTypeAliasDefinition(visited);
                 if (!l.isEmpty()) return l;
             }
 		}
 		return emptyList();
     }
     
-    public boolean isRecursiveTypeDefinition(TypeDeclaration ad) {
+    public List<TypeDeclaration> isRecursiveTypeDefinition(Set<TypeDeclaration> visited) {
         //TODO this method could overflow if one of the referenced
-        //     alias definitions is also recursive!
+        //     type or alias definitions is also recursive!
         TypeDeclaration d = getDeclaration();
         if (d instanceof TypeAlias||
             d instanceof ClassAlias||
             d instanceof InterfaceAlias) {
-            if (d.equals(ad)) {
-                return true;
+            if (visited.contains(d)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
             }
-            if (d.getExtendedType()!=null &&
-                    d.getExtendedType().isRecursiveTypeDefinition(ad)) return true;
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                if (ct.isRecursiveTypeDefinition(ad)) return true;
+                List<TypeDeclaration> l = ct.isRecursiveTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.isRecursiveTypeDefinition(ad)) return true;
+                List<TypeDeclaration> l = st.isRecursiveTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
             }
         }
         else {
-            if (d.equals(ad)) {
-                return true;
+            if (visited.contains(d)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
             }
             for (ProducedType at: getTypeArgumentList()) {
-                if (at!=null && at.isRecursiveTypeDefinition(ad)) return true;
+                if (at!=null) {
+                    List<TypeDeclaration> l = at.isRecursiveTypeDefinition(visited);
+                    if (!l.isEmpty()) return l;
+                }
             }
             ProducedType qt = getQualifyingType();
-            if (qt!=null && qt.isRecursiveTypeDefinition(ad)) return true;
-            if (d.getExtendedType()!=null &&
-                    d.getExtendedType().isRecursiveRawTypeDefinition(ad)) return true;
+            if (qt!=null) {
+                List<TypeDeclaration> l = qt.isRecursiveTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
+            }
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        //Note: only follow the inheritance chain
+                        //TODO: is this correct?!
+                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.isRecursiveRawTypeDefinition(ad)) return true;
+                //Note: only follow the inheritance chain
+                //TODO: is this correct?!
+                List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
             }
         }
-        return false;
+        return emptyList();
     }
     
-    public boolean isRecursiveRawTypeDefinition(TypeDeclaration ad) {
-        //TODO this method could overflow if one of the referenced
-        //     alias definitions is also recursive!
+    public List<TypeDeclaration> isRecursiveRawTypeDefinition(Set<TypeDeclaration> visited) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof TypeAlias||
             d instanceof ClassAlias||
             d instanceof InterfaceAlias) {
-            if (d.equals(ad)) {
-                return true;
+            if (visited.contains(d)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
             }
-            if (d.getExtendedType()!=null &&
-                    d.getExtendedType().isRecursiveRawTypeDefinition(ad)) return true;
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+            for (ProducedType bt: d.getBrokenSupertypes()) {
+                List<TypeDeclaration> l = bt.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                if (ct.isRecursiveRawTypeDefinition(ad)) return true;
+                List<TypeDeclaration> l = ct.isRecursiveRawTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
             }
         }
         else if (d instanceof IntersectionType) {
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.isRecursiveRawTypeDefinition(ad)) return true;
+                List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
             }
         }
         else {
-            if (d.equals(ad)) {
-                return true;
+            if (visited.contains(d)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
             }
-            if (d.getExtendedType()!=null &&
-                    d.getExtendedType().isRecursiveRawTypeDefinition(ad)) return true;
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> i = d.getExtendedType()
+                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!i.isEmpty()) {
+                    i.add(0, d);
+                    return i;
+                }
+            }
+            for (ProducedType bt: d.getBrokenSupertypes()) {
+                List<TypeDeclaration> l = bt.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.isRecursiveRawTypeDefinition(ad)) return true;
+                List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
             }
         }
-        return false;
+        return emptyList();
     }
     
     @Deprecated

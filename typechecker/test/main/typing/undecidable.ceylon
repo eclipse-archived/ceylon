@@ -23,7 +23,7 @@ void undecidable() {
     interface Sub satisfies In<E> {}
     interface SubList satisfies List<E> {}
     @error alias E=>D;
-    alias D=>E;
+    @error alias D=>E;
     
 }
 

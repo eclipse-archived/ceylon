@@ -19,11 +19,11 @@ class WithCircularTypeParams2<S,T>()
 
 
 void testMemberResolutionOnCircular() {
-    String hi = CY().hello;
-    CX cx = CY();
-    @error object o satisfies CB {}
-    o.noop();
-    CA ca = o;
+    @error String hi = CY().hello;
+    @error CX cx = CY();
+    object o satisfies CB {}
+    @error o.noop();
+    @error CA ca = o;
 }
 
 interface CircularConstraints<P,Q,R>
@@ -31,7 +31,7 @@ interface CircularConstraints<P,Q,R>
         @error given Q satisfies R
         @error given R satisfies P {}
 
-@error class Good1WithCircularConstraints() satisfies CircularConstraints<String,String,String> {}
-@error class Good2WithCircularConstraints() satisfies CircularConstraints<Object,Object,Object> {}
-@error class Bad1WithCircularConstraints() satisfies CircularConstraints<Object,Object,String> {}
-@error class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Object> {}
+class Good1WithCircularConstraints() satisfies CircularConstraints<String,String,String> {}
+class Good2WithCircularConstraints() satisfies CircularConstraints<Object,Object,Object> {}
+class Bad1WithCircularConstraints() satisfies CircularConstraints<Object,Object,String> {}
+class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Object> {}

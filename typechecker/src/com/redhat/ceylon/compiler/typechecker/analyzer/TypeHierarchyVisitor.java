@@ -346,7 +346,7 @@ public class TypeHierarchyVisitor extends Visitor {
             List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
         final int matchingIndex = stackOfProcessedType.indexOf(declaration);
         if (matchingIndex!=-1) {
-            StringBuilder sb = new StringBuilder("cyclical inheritance in ");
+            /*StringBuilder sb = new StringBuilder("cyclical inheritance in ");
             sb.append(declaration.getName());
             sb.append(" (involving ");
             for (int index = stackOfProcessedType.size()-1;index>matchingIndex;index--) {
@@ -355,15 +355,15 @@ public class TypeHierarchyVisitor extends Visitor {
             removeTrailing(", ", sb);
             sb.append(")");
             errorReporter.addError(sb.toString());
-            return true;
+            return true;*/
         }
         return false;
     }
 
-    private void removeTrailing(String trailingString, StringBuilder sb) {
+    /*private void removeTrailing(String trailingString, StringBuilder sb) {
         final int length = sb.length();
         sb.delete(length-trailingString.length(), length);
-    }
+    }*/
 
     private Type getOrBuildType(TypeDeclaration declaration) {
         Type type = types.get(declaration);

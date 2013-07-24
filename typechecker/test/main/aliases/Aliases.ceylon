@@ -97,7 +97,7 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
 
 @error alias Rec<T> => Tuple<T,T,Rec<T>>;
 @error alias RX => String|List<RY>;
-alias RY => Object&Iterable<RX>;
+@error alias RY => Object&Iterable<RX>;
 
 alias Id<T> => T;
 alias Or<X,Y> => X|Y;

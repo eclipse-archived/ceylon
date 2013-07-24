@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static java.util.Collections.singleton;
+
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -20,21 +22,25 @@ public class AliasVisitor extends Visitor {
 
     private void check(Node that, ProducedType t, TypeDeclaration d) {
         if (t!=null) {
-            List<TypeDeclaration> l = t.isRecursiveTypeAliasDefinition(d);
+            List<TypeDeclaration> l = t.isRecursiveTypeAliasDefinition(singleton(d));
             if (!l.isEmpty()) {
-                StringBuffer sb = new StringBuffer();
-                for (TypeDeclaration td: l) {
-                    sb.append(td.getName()).append(", ");
-                }
-                sb.setLength(sb.length()-2);
                 that.addError("type alias is circular: definition of " + 
-                        d.getName() + " is recursive, involving " + sb);
+                        d.getName() + " is recursive, involving " + typeList(l));
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
                 d.getBrokenSupertypes().add(t);
             }
         }
+    }
+
+    public static String typeList(List<TypeDeclaration> l) {
+        StringBuffer sb = new StringBuffer();
+        for (TypeDeclaration td: l) {
+            sb.append(td.getName()).append(", ");
+        }
+        sb.setLength(sb.length()-2);
+        return sb.toString();
     }
 
     @Override
