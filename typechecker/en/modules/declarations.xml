@@ -404,7 +404,7 @@ TypeConstraints?
         
         <!--
         <para>If the declared type of the parameter is an optional type (a subtype of
-        <literal>Nothing</literal>) then the default argument expression must be a value
+        <literal>Null</literal>) then the default argument expression must be a value
         reference to <literal>null</literal>.</para>
         -->
         

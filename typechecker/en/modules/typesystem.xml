@@ -659,7 +659,7 @@
         
         <itemizedlist>
             <listitem>
-                <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
+                <para><literal>X?</literal> means <literal>Null|X</literal> for any 
                 type <literal>X</literal>,</para>
             </listitem>
             <listitem>
@@ -923,7 +923,7 @@ Float|Integer num = one;</programlisting></comment>
             <para>It further follows that if <literal>X</literal> and <literal>Y</literal>
             are distinct types that do not involve type parameters, and <literal>B&lt;T&gt;</literal> 
             is invariant in <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
-            is the empty type <literal>Nothing</literal>.</para>
+            is the bottom type <literal>Nothing</literal>.</para>
             
             <para>These identities result from principal instantiation inheritance, for any
             types <literal>X</literal> and <literal>Y</literal>:</para>
@@ -2170,7 +2170,7 @@ value result = prepend(null, {"hello", "world"});]]></programlisting>
         
         <itemizedlist>
             <listitem>
-                <para><literal>Element abstracts Nothing</literal>, and</para>
+                <para><literal>Element abstracts Null</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>Element abstracts String</literal>.</para>

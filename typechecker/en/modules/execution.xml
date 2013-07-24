@@ -281,7 +281,7 @@ String result = middleObject.string;</programlisting>
              are satisfied.</para>
             
              <!--para>Note that these are formal definitions. In fact, the compiler erases 
-             <literal>Nothing|T</literal> to <literal>T</literal> before generating bytecode.
+             <literal>Null|T</literal> to <literal>T</literal> before generating bytecode.
              So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
              by the virtual machine.</para-->
         
