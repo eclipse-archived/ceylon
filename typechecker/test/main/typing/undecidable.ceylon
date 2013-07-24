@@ -70,3 +70,13 @@ void broken() {
     X&Contra<Y> sup2(X&Contra<Y|Contra<X>> sup) => sup;
     @error Inv<X&Contra<Y|Contra<X>>> foo2(Inv<X&Contra<Y>> foo) => foo;
 }
+
+void evenmore() {
+    interface Inv<P> {}
+    @error interface A satisfies Inv<B|Inv<B>> {}
+    interface B satisfies A {}
+    
+    @error interface AA satisfies Inv<BB&CC> {}
+    interface BB satisfies Inv<AA> {}
+    interface CC satisfies AA {}
+}
