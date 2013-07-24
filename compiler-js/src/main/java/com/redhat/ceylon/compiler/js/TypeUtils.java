@@ -35,6 +35,7 @@ public class TypeUtils {
     final TypeDeclaration anything;
     final TypeDeclaration callable;
     final TypeDeclaration empty;
+    final TypeDeclaration metaClass;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
@@ -48,6 +49,8 @@ public class TypeUtils {
         anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
         callable = (TypeDeclaration)pkg.getMember("Callable", null, false);
         empty = (TypeDeclaration)pkg.getMember("Empty", null, false);
+        pkg = languageModule.getPackage("ceylon.language.metamodel");
+        metaClass = (TypeDeclaration)pkg.getMember("Class", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */

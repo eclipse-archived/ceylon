@@ -94,6 +94,9 @@ public class InvocationGenerator {
                     if (!argList.getPositionalArguments().isEmpty()) {
                         gen.out(",");
                     }
+                } else if (that.getPrimary().getTypeModel().getDeclaration().inherits(gen.getTypeUtils().metaClass)) {
+                    //metamodel Classes are AppliedClass$metamodel which contains "tipo", a ref to the actual class
+                    gen.out(".tipo(");
                 } else {
                     gen.out("(");
                 }
