@@ -53,9 +53,9 @@ class MRAVEC_BottomAnything() extends MRAVEC_Top<Anything>(){
     shared actual MRAVEC_Contravariant<Anything> f4() => nothing;
 }
 @noanno
-class MRAVEC_BottomErased() extends MRAVEC_Top<MRAVEC_BottomErased|MRAVEC_BottomNothing>(){
-    shared actual MRAVEC_BottomErased|MRAVEC_BottomNothing f() => nothing;
-    shared actual MRAVEC_Invariant<MRAVEC_BottomErased|MRAVEC_BottomNothing> f2() => nothing;
-    shared actual MRAVEC_Covariant<MRAVEC_BottomErased|MRAVEC_BottomNothing> f3() => nothing;
-    shared actual MRAVEC_Contravariant<MRAVEC_BottomErased|MRAVEC_BottomNothing> f4() => nothing;
+class MRAVEC_BottomErased() extends MRAVEC_Top<String|Integer>(){
+    shared actual String|Integer f() => nothing;
+    shared actual MRAVEC_Invariant<String|Integer> f2() => nothing;
+    shared actual MRAVEC_Covariant<String|Integer> f3() => nothing;
+    shared actual MRAVEC_Contravariant<String|Integer> f4() => nothing;
 }

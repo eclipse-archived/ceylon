@@ -198,7 +198,7 @@ class MRAVEC_BottomAnything extends .com.redhat.ceylon.compiler.java.test.struct
 class MRAVEC_BottomErased extends .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Top<.java.lang.Object> {
     
     MRAVEC_BottomErased() {
-        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomErased.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_BottomNothing.$TypeDescriptor));
+        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor));
     }
     
     @.java.lang.Override

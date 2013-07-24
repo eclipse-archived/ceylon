@@ -549,6 +549,7 @@ public class IssuesTest_0500_0999 extends CompilerTest {
         compareWithJavaSource("bug08xx/bug854/Bug854");
     }
     
+    @Ignore("Disabled because of https://github.com/ceylon/ceylon-spec/issues/596")
     @Test
     public void testBug866() {
         compareWithJavaSource("bug08xx/Bug866");

@@ -60,30 +60,6 @@ final class selfType2_ {
         x.compareTo((X)y);
     }
 }
-interface A extends .ceylon.language.Comparable {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.invoke.A$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$A$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.A.class);
-}
-final class A$impl {
-    
-    A$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.A $this) {
-        this.$this = $this;
-    }
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.A $this;
-}
-interface C extends .ceylon.language.Comparable {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.invoke.C$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$C$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.C.class);
-}
-final class C$impl {
-    
-    C$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.C $this) {
-        this.$this = $this;
-    }
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.C $this;
-}
 interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.invoke.D> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.invoke.D$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$D$impl();

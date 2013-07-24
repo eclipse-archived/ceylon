@@ -46,10 +46,11 @@ abstract class SelfType2<T>() of T {
 void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
     x.compareTo(y of X);
 }
-@noanno
-interface A satisfies Comparable<C|A> {}
-@noanno
-interface C satisfies Comparable<C|A> {}
+// disallowed by https://github.com/ceylon/ceylon-spec/issues/596
+//@noanno
+//interface A satisfies Comparable<C|A> {}
+//@noanno
+//interface C satisfies Comparable<C|A> {}
 @noanno
 interface D satisfies Comparable<D> {}
 @noanno
