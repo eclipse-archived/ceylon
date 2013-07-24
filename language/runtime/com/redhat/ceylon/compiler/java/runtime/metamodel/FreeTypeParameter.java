@@ -19,6 +19,12 @@ public class FreeTypeParameter
     
     TypeParameter declaration;
     
+    @Override
+    public String toString() {
+        String string = declaration.getName();
+        return string;
+    }
+    
     public FreeTypeParameter(com.redhat.ceylon.compiler.typechecker.model.TypeParameter declaration) {
         this.declaration = declaration;
     }
