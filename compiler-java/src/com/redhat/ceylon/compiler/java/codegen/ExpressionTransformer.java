@@ -2439,11 +2439,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return transformCallableSpecifierInvocation(callBuilder, (CallableSpecifierInvocation)invocation);
             } else {
                 at(invocation.getNode());
-                Primary primary = invocation.getPrimary();
-                while (primary instanceof Tree.Expression) {
-                    primary = (Tree.Primary)((Expression)primary).getTerm();
-                }
-                JCExpression result = transformPrimary(primary, new InvocationTermTransformer(invocation, callBuilder));
+                Tree.Term primary = Decl.unwrapExpressionsUntilTerm(invocation.getPrimary());
+                JCExpression result = transformTermForInvocation(primary, new InvocationTermTransformer(invocation, callBuilder));
                 return result;
                 
             }
@@ -3188,23 +3185,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     // Generic code for all primaries
     
-    public JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
-        if (primary instanceof Tree.QualifiedMemberExpression) {
-            return transform((Tree.QualifiedMemberExpression)primary, transformer);
-        } else if (primary instanceof Tree.BaseMemberExpression) {
-            return transform((Tree.BaseMemberExpression)primary, transformer);
-        } else if (primary instanceof Tree.BaseTypeExpression) {
-            return transform((Tree.BaseTypeExpression)primary, transformer);
-        } else if (primary instanceof Tree.QualifiedTypeExpression) {
-            return transform((Tree.QualifiedTypeExpression)primary, transformer);
-        } else if (primary instanceof Tree.InvocationExpression){
-            JCExpression primaryExpr = transform((Tree.InvocationExpression)primary);
+    public JCExpression transformTermForInvocation(Tree.Term term, TermTransformer transformer) {
+        if (term instanceof Tree.QualifiedMemberExpression) {
+            return transform((Tree.QualifiedMemberExpression)term, transformer);
+        } else if (term instanceof Tree.BaseMemberExpression) {
+            return transform((Tree.BaseMemberExpression)term, transformer);
+        } else if (term instanceof Tree.BaseTypeExpression) {
+            return transform((Tree.BaseTypeExpression)term, transformer);
+        } else if (term instanceof Tree.QualifiedTypeExpression) {
+            return transform((Tree.QualifiedTypeExpression)term, transformer);
+        } else {
+            JCExpression primaryExpr = transformExpression(term);
             if (transformer != null) {
                 primaryExpr = transformer.transform(primaryExpr, null);
             }
             return primaryExpr;
-        } else {
-            return makeErroneous(primary, "Unhandled primary");
         }
     }
     

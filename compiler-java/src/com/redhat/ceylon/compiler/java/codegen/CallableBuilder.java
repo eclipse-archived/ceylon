@@ -71,7 +71,7 @@ public class CallableBuilder {
                             Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
                 } else if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression) {
                     fn = gen.makeQualIdent(
-                            gen.expressionGen().transformPrimary(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getPrimary(), null),  
+                            gen.expressionGen().transformTermForInvocation(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getPrimary(), null),  
                             Naming.getDefaultedParamMethodName((Declaration)defaultedParam.getScope(), defaultedParam));
                 }
             } 
