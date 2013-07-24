@@ -140,6 +140,12 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.MetaLiteral that) {
+        super.visit(that);
+        visitReference(that);
+    }
+
+    @Override
     public void visit(Tree.ExtendedTypeExpression that) {
         super.visit(that);
         visitReference(that);
@@ -183,56 +189,67 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private void visitReference(Tree.Primary that) {
+        Declaration member;
+        boolean assigned;
         if (that instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that;
-            Declaration member = mte.getDeclaration();
-            //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
-            //TODO: check superclass members are not in declaration section!
-            if ( member==declaration && 
-                    member.isDefinedInScope(that.getScope()) ) {
-                if (!declared) {
-                    //you are allowed to refer to later 
-                    //declarations in a class declaration
-                    //section or interface
-                    if (!isForwardReferenceable() && !hasParameter) {
-                        if (declaration.getContainer() instanceof Class) {
-                            that.addError("forward reference to class member in initializer: " + 
-                                    member.getName() + " is not yet declared (forward references must occur in declaration section)");
+            member = mte.getDeclaration();
+            assigned = mte.getAssigned();
+        }
+        else if (that instanceof Tree.MetaLiteral) {
+            Tree.MetaLiteral ml = (Tree.MetaLiteral) that;
+            member = ml.getDeclaration();
+            assigned = false;
+        }
+        else {
+            return;
+        }
+        //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
+        //TODO: check superclass members are not in declaration section!
+        if ( member==declaration && 
+                member.isDefinedInScope(that.getScope()) ) {
+            if (!declared) {
+                //you are allowed to refer to later 
+                //declarations in a class declaration
+                //section or interface
+                if (!isForwardReferenceable() && !hasParameter) {
+                    if (declaration.getContainer() instanceof Class) {
+                        that.addError("forward reference to class member in initializer: " + 
+                                member.getName() + " is not yet declared (forward references must occur in declaration section)");
+                    }
+                    else {
+                        that.addError("forward reference to local declaration: " + 
+                                member.getName() + " is not yet declared");
+                    }
+                }
+            }
+            else if (!specified.definitely) {
+                //you are allowed to refer to formal
+                //declarations in a class declaration
+                //section or interface
+                if (declaration.isFormal()) {
+                    if (!isForwardReferenceable()) {
+                        that.addError("formal member may not be used in initializer: " + 
+                                member.getName());                    
+                    }
+                }
+                else if (!declaration.isNative()) {
+                    if (!isLate() || !isForwardReferenceable()) {
+                        if (isVariable()) {
+                            that.addError("not definitely initialized: " + 
+                                    member.getName());                    
                         }
                         else {
-                            that.addError("forward reference to local declaration: " + 
-                                    member.getName() + " is not yet declared");
+                            that.addError("not definitely specified: " + 
+                                    member.getName());
                         }
                     }
                 }
-                else if (!specified.definitely) {
-                    //you are allowed to refer to formal
-                    //declarations in a class declaration
-                    //section or interface
-                    if (declaration.isFormal()) {
-						if (!isForwardReferenceable()) {
-						    that.addError("formal member may not be used in initializer: " + 
-						            member.getName());                    
-						}
-					}
-                    else if (!declaration.isNative()) {
-                        if (!isLate() || !isForwardReferenceable()) {
-                            if (isVariable()) {
-                                that.addError("not definitely initialized: " + 
-                                        member.getName());                    
-                            }
-                            else {
-                                that.addError("not definitely specified: " + 
-                                        member.getName());
-                            }
-                        }
-                    }
-                }
-                if (!mte.getAssigned() && member.isDefault() && 
-                        !isForwardReferenceable()) {
-                    that.addError("default member may not be used in initializer: " + 
-                            member.getName());                    
-                }
+            }
+            if (!assigned && member.isDefault() && 
+                    !isForwardReferenceable()) {
+                that.addError("default member may not be used in initializer: " + 
+                        member.getName());                    
             }
         }
     }
