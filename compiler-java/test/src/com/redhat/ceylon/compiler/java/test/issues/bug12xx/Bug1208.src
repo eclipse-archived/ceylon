@@ -1,0 +1,70 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1208I<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$impl();
+    
+    public abstract long m1();
+    
+    public abstract T m2();
+    
+    public abstract long m3();
+    
+    public abstract T m4();
+}
+final class Bug1208I$impl<T> {
+    
+    Bug1208I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<T> $this) {
+        this.$reifiedT = $reifiedT;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<T> $this;
+    
+    public void $refine(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT) {
+        this.$reifiedT = $reifiedT;
+    }
+}
+class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<.ceylon.language.Integer> {
+    
+    Bug1208() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1208I$this;
+    }
+    
+    @.java.lang.Override
+    public final long m1() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer m2() {
+        return .ceylon.language.Integer.instance(2L);
+    }
+    
+    @.java.lang.Override
+    public final long m3() {
+        return m2().longValue();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer m4() {
+        return m2();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.class);
+}

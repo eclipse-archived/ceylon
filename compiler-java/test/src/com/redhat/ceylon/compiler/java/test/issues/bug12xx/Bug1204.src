@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 final class bug1204_ {
     
@@ -6,12 +6,12 @@ final class bug1204_ {
     }
     
     static void bug1204() {
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1204getter_.$get().$call();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1204getter_.$get().$call();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1204_.bug1204();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1204_.bug1204();
     }
 }
 final class bug1204getter_ {

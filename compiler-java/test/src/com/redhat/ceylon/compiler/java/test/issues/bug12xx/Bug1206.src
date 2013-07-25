@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 final class bug1206_ {
     
@@ -39,11 +39,11 @@ final class bug1206_ {
                 }
             };
         ).$call().longValue();
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1206_.bug1206();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1206_.bug1206();
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1206_.bug1206();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1206_.bug1206();
     }
 }

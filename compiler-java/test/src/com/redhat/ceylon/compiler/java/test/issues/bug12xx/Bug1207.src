@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 final class bug1207_ {
     
@@ -6,7 +6,7 @@ final class bug1207_ {
     }
     
     static void bug1207() {
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1207_.bug1207();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
         .ceylon.language.String.replace("hello", "h", "H");
         final .ceylon.language.Callable<? extends .java.lang.Object> c1 = (
             let
@@ -18,7 +18,7 @@ final class bug1207_ {
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1207_.bug1207();
+                                .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
                             }
                             returning null;
                         );
@@ -32,7 +32,7 @@ final class bug1207_ {
                     return (
                         let
                         {
-                            .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1207_.bug1207();
+                            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
                         }
                         returning null;
                     );
@@ -49,7 +49,7 @@ final class bug1207_ {
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1207_.bug1207();
+                                .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
                             }
                             returning null;
                         );
@@ -63,7 +63,7 @@ final class bug1207_ {
                     return (
                         let
                         {
-                            .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1207_.bug1207();
+                            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
                         }
                         returning null;
                     );
@@ -83,6 +83,6 @@ final class bug1207_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.$get().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1207_.bug1207();
+        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1207_.bug1207();
     }
 }

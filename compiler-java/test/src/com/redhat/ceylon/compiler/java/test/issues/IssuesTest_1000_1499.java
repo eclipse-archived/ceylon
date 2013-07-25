@@ -301,26 +301,26 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1203")
     @Test
     public void testBug1203_fail() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1203", "bug11xx/Bug1203.ceylon");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1203", "bug12xx/Bug1203.ceylon");
     }
     
     @Test
     public void testBug1204() {
-        compareWithJavaSource("bug11xx/Bug1204");
+        compareWithJavaSource("bug12xx/Bug1204");
     }
     
     @Test
     public void testBug1206() {
-        compareWithJavaSource("bug11xx/Bug1206");
+        compareWithJavaSource("bug12xx/Bug1206");
     }
 
     @Test
     public void testBug1207() {
-        compareWithJavaSource("bug11xx/Bug1207");
+        compareWithJavaSource("bug12xx/Bug1207");
     }
 
     @Test
     public void testBug1208() {
-        compareWithJavaSource("bug11xx/Bug1208");
+        compareWithJavaSource("bug12xx/Bug1208");
     }
 }
