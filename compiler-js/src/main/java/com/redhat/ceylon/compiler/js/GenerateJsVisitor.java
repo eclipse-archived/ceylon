@@ -2681,6 +2681,11 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Return that) {
+        if (dynblock > 0 && TypeUtils.isUnknown(that.getExpression().getTypeModel())) {
+            that.addUnexpectedError("Cannot leak object of unknown type outside of dynamic block");
+            out("ERROR:Cannot leak unknown type outside dynamic block");
+            return;
+        }
         out("return ");
         super.visit(that);
     }
@@ -4091,6 +4096,7 @@ public class GenerateJsVisitor extends Visitor
         if (ref == null) {
             that.addUnexpectedError("Member literal with no valid target");
         } else {
+            //TODO We can skip the typeLiteral call and directly return a Function or Method
             Declaration d = ref.getDeclaration();
             out(clAlias, "typeLiteral$metamodel({Type:{t:");
             if (that.getType() == null) {
