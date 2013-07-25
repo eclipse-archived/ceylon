@@ -5440,7 +5440,15 @@ public class ExpressionVisitor extends Visitor {
             ParameterList parameterList = ((Functional)method).getParameterLists().get(0);
 
             TypeArgumentList tal = that.getTypeArgumentList();
-            if (explicitTypeArguments(method, tal, null)) {
+            // there's no model for local values that are not parameters
+            if(!result.isClassOrInterfaceMember()
+                    && !result.isToplevel()){
+                if(result instanceof FunctionalParameter){
+                    that.addError("metamodel references to function parameters not supported yet");
+                }else{
+                    that.addError("metamodel references to local functions not supported");
+                }
+            }else if (explicitTypeArguments(method, tal, null)) {
                 List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method));
                 if(tal != null)
                     tal.setTypeModels(ta);
@@ -5477,7 +5485,21 @@ public class ExpressionVisitor extends Visitor {
                 || result instanceof ValueParameter){
             TypedDeclaration value = (TypedDeclaration) result;
 
-            if(that.getTypeArgumentList() != null){
+            // there's no model for local values that are not parameters
+            if(!result.isClassOrInterfaceMember()
+                    && !result.isToplevel()){
+                if(result instanceof ValueParameter){
+                    that.addError("metamodel references to function parameters not supported yet");
+                }else{
+                    that.addError("metamodel references to local values not supported");
+                }
+            }else if(result instanceof Value
+                     && !result.isToplevel()
+                     && !result.isShared()
+                     // private attributes which hide a parameter are reified as a parameter
+                     && ((Value)result).getInitializerParameter() == null){
+                that.addError("metamodel references to non-shared attributes not supported yet");
+            }else if(that.getTypeArgumentList() != null){
                 that.addError("does not accept type arguments: " + result.getName(unit));
             }else{
                 ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
