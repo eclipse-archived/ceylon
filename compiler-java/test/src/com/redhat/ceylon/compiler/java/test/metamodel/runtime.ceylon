@@ -53,6 +53,11 @@ void checkConstructors(){
     assert(is Class<DefaultedParams2, [Boolean, Integer=, Integer=, Integer=, Integer=]> defaultedParams2Type);
     defaultedParams2Type(false);
     defaultedParams2Type(true, -1, -2, -3, -4);
+    
+    // private class with private constructor
+    value privateClassType = `PrivateClass`;
+    value privateClassInstance = privateClassType();
+    assert(privateClassInstance.string == "d");
 }
 
 void checkMemberAttributes(){
@@ -119,6 +124,10 @@ void checkMemberAttributes(){
     obj2Bound.set(3);
     assert(obj2Bound.get() == 3);
     assert(noParamsInstance.obj2 == 3);
+    
+    // private attribute
+    value privateAttr = `PrivateClass.privateString`;
+    assert(privateAttr(PrivateClass()).get() == "a");
 }
 
 void checkMemberFunctions(){
@@ -149,6 +158,10 @@ void checkMemberFunctions(){
     assert(f7(noParamsInstance)() == 'a');
     assert(exists f8 = noParamsType.getMethod<NoParams, Boolean, []>("getBoolean"));
     assert(f8(noParamsInstance)() == true);
+
+    // private method
+    value privateMethod = `PrivateClass.privateMethod`;
+    assert(privateMethod(PrivateClass())() == "b");
 }
 
 void checkMemberTypes(){
@@ -180,6 +193,12 @@ void checkMemberTypes(){
     assert(exists parameterisedInnerClassMember);
     Anything parameterisedInnerClassType = parameterisedInnerClassMember(ParameterisedContainerClass<Integer>());
     assert(is Class<ParameterisedContainerClass<Integer>.InnerClass<String>,[]> parameterisedInnerClassType);
+    
+    // private member type
+    assert(exists privateMemberType = `PrivateClass`.getClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
+    value privateMember = privateMemberType(PrivateClass())();
+    print(privateMember.string);
+    assert(privateMember.string == "c");
 }
 
 void checkUntypedFunctionToAppliedFunction(){
@@ -345,6 +364,10 @@ void checkToplevelAttributes(){
     toplevelObjectVariable.set(3);
     assert(toplevelObjectVariable.get() == 3);
     assert(toplevelObject2 == 3);
+    
+    // private attr
+    value privateToplevelAttributeModel = `privateToplevelAttribute`;
+    assert(privateToplevelAttributeModel.get() == "a");
 }
 
 void checkToplevelFunctions(){
@@ -438,6 +461,10 @@ void checkToplevelFunctions(){
     assert(exists f14 = pkg.getFunction("getAndTakeNoParams"));
     assert(is Function<NoParams, [NoParams]> f14a = f14.apply());
     assert(f14a(noParamsInstance) == noParamsInstance);
+
+    // private function
+    value privateToplevelFunctionModel = `privateToplevelFunction`;
+    assert(privateToplevelFunctionModel() == "b");
 }
 
 void checkModules(){
@@ -499,4 +526,3 @@ shared void runtime() {
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
 }
-

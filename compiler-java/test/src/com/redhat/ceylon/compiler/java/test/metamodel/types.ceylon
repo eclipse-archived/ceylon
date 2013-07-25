@@ -12,7 +12,25 @@ shared variable Character toplevelCharacter2 = 'a';
 shared variable Boolean toplevelBoolean2 = true;
 shared variable Object toplevelObject2 = 2;
 
+String privateToplevelAttribute = "a";
+String privateToplevelFunction(){
+    return "b";
+}
+
 shared object topLevelObjectDeclaration {
+}
+
+class PrivateClass(){
+    String privateString = "a";
+    String privateMethod(){
+        // capture privateString
+        privateString.iterator();
+        return "b";
+    }
+    class Inner(){
+        string = "c";
+    }
+    string = "d";
 }
 
 shared class NoParams(){
