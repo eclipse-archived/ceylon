@@ -1070,7 +1070,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else {
-            out(clAlias, "defineAttr(");
+            out(clAlias, "/*1*/defineAttr(");
             outerSelf(d);
             out(",'", names.name(d), "',function(){return ");
             if (addToPrototype) {
@@ -1078,7 +1078,9 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 out(names.name(d));
             }
-            out(";});");
+            out(";},undefined,");
+            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            out(");");
             endLine();
         }
     }
@@ -1296,12 +1298,14 @@ public class GenerateJsVisitor extends Visitor
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
         if (defineAsProperty(d)) {
-            out(clAlias, "defineAttr(");
+            out(clAlias, "/*2*/defineAttr(");
             outerSelf(d);
             out(",'", names.name(d), "',function()");
             super.visit(that);
             final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
-            if (setterDef != null) {
+            if (setterDef == null) {
+                out(",undefined");
+            } else {
                 out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
                 if (setterDef.getSpecifierExpression() == null) {
                     super.visit(setterDef);
@@ -1311,6 +1315,8 @@ public class GenerateJsVisitor extends Visitor
                     out(";}");
                 }
             }
+            out(",");
+            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out(");");
         }
         else {
@@ -1325,11 +1331,13 @@ public class GenerateJsVisitor extends Visitor
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
+        out(clAlias, "/*3*/defineAttr(", names.self(outer), ",'", names.name(d),
                 "',function()");
         super.visit(that);
         final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
-        if (setterDef != null) {
+        if (setterDef == null) {
+            out(",undefined");
+        } else {
             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
             if (setterDef.getSpecifierExpression() == null) {
                 super.visit(setterDef);
@@ -1339,6 +1347,8 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
             }
         }
+        out(",");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         out(");");
     }
     
@@ -1451,7 +1461,7 @@ public class GenerateJsVisitor extends Visitor
             else if (specInitExpr instanceof LazySpecifierExpression) {
                 final boolean property = defineAsProperty(d);
                 if (property) {
-                    out(clAlias, "defineAttr(");
+                    out(clAlias, "/*4*/defineAttr(");
                     outerSelf(d);
                     out(",'", names.name(d), "',function(){return ");
                 } else {
@@ -1463,9 +1473,11 @@ public class GenerateJsVisitor extends Visitor
                 boxUnboxEnd(boxType);
                 out(";}");
                 if (property) {
+                    boolean hasSetter = false;
                     if (d.isVariable()) {
                         Tree.AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
                         if (setterDef != null) {
+                            hasSetter = true;
                             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
                             if (setterDef.getSpecifierExpression() == null) {
                                 super.visit(setterDef);
@@ -1476,6 +1488,11 @@ public class GenerateJsVisitor extends Visitor
                             }
                         }
                     }
+                    if (!hasSetter) {
+                        out(",undefined");
+                    }
+                    out(",");
+                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
                     out(");");
                     endLine();
                 } else {
@@ -1546,7 +1563,7 @@ public class GenerateJsVisitor extends Visitor
             if (isCaptured(decl)) {
                 final boolean isLate = decl.isLate();
                 if (defineAsProperty(decl)) {
-                    out(clAlias, "defineAttr(");
+                    out(clAlias, "/*5*/defineAttr(");
                     outerSelf(decl);
                     out(",'", varName, "',function(){");
                     if (isLate) {
@@ -1612,7 +1629,7 @@ public class GenerateJsVisitor extends Visitor
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
-                    out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
+                    out(clAlias, "/*6*/defineAttr(", names.self(outer), ",'", names.name(d),
                             "',function()");
                     beginBlock();
                     initSelf(that.getScope());
@@ -1658,7 +1675,11 @@ public class GenerateJsVisitor extends Visitor
                         }
                         out("return this.", privname,
                                 "=", param, ";}");
+                    } else {
+                        out(",undefined");
                     }
+                    out(",");
+                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
                     out(");");
                     endLine();
                 }
@@ -2401,7 +2422,11 @@ public class GenerateJsVisitor extends Visitor
                 specStmt.getSpecifierExpression().visit(this);
                 out(";");
                 endBlock();
-                if (property) { out(")"); }
+                if (property) {
+                    out(",undefined,");
+                    TypeUtils.encodeForRuntime(bmeDecl, null/*TODO shared actual*/, this);
+                    out(")");
+                }
                 endLine(true);
                 directAccess.remove(bmeDecl);
             }
@@ -2681,23 +2706,17 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Return that) {
+        out("return ");
         if (dynblock > 0 && TypeUtils.isUnknown(that.getExpression().getTypeModel())) {
-            that.addUnexpectedError("Cannot leak object of unknown type outside of dynamic block");
-            out("ERROR:Cannot leak unknown type outside dynamic block");
+            TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this);
+            endLine(true);
             return;
         }
-        out("return ");
         super.visit(that);
     }
 
     @Override
-    public void visit(AnnotationList that) {
-        out("/*anotaciones:");
-        for (Annotation ann : that.getAnnotations()) {
-            out(ann.getTypeModel().getProducedTypeQualifiedName(),",");
-        }
-        out("*/");
-    }
+    public void visit(AnnotationList that) {}
 
     void self(TypeDeclaration d) {
         out(names.self(d));
@@ -4104,7 +4123,11 @@ public class GenerateJsVisitor extends Visitor
             } else {
                 qualify(that, that.getType().getTypeModel().getDeclaration());
                 out(names.name(that.getType().getTypeModel().getDeclaration()));
-                out(".");
+                out(".$$.prototype.");
+            }
+            //Como le hago con setters?
+            if (d instanceof Value) {
+                out("$prop$");
             }
             out(names.name(d));
             if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
