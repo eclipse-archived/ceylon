@@ -9,6 +9,7 @@ function type$metamodel(x) {
             var _x = x.constructor.T$all[x.constructor.T$name];
             if (_x) {
                 mm = _x.$$metamodel$$;
+                x=_x;
             }
         }
         if (mm && mm.d['$mt']) {
@@ -16,8 +17,11 @@ function type$metamodel(x) {
             if (metatype === 'ifc') { //Interface
                 //
             } else if (metatype === 'cls') { //Class
+                return typeLiteral$metamodel({Type:{t:x}});
             } else if (metatype === 'mthd') { //Method
+                return typeLiteral$metamodel({Type:{t:$JsCallable(x)}});
             } else {
+                console.log("type(" + metatype + ")WTF?");
             }
         } else {
             throw Exception(String$("No metamodel available for "+x));
@@ -42,8 +46,9 @@ function typeLiteral$metamodel($$targs$$) {
             return AppliedClass$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
         } else if (mdl.d['$mt'] === 'ifc') {
             return AppliedInterface$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
+        } else if (mdl.d['$mt'] === 'mthd') {
         }
-        console.log("typeLiteral<" + $$targs$$.Type.t.$$.T$name + ">");
+        console.log("typeLiteral<" + $$targs$$.Type.t.getT$name() + ">");
     }
     throw Exception("typeLiteral UNIMPLEMENTED for " + require('util').inspect($$targs$$));
 }
