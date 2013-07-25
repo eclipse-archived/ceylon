@@ -55,7 +55,8 @@ public class AppliedValue<Type>
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
-                Method m = javaClass.getMethod(getterName);
+                // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
+                Method m = decl.isShared() ? javaClass.getMethod(getterName) : javaClass.getDeclaredMethod(getterName);
                 m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
@@ -78,7 +79,8 @@ public class AppliedValue<Type>
             // FIXME: we should really save the getter name in the LazyDecl
             String getterName = Naming.getGetterName(lazyDecl);
             try {
-                Method m = javaClass.getMethod(getterName);
+                // toplevels don't have inheritance
+                Method m = javaClass.getDeclaredMethod(getterName);
                 m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
@@ -99,7 +101,8 @@ public class AppliedValue<Type>
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
             String fieldName = fieldDecl.getRealName();
             try {
-                Field f = javaClass.getField(fieldName);
+                // fields are not inherited
+                Field f = javaClass.getDeclaredField(fieldName);
                 f.setAccessible(true);
                 getter = MethodHandles.lookup().unreflectGetter(f);
                 java.lang.Class<?> getterType = f.getType();

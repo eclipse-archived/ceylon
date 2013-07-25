@@ -97,7 +97,10 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         Object found = null;
-        if(!javaClass.isMemberClass() || !Metamodel.isCeylon(decl)){
+        if(!javaClass.isMemberClass() 
+                || !Metamodel.isCeylon(decl)
+                // private ceylon member classes don't have any outer constructor method so treat them like java members
+                || !decl.isShared()){
             for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
                 if(constr.isAnnotationPresent(Ignore.class)){
                     // it's likely an overloaded constructor
