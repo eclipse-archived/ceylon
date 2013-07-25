@@ -516,7 +516,8 @@ public class ClassDefinitionBuilder {
             }
         } else {
             // Otherwise it's local to the constructor
-            init(gen.make().VarDef(gen.make().Modifiers(modifiers, annotations), attrNameNm, type, initialValue));
+            // Stef: pretty sure we don't want annotations on a variable defined in a constructor
+            init(gen.make().VarDef(gen.make().Modifiers(modifiers), attrNameNm, type, initialValue));
         }
         return this;
     }

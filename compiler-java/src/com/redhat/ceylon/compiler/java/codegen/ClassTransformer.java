@@ -1449,7 +1449,8 @@ public class ClassTransformer extends AbstractTransformer {
                 if (concrete) {
                     classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
-                    classBuilder.field(modifiers, attrName, type, initialValue, !useField);
+                    // fields should be ignored, they are accessed by the getters
+                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, makeAtIgnore());
                 }        
             }
         }
