@@ -51,3 +51,14 @@ void newit() {
         value aa = value { a=1; b=2; 5,6,7,8 };
     }
 }
+
+variable String val = "";
+void fun(String o) {}
+String leak() {
+  dynamic {
+    value x = value { x=1; };
+    val=x;
+    fun(x);
+    return x;
+  }
+}
