@@ -1563,7 +1563,7 @@ public class GenerateJsVisitor extends Visitor
             if (isCaptured(decl)) {
                 final boolean isLate = decl.isLate();
                 if (defineAsProperty(decl)) {
-                    out(clAlias, "/*5*/defineAttr(");
+                    out(clAlias, "defineAttr(");
                     outerSelf(decl);
                     out(",'", varName, "',function(){");
                     if (isLate) {
