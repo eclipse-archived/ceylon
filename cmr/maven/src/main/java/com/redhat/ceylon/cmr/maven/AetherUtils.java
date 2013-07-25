@@ -88,7 +88,7 @@ public class AetherUtils {
         final String artifactId = name.substring(p + 1);
         final String version = ac.getVersion();
 
-        if (ac.getSuffix().equals("-sources.jar")) {
+        if (ac.getSuffix().equals(ArtifactContext.MAVEN_SRC)) {
             return fetchWithClassifier(groupId, artifactId, version, "sources", offline);
         }
         return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact(), offline);
