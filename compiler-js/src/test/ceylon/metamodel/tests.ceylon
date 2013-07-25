@@ -11,6 +11,11 @@ void literals<T>() {
     check(unionType.caseTypes.size == 2, "UnionType case types ``unionType.caseTypes.size``, expected 2");
     IntersectionType intersectionType = `Number&Closeable`;
     check(intersectionType.satisfiedTypes.size == 2, "IntersectionType satisfied types ``intersectionType.satisfiedTypes.size``, expected 2");
+    Function<Boolean,[{Boolean*}]> ftype = `any`;
+    Function<Integer,[{Integer+}]> ftypeParams = `sum<Integer>`;
+    Function<Float,[Float,Float]> ftimes = `times<Float>`;
+    Method<String,String,[Integer]> finitial = `String.initial`;
+    Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
 }
 
 class Example1(){}
