@@ -6,7 +6,7 @@ function AppliedClass$metamodel(tipo,$$targs$$,that){
     that.tipo=tipo;
     return that;
 }
-AppliedClass$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{T:{'var':'out',},A:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$metamodel,a:{Arguments:'A',Type:'T'}}],pkg:'ceylon.language.metamodel',d:$$METAMODEL$$['ceylon.language.metamodel']['Class']};
+AppliedClass$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',},A:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},satisfies:[{t:Class$metamodel,a:{Arguments:'A',Type:'Type'}}],pkg:'ceylon.language.metamodel',d:$$METAMODEL$$['ceylon.language.metamodel']['Class']};
 function $init$AppliedClass$metamodel(){
     if (AppliedClass$metamodel.$$===undefined){
         initTypeProto(AppliedClass$metamodel,'ceylon.language.metamodel:: AppliedClass',Basic,Class$metamodel);
@@ -106,7 +106,7 @@ function AppliedInterface$metamodel($$targs$$,$$interfaz){
     });
     return $$interfaz;
 }
-AppliedInterface$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{T:{'var':'out',}},satisfies:[{t:Interface$metamodel,a:{Type:'T'}}],pkg:'ceylon.language.metamodel',d:$$METAMODEL$$['ceylon.language.metamodel']['Interface']};
+AppliedInterface$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',}},satisfies:[{t:Interface$metamodel,a:{Type:'Type'}}],pkg:'ceylon.language.metamodel',d:$$METAMODEL$$['ceylon.language.metamodel']['Interface']};
 function $init$AppliedInterface$metamodel(){
     if (AppliedInterface$metamodel.$$===undefined){
         initTypeProto(AppliedInterface$metamodel,'ceylon.language.metamodel::AppliedInterface',Basic,Interface$metamodel);
@@ -168,3 +168,40 @@ $init$AppliedIntersectionType$metamodel();
 function AppliedFunction$metamodel(f) {
   return f;
 }
+
+
+function AppliedAttribute$metamodel($$targs$$,$$appliedAttribute){
+    $init$AppliedAttribute$metamodel();
+    if ($$appliedAttribute===undefined)$$appliedAttribute=new AppliedAttribute$metamodel.$$;
+    set_type_args($$appliedAttribute,$$targs$$);
+    Attribute$metamodel($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedAttribute.$$targs$$.Type,Container:$$appliedAttribute.$$targs$$.Container},$$appliedAttribute);
+    return $$appliedAttribute;
+}
+AppliedAttribute$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in',},Type:{'var':'out',}},satisfies:[{t:Attribute$metamodel,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['Attribute']};
+exports.AppliedAttribute$metamodel=AppliedAttribute$metamodel;
+function $init$AppliedAttribute$metamodel(){
+    if (AppliedAttribute$metamodel.$$===undefined){
+        initTypeProto(AppliedAttribute$metamodel,'AppliedAttribute',Basic,Attribute$metamodel);
+        (function($$appliedAttribute){
+            
+            //AttributeGetterDefinition declaration at caca.ceylon (5:2-5:58)
+            defineAttr($$appliedAttribute,'declaration',function(){
+                var $$appliedAttribute=this;
+                throw Exception();
+            },undefined,{mod:$$METAMODEL$$,$an:function(){return[shared(),actual()];},pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AttributeModel']['$at']['declaration']});
+            //AttributeGetterDefinition declaringClassOrInterface at caca.ceylon (6:2-6:76)
+            defineAttr($$appliedAttribute,'declaringClassOrInterface',function(){
+                var $$appliedAttribute=this;
+                throw Exception();
+            },undefined,{mod:$$METAMODEL$$,$an:function(){return[shared(),actual()];},pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AttributeModel']['$at']['declaringClassOrInterface']});
+            //AttributeGetterDefinition type at caca.ceylon (7:2-7:31)
+            defineAttr($$appliedAttribute,'type',function(){
+                var $$appliedAttribute=this;
+                throw Exception();
+            },undefined,{mod:$$METAMODEL$$,$an:function(){return[shared(),actual()];},pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AttributeModel']['$at']['type']});
+        })(AppliedAttribute$metamodel.$$.prototype);
+    }
+    return AppliedAttribute$metamodel;
+}
+exports.$init$AppliedAttribute$metamodel=$init$AppliedAttribute$metamodel;
+$init$AppliedAttribute$metamodel();

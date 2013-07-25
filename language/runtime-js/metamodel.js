@@ -48,6 +48,10 @@ function typeLiteral$metamodel($$targs$$) {
             return AppliedInterface$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
         } else if (mdl.d['$mt'] === 'mthd') {
             return AppliedFunction$metamodel($$targs$$.Type.t);
+        } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
+            return AppliedAttribute$metamodel($$targs$$.Type.t);
+        } else {
+console.log("WTF is a metatype " + mdl.d['$mt'] + "???????");
         }
         console.log("typeLiteral<" + $$targs$$.Type.t.getT$name() + ">");
     }
