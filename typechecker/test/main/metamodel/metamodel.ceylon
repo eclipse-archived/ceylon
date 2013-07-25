@@ -140,6 +140,19 @@ void test<T>() {
     value classSharedMethodAndParameter = `Container.sharedMethodAndParameter`;
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classMethodAndParameter = `Container.methodAndParameter`;
+    
+    // private attributes
+    @error:"metamodel references to non-shared attributes not supported yet"
+    value privateAttribute = `Container.privateAttribute`;
+    
+    // local values and methods
+    value localValue = 2;
+    void localFunction(){}
+    
+    @error:"metamodel references to local values not supported"
+    value localValueDecl = `localValue`;
+    @error:"metamodel references to local functions not supported"
+    value localFunctionDecl = `localFunction`;
 }
 
 
@@ -177,6 +190,7 @@ class Container(shared Integer parameterAndSharedAttribute,
     shared void method(){}
     shared Integer attribute = 2;
     shared variable Integer variableAttribute = 2;
+    Integer privateAttribute = 2;
 }
 
 class ParameterisedContainer<Outer>(Outer a,
