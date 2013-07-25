@@ -2,6 +2,13 @@ import check { ... }
 
 class Carrier() {}
 
+Object leakTest(Boolean flag) {
+  dynamic {
+    value x = value{x=1;};
+    return flag then Carrier() else x;
+  }
+}
+
 //Test the dynamic annotation
 shared void test() {
     variable Singleton<Object> testSingleton = Singleton(1);
@@ -140,6 +147,13 @@ shared void test() {
         } catch (Exception ex) {
             check(true, "OK incomplete switch fails at runtime");
         }
+    }
+    check(leakTest(true) is Carrier, "leak test 1");
+    try {
+        leakTest(false);
+        fail("leaking objects outside dynamic blocks...");
+    } catch (Exception ex) {
+        check("dynamic" in ex.message, "leak test 2");
     }
     results();
 }
