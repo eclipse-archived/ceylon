@@ -50,7 +50,7 @@ public class JsCompiler {
     private int errCount = 0;
 
     protected List<Message> errors = new ArrayList<Message>();
-    protected List<Message> unitErrors = new ArrayList<Message>();
+    protected Set<Message> unitErrors = new HashSet<Message>();
     protected List<String> files;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
@@ -168,7 +168,7 @@ public class JsCompiler {
 
     /** Compile one phased unit.
      * @return The errors found for the unit. */
-    public List<Message> compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
+    public Set<Message> compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (errCount == 0 || !stopOnErrors) {
@@ -184,6 +184,7 @@ public class JsCompiler {
             JsOutput jsout = getOutput(pu);
             GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens(), types);
             pu.getCompilationUnit().visit(jsv);
+            pu.getCompilationUnit().visit(unitVisitor);
         }
         return unitErrors;
     }
