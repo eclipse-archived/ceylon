@@ -561,7 +561,7 @@ class Invariance() {
     interface O<T> {}
     interface I satisfies O<I> {}
     void f1<E>() @error given E satisfies O<E> & O<I> {}
-    void f2<E>() @error given E satisfies O<E&I> {}
+    void f2<E>() given E satisfies O<E&I> {}
     void f3<E>() @error given E satisfies O<E> & I {}
     @error interface F1<E> satisfies O<E> & O<I> {}
     interface F2<E> satisfies O<E&I> {}
@@ -595,7 +595,7 @@ class CoVariance() {
     //nothing really wrong with this, 
     //but the spec says it is an error
     void f1<E>() @error given E satisfies O<E> & O<I> {}
-    void f2<E>() @error given E satisfies O<E&I> {}
+    void f2<E>() given E satisfies O<E&I> {}
     void f3<E>() given E satisfies O<E> & I {}
     //nothing really wrong with this, 
     //but the spec says it is an error

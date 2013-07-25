@@ -6,7 +6,7 @@ void undecidable() {
     
     interface Co<out T> {}
     @error interface A satisfies Co<Inv<A&B&Co<Inv<A&B>>>> {}
-    @error interface B satisfies Co<Co<B&A>> {}
+    interface B satisfies Co<Co<B&A>> {}
     class Inv<T>() {}
     @error Inv<A&B&Co<Inv<A>>> foo(Inv<A&B> bar) => bar;
     
@@ -30,7 +30,7 @@ void undecidable() {
 void moreundecidable() {
     interface Co<out P> {}
     @error interface A satisfies Co<B&Co<A>> {}
-    @error interface B satisfies Co<A&Co<B>> {}
+    interface B satisfies Co<A&Co<B>> {}
     @error Co<A&B&Co<A&B>> foo(Co<A&B> co) => co;
 }
 
@@ -79,4 +79,15 @@ void evenmore() {
     @error interface AA satisfies Inv<BB&CC> {}
     interface BB satisfies Inv<AA> {}
     interface CC satisfies AA {}
+}
+
+void moremore() {
+    interface S<out P> {}
+    
+    interface A satisfies S<S<C>> {}
+    interface B satisfies S<C> {}
+    @error class C() satisfies A&B {}
+    
+    interface T<out P> satisfies S<S<P>> {}
+    @error class D() satisfies S<D>&T<D> {}
 }

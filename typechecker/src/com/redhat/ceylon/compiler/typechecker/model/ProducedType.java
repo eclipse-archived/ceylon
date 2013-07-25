@@ -203,21 +203,24 @@ public class ProducedType extends ProducedReference {
         return type.isSubtypeOf(this);
     }
 
-    static int i=0;
-    
     /**
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(ProducedType type) {
         return type!=null && resolveAliases()
-        		.isSubtypeOfInternal(type.resolveAliases());
+                .isSubtypeOfInternal(type.resolveAliases());
     }
-    
+
     /**
      * Is this type a subtype of the given type? Ignore
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
+        if (depth>25) {
+            throw new RuntimeException("undecidable subtyping");
+        }
+        depth++;
+        try {
         if (isNothing()) {
             return true;
         }
@@ -325,6 +328,8 @@ public class ProducedType extends ProducedReference {
                 return true;
             }
         }
+        }
+        finally { depth--; }
     }
 
     /**
@@ -599,6 +604,11 @@ public class ProducedType extends ProducedReference {
      * satisfying the given predicate. 
      */
     public ProducedType getSupertype(final Criteria c) {
+        if (depth>25) {
+            throw new RuntimeException("undecidable canonicalization");
+        }
+        depth++;
+        try {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
         }
@@ -612,6 +622,8 @@ public class ProducedType extends ProducedReference {
         else {
             return null;
         }
+        }
+        finally { depth--; }
     }
     
     private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
@@ -673,6 +685,8 @@ public class ProducedType extends ProducedReference {
 		}
 		return stc;
 	}
+	
+	static int depth=0; 
 	
     private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
@@ -1510,7 +1524,14 @@ public class ProducedType extends ProducedReference {
         // cache the resolved version
         if(resolvedAliases == null){
             // really compute it
+            if (depth>25) {
+                throw new RuntimeException("undecidable canonicalization");
+            }
+            depth++;
+            try {
             resolvedAliases = curriedResolveAliases();
+            }
+            finally { depth--; }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
             if(resolvedAliases != this){
@@ -1677,72 +1698,6 @@ public class ProducedType extends ProducedReference {
             }
 		}
 		return emptyList();
-    }
-    
-    public List<TypeDeclaration> isRecursiveTypeDefinition(Set<TypeDeclaration> visited) {
-        //TODO this method could overflow if one of the referenced
-        //     type or alias definitions is also recursive!
-        TypeDeclaration d = getDeclaration();
-        if (d instanceof TypeAlias||
-            d instanceof ClassAlias||
-            d instanceof InterfaceAlias) {
-            if (visited.contains(d)) {
-                return new ArrayList<TypeDeclaration>(singletonList(d));
-            }
-            if (d.getExtendedType()!=null) {
-                List<TypeDeclaration> l = d.getExtendedType()
-                        .isRecursiveTypeDefinition(extend(d, visited));
-                if (!l.isEmpty()) {
-                    return extend(d, l);
-                }
-            }
-        }
-        else if (d instanceof UnionType) {
-            for (ProducedType ct: getCaseTypes()) {
-                List<TypeDeclaration> l = ct.isRecursiveTypeDefinition(visited);
-                if (!l.isEmpty()) return l;
-            }
-        }
-        else if (d instanceof IntersectionType) {
-            for (ProducedType st: getSatisfiedTypes()) {
-                List<TypeDeclaration> l = st.isRecursiveTypeDefinition(visited);
-                if (!l.isEmpty()) return l;
-            }
-        }
-        else {
-            if (visited.contains(d)) {
-                return new ArrayList<TypeDeclaration>(singletonList(d));
-            }
-            for (ProducedType at: getTypeArgumentList()) {
-                if (at!=null) {
-                    List<TypeDeclaration> l = at.isRecursiveTypeDefinition(visited);
-                    if (!l.isEmpty()) return l;
-                }
-            }
-            ProducedType qt = getQualifyingType();
-            if (qt!=null) {
-                List<TypeDeclaration> l = qt.isRecursiveTypeDefinition(visited);
-                if (!l.isEmpty()) return l;
-            }
-            if (d.getExtendedType()!=null) {
-                List<TypeDeclaration> l = d.getExtendedType()
-                        //Note: only follow the inheritance chain
-                        //TODO: is this correct?!
-                        .isRecursiveRawTypeDefinition(extend(d, visited));
-                if (!l.isEmpty()) {
-                    return extend(d, l);
-                }
-            }
-            for (ProducedType st: getSatisfiedTypes()) {
-                //Note: only follow the inheritance chain
-                //TODO: is this correct?!
-                List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(extend(d, visited));
-                if (!l.isEmpty()) {
-                    return extend(d, l);
-                }
-            }
-        }
-        return emptyList();
     }
     
     public List<TypeDeclaration> isRecursiveRawTypeDefinition(Set<TypeDeclaration> visited) {
