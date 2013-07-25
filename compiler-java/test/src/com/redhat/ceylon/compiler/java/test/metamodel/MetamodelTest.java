@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class MetamodelTest extends CompilerTest {
@@ -93,6 +94,13 @@ public class MetamodelTest extends CompilerTest {
     @Test
     public void testBug1201() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug1201", "bug1201.ceylon");
+    }
+
+    @Test
+    public void testBug1209() {
+        assertErrors("bug1209",
+                new CompilerError(3, "metamodel references to local values not supported")
+        );
     }
 
     @Test
