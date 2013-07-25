@@ -73,13 +73,14 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         super.init();
         com.redhat.ceylon.compiler.typechecker.model.Class decl = (com.redhat.ceylon.compiler.typechecker.model.Class) producedType.getDeclaration();
 
-        // anonymous classes don't have parameter lists
+        // anonymous classes don't have constructors
+        // FIXME: so we really want to disallow that in the metamodel?
         if(!decl.isAnonymous()){
-            initParameters(decl);
+            initConstructor(decl);
         }
     }
 
-    private void initParameters(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
+    private void initConstructor(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
 
