@@ -22,7 +22,7 @@ defineAttr(Comprehension$proto, 'sequence', function() {
     var sb = SequenceBuilder(this.$$targs$$);
     sb.appendAll(this);
     return sb.sequence;
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterable']['$at']['sequence']});
 exports.Comprehension=Comprehension;
 
 function ComprehensionIterator(nextFunc, $$targs$$, it) {

@@ -90,8 +90,9 @@ function inheritProto(type) {
 }
 // Define a property on the given object (which may be a prototype).
 // "get" and "set" are getter/setter functions, and the latter is optional.
-function defineAttr(obj, name, get, set) {
+function defineAttr(obj, name, get, set, metamodel) {
     Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
+    obj['$prop$'+name] = {get:get, set:set, $$metamodel$$:metamodel};
 }
 // Create a copy of the given property. The name of the copied property is name+suffix.
 // This is used in closure mode to provide access to inherited attribute implementations.
@@ -149,7 +150,7 @@ Object$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$
 var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
-});
+},undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']['$at']['string']});
 Object$proto.toString=function() { return this.string.valueOf(); }
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
@@ -169,7 +170,8 @@ var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return isOfType(that, {t:Identifiable}) && (that===this);
 }
-defineAttr(Identifiable$proto, 'hash', function(){ return $identityHash(this); });
+defineAttr(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
+    undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Identifiable']['$at']['hash']});
 
 //INTERFACES
 //Compiled from Ceylon sources

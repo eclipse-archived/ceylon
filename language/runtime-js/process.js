@@ -9,17 +9,23 @@ initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
 defineAttr(lang$proto, 'version', function() {
     return String$("0.6",3);
-});
-defineAttr(lang$proto, 'majorVersion', function(){ return 0; });
-defineAttr(lang$proto, 'minorVersion', function(){ return 6; });
-defineAttr(lang$proto, 'releaseVersion', function(){ return 0; });
-defineAttr(lang$proto, 'versionName', function(){ return String$("Transmogrifier",14); });
-defineAttr(lang$proto, 'majorVersionBinary', function(){ return 5; });
-defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; });
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['version']});
+defineAttr(lang$proto, 'majorVersion', function(){ return 0; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['majorVersion']});
+defineAttr(lang$proto, 'minorVersion', function(){ return 6; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['minorVersion']});
+defineAttr(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['releaseVersion']});
+defineAttr(lang$proto, 'versionName', function(){ return String$("Transmogrifier",14); },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['versionName']});
+defineAttr(lang$proto, 'majorVersionBinary', function(){ return 5; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['majorVersionBinary']});
+defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['language']['$at']['minorVersionBinary']});
 var languageString = String$("language", 8);
 defineAttr(lang$proto, 'string', function() {
     return languageString;
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']['$at']['string']});
 
 var language$ = languageClass();
 function getLanguage() { return language$; }
@@ -85,7 +91,8 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         }
     }
 }
-defineAttr(process$proto, 'arguments', function(){ return argv; });
+defineAttr(process$proto, 'arguments', function(){ return argv; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['arguments']});
 process$proto.namedArgumentPresent = function(name) {
     return (name in namedArgs);
 }
@@ -135,7 +142,8 @@ process$proto.propertyValue = function(name) {
     return (value !== undefined) ? value : null;
 }
 
-defineAttr(process$proto, 'newline', function(){ return linesep; });
+defineAttr(process$proto, 'newline', function(){ return linesep; },undefined,
+  {$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['newline']});
 
 if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
     process$proto.write = function(string) {
@@ -179,10 +187,10 @@ process$proto.readLine = function() {
 
 defineAttr(process$proto, 'milliseconds', function() {
     return Date.now();
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['milliseconds']});
 defineAttr(process$proto, 'nanoseconds', function() {
     return Date.now()*1000000;
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['nanoseconds']});
 
 if ((typeof process !== "undefined") && (process.exit !== undefined)) {
     process$proto.exit = function(code) {
@@ -195,7 +203,7 @@ if ((typeof process !== "undefined") && (process.exit !== undefined)) {
 var processString = String$("process", 7);
 defineAttr(process$proto, 'string', function() {
     return processString;
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Object']['$at']['string']});
 defineAttr(process$proto, 'vm', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(\.exe)?$/)) {
         return String$("node.js", 7);
@@ -203,22 +211,22 @@ defineAttr(process$proto, 'vm', function() {
         return String$("Browser", 7);
     }
     return String$("Unknown JavaScript environment", 30);
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['vm']});
 defineAttr(process$proto, 'vmVersion', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['vmVersion']});
 defineAttr(process$proto, 'os',function() {
     if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['os']});
 defineAttr(process$proto, 'osVersion', function() {
     return String$("Unknown");
-});
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['process']['$at']['osVersion']});
 
 var process$ = processClass();
 function getProcess() { return process$; }
