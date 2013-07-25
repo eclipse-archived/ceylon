@@ -1070,7 +1070,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else {
-            out(clAlias, "/*1*/defineAttr(");
+            out(clAlias, "defineAttr(");
             outerSelf(d);
             out(",'", names.name(d), "',function(){return ");
             if (addToPrototype) {
@@ -1298,7 +1298,7 @@ public class GenerateJsVisitor extends Visitor
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
         if (defineAsProperty(d)) {
-            out(clAlias, "/*2*/defineAttr(");
+            out(clAlias, "defineAttr(");
             outerSelf(d);
             out(",'", names.name(d), "',function()");
             super.visit(that);
@@ -1331,7 +1331,7 @@ public class GenerateJsVisitor extends Visitor
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(clAlias, "/*3*/defineAttr(", names.self(outer), ",'", names.name(d),
+        out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
                 "',function()");
         super.visit(that);
         final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
@@ -1461,7 +1461,7 @@ public class GenerateJsVisitor extends Visitor
             else if (specInitExpr instanceof LazySpecifierExpression) {
                 final boolean property = defineAsProperty(d);
                 if (property) {
-                    out(clAlias, "/*4*/defineAttr(");
+                    out(clAlias, "defineAttr(");
                     outerSelf(d);
                     out(",'", names.name(d), "',function(){return ");
                 } else {
@@ -1503,7 +1503,7 @@ public class GenerateJsVisitor extends Visitor
             else {
                 if ((specInitExpr != null) || (classParam != null) || !d.isMember()
                             || d.isVariable() || isLate) {
-                    generateAttributeGetter(d, specInitExpr, classParam);
+                    generateAttributeGetter(that, d, specInitExpr, classParam);
                 }
                 if ((d.isVariable() || isLate) && !defineAsProperty(d)) {
                     final String varName = names.name(d);
@@ -1520,7 +1520,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
     
-    private void generateAttributeGetter(MethodOrValue decl,
+    private void generateAttributeGetter(AnyAttribute attributeNode, MethodOrValue decl,
                 SpecifierOrInitializerExpression expr, String param) {
         final String varName = names.name(decl);
         out("var ", varName);
@@ -1577,7 +1577,11 @@ public class GenerateJsVisitor extends Visitor
                             generateImmutableAttributeReassignmentCheck(varName, names.name(decl));
                         }
                         out("return ", varName, "=", par, ";}");
+                    } else {
+                        out(",undefined");
                     }
+                    out(",");
+                    TypeUtils.encodeForRuntime(decl, attributeNode == null ? null : attributeNode.getAnnotationList(), this);
                     out(");");
                     endLine();
                 }
@@ -1629,7 +1633,7 @@ public class GenerateJsVisitor extends Visitor
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
-                    out(clAlias, "/*6*/defineAttr(", names.self(outer), ",'", names.name(d),
+                    out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
                             "',function()");
                     beginBlock();
                     initSelf(that.getScope());
@@ -1641,9 +1645,11 @@ public class GenerateJsVisitor extends Visitor
                     if (boxType == 4) out("/*TODO: callable targs 3*/");
                     boxUnboxEnd(boxType);
                     endBlock();
+                    boolean hasSetter = false;
                     if (d.isVariable()) {
                         Tree.AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
                         if (setterDef != null) {
+                            hasSetter = true;
                             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
                             if (setterDef.getSpecifierExpression() == null) {
                                 super.visit(setterDef);
@@ -1656,6 +1662,11 @@ public class GenerateJsVisitor extends Visitor
                             }
                         }
                     }
+                    if (!hasSetter) {
+                        out(",undefined");
+                    }
+                    out(",");
+                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
                     out(")");
                     endLine(true);
                 }
@@ -2476,7 +2487,7 @@ public class GenerateJsVisitor extends Visitor
                     // Specifier for a member attribute. This actually defines the
                     // member (e.g. in shortcut refinement syntax the attribute
                     // declaration itself can be omitted), so generate the attribute.
-                    generateAttributeGetter(moval,
+                    generateAttributeGetter(null, moval,
                             specStmt.getSpecifierExpression(), null);
                 } else {
                     // Specifier for some other attribute, or for a method.
