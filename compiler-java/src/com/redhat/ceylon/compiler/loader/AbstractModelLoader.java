@@ -1564,10 +1564,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         method.setContainer(klass);
         method.setRealName(methodMirror.getName());
-        method.setName(Util.strip(methodMirror.getName()));
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded);
         setMethodOrValueFlags(klass, methodMirror, method);
+        method.setName(Util.strip(methodMirror.getName(), isCeylon, method.isShared()));
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first
@@ -1816,9 +1816,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         JavaBeanValue value = new JavaBeanValue();
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
-        value.setName(methodName);
         value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodMirror, value);
+        value.setName(Util.strip(methodName, isCeylon, value.isShared()));
 
         ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
                                        "getter '"+methodName+"'", klass);

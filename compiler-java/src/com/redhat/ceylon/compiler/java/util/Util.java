@@ -98,6 +98,13 @@ public class Util {
         return Naming.stripLeadingDollar(str);
     }
 
+    public static String strip(String name, boolean isCeylon, boolean isShared) {
+        String stripped = strip(name);
+        if(isCeylon && !isShared && name.endsWith("$priv"))
+            return stripped.substring(0, stripped.length() - 5);
+        return stripped;
+    }
+
     public static String capitalize(String str){
         return Naming.capitalize(str);
     }
