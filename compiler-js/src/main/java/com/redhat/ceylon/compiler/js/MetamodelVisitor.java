@@ -128,19 +128,23 @@ public class MetamodelVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement st) {
         TypedDeclaration d = ((Tree.SpecifierStatement) st).getDeclaration();
         //Just add shared and actual annotations to this declaration
-        Annotation ann = new Annotation();
-        ann.setName("shared");
-        d.getAnnotations().add(ann);
-        ann = new Annotation();
-        ann.setName("actual");
-        d.getAnnotations().add(ann);
-        if (d instanceof Method) {
-            gen.encodeMethod((Method)d);
-        } else if (d instanceof Value) {
-            gen.encodeAttribute((Value)d);
+        if (d != null) {
+            Annotation ann = new Annotation();
+            ann.setName("shared");
+            d.getAnnotations().add(ann);
+            ann = new Annotation();
+            ann.setName("actual");
+            d.getAnnotations().add(ann);
+            if (d instanceof Method) {
+                gen.encodeMethod((Method)d);
+            } else if (d instanceof Value) {
+                gen.encodeAttribute((Value)d);
+            } else {
+                throw new RuntimeException("JS compiler doesn't know how to encode " +
+                        d.getClass().getName() + " into model");
+            }
         } else {
-            throw new RuntimeException("JS compiler doesn't know how to encode " +
-                    d.getClass().getName() + " into model");
+            st.addUnexpectedError("Specifier statement encountered without a corresponding declaration");
         }
     }
 
