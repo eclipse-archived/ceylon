@@ -56,8 +56,13 @@ public class MetamodelTest extends CompilerTest {
     }
 
     @Test
-    public void testBug238() {
+    public void testBugCL238() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug238", "bug238.ceylon");
+    }
+
+    @Test
+    public void testBugCL257() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bug257", "bug257.ceylon");
     }
 
     @Test
