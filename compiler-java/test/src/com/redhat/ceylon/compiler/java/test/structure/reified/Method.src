@@ -36,6 +36,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         <.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor);
         <.java.lang.Object>method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
     @.ceylon.language.Shared$annotation

@@ -106,6 +106,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final .java.lang.Object param;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object attr;
     
     @.ceylon.language.Shared$annotation
@@ -116,6 +117,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     public final .java.lang.Object getAttr() {
         return attr;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object param2;
     
     @.ceylon.language.Shared$annotation

@@ -60,6 +60,7 @@ public final class objectArgumentNamedInvocationChained_ {
                                 this.string = "Foo";
                                 this.hash = (int)0L;
                             }
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             private final .java.lang.String string;
                             
                             @.ceylon.language.Shared$annotation
@@ -85,6 +86,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             final .java.lang.Object other) {
                                 return false;
                             }
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             private final int hash;
                             
                             @.ceylon.language.Shared$annotation
@@ -120,6 +122,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         this.string = "Bar";
                         this.hash = (int)0L;
                     }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     private final .java.lang.String string;
                     
                     @.ceylon.language.Shared$annotation
@@ -145,6 +148,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     final .java.lang.Object other) {
                         return false;
                     }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     private final int hash;
                     
                     @.ceylon.language.Shared$annotation

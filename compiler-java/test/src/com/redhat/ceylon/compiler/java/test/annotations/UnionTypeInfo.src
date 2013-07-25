@@ -83,6 +83,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
         final getter$setter_ getter$setter_ = new getter$setter_();
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object sharedAttr;
     
     @.ceylon.language.Shared$annotation
