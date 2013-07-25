@@ -47,7 +47,7 @@ public class MainForJsTest {
             System.exit(1);
         }
         System.out.println("Compiling without optimization");
-        JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
+        JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(true);
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
         } else {
