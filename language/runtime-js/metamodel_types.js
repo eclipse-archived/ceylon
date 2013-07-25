@@ -165,3 +165,6 @@ function $init$AppliedIntersectionType$metamodel(){
 exports.$init$AppliedIntersectionType$metamodel=$init$AppliedIntersectionType$metamodel;
 $init$AppliedIntersectionType$metamodel();
 
+function AppliedFunction$metamodel(f) {
+  return f;
+}

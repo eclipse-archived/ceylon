@@ -47,6 +47,7 @@ function typeLiteral$metamodel($$targs$$) {
         } else if (mdl.d['$mt'] === 'ifc') {
             return AppliedInterface$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
         } else if (mdl.d['$mt'] === 'mthd') {
+            return AppliedFunction$metamodel($$targs$$.Type.t);
         }
         console.log("typeLiteral<" + $$targs$$.Type.t.getT$name() + ">");
     }
