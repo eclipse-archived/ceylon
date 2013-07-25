@@ -13,8 +13,23 @@ void literals<T>() {
     check(intersectionType.satisfiedTypes.size == 2, "IntersectionType satisfied types ``intersectionType.satisfiedTypes.size``, expected 2");
 }
 
+class Example1(){}
+class Example2() extends Example1(){}
+
+void typeTests() {
+  print("type(null):``type(null)``");
+  print("type(Example1()):``type(Example1())``");
+  print("type(Example2):``type(Example2)``");
+  print("type('hello'):``type("hello")``");
+  print("type({1,2,4,5}):``type({1,2,4,5})``");
+  print("type(1..2):``type(1..2)``");
+  print("type(test):``type(test)``");
+  print("type('hello'.initial):``type("hello".initial)``");
+}
+
 shared void test() {
     print("Metamodel tests");
     literals<String>();
+    typeTests();
     results();
 }
