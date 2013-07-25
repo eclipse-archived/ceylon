@@ -493,7 +493,10 @@ public class Naming implements LocalId {
         } else {
             decl = refinedDecl;
         }
-        if (decl instanceof JavaBeanValue) {
+        if (decl instanceof JavaBeanValue
+                // only if the declaration actually has a setter name, if it's a non-variable
+                // one it will not. This is also used for late setters...
+                && ((JavaBeanValue)decl).getSetterName() != null) {
             return ((JavaBeanValue)decl).getSetterName();
         } else if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             String setterName = getSetterName(decl.getName());
