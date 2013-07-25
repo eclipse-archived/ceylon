@@ -4085,5 +4085,29 @@ public class GenerateJsVisitor extends Visitor
         out("})");
     }
 
+    @Override
+    public void visit(MemberLiteral that) {
+        com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
+        if (ref == null) {
+            that.addUnexpectedError("Member literal with no valid target");
+        } else {
+            Declaration d = ref.getDeclaration();
+            out(clAlias, "typeLiteral$metamodel({Type:{t:");
+            if (that.getType() == null) {
+                qualify(that, d);
+            } else {
+                qualify(that, that.getType().getTypeModel().getDeclaration());
+                out(names.name(that.getType().getTypeModel().getDeclaration()));
+                out(".");
+            }
+            out(names.name(d));
+            if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
+                out(",a:");
+                TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+            }
+            out("}})");
+        }
+    }
+
 }
 
