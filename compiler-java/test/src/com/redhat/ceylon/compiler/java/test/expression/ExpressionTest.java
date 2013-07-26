@@ -105,6 +105,10 @@ public class ExpressionTest extends CompilerTest {
     public void testAtrQualifiedTopLevels(){
         compareWithJavaSource("attribute/QualifiedTopLevels");
     }
+    @Test
+    public void testAtrFoo(){
+        compareWithJavaSource("attribute/Foo");
+    }
 
     // Boxing and unboxing
     
