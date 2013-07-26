@@ -5,6 +5,7 @@ import java.util.List;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ConstraintVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
@@ -256,6 +257,7 @@ public class PhasedUnit {
             ProducedType.depth=-100;
             //System.out.println("Run analysis phase for " + fileName);
             compilationUnit.visit(new ExpressionVisitor());
+            compilationUnit.visit(new ConstraintVisitor());
             compilationUnit.visit(new TypeArgumentVisitor());
             compilationUnit.visit(new TypeHierarchyVisitor());
             fullyTyped = true;

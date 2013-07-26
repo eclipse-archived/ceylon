@@ -2718,14 +2718,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.Annotation that) {
-        super.visit(that);
-        Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
-        if (dec!=null && !dec.isToplevel()) {
-            that.getPrimary().addError("annotation must be a toplevel function reference");
-        }
-    }
-    
     private boolean involvesUnknownTypes(Tree.ElementOrRange eor) {
         if (eor instanceof Tree.Element) {
             return isTypeUnknown(((Tree.Element) eor).getExpression().getTypeModel());
