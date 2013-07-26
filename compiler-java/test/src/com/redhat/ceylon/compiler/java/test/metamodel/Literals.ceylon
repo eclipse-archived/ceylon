@@ -172,3 +172,14 @@ void literals<T>(){
     FunctionDeclaration parameterisedSharedMethodAndParam = `LitParameterisedClassWithParameters.sharedMethodAndParameter`;
     FunctionDeclaration parameterisedMethodAndParam = `LitParameterisedClassWithParameters.methodAndParameter`;
 }
+
+class RelativeLiterals(shared String str = "a") {
+    shared Integer integer = 0;
+    class Inner(){}
+    shared void f(){
+        value temp1 = `str`;
+        value temp2 = `integer`;
+        value temp3 = `f`;
+        value temp4 = `Inner`;
+    }
+}

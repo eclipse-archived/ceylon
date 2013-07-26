@@ -589,6 +589,97 @@ final class literals_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(
+        name = "Inner",
+        javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.Inner",
+        packageName = "com.redhat.ceylon.compiler.java.test.metamodel")})
+class RelativeLiterals implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    RelativeLiterals() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$str$0 = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$init$str();
+                this($ceylontmp$str$0);
+            }
+            returning null;
+        );
+    }
+    
+    RelativeLiterals(@.com.redhat.ceylon.compiler.java.metadata.Name("str")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    final .java.lang.String str) {
+        this.str = str;
+        this.integer = 0L;
+    }
+    private final .java.lang.String str;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String getStr() {
+        return str;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static .java.lang.String $init$str() {
+        return "a";
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long integer;
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getInteger() {
+        return integer;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            name = "RelativeLiterals",
+            javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals",
+            packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        Inner() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.Inner.class));
+        }
+    }
+    
+    @.ceylon.language.Shared$annotation
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void f() {
+        final .java.lang.Object temp1 = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor)).getAttribute(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, "str");
+        final .java.lang.Object temp2 = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor)).getAttribute(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, "integer");
+        final .java.lang.Object temp3 = ((.ceylon.language.metamodel.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals>).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor)).getMethod(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor, .ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "f");
+        final .java.lang.Object temp4 = (.java.lang.Object).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.Inner.class)));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.$TypeDescriptor;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class litValue_ {
     
