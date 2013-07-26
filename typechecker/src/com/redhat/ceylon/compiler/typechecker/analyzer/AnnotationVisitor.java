@@ -1,17 +1,15 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
+import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.LiteralAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -48,20 +46,7 @@ public class AnnotationVisitor extends Visitor {
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
                 && def instanceof Method
-                && containsAnnotationAnnotation(def);
-    }
-
-    private static boolean containsAnnotationAnnotation(
-            Declaration decl) {
-        List<Annotation> annotations = decl.getAnnotations();
-        if (annotations != null) {
-            for (Annotation ann : annotations) {
-                if ("annotation".equals(ann.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+                && def.isAnnotation();
     }
 
     public static boolean isAnnotationClass(Tree.ClassOrInterface def) {
@@ -70,7 +55,7 @@ public class AnnotationVisitor extends Visitor {
 
     public static boolean isAnnotationClass(Declaration declarationModel) {
         return (declarationModel instanceof Class)
-                && containsAnnotationAnnotation(declarationModel);
+                && declarationModel.isAnnotation();
     }
     
     @Override
