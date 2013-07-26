@@ -47,7 +47,7 @@ function typeLiteral$metamodel($$targs$$) {
         } else if (mdl.d['$mt'] === 'ifc') {
             return AppliedInterface$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
         } else if (mdl.d['$mt'] === 'mthd') {
-            return AppliedFunction$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
+            return AppliedFunction$metamodel($$targs$$.Type.t,{Type:mdl.$t,Arguments:mdl.$ps});
         } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
             return AppliedAttribute$metamodel($$targs$$.Type.t,{Container:{t:mdl.$cont},Type:mdl.$t});
         } else {
@@ -64,9 +64,9 @@ function pushTypes(list, types) {
   for (var i=0; i<types.length; i++) {
     var t = types[i];
     if (t.t === 'u') {
-      list.push(applyUnionType(t.l));
+      list.push(applyUnionType(t, t.l));
     } else if (t.t === 'i') {
-      list.push(applyIntersectionType(t.l));
+      list.push(applyIntersectionType(t, t.l));
     } else {
       list.push(typeLiteral$metamodel({Type:t}));
     }
@@ -77,12 +77,12 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType$metamodel(cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$metamodel}}));
+  return AppliedUnionType$metamodel(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$metamodel}}));
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType$metamodel(sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$metamodel}}));
+  return AppliedIntersectionType$metamodel(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$metamodel}}));
 }
 function applyType(t) { //return AppliedType
   return typeLiteral$metamodel({Type:t});
