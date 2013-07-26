@@ -102,17 +102,17 @@ void literals<T>(){
     Type nothingType = `String&Number`;
     
     Value<Integer> valueType1 = `litValue`;
-    AttributeDeclaration valueType2 = `litValue`;
+    ValueDeclaration valueType2 = `litValue`;
     value valueType3 = `litValue`;
 
     // Values and variables
 
     Attribute<LitClass,Integer> attributeType1 = `LitClass.attribute`;
-    AttributeDeclaration attributeType2 = `LitClass.attribute`;
+    ValueDeclaration attributeType2 = `LitClass.attribute`;
     value attributeType3 = `LitClass.attribute`;
 
     Attribute<LitParameterisedClass<Integer>,Integer> attributeType = `LitParameterisedClass<Integer>.attribute`;
-    AttributeDeclaration attributeDecl = `LitParameterisedClass.attribute`;
+    ValueDeclaration attributeDecl = `LitParameterisedClass.attribute`;
 
     Variable<Integer> variableType1 = `litVariable`;
     VariableDeclaration variableType2 = `litVariable`;
@@ -150,10 +150,10 @@ void literals<T>(){
     
     // Class parameters
     
-    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> paramAndSharedAttr = `LitClassWithParameters.parameterAndSharedAttribute`;
-    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> paramAttr = `LitClassWithParameters.parameterAttribute`;
-    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> sharedAttrAndParam = `LitClassWithParameters.sharedAttributeAndParameter`;
-    AttributeDeclaration&Attribute<LitClassWithParameters,Integer> attrAndParam = `LitClassWithParameters.attributeAndParameter`;
+    ValueDeclaration&Attribute<LitClassWithParameters,Integer> paramAndSharedAttr = `LitClassWithParameters.parameterAndSharedAttribute`;
+    ValueDeclaration&Attribute<LitClassWithParameters,Integer> paramAttr = `LitClassWithParameters.parameterAttribute`;
+    ValueDeclaration&Attribute<LitClassWithParameters,Integer> sharedAttrAndParam = `LitClassWithParameters.sharedAttributeAndParameter`;
+    ValueDeclaration&Attribute<LitClassWithParameters,Integer> attrAndParam = `LitClassWithParameters.attributeAndParameter`;
 
     // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
     //FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> paramAndSharedMethod = `LitClassWithParameters.parameterAndSharedMethod`;
@@ -161,10 +161,10 @@ void literals<T>(){
     FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> sharedMethodAndParam = `LitClassWithParameters.sharedMethodAndParameter`;
     FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> methodAndParam = `LitClassWithParameters.methodAndParameter`;
 
-    AttributeDeclaration parameterisedParamAndSharedAttr = `LitParameterisedClassWithParameters.parameterAndSharedAttribute`;
-    AttributeDeclaration parameterisedParamAttr = `LitParameterisedClassWithParameters.parameterAttribute`;
-    AttributeDeclaration parameterisedSharedAttrAndParam = `LitParameterisedClassWithParameters.sharedAttributeAndParameter`;
-    AttributeDeclaration parameterisedAttrAndParam = `LitParameterisedClassWithParameters.attributeAndParameter`;
+    ValueDeclaration parameterisedParamAndSharedAttr = `LitParameterisedClassWithParameters.parameterAndSharedAttribute`;
+    ValueDeclaration parameterisedParamAttr = `LitParameterisedClassWithParameters.parameterAttribute`;
+    ValueDeclaration parameterisedSharedAttrAndParam = `LitParameterisedClassWithParameters.sharedAttributeAndParameter`;
+    ValueDeclaration parameterisedAttrAndParam = `LitParameterisedClassWithParameters.attributeAndParameter`;
 
     // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
     //FunctionDeclaration parameterisedParamAndSharedMethod = `LitParameterisedClassWithParameters.parameterAndSharedMethod`;

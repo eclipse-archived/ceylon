@@ -1,6 +1,6 @@
 import ceylon.language.metamodel { ... }
 import ceylon.language.metamodel.declaration {
-    AttributeDeclaration,
+    ValueDeclaration,
     FunctionDeclaration,
     ClassDeclaration,
     OpenParameterisedType,
@@ -296,69 +296,69 @@ void checkToplevelAttributes(){
 
     assert(pkg.members<TopLevelOrMemberDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
-    assert(is AttributeDeclaration toplevelIntegerDecl = pkg.getAttribute("toplevelInteger"));
+    assert(is ValueDeclaration toplevelIntegerDecl = pkg.getValue("toplevelInteger"));
     assert(is Value<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply());
     assert(toplevelIntegerAttribute.get() == 1);
 
-    assert(is AttributeDeclaration toplevelStringDecl = pkg.getAttribute("toplevelString"));
+    assert(is ValueDeclaration toplevelStringDecl = pkg.getValue("toplevelString"));
     assert(is Value<String> toplevelStringAttribute = toplevelStringDecl.apply());
     assert(toplevelStringAttribute.get() == "a");
 
-    assert(is AttributeDeclaration toplevelFloatDecl = pkg.getAttribute("toplevelFloat"));
+    assert(is ValueDeclaration toplevelFloatDecl = pkg.getValue("toplevelFloat"));
     assert(is Value<Float> toplevelFloatAttribute = toplevelFloatDecl.apply());
     assert(toplevelFloatAttribute.get() == 1.2);
 
-    assert(is AttributeDeclaration toplevelCharacterDecl = pkg.getAttribute("toplevelCharacter"));
+    assert(is ValueDeclaration toplevelCharacterDecl = pkg.getValue("toplevelCharacter"));
     assert(is Value<Character> toplevelCharacterAttribute = toplevelCharacterDecl.apply());
     assert(toplevelCharacterAttribute.get() == 'a');
 
-    assert(is AttributeDeclaration toplevelBooleanDecl = pkg.getAttribute("toplevelBoolean"));
+    assert(is ValueDeclaration toplevelBooleanDecl = pkg.getValue("toplevelBoolean"));
     assert(is Value<Boolean> toplevelBooleanAttribute = toplevelBooleanDecl.apply());
     assert(toplevelBooleanAttribute.get() == true);
 
-    assert(is AttributeDeclaration toplevelObjectDecl = pkg.getAttribute("toplevelObject"));
+    assert(is ValueDeclaration toplevelObjectDecl = pkg.getValue("toplevelObject"));
     assert(is Value<Object> toplevelObjectAttribute = toplevelObjectDecl.apply());
     assert(toplevelObjectAttribute.get() == 2);
 
     //
     // variables
 
-    assert(is AttributeDeclaration toplevelIntegerVariableDecl = pkg.getAttribute("toplevelInteger2"));
+    assert(is ValueDeclaration toplevelIntegerVariableDecl = pkg.getValue("toplevelInteger2"));
     assert(is Variable<Integer> toplevelIntegerVariable = toplevelIntegerVariableDecl.apply());
     assert(toplevelIntegerVariable.get() == 1);
     toplevelIntegerVariable.set(2);
     assert(toplevelIntegerVariable.get() == 2);
     assert(toplevelInteger2 == 2);
 
-    assert(is AttributeDeclaration toplevelStringVariableDecl = pkg.getAttribute("toplevelString2"));
+    assert(is ValueDeclaration toplevelStringVariableDecl = pkg.getValue("toplevelString2"));
     assert(is Variable<String> toplevelStringVariable = toplevelStringVariableDecl.apply());
     assert(toplevelStringVariable.get() == "a");
     toplevelStringVariable.set("b");
     assert(toplevelStringVariable.get() == "b");
     assert(toplevelString2 == "b");
 
-    assert(is AttributeDeclaration toplevelFloatVariableDecl = pkg.getAttribute("toplevelFloat2"));
+    assert(is ValueDeclaration toplevelFloatVariableDecl = pkg.getValue("toplevelFloat2"));
     assert(is Variable<Float> toplevelFloatVariable = toplevelFloatVariableDecl.apply());
     assert(toplevelFloatVariable.get() == 1.2);
     toplevelFloatVariable.set(2.0);
     assert(toplevelFloatVariable.get() == 2.0);
     assert(toplevelFloat2 == 2.0);
 
-    assert(is AttributeDeclaration toplevelCharacterVariableDecl = pkg.getAttribute("toplevelCharacter2"));
+    assert(is ValueDeclaration toplevelCharacterVariableDecl = pkg.getValue("toplevelCharacter2"));
     assert(is Variable<Character> toplevelCharacterVariable = toplevelCharacterVariableDecl.apply());
     assert(toplevelCharacterVariable.get() == 'a');
     toplevelCharacterVariable.set('b');
     assert(toplevelCharacterVariable.get() == 'b');
     assert(toplevelCharacter2 == 'b');
 
-    assert(is AttributeDeclaration toplevelBooleanVariableDecl = pkg.getAttribute("toplevelBoolean2"));
+    assert(is ValueDeclaration toplevelBooleanVariableDecl = pkg.getValue("toplevelBoolean2"));
     assert(is Variable<Boolean> toplevelBooleanVariable = toplevelBooleanVariableDecl.apply());
     assert(toplevelBooleanVariable.get() == true);
     toplevelBooleanVariable.set(false);
     assert(toplevelBooleanVariable.get() == false);
     assert(toplevelBoolean2 == false);
 
-    assert(is AttributeDeclaration toplevelObjectVariableDecl = pkg.getAttribute("toplevelObject2"));
+    assert(is ValueDeclaration toplevelObjectVariableDecl = pkg.getValue("toplevelObject2"));
     assert(is Variable<Object> toplevelObjectVariable = toplevelObjectVariableDecl.apply());
     assert(toplevelObjectVariable.get() == 2);
     toplevelObjectVariable.set(3);
@@ -486,7 +486,7 @@ void checkObjectDeclaration(){
     // get it via its package
     value noParamsClass = type(NoParams());
     value pkg = noParamsClass.declaration.packageContainer;
-    assert(exists topLevelObjectDeclarationAttribute = pkg.getAttribute("topLevelObjectDeclaration"));
+    assert(exists topLevelObjectDeclarationAttribute = pkg.getValue("topLevelObjectDeclaration"));
     assert(is OpenParameterisedType<ClassDeclaration> topLevelObjectTypeDeclaration = topLevelObjectDeclarationAttribute.openType);
     value topLevelObjectClassDeclaration = topLevelObjectTypeDeclaration.declaration;
     assert(topLevelObjectClassDeclaration.name == "topLevelObjectDeclaration");

@@ -992,7 +992,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                     List.<JCExpression>of(ceylonLiteral(pkg.getNameAsString())));
             
             // now get the toplevel
-            String getter = Decl.isMethod(declaration) ? "getFunction" : "getAttribute";
+            String getter = Decl.isMethod(declaration) ? "getFunction" : "getValue";
             JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
                                                      List.<JCExpression>of(ceylonLiteral(declaration.getName())));
             
@@ -1022,7 +1022,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(((TypedDeclaration) declaration).isVariable())
                     memberClassName = "VariableDeclaration";
                 else
-                    memberClassName = "AttributeDeclaration";
+                    memberClassName = "ValueDeclaration";
             }else{
                 return makeErroneous(expr, "declaration type not supported yet: "+declaration);
             }

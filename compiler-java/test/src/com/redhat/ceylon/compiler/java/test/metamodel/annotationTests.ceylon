@@ -9,7 +9,7 @@ import ceylon.language.metamodel{
     Function, Attribute
 }
 import ceylon.language.metamodel.declaration {
-    AttributeDeclaration,
+    ValueDeclaration,
     VariableDeclaration,
     TopLevelOrMemberDeclaration,
     FunctionDeclaration,
@@ -25,16 +25,16 @@ Package aPackage {
     value pkg = aClassDecl.packageContainer;
     return pkg;
 }
-AttributeDeclaration aToplevelAttributeDecl {
-    assert(is AttributeDeclaration result = aPackage.getAttribute("aToplevelAttribute"));
+ValueDeclaration aToplevelAttributeDecl {
+    assert(is ValueDeclaration result = aPackage.getValue("aToplevelAttribute"));
     return result;
 }
 VariableDeclaration aToplevelGetterSetterDecl {
-    assert(is VariableDeclaration result = aPackage.getAttribute("aToplevelGetterSetter"));
+    assert(is VariableDeclaration result = aPackage.getValue("aToplevelGetterSetter"));
     return result;
 }
-AttributeDeclaration aToplevelObjectDecl {
-    assert(is AttributeDeclaration result = aPackage.getAttribute("aToplevelObject"));
+ValueDeclaration aToplevelObjectDecl {
+    assert(is ValueDeclaration result = aPackage.getValue("aToplevelObject"));
     return result;
 }
 FunctionDeclaration aToplevelFunctionDecl {
@@ -107,11 +107,11 @@ void checkAToplevelAttributeAnnotations() {
     
     // Using funky type arguments to Declaration.annotations<>()
     assert(aToplevelAttributeDecl.annotations<Nothing>().empty);
-    // TODO Depends on fix for #1157 assert(aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Nothing, Anything, AttributeDeclaration>>() empty);
-    assert(nonempty doc4 = aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Doc, Anything, AttributeDeclaration>>(),
+    // TODO Depends on fix for #1157 assert(aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Nothing, Anything, ValueDeclaration>>() empty);
+    assert(nonempty doc4 = aToplevelAttributeDecl.annotations<ConstrainedAnnotation<Doc, Anything, ValueDeclaration>>(),
         is Doc doc4_1 = doc4.first,
         doc4_1.description == "aToplevelAttribute");
-    assert(nonempty doc5 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Doc, AttributeDeclaration>>(),
+    assert(nonempty doc5 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Doc, ValueDeclaration>>(),
         is Doc doc5_1 = doc5.first,
         doc5_1.description == "aToplevelAttribute");
     assert(aToplevelAttributeDecl.annotations<Shared|Doc|Seq>().size == 4);
@@ -119,9 +119,9 @@ void checkAToplevelAttributeAnnotations() {
     assert(aToplevelAttributeDecl.annotations<Doc|Seq>().size == 3);
     
     // since Doc is not Sequenced, this returns empty:
-    assert(nonempty shared6 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Shared, AttributeDeclaration>>(),
+    assert(nonempty shared6 = aToplevelAttributeDecl.annotations<OptionalAnnotation<Shared, ValueDeclaration>>(),
         is Shared shared6_1 = shared6.first);
-    assert(nonempty seq7 = aToplevelAttributeDecl.annotations<SequencedAnnotation<Seq, AttributeDeclaration>>(),
+    assert(nonempty seq7 = aToplevelAttributeDecl.annotations<SequencedAnnotation<Seq, ValueDeclaration>>(),
         is Seq seq7_1 = seq7.first,
         seq7_1.seq == "aToplevelAttribute 1");
 }
@@ -454,7 +454,7 @@ void checkAInterface() {
     // TODO assert(! nsmd in sharedInterfaces);
     // TODO test with an object declaration
     
-    value sharedAttributes = aInterfaceDecl.annotatedMemberDeclarations<AttributeDeclaration, Shared>();
+    value sharedAttributes = aInterfaceDecl.annotatedMemberDeclarations<ValueDeclaration, Shared>();
     assert(! ficd in sharedAttributes);
     assert(! dicd in sharedAttributes);
     assert(! iid in sharedAttributes);
@@ -496,7 +496,7 @@ void checkAInterface() {
     // TODO assert(nsmd in sharedMethods);
     // TODO test with an object declaration
     
-    value sharedAndDocdMethodsAndAttributes = aInterfaceDecl.annotatedMemberDeclarations<FunctionDeclaration|AttributeDeclaration, Shared|Doc>();
+    value sharedAndDocdMethodsAndAttributes = aInterfaceDecl.annotatedMemberDeclarations<FunctionDeclaration|ValueDeclaration, Shared|Doc>();
     assert(! ficd in sharedAndDocdMethodsAndAttributes);
     assert(! dicd in sharedAndDocdMethodsAndAttributes);
     assert(! iid in sharedAndDocdMethodsAndAttributes);
@@ -560,7 +560,7 @@ void checkPackage() {
     assert(! aToplevelGetterSetterDecl in sharedClassesAndInterfaces);
     assert(! aToplevelFunctionDecl in sharedClassesAndInterfaces);
     
-    value sharedAttributes = p.annotatedMembers<AttributeDeclaration, Shared>();
+    value sharedAttributes = p.annotatedMembers<ValueDeclaration, Shared>();
     assert(! aClassDecl in sharedAttributes);
     assert(! aAbstractClassDecl in sharedAttributes);
     assert(! aInterfaceDecl in sharedAttributes);
@@ -609,7 +609,7 @@ void checkPackage() {
     assert(! aToplevelGetterSetterDecl in seqClassesAndInterfaces);
     assert(! aToplevelFunctionDecl in seqClassesAndInterfaces);
     
-    value seqAttributes = p.annotatedMembers<AttributeDeclaration, Seq>();
+    value seqAttributes = p.annotatedMembers<ValueDeclaration, Seq>();
     assert(! aClassDecl in seqAttributes);
     assert(! aAbstractClassDecl in seqAttributes);
     assert(! aInterfaceDecl in seqAttributes);

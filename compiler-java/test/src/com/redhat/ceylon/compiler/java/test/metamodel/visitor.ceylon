@@ -142,7 +142,7 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
         case(is FunctionDeclaration){
             visitFunction(m);
         }
-        case(is AttributeDeclaration){
+        case(is ValueDeclaration){
             visitValue(m);
         }
         case(is ClassDeclaration){
@@ -171,7 +171,7 @@ void visitFunction(FunctionDeclaration func) {
     output(");\n");
 }
 
-void visitValue(AttributeDeclaration val) {
+void visitValue(ValueDeclaration val) {
     output(" ");
     visitOpenType(val.openType);
     output(" ``val.name``;\n");
