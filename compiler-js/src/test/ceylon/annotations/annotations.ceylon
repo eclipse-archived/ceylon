@@ -49,6 +49,7 @@ shared void test() {
   value a4 = annotations(`AnnoTest1`, `test`);
   if (exists a4) {
     check(a4.count == 5, "Annotations 4 count");
+    check(a4.text == "With Count", "Annotations 4 text");
   } else {
     fail("Annotations 4");
   }

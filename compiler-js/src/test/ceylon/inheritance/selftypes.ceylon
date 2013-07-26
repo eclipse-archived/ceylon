@@ -1,7 +1,7 @@
 import check { check }
 
-interface A141 satisfies Comparable<C141|A141> {}
-interface C141 satisfies Comparable<C141|A141> {}
+//interface A141 satisfies Comparable<C141|A141> {}
+//interface C141 satisfies Comparable<C141|A141> {}
 
 interface Comp141<in T> of T
         given T satisfies Comp141<T> {
