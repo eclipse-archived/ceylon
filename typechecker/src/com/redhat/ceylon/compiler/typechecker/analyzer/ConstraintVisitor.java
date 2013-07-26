@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class ConstraintVisitor extends Visitor {
@@ -45,29 +45,35 @@ public class ConstraintVisitor extends Visitor {
         Tree.DefaultArgument da = pn.getDefaultArgument();
         if (da!=null) {
             Tree.Expression e = da.getSpecifierExpression().getExpression();
-            checkAnnotationArgument(a, e);
+            checkAnnotationArgument(a, e, pt);
         }
     }
 
-    private void checkAnnotationArgument(Declaration a, Tree.Expression e) {
+    private void checkAnnotationArgument(Declaration a, Tree.Expression e, ProducedType pt) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.Literal) {
                 //ok
             }
+            else if (term instanceof Tree.MetaLiteral) {
+                //ok
+            }
+            else if (term instanceof Tree.InvocationExpression) {
+                checkAnnotationInstantiation(null, e, pt);
+            }
             else if (term instanceof Tree.BaseMemberExpression) {
                 Declaration d = ((Tree.BaseMemberExpression) term).getDeclaration();
-                if (d instanceof Parameter) {
+                if (a!=null && d instanceof Parameter) {
                     if (!((Parameter) d).getDeclaration().equals(a)) {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
                 }
                 else {
-                    e.addError("illegal annotation argument: must be a literal value or parameter reference");
+                    e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
                 }
             }
             else {
-                e.addError("illegal annotation argument: must be a literal value or parameter reference");
+                e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
             }
         }
     }
@@ -130,7 +136,7 @@ public class ConstraintVisitor extends Visitor {
                     Tree.Statement s = block.getStatements().get(0);
                     if (s instanceof Tree.Return) {
                         Tree.Expression e = ((Tree.Return) s).getExpression();
-                        checkAnnotationInstantiation(a, e);
+                        checkAnnotationInstantiation(a, e, a.getType());
                     }
                     else {
                         s.addError("annotation constructor body must return an annotation instance");
@@ -143,58 +149,61 @@ public class ConstraintVisitor extends Visitor {
             else {
                 Tree.SpecifierExpression se = ((Tree.MethodDeclaration) that).getSpecifierExpression();
                 if (se!=null) {
-                    checkAnnotationInstantiation(a,se.getExpression());
+                    checkAnnotationInstantiation(a, se.getExpression(), a.getType());
                 }
             }
         }
     }
 
-    private void checkAnnotationInstantiation(Method a, Tree.Expression e) {
+    private void checkAnnotationInstantiation(Method a, Tree.Expression e, ProducedType pt) {
         if (e!=null) {
-            Tree.Term term = e.getTerm();
+            Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
                 Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
-                if (!ie.getTypeModel().isExactly(a.getType())) {
+                if (!ie.getTypeModel().isExactly(pt)) {
                     ie.addError("annotation constructor must return exactly the annotation type");
                 }
-                Tree.Primary p = ie.getPrimary();
-                if (p instanceof Tree.BaseTypeExpression) {
-                    Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
-                    Tree.NamedArgumentList nal = ie.getNamedArgumentList();
-                    if (pal!=null) {
-                        for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
-                            if (pa!=null) {
-                                if (pa instanceof Tree.ListedArgument) {
-                                    checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression());
-                                }
-                                else {
-                                    pa.addError("illegal annotation argument");
-                                }
-                            }
+                if (!(ie.getPrimary() instanceof Tree.BaseTypeExpression)) {
+                    term.addError("annotation constructor must return a newly-instantiated annotation");
+                }
+                checkAnnotationArguments(a, ie);
+            }
+            else {
+                term.addError("annotation constructor must return a newly-instantiated annotation");
+            }
+        }
+    }
+
+    private void checkAnnotationArguments(Method a, Tree.InvocationExpression ie) {
+        Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
+        Tree.NamedArgumentList nal = ie.getNamedArgumentList();
+        if (pal!=null) {
+            for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
+                if (pa!=null) {
+                    if (pa instanceof Tree.ListedArgument) {
+                        checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
+                                pa.getParameter().getType());
+                    }
+                    else {
+                        pa.addError("illegal annotation argument");
+                    }
+                }
+            }
+        }
+        else {
+            for (Tree.NamedArgument na: nal.getNamedArguments()) {
+                if (na!=null) {
+                    if (na instanceof Tree.SpecifiedArgument) {
+                        Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
+                        if (se!=null) {
+                            checkAnnotationArgument(a, se.getExpression(),
+                                    na.getParameter().getType());
                         }
                     }
                     else {
-                        for (Tree.NamedArgument na: nal.getNamedArguments()) {
-                            if (na!=null) {
-                                if (na instanceof Tree.SpecifiedArgument) {
-                                    Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
-                                    if (se!=null) {
-                                        checkAnnotationArgument(a, se.getExpression());
-                                    }
-                                }
-                                else {
-                                    na.addError("illegal annotation argument");
-                                }
-                            }
-                        }
+                        na.addError("illegal annotation argument");
                     }
                 }
-                else {
-                    e.addError("annotation constructor must return a newly-instantiated annotation");
-                }
-            }
-            else {
-                e.addError("annotation constructor must return a newly-instantiated annotation");
             }
         }
     }
@@ -207,6 +216,9 @@ public class ConstraintVisitor extends Visitor {
         }*/
         if (dec!=null && !dec.isAnnotation()) {
             that.getPrimary().addError("not an annotation constructor");
+        }
+        else {
+            checkAnnotationArguments(null, (Tree.InvocationExpression) that);
         }
     }
     
