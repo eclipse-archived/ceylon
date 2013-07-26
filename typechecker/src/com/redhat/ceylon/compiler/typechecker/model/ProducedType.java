@@ -216,7 +216,7 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
-        if (depth>25) {
+        if (depth>30) {
             throw new RuntimeException("undecidable subtyping");
         }
         depth++;
@@ -604,7 +604,7 @@ public class ProducedType extends ProducedReference {
      * satisfying the given predicate. 
      */
     public ProducedType getSupertype(final Criteria c) {
-        if (depth>25) {
+        if (depth>30) {
             throw new RuntimeException("undecidable canonicalization");
         }
         depth++;
@@ -686,7 +686,7 @@ public class ProducedType extends ProducedReference {
 		return stc;
 	}
 	
-	static int depth=0; 
+	public static int depth=0; 
 	
     private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
@@ -1524,7 +1524,7 @@ public class ProducedType extends ProducedReference {
         // cache the resolved version
         if(resolvedAliases == null){
             // really compute it
-            if (depth>25) {
+            if (depth>30) {
                 throw new RuntimeException("undecidable canonicalization");
             }
             depth++;

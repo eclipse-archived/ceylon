@@ -5455,7 +5455,7 @@ public class ExpressionVisitor extends Visitor {
 
             TypeArgumentList tal = that.getTypeArgumentList();
             // there's no model for local values that are not parameters
-            if(!result.isClassOrInterfaceMember()
+            if((!result.isClassOrInterfaceMember()||!result.isShared())
                     && !result.isToplevel()){
                 if(result instanceof FunctionalParameter){
                     that.addError("metamodel references to function parameters not supported yet");
@@ -5500,7 +5500,7 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration value = (TypedDeclaration) result;
 
             // there's no model for local values that are not parameters
-            if(!result.isClassOrInterfaceMember()
+            if((!result.isClassOrInterfaceMember()||!result.isShared())
                     && !result.isToplevel()){
                 if(result instanceof ValueParameter){
                     that.addError("metamodel references to function parameters not supported yet");
