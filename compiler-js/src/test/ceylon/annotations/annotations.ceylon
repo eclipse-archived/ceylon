@@ -1,3 +1,5 @@
+import check { ... }
+
 import ceylon.language.metamodel{
   annotations,
   SequencedAnnotation,OptionalAnnotation
@@ -35,7 +37,20 @@ shared class Example2() {
 annotest2{count=5;}
 shared void test() {
   value a1 = annotations(`AnnoTest1`, `Example1`);
+  check(a1 exists, "Annotations 1");
   value a2 = annotations(`AnnoTest3`, `Example2`);
+  check(a2.size == 2, "Annotations 2");
   value a3 = annotations(`AnnoTest1`, `Example2.string`);
+  if (exists a3) {
+    check(a3.text=="named call", "Annotations 3 text");
+  } else {
+    fail("Annotations 3");
+  }
   value a4 = annotations(`AnnoTest1`, `test`);
+  if (exists a4) {
+    check(a4.count == 5, "Annotations 4 count");
+  } else {
+    fail("Annotations 4");
+  }
+  results();
 }
