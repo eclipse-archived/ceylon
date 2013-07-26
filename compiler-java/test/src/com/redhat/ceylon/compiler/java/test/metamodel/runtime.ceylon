@@ -126,7 +126,7 @@ void checkMemberAttributes(){
     assert(noParamsInstance.obj2 == 3);
     
     // private attribute
-    value privateAttr = `PrivateClass.privateString`;
+    assert(exists privateAttr = `PrivateClass`.getAttribute<PrivateClass,String>("privateString"));
     assert(privateAttr(PrivateClass()).get() == "a");
 }
 
