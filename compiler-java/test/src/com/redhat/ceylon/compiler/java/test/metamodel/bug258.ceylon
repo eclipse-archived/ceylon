@@ -26,6 +26,11 @@ void bug258(){
     
     value xCause = Exception();
     value x = Exception("foo", xCause);
+
+    value exception = `Exception`;
+    value x2 = exception("foo", xCause);
+    assert (exists iNeedEqDamnit = x2.cause, iNeedEqDamnit == xCause);
+    assert (x2.message == "foo");
     
     value exceptionCause = `Exception.cause`;
     assert (exists grr = exceptionCause(x).get(), grr == xCause);
