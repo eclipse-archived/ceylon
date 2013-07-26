@@ -5537,7 +5537,7 @@ public class ExpressionVisitor extends Visitor {
 
     // should really be a Value|Parameter but hey ;)
     private ProducedType getTypeLiteralValueDeclarationType(TypedDeclaration param) {
-        return getTypeLiteralDeclarationType(param.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
+        return getTypeLiteralDeclarationType(param.isVariable() ? "VariableDeclaration" : "ValueDeclaration");
     }
 
     // should really be a Value|Parameter but hey ;)

@@ -79,7 +79,7 @@ void test<T>() {
     value parameterisedContainerMethodErr2 = `ParameterisedContainer.method<Integer>`;
     
     // toplevel attributes
-    @type:"AttributeDeclaration&Value<Integer>"
+    @type:"ValueDeclaration&Value<Integer>"
     value toplevelAttribute = `attribute`;
     @error:"does not accept type arguments: attribute"
     value toplevelAttributeErr = `attribute<String>`;
@@ -87,13 +87,13 @@ void test<T>() {
     value toplevelVariableAttribute = `variableAttribute`;
 
     // qualified attributes
-    @type:"AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"ValueDeclaration&Attribute<Container,Integer>"
     value containerAttribute = `Container.attribute`;
     @type:"VariableDeclaration&VariableAttribute<Container,Integer>"
     value containerVariableAttribute = `Container.variableAttribute`;
     @type:"Attribute<ParameterisedContainer<String>,String>"
     value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
-    @type:"AttributeDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedContainerAttributeDecl = `ParameterisedContainer.attribute`;
     @type:"VariableAttribute<ParameterisedContainer<String>,String>"
     value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
@@ -101,45 +101,45 @@ void test<T>() {
     value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
     
     // class parameters
-    @type:"AttributeDeclaration&Attribute<Container,Integer>"
-    @error value classParameter = `Container.parameter`;
-    @type:"AttributeDeclaration&Attribute<Container,Integer>"
+    @error
+    value classParameter = `Container.parameter`;
+    @type:"ValueDeclaration&Attribute<Container,Integer>"
     value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
-    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
-    @error value classParameterMethod = `Container.parameterAndMethod`;
+    @error
+    value classParameterMethod = `Container.parameterAndMethod`;
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classParameterAndSharedMethod = `Container.parameterAndSharedMethod`;
 
-    @type:"AttributeDeclaration"
-    @error value parameterisedClassParameter = `ParameterisedContainer.parameter`;
-    @type:"Attribute<ParameterisedContainer<String>,Integer>"
-    @error value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
+    @error
+    value parameterisedClassParameter = `ParameterisedContainer.parameter`;
+    @error
+    value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
-    @type:"AttributeDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedClassParameterAndSharedAttributeDecl = `ParameterisedContainer.parameterAndSharedAttribute`;
     
     // class attributes that are parameters too
-    @type:"AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"ValueDeclaration&Attribute<Container,Integer>"
     value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
-    @type:"AttributeDeclaration&Attribute<Container,Integer>"
-    @error value classAttributeAndParameter = `Container.attributeAndParameter`;
+    @error
+    value classAttributeAndParameter = `Container.attributeAndParameter`;
 
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
-    @type:"AttributeDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedClassSharedAttributeAndParameterDecl = `ParameterisedContainer.sharedAttributeAndParameter`;
 
-    @type:"Attribute<ParameterisedContainer<String>,Integer>"
-    @error value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
-    @type:"AttributeDeclaration"
-    @error value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
+    @error
+    value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
+    @error
+    value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
 
     // class methods that are parameters too
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classSharedMethodAndParameter = `Container.sharedMethodAndParameter`;
-    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
-    @error value classMethodAndParameter = `Container.methodAndParameter`;
+    @error
+    value classMethodAndParameter = `Container.methodAndParameter`;
     
     // private attributes
     @error:"metamodel references to non-shared attributes not supported yet"
