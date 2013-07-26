@@ -2,7 +2,9 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -33,6 +35,38 @@ public class ConstraintVisitor extends Visitor {
         return false;
     }
     
+    private void checkAnnotationParameter(Declaration a, Tree.Parameter pn) {
+        Parameter p = pn.getDeclarationModel();
+        ProducedType pt = p.getType();
+        if (isIllegalAnnotationParameterType(pt)) {
+            pn.addError("illegal annotation parameter type");
+        }
+        Tree.DefaultArgument da = pn.getDefaultArgument();
+        if (da!=null) {
+            Tree.Expression e = da.getSpecifierExpression().getExpression();
+            if (e!=null) {
+                Tree.Term term = e.getTerm();
+                if (term instanceof Tree.Literal) {
+                    //ok
+                }
+                else if (term instanceof Tree.BaseMemberExpression) {
+                    Declaration d = ((Tree.BaseMemberExpression) term).getDeclaration();
+                    if (d instanceof Parameter) {
+                        if (!((Parameter) d).getDeclaration().equals(a)) {
+                            e.addError("illegal annotation parameter default argument: must be a reference to a parameter of the annotation");
+                        }
+                    }
+                    else {
+                        e.addError("illegal annotation parameter default argument: must be a literal value or parameter reference");
+                    }
+                }
+                else {
+                    e.addError("illegal annotation parameter default argument: must be a literal value or parameter reference");
+                }
+            }
+        }
+    }
+
     private TypeDeclaration getAnnotationDeclaration(Unit unit) {
         return (TypeDeclaration) unit.getPackage().getModule()
                 .getLanguageModule()
@@ -43,27 +77,24 @@ public class ConstraintVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyClass that) {
         super.visit(that);
-        if (that.getDeclarationModel().isAnnotation()) {
-            if (that.getDeclarationModel().isParameterized()) {
+        Class c = that.getDeclarationModel();
+        if (c.isAnnotation()) {
+            if (c.isParameterized()) {
                 that.addError("annotation class may not be a parameterized type");
             }
-            if (that.getDeclarationModel().isAbstract()) {
+            if (c.isAbstract()) {
                 that.addError("annotation class may not be abstract");
             }
-            if (!that.getDeclarationModel().getExtendedTypeDeclaration()
+            if (!c.getExtendedTypeDeclaration()
                     .equals(that.getUnit().getBasicDeclaration())) {
                 that.addError("annotation class must directly extend Basic");
             }
             TypeDeclaration annotationDec = getAnnotationDeclaration(that.getUnit());
-            if (!that.getDeclarationModel().inherits(annotationDec)) {
+            if (!c.inherits(annotationDec)) {
                 that.addError("annotation class must be a subtype of Annotation");
             }
             for (Tree.Parameter pn: that.getParameterList().getParameters()) {
-                Parameter p = pn.getDeclarationModel();
-                ProducedType pt = p.getType();
-                if (isIllegalAnnotationParameterType(pt)) {
-                    pn.addError("illegal annotation parameter type");
-                }
+                checkAnnotationParameter(c, pn);
             }
         }
     }
@@ -71,7 +102,8 @@ public class ConstraintVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
-        if (that.getDeclarationModel().isAnnotation()) {
+        Method a = that.getDeclarationModel();
+        if (a.isAnnotation()) {
             Tree.Type type = that.getType();
             if (type!=null) {
                 if (!type.getTypeModel().getDeclaration().isAnnotation()) {
@@ -81,11 +113,7 @@ public class ConstraintVisitor extends Visitor {
             List<Tree.ParameterList> pls = that.getParameterLists();
             if (pls.size() == 1) {
                 for (Tree.Parameter pn: pls.get(0).getParameters()) {
-                    Parameter p = pn.getDeclarationModel();
-                    ProducedType pt = p.getType();
-                    if (isIllegalAnnotationParameterType(pt)) {
-                        pn.addError("illegal annotation constructor parameter type");
-                    }
+                    checkAnnotationParameter(a, pn);
                 }
             }
             else {
