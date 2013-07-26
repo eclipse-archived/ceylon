@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -391,16 +392,21 @@ public class TypeUtils {
             tparms = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getTypeParameters();
             satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Interface) d).getSatisfiedTypes();
 
-        } else if (d instanceof Method) {
+        } else if (d instanceof MethodOrValue) {
 
             gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
-            metamodelTypeNameOrList(d.getUnit().getPackage(), ((Method)d).getType(), gen);
-            gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
-            //Parameter types of the first parameter list
-            encodeParameterListForRuntime(((Method)d).getParameterLists().get(0), gen);
-            tparms = ((Method) d).getTypeParameters();
+            metamodelTypeNameOrList(d.getUnit().getPackage(), ((MethodOrValue)d).getType(), gen);
+            if (d instanceof Method) {
+                gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
+                //Parameter types of the first parameter list
+                encodeParameterListForRuntime(((Method)d).getParameterLists().get(0), gen);
+                tparms = ((Method) d).getTypeParameters();
+            }
 
+        }
+        if (d.isMember()) {
+            gen.out(",$cont:", gen.getNames().name((Declaration)d.getContainer()));
         }
         if (tparms != null && !tparms.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
