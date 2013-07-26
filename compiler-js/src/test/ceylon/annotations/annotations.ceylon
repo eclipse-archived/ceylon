@@ -39,30 +39,40 @@ shared class Example2() {
   shared actual String string => "Example2";
 }
 
+annotest3("one") annotest3("two") annotest3("three")
+Singleton<String> testSingleton = Singleton("!");
+
 annotest2{count=5;}
 shared void test() {
   value a1 = annotations(`AnnoTest1`, `Example1`);
   check(a1 exists, "Annotations 1 (opt on class)");
   value a2 = annotations(`AnnoTest3`, `Example2`);
   check(a2.size == 2, "Annotations 2 (seq on class)");
-  value a3 = annotations(`AnnoTest1`, `Example2.string`);
+  value a3 = annotations(`AnnoTest1`, `test`);
   if (exists a3) {
-    check(a3.text=="named call", "Annotations 3 text");
+    check(a3.count == 5, "Annotations 3 count");
+    check(a3.text == "With Count", "Annotations 3 text");
   } else {
-    fail("Annotations 3 (on attribute)");
+    fail("Annotations 3 (on toplevel method)");
   }
-  value a4 = annotations(`AnnoTest1`, `test`);
-  if (exists a4) {
-    check(a4.count == 5, "Annotations 4 count");
-    check(a4.text == "With Count", "Annotations 4 text");
+  /*value a4 = annotations(`AnnoTest3`, `testSingleton`);
+  if (nonempty a4) {
+    check(a4.size==3, "Annotations 4 size");
   } else {
-    fail("Annotations 4 (on toplevel method)");
+    fail("Annotations 4 (top-level attribute)");
   }
-  value a5 = annotations(`AnnoTest1`, `Example1.printTime`);
+  check(!annotations(`AnnoTest1`, `testSingleton`) exists, "testSingleton shouldn't have AnnoTest1");*/
+  value a5 = annotations(`AnnoTest1`, `Example2.string`);
   if (exists a5) {
-    check(a5.count == 9, "Annotations 5 count");
+    check(a5.text=="named call", "Annotations 5 text");
   } else {
-    fail("Annotations 5 (on member method)");
+    fail("Annotations 5 (on attribute)");
+  }
+  value a6 = annotations(`AnnoTest1`, `Example1.printTime`);
+  if (exists a6) {
+    check(a6.count == 9, "Annotations 6 count");
+  } else {
+    fail("Annotations 6 (on member method)");
   }
   results();
 }
