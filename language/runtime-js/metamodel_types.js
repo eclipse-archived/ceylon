@@ -56,7 +56,7 @@ function $init$AppliedClass$metamodel(){
 exports.AppliedClass$metamodel=$init$AppliedClass$metamodel;
 $init$AppliedClass$metamodel();
 
-function AppliedInterface$metamodel($$targs$$,$$interfaz){
+function AppliedInterface$metamodel(tipo,$$targs$$,$$interfaz){
     $init$AppliedInterface$metamodel();
     if ($$interfaz===undefined)$$interfaz=new AppliedInterface$metamodel.$$;
     set_type_args($$interfaz,$$targs$$);
@@ -104,6 +104,7 @@ function AppliedInterface$metamodel($$targs$$,$$interfaz){
     defineAttr($$interfaz,'typeArguments',function() {
         throw Exception(String$("type args",9));
     });
+    $$interfaz.tipo=tipo;
     return $$interfaz;
 }
 AppliedInterface$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out',}},satisfies:[{t:Interface$metamodel,a:{Type:'Type'}}],pkg:'ceylon.language.metamodel',d:$$METAMODEL$$['ceylon.language.metamodel']['Interface']};
@@ -116,11 +117,12 @@ function $init$AppliedInterface$metamodel(){
 exports.$init$AppliedInterface$metamodel=$init$AppliedInterface$metamodel;
 $init$AppliedInterface$metamodel();
 
-function AppliedUnionType$metamodel(types$2, $$appliedUnionType){
+function AppliedUnionType$metamodel(tipo,types$2, $$appliedUnionType){
     $init$AppliedUnionType$metamodel();
     if ($$appliedUnionType===undefined)$$appliedUnionType=new AppliedUnionType$metamodel.$$;
     $$appliedUnionType.types$2=types$2;
     UnionType$metamodel($$appliedUnionType);
+    $$appliedUnionType.tipo=tipo;
     return $$appliedUnionType;
 }
 AppliedUnionType$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:UnionType$metamodel}],pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AppliedUnionType']};
@@ -140,12 +142,12 @@ function $init$AppliedUnionType$metamodel(){
 exports.$init$AppliedUnionType$metamodel=$init$AppliedUnionType$metamodel;
 $init$AppliedUnionType$metamodel();
 
-function AppliedIntersectionType$metamodel(types$3, $$appliedIntersectionType){
+function AppliedIntersectionType$metamodel(tipo,types$3, $$appliedIntersectionType){
     $init$AppliedIntersectionType$metamodel();
     if ($$appliedIntersectionType===undefined)$$appliedIntersectionType=new AppliedIntersectionType$metamodel.$$;
     $$appliedIntersectionType.types$3=types$3;
     IntersectionType$metamodel($$appliedIntersectionType);
-    
+    $$appliedIntersectionType.tipo=tipo;
     return $$appliedIntersectionType;
 }
 AppliedIntersectionType$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:IntersectionType$metamodel}],pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['AppliedIntersectionType']};
@@ -170,11 +172,12 @@ function AppliedFunction$metamodel(f) {
 }
 
 
-function AppliedAttribute$metamodel($$targs$$,$$appliedAttribute){
+function AppliedAttribute$metamodel(attr,$$targs$$,$$appliedAttribute){
     $init$AppliedAttribute$metamodel();
     if ($$appliedAttribute===undefined)$$appliedAttribute=new AppliedAttribute$metamodel.$$;
     set_type_args($$appliedAttribute,$$targs$$);
     Attribute$metamodel($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedAttribute.$$targs$$.Type,Container:$$appliedAttribute.$$targs$$.Container},$$appliedAttribute);
+    $$appliedAttribute.attr=attr;
     return $$appliedAttribute;
 }
 AppliedAttribute$metamodel.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in',},Type:{'var':'out',}},satisfies:[{t:Attribute$metamodel,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},pkg:'',d:$$METAMODEL$$['ceylon.language.metamodel']['Attribute']};
