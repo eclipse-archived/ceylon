@@ -124,10 +124,6 @@ void checkMemberAttributes(){
     obj2Bound.set(3);
     assert(obj2Bound.get() == 3);
     assert(noParamsInstance.obj2 == 3);
-    
-    // private attribute
-    assert(exists privateAttr = `PrivateClass`.getAttribute<PrivateClass,String>("privateString"));
-    assert(privateAttr(PrivateClass()).get() == "a");
 }
 
 void checkMemberFunctions(){
@@ -158,10 +154,6 @@ void checkMemberFunctions(){
     assert(f7(noParamsInstance)() == 'a');
     assert(exists f8 = noParamsType.getMethod<NoParams, Boolean, []>("getBoolean"));
     assert(f8(noParamsInstance)() == true);
-
-    // private method
-    value privateMethod = `PrivateClass.privateMethod`;
-    assert(privateMethod(PrivateClass())() == "b");
 }
 
 void checkMemberTypes(){

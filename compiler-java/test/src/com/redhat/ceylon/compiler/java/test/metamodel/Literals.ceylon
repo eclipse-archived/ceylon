@@ -151,26 +151,18 @@ void literals<T>(){
     // Class parameters
     
     ValueDeclaration&Attribute<LitClassWithParameters,Integer> paramAndSharedAttr = `LitClassWithParameters.parameterAndSharedAttribute`;
-    ValueDeclaration&Attribute<LitClassWithParameters,Integer> paramAttr = `LitClassWithParameters.parameterAttribute`;
     ValueDeclaration&Attribute<LitClassWithParameters,Integer> sharedAttrAndParam = `LitClassWithParameters.sharedAttributeAndParameter`;
-    ValueDeclaration&Attribute<LitClassWithParameters,Integer> attrAndParam = `LitClassWithParameters.attributeAndParameter`;
 
     // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
     //FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> paramAndSharedMethod = `LitClassWithParameters.parameterAndSharedMethod`;
-    FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> methodAttr = `LitClassWithParameters.parameterMethod`;
     FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> sharedMethodAndParam = `LitClassWithParameters.sharedMethodAndParameter`;
-    FunctionDeclaration&Method<LitClassWithParameters,Integer,[]> methodAndParam = `LitClassWithParameters.methodAndParameter`;
 
     ValueDeclaration parameterisedParamAndSharedAttr = `LitParameterisedClassWithParameters.parameterAndSharedAttribute`;
-    ValueDeclaration parameterisedParamAttr = `LitParameterisedClassWithParameters.parameterAttribute`;
     ValueDeclaration parameterisedSharedAttrAndParam = `LitParameterisedClassWithParameters.sharedAttributeAndParameter`;
-    ValueDeclaration parameterisedAttrAndParam = `LitParameterisedClassWithParameters.attributeAndParameter`;
 
     // not supported yet: https://github.com/ceylon/ceylon-compiler/issues/1200
     //FunctionDeclaration parameterisedParamAndSharedMethod = `LitParameterisedClassWithParameters.parameterAndSharedMethod`;
-    FunctionDeclaration parameterisedMethodAttr = `LitParameterisedClassWithParameters.parameterMethod`;
     FunctionDeclaration parameterisedSharedMethodAndParam = `LitParameterisedClassWithParameters.sharedMethodAndParameter`;
-    FunctionDeclaration parameterisedMethodAndParam = `LitParameterisedClassWithParameters.methodAndParameter`;
 }
 
 class RelativeLiterals(shared String str = "a") {
