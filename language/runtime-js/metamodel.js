@@ -47,9 +47,9 @@ function typeLiteral$metamodel($$targs$$) {
         } else if (mdl.d['$mt'] === 'ifc') {
             return AppliedInterface$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
         } else if (mdl.d['$mt'] === 'mthd') {
-            return AppliedFunction$metamodel($$targs$$.Type.t);
+            return AppliedFunction$metamodel($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
         } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
-            return AppliedAttribute$metamodel($$targs$$.Type.t);
+            return AppliedAttribute$metamodel($$targs$$.Type.t,{Container:{t:mdl.$cont},Type:mdl.$t});
         } else {
 console.log("WTF is a metatype " + mdl.d['$mt'] + "???????");
         }
