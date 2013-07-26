@@ -5462,7 +5462,8 @@ public class ExpressionVisitor extends Visitor {
                 }else{
                     that.addError("metamodel references to local functions not supported");
                 }
-            }else if (explicitTypeArguments(method, tal, null)) {
+            }
+            if (explicitTypeArguments(method, tal, null)) {
                 List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method));
                 if(tal != null)
                     tal.setTypeModels(ta);
@@ -5507,7 +5508,8 @@ public class ExpressionVisitor extends Visitor {
                 }else{
                     that.addError("metamodel references to local values not supported");
                 }
-            }else if(that.getTypeArgumentList() != null){
+            }
+            if(that.getTypeArgumentList() != null){
                 that.addError("does not accept type arguments: " + result.getName(unit));
             }else{
                 ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());

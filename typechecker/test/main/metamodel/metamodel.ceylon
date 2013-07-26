@@ -102,18 +102,18 @@ void test<T>() {
     
     // class parameters
     @type:"AttributeDeclaration&Attribute<Container,Integer>"
-    value classParameter = `Container.parameter`;
+    @error value classParameter = `Container.parameter`;
     @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
-    value classParameterMethod = `Container.parameterAndMethod`;
+    @error value classParameterMethod = `Container.parameterAndMethod`;
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classParameterAndSharedMethod = `Container.parameterAndSharedMethod`;
 
     @type:"AttributeDeclaration"
-    value parameterisedClassParameter = `ParameterisedContainer.parameter`;
+    @error value parameterisedClassParameter = `ParameterisedContainer.parameter`;
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
-    value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
+    @error value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
     @type:"AttributeDeclaration"
@@ -123,7 +123,7 @@ void test<T>() {
     @type:"AttributeDeclaration&Attribute<Container,Integer>"
     value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
     @type:"AttributeDeclaration&Attribute<Container,Integer>"
-    value classAttributeAndParameter = `Container.attributeAndParameter`;
+    @error value classAttributeAndParameter = `Container.attributeAndParameter`;
 
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
@@ -131,15 +131,15 @@ void test<T>() {
     value parameterisedClassSharedAttributeAndParameterDecl = `ParameterisedContainer.sharedAttributeAndParameter`;
 
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
-    value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
+    @error value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
     @type:"AttributeDeclaration"
-    value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
+    @error value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
 
     // class methods that are parameters too
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classSharedMethodAndParameter = `Container.sharedMethodAndParameter`;
     @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
-    value classMethodAndParameter = `Container.methodAndParameter`;
+    @error value classMethodAndParameter = `Container.methodAndParameter`;
     
     // private attributes
     @error:"metamodel references to non-shared attributes not supported yet"
