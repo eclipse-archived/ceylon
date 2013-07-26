@@ -85,6 +85,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpreadArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -1033,16 +1034,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                    List.of(reifiedMemberType, ceylonLiteral(declaration.getName())));
             return memberCall;
         }else{
-            // it's a member we get from its container type
-            JCExpression typeCall = makeTypeLiteralCall(expr, expr.getType(), false);
-            // make sure we cast it to ClassOrInterface
-            JCExpression classOrInterfaceTypeExpr = makeJavaType(typeFact().getLanguageModuleMetamodelDeclaration("ClassOrInterface")
-                        .getProducedReference(null, Arrays.asList(expr.getType().getTypeModel())).getType());
-            typeCall = make().TypeCast(classOrInterfaceTypeExpr, typeCall);
             // get its produced ref
             ProducedReference producedReference = expr.getTarget();
+            // it's a member we get from its container type
+            ProducedType containerType = producedReference.getQualifyingType();
+            JCExpression typeCall = makeTypeLiteralCall(expr, containerType, false);
+            // make sure we cast it to ClassOrInterface
+            JCExpression classOrInterfaceTypeExpr = makeJavaType(typeFact().getLanguageModuleMetamodelDeclaration("ClassOrInterface")
+                        .getProducedReference(null, Arrays.asList(containerType)).getType());
+            typeCall = make().TypeCast(classOrInterfaceTypeExpr, typeCall);
             // we will need a TD for the container
-            JCExpression reifiedContainerExpr = makeReifiedTypeArgument(expr.getType().getTypeModel());
+            JCExpression reifiedContainerExpr = makeReifiedTypeArgument(containerType);
             // make a raw call and cast
             JCExpression memberCall;
             if(declaration instanceof Method
@@ -1095,9 +1097,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().Apply(null, typeLiteralIdent, List.of(reifiedTypeArgument));
     }
 
-    private JCExpression makeTypeLiteralCall(Tree.MetaLiteral expr, Tree.StaticType type, boolean addCast) {
+    private JCExpression makeTypeLiteralCall(Tree.MetaLiteral expr, ProducedType type, boolean addCast) {
         // construct a call to typeLiteral<T>() and cast if required
-        JCExpression call = makeTypeLiteralCall(type.getTypeModel());
+        JCExpression call = makeTypeLiteralCall(type);
         // if we have a type that is not nothingType and not Type, we need to cast
         ProducedType exprType = expr.getTypeModel().resolveAliases();
         TypeDeclaration typeDeclaration = exprType.getDeclaration();
@@ -1114,7 +1116,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.TypeLiteral expr) {
         at(expr);
         if(!expr.getWantsDeclaration()){
-            return makeTypeLiteralCall(expr, expr.getType(), true);
+            return makeTypeLiteralCall(expr, expr.getType().getTypeModel(), true);
         }else{
             // use the generated class to get to the declaration literal
             // FIXME: other types of declarations?
