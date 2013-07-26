@@ -1,6 +1,6 @@
 /*Native Implementation of annotations() */
 function annotations$metamodel(anntype, progelem, $$targs$$) {
-  var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.attr?progelem.attr.$$metamodel$$:undefined;
+  var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.attr?progelem.attr.$$metamodel$$:progelem.$$metamodel$$;
   if (mm && mm['$an']) {
     var anns = mm['$an'];
     if (typeof(anns) === 'function') {
@@ -14,7 +14,7 @@ function annotations$metamodel(anntype, progelem, $$targs$$) {
       }
       return null;
     }
-    //gather all annotatinos of the required type and return them
+    //gather all annotations of the required type and return them
     var r=[];
     for (var i=0; i < anns.length; i++) {
       if (isOfType(anns[i], {t:anntype.tipo}))r.push(anns[i]);
