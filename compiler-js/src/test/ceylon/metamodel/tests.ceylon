@@ -12,8 +12,11 @@ void literals<T>() {
     IntersectionType intersectionType = `Number&Closeable`;
     check(intersectionType.satisfiedTypes.size == 2, "IntersectionType satisfied types ``intersectionType.satisfiedTypes.size``, expected 2");
     Function<Boolean,[{Boolean*}]> ftype = `any`;
+    check(any{false,false,true}, "simple metamodel function");
     Function<Integer,[{Integer+}]> ftypeParams = `sum<Integer>`;
+    check(sum{1,2,3,4}==10, "metamodel function w/type params 1");
     Function<Float,[Float,Float]> ftimes = `times<Float>`;
+    check(ftimes(2.0,2.0)==4.0, "metamodel function w/type params 2");
     Method<String,String,[Integer]> finitial = `String.initial`;
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
 }
