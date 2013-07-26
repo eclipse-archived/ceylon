@@ -3636,26 +3636,19 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
+        String name = name(that.getIdentifier());
         TypedDeclaration member = getBaseDeclaration(that, that.getSignature(), 
                 that.getEllipsis());
         if (member==null) {
             if (!dynamic) {
                 that.addError("function or value does not exist: " +
-                        name(that.getIdentifier()), 100);
+                        name, 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
         else {
             that.setDeclaration(member);
-            if (!member.isVisible(that.getScope())) {
-                that.addError("function or value is not visible: " +
-                        name(that.getIdentifier()), 400);
-            }
-            if (member.isPackageVisibility() && 
-                    !declaredInPackage(member, unit)) {
-                that.addError("package private function or value is not visible: " +
-                        name(that.getIdentifier()));
-            }
+            checkBaseVisibility(that, member, name);
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal, 
@@ -3674,6 +3667,19 @@ public class ExpressionVisitor extends Visitor {
                 }
             }*/
             checkOverloadedReference(that);
+        }
+    }
+
+    private void checkBaseVisibility(Node that, TypedDeclaration member, 
+            String name) {
+        if (!member.isVisible(that.getScope())) {
+            that.addError("function or value is not visible: " +
+                    name, 400);
+        }
+        if (member.isPackageVisibility() && 
+                !declaredInPackage(member, unit)) {
+            that.addError("package private function or value is not visible: " +
+                    name);
         }
     }
     
@@ -3729,23 +3735,10 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setDeclaration(member);
-                if (!member.isVisible(that.getScope())) {
-                    that.addError("method or attribute is not visible: " +
-                            name + " of " + container, 400);
-                }
                 boolean selfReference = p instanceof Tree.This ||
                         p instanceof Tree.Super;
-                if (member.isProtectedVisibility() && 
-                        !selfReference && 
-                        !declaredInPackage(member, unit)) {
-                    that.addError("protected method or attribute is not visible: " +
-                            name + " of " + container);
-                }
-                if (member.isPackageVisibility() && 
-                        !declaredInPackage(member, unit)) {
-                    that.addError("package private method or attribute is not visible: " +
-                            name + " of " + container);
-                }
+                checkQualifiedVisibility(that, member, name, container,
+                        selfReference);
                 if (!selfReference && !member.isShared()) {
                     member.setOtherInstanceAccess(true);
                 }
@@ -3768,6 +3761,25 @@ public class ExpressionVisitor extends Visitor {
                 checkOverloadedReference(that);
             }
             checkSuperMember(that);
+        }
+    }
+
+    private void checkQualifiedVisibility(Node that, TypedDeclaration member, 
+            String name, String container, boolean selfReference) {
+        if (!member.isVisible(that.getScope())) {
+            that.addError("method or attribute is not visible: " +
+                    name + " of " + container, 400);
+        }
+        if (member.isProtectedVisibility() && 
+                !selfReference && 
+                !declaredInPackage(member, unit)) {
+            that.addError("protected method or attribute is not visible: " +
+                    name + " of " + container);
+        }
+        if (member.isPackageVisibility() && 
+                !declaredInPackage(member, unit)) {
+            that.addError("package private method or attribute is not visible: " +
+                    name + " of " + container);
         }
     }
 
@@ -5410,6 +5422,7 @@ public class ExpressionVisitor extends Visitor {
                 String container = "type " + d.getName(unit);
                 Declaration member = d.getMember(name, unit, null, false);
                 if(member instanceof TypedDeclaration){
+                    checkQualifiedVisibility(that, (TypedDeclaration) member, name, container, false);
                     that.setDeclaration(member);
                     setMetamodelType(that, member, qualifyingType);
                 }else{
@@ -5419,6 +5432,7 @@ public class ExpressionVisitor extends Visitor {
             }else{
                 Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
                 if (result instanceof TypedDeclaration) {
+                    checkBaseVisibility(that, (TypedDeclaration) result, name);
                     that.setDeclaration(result);
                     setMetamodelType(that, result, that.getScope().getDeclaringType(result));
                 }else{
@@ -5493,12 +5507,6 @@ public class ExpressionVisitor extends Visitor {
                 }else{
                     that.addError("metamodel references to local values not supported");
                 }
-            }else if(result instanceof Value
-                     && !result.isToplevel()
-                     && !result.isShared()
-                     // private attributes which hide a parameter are reified as a parameter
-                     && ((Value)result).getInitializerParameter() == null){
-                that.addError("metamodel references to non-shared attributes not supported yet");
             }else if(that.getTypeArgumentList() != null){
                 that.addError("does not accept type arguments: " + result.getName(unit));
             }else{
