@@ -1,4 +1,4 @@
-import check { ... }
+import check { check,fail,results }
 
 import ceylon.language.metamodel{
   annotations,
@@ -24,7 +24,12 @@ shared annotation class AnnoTest3(text)
 shared annotation AnnoTest3 annotest3(String text) => AnnoTest3(text);
 
 shared annotest1 class Example1() {
-  shared actual String string => "Example1";
+  string => "Example1";
+  shared annotest2(9) Integer printTime() {
+    value m = process.milliseconds;
+    print("printing at: ``m``");
+    return m;
+  }
 }
 annotest1("with something different")
 annotest3("repeated twice")
@@ -37,21 +42,27 @@ shared class Example2() {
 annotest2{count=5;}
 shared void test() {
   value a1 = annotations(`AnnoTest1`, `Example1`);
-  check(a1 exists, "Annotations 1");
+  check(a1 exists, "Annotations 1 (opt on class)");
   value a2 = annotations(`AnnoTest3`, `Example2`);
-  check(a2.size == 2, "Annotations 2");
+  check(a2.size == 2, "Annotations 2 (seq on class)");
   value a3 = annotations(`AnnoTest1`, `Example2.string`);
   if (exists a3) {
     check(a3.text=="named call", "Annotations 3 text");
   } else {
-    fail("Annotations 3");
+    fail("Annotations 3 (on attribute)");
   }
   value a4 = annotations(`AnnoTest1`, `test`);
   if (exists a4) {
     check(a4.count == 5, "Annotations 4 count");
     check(a4.text == "With Count", "Annotations 4 text");
   } else {
-    fail("Annotations 4");
+    fail("Annotations 4 (on toplevel method)");
+  }
+  value a5 = annotations(`AnnoTest1`, `Example1.printTime`);
+  if (exists a5) {
+    check(a5.count == 9, "Annotations 5 count");
+  } else {
+    fail("Annotations 5 (on member method)");
   }
   results();
 }
