@@ -1524,7 +1524,7 @@ public class ProducedType extends ProducedReference {
         // cache the resolved version
         if(resolvedAliases == null){
             // really compute it
-            if (depth>30) {
+            if (depth>50) {
                 throw new RuntimeException("undecidable canonicalization");
             }
             depth++;

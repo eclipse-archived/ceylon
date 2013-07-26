@@ -253,7 +253,7 @@ public class PhasedUnit {
 
     public synchronized void analyseTypes() {
         if (! fullyTyped) {
-            ProducedType.depth=0;
+            ProducedType.depth=-100;
             //System.out.println("Run analysis phase for " + fileName);
             compilationUnit.visit(new ExpressionVisitor());
             compilationUnit.visit(new TypeArgumentVisitor());
