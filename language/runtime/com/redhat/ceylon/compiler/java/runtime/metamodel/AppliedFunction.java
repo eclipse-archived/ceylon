@@ -71,23 +71,45 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
         // FIXME: delay method setup for when we actually use it?
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
-        // FIXME: deal with Java classes and overloading
-        // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-        Method found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);;
+        Method found = null;
         String name = Metamodel.getJavaMethodName((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
-        for(Method method : javaClass.getDeclaredMethods()){
-            if(!method.getName().equals(name))
-                continue;
-            if(method.isAnnotationPresent(Ignore.class)){
-                // save method for later
-                // FIXME: proper checks
-                if(firstDefaulted != -1){
-                    int params = method.getParameterTypes().length;
-                    defaultedMethods[params - firstDefaulted] = method;
+        
+        // special cases for some erased types
+        if(javaClass == ceylon.language.Object.class
+                || javaClass == ceylon.language.Basic.class
+                || javaClass == ceylon.language.Identifiable.class){
+            if("equals".equals(name)){
+                // go fetch the method Object.equals
+                try {
+                    found = java.lang.Object.class.getDeclaredMethod("equals", java.lang.Object.class);
+                } catch (NoSuchMethodException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (SecurityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-                continue;
+            }else{
+                throw new RuntimeException("Object/Basic/Identifiable member not supported: "+decl.getName());
             }
-            // FIXME: deal with private stuff?
+        }else{
+            // FIXME: deal with Java classes and overloading
+            // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
+            found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);;
+            for(Method method : javaClass.getDeclaredMethods()){
+                if(!method.getName().equals(name))
+                    continue;
+                if(method.isAnnotationPresent(Ignore.class)){
+                    // save method for later
+                    // FIXME: proper checks
+                    if(firstDefaulted != -1){
+                        int params = method.getParameterTypes().length;
+                        defaultedMethods[params - firstDefaulted] = method;
+                    }
+                    continue;
+                }
+                // FIXME: deal with private stuff?
+            }
         }
         if(found != null){
             boolean variadic = found.isVarArgs();

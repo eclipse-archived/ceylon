@@ -53,6 +53,17 @@ public class AppliedValue<Type>
         com.redhat.ceylon.compiler.typechecker.model.Declaration decl = declaration.declaration;
         if(decl instanceof JavaBeanValue){
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
+            if(javaClass == ceylon.language.Object.class
+                    || javaClass == ceylon.language.Basic.class
+                    || javaClass == ceylon.language.Identifiable.class){
+                if("string".equals(decl.getName())
+                        || "hash".equals(decl.getName())){
+                    // look it up on j.l.Object, getterName should work
+                    javaClass = java.lang.Object.class;
+                }else{
+                    throw new RuntimeException("Object/Basic/Identifiable member not supported: "+decl.getName());
+                }
+            }
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
