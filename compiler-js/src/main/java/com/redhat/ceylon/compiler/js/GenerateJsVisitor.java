@@ -1187,22 +1187,6 @@ public class GenerateJsVisitor extends Visitor
             //Add reference to metamodel
             out(names.name(d), ".$$metamodel$$=");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-            out(";//", names.name(d), ".$$targs$$=");
-            Map<TypeParameter, ProducedType> _parms = new HashMap<>();
-            for (TypeParameter ctp : types.callable.getTypeParameters()) {
-                if ("Return".equals(ctp.getName())) {
-                    _parms.put(ctp, d.getType());
-                } else if ("Arguments".equals(ctp.getName())) {
-                    try {
-                        com.redhat.ceylon.compiler.typechecker.model.ParameterList plist = d.getParameterLists().get(0);
-                        _parms.put(ctp, types.tupleFromParameters(plist.getParameters()));
-                    } catch (Exception ex) {
-                        System.err.println("WTF????? This should never happen! JS compiler is seriously broken...");
-                        ex.printStackTrace();
-                    }
-                }
-            }
-            TypeUtils.printTypeArguments(that, _parms, this);
             endLine(true);
         }
     }
@@ -4114,9 +4098,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(TypeLiteral that) {
         out(clAlias, "typeLiteral$metamodel({Type:");
-        final StaticType type = that.getType();
-        final ProducedType pt = type.getTypeModel().resolveAliases();
-        TypeUtils.typeNameOrList(that, pt, this, true);
+        TypeUtils.typeNameOrList(that, that.getType().getTypeModel(), this, true);
         out("})");
     }
 
