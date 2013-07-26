@@ -175,8 +175,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.AttributeDeclaration getAttribute(String name) {
+    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.ValueDeclaration getValue(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
             return null;

@@ -7,7 +7,7 @@ import ceylon.language.metamodel {
 }
 
 shared interface FunctionDeclaration
-        satisfies FunctionOrAttributeDeclaration & GenericDeclaration & FunctionalDeclaration {
+        satisfies FunctionOrValueDeclaration & GenericDeclaration & FunctionalDeclaration {
 
     shared formal AppliedFunction<Anything, Nothing> apply(Type* types);
 

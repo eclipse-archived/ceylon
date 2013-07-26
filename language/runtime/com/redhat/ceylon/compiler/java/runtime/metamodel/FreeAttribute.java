@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.metamodel.declaration.OpenType;
-import ceylon.language.metamodel.declaration.AttributeDeclaration$impl;
+import ceylon.language.metamodel.declaration.ValueDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -21,8 +21,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeAttribute 
-    extends FreeFunctionOrAttribute
-    implements ceylon.language.metamodel.declaration.AttributeDeclaration, AnnotationBearing {
+    extends FreeFunctionOrValue
+    implements ceylon.language.metamodel.declaration.ValueDeclaration, AnnotationBearing {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAttribute.class);
@@ -37,7 +37,7 @@ public class FreeAttribute
 
     @Override
     @Ignore
-    public AttributeDeclaration$impl $ceylon$language$metamodel$declaration$AttributeDeclaration$impl() {
+    public ValueDeclaration$impl $ceylon$language$metamodel$declaration$ValueDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

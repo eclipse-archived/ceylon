@@ -1,6 +1,6 @@
-shared interface FunctionOrAttributeDeclaration
+shared interface FunctionOrValueDeclaration
     of FunctionDeclaration
-     | AttributeDeclaration
+     | ValueDeclaration
     satisfies TopLevelOrMemberDeclaration {
     
     // FIXME: add Boolean parameter

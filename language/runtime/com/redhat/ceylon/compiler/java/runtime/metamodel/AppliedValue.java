@@ -149,8 +149,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration")
-    public ceylon.language.metamodel.declaration.AttributeDeclaration getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration")
+    public ceylon.language.metamodel.declaration.ValueDeclaration getDeclaration() {
         return declaration;
     }
 

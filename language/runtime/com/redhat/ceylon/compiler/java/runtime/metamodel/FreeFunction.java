@@ -30,7 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeFunction 
-    extends FreeFunctionOrAttribute
+    extends FreeFunctionOrValue
     implements ceylon.language.metamodel.declaration.FunctionDeclaration, AnnotationBearing {
 
     @Ignore
@@ -40,7 +40,7 @@ public class FreeFunction
     
     private OpenType type;
 
-    private Sequential<? extends ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration> parameterList;
+    private Sequential<? extends ceylon.language.metamodel.declaration.FunctionOrValueDeclaration> parameterList;
 
     public FreeFunction(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
@@ -60,13 +60,13 @@ public class FreeFunction
         List<ParameterList> parameterLists = ((Functional)declaration).getParameterLists();
         ParameterList parameterList = parameterLists.get(0);
         List<Parameter> modelParameters = parameterList.getParameters();
-        ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration[] parameters = new ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration[modelParameters.size()];
+        ceylon.language.metamodel.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.metamodel.declaration.FunctionOrValueDeclaration[modelParameters.size()];
         i=0;
         for(Parameter modelParameter : modelParameters){
-            parameters[i] = (ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration)Metamodel.getOrCreateMetamodel(modelParameter);
+            parameters[i] = (ceylon.language.metamodel.declaration.FunctionOrValueDeclaration)Metamodel.getOrCreateMetamodel(modelParameter);
             i++;
         }
-        this.parameterList = Util.sequentialInstance(ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration.$TypeDescriptor, parameters);
+        this.parameterList = Util.sequentialInstance(ceylon.language.metamodel.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
     }
 
     @Override
@@ -91,18 +91,18 @@ public class FreeFunction
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::FunctionOrAttributeDeclaration>")
-    public Sequential<? extends ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration> getParameterDeclarations(){
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::FunctionOrValueDeclaration>")
+    public Sequential<? extends ceylon.language.metamodel.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
         return parameterList;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::FunctionOrAttributeDeclaration|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration getParameterDeclaration(@Name("name") String name){
+    @TypeInfo("ceylon.language.metamodel.declaration::FunctionOrValueDeclaration|ceylon.language::Null")
+    public ceylon.language.metamodel.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
         Iterator<?> iterator = parameterList.iterator();
         Object o;
         while((o = iterator.next()) != finished_.$get()){
-            ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration pd = (ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration) o;
+            ceylon.language.metamodel.declaration.FunctionOrValueDeclaration pd = (ceylon.language.metamodel.declaration.FunctionOrValueDeclaration) o;
             if(pd.getName().equals(name))
                 return pd;
         }

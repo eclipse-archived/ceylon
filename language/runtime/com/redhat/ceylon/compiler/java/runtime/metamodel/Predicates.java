@@ -269,7 +269,7 @@ class Predicates {
             Class<? extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.metamodel.declaration.VariableDeclaration.class) {
                 return DECLARATION_IS_VARIABLE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.AttributeDeclaration.class) {
+            } else if (declarationClass == ceylon.language.metamodel.declaration.ValueDeclaration.class) {
                 return DECLARATION_IS_VALUE;
             } else if (declarationClass == ceylon.language.metamodel.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;

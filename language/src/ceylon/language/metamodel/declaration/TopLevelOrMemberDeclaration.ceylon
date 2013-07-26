@@ -1,6 +1,6 @@
 import ceylon.language.metamodel{Annotated}
 
-shared interface TopLevelOrMemberDeclaration of FunctionOrAttributeDeclaration |
+shared interface TopLevelOrMemberDeclaration of FunctionOrValueDeclaration |
                                                 ClassOrInterfaceDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration {
     

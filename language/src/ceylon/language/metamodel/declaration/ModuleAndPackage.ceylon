@@ -50,8 +50,8 @@ shared interface Package
     shared formal Kind? getMember<Kind>(String name) 
             given Kind satisfies TopLevelOrMemberDeclaration;
 
-    "The attribute with the given name."
-    shared formal AttributeDeclaration? getAttribute(String name);
+    "The value with the given name."
+    shared formal ValueDeclaration? getValue(String name);
 
     "The class or interface with the given name."
     shared formal ClassOrInterfaceDeclaration? getClassOrInterface(String name);

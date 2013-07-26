@@ -8,7 +8,7 @@ import ceylon.language.metamodel.AttributeModel$impl;
 import ceylon.language.metamodel.ClassOrInterface;
 import ceylon.language.metamodel.Model$impl;
 import ceylon.language.metamodel.Member$impl;
-import ceylon.language.metamodel.declaration.AttributeDeclaration;
+import ceylon.language.metamodel.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -85,8 +85,8 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::AttributeDeclaration")
-    public AttributeDeclaration getDeclaration() {
+    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration")
+    public ValueDeclaration getDeclaration() {
         return this;
     }
 

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration$impl;
+import ceylon.language.metamodel.declaration.FunctionOrValueDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -9,23 +9,23 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public abstract class FreeFunctionOrAttribute 
+public abstract class FreeFunctionOrValue 
     extends FreeTopLevelOrMemberDeclaration
-    implements ceylon.language.metamodel.declaration.FunctionOrAttributeDeclaration {
+    implements ceylon.language.metamodel.declaration.FunctionOrValueDeclaration {
 
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeFunctionOrAttribute.class);
+    public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeFunctionOrValue.class);
     
     protected Parameter parameter;
 
-    public FreeFunctionOrAttribute(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
+    public FreeFunctionOrValue(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         super(declaration);
         this.parameter = Metamodel.getParameterFromTypedDeclaration(declaration);
     }
     
     @Override
     @Ignore
-    public FunctionOrAttributeDeclaration$impl $ceylon$language$metamodel$declaration$FunctionOrAttributeDeclaration$impl() {
+    public FunctionOrValueDeclaration$impl $ceylon$language$metamodel$declaration$FunctionOrValueDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }

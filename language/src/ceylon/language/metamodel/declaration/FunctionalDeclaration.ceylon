@@ -1,4 +1,4 @@
 shared interface FunctionalDeclaration {
-    shared formal FunctionOrAttributeDeclaration[] parameterDeclarations;
-    shared formal FunctionOrAttributeDeclaration? getParameterDeclaration(String name);
+    shared formal FunctionOrValueDeclaration[] parameterDeclarations;
+    shared formal FunctionOrValueDeclaration? getParameterDeclaration(String name);
 }
