@@ -1,5 +1,5 @@
     interface Set<Element,Other> of Other
-            satisfies Iterable<Element> 
+            //satisfies Iterable<Element> 
             given Other satisfies Set<Element,Other> {
         shared formal void add(Element elem);
         shared formal Boolean contains1(Element elem);
@@ -11,10 +11,11 @@
     class TreeSet<Element>()
             satisfies Set<Element,TreeSet<Element>> 
             given Element satisfies Object {
-        shared actual Iterator<Element> iterator() => nothing;
+        //shared actual Iterator<Element> iterator() => nothing;
+        {Element*} elements => nothing;
         actual shared void add(Element elem) {}
         actual shared Boolean contains1(Element elem) { 
-            for (e in this) {
+            for (e in elements) {
                 if (elem==e) {
                     return true;
                 }
@@ -27,7 +28,7 @@
             return this==that;
         }
         shared actual void addAll(TreeSet<Element> set) {
-            for (e in set) {
+            for (e in set.elements) {
                 add(e);
             }
         }

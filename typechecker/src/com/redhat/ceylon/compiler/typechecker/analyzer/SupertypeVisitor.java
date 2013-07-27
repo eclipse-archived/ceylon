@@ -37,6 +37,7 @@ public class SupertypeVisitor extends Visitor {
     private void checkForUndecidability(Tree.ExtendedType etn, Tree.SatisfiedTypes stn, 
             TypeDeclaration d, Tree.TypeDeclaration that) {
         boolean errors = false;
+        Unit unit = d.getUnit();
         if (stn!=null) {
             for (Tree.StaticType st: stn.getTypes()) {
                 ProducedType t = st.getTypeModel();
@@ -49,10 +50,20 @@ public class SupertypeVisitor extends Visitor {
                         d.getBrokenSupertypes().add(t);
                         errors = true;
                     }
+                    if (d.getSelfType()!=null) {
+                        for (TypeDeclaration td: t.getDeclaration()
+                                .getSuperTypeDeclarations()) {
+                            if (td.isParameterized() && td.getSelfType()==null) {
+                                st.addError("type with self type may not inherit a parameterized type with no self type: " +
+                                        td.getName());
+                                d.setExtendedType(unit.getBasicDeclaration().getType());
+                                errors = true;
+                            }
+                        }
+                    }
                 }
             }
         }
-        Unit unit = d.getUnit();
         if (etn!=null) {
             Tree.StaticType et = etn.getType();
             ProducedType t = et.getTypeModel();
@@ -64,6 +75,17 @@ public class SupertypeVisitor extends Visitor {
                     d.setExtendedType(unit.getBasicDeclaration().getType());
                     d.getBrokenSupertypes().add(t);
                     errors = true;
+                }
+                if (d.getSelfType()!=null) {
+                    for (TypeDeclaration td: t.getDeclaration()
+                            .getSuperTypeDeclarations()) {
+                        if (td.isParameterized() && td.getSelfType()==null) {
+                            et.addError("type with self type may not inherit a parameterized type with no self type: " +
+                                        td.getName());
+                            d.setExtendedType(unit.getBasicDeclaration().getType());
+                            errors = true;
+                        }
+                    }
                 }
             }
         }
