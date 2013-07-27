@@ -559,16 +559,16 @@ class Generics() {
 class Invariance() {
 
     interface O<T> {}
-    interface I satisfies O<I> {}
+    @error interface I satisfies O<I> {}
     void f1<E>() @error given E satisfies O<E> & O<I> {}
-    void f2<E>() given E satisfies O<E&I> {}
+    void f2<E>() @error given E satisfies O<E&I> {}
     void f3<E>() @error given E satisfies O<E> & I {}
     @error interface F1<E> satisfies O<E> & O<I> {}
     interface F2<E> satisfies O<E&I> {}
-    @error interface F3<E> satisfies O<E> & I {}
+    interface F3<E> satisfies O<E> & I {}
     
     void m<E>(O<E> & O<I> val) 
-            given E satisfies O<E> {
+            @error given E satisfies O<E> {
         //these fail because of the famous problem with
         //not being able to write down the pricipal
         //instantiation of O<E> & O<I>
@@ -577,7 +577,7 @@ class Invariance() {
     }
     
     void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
-            given E satisfies O<E> {
+            @error given E satisfies O<E> {
         O<E&I> g2 = f2;
         //fail because F1/F2 are not well-defined
         //and the subtype algo can't calculate
@@ -591,12 +591,12 @@ class Invariance() {
 class CoVariance() {
 
     interface O<out T> {}
-    interface I satisfies O<I> {}
+    @error interface I satisfies O<I> {}
     //nothing really wrong with this, 
     //but the spec says it is an error
     void f1<E>() @error given E satisfies O<E> & O<I> {}
-    void f2<E>() given E satisfies O<E&I> {}
-    void f3<E>() given E satisfies O<E> & I {}
+    void f2<E>() @error given E satisfies O<E&I> {}
+    void f3<E>() @error given E satisfies O<E> & I {}
     //nothing really wrong with this, 
     //but the spec says it is an error
     @error interface F1<E> satisfies O<E> & O<I> {}
@@ -604,16 +604,16 @@ class CoVariance() {
     interface F3<E> satisfies O<E> & I {}
     
     void m<E>(O<E> & O<I> val) 
-            given E satisfies O<E> {
+            @error given E satisfies O<E> {
         O<E> val1 = val;
         O<I> val2 = val;
     }
     
     void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
-            given E satisfies O<E> {
+            @error given E satisfies O<E> {
         O<E> & O<I> g1 = f1; 
         O<E> & O<I> g2 = f2; 
-        O<E> & O<I> g3 = f3; 
+        @error O<E> & O<I> g3 = f3; 
     }
     
 }
