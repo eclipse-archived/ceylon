@@ -1,7 +1,22 @@
 import ceylon.language.metamodel { ... }
+import ceylon.language.metamodel.declaration { Declaration }
+
+annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
+annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
 
 Null table(String name, String schema) { return null; }
 Null persistent(String column, Anything type, Boolean update) { return null; }
+
+"A class"
+by ("Gavin King",
+    "Emmanuel Bernard")
+class ToplevelClass() {}
+
+annotation class TypeDescription(String desc) 
+    satisfies OptionalAnnotation<TypeDescription,Annotated> {}
+
+annotation class SequencedDescription(String desc) 
+    satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
 
 class Annotations() {
     
@@ -14,7 +29,7 @@ class Annotations() {
         "Emmanuel Bernard")
     class LocalClass() {}
     
-    see (`LocalClass`, `Annotations`)
+    seethese (`ToplevelClass`, `Annotations`)
     void accept(LocalClass c) {}
     
     class TrimmedString() {}
@@ -32,13 +47,7 @@ class Annotations() {
     
     @error print ("hello") class Broken() {}
     
-    annotation class TypeDescription(String desc) 
-        satisfies OptionalAnnotation<TypeDescription,Annotated> {}
-    
-    annotation class SequencedDescription(String desc) 
-        satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
-
-    void getMeOutOfTheInitialiserSection(){
+    /*void getMeOutOfTheInitialiserSection(){
 
         Class<Annotations,[]> at = `Annotations`;
         Member<Annotations,Class<TypeDescription,[String]>> tdt = `TypeDescription`;
@@ -46,5 +55,5 @@ class Annotations() {
 
         TypeDescription? d = annotations<TypeDescription,TypeDescription?,Annotated>(tdt(this), at.declaration);
         SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Annotated>(sdt(this), at.declaration);
-    }
+    }*/
 }

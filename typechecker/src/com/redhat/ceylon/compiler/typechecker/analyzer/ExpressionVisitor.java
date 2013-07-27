@@ -9,6 +9,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminatePare
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
@@ -3699,20 +3701,27 @@ public class ExpressionVisitor extends Visitor {
             String name = name(that.getIdentifier());
             String container;
             boolean ambiguous;
+            List<ProducedType> signature = that.getSignature();
+            boolean ellipsis = that.getEllipsis();
             if (packageQualified) {
                 container = "package " + unit.getPackage().getNameAsString();
-                member = (TypedDeclaration) unit.getPackage()
-                        .getMember(name, that.getSignature(), that.getEllipsis());
+                Declaration pm = unit.getPackage()
+                        .getMember(name, signature, ellipsis);
+                if (pm instanceof TypedDeclaration) {
+                    member = (TypedDeclaration) pm;
+                }
+                else {
+                    member = null;
+                }
                 ambiguous = false;
             }
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type " + d.getName(unit);
-                member = (TypedDeclaration) d.getMember(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                member = getTypedMember(d, name, signature, ellipsis, unit);
                 ambiguous = member==null && d.isMemberAmbiguous(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                        signature, ellipsis);
             }
             if (member==null) {
                 if (ambiguous) {
@@ -3992,20 +4001,27 @@ public class ExpressionVisitor extends Visitor {
             String name = name(that.getIdentifier());
             String container;
             boolean ambiguous;
+            List<ProducedType> signature = that.getSignature();
+            boolean ellipsis = that.getEllipsis();
             if (packageQualified) {
                 container = "package " + unit.getPackage().getNameAsString();
-                type = (TypeDeclaration) unit.getPackage()
-                        .getMember(name, that.getSignature(), that.getEllipsis());
+                Declaration pm = unit.getPackage()
+                        .getMember(name, signature, ellipsis);
+                if (pm instanceof TypeDeclaration) {
+                    type = (TypeDeclaration) pm;
+                }
+                else {
+                    type = null;
+                }
                 ambiguous = false;
             }
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type " + d.getName(unit);
-                type = (TypeDeclaration) d.getMember(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                type = getTypeMember(d, name, signature, ellipsis, unit);
                 ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                        signature, ellipsis);
             }
             if (type==null) {
                 if (ambiguous) {
@@ -5295,6 +5311,7 @@ public class ExpressionVisitor extends Visitor {
         if(declaration == null)
             return;
         that.setDeclaration(declaration);
+        checkNonlocalType(that.getType(), declaration);
         if(declaration instanceof Class){
             boolean isParameterised = isParameterised(declaration);
             if(!isParameterised){
@@ -5349,6 +5366,27 @@ public class ExpressionVisitor extends Visitor {
             // FIXME: we get there for UnknownType too, but I'm not sure if we need to add an error or if getting an UnknownType
             // means we already logged an error?
             that.addError("Type literal not supported yet: " + declaration);
+        }
+    }
+
+    private void checkNonlocalType(Node that, TypeDeclaration declaration) {
+        if (declaration instanceof UnionType) {
+            for (TypeDeclaration ctd: declaration.getCaseTypeDeclarations()) {
+                checkNonlocalType(that, ctd);
+            }
+        }
+        if (declaration instanceof IntersectionType) {
+            for (TypeDeclaration std: declaration.getSatisfiedTypeDeclarations()) {
+                checkNonlocalType(that, std);
+            }
+        }
+        else if (declaration instanceof ClassOrInterface &&
+                (!declaration.isClassOrInterfaceMember()||!declaration.isShared())
+                && !declaration.isToplevel()){
+            that.addError("metamodel references to local types not supported yet");
+        }
+        else if (declaration.getContainer() instanceof TypeDeclaration) {
+            checkNonlocalType(that, (TypeDeclaration) declaration.getContainer());
         }
     }
     
@@ -5411,15 +5449,22 @@ public class ExpressionVisitor extends Visitor {
                     // let it go, we already logged an error for the missing type
                     return;
                 }
+                checkNonlocalType(that.getType(), d);
                 String container = "type " + d.getName(unit);
-                Declaration member = d.getMember(name, unit, null, false);
-                if(member instanceof TypedDeclaration){
+                TypedDeclaration member = getTypedMember(d, name, null, false, unit);
+                if(member==null) {
+                    if (d.isMemberAmbiguous(name, unit, null, false)) {
+                        that.addError("method or attribute is ambiguous: " +
+                                name + " for " + container);
+                    }
+                    else {
+                        that.addError("method or attribute does not exist: " +
+                                name + " in " + container);
+                    }
+                } else {
                     checkQualifiedVisibility(that, (TypedDeclaration) member, name, container, false);
                     that.setDeclaration(member);
                     setMetamodelType(that, member, qualifyingType);
-                }else{
-                    that.addError("member method or attribute is ambiguous: " +
-                            name + " for " + container);
                 }
             }else{
                 Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);

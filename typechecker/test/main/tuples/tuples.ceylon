@@ -68,7 +68,7 @@ void test() {
     [Integer, Integer, String, Integer, Integer] t6 = 
             [1, 2, "", 4, 5][-2...];
     
-    interface R<Element> satisfies Ranged<Integer,Element[]> {
+    @error interface R<Element> satisfies Ranged<Integer,Element[]> {
         shared actual Element[] spanTo(Integer to) {
             value end = to;
             return this[0:end+1];

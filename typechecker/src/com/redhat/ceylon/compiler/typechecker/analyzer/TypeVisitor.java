@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
@@ -227,8 +227,7 @@ public class TypeVisitor extends Visitor {
             if (d.isToplevel() && n!=null && 
                     i.getAlias().equals(n)) {
                 if (alias==null) {
-                    id
-                        .addError("toplevel declaration with this name declared in this unit: " + n);
+                    id.addError("toplevel declaration with this name declared in this unit: " + n);
                 }
                 else {
                     alias.addError("toplevel declaration with this name declared in this unit: " + n);
@@ -567,7 +566,7 @@ public class TypeVisitor extends Visitor {
         if (pt!=null) {
             TypeDeclaration d = pt.getDeclaration();
 			String name = name(that.getIdentifier());
-            TypeDeclaration type = (TypeDeclaration) d.getMember(name, unit, null, false);
+            TypeDeclaration type = getTypeMember(d, name, null, false, unit);
             if (type==null) {
                 if (d.isMemberAmbiguous(name, unit, null, false)) {
                     that.addError("member type declaration is ambiguous: " + 
