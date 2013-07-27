@@ -82,7 +82,7 @@ public class SupertypeVisitor extends Visitor {
                             }
                             errors = true;
                         }
-                        l = t.isIllegalSelfTypeOccurrence(false, singleton(d));
+                        l = t.isIllegalSelfTypeOccurrence(false, false, singleton(d));
                         if (!l.isEmpty()) {
                             st.addError("self typed type appears as argument in supertype " +
                                     t.getProducedTypeName() + " of " + d.getName());
@@ -108,7 +108,7 @@ public class SupertypeVisitor extends Visitor {
                         }
                         errors = true;
                     }
-                    l = t.isIllegalSelfTypeOccurrence(false, singleton(d));
+                    l = t.isIllegalSelfTypeOccurrence(false, false, singleton(d));
                     if (!l.isEmpty()) {
                         et.addError("self typed type appears as argument in supertype " +
                                     t.getProducedTypeName() + " of " + d.getName());

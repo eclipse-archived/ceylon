@@ -1628,7 +1628,7 @@ public class ProducedType extends ProducedReference {
     }
     
     public List<TypeDeclaration> isIllegalSelfTypeOccurrence(boolean arg,
-            Set<TypeDeclaration> visited) {
+            boolean selfTypeArg, Set<TypeDeclaration> visited) {
         TypeDeclaration d = getDeclaration();
         if (d instanceof TypeAlias||
             d instanceof ClassAlias||
@@ -1638,7 +1638,7 @@ public class ProducedType extends ProducedReference {
             }
             if (d.getExtendedType()!=null) {
                 List<TypeDeclaration> l = d.getExtendedType()
-                        .isIllegalSelfTypeOccurrence(arg, extend(d, visited));
+                        .isIllegalSelfTypeOccurrence(arg, selfTypeArg, extend(d, visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }
@@ -1646,16 +1646,16 @@ public class ProducedType extends ProducedReference {
         }
         else if (d instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                List<TypeDeclaration> l = ct.isIllegalSelfTypeOccurrence(arg, visited);
+                List<TypeDeclaration> l = ct.isIllegalSelfTypeOccurrence(arg, selfTypeArg, visited);
                 if (!l.isEmpty()) return l;
             }
         }
         else if (d instanceof IntersectionType) {
-            if (arg) {
+            if (selfTypeArg) {
                 return new ArrayList<TypeDeclaration>(singletonList(d));
             }
             for (ProducedType st: getSatisfiedTypes()) {
-                List<TypeDeclaration> l = st.isIllegalSelfTypeOccurrence(arg, visited);
+                List<TypeDeclaration> l = st.isIllegalSelfTypeOccurrence(arg, selfTypeArg, visited);
                 if (!l.isEmpty()) return l;
             }
         }
@@ -1667,15 +1667,22 @@ public class ProducedType extends ProducedReference {
                     }
                 }
             }
+            boolean shape = false;
+            for (TypeParameter tp: getDeclaration().getTypeParameters()) {
+                if (tp.isSelfType()) {
+                    shape=true;
+                    break;
+                }
+            }
             for (ProducedType at: getTypeArgumentList()) {
                 if (at!=null) {
-                    List<TypeDeclaration> l = at.isIllegalSelfTypeOccurrence(true, visited);
+                    List<TypeDeclaration> l = at.isIllegalSelfTypeOccurrence(true, shape|selfTypeArg, visited);
                     if (!l.isEmpty()) return l;
                 }
             }
             ProducedType qt = getQualifyingType();
             if (qt!=null) {
-                List<TypeDeclaration> l = qt.isIllegalSelfTypeOccurrence(arg, visited);
+                List<TypeDeclaration> l = qt.isIllegalSelfTypeOccurrence(arg, selfTypeArg, visited);
                 if (!l.isEmpty()) return l;
             }
         }
