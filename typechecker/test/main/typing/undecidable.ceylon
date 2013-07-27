@@ -6,7 +6,7 @@ void undecidable() {
     
     interface Co<out T> {}
     @error interface A satisfies Co<Inv<A&B&Co<Inv<A&B>>>> {}
-    interface B satisfies Co<Co<B&A>> {}
+    @error interface B satisfies Co<Co<B&A>> {}
     class Inv<T>() {}
     @error Inv<A&B&Co<Inv<A>>> foo(Inv<A&B> bar) => bar;
     
@@ -17,7 +17,7 @@ void undecidable() {
     alias ZIntZ => Z&Int<Z>;
     
     interface Invar<P> {}
-    interface G satisfies Invar<H> {}
+    @error interface G satisfies Invar<H> {}
     @error interface H satisfies Invar<G&H> {}
     
     interface Sub satisfies In<E> {}
@@ -30,20 +30,20 @@ void undecidable() {
 void moreundecidable() {
     interface Co<out P> {}
     @error interface A satisfies Co<B&Co<A>> {}
-    interface B satisfies Co<A&Co<B>> {}
+    @error interface B satisfies Co<A&Co<B>> {}
     @error Co<A&B&Co<A&B>> foo(Co<A&B> co) => co;
 }
 
 void decidable() {
     interface Co<out P> {}
-    interface Contra<in P> {}    
+    interface Contra<in P> of P {}    
     interface Inv<P> {}
     
-    interface A satisfies Co<Co<A>> {}
-    interface B satisfies Co<Co<B>> {}
-    A&Co<B&Co<A>> sub1(A&Co<B> sub) => sub;
+    @error interface A satisfies Co<Co<A>> {}
+    @error interface B satisfies Co<Co<B>> {}
+    @error A&Co<B&Co<A>> sub1(A&Co<B> sub) => sub;
     A&Co<B> sup1(A&Co<B&Co<A>> sup) => sup;
-    Inv<A&Co<B&Co<A>>> foo1(Inv<A&Co<B>> foo) => foo;
+    @error Inv<A&Co<B&Co<A>>> foo1(Inv<A&Co<B>> foo) => foo;
     
     interface X satisfies Contra<X> {}
     interface Y satisfies Contra<Y> {}
@@ -84,10 +84,16 @@ void evenmore() {
 void moremore() {
     interface S<out P> {}
     
-    interface A satisfies S<S<C>> {}
-    interface B satisfies S<C> {}
-    @error class C() satisfies A&B {}
+    @error interface A satisfies S<S<C>> {}
+    @error interface B satisfies S<C> {}
+    class C() satisfies A&B {}
     
     interface T<out P> satisfies S<S<P>> {}
     @error class D() satisfies S<D>&T<D> {}
+}
+
+void extramore() {
+    interface Inv<O, P> of O {}
+    @error interface A satisfies Inv<A,A&B> {}
+    interface B satisfies Inv<B,B> {}
 }
