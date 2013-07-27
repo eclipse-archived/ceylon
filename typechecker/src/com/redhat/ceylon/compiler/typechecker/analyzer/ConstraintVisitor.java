@@ -184,6 +184,10 @@ public class ConstraintVisitor extends Visitor {
                         checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
                                 pa.getParameter().getType());
                     }
+                    else if (pa instanceof Tree.SpreadArgument) {
+                        checkAnnotationArgument(a, ((Tree.SpreadArgument) pa).getExpression(),
+                                pa.getParameter().getType());
+                    }
                     else {
                         pa.addError("illegal annotation argument");
                     }
