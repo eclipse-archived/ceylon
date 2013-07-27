@@ -106,11 +106,11 @@ class GenericRefinement() {
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies Baz<T&S>;
+		            @error given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
 		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&String> {}
+		            @error given T satisfies Baz<T&String> {}
 		}
     }
 
@@ -118,10 +118,10 @@ class GenericRefinement() {
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies List<T&S>;
+		            @error given T satisfies List<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
-		    shared actual void accept<T>(T t)
+		    @error shared actual void accept<T>(T t)
 		            given T satisfies List<String> {}
 		}
     }
@@ -130,7 +130,7 @@ class GenericRefinement() {
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies Comparable<T&S>;
+		            @error given T satisfies Comparable<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
 		    @error
@@ -144,12 +144,11 @@ class GenericRefinement() {
         interface Baz<X> {}
 		interface Foo<S> {
 		    shared formal void accept<T>(T t) 
-		            given T satisfies Baz<T&S>;
+		            @error given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<I> {
-			@error
 		    shared actual void accept<T>(T t)
-		            given T satisfies Baz<T&J> {}
+		            @error given T satisfies Baz<T&J> {}
 		}
     }
     
@@ -158,11 +157,11 @@ class GenericRefinement() {
         interface Baz<X> {}
         interface Foo<S> {
             shared formal void accept<T>(T t) 
-                    given T satisfies Baz<T&S>&J;
+                    @error given T satisfies Baz<T&S>&J;
         }
         class Bar() satisfies Foo<I> {
             shared actual void accept<T>(T t)
-                    given T satisfies Baz<T&I>&J {}
+                    @error given T satisfies Baz<T&I>&J {}
         }
     }
     

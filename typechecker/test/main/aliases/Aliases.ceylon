@@ -124,7 +124,7 @@ abstract class I(Integer i) => Integer(i);
 
 void inheritsAlias() {
     interface I<T> {}
-    interface J satisfies I<J> {}
+    @error interface J satisfies I<J> {}
     interface K => J;
     interface L satisfies I<String> {}
     interface M => L;
