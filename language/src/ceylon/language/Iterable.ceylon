@@ -312,8 +312,8 @@ shared interface Iterable<out Element, out Absent=Null>
      
      results in an iterable object with the elements
      `0`, `3`, `6`, and `9` in that order."
-    throws (Exception, "if the given step size is nonpositive, 
-                        i.e. `step<1`") //TODO: this is an assertion
+    //throws (`Exception`, "if the given step size is nonpositive, 
+    //                    i.e. `step<1`") //TODO: this is an assertion
     shared default Iterable<Element,Absent> by(Integer step) {
         "step size must be greater than zero"
         assert (step > 0);
