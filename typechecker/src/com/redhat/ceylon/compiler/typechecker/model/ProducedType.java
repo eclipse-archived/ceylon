@@ -216,11 +216,6 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
-        if (depth>30) {
-            throw new RuntimeException("undecidable subtyping");
-        }
-        depth++;
-        try {
         if (isNothing()) {
             return true;
         }
@@ -328,8 +323,6 @@ public class ProducedType extends ProducedReference {
                 return true;
             }
         }
-        }
-        finally { depth--; }
     }
 
     /**
@@ -604,11 +597,6 @@ public class ProducedType extends ProducedReference {
      * satisfying the given predicate. 
      */
     public ProducedType getSupertype(final Criteria c) {
-        if (depth>30) {
-            throw new RuntimeException("undecidable canonicalization");
-        }
-        depth++;
-        try {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
         }
@@ -622,8 +610,6 @@ public class ProducedType extends ProducedReference {
         else {
             return null;
         }
-        }
-        finally { depth--; }
     }
     
     private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
@@ -685,8 +671,6 @@ public class ProducedType extends ProducedReference {
 		}
 		return stc;
 	}
-	
-	public static int depth=0; 
 	
     private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
@@ -1524,14 +1508,7 @@ public class ProducedType extends ProducedReference {
         // cache the resolved version
         if(resolvedAliases == null){
             // really compute it
-            if (depth>50) {
-                throw new RuntimeException("undecidable canonicalization");
-            }
-            depth++;
-            try {
             resolvedAliases = curriedResolveAliases();
-            }
-            finally { depth--; }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
             if(resolvedAliases != this){
@@ -1650,6 +1627,61 @@ public class ProducedType extends ProducedReference {
         return results;
     }
     
+    public List<TypeDeclaration> isIllegalSelfTypeOccurrence(boolean arg,
+            Set<TypeDeclaration> visited) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeAlias||
+            d instanceof ClassAlias||
+            d instanceof InterfaceAlias) {
+            if (visited.contains(d)) {
+                return emptyList();
+            }
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isIllegalSelfTypeOccurrence(arg, extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                List<TypeDeclaration> l = ct.isIllegalSelfTypeOccurrence(arg, visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            if (arg) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
+            }
+            for (ProducedType st: getSatisfiedTypes()) {
+                List<TypeDeclaration> l = st.isIllegalSelfTypeOccurrence(arg, visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        else {
+            if (arg) {
+                for (TypeParameter tp: getDeclaration().getTypeParameters()) {
+                    if (tp.isSelfType()) {
+                        return new ArrayList<TypeDeclaration>(singletonList(d));
+                    }
+                }
+            }
+            for (ProducedType at: getTypeArgumentList()) {
+                if (at!=null) {
+                    List<TypeDeclaration> l = at.isIllegalSelfTypeOccurrence(true, visited);
+                    if (!l.isEmpty()) return l;
+                }
+            }
+            ProducedType qt = getQualifyingType();
+            if (qt!=null) {
+                List<TypeDeclaration> l = qt.isIllegalSelfTypeOccurrence(arg, visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        return emptyList();
+    }
+    
     public List<TypeDeclaration> isRecursiveTypeAliasDefinition(Set<TypeDeclaration> visited) {
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||
@@ -1739,11 +1771,11 @@ public class ProducedType extends ProducedReference {
                 return new ArrayList<TypeDeclaration>(singletonList(d));
             }
             if (d.getExtendedType()!=null) {
-                List<TypeDeclaration> i = d.getExtendedType()
+                List<TypeDeclaration> l = d.getExtendedType()
                         .isRecursiveRawTypeDefinition(extend(d, visited));
-                if (!i.isEmpty()) {
-                    i.add(0, d);
-                    return i;
+                if (!l.isEmpty()) {
+                    l.add(0, d);
+                    return l;
                 }
             }
             for (ProducedType bt: d.getBrokenSupertypes()) {
@@ -1754,6 +1786,82 @@ public class ProducedType extends ProducedReference {
             }
             for (ProducedType st: getSatisfiedTypes()) {
                 List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+        }
+        return emptyList();
+    }
+    
+    public List<TypeDeclaration> isRecursiveTypeDefinition(TypeDeclaration td, 
+            Set<TypeDeclaration> visited) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeAlias||
+            d instanceof ClassAlias||
+            d instanceof InterfaceAlias) {
+            if (visited.contains(d)) {
+                return emptyList();
+            }
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveTypeDefinition(td, extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                List<TypeDeclaration> l = ct.isRecursiveTypeDefinition(td, visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getSatisfiedTypes()) {
+                List<TypeDeclaration> l = st.isRecursiveTypeDefinition(td, visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        else {
+            if (d.equals(td)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
+            }
+            if (visited.contains(d)) {
+                return emptyList();
+            }
+            boolean shape = false;
+            for (TypeParameter tp: getDeclaration().getTypeParameters()) {
+                if (tp.isSelfType()) {
+                    shape=true;
+                    break;
+                }
+            }
+            if (!shape) {
+                //int i=0;
+                for (ProducedType at: getTypeArgumentList()) {
+                    //TypeParameter tp = getDeclaration().getTypeParameters().get(i++);
+                    if (at!=null /*&& !tp.isSelfType()*/) {
+                        List<TypeDeclaration> l = at.isRecursiveTypeDefinition(td, visited);
+                        if (!l.isEmpty()) return l;
+                    }
+                }
+            }
+            ProducedType qt = getQualifyingType();
+            if (qt!=null) {
+                List<TypeDeclaration> l = qt.isRecursiveTypeDefinition(td, visited);
+                if (!l.isEmpty()) return l;
+            }
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveTypeDefinition(td, extend(d, visited));
+                if (!l.isEmpty()) {
+                    l.add(0, d);
+                    return l;
+                }
+            }
+            for (ProducedType st: getSatisfiedTypes()) {
+                List<TypeDeclaration> l = st.isRecursiveTypeDefinition(td, extend(d, visited));
                 if (!l.isEmpty()) {
                     return extend(d, l);
                 }

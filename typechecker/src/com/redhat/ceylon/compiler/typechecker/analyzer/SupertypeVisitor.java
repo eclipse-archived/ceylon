@@ -1,13 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor.typeList;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static java.util.Collections.singleton;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -60,7 +57,7 @@ public class SupertypeVisitor extends Visitor {
             Tree.StaticType et = etn.getType();
             ProducedType t = et.getTypeModel();
             if (t!=null) {
-                List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton((TypeDeclaration)d));
+                List<TypeDeclaration> l = t.isRecursiveRawTypeDefinition(singleton(d));
                 if (!l.isEmpty()) {
                     etn.addError("inheritance is circular: definition of " + 
                             d.getName() + " is recursive, involving " + typeList(l));
@@ -71,7 +68,58 @@ public class SupertypeVisitor extends Visitor {
             }
         }
         if (!errors) {
-            List<ProducedType> list = new ArrayList<ProducedType>();
+            if (stn!=null) {
+                for (Tree.StaticType st: stn.getTypes()) {
+                    ProducedType t = st.getTypeModel();
+                    if (t!=null) {
+                        List<TypeDeclaration> l = t.isRecursiveTypeDefinition(d, singleton(d));
+                        if (!l.isEmpty()) {
+                            st.addError("inheritance is circular: definition of " + d.getName() + 
+                                    " is recursive, involving " + typeList(l) + 
+                                    " in supertype " + t.getProducedTypeName());
+                            if (!unit.getPackage().getQualifiedNameString().startsWith("ceylon")) {
+                                d.getSatisfiedTypes().remove(t);
+                            }
+                            errors = true;
+                        }
+                        l = t.isIllegalSelfTypeOccurrence(false, singleton(d));
+                        if (!l.isEmpty()) {
+                            st.addError("self typed type appears as argument in supertype " +
+                                    t.getProducedTypeName() + " of " + d.getName());
+                            if (!unit.getPackage().getQualifiedNameString().startsWith("ceylon")) {
+                                d.getSatisfiedTypes().remove(t);
+                            }
+                            errors = true;
+                        }
+                    }
+                }
+            }
+            if (etn!=null) {
+                Tree.StaticType et = etn.getType();
+                ProducedType t = et.getTypeModel();
+                if (t!=null) {
+                    List<TypeDeclaration> l = t.isRecursiveTypeDefinition(d, singleton(d));
+                    if (!l.isEmpty()) {
+                        et.addError("inheritance is circular: definition of " + d.getName() + 
+                                " is recursive, involving " + typeList(l) + 
+                                " in supertype " + t.getProducedTypeName());
+                        if (!unit.getPackage().getQualifiedNameString().startsWith("ceylon")) {
+                            d.setExtendedType(unit.getBasicDeclaration().getType());
+                        }
+                        errors = true;
+                    }
+                    l = t.isIllegalSelfTypeOccurrence(false, singleton(d));
+                    if (!l.isEmpty()) {
+                        et.addError("self typed type appears as argument in supertype " +
+                                    t.getProducedTypeName() + " of " + d.getName());
+                        if (!unit.getPackage().getQualifiedNameString().startsWith("ceylon")) {
+                            d.setExtendedType(unit.getBasicDeclaration().getType());
+                        }
+                        errors = true;
+                    }
+                }
+            }
+            /*List<ProducedType> list = new ArrayList<ProducedType>();
             try {
                 for (ProducedType st: d.getType().getSupertypes()) {
                     addToIntersection(list, st, unit);
@@ -85,7 +133,7 @@ public class SupertypeVisitor extends Visitor {
                 d.getSatisfiedTypes().clear();
                 d.setExtendedType(unit.getBasicDeclaration().getType());
                 return;
-            }
+            }*/
             if (stn!=null) {
                 for (Tree.StaticType st: stn.getTypes()) {
                     ProducedType t = st.getTypeModel();

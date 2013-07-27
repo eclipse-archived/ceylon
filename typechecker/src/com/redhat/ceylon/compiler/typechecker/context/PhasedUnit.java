@@ -24,7 +24,6 @@ import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -243,7 +242,6 @@ public class PhasedUnit {
 
     public synchronized void validateRefinement() {
         if (! refinementValidated) {
-            ProducedType.depth=0;
             //System.out.println("Validate member refinement for " + fileName);
         	compilationUnit.visit(new AliasVisitor());
             compilationUnit.visit(new SupertypeVisitor()); //TODO: move to a new phase!
@@ -254,7 +252,6 @@ public class PhasedUnit {
 
     public synchronized void analyseTypes() {
         if (! fullyTyped) {
-            ProducedType.depth=-100;
             //System.out.println("Run analysis phase for " + fileName);
             compilationUnit.visit(new ExpressionVisitor());
             compilationUnit.visit(new ConstraintVisitor());
