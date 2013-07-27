@@ -227,8 +227,7 @@ public class TypeVisitor extends Visitor {
             if (d.isToplevel() && n!=null && 
                     i.getAlias().equals(n)) {
                 if (alias==null) {
-                    id
-                        .addError("toplevel declaration with this name declared in this unit: " + n);
+                    id.addError("toplevel declaration with this name declared in this unit: " + n);
                 }
                 else {
                     alias.addError("toplevel declaration with this name declared in this unit: " + n);
