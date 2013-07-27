@@ -179,7 +179,7 @@ public class ConstraintVisitor extends Visitor {
         Tree.NamedArgumentList nal = ie.getNamedArgumentList();
         if (pal!=null) {
             for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
-                if (pa!=null) {
+                if (pa!=null && pa.getParameter()!=null) {
                     if (pa instanceof Tree.ListedArgument) {
                         checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
                                 pa.getParameter().getType());
@@ -195,7 +195,7 @@ public class ConstraintVisitor extends Visitor {
                 if (na!=null) {
                     if (na instanceof Tree.SpecifiedArgument) {
                         Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
-                        if (se!=null) {
+                        if (se!=null && na.getParameter()!=null) {
                             checkAnnotationArgument(a, se.getExpression(),
                                     na.getParameter().getType());
                         }
