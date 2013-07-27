@@ -118,7 +118,7 @@ public class ConstraintVisitor extends Visitor {
             Tree.Type type = that.getType();
             if (type!=null) {
                 if (!type.getTypeModel().getDeclaration().isAnnotation()) {
-                    type.addError("annotation constructor must return an annotation type");
+                    //type.addError("annotation constructor must return an annotation type");
                 }
             }
             List<Tree.ParameterList> pls = that.getParameterLists();
@@ -215,7 +215,7 @@ public class ConstraintVisitor extends Visitor {
             that.getPrimary().addError("annotation must be a toplevel function reference");
         }*/
         if (dec!=null && !dec.isAnnotation()) {
-            that.getPrimary().addError("not an annotation constructor");
+            //that.getPrimary().addError("not an annotation constructor");
         }
         else {
             checkAnnotationArguments(null, (Tree.InvocationExpression) that);

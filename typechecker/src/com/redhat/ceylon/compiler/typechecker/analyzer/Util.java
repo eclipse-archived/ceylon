@@ -33,6 +33,24 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class Util {
     
+    static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
+            List<ProducedType> signature, boolean ellipsis, Unit unit) {
+        Declaration member = d.getMember(name, unit, signature, ellipsis);
+        if (member instanceof TypedDeclaration)
+            return (TypedDeclaration) member;
+        else
+            return null;
+    }
+
+    static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
+            List<ProducedType> signature, boolean ellipsis, Unit unit) {
+        Declaration member = d.getMember(name, unit, signature, ellipsis);
+        if (member instanceof TypeDeclaration)
+            return (TypeDeclaration) member;
+        else
+            return null;
+    }
+
     static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
             List<ProducedType> signature, boolean ellipsis) {
         Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
