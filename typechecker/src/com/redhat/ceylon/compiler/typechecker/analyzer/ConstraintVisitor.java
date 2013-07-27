@@ -16,21 +16,24 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class ConstraintVisitor extends Visitor {
     
     private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
-        TypeDeclaration ptd = pt.getDeclaration();
-        Unit unit = pt.getDeclaration().getUnit();
-        if (!ptd.isAnnotation() &&
-                !ptd.equals(unit.getStringDeclaration()) &&
-                !ptd.equals(unit.getIntegerDeclaration()) &&
-                !ptd.equals(unit.getFloatDeclaration()) &&
-                !ptd.equals(unit.getCharacterDeclaration()) &&
-                !ptd.equals(unit.getIterableDeclaration()) &&
-                !ptd.equals(unit.getSequentialDeclaration())) {
-            return true;
-        }
-        if (ptd.equals(unit.getIterableDeclaration()) ||
-                ptd.equals(unit.getSequentialDeclaration())) {
-            if (isIllegalAnnotationParameterType(unit.getIteratedType(pt))) {
+        if (pt!=null) {
+            TypeDeclaration ptd = pt.getDeclaration();
+            Unit unit = pt.getDeclaration().getUnit();
+            if (!ptd.isAnnotation() &&
+                    !ptd.equals(unit.getStringDeclaration()) &&
+                    !ptd.equals(unit.getIntegerDeclaration()) &&
+                    !ptd.equals(unit.getFloatDeclaration()) &&
+                    !ptd.equals(unit.getCharacterDeclaration()) &&
+                    !ptd.equals(unit.getIterableDeclaration()) &&
+                    !ptd.equals(unit.getSequentialDeclaration()) &&
+                    !pt.isSubtypeOf(getDeclarationDeclaration(unit).getType())) {
                 return true;
+            }
+            if (ptd.equals(unit.getIterableDeclaration()) ||
+                    ptd.equals(unit.getSequentialDeclaration())) {
+                if (isIllegalAnnotationParameterType(unit.getIteratedType(pt))) {
+                    return true;
+                }
             }
         }
         return false;
@@ -78,11 +81,18 @@ public class ConstraintVisitor extends Visitor {
         }
     }
 
-    private TypeDeclaration getAnnotationDeclaration(Unit unit) {
+    private static TypeDeclaration getAnnotationDeclaration(Unit unit) {
         return (TypeDeclaration) unit.getPackage().getModule()
                 .getLanguageModule()
                 .getDirectPackage("ceylon.language.metamodel")
                 .getMemberOrParameter(unit, "Annotation", null, false);
+    }
+
+    private static TypeDeclaration getDeclarationDeclaration(Unit unit) {
+        return (TypeDeclaration) unit.getPackage().getModule()
+                .getLanguageModule()
+                .getDirectPackage("ceylon.language.metamodel.declaration")
+                .getMemberOrParameter(unit, "Declaration", null, false);
     }
 
     @Override
