@@ -1,4 +1,4 @@
-    interface Set<Element,Other>
+    interface Set<Element,Other> of Other
             satisfies Iterable<Element> 
             given Other satisfies Set<Element,Other> {
         shared formal void add(Element elem);
