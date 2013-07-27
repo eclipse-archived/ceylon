@@ -7,7 +7,8 @@
  a wider type."
 //see (`Integer`, `Float`)
 by ("Gavin")
-shared interface Invertable<out Inverse> {
+shared interface Invertable<out Inverse> of Inverse
+    given Inverse satisfies Invertable<Inverse> {
     
     "The additive inverse of the value, which may be expressed
      as an instance of a wider type."

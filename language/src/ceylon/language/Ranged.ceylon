@@ -9,7 +9,7 @@
      print(\"hello world\"[0..5])
  "
 //see (`List`, `Sequence`, `String`)
-shared interface Ranged<in Index, out Span> 
+shared interface Ranged<in Index, out Span> of Span
         given Index satisfies Comparable<Index> {
     
     "Obtain a span containing the mapped values between 
