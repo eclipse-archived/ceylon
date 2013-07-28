@@ -8,7 +8,7 @@
     
     <itemizedlist>
         <listitem>
-            <para>literal values and self references,</para>
+            <para>literal values, string templates, and self references,</para>
         </listitem>
         <listitem>
             <para>evaluation and assignment of values,</para>
@@ -17,7 +17,7 @@
             <para>invocation of functions and instantiation of classes,</para> 
         </listitem>
         <listitem>
-            <para>callable references and anonymous functions,</para>
+            <para>callable references, static references, and anonymous functions,</para>
         </listitem>
         <listitem>
             <para>comprehensions,</para>
@@ -786,7 +786,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
-        <section id="sequenceinstantiation">
+        <section id="enumeration">
             <title>Iterable and tuple enumeration</title>
             
             <para>An <emphasis>enumeration expression</emphasis> is an abbreviation for
