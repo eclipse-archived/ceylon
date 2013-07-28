@@ -539,15 +539,20 @@ class Complex(Float x, Float y=0.0)
                 in <literal>Sequence&lt;String&gt;</literal>,</para>
             </listitem>
             <listitem>
-                <para>the value name in an unqualified value reference, for 
-                example <literal>counter</literal> in <literal>counter.count</literal>, 
-                or</para>
+                <para>the value name in a base value reference, for example 
+                <literal>counter</literal> in <literal>counter.count</literal>, 
+                </para>
             </listitem>
             <listitem>
-                <para>the function or type name in an unqualified callable 
-                reference, for example <literal>entries</literal> in 
+                <para>the function or type name in a base callable reference, 
+                for example <literal>entries</literal> in 
                 <literal>entries(people*.name)</literal> or <literal>Entry</literal>
-                in <literal>Entry(name,item)</literal>.</para>
+                in <literal>Entry(name,item)</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the type name in an unqualified type in a static reference, 
+                for example <literal>Sequence</literal> in 
+                <literal>Sequence.iterator</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -599,13 +604,22 @@ class Complex(Float x, Float y=0.0)
                 <literal>Buffer</literal> in <literal>BufferedReader.Buffer</literal>,</para>
             </listitem>
             <listitem>
-                <para>the value name in a qualified value reference, for example
-                <literal>count</literal> in <literal>counter.count</literal>, or</para>
+                <para>the value name in a member value reference, for example
+                <literal>count</literal> in <literal>counter.count</literal>,</para>
             </listitem>
             <listitem>
-                <para>the function or type name in a qualified callable reference, 
+                <para>the function or type name in a member callable reference, 
                 for example <literal>split</literal> in <literal>text.split()</literal>,
-                or <literal>Buffer</literal> in <literal>br.Buffer()</literal>.</para>
+                or <literal>Buffer</literal> in <literal>br.Buffer()</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>the type name in a qualified type in a static reference, 
+                for example <literal>BufferedReader.Buffer</literal> in 
+                <literal>BufferedReader.Buffer.size</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the member name in a static reference, for example 
+                <literal>iterator</literal> in <literal>Sequence.iterator</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -619,6 +633,10 @@ class Complex(Float x, Float y=0.0)
             <listitem>
                 <para>For a value reference or callable reference, the 
                 qualifying type is the type of the receiver expression.</para>
+            </listitem>
+            <listitem>
+                <para>For a static reference, the qualifying type is the full 
+                qualified type the qualifies the type or member name.</para>
             </listitem>
         </itemizedlist>
                 
