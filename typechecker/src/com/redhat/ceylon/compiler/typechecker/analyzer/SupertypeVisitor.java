@@ -56,7 +56,7 @@ public class SupertypeVisitor extends Visitor {
                             if (td.isParameterized() && td.getSelfType()==null) {
                                 st.addError("type with self type may not inherit a parameterized type with no self type: " +
                                         td.getName());
-                                d.setExtendedType(unit.getBasicDeclaration().getType());
+                                d.getSatisfiedTypes().remove(t);
                                 errors = true;
                             }
                         }
