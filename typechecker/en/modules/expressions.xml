@@ -145,8 +145,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="naturalnumber">
         <title>Integer number literals</title>
         
-        <para>An integer literal <literal>n</literal> is an 
-        expression of type <literal>Integer</literal>.</para>
+        <para>An integer literal, as defined in 
+        <xref linkend="numericliterals"/>, is an expression 
+        of type <literal>Integer</literal>.</para>
         
         <programlisting>Integer five = 5;</programlisting>
         <programlisting>Integer mask = $1111_0000;</programlisting>
@@ -157,8 +158,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="floatnumber">
         <title>Floating point number literals</title>
         
-        <para>A floating point literal is an expression of 
-        type <literal>Float</literal>.</para>
+        <para>A floating point literal, as defined in 
+        <xref linkend="numericliterals"/>, is an expression 
+        of type <literal>Float</literal>.</para>
         
         <programlisting>shared Float pi = 3.14159;</programlisting>
         
@@ -167,8 +169,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="character">
         <title>Character literals</title>
         
-        <para>A single character literal is an expression of type 
-        <literal>Character</literal>.</para>
+        <para>A single character literal, as defined in 
+        <xref linkend="characterliterals"/>, is an expression of 
+        type <literal>Character</literal>.</para>
                 
         <programlisting>if (exists ch=string[i], ch &equals; '+') { ... }</programlisting>
         
@@ -177,7 +180,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section id="string">
         <title>Character string literals</title>
         
-        <para>A character string literal is an expression of type
+        <para>A character string literal, as defined in 
+        <xref linkend="stringliterals"/>, is an expression of type
         <literal>String</literal>.</para>
         
         <programlisting>person.name = "Gavin King";</programlisting>
@@ -191,72 +195,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
     </section>
     
-    <!--section id="quoted">
-        <title>Single quoted literals</title>
-        
-        <para>Single-quoted strings are used to express literal values for dates, 
-        times, regexes and hexadecimal numbers, and even for more domain-specific 
-        things like names, cron expressions, internet addresses, and phone numbers.
-        This is an important facility since Ceylon is a language for expressing 
-        structured data.</para>
-        
-        <programlisting>Regex regex = '^\w+@((\w+)\.)+$';</programlisting>
-        <programlisting>ph = '+1 (404) 129 3456';</programlisting>
-        <programlisting>Duration duration = '1h 30m';</programlisting>
-        <programlisting>Datetime dt = Datetime('25/03/2005', '12:00 AM PST');</programlisting>
-        <programlisting>Timer { schedule = '0 0 23 ? * MON-FRI'; onTimeout=purge; }.start();</programlisting>
-        <programlisting>Text { color = 'FF3B66'; "Hello World!" }</programlisting>
-        <programlisting>Link { url = 'http://jboss.org/ceylon'; "Powered by Ceylon" }</programlisting>
-        <programlisting>Email { to = 'gavin@hibernate.org'; subject="Ceylon"; text = "Need some help with the compiler?"; }</programlisting>
-        
-        <para>A single quoted literal may only appear in the following positions:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>as the right hand side of a specifier for a local or
-                attribute with an explicitly declared type, or</para>
-            </listitem>
-            <listitem>
-                <para>as an argument of an invocation or instantiation.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>In either case:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the declared type of the local, attribute, or parameter 
-                must be a class or interface annotated <literal>literal</literal>,
-                and</para>
-            </listitem>
-            <listitem>
-                <para>the single quoted literal must match the pattern specified
-                by the <literal>format</literal> argument of the 
-                <literal>literal</literal> annotation.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The type of the literal expression is the declared type of the
-        local, attribute, or parameter. At runtime, an instance of this type
-        is produced by calling the method specified by the <literal>parser</literal>
-        argument of the <literal>literal</literal> annotation.</para>
-        
-        <programlisting>Color parseColor(String literal) { ... }
-
-literal { 
-    format = '[0-9A-F]{6}|red|blue|green|yellow|black|white'; 
-    parser = parseColor;
-}
-shared interface Color { ... }</programlisting>
-        
-        <comment><para>TODO: Single quoted operator literals should come built-in.
-        For example: <literal>'+'</literal> and <literal>'&lt;='</literal>.</para></comment>
-        
-        <comment><para>TODO: we should try to support interpolated expressions, 
-        just like we do for string literals.</para></comment>
-        
-    </section-->
-
     </section>
     
     <section id="constantexpressions">
@@ -394,9 +332,9 @@ shared interface Color { ... }</programlisting>
         <section id="anonymousfunctions">
             <title>Anonymous functions</title>
             
-            <para>An anonymous function is a function with no name, defined within
-            an expression. It comprises one or more parameter lists, followed by an 
-            expression.</para>
+            <para>An anonymous function is a function, as specified in 
+            <xref linkend="functions"/>, with no name, defined within an expression. 
+            It comprises one or more parameter lists, followed by an expression.</para>
             
             <synopsis>FunctionExpression: ("function" | "void")? Parameters+ ("=>" Expression | Block)</synopsis>
             

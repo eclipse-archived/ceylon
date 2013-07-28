@@ -1563,7 +1563,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
     </section>
         
-    <section id="methods">
+    <section id="functions">
         <title>Functions</title>
         
         <para>A <emphasis>function</emphasis> is a callable block of code. Functions 
@@ -1642,7 +1642,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         </section>
         
-        <section id="methodswithblocks">
+        <section id="functionswithblocks">
             <title>Functions with blocks</title>
             
         <para>A function implementation may be a block.</para>
@@ -1682,7 +1682,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
                 
         </section>
         
-        <section id="methodswithspecifiers">
+        <section id="functionswithspecifiers">
             <title>Functions with specifiers</title>
             
         <para>Alternatively, a function implementation may be a lazy specifier, that
@@ -1750,7 +1750,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         </section>
         
-        <section id="methodforwarddeclaration">
+        <section id="functionforwarddeclaration">
             <title>Forward declaration of functions</title>
             
             <para>The declaration of a function may be separated from the specification of 
@@ -2010,7 +2010,7 @@ case (hexadecimal) {
         
     </section>
     
-    <section id="attributes">
+    <section id="values">
         <title>Values</title>
         
         <para>There are two basic kinds of <emphasis>value</emphasis>:</para>
@@ -2187,7 +2187,7 @@ assign name {
             
         </section>
         
-        <section id="attributetypeinference">
+        <section id="valuetypeinference">
             <title>Value type inference</title>
         
         <para>A block-local value with a block, specifier, or lazy specifier may be declared 
@@ -2223,7 +2223,7 @@ assign name {
         
         </section>
         
-        <section id="attributeforwarddeclaration">
+        <section id="valueforwarddeclaration">
             <title>Forward declaration of values</title>
             
             <para>The declaration of a reference may be separated from the specification 
