@@ -374,8 +374,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <synopsis>Atom: Literal | StringTemplate | SelfReference | GroupedExpression | Iterable | Tuple</synopsis>
         
         <para>A <emphasis>primary</emphasis> is formed by recursively forming 
-        qualified expression and invocation expression from from an atom or 
-        base expression.</para>
+        member expressions and invocation expressions from an atom, base 
+        expression, or static expression.</para>
         
         <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation</synopsis>
         
