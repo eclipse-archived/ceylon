@@ -6,7 +6,8 @@
     define any primitive or compound types that cannot, in principle, be expressed within 
     the language itself.</para>
     
-    <para>A class is a recipe for producing new values, called <emphasis>instances</emphasis>
+    <para>A class, fully defined in <xref linkend="classes"/>, is a recipe for producing 
+    new values, called <emphasis>instances</emphasis>
     of the class (or simply <emphasis>objects</emphasis>), and defines the operations and 
     attributes of the resulting values. A class instance may hold references to other 
     objects, and has an identity distinct from these references.</para>
@@ -40,29 +41,32 @@
     
     <itemizedlist>
         <listitem>
-            <para>An <emphasis>interface</emphasis> is an abstract type schema that cannot
-            itself be directly instantiated. An interface may define concrete members, but
-            these members may not hold references to other objects. A class may inherit one 
-            or more interfaces. An instance of a class that inherits an interface is also 
-            considered an instance of the interface.</para>
+            <para>An <emphasis>interface</emphasis>, defined in <xref linkend="interfaces"/>, 
+            is an abstract type schema that cannot itself be directly instantiated. An 
+            interface may define concrete members, but these members may not hold references 
+            to other objects. A class may inherit one or more interfaces. An instance of a 
+            class that inherits an interface is also considered an instance of the interface.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>generic type parameter</emphasis> is considered a type
-            within the declaration that it parameterizes. In fact, it is an abstraction
-            over many types: it generalizes the declaration to all types which could be 
-            assigned to the parameter.</para>
+            <para>A <emphasis>generic type parameter</emphasis>, defined in 
+            <xref linkend="generictypeparameters"/>, is considered a type within the 
+            declaration that it parameterizes. In fact, it is an abstraction over many types: 
+            it generalizes the declaration to all types which could be assigned to the 
+            parameter.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
-            for the generic type parameters of a parameterized type.</para>
+            <para>A <emphasis>produced type</emphasis>, defined in 
+            <xref linkend="generictypearguments"/>, is formed by specifying arguments for the 
+            generic type parameters of a parameterized type.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>union type</emphasis> is a type to which each of an 
-            enumerated list of produced types is assignable.</para>
+            <para>A <emphasis>union type</emphasis>, defined in <xref linkend="uniontypes"/>, 
+            is a type to which each of an enumerated list of produced types is assignable.</para>
         </listitem>
         <listitem>
-            <para>An <emphasis>intersection type</emphasis> is a type which is assignable 
-            to each of an enumerated list of produced types.</para>
+            <para>An <emphasis>intersection type</emphasis>, defined in 
+            <xref linkend="intersectiontypes"/>, is a type which is assignable to each of an 
+            enumerated list of produced types.</para>
         </listitem>
     </itemizedlist>
     
@@ -78,9 +82,10 @@
     
     <itemizedlist>
         <listitem>
-            <para>A <emphasis>type alias</emphasis> is a synonym for an expression 
-            involving other types or generic types. A type alias may itself be
-            parameterized.</para>
+            <para>A <emphasis>type alias</emphasis>, defined in <xref linkend="typealiases"/>,
+            in <xref linkend="classaliases"/>, and in <xref linkend="interfacealiases"/> is 
+            a synonym for an expression involving other types or generic types. A type alias 
+            may itself be parameterized.</para>
         </listitem>
     </itemizedlist>
     
@@ -158,7 +163,9 @@
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
         be named with an initial uppercase letter. Methods, attributes, parameters, 
-        and locals must be named with an initial lowercase letter or underscore.</para>
+        and locals must be named with an initial lowercase letter or underscore.
+        The grammar for identifiers is defined by 
+        <xref linkend="identifiersandkeywords"/>.</para>
         
         <synopsis>TypeName: UIdentifier</synopsis>
         <synopsis>MemberName: LIdentifier</synopsis>
@@ -833,18 +840,21 @@ Float|Integer num = one;</programlisting></comment>
         
         <itemizedlist>
             <listitem>
-                <para>a class may <emphasis>extend</emphasis> another class,</para>
+                <para>a class may <emphasis>extend</emphasis> another class, as defined
+                by <xref linkend="classinheritance"/>,</para>
             </listitem>
             <listitem>
-                <para>a class may <emphasis>satisfy</emphasis> one or more interfaces,</para>
+                <para>a class may <emphasis>satisfy</emphasis> one or more interfaces, 
+                as defined by <xref linkend="classinheritance"/>,</para>
             </listitem>
             <listitem>
                 <para>an interface may <emphasis>satisfy</emphasis> one or more other 
-                interfaces, or</para>
+                interfaces, as defined by <xref linkend="interfaceinheritance"/>, or</para>
             </listitem>
             <listitem>
                 <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
-                more interfaces or type parameters.</para>
+                more interfaces or type parameters, as defined by 
+                <xref linkend="generictypeconstraints"/>.</para>
             </listitem>
             <!--listitem>
                 <para>a type parameter may <emphasis>abstract</emphasis> a class, interface or 
@@ -1044,11 +1054,14 @@ Float|Integer num = one;</programlisting></comment>
         <listitem>
             <para>An <literal>abstract</literal> class or interface may be an 
             <emphasis>enumerated type</emphasis>, with an enumerated list of 
-            disjoint subtypes called <emphasis>cases</emphasis>.</para>
+            disjoint subtypes called <emphasis>cases</emphasis>, as defined by
+            <xref linkend="classeswithcases"/> and 
+            <xref linkend="interfaceswithcases"/>.</para>
         </listitem>
         <listitem>
             <para>A type parameter may have an <emphasis>enumerated bound</emphasis>,
-            with an enumerated list possible type arguments.</para>
+            with an enumerated list possible type arguments, as defined by
+            <xref linkend="generictypeconstraints"/>.</para>
         </listitem>
         <listitem>
             <para>An <literal>abstract</literal> class or interface may have a 
