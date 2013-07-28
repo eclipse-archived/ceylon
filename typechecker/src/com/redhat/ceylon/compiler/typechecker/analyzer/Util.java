@@ -539,7 +539,7 @@ public class Util {
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
                         Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
-                        if (d!=null && d.getQualifiedNameString().equals("ceylon.language::true")) {
+                        if (isBooleanTrue(d)) {
                             continue;
                         }
                     }
@@ -548,6 +548,16 @@ public class Util {
             return false;
         }
         return true;
+    }
+
+    static boolean isBooleanTrue(Declaration d) {
+        return d!=null && d.getQualifiedNameString()
+                .equals("ceylon.language::true");
+    }
+
+    static boolean isBooleanFalse(Declaration d) {
+        return d!=null && d.getQualifiedNameString()
+                .equals("ceylon.language::false");
     }
 
     static boolean isNeverSatisfied(Tree.ConditionList cl) {
@@ -561,7 +571,7 @@ public class Util {
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
                         Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
-                        if (d!=null && d.getQualifiedNameString().equals("ceylon.language::false")) {
+                        if (isBooleanFalse(d)) {
                             return true;
                         }
                     }
