@@ -350,6 +350,14 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Boolean");
     }
     
+    public Value getTrueValueDeclaration() {
+        return (Value) getLanguageModuleDeclaration("true");
+    }
+    
+    public Value getFalseValueDeclaration() {
+        return (Value) getLanguageModuleDeclaration("false");
+    }
+    
     public TypeDeclaration getStringDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("String");
     }
