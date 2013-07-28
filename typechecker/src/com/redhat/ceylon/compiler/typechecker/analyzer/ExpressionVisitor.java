@@ -6,7 +6,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
@@ -3631,8 +3632,10 @@ public class ExpressionVisitor extends Visitor {
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
         String name = name(that.getIdentifier());
-        TypedDeclaration member = getBaseDeclaration(that, that.getSignature(), 
-                that.getEllipsis());
+        TypedDeclaration member = getTypedDeclaration(that.getScope(), 
+                name(that.getIdentifier()), 
+                that.getSignature(), that.getEllipsis(), 
+                that.getUnit());
         if (member==null) {
             if (!dynamic) {
                 that.addError("function or value does not exist: " +
@@ -3884,8 +3887,10 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
-        TypeDeclaration type = getBaseDeclaration(that, that.getSignature(), 
-                that.getEllipsis());
+        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
+                name(that.getIdentifier()), 
+                that.getSignature(), that.getEllipsis(), 
+                that.getUnit());
         if (type==null) {
             if (!dynamic) {
                 that.addError("type does not exist: " + 

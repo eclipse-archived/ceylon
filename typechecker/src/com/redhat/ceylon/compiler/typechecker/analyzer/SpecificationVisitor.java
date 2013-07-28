@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -13,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -288,7 +290,8 @@ public class SpecificationVisitor extends Visitor {
         assign(lt);
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getBaseDeclaration(m, null, false);
+            Declaration member = getTypedDeclaration(m.getScope(), 
+                    name(m.getIdentifier()), null, false, m.getUnit());
             if (member==declaration) {
                 if (that.getRightTerm()!=null) {
                     that.getRightTerm().visit(this);
@@ -330,7 +333,8 @@ public class SpecificationVisitor extends Visitor {
         //      completely in ExpressionVisitor.checkAssignable()
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getBaseDeclaration(m, null, false);
+            Declaration member = getTypedDeclaration(m.getScope(), 
+                    name(m.getIdentifier()), null, false, m.getUnit());
             if (member==declaration) {
                 if (!isVariable() && !isLate()) {
                     if (node instanceof Tree.AssignOp) {
@@ -433,7 +437,9 @@ public class SpecificationVisitor extends Visitor {
         }
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
-	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression) m, null, false);
+	        BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
+            Declaration member = getTypedDeclaration(bme.getScope(), 
+                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        if (member==declaration) {
                 boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
             	if (declaration instanceof Value && 

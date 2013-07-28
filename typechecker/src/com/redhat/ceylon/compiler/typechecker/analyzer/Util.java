@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -51,10 +52,11 @@ public class Util {
             return null;
     }
 
-    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
-            List<ProducedType> signature, boolean ellipsis) {
-        Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
-                name(bme.getIdentifier()), signature, ellipsis);
+    static TypedDeclaration getTypedDeclaration(Scope scope,
+            String name, List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = scope.getMemberOrParameter(unit, 
+                name, signature, ellipsis);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -63,21 +65,11 @@ public class Util {
         }
     }
     
-    static TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
-        Declaration result = bt.getScope().getMemberOrParameter(bt.getUnit(), 
-                name(bt.getIdentifier()), null, false);
-        if (result instanceof TypeDeclaration) {
-        	return (TypeDeclaration) result;
-        }
-        else {
-        	return null;
-        }
-    }
-    
-    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte, 
-            List<ProducedType> signature, boolean ellipsis) {
-        Declaration result = bte.getScope().getMemberOrParameter(bte.getUnit(), 
-                name(bte.getIdentifier()), signature, ellipsis);
+    static TypeDeclaration getTypeDeclaration(Scope scope,
+            String name, List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = scope.getMemberOrParameter(unit, 
+                name, signature, ellipsis);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }

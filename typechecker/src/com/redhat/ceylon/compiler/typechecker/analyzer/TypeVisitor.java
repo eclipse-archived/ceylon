@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
@@ -530,7 +531,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = getBaseDeclaration(that);
+        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
+                name(that.getIdentifier()), null, false, that.getUnit());
         String name = name(that.getIdentifier());
         if (type==null) {
             that.addError("type declaration does not exist: " + name, 102);
@@ -1051,7 +1053,8 @@ public class TypeVisitor extends Visitor {
         else {
         	for (Tree.BaseMemberExpression bme: bmes) {
         		//bmes have not yet been resolved
-        		TypedDeclaration od = getBaseDeclaration(bme, null, false);
+        		TypedDeclaration od = getTypedDeclaration(bme.getScope(), 
+        		        name(bme.getIdentifier()), null, false, bme.getUnit());
         		if (od!=null) {
         			ProducedType type = od.getType();
         			if (type!=null) {
