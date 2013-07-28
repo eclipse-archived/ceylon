@@ -119,8 +119,7 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
         
         <para>The principle of <emphasis>closure</emphasis> states a that nested body
         always has access to a set of values for all references declared by containing 
-        bodies.
-        The set of <emphasis>current instances</emphasis> of containing  classes 
+        bodies. The set of <emphasis>current instances</emphasis> of containing classes 
         and interfaces and <emphasis>current frames</emphasis> of containing blocks 
         forms the closure of a nested declaration.</para>           
             

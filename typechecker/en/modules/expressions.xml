@@ -439,7 +439,7 @@ shared interface Color { ... }</programlisting>
         qualified expression and invocation expression from from an atom or 
         base expression.</para>
         
-        <synopsis>Primary: Atom | BaseExpression | QualifiedExpression | Invocation</synopsis>
+        <synopsis>Primary: Atom | BaseExpression | MemberExpression | StaticExpression | Invocation</synopsis>
         
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators, and anonymous functions.</para>    
@@ -461,13 +461,13 @@ shared interface Color { ... }</programlisting>
         operator expression occurs within a <literal>dynamic</literal> block, 
         then the whole operator expression has no type.</para>
         
-    <section id="receiverexpressions">
-        <title>Base expressions and qualified expressions</title>
+    <section id="baseexpressions">
+        <title>Base expressions</title>
         
         <para>A <emphasis>base expression</emphasis> is an unqualified 
         identifier, with an optional list of type arguments:</para>
         
-        <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments</synopsis>
+        <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments?</synopsis>
         
         <para>A base expression is either:</para>
         
@@ -486,40 +486,51 @@ shared interface Color { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>The referenced declaration is determined by resolving the unqualified 
+        reference as defined by <xref linkend="unqualifiedreferenceresolution"/>.</para>
+        
         <para>If a base expression is a reference to an attribute, method, or 
         member class of a class, the receiving instance is the current instance 
-        of that class.</para>
+        of that class, as defined by <xref linkend="sequentialexecutionandclosure"/>.</para>
+    
+    </section>
+    
+    <section id="memberexpressions">
+        <title>Member expressions</title>
         
-        <para>A <emphasis>qualified expression</emphasis> is a <emphasis>receiver
-        expression</emphasis>, followed by a <emphasis>member operator</emphasis>,
-        followed by an identifier, with an optional list of type arguments.</para>
+        <para>A <emphasis>member expression</emphasis> is a <emphasis>receiver
+        expression</emphasis>, followed by an identifier, with an optional list 
+        of type arguments.</para>
         
-        <synopsis>QualifiedExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</synopsis>
+        <synopsis>MemberExpression: (Primary ".") (MemberName | TypeName) TypeArguments?</synopsis>
         
-        <para>A qualified expression is a reference to a member of a type: an
+        <para>A member expression is a reference to a member of a type: an
         attribute, method, or member class.</para>
+        
+        <para>The referenced member is determined by resolving the qualified 
+        reference as defined by <xref linkend="qualifiedreferenceresolution"/>.</para>
         
         <para>The receiver expression produces the instance upon which the member 
         is invoked or evaluated. The type of the receiver expression must have a 
         member with the specified name.</para>
         
-        <para>When a qualified expression is executed, the receiver expresson is 
+        <para>When a member expression is executed, the receiver expresson is 
         evaluated and then held until the member is invoked or evaluated.</para>
         
-        <para>If a base expression or qualified expression does not reference any 
+        <para>If a base expression or member expression does not reference any 
         statically typed declaration, and occurs within a <literal>dynamic</literal> 
         block, then it is considered a value reference.</para>
         
     </section>
                 
-    <section id="attributeandlocalreferences">
+    <section id="valuereferences">
             <title>Value references</title>
         
         <para>A <emphasis>value reference</emphasis> is a base expression or 
-        qualified expression that references a value declaration.</para>
+        member expression that references a value declaration.</para>
         
-        <para>The type of a value expression for a value of declared type
-        <literal>X</literal> is simply <literal>X</literal>.</para>
+        <para>The type of a value reference expression for a value of declared 
+        type <literal>X</literal> is simply <literal>X</literal>.</para>
         
         <para>A value reference which occurs within a <literal>dynamic</literal> 
         block and which does not reference any statically typed declaration
@@ -534,7 +545,7 @@ shared interface Color { ... }</programlisting>
         <title>Callable references</title>
         
         <para>A <emphasis>callable reference</emphasis> is a base expression or
-        qualified expression that references something&mdash;a function or 
+        member expression that references something&mdash;a function or 
         class&mdash;that can be <emphasis>invoked</emphasis> or 
         <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
         
@@ -559,7 +570,69 @@ shared interface Color { ... }</programlisting>
                 <para>it must have an explicit type argument list.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A callable reference may not appear as the receiver expression of
+        a member expression.</para>
+        
+        <comment><para>Note: this restriction exists to eliminate an ambiguity in
+        the interpretation of static expressions such as <literal>Person.string</literal>
+        and <literal>Person.equals</literal>.</para></comment>
                 
+    </section>
+    
+    <section id="staticexpressions">
+        <title>Static expressions</title>
+        
+        <para>A <emphasis>static expression</emphasis> is a type, followed by an identifier, 
+        with an optional list of type arguments.</para>
+        
+        <synopsis>StaticExpression: (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
+        
+        <para>A static expression is a reference to a member of a type: an attribute, method, 
+        or member class.</para>
+        
+        <para>The referenced member is determined by resolving the qualified reference as defined 
+        by <xref linkend="qualifiedreferenceresolution"/>.</para>
+        
+        <para>Unlike member expressions, a static expression does not have a receiver expression. 
+        All static expressions are callable expressions which accept an argument of the specified 
+        type.</para>
+        
+        <!--comment><para>TODO: should we support static expressions involving union/intersection types 
+        and abbreviations, for example <literal>&lt;String[]|Set&lt;Character&gt;&gt;.iterator</literal>?</para></comment-->
+        
+    </section>
+    
+    <section id="staticvaluereferences">
+            <title>Static value references</title>
+        
+        <para>A <emphasis>static value reference</emphasis> is a static 
+        expression that references an attribute declaration.</para>
+        
+        <para>The type of a static value reference expression for an attribute 
+        of declared type <literal>X</literal> belonging to a type <literal>T</literal> 
+        is <literal>X(T)</literal>.</para>
+        
+        <para>A value declaration is never generic, so a static value reference 
+        never ends in a type argument list.</para>
+        
+    </section>
+    
+    <section id="staticcallablereferences">
+        <title>Static callable references</title>
+        
+        <para>A <emphasis>static callable reference</emphasis> is a static 
+        expression that references something&mdash;a method or member 
+        class&mdash;that can be <emphasis>invoked</emphasis> or 
+        <emphasis>instantiated</emphasis>.</para>
+        
+        <para>The type of a static callable reference expression for a method
+        or member class of callable type <literal>C</literal> belonging to a 
+        type <literal>T</literal> is <literal>C(T)</literal>.</para>
+        
+        <para>If a callable reference expression refers to a generic declaration, 
+        it must end in an explicit type argument list.</para>
+        
     </section>
     
     </section>
