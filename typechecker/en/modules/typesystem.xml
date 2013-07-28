@@ -1269,6 +1269,12 @@ Item item = comp of Item;</programlisting>
                 <literal>Y</literal> is an interface,</para>
             </listitem>
             <listitem>
+                <para><literal>X</literal> is an anonymous class or a <literal>final</literal> 
+                class with no type parameters and <literal>Y</literal> is a type in 
+                which no type parameter reference occurs, and <literal>X</literal> 
+                is not a suptype of <literal>Y</literal>,</para>
+            </listitem>
+            <listitem>
                 <para><literal>X</literal> is a type parameter and <literal>Y</literal> 
                 and the intersection of the upper bounds of <literal>X</literal> are 
                 disjoint,</para>
@@ -1292,12 +1298,6 @@ Item item = comp of Item;</programlisting>
                 <literal>A</literal> nor <literal>B</literal> involve type parameters.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: In addition, the compiler does some reasoning about classes
-        that are "effectively final", that is, anonymous classes, <literal>final</literal> 
-        Java classes, and the special classes in the language module which can't be 
-        extended. We should probably add a <literal>final</literal> annotation and make
-        the notional of finality part of the type system.</para></comment>
         
     </section>
         
