@@ -6,11 +6,11 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
