@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { modules }
+import ceylon.language.model { modules }
 
 @noanno
 class Bug1205() {}

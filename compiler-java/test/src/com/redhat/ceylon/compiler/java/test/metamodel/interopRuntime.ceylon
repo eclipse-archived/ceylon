@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { Class, Attribute, Variable, Function }
+import ceylon.language.model { Class, Attribute, Variable, Function }
 
 void interopRuntime(){
     Class<JavaType,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;

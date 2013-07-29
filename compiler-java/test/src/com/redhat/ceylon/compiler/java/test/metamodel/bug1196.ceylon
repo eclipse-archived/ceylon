@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { modules }
+import ceylon.language.model { modules }
 
 void bug1196<T>(T t) {
     print(`List<T>`);

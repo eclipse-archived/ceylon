@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { modules }
+import ceylon.language.model { modules }
 
 void bug238(){
     value m = modules.find("com.redhat.ceylon.compiler.java.test.metamodel", "123");

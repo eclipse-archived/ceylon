@@ -22,8 +22,8 @@ final class bug1205_ {
     }
     
     static void bug1205() {
-        ((.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205>)(.ceylon.language.Callable)(.java.lang.Object).ceylon.language.metamodel.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor)).$call();
-        ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable).ceylon.language.metamodel.modules_.$get().find("com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getFunction("bug1205")).$call();
+        ((.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205>)(.ceylon.language.Callable)(.java.lang.Object).ceylon.language.model.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor)).$call();
+        ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable).ceylon.language.model.modules_.$get().find("com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getFunction("bug1205")).$call();
     }
     
     public static void main(.java.lang.String[] args) {

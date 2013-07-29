@@ -106,8 +106,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public static final String JAVA_BASE_MODULE_NAME = "java.base";
     public static final String CEYLON_LANGUAGE = "ceylon.language";
-    public static final String CEYLON_LANGUAGE_METAMODEL = "ceylon.language.metamodel";
-    public static final String CEYLON_LANGUAGE_METAMODEL_DECLARATION = "ceylon.language.metamodel.declaration";
+    public static final String CEYLON_LANGUAGE_MODEL = "ceylon.language.model";
+    public static final String CEYLON_LANGUAGE_MODEL_DECLARATION = "ceylon.language.model.declaration";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String JDK_MODULE_VERSION = "7";
@@ -357,8 +357,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
          */
         if(!isBootstrap){
             loadPackage(languageModule, CEYLON_LANGUAGE, true);
-            loadPackage(languageModule, CEYLON_LANGUAGE_METAMODEL, true);
-            loadPackage(languageModule, CEYLON_LANGUAGE_METAMODEL_DECLARATION, true);
+            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL, true);
+            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL_DECLARATION, true);
         }
     }
 

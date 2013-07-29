@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { modules }
+import ceylon.language.model { modules }
 
 void bug1197() {
     assert(`List<String>.first`.string == "List<String>.first");

@@ -1,4 +1,4 @@
-import ceylon.language.metamodel{Type}
+import ceylon.language.model{Type}
 
 @noanno
 class ConstructorArguments(

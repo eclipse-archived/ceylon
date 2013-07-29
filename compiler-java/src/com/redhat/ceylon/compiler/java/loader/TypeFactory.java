@@ -166,10 +166,10 @@ public class TypeFactory extends Unit {
     }
 
     public TypeDeclaration getMetamodelTypeDeclaration() {
-        return (TypeDeclaration) getLanguageModuleMetamodelDeclaration("Type");
+        return (TypeDeclaration) getLanguageModuleModelDeclaration("Type");
     }
 
     public TypedDeclaration getMetamodelNothingTypeDeclaration() {
-        return (TypedDeclaration) getLanguageModuleMetamodelDeclaration("nothingType");
+        return (TypedDeclaration) getLanguageModuleModelDeclaration("nothingType");
     }
 }

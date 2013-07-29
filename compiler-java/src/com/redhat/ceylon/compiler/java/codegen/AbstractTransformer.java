@@ -3058,7 +3058,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isSequencedAnnotation(Class klass) {
-        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclaration("SequencedAnnotation");
+        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleModelDeclaration("SequencedAnnotation");
         return meta != null && klass.getType().isSubtypeOf(
                 meta.getProducedType(null, 
                 Arrays.asList(typeFact().getAnythingDeclaration().getType(),

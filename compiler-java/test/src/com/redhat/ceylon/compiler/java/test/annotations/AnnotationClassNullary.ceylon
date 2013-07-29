@@ -1,5 +1,5 @@
-import ceylon.language.metamodel{OptionalAnnotation, SequencedAnnotation}
-import ceylon.language.metamodel.declaration { ClassOrInterfaceDeclaration }
+import ceylon.language.model{OptionalAnnotation, SequencedAnnotation}
+import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
 annotation class AnnotationClassNullary() satisfies OptionalAnnotation<AnnotationClassNullary, ClassOrInterfaceDeclaration>{}

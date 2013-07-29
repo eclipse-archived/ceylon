@@ -390,18 +390,18 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private List<JCAnnotation> transformAnnotationConstraints(Class klass) {
-        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclaration("ConstrainedAnnotation");
+        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleModelDeclaration("ConstrainedAnnotation");
         ProducedType constrainedType = klass.getType().getSupertype(meta);
         if (constrainedType != null) {
             ProducedType programElement = constrainedType.getTypeArgumentList().get(2);
-            if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("Package")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("Module")).getType())) {
+            if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("Package")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("Module")).getType())) {
                 return makeAtAnnotationTarget(ElementType.TYPE);
-            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("ValueDeclaration")).getType())
-                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("FunctionDeclaration")).getType())) {
+            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("ValueDeclaration")).getType())
+                    || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("FunctionDeclaration")).getType())) {
                 return makeAtAnnotationTarget(ElementType.METHOD);
-            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("Import")).getType())) {
+            } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("Import")).getType())) {
                 return makeAtAnnotationTarget(ElementType.FIELD);
             }
         }

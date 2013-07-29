@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { modules }
+import ceylon.language.model { modules }
 
 shared class Bug1198Person(shared String name) {
     string => name;

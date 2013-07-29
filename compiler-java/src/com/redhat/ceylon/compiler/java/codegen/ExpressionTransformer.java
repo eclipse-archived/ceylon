@@ -1026,7 +1026,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else{
                 return makeErroneous(expr, "declaration type not supported yet: "+declaration);
             }
-            TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleMetamodelDeclarationDeclaration(memberClassName);
+            TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleModelDeclarationDeclaration(memberClassName);
             JCExpression memberType = makeJavaType(metamodelDecl.getType());
             JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
             JCExpression memberCall = make().Apply(List.of(memberType), 
@@ -1040,7 +1040,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType containerType = producedReference.getQualifyingType();
             JCExpression typeCall = makeTypeLiteralCall(expr, containerType, false);
             // make sure we cast it to ClassOrInterface
-            JCExpression classOrInterfaceTypeExpr = makeJavaType(typeFact().getLanguageModuleMetamodelDeclaration("ClassOrInterface")
+            JCExpression classOrInterfaceTypeExpr = makeJavaType(typeFact().getLanguageModuleModelDeclaration("ClassOrInterface")
                         .getProducedReference(null, Arrays.asList(containerType)).getType());
             typeCall = make().TypeCast(classOrInterfaceTypeExpr, typeCall);
             // we will need a TD for the container
@@ -1124,7 +1124,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression metamodelCall = makeMetamodelInvocation("getOrCreateMetamodel", List.of(classLiteral), null);
             ProducedType exprType = expr.getTypeModel().resolveAliases();
             // now cast if required
-            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleMetamodelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())){
+            if(!exprType.isExactly(((TypeDeclaration)typeFact().getLanguageModuleModelDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType())){
                 JCExpression type = makeJavaType(exprType, JT_NO_PRIMITIVES);
                 return make().TypeCast(type, metamodelCall);
             }

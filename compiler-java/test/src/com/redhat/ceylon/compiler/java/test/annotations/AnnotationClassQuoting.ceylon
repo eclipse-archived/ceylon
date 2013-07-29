@@ -1,5 +1,5 @@
-import ceylon.language.metamodel{SequencedAnnotation}
-import ceylon.language.metamodel.declaration { ClassOrInterfaceDeclaration }
+import ceylon.language.model{SequencedAnnotation}
+import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
 annotation class AnnotationClassQuoting(

@@ -1,5 +1,5 @@
 
-import ceylon.language.metamodel{
+import ceylon.language.model{
     type, 
     annotations, optionalAnnotation, sequencedAnnotations,
     Annotation2 = Annotation, 
@@ -8,7 +8,7 @@ import ceylon.language.metamodel{
     ClassOrInterface, Class, Interface,
     Function, Attribute
 }
-import ceylon.language.metamodel.declaration {
+import ceylon.language.model.declaration {
     ValueDeclaration,
     VariableDeclaration,
     TopLevelOrMemberDeclaration,

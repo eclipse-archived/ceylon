@@ -1,4 +1,4 @@
-import ceylon.language.metamodel{Annotated, SequencedAnnotation}
+import ceylon.language.model{Annotated, SequencedAnnotation}
 
 shared annotation class Seq(shared String seq) 
     satisfies SequencedAnnotation<Seq, Annotated> {}
