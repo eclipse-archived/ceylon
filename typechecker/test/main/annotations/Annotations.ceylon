@@ -1,5 +1,5 @@
-import ceylon.language.metamodel { ... }
-import ceylon.language.metamodel.declaration { Declaration }
+import ceylon.language.model { ... }
+import ceylon.language.model.declaration { Declaration }
 
 annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);

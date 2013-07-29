@@ -84,14 +84,14 @@ public class ConstraintVisitor extends Visitor {
     private static TypeDeclaration getAnnotationDeclaration(Unit unit) {
         return (TypeDeclaration) unit.getPackage().getModule()
                 .getLanguageModule()
-                .getDirectPackage("ceylon.language.metamodel")
+                .getDirectPackage("ceylon.language.model")
                 .getMemberOrParameter(unit, "Annotation", null, false);
     }
 
     private static TypeDeclaration getDeclarationDeclaration(Unit unit) {
         return (TypeDeclaration) unit.getPackage().getModule()
                 .getLanguageModule()
-                .getDirectPackage("ceylon.language.metamodel.declaration")
+                .getDirectPackage("ceylon.language.model.declaration")
                 .getMemberOrParameter(unit, "Declaration", null, false);
     }
 

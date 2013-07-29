@@ -5352,18 +5352,18 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(interfaceType);
             }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
         }else if(declaration instanceof UnionType){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("UnionType");
+            Declaration metamodelDecl = unit.getLanguageModuleModelDeclaration("UnionType");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
         }else if(declaration instanceof IntersectionType){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("IntersectionType");
+            Declaration metamodelDecl = unit.getLanguageModuleModelDeclaration("IntersectionType");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
         }else if(declaration instanceof NothingType){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("nothingType");
+            Declaration metamodelDecl = unit.getLanguageModuleModelDeclaration("nothingType");
             if(metamodelDecl instanceof TypedDeclaration){
                 that.setTypeModel(((TypedDeclaration) metamodelDecl).getType());
             }
         }else if(declaration instanceof TypeParameter){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Type");
+            Declaration metamodelDecl = unit.getLanguageModuleModelDeclaration("Type");
             that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
         }else if(declaration instanceof UnknownType){
             // let it go, we already logged an error for the missing type
@@ -5396,18 +5396,18 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType getTypeLiteralDeclarationType(String name) {
-        return unit.getLanguageModuleMetamodelDeclarationDeclaration(name).getProducedReference(null, Collections.<ProducedType>emptyList()).getType();
+        return unit.getLanguageModuleModelDeclarationDeclaration(name).getProducedReference(null, Collections.<ProducedType>emptyList()).getType();
     }
 
     private ProducedType getTypeLiteralClassType(TypeDeclaration declaration, ProducedType literalType) {
         ParameterList parameterList = ((Class) declaration).getParameterList();
         ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
         if(declaration.isMember()){
-            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("MemberClass");
+            Declaration memberDecl = unit.getLanguageModuleModelDeclaration("MemberClass");
             ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), literalType, parameterTuple)).getType();
             return memberType;
         }else{
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
+            Declaration metamodelDecl = unit.getLanguageModuleModelDeclaration("Class");
             ProducedType classType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType();
             return classType;
         }
@@ -5415,11 +5415,11 @@ public class ExpressionVisitor extends Visitor {
     
     private ProducedType getTypeLiteralInterfaceType(TypeDeclaration declaration, ProducedType literalType) {
         if(declaration.isMember()){
-            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("MemberInterface");
+            Declaration memberDecl = unit.getLanguageModuleModelDeclaration("MemberInterface");
             ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), literalType)).getType();
             return memberType;
         }else{
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
+            Declaration metamodelDecl = unit.getLanguageModuleModelDeclaration("Interface");
             ProducedType interfaceType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType();
             return interfaceType;
         }
@@ -5585,10 +5585,10 @@ public class ExpressionVisitor extends Visitor {
     // should really be a Value|Parameter but hey ;)
     private ProducedType getTypeLiteralAttributeType(ProducedTypedReference pr, TypedDeclaration value) {
         if(pr.getQualifyingType() != null){
-            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "VariableAttribute" : "Attribute");
+            Declaration memberDecl = unit.getLanguageModuleModelDeclaration(value.isVariable() ? "VariableAttribute" : "Attribute");
             return memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getQualifyingType(), pr.getType())).getType();
         }else{
-            Declaration attributeDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "Variable" : "Value");
+            Declaration attributeDecl = unit.getLanguageModuleModelDeclaration(value.isVariable() ? "Variable" : "Value");
             return attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
         }
     }
@@ -5599,10 +5599,10 @@ public class ExpressionVisitor extends Visitor {
         if (returnType != null) {
             
             if(pr.getQualifyingType() != null){
-                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Method");
+                Declaration memberDecl = unit.getLanguageModuleModelDeclaration("Method");
                 return memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getQualifyingType(), returnType, parameterTuple)).getType();
             }else{
-                Declaration functionDecl = unit.getLanguageModuleMetamodelDeclaration("Function");
+                Declaration functionDecl = unit.getLanguageModuleModelDeclaration("Function");
                 return functionDecl.getProducedReference(null, Arrays.<ProducedType>asList(returnType, parameterTuple)).getType();
             }
         }
