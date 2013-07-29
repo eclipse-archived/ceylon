@@ -1,5 +1,5 @@
 /*Native Implementation of annotations() */
-function annotations$metamodel(anntype, progelem, $$targs$$) {
+function annotations$model(anntype, progelem, $$targs$$) {
   var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.attr?progelem.attr.$$metamodel$$:progelem.$$metamodel$$;
   if (mm && mm['$an']) {
     var anns = mm['$an'];
@@ -7,7 +7,7 @@ function annotations$metamodel(anntype, progelem, $$targs$$) {
       anns = anns();
       mm['$an'] = anns;
     }
-    if (anntype.tipo.$$.T$all['ceylon.language.metamodel::OptionalAnnotation'] !== undefined) {
+    if (anntype.tipo.$$.T$all['ceylon.language.model::OptionalAnnotation'] !== undefined) {
       //find the first one and return it
       for (var i=0; i < anns.length; i++) {
         if (isOfType(anns[i], {t:anntype.tipo}))return anns[i];
@@ -19,9 +19,9 @@ function annotations$metamodel(anntype, progelem, $$targs$$) {
     for (var i=0; i < anns.length; i++) {
       if (isOfType(anns[i], {t:anntype.tipo}))r.push(anns[i]);
     }
-    return r.length==0?getEmpty():r.reifyCeylonType({Absent:{t:Null},Element:{t:ConstrainedAnnotation$metamodel,
+    return r.length==0?getEmpty():r.reifyCeylonType({Absent:{t:Null},Element:{t:ConstrainedAnnotation$model,
       a:{Value:$$targs$$.Value,Values:$$targs$$.Values,ProgramElement:$$targs$$.ProgramElement}}});
   }
   return null;
 }
-exports.annotations$metamodel=annotations$metamodel;
+exports.annotations$model=annotations$model;
