@@ -1055,332 +1055,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         </comment-->
         
         </section>
-
-        <!--section id="sequencedarguments">
-            <title>Sequenced and tuple arguments</title>
-            
-        <para>For a sequenced parameter of type <literal>T...</literal> in a direct 
-        invocation expression, there may be either:</para> 
-        
-        <itemizedlist>
-            <listitem>
-                <para>multiple arguments separated by commas, or</para>
-            </listitem>
-            <listitem>
-                <para>a single argument followed by an ellipsis.</para>
-            </listitem>
-        </itemizedlist>
-
-        <para>In the first case, the argument expressions are evaluated and collected into 
-        an instance of <literal>Iterable&lt;T&gt;</literal> when the invocation is executed.</para>
-                
-        <para>In the second case, the single argument expression must be of type 
-        <literal>Iterable&lt;T&gt;</literal>, and must be followed by an ellipsis 
-        <literal>...</literal>, to indicate that it is <emphasis>not</emphasis> necessary 
-        to wrap the value in an <literal>Iterable</literal>.</para>
-        
-        <para>An argument to a tuple parameter is always a single expression followed by 
-        an ellipsis.</para>
-                        
-        <synopsis>Sequence: Expression ("," Expression)* | Expression "..."</synopsis>
-        
-        <comment><para>Note: the ellipsis <literal>...</literal> is like the opposite of 
-        a sequence instantiation: <literal>{ x... }</literal> means <literal>x</literal>
-        and <literal>{ x, y }...</literal> means <literal>x, y</literal>.</para></comment>
-        
-        <para>For example:</para>
-        
-        <programlisting>(1, 1, 2, 3, 5, 8)</programlisting>
-        <programlisting>(names...)</programlisting>
-        <programlisting>(args...)</programlisting>
-        
-        <para>TODO: syntax for comprehensions.</para>
-        
-        <comment><para>TODO: Should we let you write <literal>{ x..., y... }</literal> to
-        pass the concatenation of two sequences to a sequenced parameter? Or even things
-        like <literal>{ x, y... }</literal> and <literal>{ x..., y }</literal>?</para></comment>
-                
-        <comment><para>TODO: Should we allow an argument to a sequenced parameter in a named
-        argument list to be a local declaration, thus allowing the object to be referred to
-        later?</para>
-            <programlisting>Panel {
-    label = "Hello";
-    Input i = Input(),
-    Button {
-        label = "Hello";
-        void action() {
-            log.info(i.text);
-        }
-    }
-}</programlisting>            
-        </comment>
-        
-        </section-->
                     
     </section>
-        
-    <!--section id="metamodelreferences">
-        <title>Metamodel references</title>
-        
-        <para>The metamodel object representing a type or program element may be obtained
-        using a completely typesafe syntax.</para>
-        
-        <synopsis>Meta: TypeMeta | MethodMeta | AttributeMeta | FunctionMeta | ValueMeta</synopsis>
-        
-        <para>Metamodel references are compile-time typesafe.</para>
-        
-        <programlisting>Type&lt;List&lt;String&gt;&gt; stringListType = List&lt;String&gt;;</programlisting>
-        
-        <programlisting>Class&lt;Person,Name&gt; personClass = Person;</programlisting>
-        
-        <programlisting>Method&lt;Log, Void, String&gt; infoMethod = Log.info;</programlisting>
-        
-        <programlisting>Method&lt;String, Boolean, String&gt; stringSmaller = Comparable&lt;String&gt;.smallerThan;</programlisting>
-        
-        <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
-        
-        <para>A metamodel reference that refers to a generic declaration must specify type
-        arguments.</para>
-        
-        <comment><para>Note: this restriction results from the lack of existential types. 
-        The expression <literal>Entry</literal> would have the existential type 
-        <literal>ClassConstructor&lt;Entry&lt;Key,Item&gt;,Key,Item&gt; given Key satisfies Object given Item satisfies Object</literal>.
-        The expression <literal>Comparable.smallerThan</literal> would be of existential type 
-        <literal>MethodConstructor&lt;Value,Boolean,Value&gt; given Value satisfies Comparable&lt;Value&gt;</literal>.</para></comment>
-        
-        <comment><para>TODO: Do we anyway need some kind of metamodel objects for type 
-        constructors like <literal>Entry</literal> or even <literal>Comparable.smallerThan</literal>. 
-        These would not support typesafe operations, but would at least allow runtime 
-        reflection.</para></comment>
-        
-        <comment><para>TODO: Are there metamodel objects for block local declarations? This
-        includes block local declarations inside a class body, and block local declarations
-        inside a method or attribute body.</para></comment>
-        
-        <comment><para>TODO: Should we have typesafe metamodel reference expressions for 
-        parameters? For example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
-        
-        <comment><para>TODO: Should we remodel member metamodel references as members of the 
-        metatype? Then we can get rid of two of the following sections. The reason to not do 
-        this is that member class metamodel references have the wrong case for an 
-        attribute.</para></comment>
-        
-        <section id="interfaceandclassmetamodelreferences">
-            <title>Interface and class metamodel references</title>
-            
-        <para>A <literal>Type</literal> object may be obtained by specifying the full
-        type, including type arguments if the type is generic.</para>
-        
-        <synopsis>TypeMeta: Type</synopsis>
-        
-        <para>The metamodel expression, <literal>X</literal>, for a type, class or interface 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>of type <literal>Interface&lt;X&gt;</literal> where 
-                <literal>X</literal> is the interface, or</para>
-            </listitem>
-            <listitem>
-                <para>assignable to <literal>Class&lt;X,P...&gt;</literal> where 
-                <literal>X</literal> is the toplevel <literal>abstract</literal> class and 
-                <literal>P...</literal> are the types of the parameter list of the class, 
-                or</para>
-            </listitem>
-            <listitem>
-                <para>assignable to <literal>OpenConcreteClass&lt;X,P...&gt;</literal> where 
-                <literal>X</literal> is the toplevel concrete class and <literal>P...</literal> 
-                are the types of the parameter list of the class, or</para>
-            </listitem>
-            <listitem>
-                <para>assignable to <literal>OpenMemberClass&lt;X,Y,P...&gt;</literal> where 
-                <literal>Y</literal> is the member class and <literal>P...</literal> 
-                are the types of the parameter list of the class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that for a toplevel class <literal>X</literal>, the expression <literal>X</literal>
-        is both a metamodel reference and a callable reference. This is consistent, since
-        <literal>Class&lt;X,P...&gt;</literal> is a subtype of <literal>Callable&lt;X,P...&gt;</literal>.</para>
-        
-        <para>Furthermore, the expression type is assignable to all metatypes of the 
-        type&mdash;the types listed in the <literal>is</literal> clause of the type 
-        definition. <emphasis>(Note that metatypes are a proposed feature for a future 
-        version of the language.)</emphasis></para>
-        
-        </section>
-        
-        <section id="toplevelmethodmetamodelreferences">
-            <title>Toplevel method metamodel references</title>
-            
-        <para>A <literal>Function</literal> object representing a toplevel method may be 
-        obtained by specifying the method name, with type arguments if the toplevel method 
-        is generic.</para>
-        
-        <synopsis>FunctionMeta: MemberName TypeArguments?</synopsis>
-               
-        <para>The metamodel expression, <literal>method</literal>, for a toplevel method 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>assignable to <literal>OpenFunction&lt;R,P...&gt;</literal> where 
-                <literal>R</literal> is the callable type of a method produced by 
-                removing the first parameter list of the method, and <literal>P...</literal> 
-                are the types of the first parameter lists of the method.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that for a toplevel method <literal>x()</literal>, the expression 
-        <literal>x</literal> is both a metamodel reference and a callable reference. This 
-        is consistent, since <literal>Function&lt;X,P...&gt;</literal> is a subtype of 
-        <literal>Callable&lt;X,P...&gt;</literal>.</para>
-           
-        </section>
-        
-        <section id="membermethodmetamodelreferences">
-            <title>Member method metamodel references</title>
-            
-        <para>A <literal>Method</literal> object representing a member method may be 
-        obtained by specifying the type (with type arguments) and member name, together 
-        with type arguments if the method is generic.</para>
-        
-        <synopsis>MethodMeta: Type "." MemberName TypeArguments?</synopsis>
-               
-        <para>The metamodel expression, <literal>X.member</literal>, for a member method 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>assignable to <literal>OpenMethod&lt;X,R,P...&gt;</literal> where 
-                <literal>X</literal> is the type that defines the method, and 
-                <literal>R</literal> is the callable type of a method produced by 
-                removing the first parameter list of the method, and 
-                <literal>P...</literal> are the types of the first parameter list of 
-                the method.</para>
-            </listitem>
-        </itemizedlist>
-         
-        </section>
-        
-        <section id="toplevelattributemetamodelreferences">
-            <title>Toplevel attribute metamodel references</title>
-            
-        <para>A <literal>Value</literal> object representing a toplevel attribute may be 
-        obtained by specifying the attribute name, with type arguments if the toplevel method 
-        is generic.</para>
-        
-        <synopsis>ValueMeta: MemberName TypeArguments?</synopsis>
-               
-        <para>The metamodel expression, <literal>attribute</literal>, for a toplevel attribute 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>of type <literal>OpenValue&lt;T&gt;</literal> where 
-                <literal>T</literal> is the declared type of the attribute.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that for a toplevel attribute <literal>x</literal>, the expression <literal>x</literal>
-        is both a metamodel reference and a value reference. This is consistent, since
-        <literal>Value&lt;T&gt;</literal> is assignable to <literal>Gettable&lt;T&gt;</literal>.</para>
-           
-        </section>
-        
-        <section id="attributemetamodelreferences">
-            <title>Member attribute metamodel references</title>
-            
-        <para>An <literal>Attribute</literal> object representing a member attribute may 
-        be obtained by specifying the type (with type arguments) and member name.</para>
-        
-        <synopsis>AttributeMeta: Type "." MemberName</synopsis>
-
-        <para>The metamodel expression, <literal>X.member</literal>, for a member 
-        attribute is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>of type <literal>OpenAttribute&lt;X,T&gt;</literal> where 
-                <literal>X</literal> is the type that defines the attribute, 
-                and <literal>T</literal> is the declared type of the attribute,
-                unless the attribute is declared <literal>variable</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>of type <literal>OpenMutableAttribute&lt;X,T&gt;</literal> where 
-                <literal>X</literal> is the type that defines the attribute, 
-                and <literal>T</literal> is the declared type of the attribute,
-                if the attribute is declared <literal>variable</literal>.</para>
-            </listitem>
-        </itemizedlist>
-         
-        </section>
-        
-        <section id="usingthemetamodel">
-            <title>Using the metamodel</title>
-            
-        <para>The metamodel object for a type allows its members to be iterated:</para>
-        
-        <programlisting><![CDATA[for (Attribute<Value,String> attribute 
-            in Value.members(Attribute<Value,String>)) {
-    log.info(attribute.declaringType.name + "." + attribute.name 
-                + "=" + attribute(obj));
-}]]></programlisting>
-                
-        <para>The metamodel object for a class, attribute or method satisfies 
-        <literal>Callable</literal> and is therefore invokable.</para>
-        
-        <programlisting>Class&lt;ArrayList&lt;String&gt;,String[]&gt; arrayListClass = ArrayList&lt;String&gt;;
-        
-List list = arrayListClass("foo", "bar", "baz);</programlisting>
-        
-        <programlisting>Attribute&lt;Person, String&gt; nameAttribute = Person.name;
-        
-String personName = nameAttribute(person);</programlisting>
-        
-        <programlisting>Method&lt;Person, String&gt; sayMethod = Person.say;
-        
-String result = sayMethod(person)();</programlisting>
-
-        <programlisting>MutableAttribute&lt;Counter, Integer&gt; countAttribute = Counter.count;
-
-countAttribute(this)++;</programlisting>        
-
-        <para>The metamodel object for a class, attribute or method supports registration 
-        of a listener, which intercepts invocations.</para>
-        
-        <programlisting>OpenMutableAttribute&lt;Counter, Integer&gt; countAttribute = Counter.count;
-
-countAttribute.intercept() 
-    onGet (Counter c, Integer proceed()) {
-        log.debug("getting");
-        return proceed();
-    };
-    
-countAttribute.intercept() 
-    onSet (Counter c, void proceed(Integer n), Integer arg) {
-        log.debug("setting");
-        proceed(arg);
-    };</programlisting>
-
-        <programlisting>OpenMethod&lt;Order,Item,Product,Integer&gt; createItemMethod = Order.createItem;
-        
-createItemMethod.intercept()
-    onInvoke (Order o, Item proceed(Product p, Integer n),  
-              Product product, Integer quantity) {
-        log.debug("invoking in transaction");
-        try (Transaction()) {
-            return proceed(product,quantity);
-        }
-    };</programlisting>
-    
-        </section>
-    
-        <comment><para>TODO: According to this, we can "curry" in type arguments of
-        the type. We need this. But if so, why can't we curry type arguments of the 
-        member? It's not a problem from the grammar point of view.</para></comment>
-        
-    </section-->
     
     <section id="miscexpressions">
         <title>Conditional expressions and anonymous class expressions</title>
@@ -2879,6 +2555,29 @@ createItemMethod.intercept()
     
     </section>
     
+    </section>
+    
+    <section>
+        <title>Metamodel expressions</title>
+        
+        <para>A <emphasis>metamodel expression</emphasis> is a reference to
+        a program element and evaluates to a metamodel of program element.</para>
+        
+        <programlisting>Class&lt;Person,[Name]&gt; personClass = `Person`;</programlisting>
+        <programlisting>Interface&lt;List&lt;String&gt;&gt; stringListInterface = `List&lt;String&gt;`;</programlisting>
+        <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
+        <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
+        
+        <para>A <emphasis>type metamodel expression</emphasis> is a type 
+        surrounded in backticks.</para>
+        
+        <synopsis>MetaType: "`" Type "`"</synopsis>
+        
+        <para>A <emphasis>member metamodel expression</emphasis> is a type, 
+        followed by a member name, surrounded in backticks.</para>
+        
+        <synopsis>MetaMember: "`" (QualifiedType|GroupedType) "." MemberName "`"</synopsis>
+        
     </section>
     
 </chapter>
