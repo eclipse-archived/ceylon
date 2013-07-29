@@ -8,7 +8,7 @@ import ceylon.language.model{
     //Function, Value
 }
 import ceylon.language.model.declaration {
-    AttributeDeclaration,
+    ValueDeclaration,
     VariableDeclaration,
     Declaration,
     FunctionDeclaration,
@@ -37,10 +37,10 @@ annotation class ConstrainedToFunction() satisfies OptionalAnnotation<Constraine
 annotation class ConstrainedToFunctionSeq() satisfies SequencedAnnotation<ConstrainedToFunction, FunctionDeclaration> {
 }
 
-annotation class ConstrainedToValue() satisfies OptionalAnnotation<ConstrainedToValue, AttributeDeclaration> {
+annotation class ConstrainedToValue() satisfies OptionalAnnotation<ConstrainedToValue, ValueDeclaration> {
 }
 
-annotation class ConstrainedToValueSeq() satisfies SequencedAnnotation<ConstrainedToValue, AttributeDeclaration> {
+annotation class ConstrainedToValueSeq() satisfies SequencedAnnotation<ConstrainedToValue, ValueDeclaration> {
 }
 
 annotation class ConstrainedToVariable() satisfies OptionalAnnotation<ConstrainedToVariable, VariableDeclaration> {
