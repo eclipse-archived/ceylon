@@ -1731,6 +1731,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
         final Method model = def.getDeclarationModel();
+        if (model.isParameter()) {
+            return List.nil();
+        }
         naming.noteDecl(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
@@ -1898,8 +1901,11 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<MethodDefinitionBuilder> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
+        if (def.getDeclarationModel().isParameter()) {
+            return List.nil();
+        }
         // Transform the method body of the 'inner-most method'
-        List<JCStatement> body = transformMethodBody(def);        
+        List<JCStatement> body = transformMethodBody(def);
         return transform(def, classBuilder, body);
     }
 
