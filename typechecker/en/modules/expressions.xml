@@ -2568,15 +2568,32 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
         <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
         
-        <para>A <emphasis>type metamodel expression</emphasis> is a type 
-        surrounded in backticks.</para>
+        <para>A <emphasis>type metamodel expression</emphasis> is a type, as
+        defined by <xref linkend="type"/>, surrounded by backticks.</para>
         
         <synopsis>MetaType: "`" Type "`"</synopsis>
         
-        <para>A <emphasis>member metamodel expression</emphasis> is a type, 
-        followed by a member name, surrounded in backticks.</para>
+        <para>A <emphasis>base metamodel expression</emphasis> is a member name, 
+        with an optional list of type arguments, surrounded by backticks.</para>
         
-        <synopsis>MetaMember: "`" (QualifiedType|GroupedType) "." MemberName "`"</synopsis>
+        <synopsis>MetaBase: "`" MemberName TypeArguments? "`"</synopsis>
+        
+        <para>A base metamodel expression is a reference to a value or function. 
+        The referenced declaration is determined according to
+        <xref linkend="unqualifiedreferenceresolution"/>.</para>
+        
+        <para>A <emphasis>member metamodel expression</emphasis> is a type, as
+        defined by <xref linkend="type"/>, followed by a member name, with an 
+        optional list of type arguments, surrounded by backticks.</para>
+        
+        <synopsis>MetaMember: "`" (QualifiedType|GroupedType) "." MemberName TypeArguments? "`"</synopsis>
+        
+        <para>A member metamodel expression is a reference to an attribute or 
+        method of the type. The member is resolved as a member of the type 
+        according to <xref linkend="qualifiedreferenceresolution"/>.</para>
+        
+        <para>Metamodel expressions may or may not include type arguments to 
+        generic types or generic functions.</para>
         
     </section>
     
