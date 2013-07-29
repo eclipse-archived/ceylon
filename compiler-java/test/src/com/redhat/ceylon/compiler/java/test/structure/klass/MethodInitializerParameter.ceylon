@@ -18,9 +18,8 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class MethodInitializerParameter<T>(m, m2, m3, m4) {
+class MethodInitializerParameter<T>(m, m2, m3) {
     void m(Integer i);
     void m2(Integer i, Integer* seq);
     T m3(T t);
-    void m4(Integer i=1);
 }

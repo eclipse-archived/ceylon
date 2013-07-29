@@ -56,13 +56,5 @@ class MethodInitializerParameter<T>(T t) {
             t=t;
         };
     }
-    void defaultedParameter(m) {
-        void m(Integer i=1);
-        m();
-        m(2);
-        m{};
-        m{
-            i=2;
-        };
-    }
+    
 }
