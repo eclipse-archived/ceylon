@@ -4097,7 +4097,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(TypeLiteral that) {
-        out(clAlias, "typeLiteral$metamodel({Type:");
+        out(clAlias, "typeLiteral$model({Type:");
         TypeUtils.typeNameOrList(that, that.getType().getTypeModel(), this, true);
         out("})");
     }
@@ -4110,7 +4110,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             //TODO We can skip the typeLiteral call and directly return a Function or Method
             Declaration d = ref.getDeclaration();
-            out(clAlias, "typeLiteral$metamodel({Type:{t:");
+            out(clAlias, "typeLiteral$model({Type:{t:");
             if (that.getType() == null) {
                 qualify(that, d);
             } else {

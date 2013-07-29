@@ -50,7 +50,7 @@ public class TypeUtils {
         anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
         callable = (TypeDeclaration)pkg.getMember("Callable", null, false);
         empty = (TypeDeclaration)pkg.getMember("Empty", null, false);
-        pkg = languageModule.getPackage("ceylon.language.metamodel");
+        pkg = languageModule.getPackage("ceylon.language.model");
         metaClass = (TypeDeclaration)pkg.getMember("Class", null, false);
     }
 
@@ -120,7 +120,7 @@ public class TypeUtils {
                     gen.out(gen.getNames().name(p), ".");
                 }
             } else if (imported) {
-                //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.metamodel types
+                //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.model types
                 final String modAlias = gen.getNames().moduleAlias(t.getUnit().getPackage().getModule());
                 if (modAlias != null && !modAlias.isEmpty()) {
                     gen.out(modAlias, ".");

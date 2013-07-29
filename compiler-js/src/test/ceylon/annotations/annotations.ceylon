@@ -1,16 +1,16 @@
 import check { check,fail,results }
 
-import ceylon.language.metamodel{
+import ceylon.language.model{
   annotations,
   SequencedAnnotation,OptionalAnnotation
 }
-import ceylon.language.metamodel.declaration{
-  ClassOrInterfaceDeclaration, AttributeDeclaration,
+import ceylon.language.model.declaration{
+  ClassOrInterfaceDeclaration, ValueDeclaration,
   FunctionDeclaration
 }
 
 shared annotation class AnnoTest1(text,count=1)
-    satisfies OptionalAnnotation<AnnoTest1,ClassOrInterfaceDeclaration|AttributeDeclaration|FunctionDeclaration>{
+    satisfies OptionalAnnotation<AnnoTest1,ClassOrInterfaceDeclaration|ValueDeclaration|FunctionDeclaration>{
   shared String text;
   shared Integer count;
 }
@@ -39,6 +39,10 @@ shared class Example2() {
   shared actual String string => "Example2";
 }
 
+annotest1("for an interface")
+annotest3("for an interface")
+interface Example3 {}
+
 annotest3("one") annotest3("two") annotest3("three")
 Singleton<String> testSingleton = Singleton("!");
 
@@ -55,6 +59,8 @@ shared void test() {
   } else {
     fail("Annotations 3 (on toplevel method)");
   }
+  check(annotations(`AnnoTest1`, `Example3`) exists, "Annotation on interface");
+  
   /*value a4 = annotations(`AnnoTest3`, `testSingleton`);
   if (nonempty a4) {
     check(a4.size==3, "Annotations 4 size");
