@@ -4800,10 +4800,10 @@ public class ExpressionVisitor extends Visitor {
                             }
                             else {
                                 ((Tree.TypeArgumentList) tal).getTypes()
-                                .get(i).addError("type parameter " + param.getName() 
-                                        + " of declaration " + dec.getName(unit)
-                                        + " has argument " + argType.getProducedTypeName(unit) 
-                                        + " not one of the enumerated cases of " + param.getName());
+                                        .get(i).addError("type parameter " + param.getName() 
+                                                + " of declaration " + dec.getName(unit)
+                                                + " has argument " + argType.getProducedTypeName(unit) 
+                                                + " not one of the enumerated cases of " + param.getName());
                             }
                         }
                         return false;
@@ -4819,12 +4819,12 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     String help="";
                     if (args<min) {
-                        help = " (requires at least " + min + " type arguments)";
+                        help = " requires at least " + min + " type arguments";
                     }
                     else if (args>max) {
-                        help = " (allows at most " + max + " type arguments)";
+                        help = " allows at most " + max + " type arguments";
                     }
-                    tal.addError("wrong number of type arguments to: " + 
+                    tal.addError("wrong number of type arguments: " + 
                             dec.getName(unit) + help);
                 }
                 return false;
