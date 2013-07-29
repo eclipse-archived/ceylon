@@ -12,32 +12,32 @@ class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     AnnotationClassNullary() {
-        this.$ceylon$language$metamodel$OptionalAnnotation$this = new .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, this);
+        this.$ceylon$language$model$OptionalAnnotation$this = new .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$OptionalAnnotation$this;
+    protected final .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$OptionalAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$OptionalAnnotation$impl() {
-        return $ceylon$language$metamodel$OptionalAnnotation$this;
+    public .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$OptionalAnnotation$impl() {
+        return $ceylon$language$model$OptionalAnnotation$this;
     }
-    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$impl() {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylon$language$metamodel$Annotation$this;
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylon$language$model$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylon$language$metamodel$Annotation$impl() {
-        return $ceylon$language$metamodel$Annotation$this;
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -69,32 +69,32 @@ class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.jav
     }
     
     AnnotationClassNullarySequenced() {
-        this.$ceylon$language$metamodel$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, this);
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$SequencedAnnotation$this;
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$SequencedAnnotation$impl() {
-        return $ceylon$language$metamodel$SequencedAnnotation$this;
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
     }
-    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$impl() {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced> $ceylon$language$metamodel$Annotation$this;
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced> $ceylon$language$model$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced> $ceylon$language$metamodel$Annotation$impl() {
-        return $ceylon$language$metamodel$Annotation$this;
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {

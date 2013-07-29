@@ -20,32 +20,32 @@ class AnnotationClassString implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     AnnotationClassString(final .java.lang.String s) {
-        this.$ceylon$language$metamodel$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, this);
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, this);
     }
-    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$SequencedAnnotation$this;
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$SequencedAnnotation$impl() {
-        return $ceylon$language$metamodel$SequencedAnnotation$this;
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
     }
-    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$impl() {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$metamodel$Annotation$this;
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$model$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$metamodel$Annotation$impl() {
-        return $ceylon$language$metamodel$Annotation$this;
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     @.java.lang.Override
@@ -85,36 +85,36 @@ class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compiler.java
     }
     
     AnnotationClassStringDefaulted(final .java.lang.String s) {
-        this.$ceylon$language$metamodel$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
-        this.$ceylon$language$metamodel$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, this);
+        this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString.$TypeDescriptor, this);
     }
     
     static .java.lang.String $init$s() {
         return "foo";
     }
-    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$SequencedAnnotation$this;
+    protected final .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$SequencedAnnotation$impl() {
-        return $ceylon$language$metamodel$SequencedAnnotation$this;
+    public .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$SequencedAnnotation$impl() {
+        return $ceylon$language$model$SequencedAnnotation$this;
     }
-    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    protected final .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$metamodel$ConstrainedAnnotation$impl() {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this;
+    public .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> $ceylon$language$model$ConstrainedAnnotation$impl() {
+        return $ceylon$language$model$ConstrainedAnnotation$this;
     }
     
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.model.Annotated programElement) {
-        return $ceylon$language$metamodel$ConstrainedAnnotation$this.occurs(programElement);
+        return $ceylon$language$model$ConstrainedAnnotation$this.occurs(programElement);
     }
-    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$metamodel$Annotation$this;
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$model$Annotation$this;
     
     @.java.lang.Override
-    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$metamodel$Annotation$impl() {
-        return $ceylon$language$metamodel$Annotation$this;
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {
