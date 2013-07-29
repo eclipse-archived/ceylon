@@ -362,7 +362,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsDefaultParameter(){
         compareWithJavaSource("klass/DefaultParameter");
     }
-    
+    @Test
+    public void testKlsSubclassException(){
+        compareWithJavaSource("klass/SubclassException");
+    }
     //
     // Methods
     
