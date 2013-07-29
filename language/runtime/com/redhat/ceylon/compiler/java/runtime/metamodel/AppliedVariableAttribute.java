@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.Member$impl;
-import ceylon.language.metamodel.VariableAttribute$impl;
+import ceylon.language.model.Member$impl;
+import ceylon.language.model.VariableAttribute$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -14,55 +14,55 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
  */
 public class AppliedVariableAttribute<Container, Type> 
     extends AppliedAttribute<Container, Type>
-    implements ceylon.language.metamodel.VariableAttribute<Container, Type> {
+    implements ceylon.language.model.VariableAttribute<Container, Type> {
 
     public AppliedVariableAttribute(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor $reifiedType, 
                                     FreeAttribute declaration, ProducedTypedReference typedReference,
-                                    ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
+                                    ceylon.language.model.ClassOrInterface<? extends Object> container) {
         super($reifiedContainer, $reifiedType, declaration, typedReference, container);
     }
 
     @Override
     @Ignore
-    public VariableAttribute$impl<Container, Type> $ceylon$language$metamodel$VariableAttribute$impl() {
+    public VariableAttribute$impl<Container, Type> $ceylon$language$model$VariableAttribute$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Member$impl $ceylon$language$metamodel$Member$impl() {
+    public Member$impl $ceylon$language$model$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public ceylon.language.metamodel.Variable<Type> $call() {
-        return (ceylon.language.metamodel.Variable<Type>)super.$call();
+    public ceylon.language.model.Variable<Type> $call() {
+        return (ceylon.language.model.Variable<Type>)super.$call();
     }
 
     @Override
-    public ceylon.language.metamodel.Variable<Type> $call(Object arg0) {
-        return (ceylon.language.metamodel.Variable<Type>)super.$call(arg0);
+    public ceylon.language.model.Variable<Type> $call(Object arg0) {
+        return (ceylon.language.model.Variable<Type>)super.$call(arg0);
     }
 
     @Override
-    public ceylon.language.metamodel.Variable<Type> $call(Object arg0, Object arg1) {
-        return (ceylon.language.metamodel.Variable<Type>)super.$call(arg0, arg1);
+    public ceylon.language.model.Variable<Type> $call(Object arg0, Object arg1) {
+        return (ceylon.language.model.Variable<Type>)super.$call(arg0, arg1);
     }
 
     @Override
-    public ceylon.language.metamodel.Variable<Type> $call(Object arg0, Object arg1, Object arg2) {
-        return (ceylon.language.metamodel.Variable<Type>)super.$call(arg0, arg1, arg2);
+    public ceylon.language.model.Variable<Type> $call(Object arg0, Object arg1, Object arg2) {
+        return (ceylon.language.model.Variable<Type>)super.$call(arg0, arg1, arg2);
     }
 
     @Override
-    public ceylon.language.metamodel.Variable<Type> $call(Object... args) {
-        return (ceylon.language.metamodel.Variable<Type>)super.$call(args);
+    public ceylon.language.model.Variable<Type> $call(Object... args) {
+        return (ceylon.language.model.Variable<Type>)super.$call(args);
     }
 
     @Override
-    protected ceylon.language.metamodel.Variable<Type> bindTo(Object instance) {
+    protected ceylon.language.model.Variable<Type> bindTo(Object instance) {
         return new AppliedVariable(null, declaration, typedReference, instance);
     }
     

@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.metamodel.declaration.OpenType;
-import ceylon.language.metamodel.declaration.ValueDeclaration$impl;
+import ceylon.language.model.declaration.OpenType;
+import ceylon.language.model.declaration.ValueDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeAttribute 
     extends FreeFunctionOrValue
-    implements ceylon.language.metamodel.declaration.ValueDeclaration, AnnotationBearing {
+    implements ceylon.language.model.declaration.ValueDeclaration, AnnotationBearing {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeAttribute.class);
@@ -37,7 +37,7 @@ public class FreeAttribute
 
     @Override
     @Ignore
-    public ValueDeclaration$impl $ceylon$language$metamodel$declaration$ValueDeclaration$impl() {
+    public ValueDeclaration$impl $ceylon$language$model$declaration$ValueDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -48,13 +48,13 @@ public class FreeAttribute
     }
 
     @Override
-    public ceylon.language.metamodel.Value<? extends Object> apply() {
+    public ceylon.language.model.Value<? extends Object> apply() {
         return apply(null);
     }
     
     @Override
-    @TypeInfo("ceylon.language.metamodel::Value<ceylon.language::Anything>")
-    public ceylon.language.metamodel.Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
+    @TypeInfo("ceylon.language.model::Value<ceylon.language::Anything>")
+    public ceylon.language.model.Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
         // FIXME: validate that instance is null for toplevels and not null for memberss
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         // FIXME: this is not valid if the container type has TP
@@ -66,7 +66,7 @@ public class FreeAttribute
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::OpenType")
+    @TypeInfo("ceylon.language.model.declaration::OpenType")
     public OpenType getOpenType() {
         return type;
     }

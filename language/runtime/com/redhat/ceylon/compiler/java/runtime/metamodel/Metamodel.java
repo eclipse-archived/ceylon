@@ -15,10 +15,10 @@ import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.metamodel.Annotated;
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.ConstrainedAnnotation;
-import ceylon.language.metamodel.declaration.Module;
+import ceylon.language.model.Annotated;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.ConstrainedAnnotation;
+import ceylon.language.model.declaration.Module;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -132,7 +132,7 @@ public class Metamodel {
         return instanceType.toProducedType(moduleManager);
     }
 
-    public static ceylon.language.metamodel.Type getAppliedMetamodel(TypeDescriptor typeDescriptor) {
+    public static ceylon.language.model.Type getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw new RuntimeException("Metamodel not yet supported for Java types");
         ProducedType pt = typeDescriptor.toProducedType(moduleManager);
@@ -290,7 +290,7 @@ public class Metamodel {
         }
     }
 
-    public static ceylon.language.metamodel.declaration.OpenType getMetamodel(ProducedType pt) {
+    public static ceylon.language.model.declaration.OpenType getMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeParameterisedType(null, pt);
@@ -306,17 +306,17 @@ public class Metamodel {
             return new FreeIntersectionType(declaration.getSatisfiedTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.metamodel.declaration.nothingType_.$get();
+            return ceylon.language.model.declaration.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
-    public static ceylon.language.metamodel.Type getAppliedMetamodel(ProducedType pt) {
+    public static ceylon.language.model.Type getAppliedMetamodel(ProducedType pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // if there are no TP the declaration model will also be an applied type
             if(!hasTypeParameters(declaration))
-                return (ceylon.language.metamodel.Type)getOrCreateMetamodel(declaration);
+                return (ceylon.language.model.Type)getOrCreateMetamodel(declaration);
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
             if(!declaration.isAnonymous())
@@ -334,7 +334,7 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             // if there are no TP the declaration model will also be an applied type
             if(!hasTypeParameters(declaration))
-                return (ceylon.language.metamodel.Type)getOrCreateMetamodel(declaration);
+                return (ceylon.language.model.Type)getOrCreateMetamodel(declaration);
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
             if(declaration.isToplevel())
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface(reifiedType, pt);
@@ -349,7 +349,7 @@ public class Metamodel {
             return new AppliedIntersectionType(declaration.getSatisfiedTypes());
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
-            return ceylon.language.metamodel.nothingType_.$get();
+            return ceylon.language.model.nothingType_.$get();
         }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
@@ -457,13 +457,13 @@ public class Metamodel {
         throw new RuntimeException("Unsupported method container for "+method.getName()+": "+container);
     }
 
-    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.declaration.OpenType pt) {
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.declaration.OpenType pt) {
         if(pt instanceof FreeParameterisedType)
             return ((FreeParameterisedType)pt).producedType;
         throw new RuntimeException("Unsupported produced type: " + pt);
     }
 
-    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.metamodel.Type pt) {
+    public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.model.Type pt) {
         if(pt instanceof AppliedClassOrInterface)
             return ((AppliedClassOrInterface)pt).producedType;
         if(pt instanceof FreeClassWithAppliedClass)
@@ -488,12 +488,12 @@ public class Metamodel {
     }
 
 
-    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.metamodel.Type> types) {
+    public static java.util.List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.model.Type> types) {
         Iterator<?> iterator = types.iterator();
         Object it;
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.compiler.typechecker.model.ProducedType>();
         while((it = iterator.next()) != finished_.$get()){
-            ceylon.language.metamodel.Type pt = (ceylon.language.metamodel.Type) it;
+            ceylon.language.model.Type pt = (ceylon.language.model.Type) it;
             com.redhat.ceylon.compiler.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
         }
@@ -520,7 +520,7 @@ public class Metamodel {
         return refAnnotationClass;
     }
     
-    private static <A extends ceylon.language.metamodel.Annotation<? extends A>> void addAnnotation(
+    private static <A extends ceylon.language.model.Annotation<? extends A>> void addAnnotation(
             SequenceBuilder<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
             Predicates.Predicate<A> pred) {
@@ -571,7 +571,7 @@ public class Metamodel {
     }
     
     private static void addProxyCeylonAnnotation(
-            SequenceBuilder<? extends ceylon.language.metamodel.Annotation> ceylonAnnotations,
+            SequenceBuilder<? extends ceylon.language.model.Annotation> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
         InvocationHandler handler = new InvocationHandler() {
@@ -584,11 +584,11 @@ public class Metamodel {
             }
         };
         java.lang.reflect.Proxy.newProxyInstance(jAnnotationType.getClassLoader(), 
-                new Class[]{jAnnotationType, ceylon.language.metamodel.Annotation.class}, 
+                new Class[]{jAnnotationType, ceylon.language.model.Annotation.class}, 
                 handler);
     }
     
-    public static <A extends ceylon.language.metamodel.Annotation<? extends A>> Sequential<? extends A> annotations(
+    public static <A extends ceylon.language.model.Annotation<? extends A>> Sequential<? extends A> annotations(
             TypeDescriptor $reifiedValues,
             Annotated annotated) {
         // TODO If the annotated is not a valid target for the annotationType
@@ -597,7 +597,7 @@ public class Metamodel {
         return annotations($reifiedValues, annotated, predicate);
     }
 
-    public static <A extends ceylon.language.metamodel.Annotation<? extends A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
+    public static <A extends ceylon.language.model.Annotation<? extends A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
             Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations();
         if (jAnnotations == null) {
@@ -633,10 +633,10 @@ public class Metamodel {
         return -1;
     }
 
-    public static Sequential<? extends ceylon.language.metamodel.declaration.Module> getModuleList() {
+    public static Sequential<? extends ceylon.language.model.declaration.Module> getModuleList() {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         Set<com.redhat.ceylon.compiler.typechecker.model.Module> modules = moduleManager.getContext().getModules().getListOfModules();
-        ceylon.language.metamodel.declaration.Module[] array = new ceylon.language.metamodel.declaration.Module[modules.size()];
+        ceylon.language.model.declaration.Module[] array = new ceylon.language.model.declaration.Module[modules.size()];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.Module module : modules){
             array[i++] = getOrCreateMetamodel(module);
@@ -644,7 +644,7 @@ public class Metamodel {
         return Util.sequentialInstance(Module.$TypeDescriptor, array);
     }
 
-    public static ceylon.language.metamodel.declaration.Module findLoadedModule(String name, String version) {
+    public static ceylon.language.model.declaration.Module findLoadedModule(String name, String version) {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
         return module != null ? getOrCreateMetamodel(module) : null;
@@ -686,14 +686,14 @@ public class Metamodel {
         }
     }
     
-    public static ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
+    public static ceylon.language.model.declaration.ClassOrInterfaceDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
         // FIXME: is this really enough?
         String typeName = klass.getName();
         com.redhat.ceylon.compiler.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface decl = 
                 (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) 
                     moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-        return (ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration) getOrCreateMetamodel(decl);
+        return (ceylon.language.model.declaration.ClassOrInterfaceDeclaration) getOrCreateMetamodel(decl);
     }
 
     public static TypeDescriptor getTypeDescriptorForFunction(ProducedReference appliedFunction) {

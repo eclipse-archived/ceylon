@@ -12,5 +12,5 @@ shared Value? optionalAnnotation<Value,ProgramElement>(
             ProgramElement programElement)
         given Value satisfies OptionalAnnotation<Value,ProgramElement>
         given ProgramElement satisfies Annotated { 
-    return annotations<Value,Value?,ProgramElement>(annotationType, programElement); 
+    return annotations<Value,Value?,ProgramElement>(annotationType, programElement);
 }

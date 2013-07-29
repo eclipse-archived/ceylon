@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Function;
-import ceylon.language.metamodel.FunctionModel$impl;
-import ceylon.language.metamodel.Method$impl;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.declaration.FunctionDeclaration;
+import ceylon.language.model.Function;
+import ceylon.language.model.FunctionModel$impl;
+import ceylon.language.model.Method$impl;
+import ceylon.language.model.Model$impl;
+import ceylon.language.model.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -24,12 +24,12 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
 })
 public class AppliedMethod<Container, Type, Arguments extends Sequential<? extends Object>> 
-    extends AppliedMember<Container, ceylon.language.metamodel.Function<? extends Type, ? super Arguments>> 
-    implements ceylon.language.metamodel.Method<Container, Type, Arguments> {
+    extends AppliedMember<Container, ceylon.language.model.Function<? extends Type, ? super Arguments>> 
+    implements ceylon.language.model.Method<Container, Type, Arguments> {
 
     private FreeFunction declaration;
     private ProducedTypedReference appliedFunction;
-    private ceylon.language.metamodel.Type closedType;
+    private ceylon.language.model.Type closedType;
     @Ignore
     private TypeDescriptor $reifiedType;
     @Ignore
@@ -45,8 +45,8 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
                          @Ignore TypeDescriptor $reifiedArguments, 
                          ProducedTypedReference appliedFunction, 
                          FreeFunction declaration,
-                         ceylon.language.metamodel.ClassOrInterface<? extends Object> container) {
-        super($reifiedType, TypeDescriptor.klass(ceylon.language.metamodel.Function.class, $reifiedType, $reifiedArguments), container);
+                         ceylon.language.model.ClassOrInterface<? extends Object> container) {
+        super($reifiedType, TypeDescriptor.klass(ceylon.language.model.Function.class, $reifiedType, $reifiedArguments), container);
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
         this.appliedFunction = appliedFunction;
@@ -56,34 +56,34 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$metamodel$Model$impl() {
+    public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Method$impl<Container, Type, Arguments> $ceylon$language$metamodel$Method$impl() {
+    public Method$impl<Container, Type, Arguments> $ceylon$language$model$Method$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public FunctionModel$impl<Type, Arguments> $ceylon$language$metamodel$FunctionModel$impl() {
+    public FunctionModel$impl<Type, Arguments> $ceylon$language$model$FunctionModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::FunctionDeclaration")
+    @TypeInfo("ceylon.language.model.declaration::FunctionDeclaration")
     public FunctionDeclaration getDeclaration() {
         return declaration;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Type")
-    public ceylon.language.metamodel.Type getType() {
+    @TypeInfo("ceylon.language.model::Type")
+    public ceylon.language.model.Type getType() {
         return closedType;
     }
 

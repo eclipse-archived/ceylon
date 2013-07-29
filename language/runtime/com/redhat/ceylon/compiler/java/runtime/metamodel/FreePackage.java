@@ -5,10 +5,10 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.metamodel.declaration.Declaration$impl;
-import ceylon.language.metamodel.declaration.Package$impl;
+import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.model.declaration.Declaration$impl;
+import ceylon.language.model.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreePackage implements ceylon.language.metamodel.declaration.Package, 
+public class FreePackage implements ceylon.language.model.declaration.Package, 
         AnnotationBearing,
         ReifiedType {
 
@@ -45,28 +45,28 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+    public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$metamodel$declaration$AnnotatedDeclaration$impl() {
+    public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Package$impl $ceylon$language$metamodel$declaration$Package$impl() {
+    public Package$impl $ceylon$language$model$declaration$Package$impl() {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
-    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
+    public Annotated$impl $ceylon$language$model$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -80,8 +80,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
-    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.metamodel::Annotation<Annotation>"))
-    public <Annotation extends ceylon.language.metamodel.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.model::Annotation<Annotation>"))
+    public <Annotation extends ceylon.language.model.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 
@@ -92,7 +92,7 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    public ceylon.language.metamodel.declaration.Module getContainer() {
+    public ceylon.language.model.declaration.Module getContainer() {
         // this does not need to be thread-safe as Metamodel.getOrCreateMetamodel is thread-safe so if we
         // assign module twice we get the same result
         if(module == null){
@@ -103,8 +103,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
-    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"))
+    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Sequential<? extends Kind> 
     members(@Ignore TypeDescriptor $reifiedKind) {
         
         Predicates.Predicate predicate = Predicates.isDeclarationOfKind($reifiedKind);
@@ -114,8 +114,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
 
     @Override
     @TypeInfo("Kind")
-    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"))
-    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> Kind 
+    @TypeParameters(@TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"))
+    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> Kind 
     getMember(@Ignore TypeDescriptor $reifiedKind, @Name("name") String name) {
         
         Predicates.Predicate predicate = Predicates.and(
@@ -129,10 +129,10 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     @Override
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
-        @TypeParameter(value = "Kind", satisfies = "ceylon.language.metamodel.declaration::TopLevelOrMemberDeclaration"), 
+        @TypeParameter(value = "Kind", satisfies = "ceylon.language.model.declaration::TopLevelOrMemberDeclaration"), 
         @TypeParameter(value = "Annotation") 
     })
-    public <Kind extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration, Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate predicate = Predicates.and(
@@ -175,8 +175,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.ValueDeclaration getValue(String name) {
+    @TypeInfo("ceylon.language.model.declaration::ValueDeclaration|ceylon.language::Null")
+    public ceylon.language.model.declaration.ValueDeclaration getValue(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Value == false)
             return null;
@@ -185,8 +185,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::FunctionDeclaration|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.FunctionDeclaration getFunction(String name) {
+    @TypeInfo("ceylon.language.model.declaration::FunctionDeclaration|ceylon.language::Null")
+    public ceylon.language.model.declaration.FunctionDeclaration getFunction(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.Method == false)
             return null;
@@ -195,8 +195,8 @@ public class FreePackage implements ceylon.language.metamodel.declaration.Packag
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ClassOrInterfaceDeclaration|ceylon.language::Null")
-    public ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration getClassOrInterface(String name) {
+    @TypeInfo("ceylon.language.model.declaration::ClassOrInterfaceDeclaration|ceylon.language::Null")
+    public ceylon.language.model.declaration.ClassOrInterfaceDeclaration getClassOrInterface(String name) {
         com.redhat.ceylon.compiler.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
         if(toplevel instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface == false)
             return null;

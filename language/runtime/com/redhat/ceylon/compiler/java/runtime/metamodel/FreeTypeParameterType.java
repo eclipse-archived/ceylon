@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.declaration.OpenType$impl;
-import ceylon.language.metamodel.declaration.OpenTypeVariable$impl;
+import ceylon.language.model.declaration.OpenType$impl;
+import ceylon.language.model.declaration.OpenTypeVariable$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -14,12 +14,12 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 @Ceylon(major = 5)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameterType 
-    implements ceylon.language.metamodel.declaration.OpenTypeVariable, ReifiedType {
+    implements ceylon.language.model.declaration.OpenTypeVariable, ReifiedType {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(FreeTypeParameterType.class);
     
-    protected ceylon.language.metamodel.declaration.TypeParameter declaration;
+    protected ceylon.language.model.declaration.TypeParameter declaration;
 
     private TypeParameter wrapped;
 
@@ -31,21 +31,21 @@ public class FreeTypeParameterType
 
     @Override
     @Ignore
-    public OpenType$impl $ceylon$language$metamodel$declaration$OpenType$impl() {
+    public OpenType$impl $ceylon$language$model$declaration$OpenType$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public OpenTypeVariable$impl $ceylon$language$metamodel$declaration$OpenTypeVariable$impl() {
+    public OpenTypeVariable$impl $ceylon$language$model$declaration$OpenTypeVariable$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::TypeParameter")
-    public ceylon.language.metamodel.declaration.TypeParameter getDeclaration() {
+    @TypeInfo("ceylon.language.model.declaration::TypeParameter")
+    public ceylon.language.model.declaration.TypeParameter getDeclaration() {
         checkInit();
         return declaration;
     }
@@ -56,7 +56,7 @@ public class FreeTypeParameterType
         // FIXME: support more container sources, such as methods and outer declarations
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface containerMetamodel = (FreeClassOrInterface) Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) container);
-            ceylon.language.metamodel.declaration.TypeParameter typeParameter = containerMetamodel.getTypeParameterDeclaration(wrapped.getName());
+            ceylon.language.model.declaration.TypeParameter typeParameter = containerMetamodel.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else
@@ -64,7 +64,7 @@ public class FreeTypeParameterType
         }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
             // try to find it in the method
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction method = Metamodel.getMetamodel((com.redhat.ceylon.compiler.typechecker.model.Method)container);
-            ceylon.language.metamodel.declaration.TypeParameter typeParameter = method.getTypeParameterDeclaration(wrapped.getName());
+            ceylon.language.model.declaration.TypeParameter typeParameter = method.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else

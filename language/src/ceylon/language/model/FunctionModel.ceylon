@@ -1,7 +1,7 @@
-import ceylon.language.metamodel.declaration {
+import ceylon.language.model.declaration {
     FunctionDeclaration
 }
-import ceylon.language.metamodel {
+import ceylon.language.model {
     ClosedType = Type
 }
 

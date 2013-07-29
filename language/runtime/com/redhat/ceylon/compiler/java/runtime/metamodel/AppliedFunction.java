@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.FunctionModel$impl;
-import ceylon.language.metamodel.Function$impl;
+import ceylon.language.model.Model$impl;
+import ceylon.language.model.FunctionModel$impl;
+import ceylon.language.model.Function$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -33,14 +33,14 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 public class AppliedFunction<Type, Arguments extends Sequential<? extends Object>> 
-    implements ceylon.language.metamodel.Function<Type, Arguments>, ReifiedType {
+    implements ceylon.language.model.Function<Type, Arguments>, ReifiedType {
 
     @Ignore
     private final TypeDescriptor $reifiedType;
     @Ignore
     private final TypeDescriptor $reifiedArguments;
     
-    private ceylon.language.metamodel.Type type;
+    private ceylon.language.model.Type type;
     protected FreeFunction declaration;
     private MethodHandle method;
     private MethodHandle[] dispatch;
@@ -178,21 +178,21 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     
     @Override
     @Ignore
-    public Model$impl $ceylon$language$metamodel$Model$impl() {
+    public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
-    public FunctionModel$impl $ceylon$language$metamodel$FunctionModel$impl() {
+    public FunctionModel$impl $ceylon$language$model$FunctionModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
-    public Function$impl<Type, Arguments> $ceylon$language$metamodel$Function$impl() {
+    public Function$impl<Type, Arguments> $ceylon$language$model$Function$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -281,8 +281,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Type")
-    public ceylon.language.metamodel.Type getType() {
+    @TypeInfo("ceylon.language.model::Type")
+    public ceylon.language.model.Type getType() {
         return type;
     }
 

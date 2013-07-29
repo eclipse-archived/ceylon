@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.Member$impl;
+import ceylon.language.model.Member$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -15,19 +15,19 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.IN),
-    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.metamodel::Model")
+    @TypeParameter(value = "Kind", variance = Variance.OUT, satisfies = "ceylon.language.model::Model")
 })
-public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel.Model> 
-    implements ceylon.language.metamodel.Member<Type, Kind>, ReifiedType {
+public abstract class AppliedMember<Type, Kind extends ceylon.language.model.Model> 
+    implements ceylon.language.model.Member<Type, Kind>, ReifiedType {
 
-    private ceylon.language.metamodel.ClassOrInterface<? extends Object> container;
+    private ceylon.language.model.ClassOrInterface<? extends Object> container;
     @Ignore
     protected final TypeDescriptor $reifiedKind;
     @Ignore
     protected final TypeDescriptor $reifiedType;
 
     public AppliedMember(@Ignore TypeDescriptor $reifiedType, @Ignore TypeDescriptor $reifiedKind,
-                         ceylon.language.metamodel.ClassOrInterface<? extends Object> container){
+                         ceylon.language.model.ClassOrInterface<? extends Object> container){
         this.$reifiedType = $reifiedType;
         this.$reifiedKind = $reifiedKind;
         this.container = container;
@@ -35,14 +35,14 @@ public abstract class AppliedMember<Type, Kind extends ceylon.language.metamodel
     
     @Override
     @Ignore
-    public Member$impl<Type, Kind> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Type, Kind> $ceylon$language$model$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
         return container;
     }
 

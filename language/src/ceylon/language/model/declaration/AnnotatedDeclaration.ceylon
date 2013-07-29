@@ -1,5 +1,5 @@
-import ceylon.language.metamodel{Annotated}
-import ceylon.language.metamodel{MetamodelAnnotation = Annotation}
+import ceylon.language.model{Annotated}
+import ceylon.language.model{MetamodelAnnotation = Annotation}
 
 shared interface AnnotatedDeclaration of TopLevelOrMemberDeclaration
                                        | Module

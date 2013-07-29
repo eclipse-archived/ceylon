@@ -3,12 +3,12 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.metamodel.Attribute$impl;
-import ceylon.language.metamodel.AttributeModel$impl;
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Member$impl;
-import ceylon.language.metamodel.declaration.ValueDeclaration;
+import ceylon.language.model.Attribute$impl;
+import ceylon.language.model.AttributeModel$impl;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.Model$impl;
+import ceylon.language.model.Member$impl;
+import ceylon.language.model.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -29,14 +29,14 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 })
 public class FreeAttributeWithAppliedAttribute<Container, Type> 
     extends FreeAttribute 
-    implements ceylon.language.metamodel.Attribute<Container, Type> {
+    implements ceylon.language.model.Attribute<Container, Type> {
 
     @Ignore
     private TypeDescriptor $reifiedContainer;
     @Ignore
     private TypeDescriptor $reifiedType;
 
-    private ceylon.language.metamodel.Type closedType;
+    private ceylon.language.model.Type closedType;
     private AppliedAttribute<Container, Type> memberDelegate;
 
     protected FreeAttributeWithAppliedAttribute(@Ignore TypeDescriptor $reifiedContainer,
@@ -46,7 +46,7 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
         
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Collections.emptyList();
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface container = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) declaration.getContainer();
-        ceylon.language.metamodel.ClassOrInterface<? extends Object> appliedContainer = (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(container.getType());
+        ceylon.language.model.ClassOrInterface<? extends Object> appliedContainer = (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(container.getType());
         ProducedTypedReference typedReference = declaration.getProducedTypedReference(container.getType(), producedTypes);
         ProducedType appliedType = typedReference.getType();
         this.$reifiedContainer = Metamodel.getTypeDescriptorForProducedType(container.getType());
@@ -58,77 +58,77 @@ public class FreeAttributeWithAppliedAttribute<Container, Type>
 
     @Override
     @Ignore
-    public Member$impl<Container, ceylon.language.metamodel.Value<? extends Type>> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Container, ceylon.language.model.Value<? extends Type>> $ceylon$language$model$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AttributeModel$impl<Type> $ceylon$language$metamodel$AttributeModel$impl() {
+    public AttributeModel$impl<Type> $ceylon$language$model$AttributeModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$metamodel$Model$impl() {
+    public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Attribute$impl<Container, Type> $ceylon$language$metamodel$Attribute$impl() {
+    public Attribute$impl<Container, Type> $ceylon$language$model$Attribute$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration")
+    @TypeInfo("ceylon.language.model.declaration::ValueDeclaration")
     public ValueDeclaration getDeclaration() {
         return this;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
         return memberDelegate.getDeclaringClassOrInterface();
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Type")
-    public ceylon.language.metamodel.Type getType() {
+    @TypeInfo("ceylon.language.model::Type")
+    public ceylon.language.model.Type getType() {
         return closedType;
     }
 
     @Override
     @Ignore
-    public ceylon.language.metamodel.Value<? extends Type> $call() {
+    public ceylon.language.model.Value<? extends Type> $call() {
         return memberDelegate.$call();
     }
 
     @Override
     @Ignore
-    public ceylon.language.metamodel.Value<? extends Type> $call(Object arg0) {
+    public ceylon.language.model.Value<? extends Type> $call(Object arg0) {
         return memberDelegate.$call(arg0);
     }
 
     @Override
     @Ignore
-    public ceylon.language.metamodel.Value<? extends Type> $call(Object arg0, Object arg1) {
+    public ceylon.language.model.Value<? extends Type> $call(Object arg0, Object arg1) {
         return memberDelegate.$call(arg0, arg1);
     }
 
     @Override
     @Ignore
-    public ceylon.language.metamodel.Value<? extends Type> $call(Object arg0, Object arg1, Object arg2) {
+    public ceylon.language.model.Value<? extends Type> $call(Object arg0, Object arg1, Object arg2) {
         return memberDelegate.$call(arg0, arg1, arg2);
     }
 
     @Override
     @Ignore
-    public ceylon.language.metamodel.Value<? extends Type> $call(Object... args) {
+    public ceylon.language.model.Value<? extends Type> $call(Object... args) {
         return memberDelegate.$call(args);
     }
 

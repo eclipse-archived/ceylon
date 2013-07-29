@@ -1,4 +1,4 @@
-package ceylon.language.metamodel;
+package ceylon.language.model;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -16,9 +16,9 @@ public final class typeLiteral_ {
     
     private typeLiteral_() {}
     
-    @TypeInfo("ceylon.language.metamodel::Type")
+    @TypeInfo("ceylon.language.model::Type")
     @TypeParameters(@TypeParameter(value = "Type", variance = Variance.OUT, satisfies = "ceylon.language::Anything"))
-    public static <Type> ceylon.language.metamodel.Type typeLiteral(@Ignore TypeDescriptor $reifiedType) {
+    public static <Type> ceylon.language.model.Type typeLiteral(@Ignore TypeDescriptor $reifiedType) {
         return Metamodel.getAppliedMetamodel($reifiedType);
     }
 }

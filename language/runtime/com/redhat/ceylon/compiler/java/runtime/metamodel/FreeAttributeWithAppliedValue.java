@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.Collections;
 
-import ceylon.language.metamodel.Value;
-import ceylon.language.metamodel.Value$impl;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.AttributeModel$impl;
-import ceylon.language.metamodel.declaration.ValueDeclaration;
+import ceylon.language.model.Value;
+import ceylon.language.model.Value$impl;
+import ceylon.language.model.Model$impl;
+import ceylon.language.model.AttributeModel$impl;
+import ceylon.language.model.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -39,21 +39,21 @@ public class FreeAttributeWithAppliedValue<Type>
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$metamodel$Model$impl() {
+    public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AttributeModel$impl $ceylon$language$metamodel$AttributeModel$impl() {
+    public AttributeModel$impl $ceylon$language$model$AttributeModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
+    public Value$impl<Type> $ceylon$language$model$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -64,19 +64,19 @@ public class FreeAttributeWithAppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Type")
-    public ceylon.language.metamodel.Type getType() {
+    @TypeInfo("ceylon.language.model::Type")
+    public ceylon.language.model.Type getType() {
         return typeDelegate.getType();
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration")
+    @TypeInfo("ceylon.language.model.declaration::ValueDeclaration")
     public ValueDeclaration getDeclaration() {
         return this;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Value<ceylon.language::Anything>")
+    @TypeInfo("ceylon.language.model::Value<ceylon.language::Anything>")
     public Value<? extends Object> apply(@Name @TypeInfo("ceylon.language::Anything") Object instance) {
         return this;
     }

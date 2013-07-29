@@ -1,4 +1,4 @@
-package ceylon.language.metamodel;
+package ceylon.language.model;
 
 import ceylon.language.Sequential;
 
@@ -20,10 +20,10 @@ public final class type_ {
     private type_() {}
     
     @TypeParameters(@TypeParameter(value = "Type", variance = Variance.OUT, satisfies = "ceylon.language::Anything"))
-    @TypeInfo("ceylon.language.metamodel::Class<Type,ceylon.language::Nothing>")
-    public static <Type> ceylon.language.metamodel.Class<? extends Type, ? super Sequential<? extends Object>> type(
+    @TypeInfo("ceylon.language.model::Class<Type,ceylon.language::Nothing>")
+    public static <Type> ceylon.language.model.Class<? extends Type, ? super Sequential<? extends Object>> type(
             @Ignore TypeDescriptor $reifiedType,
             @Name("instance") @TypeInfo("Type") Type instance) {
-        return (ceylon.language.metamodel.Class) Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
+        return (ceylon.language.model.Class) Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(instance));
     }
 }

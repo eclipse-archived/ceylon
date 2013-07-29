@@ -4,12 +4,12 @@ import java.util.List;
 
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Annotated$impl;
-import ceylon.language.metamodel.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.metamodel.declaration.Declaration$impl;
-import ceylon.language.metamodel.declaration.Module$impl;
-import ceylon.language.metamodel.declaration.Package;
-import ceylon.language.metamodel.declaration.Import;
+import ceylon.language.model.Annotated$impl;
+import ceylon.language.model.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.model.declaration.Declaration$impl;
+import ceylon.language.model.declaration.Module$impl;
+import ceylon.language.model.declaration.Package;
+import ceylon.language.model.declaration.Import;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-public class FreeModule implements ceylon.language.metamodel.declaration.Module,
+public class FreeModule implements ceylon.language.model.declaration.Module,
         AnnotationBearing,
         ReifiedType {
 
@@ -41,28 +41,28 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
 
     @Override
     @Ignore
-    public Declaration$impl $ceylon$language$metamodel$declaration$Declaration$impl() {
+    public Declaration$impl $ceylon$language$model$declaration$Declaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$metamodel$declaration$AnnotatedDeclaration$impl() {
+    public AnnotatedDeclaration$impl $ceylon$language$model$declaration$AnnotatedDeclaration$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Module$impl $ceylon$language$metamodel$declaration$Module$impl() {
+    public Module$impl $ceylon$language$model$declaration$Module$impl() {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
     @Ignore
-    public Annotated$impl $ceylon$language$metamodel$Annotated$impl() {
+    public Annotated$impl $ceylon$language$model$Annotated$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -75,13 +75,13 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
-    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.metamodel::Annotation<Annotation>"))
-    public <Annotation extends ceylon.language.metamodel.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language.model::Annotation<Annotation>"))
+    public <Annotation extends ceylon.language.model.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Package>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::Package>")
     public Sequential<? extends Package> getMembers() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.packages == null){
@@ -96,14 +96,14 @@ public class FreeModule implements ceylon.language.metamodel.declaration.Module,
     }
 
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language.metamodel.declaration::Package")
+    @TypeInfo("ceylon.language::Null|ceylon.language.model.declaration::Package")
     public Package findPackage(@Name("name") String name) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = declaration.getDirectPackage(name);
         return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Import>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::Import>")
     public Sequential<? extends Import> getDependencies() {
         // no need to synchronise as concurrent invocations should get the same array back
         if(this.dependencies == null){

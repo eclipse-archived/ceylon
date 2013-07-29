@@ -1,4 +1,4 @@
-import ceylon.language.metamodel {
+import ceylon.language.model {
     AppliedInterface = Interface,
     Type
 }

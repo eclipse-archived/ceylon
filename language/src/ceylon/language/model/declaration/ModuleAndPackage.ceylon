@@ -1,4 +1,4 @@
-import ceylon.language.metamodel{Annotated}
+import ceylon.language.model{Annotated}
 
 "Model of a `module` declaration
  from a `module.ceylon` compilation unit"

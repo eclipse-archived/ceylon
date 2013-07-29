@@ -1,4 +1,4 @@
-import ceylon.language.metamodel { Value }
+import ceylon.language.model { Value }
 
 shared interface ValueDeclaration
         satisfies FunctionOrValueDeclaration {

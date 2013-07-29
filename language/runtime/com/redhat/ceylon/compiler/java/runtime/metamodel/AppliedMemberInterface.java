@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.Interface;
-import ceylon.language.metamodel.InterfaceModel$impl;
-import ceylon.language.metamodel.Member$impl;
-import ceylon.language.metamodel.MemberInterface$impl;
-import ceylon.language.metamodel.declaration.InterfaceDeclaration;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.Interface;
+import ceylon.language.model.InterfaceModel$impl;
+import ceylon.language.model.Member$impl;
+import ceylon.language.model.MemberInterface$impl;
+import ceylon.language.model.declaration.InterfaceDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberInterface<Container, Type> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.metamodel.MemberInterface<Container, Type> {
+    implements ceylon.language.model.MemberInterface<Container, Type> {
 
     @Ignore
     private TypeDescriptor $reifiedContainer;
@@ -28,21 +28,21 @@ public class AppliedMemberInterface<Container, Type>
 
     @Override
     @Ignore
-    public InterfaceModel$impl<Type> $ceylon$language$metamodel$InterfaceModel$impl() {
+    public InterfaceModel$impl<Type> $ceylon$language$model$InterfaceModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Member$impl<Container, Interface<? extends Type>> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Container, Interface<? extends Type>> $ceylon$language$model$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public MemberInterface$impl<Container, Type> $ceylon$language$metamodel$MemberInterface$impl() {
+    public MemberInterface$impl<Container, Type> $ceylon$language$model$MemberInterface$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -84,14 +84,14 @@ public class AppliedMemberInterface<Container, Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::InterfaceDeclaration")
+    @TypeInfo("ceylon.language.model.declaration::InterfaceDeclaration")
     public InterfaceDeclaration getDeclaration() {
         return (InterfaceDeclaration) super.getDeclaration();
     }
     
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
         return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
     }
 

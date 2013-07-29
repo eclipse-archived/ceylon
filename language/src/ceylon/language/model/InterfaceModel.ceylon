@@ -1,4 +1,4 @@
-import ceylon.language.metamodel.declaration {
+import ceylon.language.model.declaration {
     InterfaceDeclaration
 }
 

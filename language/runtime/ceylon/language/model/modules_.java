@@ -1,7 +1,8 @@
-package ceylon.language.metamodel;
+package ceylon.language.model;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.declaration.Module;
+import ceylon.language.model.modules_;
+import ceylon.language.model.declaration.Module;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -23,17 +24,17 @@ public final class modules_ {
         return value;
     }
     
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel.declaration::Module>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.model.declaration::Module>")
     public Sequential<? extends Module> getList(){
         return Metamodel.getModuleList();
     }
     
-    @TypeInfo("ceylon.language.metamodel.declaration::Module|ceylon.language::Null")
+    @TypeInfo("ceylon.language.model.declaration::Module|ceylon.language::Null")
     public Module find(@Name("name") String name, @Name("version") String version){
         return Metamodel.findLoadedModule(name, version);
     }
 
-    @TypeInfo("ceylon.language.metamodel.declaration::Module|ceylon.language::Null")
+    @TypeInfo("ceylon.language.model.declaration::Module|ceylon.language::Null")
     public Module getDefault(){
         return Metamodel.getDefaultModule();
     }

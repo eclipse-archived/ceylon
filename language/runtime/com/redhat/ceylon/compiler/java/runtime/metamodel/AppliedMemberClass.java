@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Class;
-import ceylon.language.metamodel.ClassModel$impl;
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.Member$impl;
-import ceylon.language.metamodel.MemberClass$impl;
-import ceylon.language.metamodel.declaration.ClassDeclaration;
+import ceylon.language.model.Class;
+import ceylon.language.model.ClassModel$impl;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.Member$impl;
+import ceylon.language.model.MemberClass$impl;
+import ceylon.language.model.declaration.ClassDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.metamodel.MemberClass<Container, Type, Arguments> {
+    implements ceylon.language.model.MemberClass<Container, Type, Arguments> {
 
     @Ignore
     private TypeDescriptor $reifiedContainer;
@@ -33,21 +33,21 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
 
     @Override
     @Ignore
-    public ClassModel$impl<Type, Arguments> $ceylon$language$metamodel$ClassModel$impl() {
+    public ClassModel$impl<Type, Arguments> $ceylon$language$model$ClassModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Member$impl<Container, Class<? extends Type, ? super Arguments>> $ceylon$language$metamodel$Member$impl() {
+    public Member$impl<Container, Class<? extends Type, ? super Arguments>> $ceylon$language$model$Member$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public MemberClass$impl<Container, Type, Arguments> $ceylon$language$metamodel$MemberClass$impl() {
+    public MemberClass$impl<Container, Type, Arguments> $ceylon$language$model$MemberClass$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -89,14 +89,14 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     }
     
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ClassDeclaration")
+    @TypeInfo("ceylon.language.model.declaration::ClassDeclaration")
     public ClassDeclaration getDeclaration() {
         return (ClassDeclaration) super.getDeclaration();
     }
     
     @Override
-    @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language::Anything>")
-    public ceylon.language.metamodel.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
+    @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language::Anything>")
+    public ceylon.language.model.ClassOrInterface<? extends Object> getDeclaringClassOrInterface() {
         return (ClassOrInterface<? extends Object>) Metamodel.getAppliedMetamodel(producedType.getQualifyingType());
     }
 

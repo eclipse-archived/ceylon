@@ -6,9 +6,9 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.Value$impl;
-import ceylon.language.metamodel.AttributeModel$impl;
+import ceylon.language.model.Model$impl;
+import ceylon.language.model.Value$impl;
+import ceylon.language.model.AttributeModel$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -32,9 +32,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
     @TypeParameter(value = "Type", variance = Variance.OUT),
 })
 public class AppliedValue<Type> 
-        implements ceylon.language.metamodel.Value<Type>, ReifiedType {
+        implements ceylon.language.model.Value<Type>, ReifiedType {
 
-    private ceylon.language.metamodel.Type type;
+    private ceylon.language.model.Type type;
     @Ignore
     protected TypeDescriptor $reifiedType;
     protected FreeAttribute declaration;
@@ -140,28 +140,28 @@ public class AppliedValue<Type>
 
     @Override
     @Ignore
-    public Value$impl<Type> $ceylon$language$metamodel$Value$impl() {
+    public Value$impl<Type> $ceylon$language$model$Value$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public AttributeModel$impl<Type> $ceylon$language$metamodel$AttributeModel$impl() {
+    public AttributeModel$impl<Type> $ceylon$language$model$AttributeModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$metamodel$Model$impl() {
+    public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ValueDeclaration")
-    public ceylon.language.metamodel.declaration.ValueDeclaration getDeclaration() {
+    @TypeInfo("ceylon.language.model.declaration::ValueDeclaration")
+    public ceylon.language.model.declaration.ValueDeclaration getDeclaration() {
         return declaration;
     }
 
@@ -175,8 +175,8 @@ public class AppliedValue<Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Type")
-    public ceylon.language.metamodel.Type getType() {
+    @TypeInfo("ceylon.language.model::Type")
+    public ceylon.language.model.Type getType() {
         return type;
     }
 

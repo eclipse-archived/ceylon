@@ -1,4 +1,4 @@
-import ceylon.language.metamodel {
+import ceylon.language.model {
     AppliedClassOrInterface = ClassOrInterface,
     AppliedMember = Member,
     Type

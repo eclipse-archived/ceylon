@@ -4,11 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Function;
-import ceylon.language.metamodel.Function$impl;
-import ceylon.language.metamodel.FunctionModel$impl;
-import ceylon.language.metamodel.Model$impl;
-import ceylon.language.metamodel.declaration.FunctionDeclaration;
+import ceylon.language.model.Function;
+import ceylon.language.model.Function$impl;
+import ceylon.language.model.FunctionModel$impl;
+import ceylon.language.model.Model$impl;
+import ceylon.language.model.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<? extends Object>>
     extends FreeFunction 
-    implements ceylon.language.metamodel.Function<Type, Arguments> {
+    implements ceylon.language.model.Function<Type, Arguments> {
 
     private AppliedFunction<Type,Arguments> typeDelegate;
     @Ignore
@@ -50,21 +50,21 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
 
     @Override
     @Ignore
-    public Model$impl $ceylon$language$metamodel$Model$impl() {
+    public Model$impl $ceylon$language$model$Model$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public FunctionModel$impl $ceylon$language$metamodel$FunctionModel$impl() {
+    public FunctionModel$impl $ceylon$language$model$FunctionModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public Function$impl<Type, Arguments> $ceylon$language$metamodel$Function$impl() {
+    public Function$impl<Type, Arguments> $ceylon$language$model$Function$impl() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -106,20 +106,20 @@ public class FreeFunctionWithAppliedFunction<Type, Arguments extends Sequential<
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Type")
-    public ceylon.language.metamodel.Type getType() {
+    @TypeInfo("ceylon.language.model::Type")
+    public ceylon.language.model.Type getType() {
         return typeDelegate.getType();
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::FunctionDeclaration")
+    @TypeInfo("ceylon.language.model.declaration::FunctionDeclaration")
     public FunctionDeclaration getDeclaration() {
         return this;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel::Function<ceylon.language::Anything,ceylon.language::Nothing>")
-    public ceylon.language.metamodel.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.metamodel::Type>") @Sequenced Sequential<? extends ceylon.language.metamodel.Type> types){
+    @TypeInfo("ceylon.language.model::Function<ceylon.language::Anything,ceylon.language::Nothing>")
+    public ceylon.language.model.Function<? extends Object, ? super Sequential<? extends Object>> apply(@Name("types") @TypeInfo("ceylon.language::Sequential<ceylon.language.model::Type>") @Sequenced Sequential<? extends ceylon.language.model.Type> types){
         return (Function)this;
     }
     

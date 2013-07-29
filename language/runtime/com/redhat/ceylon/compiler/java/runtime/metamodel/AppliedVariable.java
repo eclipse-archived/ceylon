@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import ceylon.language.metamodel.Variable$impl;
+import ceylon.language.model.Variable$impl;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 })
 public class AppliedVariable<Type> 
     extends AppliedValue<Type> 
-    implements ceylon.language.metamodel.Variable<Type> {
+    implements ceylon.language.model.Variable<Type> {
 
     private MethodHandle setter;
 
@@ -94,7 +94,7 @@ public class AppliedVariable<Type>
 
     @Override
     @Ignore
-    public Variable$impl<Type> $ceylon$language$metamodel$Variable$impl() {
+    public Variable$impl<Type> $ceylon$language$model$Variable$impl() {
         // TODO Auto-generated method stub
         return null;
     }

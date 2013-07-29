@@ -1,4 +1,4 @@
-import ceylon.language.metamodel.declaration { Module }
+import ceylon.language.model.declaration { Module }
 
 shared native object modules {
     shared native Module[] list;

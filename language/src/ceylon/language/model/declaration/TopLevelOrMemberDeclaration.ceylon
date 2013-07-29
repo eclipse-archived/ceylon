@@ -1,4 +1,4 @@
-import ceylon.language.metamodel{Annotated}
+import ceylon.language.model{Annotated}
 
 shared interface TopLevelOrMemberDeclaration of FunctionOrValueDeclaration |
                                                 ClassOrInterfaceDeclaration

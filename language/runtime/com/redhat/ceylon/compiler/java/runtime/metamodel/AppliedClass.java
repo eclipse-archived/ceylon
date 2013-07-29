@@ -9,8 +9,8 @@ import java.util.List;
 
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Class$impl;
-import ceylon.language.metamodel.ClassModel$impl;
+import ceylon.language.model.Class$impl;
+import ceylon.language.model.ClassModel$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     })
 public class AppliedClass<Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.metamodel.Class<Type, Arguments>, Callable<Type> {
+    implements ceylon.language.model.Class<Type, Arguments>, Callable<Type> {
 
     private TypeDescriptor $reifiedArguments;
     private MethodHandle constructor;
@@ -50,22 +50,22 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     @Ignore
-    public Class$impl<Type, Arguments> $ceylon$language$metamodel$Class$impl() {
+    public Class$impl<Type, Arguments> $ceylon$language$model$Class$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     @Ignore
-    public ClassModel$impl<Type, Arguments> $ceylon$language$metamodel$ClassModel$impl() {
+    public ClassModel$impl<Type, Arguments> $ceylon$language$model$ClassModel$impl() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    @TypeInfo("ceylon.language.metamodel.declaration::ClassDeclaration")
-    public ceylon.language.metamodel.declaration.ClassDeclaration getDeclaration() {
-        return (ceylon.language.metamodel.declaration.ClassDeclaration) super.getDeclaration();
+    @TypeInfo("ceylon.language.model.declaration::ClassDeclaration")
+    public ceylon.language.model.declaration.ClassDeclaration getDeclaration() {
+        return (ceylon.language.model.declaration.ClassDeclaration) super.getDeclaration();
     }
 
     @Override

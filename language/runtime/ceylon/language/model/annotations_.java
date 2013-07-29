@@ -1,7 +1,11 @@
-package ceylon.language.metamodel;
+package ceylon.language.model;
 
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
+import ceylon.language.model.Annotation;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.ConstrainedAnnotation;
+import ceylon.language.model.OptionalAnnotation;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -25,11 +29,11 @@ public final class annotations_ {
     @Annotations({@com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @TypeInfo("Values")
     @TypeParameters({
-        @TypeParameter(value = "Value", satisfies = {"ceylon.language.metamodel::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
+        @TypeParameter(value = "Value", satisfies = {"ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>"}), 
         @TypeParameter(value = "Values"), 
-        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language.metamodel::Annotated"})
+        @TypeParameter(value = "ProgramElement", satisfies = {"ceylon.language.model::Annotated"})
     })
-    public static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends ceylon.language.metamodel.Annotated>
+    public static <Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends ceylon.language.model.Annotated>
     Values annotations(
             @Ignore
             final TypeDescriptor $reifiedValue, 
@@ -38,7 +42,7 @@ public final class annotations_ {
             @Ignore
             final TypeDescriptor $reifiedProgramElement, 
             @Name("annotationType")
-            @TypeInfo("ceylon.language.metamodel::ClassOrInterface<ceylon.language.metamodel::ConstrainedAnnotation<Value,Values,ProgramElement>>")
+            @TypeInfo("ceylon.language.model::ClassOrInterface<ceylon.language.model::ConstrainedAnnotation<Value,Values,ProgramElement>>")
             final ClassOrInterface<? extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>> annotationType, 
             @Name("programElement")
             @TypeInfo("ProgramElement")

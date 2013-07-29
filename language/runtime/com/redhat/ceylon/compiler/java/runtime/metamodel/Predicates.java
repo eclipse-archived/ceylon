@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
-import ceylon.language.metamodel.Annotated;
-import ceylon.language.metamodel.Type;
-import ceylon.language.metamodel.ClassOrInterface;
-import ceylon.language.metamodel.ConstrainedAnnotation;
-import ceylon.language.metamodel.nothingType_;
+import ceylon.language.model.Annotated;
+import ceylon.language.model.Type;
+import ceylon.language.model.ClassOrInterface;
+import ceylon.language.model.ConstrainedAnnotation;
+import ceylon.language.model.nothingType_;
 
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -266,20 +266,20 @@ class Predicates {
      */
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
-            Class<? extends ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
-            if (declarationClass == ceylon.language.metamodel.declaration.VariableDeclaration.class) {
+            Class<? extends ceylon.language.model.declaration.TopLevelOrMemberDeclaration> declarationClass = (Class)((TypeDescriptor.Class) kind).getKlass();
+            if (declarationClass == ceylon.language.model.declaration.VariableDeclaration.class) {
                 return DECLARATION_IS_VARIABLE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.ValueDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.ValueDeclaration.class) {
                 return DECLARATION_IS_VALUE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.FunctionDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.ClassDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.ClassDeclaration.class) {
                 return DECLARATION_IS_CLASS;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.InterfaceDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.InterfaceDeclaration.class) {
                 return DECLARATION_IS_INTERFACE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.ClassOrInterfaceDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.ClassOrInterfaceDeclaration.class) {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
-            } else if (declarationClass == ceylon.language.metamodel.declaration.TopLevelOrMemberDeclaration.class) {
+            } else if (declarationClass == ceylon.language.model.declaration.TopLevelOrMemberDeclaration.class) {
                 return true_();
             }
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
@@ -310,7 +310,7 @@ class Predicates {
     /**
      * A Predicate on the Declarations having a given annotation 
      */
-    private static class AnnotatedWith<A extends ceylon.language.metamodel.Annotation<A>> 
+    private static class AnnotatedWith<A extends ceylon.language.model.Annotation<A>> 
             implements Predicate<Declaration> {
 
         private final TypeDescriptor annotation;
@@ -338,13 +338,13 @@ class Predicates {
     /**
      * Returns a predicate for Declarations having the given annotation 
      */
-    public static <Kind extends ceylon.language.metamodel.declaration.Declaration, A extends ceylon.language.metamodel.Annotation<A>>  
+    public static <Kind extends ceylon.language.model.declaration.Declaration, A extends ceylon.language.model.Annotation<A>>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
         Type at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
     }
     
-    private static <A extends ceylon.language.metamodel.Annotation<A>> Predicate<Declaration> 
+    private static <A extends ceylon.language.model.Annotation<A>> Predicate<Declaration> 
     isDeclarationAnnotatedWith(TypeDescriptor annotation, Type at) {
         if (at instanceof nothingType_) {
             return false_();
@@ -380,12 +380,12 @@ class Predicates {
      * @param $reifiedAnnotation
      * @return
      */
-    public static <A extends ceylon.language.metamodel.Annotation<? extends A>> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
+    public static <A extends ceylon.language.model.Annotation<? extends A>> Predicate<A> isAnnotationOfType(TypeDescriptor $reifiedAnnotation) {
         Type at = Metamodel.getAppliedMetamodel($reifiedAnnotation);
         return isAnnotationOfType($reifiedAnnotation, at);
     }
 
-    private static <A extends ceylon.language.metamodel.Annotation<? extends A>> Predicate<A> isAnnotationOfType(
+    private static <A extends ceylon.language.model.Annotation<? extends A>> Predicate<A> isAnnotationOfType(
             TypeDescriptor $reifiedAnnotation, Type at)
             throws EnumeratedTypeError {
         if (at instanceof nothingType_) {
@@ -405,7 +405,7 @@ class Predicates {
         }
     }
     
-    private static <A extends ceylon.language.metamodel.Annotation<? extends A>> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
+    private static <A extends ceylon.language.model.Annotation<? extends A>> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
             Sequential<? extends Type> caseTypes) {
         @SuppressWarnings("unchecked")
         Predicate<A>[] preds = new Predicate[(int)caseTypes.getSize()];
@@ -419,12 +419,12 @@ class Predicates {
         return preds;
     }
 
-    static interface AnnotationPredicate<A extends ceylon.language.metamodel.Annotation<? extends A>> extends Predicates.Predicate<A> {
+    static interface AnnotationPredicate<A extends ceylon.language.model.Annotation<? extends A>> extends Predicates.Predicate<A> {
         // TODO Is this a worthwhile optimization to make?
         /** 
          * Whether we should instantiate the given Java annotation into a 
          * Ceylon annotation. If this returns true 
-         * {@link #accept(ceylon.language.metamodel.Annotation)} 
+         * {@link #accept(ceylon.language.model.Annotation)} 
          * will still be called to determine whether the Ceylon annotation 
          * meets the acceptance criteria.
          */
@@ -437,7 +437,7 @@ class Predicates {
         public boolean accept(A cAnnotation);
     }
     
-    private static <A extends ceylon.language.metamodel.Annotation<? extends A>,
+    private static <A extends ceylon.language.model.Annotation<? extends A>,
     Value extends ConstrainedAnnotation<? extends Value, ? extends Values, ? super ProgramElement>, Values, ProgramElement extends Annotated>
     AnnotationPredicate<A> annotationPredicate(
             final TypeDescriptor $reifiedValues,
@@ -445,10 +445,10 @@ class Predicates {
         final Class<?> refAnnotationClass = Metamodel.getReflectedAnnotationClass(annotationType);
         final Class<?> refAnnotationType;
         final Class<?> refAnnotationWrapperType;
-        if (ceylon.language.metamodel.Annotation.class == refAnnotationClass
-                || ceylon.language.metamodel.ConstrainedAnnotation.class == refAnnotationClass
-                || ceylon.language.metamodel.OptionalAnnotation.class == refAnnotationClass
-                || ceylon.language.metamodel.SequencedAnnotation.class == refAnnotationClass) {
+        if (ceylon.language.model.Annotation.class == refAnnotationClass
+                || ceylon.language.model.ConstrainedAnnotation.class == refAnnotationClass
+                || ceylon.language.model.OptionalAnnotation.class == refAnnotationClass
+                || ceylon.language.model.SequencedAnnotation.class == refAnnotationClass) {
             return new AnnotationPredicate<A>() {
 
                 @Override

@@ -1,9 +1,9 @@
-import ceylon.language.metamodel.declaration {
+import ceylon.language.model.declaration {
     ClassOrInterfaceDeclaration,
     TypeParameter
 }
 
-import ceylon.language.metamodel {
+import ceylon.language.model {
     ClosedType = Type
 }
 
