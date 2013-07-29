@@ -555,7 +555,7 @@ public class Decl {
      * via a {@code VariableBox}
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
-        return Decl.isValue(attr)
+        return isNonTransientValue(attr)
                 && isLocal(attr)
                 && attr.isVariable()
                 && attr.isCaptured();

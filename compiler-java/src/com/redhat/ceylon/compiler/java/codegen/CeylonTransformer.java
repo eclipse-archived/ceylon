@@ -352,7 +352,8 @@ public class CeylonTransformer extends AbstractTransformer {
             TypedDeclaration declarationModel, String attrName,
             final Tree.SpecifierOrInitializerExpression expression) {
         JCTree.JCExpression initialValue = null;
-        if (Decl.isValue(declarationModel)) {
+        if (Decl.isNonTransientValue(declarationModel)
+                && !(expression instanceof Tree.LazySpecifierExpression)) {
             if (expression != null) {
                 initialValue = expressionGen().transformExpression(
                         expression.getExpression(), 

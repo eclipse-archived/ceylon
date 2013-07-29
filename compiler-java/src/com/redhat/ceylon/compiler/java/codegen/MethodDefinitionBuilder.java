@@ -326,7 +326,7 @@ public class MethodDefinitionBuilder {
         String aliasedName = Naming.getAliasedParameterName(param);
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         int mods = 0;
-        if (!Decl.isValue(mov) || !mov.isVariable() || mov.isCaptured()) {
+        if (!Decl.isNonTransientValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
         }
         TypedDeclaration nonWideningDecl = null;
