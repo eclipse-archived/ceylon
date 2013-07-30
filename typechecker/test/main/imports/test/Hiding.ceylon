@@ -4,7 +4,7 @@ class Set() {}
 class List() {}
 
 void useThem() {
-   @error Set();
+   Set();
    @error Map();
    List();
    String s = "hello";
