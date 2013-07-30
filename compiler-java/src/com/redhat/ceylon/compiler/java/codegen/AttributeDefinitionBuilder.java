@@ -311,7 +311,7 @@ public class AttributeDefinitionBuilder {
         
         JCTree.JCBlock block = owner.make().Block(0L, stmts);
         if (toplevel || late) {            
-            JCExpression msg = owner.makeCeylonString(late ? "Accessing uninitialized 'late' attribute" : "Cyclic initialization");
+            JCExpression msg = owner.make().Literal(late ? "Accessing uninitialized 'late' attribute" : "Cyclic initialization");
             JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationExceptionType), 
                     List.<JCExpression>of(msg)));
             JCTree.JCBlock catchBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(throwStmt));
@@ -347,7 +347,7 @@ public class AttributeDefinitionBuilder {
                 stmts = stmts.prepend(owner.make().If(generateLateInitializedPred(JCTree.NE),
                         owner.make().Throw(owner.makeNewClass( 
                                 owner.make().Type(owner.syms().ceylonInitializationExceptionType), 
-                                List.<JCExpression>of(owner.makeCeylonString("Re-initialization of 'late' attribute")))),
+                                List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute")))),
                                 null));
             }
         }
