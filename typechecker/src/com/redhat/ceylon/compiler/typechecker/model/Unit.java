@@ -853,4 +853,11 @@ public class Unit {
         }
         return null;
     }
+
+    public TypeDeclaration getLanguageModuleModelTypeDeclaration(String name) {
+        return (TypeDeclaration) getLanguageModuleModelDeclaration(name);
+    }
+    public TypeDeclaration getLanguageModuleModelDeclarationTypeDeclaration(String name) {
+        return (TypeDeclaration) getLanguageModuleModelDeclarationDeclaration(name);
+    }
 }
