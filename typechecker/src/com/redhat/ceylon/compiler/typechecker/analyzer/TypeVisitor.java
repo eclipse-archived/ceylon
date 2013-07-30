@@ -595,7 +595,7 @@ public class TypeVisitor extends Visitor {
                 if (that.getTypeArgumentList()!=null &&
                         isTypeUnknown(pt) && !pt.isUnknown()) {
                     that.getTypeArgumentList()
-                            .addError("qualifying type does not fully-specify type argument");
+                            .addError("qualifying type does not fully-specify type arguments");
                 }
             }
         }
@@ -613,7 +613,7 @@ public class TypeVisitor extends Visitor {
                     that.getTypeArgumentList()!=null &&
                     isTypeUnknown(pt) && !pt.isUnknown()) {
                 that.getTypeArgumentList()
-                        .addError("qualifying type does not fully-specify type argument");
+                        .addError("qualifying type does not fully-specify type arguments");
             }
             TypeDeclaration d = pt.getDeclaration();
 			String name = name(that.getIdentifier());
