@@ -94,7 +94,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 /**
  * Abstract class of a model loader that can load a model from a compiled Java representation,
@@ -1243,17 +1242,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         newList.setNamedParametersSupported(declaration.getParameterList().isNamedParametersSupported());
         for(Parameter p : declaration.getParameterList().getParameters()){
             // FIXME: functionalparams?
-            Parameter newParam = new ValueParameter();
+            Parameter newParam = new Parameter();
+            Value value = new Value();
+            newParam.setModel(value);
             newParam.setName(p.getName());
-            newParam.setContainer(alias);
-            DeclarationVisitor.setVisibleScope(newParam);
+            value.setContainer(alias);
+            DeclarationVisitor.setVisibleScope(value);
             newParam.setDeclaration(alias);
             newParam.setSequenced(p.isSequenced());
-            newParam.setUnboxed(p.getUnboxed());
-            newParam.setUncheckedNullType(p.hasUncheckedNullType());
-            newParam.setUnit(p.getUnit());
-            newParam.setType(p.getProducedTypedReference(alias.getExtendedType(), Collections.<ProducedType>emptyList()).getType());
-            alias.addMember(newParam);
+            value.setUnboxed(p.getModel().getUnboxed());
+            value.setUncheckedNullType(p.getModel().hasUncheckedNullType());
+            value.setUnit(p.getModel().getUnit());
+            value.setType(p.getModel().getProducedTypedReference(alias.getExtendedType(), Collections.<ProducedType>emptyList()).getType());
+            alias.addMember(value);
             newList.getParameters().add(newParam);
         }
         return newList;
@@ -1335,10 +1336,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
                 if(methodMirror.isConstructor()) {
-                    if (methodMirror == constructor) {
-                        if(!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType())
-                            setParameters((Class)klass, methodMirror, isCeylon, klass);
-                    }
+                    break;
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
                     addValue(klass, methodMirror, getJavaAttributeName(methodName), isCeylon);
@@ -1388,6 +1386,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             addValue(klass, fieldMirror, isCeylon);
         }
 
+        // Having loaded methods and values, we can now set the constructor parameters
+        if(constructor != null 
+                && (!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType()))
+            setParameters((Class)klass, constructor, isCeylon, klass);
         // Now marry-up attributes and parameters)
         if (klass instanceof Class) {
             for (Declaration m : klass.getMembers()) {
@@ -1677,11 +1679,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setEqualsParameters(Method decl, MethodMirror methodMirror) {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
-        ValueParameter parameter = new ValueParameter();
-        parameter.setUnit(decl.getUnit());
-        parameter.setContainer((Scope) decl);
+        Parameter parameter = new Parameter();
+        Value value = new Value();
+        parameter.setModel(value);
+        value.setInitializerParameter(parameter);
+        value.setUnit(decl.getUnit());
+        value.setContainer((Scope) decl);
         parameter.setName("that");
-        parameter.setType(getNonPrimitiveType(CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
+        value.setName("that");
+        value.setType(getNonPrimitiveType(CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
         parameter.setDeclaration((Declaration) decl);
         parameters.getParameters().add(parameter);
     }
@@ -1951,18 +1957,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             boolean isLastParameter = parameterIndex == parameterCount - 1;
             boolean isVariadic = isLastParameter && methodMirror.isVariadic();
             
-            ValueParameter parameter = new ValueParameter();
-            parameter.setContainer((Scope) decl);
-            DeclarationVisitor.setVisibleScope(parameter);
-            parameter.setUnit(((Element)decl).getUnit());
-            if(decl instanceof Class){
-                ((Class)decl).getMembers().add(parameter);
-            }
             String paramName = getAnnotationStringValue(paramMirror, CEYLON_NAME_ANNOTATION);
             // use whatever param name we find as default
             if(paramName == null)
                 paramName = paramMirror.getName();
+            
+            Parameter parameter = new Parameter();
             parameter.setName(paramName);
+            
             TypeMirror typeMirror = paramMirror.getType();
 
             ProducedType type;
@@ -1992,7 +1994,34 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     type = optionalType;
                 }
             }
-            parameter.setType(type);
+            
+            MethodOrValue value = null;
+            if(decl instanceof Class){
+                // For a functional parameter to a class, we can just lookup the member
+                value = (MethodOrValue)((Class)decl).getDirectMember(paramName, null, false);
+            } 
+            if (value == null) {
+                // TODO This is wrong, because you can have a Callable Value parameter
+                // so we need a @Function annotation -- we could reuse the existing @Method
+                // (which we should rename)
+                //if (typeFactory.isCallableType(type)) {
+                //    // A functional parameter to a method
+                //    value = new Method();
+                //    //value.setType(typeFactory.getCallableReturnType(type));
+                //    value.setType(type);
+                //} else {
+                    // A value parameter to a method
+                    value = new Value();
+                    value.setType(type);
+                //}
+                
+                value.setContainer((Scope) decl);
+                DeclarationVisitor.setVisibleScope(value);
+                value.setUnit(((Element)decl).getUnit());
+                value.setName(paramName);
+            }
+            value.setInitializerParameter(parameter);
+            parameter.setModel(value);
 
             if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null
                     || isVariadic)
@@ -2000,11 +2029,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
                 parameter.setDefaulted(true);
             // if it's variadic, consider the array element type (T[] == T...) for boxing rules
-            markUnboxed(parameter, isVariadic ? 
+            markUnboxed(value, isVariadic ? 
                     paramMirror.getType().getComponentType()
                     : paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
-            setAnnotations(parameter, paramMirror);
+            setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
             
             parameterIndex++;

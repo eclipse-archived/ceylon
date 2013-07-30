@@ -41,12 +41,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /**
  * Represents a lazy Package declaration.
@@ -226,25 +227,29 @@ public class LazyPackage extends Package {
                 ParameterAnnotationArgument a = new ParameterAnnotationArgument();
                 
                 {
-                    ValueParameter klassParam = new ValueParameter();
+                    Parameter klassParam = new Parameter();
+                    Value value = new Value();
+                    klassParam.setModel(value);
                     klassParam.setDeclaration(klass);
-                    klassParam.setContainer(klass);
+                    value.setContainer(klass);
                     klassParam.setName(member.getName());
-                    klassParam.setType(annotationParameterType(iface.getUnit(), m));
-                    klassParam.setUnboxed(true);
-                    klassParam.setUnit(iface.getUnit());
+                    value.setType(annotationParameterType(iface.getUnit(), m));
+                    value.setUnboxed(true);
+                    value.setUnit(iface.getUnit());
                     classpl.getParameters().add(klassParam);
                     a.setTargetParameter(klassParam);
                 }
                 {
-                    ValueParameter ctorParam = new ValueParameter();
+                    Parameter ctorParam = new Parameter();
+                    Value value = new Value();
+                    ctorParam.setModel(value);
                     ctorParam.setDeclaration(ctor);
-                    ctorParam.setContainer(klass);
+                    value.setContainer(klass);
                     ctorParam.setDefaulted(m.isDefaultedAnnotation());
                     ctorParam.setName(member.getName());
-                    ctorParam.setType(annotationParameterType(iface.getUnit(), m));
-                    ctorParam.setUnboxed(true);
-                    ctorParam.setUnit(iface.getUnit());
+                    value.setType(annotationParameterType(iface.getUnit(), m));
+                    value.setUnboxed(true);
+                    value.setUnit(iface.getUnit());
                     ctorpl.getParameters().add(ctorParam);           
                     a.setSourceParameter(ctorParam);
                 }

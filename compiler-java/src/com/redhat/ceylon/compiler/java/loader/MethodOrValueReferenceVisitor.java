@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.loader;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -33,8 +33,11 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     private TypedDeclaration declaration;
     private boolean inCapturingScope = false;
     private boolean inLazySpecifierExpression = false;
+    private Tree.CompilationUnit cu;
+    private boolean defaultArgument;
     
-    public MethodOrValueReferenceVisitor(TypedDeclaration declaration) {
+    public MethodOrValueReferenceVisitor(Tree.CompilationUnit cu, TypedDeclaration declaration) {
+        this.cu = cu;
         this.declaration = declaration;
     }
     
@@ -74,25 +77,25 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             }
             TypedDeclaration d = (TypedDeclaration) decl;
             if (d==declaration) {
-                if (Decl.isValue(d) || Decl.isGetter(decl)) {
+                if (Decl.isParameter(d)) {
+                    // a reference from a default argument 
+                    // expression of the same parameter 
+                    // list does not capture a parameter
+                    boolean sameScope = d.getContainer().equals(that.getScope());
+                    if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
+                        ((MethodOrValue)d).setCaptured(true);
+                    }
+                } else if (Decl.isValue(d) || Decl.isGetter(decl)) {
                     Value v = (Value) d;
                     v.setCaptured(true);
                     if (v.getSetter() != null) {
                         v.getSetter().setCaptured(true);
                     }
                 }
-                else if (Decl.isMethod(d)) {
+                else if (d instanceof Method) {
                     ((Method) d).setCaptured(true);
                 }
-                else if (d instanceof Parameter) {
-                    // a reference from a default argument 
-                    // expression of the same parameter 
-                    // list does not capture a parameter
-                    boolean sameScope = d.getContainer().equals(that.getScope());
-                    if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
-                        ((Parameter) d).setCaptured(true);
-                    }
-                }
+                
                 /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
                     that.addError("access to variable local from capturing scope: " + declaration.getName());
                 }*/
@@ -194,13 +197,34 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         exitCapturingScope(cs);
     }
     
-    @Override public void visit(Tree.DefaultArgument that) {
-        //parameter declarations capture 
-        //their default argument
-        boolean cs = enterCapturingScope();
+    /*@Override public void visit(Tree.FunctionalParameterDeclaration that) {
+        this.defaultArgument = true;
         super.visit(that);
-        exitCapturingScope(cs);
-    }    
+        this.defaultArgument = false;
+    }*/
+    @Override public void visit(Tree.ValueParameterDeclaration that) {
+        this.defaultArgument = true;
+        super.visit(that);
+        this.defaultArgument = false;
+    }
+    /*@Override public void visit(Tree.InitializerParameter that) {
+        this.defaultArgument = true;
+        super.visit(that);
+        this.defaultArgument = false;
+    }*/
+    
+    @Override public void visit(Tree.SpecifierOrInitializerExpression that) {
+        boolean cs = false;
+        // Things in specifiers or initializers are only captured if they are
+        // specifiers or initializers of parameters
+        if (this.defaultArgument) {
+            cs = enterCapturingScope();
+        }
+        super.visit(that);
+        if (this.defaultArgument) {
+            exitCapturingScope(cs);
+        }
+    }
     
     @Override public void visit(Tree.FunctionArgument that) {
         boolean cs = enterCapturingScope();

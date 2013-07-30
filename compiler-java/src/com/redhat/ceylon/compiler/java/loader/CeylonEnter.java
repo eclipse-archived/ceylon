@@ -439,7 +439,7 @@ public class CeylonEnter extends Enter {
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
             for (Declaration d: unit.getDeclarations()) {
                 if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-                    compilationUnit.visit(new MethodOrValueReferenceVisitor((TypedDeclaration) d));
+                    compilationUnit.visit(new MethodOrValueReferenceVisitor(compilationUnit, (TypedDeclaration) d));
                 }
             }
         }
