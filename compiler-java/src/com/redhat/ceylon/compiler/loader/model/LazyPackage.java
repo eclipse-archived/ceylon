@@ -230,8 +230,10 @@ public class LazyPackage extends Package {
                     Parameter klassParam = new Parameter();
                     Value value = new Value();
                     klassParam.setModel(value);
+                    value.setInitializerParameter(klassParam);
                     klassParam.setDeclaration(klass);
                     value.setContainer(klass);
+                    value.setName(member.getName());
                     klassParam.setName(member.getName());
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
@@ -243,9 +245,11 @@ public class LazyPackage extends Package {
                     Parameter ctorParam = new Parameter();
                     Value value = new Value();
                     ctorParam.setModel(value);
+                    value.setInitializerParameter(ctorParam);
                     ctorParam.setDeclaration(ctor);
                     value.setContainer(klass);
                     ctorParam.setDefaulted(m.isDefaultedAnnotation());
+                    value.setName(member.getName());
                     ctorParam.setName(member.getName());
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
