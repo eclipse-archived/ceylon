@@ -253,7 +253,8 @@
 ^(abstract TYPE
     ProducedType typeModel;)
 
-^(abstract STATIC_TYPE:TYPE)
+^(abstract STATIC_TYPE:TYPE
+    boolean metamodel;)
 
 "A produced type."
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
