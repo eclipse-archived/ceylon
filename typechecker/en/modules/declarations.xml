@@ -2451,9 +2451,9 @@ print(greeting);</programlisting>
         <programlisting>"The user login action"
 by ("Gavin King",
     "Andrew Haley")
-throws (DatabaseException,
+throws (`DatabaseException`,
         "if database access fails")
-seeAlso (LogoutAction.logout)
+see (`LogoutAction.logout`)
 scope (session) 
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
