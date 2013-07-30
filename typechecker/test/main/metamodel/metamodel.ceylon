@@ -224,6 +224,9 @@ void meta() {
     @error value ut1 = `List|String`; 
     @type:"UnionType" 
     value ut2 = `List<String>|String`; 
+    @error value it1 = `List&String`; 
+    @type:"IntersectionType" 
+    value it2 = `List<String>&Integer`; 
     @type:"InterfaceDeclaration" 
     value id1 = `List`;
     @type:"FunctionDeclaration" 
