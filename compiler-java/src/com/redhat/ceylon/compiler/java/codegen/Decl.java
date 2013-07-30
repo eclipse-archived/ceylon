@@ -89,6 +89,18 @@ public class Decl {
         return (decl instanceof Value) && ((Value)decl).isTransient();
     }
 
+    public static boolean isNonTransientValue(Declaration decl) {
+        return (decl instanceof Value)
+                && !((Value)decl).isTransient();
+    }
+    
+    public static boolean isSharedParameter(Declaration decl) {
+        return decl instanceof Value 
+                && ((Value)decl).isParameter() 
+                && decl.isShared();
+    }
+    
+    
     /**
      * Determines whether the declaration's is a non-transient value (not a getter)
      * @param decl The declaration
