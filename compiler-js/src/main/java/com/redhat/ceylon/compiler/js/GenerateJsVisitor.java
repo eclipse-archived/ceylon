@@ -306,7 +306,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Parameter that) {
-        out(names.name(that.getDeclarationModel()));
+        out(names.name(that.getParameterModel()));
     }
 
     @Override
@@ -321,7 +321,7 @@ public class GenerateJsVisitor extends Visitor
         }
         for (Parameter param: that.getParameters()) {
             if (!first) out(",");
-            out(names.name(param.getDeclarationModel()));
+            out(names.name(param.getParameterModel()));
             first = false;
         }
         if (ptypes) {
@@ -1227,35 +1227,52 @@ public class GenerateJsVisitor extends Visitor
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
         for (final Parameter param : params.getParameters()) {
-            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getDeclarationModel();
-            /*if (param instanceof ValueParameterDeclaration && ((ValueParameterDeclaration)param).getDeclarationModel().isHidden()) {
-                //TODO support new syntax for class and method parameters
-                //the declaration is actually different from the one we usually use
-                out("//HIDDEN! ", pd.getName(), "(", names.name(pd), ")"); endLine();
-            }*/
+            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
             String paramName = names.name(pd);
-            if (param.getDefaultArgument() != null || pd.isSequenced()) {
+            if (pd.isDefaulted() || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
-                if (param.getDefaultArgument() == null) {
+                if (pd.isSequenced()) {
                     out(clAlias, "getEmpty()");
+                } else if (param instanceof ParameterDeclaration || param instanceof InitializerParameter) {
+                    final SpecifierOrInitializerExpression expr;
+                    MethodDeclaration md = null;
+                    if (param instanceof ParameterDeclaration) {
+                        TypedDeclaration td = ((ParameterDeclaration) param).getTypedDeclaration();
+                        if (td instanceof AttributeDeclaration) {
+                            expr = ((AttributeDeclaration) td).getSpecifierOrInitializerExpression();
+                        } else if (td instanceof MethodDeclaration) {
+                            md = (MethodDeclaration)td;
+                            expr = md.getSpecifierExpression();
+                        } else {
+                            params.addUnexpectedError("Don't know what to do with TypedDeclaration " + td.getClass().getName());
+                            expr = null;
+                        }
+                    } else {
+                        expr = ((InitializerParameter) param).getSpecifierExpression();
+                    }
+                    if (expr == null) {
+                        if (pd.getAliasedParameter() != null) {
+                            System.out.println("AQUI!!!!!!!!" + pd.getAliasedParameter());
+                        }
+                        params.addUnexpectedError("Defaulted param with no expression: " + pd.getName());
+                        out("null");
+                    } else {
+                        if (md == null) {
+                            expr.visit(this);
+                        } else {
+                            // function parameter defaulted using "=>"
+                            singleExprFunction(
+                                    md.getParameterLists(),
+                                    expr.getExpression(), null);
+                        }
+                    }
                 } else {
-                    final SpecifierExpression defaultExpr =
-                            param.getDefaultArgument().getSpecifierExpression();
-                    if ((param instanceof FunctionalParameterDeclaration)
-                            && (defaultExpr instanceof LazySpecifierExpression)) {
-                        // function parameter defaulted using "=>"
-                        singleExprFunction(
-                                ((FunctionalParameterDeclaration) param).getParameterLists(),
-                                defaultExpr.getExpression(), null);
-                    }
-                    else {
-                        defaultExpr.visit(this);
-                    }
+                    params.addUnexpectedError("Don't know what to do with defaulted/sequenced param " + param);
                 }
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && pd.isCaptured()) {
+            if ((typeDecl != null) && pd.getModel().isCaptured()) {
                 self(typeDecl);
                 out(".", paramName, "=", paramName, ";");
                 endLine();
@@ -1824,7 +1841,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private boolean accessDirectly(Declaration d) {
-        return !accessThroughGetter(d) || directAccess.contains(d);
+        return !accessThroughGetter(d) || directAccess.contains(d) || d.isParameter();
     }
 
     private boolean accessThroughGetter(Declaration d) {
@@ -2593,8 +2610,7 @@ public class GenerateJsVisitor extends Visitor
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (opts.isOptimize() && !inProto) {
-            if (isMember && !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter
-                              && !d.isCaptured())) {
+            if (isMember && !(d.isParameter() && !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 if (id == null) {
                     //a local declaration of some kind,
