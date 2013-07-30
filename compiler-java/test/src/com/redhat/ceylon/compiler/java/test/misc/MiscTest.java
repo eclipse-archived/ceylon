@@ -40,6 +40,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
@@ -288,12 +289,13 @@ public class MiscTest extends CompilerTest {
             System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
             throw e;
         }
+        ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
-        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
                 Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk"), 
                 moduleNames, null);
         Boolean result = task.call();
-        Assert.assertEquals("Compilation of SDK itself failed", Boolean.TRUE, result);
+        Assert.assertEquals("Compilation of SDK itself failed: " + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
     }
 
     private void compileSDKTests(String[] modules){
@@ -316,12 +318,14 @@ public class MiscTest extends CompilerTest {
             System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
             throw e;
         }
+        ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
-        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
                 Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk"), 
                 moduleNames, null);
+        
         Boolean result = task.call();
-        Assert.assertEquals("Compilation of SDK tests failed", Boolean.TRUE, result);
+        Assert.assertEquals("Compilation of SDK tests failed:" + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
     }
 
     //
