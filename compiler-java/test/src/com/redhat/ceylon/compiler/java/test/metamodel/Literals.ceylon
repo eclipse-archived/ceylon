@@ -167,7 +167,7 @@ void literals<T>(){
 
 class RelativeLiterals(shared String str = "a") {
     shared Integer integer = 0;
-    class Inner(){}
+    shared class Inner(){}
     shared void f(){
         value temp1 = `str`;
         value temp2 = `integer`;

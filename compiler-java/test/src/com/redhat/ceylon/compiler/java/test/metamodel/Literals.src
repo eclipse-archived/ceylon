@@ -630,14 +630,21 @@ class RelativeLiterals implements .com.redhat.ceylon.compiler.java.runtime.model
         return integer;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.Inner Inner$new() {
+        return new Inner();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 5)
+    @.ceylon.language.Shared$annotation
     @.com.redhat.ceylon.compiler.java.metadata.Container(
             name = "RelativeLiterals",
             javaClass = "com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals",
             packageName = "com.redhat.ceylon.compiler.java.test.metamodel")
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        Inner() {
+        protected Inner() {
         }
         
         @.java.lang.Override
