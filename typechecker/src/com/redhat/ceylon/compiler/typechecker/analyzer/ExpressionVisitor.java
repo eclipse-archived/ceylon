@@ -4767,7 +4767,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 if (tal==null || tal instanceof Tree.InferredTypeArguments) {
                     if (!metamodel) {
-                        parent.addError("requires type arguments: " + dec.getName(unit));
+                        parent.addError("missing type arguments to generic type: " + 
+                                dec.getName(unit) + " declares type parameters");
                     }
                 }
                 else {
