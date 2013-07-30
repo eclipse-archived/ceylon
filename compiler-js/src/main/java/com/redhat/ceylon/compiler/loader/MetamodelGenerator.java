@@ -251,6 +251,9 @@ public class MetamodelGenerator {
                 if (parm.isDefaulted()) {
                     pm.put(KEY_DEFAULT, "1");
                 }
+                if (parm.isAtLeastOne()) {
+                    pm.put("$min1", "1");
+                }
                 final MethodOrValue parmtype = parm.getModel();
                 if (parmtype != null && parmtype.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parmtype.getName());
