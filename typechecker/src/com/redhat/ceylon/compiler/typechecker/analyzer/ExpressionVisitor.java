@@ -5358,10 +5358,10 @@ public class ExpressionVisitor extends Visitor {
             if ((!result.isClassOrInterfaceMember()||!result.isShared())
                     && !result.isToplevel()) {
                 if (result instanceof FunctionalParameter) {
-                    that.addError("metamodel references to function parameters not supported yet");
+                    that.addWarning("metamodel reference to function parameter not yet supported");
                 }
                 else {
-                    that.addError("metamodel references to local functions not supported");
+                    that.addError("metamodel reference to local function");
                 }
             }
             if (explicitTypeArguments(method, tal, null)) {
@@ -5390,10 +5390,10 @@ public class ExpressionVisitor extends Visitor {
             if ((!result.isClassOrInterfaceMember()||!result.isShared())
                     && !result.isToplevel()){
                 if (result instanceof ValueParameter) {
-                    that.addError("metamodel references to function parameters not supported yet");
+                    that.addWarning("metamodel reference to function parameter not yet supported");
                 }
                 else{
-                    that.addError("metamodel references to local values not supported");
+                    that.addError("metamodel reference to local value");
                 }
             }
             if (that.getTypeArgumentList() != null) {
@@ -5472,7 +5472,7 @@ public class ExpressionVisitor extends Visitor {
         else if (declaration instanceof ClassOrInterface &&
                 (!declaration.isClassOrInterfaceMember()||!declaration.isShared())
                         && !declaration.isToplevel()) {
-            that.addError("metamodel references to local types not supported yet");
+            that.addWarning("metamodel reference to local type not yet supported");
         }
         else if (declaration.getContainer() instanceof TypeDeclaration) {
             checkNonlocalType(that, (TypeDeclaration) declaration.getContainer());
