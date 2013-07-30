@@ -13,185 +13,67 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
         return t;
     }
     
-    private final void unary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
-        
-        final class m_ {
-            
-            private m_() {
-                this.m = m$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
-            
-            void m(final long i) {
-                m.$call(.ceylon.language.Integer.instance(i));
-            }
-        }
-        final m_ m = new m_();
-        m.m(1L);
+    private final void unary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
+        m.$call(.ceylon.language.Integer.instance(1L));
         (
             let
             {
-                long $arg$0$0 = 1L;
-                m.m($arg$0$0);
+                .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
+                m.$call($arg$0$0);
             }
             returning null;
         );
     }
     
-    private final void nary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
-        
-        final class m_ {
-            
-            private m_() {
-                this.m = m$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
-            
-            void m(final long i1, final long i2, final long i3, final long i4) {
-                m.$call(.ceylon.language.Integer.instance(i1), .ceylon.language.Integer.instance(i2), .ceylon.language.Integer.instance(i3), .ceylon.language.Integer.instance(i4));
-            }
-        }
-        final m_ m = new m_();
-        m.m(1L, 2L, 3L, 4L);
+    private final void nary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
+        m.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
         (
             let
             {
-                long $arg$1$0 = 1L;
-                long $arg$1$1 = 2L;
-                long $arg$1$2 = 3L;
-                long $arg$1$3 = 4L;
-                m.m($arg$1$0, $arg$1$1, $arg$1$2, $arg$1$3);
+                .ceylon.language.Integer $arg$1$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Integer $arg$1$1 = .ceylon.language.Integer.instance(2L);
+                .ceylon.language.Integer $arg$1$2 = .ceylon.language.Integer.instance(3L);
+                .ceylon.language.Integer $arg$1$3 = .ceylon.language.Integer.instance(4L);
+                m.$call($arg$1$0, $arg$1$1, $arg$1$2, $arg$1$3);
             }
             returning null;
         );
     }
     
-    private final void sequenced$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
-        
-        final class m_ {
-            
-            private m_() {
-                this.m = m$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
-            
-            void m(final long i) {
-                (
-                    let
-                    {
-                        .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$2 = m$seq(i);
-                        m(i, $ceylontmp$seq$2);
-                    }
-                    returning null;
-                );
-            }
-            
-            private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m$seq(final long i) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-            }
-            
-            void m(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
-                m.$call(.ceylon.language.Integer.instance(i), seq);
-            }
-        }
-        final m_ m = new m_();
-        m.m(1L);
-        m.m(1L, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}));
-        m.m(1L, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
+    private final void sequenced$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m) {
+        m.$call(.ceylon.language.Integer.instance(1L));
+        m.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}));
+        m.$call(.ceylon.language.Integer.instance(1L), .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}));
         (
             let
             {
-                m_ $arg$3$this$ = m;
-                long $arg$3$0 = 1L;
-                .ceylon.language.Sequential $arg$3$1 = $arg$3$this$.m$seq($arg$3$0);
-                m.m($arg$3$0, $arg$3$1);
+                .ceylon.language.Integer $arg$2$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential $arg$2$1 = (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+                m.$call($arg$2$0, $arg$2$1);
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$4$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
-                long $arg$4$0 = 1L;
-                m.m($arg$4$0, $arg$4$1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $arg$3$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor)), .ceylon.language.Integer.instance(1L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Empty>>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor), .ceylon.language.Integer.instance(2L), new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Integer.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, .ceylon.language.Integer.instance(3L), .ceylon.language.empty_.$get())));
+                .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L);
+                m.$call($arg$3$0, $arg$3$1);
             }
             returning null;
         );
     }
     
-    private final void typeParameter$priv(final .ceylon.language.Callable<? extends T> m$) {
-        
-        final class m_ {
-            
-            private m_() {
-                this.m = m$;
-            }
-            private final .ceylon.language.Callable<? extends T> m;
-            
-            T m(final T t) {
-                return m.$call(t);
-            }
-        }
-        final m_ m = new m_();
-        m.m(getT$priv());
+    private final void typeParameter$priv(final .ceylon.language.Callable<? extends T> m) {
+        m.$call(getT$priv());
         (
             let
             {
-                T $arg$5$0 = getT$priv();
+                T $arg$4$0 = getT$priv();
             }
-            returning m.m($arg$5$0);
-        );
-    }
-    
-    private final void defaultedParameter$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
-        
-        final class m_ {
-            
-            private m_() {
-                this.m = m$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
-            
-            void m() {
-                (
-                    let
-                    {
-                        long $ceylontmp$i$6 = m$i();
-                        m($ceylontmp$i$6);
-                    }
-                    returning null;
-                );
-            }
-            
-            private final long m$i() {
-                return 1L;
-            }
-            
-            void m(final long i) {
-                m.$call(.ceylon.language.Integer.instance(i));
-            }
-        }
-        final m_ m = new m_();
-        m.m();
-        m.m(2L);
-        (
-            let
-            {
-                m_ $arg$7$this$ = m;
-                long $arg$7$0 = $arg$7$this$.m$i();
-                m.m($arg$7$0);
-            }
-            returning null;
-        );
-        (
-            let
-            {
-                long $arg$8$0 = 2L;
-                m.m($arg$8$0);
-            }
-            returning null;
+            returning m.$call($arg$4$0);
         );
     }
     

@@ -22,4 +22,9 @@ class MethodInitializerParameter<T>(m, m2, m3) {
     void m(Integer i);
     void m2(Integer i, Integer* seq);
     T m3(T t);
+    shared void capture() {
+        m(1);
+        m2(1);
+        m3(nothing);
+    }
 }

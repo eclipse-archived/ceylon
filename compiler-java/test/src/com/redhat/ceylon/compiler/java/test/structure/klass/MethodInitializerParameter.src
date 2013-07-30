@@ -2,92 +2,22 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    MethodInitializerParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> m$, final .ceylon.language.Callable<? extends .java.lang.Object> m2$, final .ceylon.language.Callable<? extends T> m3$, final .ceylon.language.Callable<? extends .java.lang.Object> m4$) {
+    MethodInitializerParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT, final .ceylon.language.Callable<? extends .java.lang.Object> m, final .ceylon.language.Callable<? extends .java.lang.Object> m2, final .ceylon.language.Callable<? extends T> m3) {
         this.$reifiedT = $reifiedT;
-        
-        final class m_ {
-            
-            private m_() {
-                this.m$priv = m$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m$priv;
-            
-            private final void m$priv(final long i) {
-                m$priv.$call(.ceylon.language.Integer.instance(i));
-            }
-        }
-        final m_ m = new m_();
-        
-        final class m2_ {
-            
-            private m2_() {
-                this.m2$priv = m2$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m2$priv;
-            
-            private final void m2$priv(final long i) {
-                (
-                    let
-                    {
-                        .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$0 = m2$seq(i);
-                        m2$priv(i, $ceylontmp$seq$0);
-                    }
-                    returning null;
-                );
-            }
-            
-            private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m2$seq(final long i) {
-                return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
-            }
-            
-            private final void m2$priv(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
-                m2$priv.$call(.ceylon.language.Integer.instance(i), seq);
-            }
-        }
-        final m2_ m2 = new m2_();
-        
-        final class m3_ {
-            
-            private m3_() {
-                this.m3$priv = m3$;
-            }
-            private final .ceylon.language.Callable<? extends T> m3$priv;
-            
-            private final T m3$priv(final T t) {
-                return m3$priv.$call(t);
-            }
-        }
-        final m3_ m3 = new m3_();
-        
-        final class m4_ {
-            
-            private m4_() {
-                this.m4$priv = m4$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m4$priv;
-            
-            private final void m4$priv() {
-                (
-                    let
-                    {
-                        long $ceylontmp$i$1 = m4$i();
-                        m4$priv($ceylontmp$i$1);
-                    }
-                    returning null;
-                );
-            }
-            
-            private final long m4$i() {
-                return 1L;
-            }
-            
-            private final void m4$priv(final long i) {
-                m4$priv.$call(.ceylon.language.Integer.instance(i));
-            }
-        }
-        final m4_ m4 = new m4_();
+        this.m = m;
+        this.m2 = m2;
+        this.m3 = m3;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> m;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> m2;
+    private final .ceylon.language.Callable<? extends T> m3;
+    
+    public final void capture() {
+        m.$call(.ceylon.language.Integer.instance(1L));
+        m2.$call(.ceylon.language.Integer.instance(1L));
+        m3.$call((T).ceylon.language.nothing_.$get());
+    }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {

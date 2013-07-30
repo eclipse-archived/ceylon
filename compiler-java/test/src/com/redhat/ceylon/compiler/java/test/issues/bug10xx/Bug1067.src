@@ -2,47 +2,33 @@ package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
 
 class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f$) {
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$g$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$init$g(f$);
-                this(f$, $ceylontmp$g$0);
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$g$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$init$g(f);
+                this(f, $ceylontmp$g$0);
             }
             returning null;
         );
     }
     
-    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f$, final .ceylon.language.Callable<? extends .java.lang.Object> g$) {
-        
-        final class f_ {
-            
-            private f_() {
-                this.f$priv = f$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> f$priv;
-            
-            private final void f$priv() {
-                f$priv.$call();
-            }
-        }
-        final f_ f = new f_();
-        
-        final class g_ {
-            
-            private g_() {
-                this.g$priv = g$;
-            }
-            private final .ceylon.language.Callable<? extends .java.lang.Object> g$priv;
-            
-            private final void g$priv() {
-                g$priv.$call();
-            }
-        }
-        final g_ g = new g_();
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        this.f = f;
+        this.g = g;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    public final void f() {
+        f.$call();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> g;
+    
+    public final void g() {
+        g.$call();
     }
     
-    static .ceylon.language.Callable<? extends .java.lang.Object> $init$g(final .java.lang.Object f$) {
+    static .ceylon.language.Callable<? extends .java.lang.Object> $init$g(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor, .ceylon.language.Empty.$TypeDescriptor, "Anything()", (short)-1){
             
             @.java.lang.Override

@@ -20,6 +20,6 @@
 
 @noanno
 class Bug1067(f, g=void(){}) {
-    void f();
-    void g();
+    shared void f();
+    shared void g();
 }
