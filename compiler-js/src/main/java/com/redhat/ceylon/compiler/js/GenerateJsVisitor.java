@@ -628,7 +628,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         referenceOuter(d);
-        initParameters(that.getParameterList(), d);
+        initParameters(that.getParameterList(), d, null);
         
         final List<Declaration> superDecs = new ArrayList<Declaration>();
         if (!opts.isOptimize()) {
@@ -1135,11 +1135,13 @@ public class GenerateJsVisitor extends Visitor
                 // member in prototype style.
                 if (opts.isOptimize() && m.isMember()) { return; }
                 comment(that);
+                initDefaultedParameters(that.getParameterLists().get(0), m);
                 out("var ");
             }
             else {
                 // prototype definition
                 comment(that);
+                initDefaultedParameters(that.getParameterLists().get(0), m);
                 out(names.self(outer), ".");
             }
             out(names.name(m), "=");            
@@ -1172,6 +1174,8 @@ public class GenerateJsVisitor extends Visitor
                         names.forceName(m, name);
                     }
                 }
+                //Only the first paramlist can have defaults
+                initDefaultedParameters(that.getParameterLists().get(0), m);
             }
         }
     }
@@ -1183,6 +1187,7 @@ public class GenerateJsVisitor extends Visitor
         if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         if (!((opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
+            initDefaultedParameters(that.getParameterLists().get(0), d);
             methodDefinition(that);
             //Add reference to metamodel
             out(names.name(d), ".$$metamodel$$=");
@@ -1199,7 +1204,7 @@ public class GenerateJsVisitor extends Visitor
             paramList.visit(this);
             beginBlock();
             initSelf(that.getBlock());
-            initParameters(paramList, null);
+            initParameters(paramList, null, d);
             visitStatements(that.getBlock().getStatements());
             endBlock();
         } else {
@@ -1213,7 +1218,7 @@ public class GenerateJsVisitor extends Visitor
                 paramList.visit(this);
                 beginBlock();
                 initSelf(that.getBlock());
-                initParameters(paramList, null);
+                initParameters(paramList, d.getTypeDeclaration(), d);
                 count++;
             }
             visitStatements(that.getBlock().getStatements());
@@ -1225,49 +1230,97 @@ public class GenerateJsVisitor extends Visitor
         if (!share(d)) { out(";"); }
     }
 
-    private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
+    /** Get the specifier expression for a Parameter, if one is available. */
+    private SpecifierOrInitializerExpression getDefaultExpression(Parameter param) {
+        final SpecifierOrInitializerExpression expr;
+        if (param instanceof ParameterDeclaration || param instanceof InitializerParameter) {
+            MethodDeclaration md = null;
+            if (param instanceof ParameterDeclaration) {
+                TypedDeclaration td = ((ParameterDeclaration) param).getTypedDeclaration();
+                if (td instanceof AttributeDeclaration) {
+                    expr = ((AttributeDeclaration) td).getSpecifierOrInitializerExpression();
+                } else if (td instanceof MethodDeclaration) {
+                    md = (MethodDeclaration)td;
+                    expr = md.getSpecifierExpression();
+                } else {
+                    param.addUnexpectedError("Don't know what to do with TypedDeclaration " + td.getClass().getName());
+                    expr = null;
+                }
+            } else {
+                expr = ((InitializerParameter) param).getSpecifierExpression();
+            }
+        } else {
+            param.addUnexpectedError("Don't know what to do with defaulted/sequenced param " + param);
+            expr = null;
+        }
+        return expr;
+    }
+
+    /** Create special functions with the expressions for defaulted parameters in a parameter list. */
+    private void initDefaultedParameters(ParameterList params, Method container) {
+        if (!container.isMember())return;
         for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
-            String paramName = names.name(pd);
+            if (pd.isDefaulted()) {
+                final SpecifierOrInitializerExpression expr = getDefaultExpression(param);
+                if (expr == null) {
+                    continue;
+                }
+                qualify(params, container);
+                out(names.name(container), "$defs$", pd.getName(), "=function");
+                params.visit(this);
+                out("{");
+                initSelf(container);
+                out("return ");
+                if (param instanceof ParameterDeclaration &&
+                        ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
+                    // function parameter defaulted using "=>"
+                    singleExprFunction(
+                            ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
+                            expr.getExpression(), null);
+                } else {
+                    expr.visit(this);
+                }
+                out(";}");
+                endLine(true);
+            }
+        }
+    }
+
+    /** Initialize the sequenced, defaulted and captured parameters in a type declaration. */
+    private void initParameters(ParameterList params, TypeDeclaration typeDecl, Method m) {
+        for (final Parameter param : params.getParameters()) {
+            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
+            final String paramName = names.name(pd);
             if (pd.isDefaulted() || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
-                if (pd.isSequenced()) {
-                    out(clAlias, "getEmpty()");
-                } else if (param instanceof ParameterDeclaration || param instanceof InitializerParameter) {
-                    final SpecifierOrInitializerExpression expr;
-                    MethodDeclaration md = null;
-                    if (param instanceof ParameterDeclaration) {
-                        TypedDeclaration td = ((ParameterDeclaration) param).getTypedDeclaration();
-                        if (td instanceof AttributeDeclaration) {
-                            expr = ((AttributeDeclaration) td).getSpecifierOrInitializerExpression();
-                        } else if (td instanceof MethodDeclaration) {
-                            md = (MethodDeclaration)td;
-                            expr = md.getSpecifierExpression();
-                        } else {
-                            params.addUnexpectedError("Don't know what to do with TypedDeclaration " + td.getClass().getName());
-                            expr = null;
+                if (pd.isDefaulted()) {
+                    if (m !=null && m.isMember()) {
+                        qualify(params, m);
+                        out(names.name(m), "$defs$", pd.getName(), "(");
+                        boolean firstParam=true;
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : m.getParameterLists().get(0).getParameters()) {
+                            if (firstParam){firstParam=false;}else out(",");
+                            out(names.name(p));
                         }
+                        out(")");
                     } else {
-                        expr = ((InitializerParameter) param).getSpecifierExpression();
-                    }
-                    if (expr == null) {
-                        if (pd.getAliasedParameter() != null) {
-                            System.out.println("AQUI!!!!!!!!" + pd.getAliasedParameter());
-                        }
-                        params.addUnexpectedError("Defaulted param with no expression: " + pd.getName());
-                        out("null");
-                    } else {
-                        if (md == null) {
-                            expr.visit(this);
-                        } else {
+                        final SpecifierOrInitializerExpression expr = getDefaultExpression(param);
+                        if (expr == null) {
+                            param.addUnexpectedError("Default expression missing for " + pd.getName());
+                            out("null");
+                        } else if (param instanceof ParameterDeclaration &&
+                                ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
                             // function parameter defaulted using "=>"
                             singleExprFunction(
-                                    md.getParameterLists(),
-                                    expr.getExpression(), null);
+                                    ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
+                                    expr.getExpression(), m.getContainer());
+                        } else {
+                            expr.visit(this);
                         }
                     }
                 } else {
-                    params.addUnexpectedError("Don't know what to do with defaulted/sequenced param " + param);
+                    out(clAlias, "getEmpty()");
                 }
                 out(";}");
                 endLine();
@@ -1285,6 +1338,7 @@ public class GenerateJsVisitor extends Visitor
         Method d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
+        initDefaultedParameters(that.getParameterLists().get(0), d);
         out(names.self(outer), ".", names.name(d), "=");
         methodDefinition(that);
         //Add reference to metamodel
@@ -2485,6 +2539,7 @@ public class GenerateJsVisitor extends Visitor
                     }, null);
                     out(";");
                 } else if (moval.isMember()) {
+                    //Solution to Issue 150 probably here
                     // Specifier for a member attribute. This actually defines the
                     // member (e.g. in shortcut refinement syntax the attribute
                     // declaration itself can be omitted), so generate the attribute.
@@ -2523,7 +2578,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.name(bmeDecl), "=");
                 singleExprFunction(paramExpr.getParameterLists(),
                         specStmt.getSpecifierExpression().getExpression(),
-                        specStmt.getScope());
+                        bmeDecl instanceof Scope ? (Scope)bmeDecl : null);
                 out(";");
             }
         }
@@ -2590,9 +2645,6 @@ public class GenerateJsVisitor extends Visitor
 
     /** Outputs the module name for the specified declaration. Returns true if something was output. */
     boolean qualify(Node that, Declaration d) {
-        if (d.getUnit().getPackage().getModule().isDefault()) {
-            return false;
-        }
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
             out(path, ".");
@@ -3832,7 +3884,8 @@ public class GenerateJsVisitor extends Visitor
             public void completeFunction() {
                 beginBlock();
                 if (paramLists.size() == 1) { initSelf(scope); }
-                initParameters(paramLists.get(paramLists.size()-1), null);
+                initParameters(paramLists.get(paramLists.size()-1),
+                        scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 visitStatements(block.getStatements());
                 endBlock();
             }
@@ -3845,7 +3898,8 @@ public class GenerateJsVisitor extends Visitor
             public void completeFunction() {
                 beginBlock();
                 if (paramLists.size() == 1) { initSelf(scope); }
-                initParameters(paramLists.get(paramLists.size()-1), null);
+                initParameters(paramLists.get(paramLists.size()-1),
+                        null, scope instanceof Method ? (Method)scope : null);
                 out("return ");
                 expr.visit(GenerateJsVisitor.this);
                 out(";");
@@ -3923,7 +3977,9 @@ public class GenerateJsVisitor extends Visitor
                 if (count == 0) {
                     beginBlock();
                     initSelf(scope);
-                    initParameters(paramList, null);
+                    Scope parent = scope == null ? null : scope.getContainer();
+                    initParameters(paramList, parent instanceof TypeDeclaration ? (TypeDeclaration)parent : null,
+                            scope instanceof Method ? (Method)scope:null);
                 }
                 else {
                     out("{");

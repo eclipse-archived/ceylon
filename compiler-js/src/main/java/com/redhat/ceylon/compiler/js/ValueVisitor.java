@@ -59,7 +59,7 @@ public class ValueVisitor extends Visitor {
         if (that instanceof Tree.MemberOrTypeExpression) {
             TypedDeclaration d = (TypedDeclaration) ((Tree.MemberOrTypeExpression) that).getDeclaration();
             if (d==declaration) {
-                if (d.isParameter()) { //TODO this is only for initializer parameters
+                if (d.isParameter()) {
                     if (!d.getContainer().equals(that.getScope()) || sameScope>0) { //a reference from a default argument 
                         //expression of the same parameter 
                         //list does not capture a parameter
