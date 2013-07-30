@@ -330,6 +330,11 @@ public class IssuesTest_1000_1499 extends CompilerTest {
         compile("bug12xx/Bug1212_2.ceylon");
     }
 
+    @Test
+    public void testBug1219() {
+        compareWithJavaSource("bug12xx/Bug1219");
+    }
+    
     @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1221")
     @Test
     public void testBug1221() {
