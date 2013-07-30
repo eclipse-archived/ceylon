@@ -1,11 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -45,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -583,11 +585,36 @@ public class TypeVisitor extends Visitor {
             }
         //}
     }
-
+    
+    @Override
+    public void visit(MemberLiteral that) {
+        super.visit(that);
+        if (that.getType()!=null) {
+            ProducedType pt = that.getType().getTypeModel();
+            if (pt!=null) {
+                if (that.getTypeArgumentList()!=null &&
+                        isTypeUnknown(pt) && !pt.isUnknown()) {
+                    that.getTypeArgumentList()
+                            .addError("qualifying type does not fully-specify type argument");
+                }
+            }
+        }
+    }
+    
+    @Override
     public void visit(Tree.QualifiedType that) {
+        if (that.getMetamodel()) {
+            that.getOuterType().setMetamodel(true);
+        }
         super.visit(that);
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
+            if (that.getMetamodel() && 
+                    that.getTypeArgumentList()!=null &&
+                    isTypeUnknown(pt) && !pt.isUnknown()) {
+                that.getTypeArgumentList()
+                        .addError("qualifying type does not fully-specify type argument");
+            }
             TypeDeclaration d = pt.getDeclaration();
 			String name = name(that.getIdentifier());
             TypeDeclaration type = getTypeMember(d, name, null, false, unit);

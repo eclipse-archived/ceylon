@@ -37,7 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.UnitFactory;
 
@@ -1181,15 +1180,6 @@ public class DeclarationVisitor extends Visitor {
 				fractionalMagnitude + ")$")) {
     		that.addError("illegal floating literal format");
     	}
-    }
-    
-    @Override
-    public void visit(QualifiedType that) {
-        //TODO: this is kinda lame
-        if (that.getMetamodel()) {
-            that.getOuterType().setMetamodel(true);
-        }
-        super.visit(that);
     }
     
     @Override
