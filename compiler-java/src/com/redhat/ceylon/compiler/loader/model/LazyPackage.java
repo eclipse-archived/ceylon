@@ -254,7 +254,7 @@ public class LazyPackage extends Package {
                     value.setType(annotationParameterType(iface.getUnit(), m));
                     value.setUnboxed(true);
                     value.setUnit(iface.getUnit());
-                    ctorpl.getParameters().add(ctorParam);           
+                    ctorpl.getParameters().add(ctorParam);
                     a.setSourceParameter(ctorParam);
                 }
                 annotationArgs.add(a);
