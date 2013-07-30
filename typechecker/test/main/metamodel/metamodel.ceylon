@@ -206,3 +206,55 @@ class ParameterisedContainer<Outer>(Outer a,
     shared Outer attribute = a;
     shared variable Outer variableAttribute = a;
 }
+
+
+[T+] singletonList<T>(T t) given T satisfies Object => [t];
+
+class Foo<S>() {
+    shared class Bar<T>() {
+        shared void x<X>() {}
+    }
+}
+
+void meta() {
+    @type:"Function<Sequence<String>,Tuple<String,String,Empty>>" 
+    value fd1 = `singletonList<String>`;
+    @type:"FunctionDeclaration" 
+    value fd2 = `singletonList`;
+    @error value ut1 = `List|String`; 
+    @type:"UnionType" 
+    value ut2 = `List<String>|String`; 
+    @type:"InterfaceDeclaration" 
+    value id1 = `List`;
+    @type:"FunctionDeclaration" 
+    value md1 = `List.defines`;
+    @type:"Method<List<Integer>,Boolean,Tuple<Integer,Integer,Empty>>" 
+    value md2 = `List<Integer>.defines`; 
+    @type:"ClassDeclaration"
+    value cd1 = `Foo.Bar`;
+    @type:"FunctionDeclaration"
+    value md3 = `Foo.Bar.x`;
+    @type:"Method<Foo<Object>.Bar<Object>,Anything,Empty>"
+    value md4 = `Foo<Object>.Bar<Object>.x<Integer>`;
+    @error
+    value md5 = `Foo.Bar<Object>.x<Integer>`;
+    @error
+    value md6 = `Foo<Object>.Bar.x<Integer>`;
+    @error
+    value md7 = `Foo<Object>.Bar<String>.x<List>`;
+    @type:"ClassDeclaration"
+    value cd2 = `Foo<List<String>>.Bar`;
+    @type:"ClassDeclaration"
+    value cd3 = `Foo`;
+    @type:"Class<Foo<Object>,Empty>"
+    value cd4 = `Foo<Object>`;
+    @type:"MemberClass<Foo<Anything>,Foo<Anything>.Bar<Anything>,Empty>"
+    value cd5 = `Foo<Anything>.Bar<Anything>`;
+    @error
+    value cd6 = `Foo.Bar<Object>`;
+    @error
+    value cd7 = `Foo<List>.Bar<Object>`;
+    @error
+    value cd8 = `Foo<Object>.Bar<List>`;
+}
+
