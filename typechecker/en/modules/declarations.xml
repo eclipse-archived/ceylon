@@ -2556,8 +2556,8 @@ shared deprecated</programlisting>
             <literal>annotations()</literal> defined in the package
             <literal>ceylon.language.metamodel</literal>.</para>
             
-            <programlisting>Scope scope = annotations(Scope, Person) ? request;</programlisting>
-            <programlisting>Todo[] todos = annotations(Todo, method);</programlisting>
+            <programlisting>Scope scope = annotations(`Scope`, `Person`) ? request;</programlisting>
+            <programlisting>Todo[] todos = annotations(`Todo`, `method`);</programlisting>
             
         </section>
         
