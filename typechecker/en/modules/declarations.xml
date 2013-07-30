@@ -2459,13 +2459,17 @@ action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
         
         <para>An annotation is an invocation of a toplevel function that occurs when the 
-        program element is loaded by the virtual machine. The return type of this function 
+        program element is loaded by the virtual machine. The function is called an
+        <emphasis>annotation constructor</emphasis>. The return type of this function 
         method is called the <emphasis>annotation type</emphasis> of the annotation. 
         Invocation of the toplevel function is called <emphasis>evaluation</emphasis> of 
         the annotation. The toplevel function may not declare type parameters.</para>
         
-        <programlisting>shared Scope scope(Scope s) => s;</programlisting>
-        <programlisting>shared Todo todo(String text) => Todo(text);</programlisting>
+        <para>Both the annotation constructor and annotation type must be annotated
+        <literal>annotation</literal>.</para>
+        
+        <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
+        <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
         
         <section id="annotationarguments">
             <title>Annotation arguments</title>
@@ -2499,33 +2503,11 @@ shared deprecated</programlisting>
             <literal>ceylon.language.metamodel</literal>. Any type which is a subtype of 
             <literal>ConstrainedAnnotation</literal> is called an <emphasis>annotation 
             type</emphasis>.</para>
-            
-            <programlisting><![CDATA[shared interface ConstrainedAnnotation<out Value, out Values, in ProgramElement>
-        of OptionalAnnotation<Value,ProgramElement> | SequencedAnnotation<Value,ProgramElement>
-        satisfies Annotation<Value>
-        given Value satisfies Annotation<Value>
-        given ProgramElement satisfies Annotated {
-    shared Boolean occurs(Annotated programElement) {
-        return programElement is ProgramElement;
-    }
-}]]></programlisting>
         
             <para>The type arguments of this interface express constraints upon how 
-            annotations which return the annotation type occur.</para> 
-            
-            <para>There are only two direct subtypes of <literal>ConstrainedAnnotation</literal>:</para>
-            
-            <programlisting><![CDATA[shared interface OptionalAnnotation<out Value, in ProgramElement>
-        satisfies ConstrainedAnnotation<Value,Value?,ProgramElement>
-        given Value satisfies Annotation<Value>
-        given ProgramElement satisfies Annotated {}]]></programlisting>
-               
-            <programlisting><![CDATA[shared interface SequencedAnnotation<out T, in ProgramElement>
-        satisfies ConstrainedAnnotation<Value,Value[],ProgramElement>
-        given Value satisfies Annotation<Value>
-        given ProgramElement satisfies Annotated {}]]></programlisting>
-            
-            <para>If <literal>A</literal> is an annotation type then:</para>
+            annotations which return the annotation type occur. There are exactly two 
+            direct subtypes of <literal>ConstrainedAnnotation</literal>. If 
+            <literal>A</literal> is an annotation type then:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2546,13 +2528,13 @@ shared deprecated</programlisting>
                 </listitem>
             </itemizedlist>
                         
-            <programlisting><![CDATA[shared interface Scope
+            <programlisting><![CDATA[shared annotation interface Scope
         of request | session | application
         satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
             
-            <programlisting><![CDATA[shared class Todo(String text)
+            <programlisting><![CDATA[shared annotation class Todo(String text)
         satisfies SequencedAnnotation<Todo,Annotated> {
-    shared actual String string = text;
+    string => text;
 }]]></programlisting>
             
             <para>It is perfectly acceptable for multiple toplevel methods to return the same 
@@ -2637,6 +2619,11 @@ shared deprecated</programlisting>
             <listitem>
                 <para><literal>final</literal> specifies that a class may not 
                 be extended.</para>
+            </listitem>
+            <listitem>
+                <para><literal>annotation</literal> specifies that a class is
+                an annotation type, or that a toplevel function is an annotation
+                constructor.</para>
             </listitem>
         </itemizedlist>
         
