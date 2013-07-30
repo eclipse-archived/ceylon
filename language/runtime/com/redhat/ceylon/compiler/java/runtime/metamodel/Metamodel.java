@@ -559,7 +559,8 @@ public class Metamodel {
             
             // Invoke it with the jAnnotation as the only argument
             try {
-                Constructor<A> constructor = annotationClass.getConstructor(jAnnotationType);
+                Constructor<A> constructor = annotationClass.getDeclaredConstructor(jAnnotationType);
+                constructor.setAccessible(true);
                 A cAnnotation = constructor.newInstance(jAnnotation);
                 if (pred.accept(cAnnotation)) {
                     ceylonAnnotations.append(cAnnotation);
