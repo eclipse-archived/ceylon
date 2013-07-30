@@ -557,10 +557,10 @@ void checkParseInteger() {
         check(!parseInteger("1ffffffffffffe", 16) exists, "parseInteger(1ffffffffffffe, 16)");
         check(!parseInteger("-20000000000000", 16) exists, "parseInteger(-20000000000000, 16)");
         
-        check(9007199254740989==(parseInteger("399uaj5f5vt", 36) else ""), "parseInteger(399uaj5f5vt, 36)");
-        check(-9007199254740991==(parseInteger("-399uaj5f5vv", 36) else ""), "parseInteger(-399uaj5f5vv, 36)");
-        check(!parseInteger("399uaj5f5vu", 36) exists, "parseInteger(399uaj5f5vu, 36)");
-        check(!parseInteger("-399uaj5f5vw", 36) exists, "parseInteger(-399uaj5f5vw, 36)");
+        check(9007199254740989==(parseInteger("2gosa7pa2gt", 36) else ""), "parseInteger(2gosa7pa2gt, 36)");
+        check(-9007199254740991==(parseInteger("-2gosa7pa2gv", 36) else ""), "parseInteger(-2gosa7pa2gv, 36)");
+        check(!parseInteger("2gosa7pa2gu", 36) exists, "parseInteger(2gosa7pa2gu, 36)");
+        check(!parseInteger("-2gosa7pa2gw", 36) exists, "parseInteger(-2gosa7pa2gw, 36)");
     } else {
         fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add parseInteger() tests for this platform");
     }
@@ -634,8 +634,8 @@ void checkFormatInteger() {
         check("1ffffffffffffd"==formatInteger(maxIntegerValue, 16), "formatInteger(``maxIntegerValue``, 16)");
         check("-1fffffffffffff"==formatInteger(minIntegerValue, 16), "formatInteger(``minIntegerValue``, 16)");
         
-        check("399uaj5f5vt"==formatInteger(maxIntegerValue, 36), "formatInteger(``maxIntegerValue``, 36)");
-        check("-399uaj5f5vv"==formatInteger(minIntegerValue, 36), "formatInteger(``minIntegerValue``, 36)");
+        check("2gosa7pa2gt"==formatInteger(maxIntegerValue, 36), "formatInteger(``maxIntegerValue``, 36)");
+        check("-2gosa7pa2gv"==formatInteger(minIntegerValue, 36), "formatInteger(``minIntegerValue``, 36)");
     } else {
         fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number formatInteger() tests for this platform");
     }
