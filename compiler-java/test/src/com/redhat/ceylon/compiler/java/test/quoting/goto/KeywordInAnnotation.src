@@ -7,13 +7,20 @@ public @interface AnnotationClass$annotation {
 }
 @.ceylon.language.Shared$annotation
 @.ceylon.language.Annotation$annotation
-public class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> {
     
     public AnnotationClass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation anno) {
         this(anno.$strictfp());
     }
     
     public AnnotationClass(final .java.lang.String strictfp) {
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     @.java.lang.Override

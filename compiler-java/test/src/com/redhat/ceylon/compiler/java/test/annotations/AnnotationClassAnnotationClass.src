@@ -6,13 +6,20 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .java.lang.String name();
 }
 @.ceylon.language.Annotation$annotation
-class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> {
     
     AnnotationClassParam(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation anno) {
         this(anno.name());
     }
     
     AnnotationClassParam(final .java.lang.String name) {
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor, this);
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     @.java.lang.Override
@@ -167,7 +174,7 @@ final class annotationClassAnnotationClassSequence_ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation a() default @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation(name = "defaulted");
 }
 @.ceylon.language.Annotation$annotation
-class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted> {
     
     AnnotationClassAnnotationClassDefaulted() {
         (
@@ -185,10 +192,17 @@ class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.comp
     }
     
     AnnotationClassAnnotationClassDefaulted(final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam a) {
+        this.$ceylon$language$model$Annotation$this = new .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$TypeDescriptor, this);
     }
     
     static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $init$a() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam("defaulted");
+    }
+    protected final .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted> $ceylon$language$model$Annotation$this;
+    
+    @.java.lang.Override
+    public .ceylon.language.model.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted> $ceylon$language$model$Annotation$impl() {
+        return $ceylon$language$model$Annotation$this;
     }
     
     public static void main(.java.lang.String[] args) {

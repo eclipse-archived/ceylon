@@ -1,8 +1,8 @@
-import ceylon.language.model{SequencedAnnotation, OptionalAnnotation}
+import ceylon.language.model { SequencedAnnotation, OptionalAnnotation, Annotation }
 import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassParam(String name) {}
+annotation class AnnotationClassParam(String name) satisfies Annotation<AnnotationClassParam> {}
 @nomodel
 annotation AnnotationClassParam annotationClassParam(String name) => AnnotationClassParam(name);
 @nomodel
@@ -12,7 +12,7 @@ annotation class AnnotationClassAnnotationClassSequence(AnnotationClassParam[] p
 @nomodel
 annotation AnnotationClassAnnotationClassSequence annotationClassAnnotationClassSequence(AnnotationClassParam[] params) => AnnotationClassAnnotationClassSequence(params);
 @nomodel
-annotation class AnnotationClassAnnotationClassDefaulted(AnnotationClassParam a=AnnotationClassParam("defaulted")) {}
+annotation class AnnotationClassAnnotationClassDefaulted(AnnotationClassParam a=AnnotationClassParam("defaulted")) satisfies Annotation<AnnotationClassAnnotationClassDefaulted> {}
 @nomodel
 annotation AnnotationClassAnnotationClass annotationClassAnnotationClass(AnnotationClassParam a) => AnnotationClassAnnotationClass(a);
 @nomodel

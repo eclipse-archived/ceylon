@@ -1,20 +1,20 @@
-import ceylon.language.model{SequencedAnnotation}
+import ceylon.language.model{SequencedAnnotation, Annotation}
 import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
 annotation class AnnotationClassString(String s) satisfies SequencedAnnotation<AnnotationClassString, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassString, ClassOrInterfaceDeclaration>{}
+annotation class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassStringDefaulted, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassStringSequence(String[] s) {}
+annotation class AnnotationClassStringSequence(String[] s) satisfies Annotation<AnnotationClassStringSequence> {}
 @nomodel
-annotation class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) {}
+annotation class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) satisfies Annotation<AnnotationClassStringSequenceDefaulted> {}
 @nomodel
-annotation class AnnotationClassStringIterable({String*} s) {}
+annotation class AnnotationClassStringIterable({String*} s) satisfies Annotation<AnnotationClassStringIterable> {}
 @nomodel
-annotation class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) {}
+annotation class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) satisfies Annotation<AnnotationClassStringIterableDefaulted> {}
 @nomodel
-annotation class AnnotationClassStringVariadic({String*} s) {}
+annotation class AnnotationClassStringVariadic({String*} s) satisfies Annotation<AnnotationClassStringVariadic> {}
 @nomodel
 annotation AnnotationClassString annotationClassString(String s) { return AnnotationClassString(s); }
 @nomodel
