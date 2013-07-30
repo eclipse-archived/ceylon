@@ -8,7 +8,9 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
@@ -114,7 +116,57 @@ public class JsIdentifierNames {
     public String name(Declaration decl) {
         return getName(decl, false, false);
     }
-    
+
+    public String name(Parameter param) {
+        if (param == null) { return null; }
+        String name = param.getName();
+        MethodOrValue decl = param.getModel();
+        final boolean nonLocal = (decl.isShared() && decl.isMember())
+                || (decl.isToplevel() && decl instanceof Method);
+        if (nonLocal) {
+            // The identifier might be accessed from other .js files, so it must
+            // be reliably reproducible. In most cases simply using the original
+            // name is ok because otherwise it would result in a name collision in
+            // Ceylon too. We just have to take care of a few exceptions:
+            String suffix = nestingSuffix(decl);
+            if (suffix.length() > 0) {
+                // nested type
+                name += suffix;
+            } else if (reservedWords.contains(name)) {
+                // JavaScript keyword
+                name = '$' + name;
+            } else {
+                Declaration refinedDecl = originalDeclaration(decl);
+                if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
+                    // member name that could collide with the name of a native
+                    // JavaScript class
+                    name = '$' + name;
+                }
+            }
+        }
+        else {
+            // The identifier will not be used outside the generated .js file,
+            // so we can simply disambiguate it with a numeric ID.
+            name = uniqueVarNames.get(decl);
+            if (name == null) {
+                name = String.format("%s$%d", decl.getName(), getUID(decl));
+            }
+        }
+        //Fix #204 - same top-level declarations in different packages
+        if (decl.isToplevel() && !decl.getUnit().getPackage().equals(decl.getUnit().getPackage().getModule().getRootPackage())) {
+            //rootPackage can be null when compiling from IDE
+            String rootName = decl.getUnit().getPackage().getModule().getRootPackage() == null ?
+                    "":decl.getUnit().getPackage().getModule().getRootPackage().getNameAsString();
+            String pkgName = decl.getUnit().getPackage().getNameAsString();
+            rootName = pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
+            if (rootName.length()>0 && rootName.charAt(0) != '$') {
+                rootName = '$' + rootName;
+            }
+            name += rootName;
+        }
+        return name;
+    }
+
     /**
      * Determine a secondary, private identifier name for the given declaration.
      */
