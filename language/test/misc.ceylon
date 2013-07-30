@@ -1,5 +1,5 @@
 by()
-see()
+//see()
 tagged()
 void misc() {
     
@@ -41,9 +41,10 @@ void misc() {
     for (n->e in entries(bs.sequence)) {
         check(n==e, "entry iteration");
     }
-
+    
     //Test empty varargs
-    see(); by(); tagged();
+    //see(); 
+    by(); tagged();
     join();
     ",".join{};
     StringBuilder().appendAll{};

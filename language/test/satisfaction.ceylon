@@ -74,7 +74,7 @@ class MyIterator() satisfies Iterator<Integer> {
         return from==0 then this else {};
     }
 }*/
-class MyRanged() satisfies Ranged<Integer, Iterable<Character>> {
+class MyRanged() satisfies Ranged<Integer, Iterable<Character>>&Iterable<Character> {
     value contents = 'a'..'z';
     shared actual Iterable<Character> span(Integer from, Integer to) {
         return contents.span(from, to);
@@ -88,6 +88,7 @@ class MyRanged() satisfies Ranged<Integer, Iterable<Character>> {
     shared actual Iterable<Character> segment(Integer from, Integer length) {
         return contents.segment(from, length);
     }
+    iterator()=>contents.iterator();
 }
 class MyOrdinal(prev, next) satisfies Ordinal<MyOrdinal> {
     shared variable MyOrdinal? prev;
