@@ -85,7 +85,7 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     
@@ -118,7 +118,7 @@ final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.o
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     

@@ -432,7 +432,7 @@ final class bwToplevelN1_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     
@@ -453,7 +453,7 @@ final class bwToplevelN2_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     
@@ -474,7 +474,7 @@ final class bwToplevelI1_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     

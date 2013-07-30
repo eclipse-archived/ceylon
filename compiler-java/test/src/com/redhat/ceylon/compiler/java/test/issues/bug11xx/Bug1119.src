@@ -50,7 +50,7 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException(.ceylon.language.String.instance("Cyclic initialization"));
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
         }
     }
     
