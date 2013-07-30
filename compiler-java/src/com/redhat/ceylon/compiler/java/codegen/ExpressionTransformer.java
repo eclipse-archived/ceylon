@@ -3736,14 +3736,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
                 }
             }
-        } else if (variable && (decl.isCaptured() || decl.isShared())) {
+
+        } else if (variable && (decl.isCaptured() || decl.isShared()) 
+                && !(decl instanceof Value && ((Value)decl).getInitializerParameter() != null && !Decl.isBoxedVariable(decl) && !decl.isShared())) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
             } else if (Decl.isLocal(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
-            } else {
-                lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
             }
         } else {
             result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
