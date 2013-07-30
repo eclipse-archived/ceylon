@@ -8,8 +8,8 @@ public class SubclassException extends .ceylon.language.Exception {
     
     public SubclassException(@.com.redhat.ceylon.compiler.java.metadata.Name("description")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    final .ceylon.language.String description) {
-        super(description, null);
+    final .java.lang.String description) {
+        super(.ceylon.language.String.instance(description), null);
     }
     
     @.java.lang.Override
