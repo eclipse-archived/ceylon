@@ -21,3 +21,12 @@
 class MethodDefaultedParamCaptureInitParam(String s) {
     String m(String t = s) => t;
 }
+/*@noanno
+class MethodDefaultedParamCaptureInitParam2(s) {
+    String s;
+    String m(String t = s) => t;
+}*/
+/*@noanno
+class MethodDefaultedParamCaptureInitParam3(String s()) {
+    String m(String() t = s) => t();
+}*/
