@@ -164,7 +164,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.ClassDefinition){
-                transformClass(def, (Class)model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
+                transformClass((Tree.ClassDefinition)def, (Class)model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb, typeParameterList);
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
@@ -576,7 +576,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Tree.Parameter parameterTree) {
+    private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Tree.Parameter parameterTree, List<JCAnnotation> annotations) {
         Parameter decl = parameterTree.getParameterModel();
         if (!(decl.getModel() instanceof Value)) {
             return;
@@ -587,6 +587,7 @@ public class ClassTransformer extends AbstractTransformer {
             makeFieldForParameter(classBuilder, decl);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
             adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
+            adb.userAnnotations(annotations);
             classBuilder.attribute(adb);
         } else if (decl.isHidden()
                         // TODO Isn't this always true here? We know this is a parameter to a Class
@@ -622,32 +623,33 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.defaulted(param.isDefaulted());
         pdb.type(type, makeJavaTypeAnnotations(param.getModel()));
         pdb.modifiers(FINAL);
-        pdb.modelAnnotations(param.getModel().getAnnotations());
-        pdb.userAnnotations(annotations);
+        if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
+            // We load the model for shared parameters from the corresponding member
+            pdb.modelAnnotations(param.getModel().getAnnotations());
+            pdb.userAnnotations(annotations);
+        }
         classBuilder.parameter(pdb);
     }
     
-    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Class model, ClassDefinitionBuilder classBuilder, 
+    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass def, Class model, ClassDefinitionBuilder classBuilder, 
             com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList paramList, boolean generateInstantiator, 
             Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
         // do reified type params first
         if(typeParameterList != null)
             classBuilder.reifiedTypeParameters(typeParameterList);
         
-        for (Tree.Parameter param : paramList.getParameters()) {
+        for (final Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
-            if (param instanceof Tree.ParameterDeclaration) {
-                expressionGen().transform(Decl.getAnnotations(param));
-            }
+            
             Parameter paramModel = param.getParameterModel();
             Parameter refinedParam = CodegenUtil.findParamForDecl(
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
 
-            transformParameter(classBuilder, paramModel,
-                    expressionGen().transform(Decl.getAnnotations(param)));
-            makeAttributeForValueParameter(classBuilder, param);
-            makeMethodForFunctionalParameter(classBuilder, paramModel);
+            List<JCAnnotation> annotations = expressionGen().transform(Decl.getAnnotations(def, param));
+            transformParameter(classBuilder, paramModel, annotations);
+            makeAttributeForValueParameter(classBuilder, param, annotations);
+            makeMethodForFunctionalParameter(classBuilder, paramModel, annotations);
             
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
@@ -707,14 +709,17 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     /**
-     * Generate a method for a shared FunctionalParameter which delegates to the Callable */
+     * Generate a method for a shared FunctionalParameter which delegates to the Callable 
+     * @param annotations */
     private void makeMethodForFunctionalParameter(
-            ClassDefinitionBuilder classBuilder, Parameter paramModel) {
+            ClassDefinitionBuilder classBuilder, Parameter paramModel, List<JCAnnotation> annotations) {
+
         if (Strategy.createMethod(paramModel)) {
             makeFieldForParameter(classBuilder, paramModel);
             Method method = (Method)paramModel.getModel();
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel.getModel()));
             mdb.modifiers(transformMethodDeclFlags(method));
+            mdb.userAnnotations(annotations);
             // Functional parameters can't have type parameters 
             // Functional parameter are always declared literally as "T name()", not as "Callable<T,[]>" so they can't
             // possibly be of any other type than Callable, so we don't need to unerase them when we call "$call" on them

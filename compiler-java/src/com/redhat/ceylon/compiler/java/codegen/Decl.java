@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 
 /**
@@ -674,9 +675,24 @@ public class Decl {
         return null;
     }
     
-    public static Tree.AnnotationList getAnnotations(Tree.Parameter parameter) {
+    public static Tree.AnnotationList getAnnotations(Tree.AnyClass def, final Tree.Parameter parameter) {
         if (parameter instanceof Tree.ParameterDeclaration) {
             return ((Tree.ParameterDeclaration)parameter).getTypedDeclaration().getAnnotationList();
+        } else if (parameter instanceof Tree.InitializerParameter) {
+            final Tree.AnnotationList[] annotationList = new Tree.AnnotationList[]{null};
+            def.visit(new Visitor() {
+                public void visit(Tree.MethodDeclaration that) {
+                    if (that.getDeclarationModel().equals(parameter.getParameterModel().getModel())) {
+                        annotationList[0] = that.getAnnotationList();
+                    };
+                }
+                public void visit(Tree.AttributeDeclaration that) {
+                    if (that.getDeclarationModel().equals(parameter.getParameterModel().getModel())) {
+                        annotationList[0] = that.getAnnotationList();
+                    };
+                }
+            });
+            return annotationList[0];
         }
         return null;
     }
