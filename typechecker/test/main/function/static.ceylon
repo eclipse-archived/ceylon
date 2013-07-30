@@ -34,3 +34,29 @@ void funrefs<T>(T t) given T satisfies Category {
     String() format = Person.Address.format(person.Address("","", ""));
     @error String()(Person.Address) broke = person.Address.format;
 }
+
+interface AB<T> { 
+    shared interface BA {  
+        shared Integer iii=>10;
+    }
+    shared class CA() {
+         shared Integer jjj=>10; 
+    }
+    shared interface G {
+        shared void m<T>() {}
+    }
+}
+void testAB() {
+    value val0 = AB<String>.BA.iii;
+    value val1 = AB<String>.CA.jjj;  
+    @error value val2 = AB<String>.BA; 
+    @error value val3 = AB.BA.iii;
+    value val4 = AB<String>.CA;
+    @error value val5 = AB.CA.jjj;
+    value val6 = AB<String>.G.m<Float>;
+    @error value val7 = AB<String>.G.m;
+    @error value val9 = Singleton;
+    @error value val10 = coalesce;
+    value val11 = Singleton<String>;
+    value val12 = coalesce<Integer>;
+}

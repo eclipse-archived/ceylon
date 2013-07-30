@@ -3650,9 +3650,8 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseMemberExpression(that, member, ta, tal);
                 //otherwise infer type arguments later
             }
-            else if (!that.getDirectlyInvoked()) {
-                that.addError("missing type arguments to: " + 
-                        member.getName(unit));
+            else  {
+                typeArgumentsImplicit(that);
             }
             /*if (defaultArgument) {
                 if (member.isClassOrInterfaceMember()) {
@@ -3756,7 +3755,7 @@ public class ExpressionVisitor extends Visitor {
                     //otherwise infer type arguments later
                 }
                 else {
-                    typeArgumentsImplicit(member, that);
+                    typeArgumentsImplicit(that);
                 }
                 checkOverloadedReference(that);
             }
@@ -3790,12 +3789,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void typeArgumentsImplicit(Declaration dec,
-            Tree.MemberOrTypeExpression that) {
-        if (!that.getDirectlyInvoked() ||
-             that.getStaticMethodReference()) {
-            that.addError("missing type arguments to: " + 
-                    dec.getName(unit));
+    private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
+        if (!that.getDirectlyInvoked()) {
+            that.addError("missing type arguments to generic declaration: " + 
+                    that.getDeclaration().getName(unit) + " declares type parameters");
         }
     }
     
@@ -3914,9 +3911,8 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseTypeExpression(that, type, ta, tal);
                 //otherwise infer type arguments later
             }
-            else if (!that.getDirectlyInvoked()) {
-                that.addError("missing type arguments to: " + 
-                        type.getName(unit));
+            else {
+                typeArgumentsImplicit(that);
             }
             checkOverloadedReference(that);
         }
@@ -3926,26 +3922,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
             if (!(type instanceof ClassOrInterface)) {
-                that.addError("type is not a class or interface: " +
-                        type.getName(unit));
+                that.addError("type cannot be instantiated: " +
+                        type.getName(unit) + " is not a class or interface");
             }
         }
         else {
             if (type instanceof Class) {
                 if (((Class) type).isAbstract()) {
-                    that.addError("class is abstract: " +
-                            type.getName(unit));
+                    that.addError("class cannot be instantiated: " +
+                            type.getName(unit) + " is abstract");
                 }
             }
             else if (type instanceof TypeParameter) {
                 if (((TypeParameter) type).getParameterList()==null) {
-                    that.addError("type parameter is abstract: " +
+                    that.addError("type parameter cannot be instantiated: " +
                             type.getName(unit));
                 }
             }
             else {
-                that.addError("type is not a class: " +
-                        type.getName(unit));
+                that.addError("type cannot be instantiated: " +
+                        type.getName(unit) + " is not a class");
             }
         }
     }
@@ -4072,7 +4068,7 @@ public class ExpressionVisitor extends Visitor {
                     //otherwise infer type arguments later
                 }
                 else {
-                    typeArgumentsImplicit(type, that);
+                    typeArgumentsImplicit(that);
                 }
                 checkOverloadedReference(that);
             }
@@ -4150,7 +4146,7 @@ public class ExpressionVisitor extends Visitor {
                     t.getFullType(wrap(t, receivingType, that));
             that.setTarget(t);
             if (isTypeUnknown(ft)) {
-                if (!dynamic) {
+                if (!dynamic && !that.getStaticMethodReference()) {
                     that.addError("could not determine type of member class reference: " +
                             type.getName(unit)  + " of " + 
                             receiverType.getDeclaration().getName(unit));
@@ -4207,25 +4203,6 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setTypeModel(t);
-            }
-        }
-    }
-    
-    @Override public void visit(Tree.SpecifierOrInitializerExpression that) {
-        //i.e. this is a parenthesized expression
-        super.visit(that);
-        Tree.Term term = that.getExpression()==null ? 
-                null : that.getExpression().getTerm();
-        if (term!=null) {
-            //TODO: it seems a bit fragile to handle this here
-            if (term instanceof Tree.StaticMemberOrTypeExpression) {
-                Tree.StaticMemberOrTypeExpression smte = (Tree.StaticMemberOrTypeExpression) term;
-                if (isGeneric(smte.getDeclaration())) {
-                    if (smte.getTypeArguments() instanceof Tree.InferredTypeArguments) {
-                        smte.addError("missing type arguments to: " + 
-                                smte.getDeclaration().getName(unit));
-                    }
-                }
             }
         }
     }
