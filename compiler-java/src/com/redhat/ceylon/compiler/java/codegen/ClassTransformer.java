@@ -724,7 +724,7 @@ public class ClassTransformer extends AbstractTransformer {
             for (Parameter parameter : method.getParameterLists().get(0).getParameters()) {
                 JCExpression parameterExpr = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
                 parameterExpr = expressionGen().applyErasureAndBoxing(parameterExpr, parameter.getType(), 
-                        !CodegenUtil.isUnBoxed(method), BoxingStrategy.BOXED, 
+                        !CodegenUtil.isUnBoxed(parameter.getModel()), BoxingStrategy.BOXED, 
                         parameter.getType());
                 callBuilder.argument(parameterExpr);
                 mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
