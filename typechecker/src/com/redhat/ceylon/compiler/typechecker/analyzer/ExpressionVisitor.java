@@ -5395,8 +5395,7 @@ public class ExpressionVisitor extends Visitor {
             return unit.getLanguageModuleModelTypeDeclaration("IntersectionType").getType();
         }
         else if (declaration instanceof NothingType) {
-            TypedDeclaration metamodelDecl = (TypedDeclaration) unit.getLanguageModuleModelDeclaration("nothingType");
-            return metamodelDecl.getType();
+            return ((TypedDeclaration) unit.getLanguageModuleModelDeclaration("nothingType")).getType();
         }
         else if (declaration instanceof TypeParameter) {
             return unit.getLanguageModuleModelTypeDeclaration("Type").getType();

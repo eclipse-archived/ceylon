@@ -225,8 +225,12 @@ void meta() {
     @type:"UnionType" 
     value ut2 = `List<String>|String`; 
     @error value it1 = `List&String`; 
-    @type:"IntersectionType" 
+    @type:"Basic&Type"
     value it2 = `List<String>&Integer`; 
+    @type:"Interface<List<Character>>"
+    value it3 = `List<Character>&{Character*}`; 
+    @type:"IntersectionType" 
+    value it4 = `Category&Foo<Object>`; 
     @type:"InterfaceDeclaration" 
     value id1 = `List`;
     @type:"FunctionDeclaration" 
