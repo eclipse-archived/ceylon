@@ -36,7 +36,7 @@ void test<T>() {
     value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
     @type:"ClassDeclaration"
     value memberParameterisedClassDecl = `ParameterisedContainer.InnerClass`;
-    @error:"mixed type and declaration literal"
+    @type:"ClassDeclaration"
     value memberParameterisedClassTypeErr1 = `ParameterisedContainer<String>.InnerClass`;
     @error:"mixed type and declaration literal"
     value memberParameterisedClassTypeErr2 = `ParameterisedContainer.InnerClass<Integer>`;
@@ -45,7 +45,7 @@ void test<T>() {
     value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
     @type:"InterfaceDeclaration"
     value memberParameterisedInterfaceDecl = `ParameterisedContainer.InnerInterface`;
-    @error:"mixed type and declaration literal"
+    @type:"InterfaceDeclaration"
     value memberParameterisedInterfaceTypeErr1 = `ParameterisedContainer<String>.InnerInterface`;
     @error:"mixed type and declaration literal"
     value memberParameterisedInterfaceTypeErr2 = `ParameterisedContainer.InnerInterface<Integer>`;
@@ -73,7 +73,7 @@ void test<T>() {
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
     @type:"FunctionDeclaration"
     value parameterisedContainerMethodDecl = `ParameterisedContainer.method`;
-    @error
+    @type:"FunctionDeclaration"
     value parameterisedContainerMethodErr1 = `ParameterisedContainer<String>.method`;
     @error
     value parameterisedContainerMethodErr2 = `ParameterisedContainer.method<Integer>`;
