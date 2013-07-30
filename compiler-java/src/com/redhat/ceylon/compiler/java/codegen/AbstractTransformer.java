@@ -2095,10 +2095,14 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
+        return makeJavaTypeAnnotations(decl, true);
+    }
+    
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl, boolean handleFunctionalParameter) {
         if(decl == null || decl.getType() == null)
             return List.nil();
         ProducedType type;
-        if (decl instanceof Method && ((Method)decl).isParameter()) {
+        if (decl instanceof Method && ((Method)decl).isParameter() && handleFunctionalParameter) {
             type = getTypeForFunctionalParameter((Method)decl);
         } else if (decl instanceof Functional && Decl.isMpl((Functional)decl)) {
             type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType());

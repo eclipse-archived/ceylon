@@ -731,7 +731,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             JCExpression expr = callBuilder.build();
             if (Decl.isUnboxedVoid(method)) {
-                mdb.resultType(make().Type(syms().voidType), method);
+                mdb.resultType(makeJavaTypeAnnotations(method, false), make().Type(syms().voidType));
                 mdb.body(make().Exec(expr));
             } else {
                 ProducedType resultType;
