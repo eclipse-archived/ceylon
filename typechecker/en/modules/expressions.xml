@@ -2592,8 +2592,139 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         method of the type. The member is resolved as a member of the type 
         according to <xref linkend="qualifiedreferenceresolution"/>.</para>
         
+        <section>
+            <title>Typed and untyped metamodel expressions</title>
+            
         <para>Metamodel expressions may or may not include type arguments to 
-        generic types or generic functions.</para>
+        generic types or generic functions. However:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if a parameterized type occurs inside a union or intersection, 
+                type arguments must be supplied,</para>
+            </listitem>
+            <listitem>
+                <para>if a parameterized type occurs inside a type argument list, 
+                type arguments must be supplied,</para>
+            </listitem>
+            <listitem>
+                <para>if a parameterized type qualifies a type with type arguments, 
+                type arguments must be supplied, or</para>
+            </listitem>
+            <listitem>
+                <para>if a parameterized type qualifies a function reference with 
+                type arguments, type arguments must be supplied.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If a generic type or generic function with no type arguments occurs 
+        in a metamodel expression, the metamodel expression is called an
+        <emphasis>uptyped metamodel expression</emphasis>. Otherwise, the metamodel
+        expression is called a <emphasis>typed metamodel expression</emphasis>.</para>
+        
+        </section>
+        
+        <section>
+            <title>Typed metamodel expressions</title>
+            
+            <para>The type of a metamodel expression depends upon the kind of 
+            declaration referenced. For a typed metamodel expression:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for a toplevel value of type <literal>R</literal>, the 
+                    type is <literal>Value&lt;R&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a toplevel function of callable type 
+                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>Function&lt;R,P&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a toplevel class of callable type 
+                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>Class&lt;R,P&gt;</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>for a toplevel interface of type 
+                    <literal>R</literal>, the type is 
+                    <literal>Interface&lt;R&gt;</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Furthermore, given a member of a type <literal>T</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for an attribute of type <literal>R</literal>, the 
+                    type is <literal>Attribute&lt;T,R&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a method of callable type 
+                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>Method&lt;T,R,P&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a member class of callable type 
+                    <literal>Callable&lt;R,P&gt;</literal>, the type is 
+                    <literal>MemberClass&lt;T,R,P&gt;</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>for a nested interface of type 
+                    <literal>R</literal>, the type is 
+                    <literal>MemberInterface&lt;T,R&gt;</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Finally:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for a union type <literal>T</literal>, the type is
+                    <literal>UnionType&lt;T&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for an intersection type <literal>T</literal>, the 
+                    type is <literal>IntersectionType&lt;T&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for the type <literal>Nothing</literal>, the type is 
+                    <literal>Type&lt;Nothing&gt;</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>for a type parameter <literal>T</literal>, the type is
+                    <literal>Type&lt;T&gt;</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
+        <section>
+            <title>Untyped metamodel expressions</title>
+            
+            <para>The type of a metamodel expression depends upon the kind of 
+            declaration referenced. For an untyped metamodel expression:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for a value, the type is 
+                    <literal>ValueDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a function, the type is 
+                    <literal>FunctionDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a class, the type is 
+                    <literal>ClassDeclaration</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>for an interface, the type is 
+                    <literal>InterfaceDeclaration</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
         
     </section>
     
