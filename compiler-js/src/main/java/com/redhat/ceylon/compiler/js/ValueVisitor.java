@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -59,15 +59,14 @@ public class ValueVisitor extends Visitor {
         if (that instanceof Tree.MemberOrTypeExpression) {
             TypedDeclaration d = (TypedDeclaration) ((Tree.MemberOrTypeExpression) that).getDeclaration();
             if (d==declaration) {
-                if (d instanceof Value) {
-                    ((Value) d).setCaptured(true);
-                }
-                else if (d instanceof Parameter) {
+                if (d.isParameter()) { //TODO this is only for initializer parameters
                     if (!d.getContainer().equals(that.getScope()) || sameScope>0) { //a reference from a default argument 
-                                                                     //expression of the same parameter 
-                                                                     //list does not capture a parameter
-                        ((Parameter) d).setCaptured(true);
+                        //expression of the same parameter 
+                        //list does not capture a parameter
+                        ((MethodOrValue) d).setCaptured(true);
                     }
+                } else if (d instanceof Value) {
+                    ((Value) d).setCaptured(true);
                 }
                 /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
                     that.addError("access to variable local from capturing scope: " + declaration.getName());
@@ -131,31 +130,11 @@ public class ValueVisitor extends Visitor {
         exitCapturingScope(cs);
     }
     
-    @Override public void visit(Tree.ObjectArgument that) {
+    @Override public void visit(Tree.TypedArgument that) {
         boolean cs = enterCapturingScope();
         super.visit(that);
         exitCapturingScope(cs);
     }
-    
-    @Override public void visit(Tree.MethodArgument that) {
-        boolean cs = enterCapturingScope();
-        super.visit(that);
-        exitCapturingScope(cs);
-    }
-    
-    @Override public void visit(Tree.AttributeArgument that) {
-        boolean cs = enterCapturingScope();
-        super.visit(that);
-        exitCapturingScope(cs);
-    }
-    
-    @Override public void visit(Tree.DefaultArgument that) {
-        //parameter declarations capture 
-        //their default argument
-        boolean cs = enterCapturingScope();
-        super.visit(that);
-        exitCapturingScope(cs);
-    }    
     
     @Override public void visit(Tree.FunctionArgument that) {
         boolean cs = enterCapturingScope();
