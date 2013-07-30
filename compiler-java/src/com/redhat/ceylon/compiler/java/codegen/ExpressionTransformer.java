@@ -408,6 +408,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             BoxingStrategy boxingStrategy, ProducedType expectedType, 
             int flags) {
         
+        exprType = exprType.resolveAliases();
+        if(expectedType != null)
+            expectedType = expectedType.resolveAliases();
         boolean canCast = false;
 
         if (expectedType != null
