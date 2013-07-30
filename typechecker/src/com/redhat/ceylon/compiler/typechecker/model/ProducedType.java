@@ -216,10 +216,10 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
-        if (depth>30) {
+        if (depth.get()>30) {
             throw new RuntimeException("undecidable subtyping");
         }
-        depth++;
+        depth.set(depth.get()+1);
         try {
         if (isNothing()) {
             return true;
@@ -329,7 +329,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         }
-        finally { depth--; }
+        finally { depth.set(depth.get()-1); }
     }
 
     /**
@@ -604,10 +604,10 @@ public class ProducedType extends ProducedReference {
      * satisfying the given predicate. 
      */
     public ProducedType getSupertype(final Criteria c) {
-        if (depth>30) {
+        if (depth.get()>30) {
             throw new RuntimeException("undecidable canonicalization");
         }
-        depth++;
+        depth.set(depth.get()+1);
         try {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
@@ -623,7 +623,7 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         }
-        finally { depth--; }
+        finally { depth.set(depth.get()-1); }
     }
     
     private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
@@ -686,7 +686,11 @@ public class ProducedType extends ProducedReference {
 		return stc;
 	}
 	
-	public static int depth=0; 
+	public static ThreadLocal<Integer> depth = new ThreadLocal<Integer>(){
+	    protected Integer initialValue() {
+	        return 0;
+	    }
+	};
 	
     private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
@@ -1524,14 +1528,14 @@ public class ProducedType extends ProducedReference {
         // cache the resolved version
         if(resolvedAliases == null){
             // really compute it
-            if (depth>50) {
+            if (depth.get()>50) {
                 throw new RuntimeException("undecidable canonicalization");
             }
-            depth++;
+            depth.set(depth.get()+1);
             try {
             resolvedAliases = curriedResolveAliases();
             }
-            finally { depth--; }
+            finally { depth.set(depth.get()-1); }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
             if(resolvedAliases != this){
