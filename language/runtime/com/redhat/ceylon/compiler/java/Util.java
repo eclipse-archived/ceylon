@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import ceylon.language.ArraySequence;
+import ceylon.language.AssertionException;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Ranged;
@@ -543,9 +544,9 @@ public class Util {
         return ret;
     }
     
-    public static <T> T checkNull(T t){
+    public static <T> T checkNull(T t) {
         if(t == null)
-            throw new NullPointerException();
+            throw new AssertionException("unexpected null value returned from native call");
         return t;
     }
     
