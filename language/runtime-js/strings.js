@@ -151,12 +151,12 @@ defineAttr(String$proto, 'trimmed', function() {
     }
     return result;
 });
-String$proto.trimCharacters = function(/*Category*/chars) {
+String$proto.trim = function(/*Category*/chars) {
     var from = 0;
-    while (from<this.length && chars.contains(this.get(from))) {++from}
+    while (from<this.length && chars(this.get(from))) {++from}
     var to = this.length;
     if (from < to) {
-        do {--to} while (from<to && chars.contains(this.get(to)));
+        do {--to} while (from<to && chars(this.get(to)));
         ++to;
     }
     if (from===0 && to===this.length) {return this;}
@@ -166,10 +166,10 @@ String$proto.trimCharacters = function(/*Category*/chars) {
     }
     return result;
 }
-String$proto.trimCharacters.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['trimCharacters']};
-String$proto.trimLeadingCharacters = function(/*Category*/chars) {
+String$proto.trim.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['trim']};
+String$proto.trimLeading = function(/*Category*/chars) {
     var from = 0;
-    while (from<this.length && chars.contains(this.get(from))) {++from}
+    while (from<this.length && chars(this.get(from))) {++from}
     if (from===0) {return this;}
     var result = String$(this.substring(from, this.length));
     if (this.codePoints !== undefined) {
@@ -177,11 +177,11 @@ String$proto.trimLeadingCharacters = function(/*Category*/chars) {
     }
     return result;
 }
-String$proto.trimLeadingCharacters.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['trimLeadingCharacters']};
-String$proto.trimTrailingCharacters = function(/*Category*/chars) {
+String$proto.trimLeading.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['trimLeading']};
+String$proto.trimTrailing = function(/*Category*/chars) {
     var to = this.length;
     if (to > 0) {
-        do {--to} while (to>=0 && chars.contains(this.get(to)));
+        do {--to} while (to>=0 && chars(this.get(to)));
         ++to;
     }
     if (to===this.length) {return this;}
@@ -192,7 +192,7 @@ String$proto.trimTrailingCharacters = function(/*Category*/chars) {
     }
     return result;
 }
-String$proto.trimTrailingCharacters.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['trimTrailingCharacters']};
+String$proto.trimTrailing.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['String']['$m']['trimTrailing']};
 
 String$proto.initial = function(length) {
     if (length >= this.codePoints) {return this}
