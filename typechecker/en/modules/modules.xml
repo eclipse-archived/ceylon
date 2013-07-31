@@ -186,7 +186,8 @@
 
         <screen>ceylon.language</screen>
         <screen>ceylon.language.assertion</screen>
-        <screen>ceylon.language.metamodel</screen>
+        <screen>ceylon.language.model</screen>
+        <screen>ceylon.language.model.declaration</screen>
         
         <para>belong to the module <literal>ceylon.language</literal>. The 
         packages:</para>

@@ -2431,22 +2431,12 @@ print(greeting);</programlisting>
     </section>
     
     <section id="annotations">
-        <title>Program element annotations</title>
+        <title>Annotations</title>
         
-        <para>Any declaration may be preceded by a list of annotations. An annotation is 
-        an initial lowercase identifier, optionally followed by an argument list.</para>
-        
-        <synopsis>Annotation: MemberName Arguments?</synopsis>
-        
-        <para>A list of annotations does not require punctuation between the individual 
-        annotations in the list. An annotation list may begin with a string literal, in
-        which case it is interpreted as the argument of a <literal>doc</literal>
-        annotation.</para>
-        
-        <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
-        
-        <para>For an annotation with no arguments, the list may be omitted, in which case
-        the annotation is interpreted as having an empty positional argument list.</para>
+        <para><emphasis>Annotations</emphasis> allow information to be attached to a
+        declaration or assertion, and recovered at runtime via the use of the Ceylon
+        metamodel. Annotations occur at the very beginning of a declaration or assertion,
+        in an <emphasis>annotation list</emphasis>.</para>
         
         <programlisting>"The user login action"
 by ("Gavin King",
@@ -2458,77 +2448,183 @@ scope (session)
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
         
-        <para>An annotation is an invocation of a toplevel function that occurs when the 
-        program element is loaded by the virtual machine. The function is called an
-        <emphasis>annotation constructor</emphasis>. The return type of this function 
-        method is called the <emphasis>annotation type</emphasis> of the annotation. 
-        Invocation of the toplevel function is called <emphasis>evaluation</emphasis> of 
-        the annotation. The toplevel function may not declare type parameters.</para>
+        <section>
+            <title>Annotation lists and annotation arguments</title>
         
-        <para>Both the annotation constructor and annotation type must be annotated
-        <literal>annotation</literal>.</para>
+            <para>Any declaration may be preceded by a list of annotations. An 
+            annotation is an initial lowercase identifier, optionally followed by an 
+            argument list.</para>
         
-        <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
-        <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
+            <synopsis>Annotation: MemberName Arguments?</synopsis>
+            
+            <para>The annotation name is a reference to an annotation constructor,
+            resolved according to <xref linkend="unqualifiedreferenceresolution"/>.</para>
+            
+            <para>A list of annotations does not require punctuation between the 
+            individual annotations in the list. An annotation list may begin with a 
+            string literal, in which case it is interpreted as the argument of a 
+            <literal>doc</literal> annotation.</para>
         
-        <section id="annotationarguments">
-            <title>Annotation arguments</title>
+            <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
         
-        <para>An annotation may be specified at a program element using one of two 
-        forms.</para>
+            <para>For an annotation with no arguments, the argument list may be 
+            omitted, in which case the annotation is interpreted as having an empty 
+            positional argument list. Otherwise, the annotation argument list may be 
+            specified using one of two forms:</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>Using a positional argument invocation of the method:</para>
-                <programlisting>doc ("the name") String name;</programlisting>
-            </listitem>
-            <listitem>
-                <para>Using a named argument invocation of the method:</para>
-                <programlisting>doc { description="the name"; } String name;</programlisting>
-            </listitem>
-        </itemizedlist>
+            <itemizedlist>
+                <listitem>
+                    <para>Using a positional argument list, as defined in 
+                    <xref linkend="positionalarguments"/>:</para>
+                    <programlisting>doc ("the name") String name;</programlisting>
+                </listitem>
+                <listitem>
+                    <para>Using a named argument list, as defined in 
+                    <xref linkend="namedarguments"/>:</para>
+                    <programlisting>doc { description="the name"; } String name;</programlisting>
+                </listitem>
+            </itemizedlist>
+            
+            <para>As a special case, the name of the <literal>doc</literal> annotation
+            and the parenthesis around its argument may be ommitted if it is the first 
+            annotation in an annotation list.</para>
+            
+            <programlisting>"the name" String name;</programlisting>
+            
+            <para>Operator expressions, member expressions, self references, anonymous
+            functions, and string templates are not permitted in an annotation argument. 
+            Every base expression in an annotation argument must be a value reference to 
+            <literal>true</literal> or <literal>false</literal>, or must occur in a direct 
+            instantiation expression for an annotation type.</para>
+            
+            <para>Every annotation is an invocation expression, as defined by
+            <xref linkend="invocationexpressions"/>, of an annotation constructor.</para>
+            
+        </section>
         
-        <para>As a special case, the name of the <literal>doc</literal> annotation
-        may be ommitted if it is the first annotation in an annotation list.</para>
-        
-        <programlisting>"the name" String name;</programlisting>
-        
+        <section>
+            <title>Annotation constructors</title>
+            
+            <para>An <emphasis>annotation constructor</emphasis> is a toplevel function
+            that defines an annotation schema. An annotation constructor must be annotated 
+            <literal>annotation</literal>. An annotation constructor may not declare type 
+            parameters.</para>
+            
+            <para>Each parameter of an annotation constructor must have one of the following
+            types:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Integer</literal>, <literal>Float</literal>,
+                    <literal>Character</literal>, <literal>String</literal>, or
+                    <literal>Boolean</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>a subtype of <literal>Declaration</literal> in
+                    <literal>ceylon.language.model.declaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an annotation type, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <literal>T</literal> is a legal annotation constructor parameter 
+                    type.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A parameter of an annotation constructor may be variadic.</para>
+            
+            <para>An annotation constructor must simply instantiate and return an instance
+            of an annotation type. The body of an annotation constructor may not contain
+            multiple statements. Operator expressions, member expressions, self references,
+            anonymous functions, and string templates are not permitted in the definition of 
+            an annotation constructor. Every base expression in the body of an annotation 
+            constructor must be a reference to a parameter of the annotation constructor, to 
+            <literal>true</literal> or <literal>false</literal>, or must occur in a direct 
+            instantiation expression for an annotation type.</para>
+            
+            <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
+            <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
+            
+            <para>An annotation constructor parameter may have a default argument, which must
+            be a legal annotation argument.</para>
+            
+            <para>The return type of an annotation constructor must be a constrained annotation 
+            type.</para>
+            
         </section>
         
         <section id="annotationtypes">
             <title>Annotation types</title>
             
-            <para>The annotation type of an annotation must be a subtype of the interface 
-            <literal>ConstrainedAnnotation</literal> defined in the package 
-            <literal>ceylon.language.metamodel</literal>. Any type which is a subtype of 
-            <literal>ConstrainedAnnotation</literal> is called an <emphasis>annotation 
-            type</emphasis>.</para>
-        
-            <para>The type arguments of this interface express constraints upon how 
-            annotations which return the annotation type occur. There are exactly two 
-            direct subtypes of <literal>ConstrainedAnnotation</literal>. If 
-            <literal>A</literal> is an annotation type then:</para>
+            <para>Annotation constructors produce instances of <emphasis>annotation 
+            types</emphasis>. An annotation type is a class annotated <literal>annotation</literal>. 
+            An annotation type may not be a generic type with type parameters. An 
+            annotation type must have an empty initializer section.</para>
+            
+            <comment><para>Note: in Ceylon 1.0 only <literal>final</literal> classes may 
+            be annotation types.</para></comment>
+            
+            <para>Each initializer parameter of an annotation type must have one of the 
+            following types:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>If <literal>A</literal> is a subtype of <literal>OptionalAnnotation</literal>,
-                    at most one annotation of annotation type <literal>A</literal> may occur 
-                    at a given program element.</para>
+                    <para><literal>Integer</literal>, <literal>Float</literal>,
+                    <literal>Character</literal>, <literal>String</literal>, or
+                    <literal>Boolean</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>If <literal>A</literal> is a subtype of <literal>SequencedAnnotation</literal>,
-                    multiple annotations of annotation type <literal>A</literal> may occur 
-                    at a given program element.</para>
+                    <para>a subtype of <literal>Declaration</literal> in
+                    <literal>ceylon.language.model.declaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>If <literal>A</literal> is a subtype of <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
-                    or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
-                    of annotation type <literal>A</literal> may not occur at a program element
-                    whose metamodel expression type is not assignable to <literal>P</literal>.</para>
+                    <para>an annotation type, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <literal>T</literal> is a legal annotation parameter type.</para>
                 </listitem>
             </itemizedlist>
-                        
-            <programlisting><![CDATA[shared annotation interface Scope
+            
+            <para>An initializer parameter of an annotation type may be variadic.</para>
+            
+            <para>An initializer parameter of an annotation type parameter may have a 
+            default argument, which must be a legal annotation argument.</para>
+            
+            <para>Every annotation type must be a subtype of <literal>Annotation</literal> 
+            defined in the package <literal>ceylon.language.model</literal>.</para>
+            
+            <para>A <emphasis>constrained annotation type</emphasis> is an annotation type 
+            that is a subtype of <literal>OptionalAnnotation</literal> or 
+            <literal>SequencedAnnotation</literal> defined in the package 
+            <literal>ceylon.language.model</literal>.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>OptionalAnnotation</literal>, at most one annotation of 
+                    annotation type <literal>A</literal> may occur at a given program 
+                    element.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>SequencedAnnotation</literal>, multiple annotations of 
+                    annotation type <literal>A</literal> may occur at a given program 
+                    element.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
+                    or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
+                    of annotation type <literal>A</literal> may not occur at a program 
+                    element whose metamodel expression type is not assignable to 
+                    <literal>P</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting><![CDATA[shared annotation class Scope()
         of request | session | application
         satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
             
@@ -2537,8 +2633,8 @@ shared deprecated</programlisting>
     string => text;
 }]]></programlisting>
             
-            <para>It is perfectly acceptable for multiple toplevel methods to return the same 
-            annotation type.</para>
+            <comment><para>Note: it is perfectly acceptable for multiple annotation constructors 
+            to return the same annotation type.</para></comment>
             
             <comment><para>TODO: should we let an annotation return multiple instances of an
             annotation type (<literal>A[]</literal> where <literal>A</literal> is an annotation
@@ -2550,11 +2646,11 @@ shared deprecated</programlisting>
             <title>Annotation values</title>
             
             <para>An <emphasis>annotation value</emphasis> is the value returned when an
-            annotation is evaluated. We may obtain the annotation values of all annotations
-            of a given annotation type that occur at a given program element by passing the 
-            annotation type and program element metamodel reference to the method
+            annotation constructor is invoked. We may obtain the annotation values of all 
+            annotations of a given annotation type that occur at a given program element by 
+            passing the annotation type and program element metamodel reference to the method
             <literal>annotations()</literal> defined in the package
-            <literal>ceylon.language.metamodel</literal>.</para>
+            <literal>ceylon.language.model</literal>.</para>
             
             <programlisting>Scope scope = annotations(`Scope`, `Person`) ? request;</programlisting>
             <programlisting>Todo[] todos = annotations(`Todo`, `method`);</programlisting>
