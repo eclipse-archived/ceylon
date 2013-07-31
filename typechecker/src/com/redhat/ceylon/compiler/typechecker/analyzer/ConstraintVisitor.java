@@ -21,6 +21,8 @@ public class ConstraintVisitor extends Visitor {
             TypeDeclaration ptd = pt.getDeclaration();
             Unit unit = pt.getDeclaration().getUnit();
             if (!ptd.isAnnotation() &&
+                    // FIXME: temporary
+                    !ptd.equals(unit.getAnythingDeclaration()) &&
                     !ptd.equals(unit.getBooleanDeclaration()) &&
                     !ptd.equals(unit.getStringDeclaration()) &&
                     !ptd.equals(unit.getIntegerDeclaration()) &&
