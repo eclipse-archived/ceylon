@@ -717,6 +717,9 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.createMethod(paramModel)) {
             makeFieldForParameter(classBuilder, paramModel);
             Method method = (Method)paramModel.getModel();
+            // TODO Rather than using our own MethodDefinitionBuilder here we should
+            // be calling transformMethod() with a given body, since that 
+            // understands about generating overload methods (e.g. for sequenced parameters)
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel.getModel()));
             mdb.modifiers(transformMethodDeclFlags(method));
             mdb.userAnnotations(annotations);
