@@ -139,4 +139,12 @@ shared class Tuple<out Element, out First, out Rest=[]>
         }
     }
     
+    "Returns a new tuple that starts with the specified
+     element, followed by the elements of this tuple."
+    shared actual 
+    Tuple<Element|Other,Other,Tuple<Element,First,Rest>> 
+    withLeading<Other>(
+            "The first element of the resulting tuple."
+            Other element) => Tuple(element, this);
+    
 }
