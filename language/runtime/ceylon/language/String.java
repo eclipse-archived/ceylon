@@ -1889,6 +1889,12 @@ public final class String
 //        public Sequential<?> containsAny$elements() {
 //            return $ceylon$language$Category$this.containsAny$elements();
 //        }
+        
+        @Override
+        public java.lang.String toString() {
+            return $ceylon$language$Iterable$this.toString();
+        }
+        
         @Override
         @Ignore
         public TypeDescriptor $getType() {

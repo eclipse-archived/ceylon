@@ -84,13 +84,12 @@ shared native final class String(shared {Character*} characters)
     shared native String join({String*} strings);
     
     "Split the string into lines of text."
-    shared native {String*} lines => 
-            split((Character c) => c=='\n');
+    shared native {String*} lines => split('\n'.equals);
 
     "This string, after discarding 
      [[whitespace|Character.whitespace]] from the 
      beginning and end of the string."
-    shared native String trimmed;
+    shared native String trimmed => trim(Character.whitespace);
     
     "This string, after discarding the given 
      characters from the beginning and end 
@@ -128,11 +127,11 @@ shared native final class String(shared {Character*} characters)
      character of the string."
     shared actual native String span(Integer from, Integer to);
 
-	shared actual String spanFrom(Integer from) =>
-        span(from, size);
+	shared actual String spanFrom(Integer from)
+            => span(from, size);
 
-    shared actual String spanTo(Integer to) =>
-        to>0 then span(0, to) else "";
+    shared actual String spanTo(Integer to)
+            => to>0 then span(0, to) else "";
     
     "Select the characters of this string beginning at 
      the given index, returning a string no longer than 
