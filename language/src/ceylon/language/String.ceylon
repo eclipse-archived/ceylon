@@ -1,9 +1,9 @@
 """A string of characters. Each character in the string is
-   a 32-bit Unicode character. The internal UTF-16
-   encoding is hidden from clients.
+   a 32-bit Unicode character. The internal UTF-16 encoding 
+   is hidden from clients.
    
-   A string is a `Category` of its `Character`s, and of
-   its substrings:
+   A string is a `Category` of its `Character`s, and of its 
+   substrings:
    
        'w' in greeting 
        "hello" in greeting
@@ -36,8 +36,8 @@
        String { for (s in "hello world") if (s.letter) s.uppercased }
    
    Since a `String` has an underlying UTF-16 encoding, 
-   certain operations are expensive, requiring iteration
-   of the characters of the string. In particular, `size`
+   certain operations are expensive, requiring iteration of 
+   the characters of the string. In particular, `size`
    requires iteration of the whole string, and `get()`,
    `span()`, and `segment()` require iteration from the 
    beginning of the string to the given index."""
