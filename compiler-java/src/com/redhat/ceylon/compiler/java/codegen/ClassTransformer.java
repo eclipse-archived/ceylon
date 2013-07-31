@@ -737,13 +737,6 @@ public class ClassTransformer extends AbstractTransformer {
             if (Decl.isUnboxedVoid(method)) {
                 body = make().Exec(expr);
             } else {
-                ProducedType resultType;
-                if (Decl.isMpl(method)) {
-                    resultType = paramModel.getType().getFullType();
-                } else {
-                    resultType = paramModel.getType();
-                }
-                
                 expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(method), paramModel.getType());
                 body = make().Return(expr);
             }
