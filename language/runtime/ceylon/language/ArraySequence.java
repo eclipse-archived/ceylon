@@ -593,6 +593,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor, this, f);
     }
     @Override
+    @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> indexes(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.indexes(f);
+    }
+    @Override
     public <Result> Sequence<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Sequence$this.collect($reifiedResult, f);
     }

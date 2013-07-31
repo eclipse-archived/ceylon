@@ -1345,6 +1345,17 @@ public final class String
 
     @Override
     @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> indexes(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.indexes(f);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Integer, ? extends java.lang.Object> indexes(java.lang.String value, Callable<? extends Boolean> f) {
+        return instance(value).indexes(f);
+    }
+    
+    @Override
+    @Ignore
     public Iterable<? extends Character, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
         return new FilterIterable<Character,java.lang.Object>(Character.$TypeDescriptor, Null.$TypeDescriptor, this, f);
     }

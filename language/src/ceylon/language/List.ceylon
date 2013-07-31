@@ -227,6 +227,15 @@ shared interface List<out Element>
             { for (index in 0:list.size) 
                     if (occursAt(index,list)) index };
     
+    "The indexes in this list for which the element 
+     satisfies the given predicate."
+    shared default {Integer*} indexes(
+            "The predicate the indexed elements must satisfy"
+            Boolean selecting(Element element)) =>
+            { for (index in 0:size) 
+                    //TODO: fix this awful hack
+                    if (selecting(this[index] else nothing)) index };
+    
     /*"Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
