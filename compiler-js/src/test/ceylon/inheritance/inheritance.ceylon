@@ -10,7 +10,7 @@ shared void test() {
   bug135();
   testSelfTypes();
   testDefaulted();
-  //testIssues();
+  testIssues();
   bug218();
   results();
 }
