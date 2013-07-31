@@ -329,6 +329,16 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
 
+    @Override @Ignore
+    public boolean longerThan(long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+
+    @Override @Ignore
+    public boolean shorterThan(long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")

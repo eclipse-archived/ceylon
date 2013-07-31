@@ -86,6 +86,40 @@ shared interface Iterable<out Element, out Absent=Null>
     
     shared default Integer size => count((Element e) => true);
     
+    "Determines if this iterable object has more elements
+     than the given length. This is an efficient operation 
+     for iterable objects with many elements."
+    see (`size`)
+    shared default Boolean longerThan(Integer length) {
+        if (length<0) {
+            return true;
+        }
+        variable value count=0;
+        for (element in this) {
+            if (count++==length) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    "Determines if this iterable object has fewer elements
+     than the given length. This is an efficient operation 
+     for iterable objects with many elements."
+    see (`size`)
+    shared default Boolean shorterThan(Integer length) {
+        if (length<=0) {
+            return false;
+        }
+        variable value count=0;
+        for (element in this) {
+            if (++count==length) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
     

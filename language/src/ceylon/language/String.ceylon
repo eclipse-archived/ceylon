@@ -259,13 +259,13 @@ shared native final class String(shared {Character*} characters)
      length. This is a more efficient operation than
      `string.size>length`."
     see (`size`)
-    shared native Boolean longerThan(Integer length);
+    shared actual native Boolean longerThan(Integer length);
     
     "Determines if this string is shorter than the given
      length. This is a more efficient operation than
      `string.size>length`."
     see (`size`)
-    shared native Boolean shorterThan(Integer length);
+    shared actual native Boolean shorterThan(Integer length);
     
     "Determines if the given object is a string, and if
      so, if this string has the same length, and the 

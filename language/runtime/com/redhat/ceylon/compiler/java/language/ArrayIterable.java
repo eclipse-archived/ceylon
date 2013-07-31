@@ -241,6 +241,16 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     
     @Override @Ignore
+    public boolean longerThan(long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+
+    @Override @Ignore
+    public boolean shorterThan(long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+
+    @Override @Ignore
     public Iterable<? extends Element, ? extends Absent> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }

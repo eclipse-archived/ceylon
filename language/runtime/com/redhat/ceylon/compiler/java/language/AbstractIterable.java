@@ -165,6 +165,14 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
+    public boolean longerThan(long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+    @Override @Ignore
+    public boolean shorterThan(long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+    @Override @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }

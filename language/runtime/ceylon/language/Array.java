@@ -823,7 +823,18 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     public boolean every(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.every(f);
     }
-	@Override @Ignore
+
+    @Override @Ignore
+    public boolean longerThan(long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+
+    @Override @Ignore
+    public boolean shorterThan(long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+
+    @Override @Ignore
 	public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
 		return $ceylon$language$Iterable$this.skipping(skip);
 	}

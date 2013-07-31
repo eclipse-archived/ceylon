@@ -1720,6 +1720,16 @@ public final class String
         }
 
         @Override
+        public boolean longerThan(long length) {
+            return $ceylon$language$Iterable$this.longerThan(length);
+        }
+
+        @Override
+        public boolean shorterThan(long length) {
+            return $ceylon$language$Iterable$this.shorterThan(length);
+        }
+
+        @Override
         public boolean getEmpty() {
             return iterator().next() == finished_.$get();
         }
@@ -2024,6 +2034,14 @@ public final class String
         @Override @Ignore
         public Iterable<? extends Integer, ? extends java.lang.Object> taking(long n) {
             return $ceylon$language$Iterable$this.taking(n);
+        }
+        @Override @Ignore
+        public boolean longerThan(long length) {
+            return $ceylon$language$Iterable$this.longerThan(length);
+        }
+        @Override @Ignore
+        public boolean shorterThan(long length) {
+            return $ceylon$language$Iterable$this.shorterThan(length);
         }
         @Override @Ignore
         public Iterable<? extends Integer, ? extends java.lang.Object> by(long n) {
