@@ -134,6 +134,11 @@ public class Decl {
                     && ((Value)decl).isParameter() 
                     && (decl.isShared() || decl.isCaptured());
     }
+    
+    public static boolean isMethodOrSharedOrCapturedParam(Declaration decl) {
+        return decl instanceof Method 
+                    && (!((Method)decl).isParameter() || decl.isShared() || decl.isCaptured());
+    }
 
     /**
      * Determines whether the declaration's is a method

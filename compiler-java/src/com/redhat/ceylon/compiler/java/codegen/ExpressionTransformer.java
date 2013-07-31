@@ -3310,9 +3310,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = naming.selector((TypedDeclaration)decl);
                 }
             }
-        } else if (decl instanceof Method
-                && !((Method)decl).isParameter()) {
-            if (Decl.isLocal(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred())) {
+        } else if (Decl.isMethodOrSharedOrCapturedParam(decl)) {
+            if (!decl.isParameter()
+                    && (Decl.isLocal(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred()))) {
                 primaryExpr = null;
                 int flags = Naming.NA_MEMBER;
                 if (!isRecursiveReference(expr)) {
