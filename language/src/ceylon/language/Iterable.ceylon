@@ -190,7 +190,7 @@ shared interface Iterable<out Element, out Absent=Null>
          \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
      
      This operation is eager by nature."
-    see (`byIncreasing`, byDecreasing)
+    see (`byIncreasing`, `byDecreasing`)
     shared default Element[] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) =>

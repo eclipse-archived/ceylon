@@ -168,7 +168,7 @@ shared native final class String(shared {Character*} characters)
      potentially costly for long strings, since the
      underlying representation of the characters uses a
      UTF-16 encoding."
-    see (`longerThan`, shorterThan)
+    see (`longerThan`, `shorterThan`)
     shared actual native Integer size;
     
     "The index of the last character in the string, or

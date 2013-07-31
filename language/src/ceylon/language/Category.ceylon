@@ -32,7 +32,7 @@ shared interface Category {
      other equivalence relation, for example `===`. 
      Therefore implementations of `contains()` which do 
      not satisfy this relationship are tolerated."
-    see (`containsEvery`, containsAny)
+    see (`containsEvery`, `containsAny`)
     shared formal Boolean contains(Object element);
     
     "Determines if every one of the given values belongs

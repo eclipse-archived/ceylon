@@ -27,7 +27,7 @@ shared interface Correspondence<in Key, out Item>
     
     "Determines if there is a value defined for the 
      given key."
-    see (`definesAny`, definesEvery, keys)
+    see (`definesAny`, `definesEvery`, `keys`)
     shared default Boolean defines(Key key) => 
             get(key) exists;
     
