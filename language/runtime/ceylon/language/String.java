@@ -1925,6 +1925,11 @@ public final class String
 
             return new OccurrenceIterator();
         }
+        
+        @Override
+        public java.lang.String toString() {
+            return $ceylon$language$Iterable$this.toString();
+        }
 
         @Override
         public long getSize() {
