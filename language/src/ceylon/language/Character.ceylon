@@ -15,8 +15,7 @@ shared final native class Character(Character character)
     "The uppercase representation of this character."
     shared native Character uppercased;
 
-    "The title case representation of this character. 
-     That is, if its Unicode general category is *Lt*."
+    "The title case representation of this character."
     shared native Character titlecased;
 
     "Determine if this is a lowercase representation of
