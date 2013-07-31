@@ -29,6 +29,7 @@ class FunctionalParameterActualString extends .com.redhat.ceylon.compiler.java.t
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
     
+    @.java.lang.Override
     public final .ceylon.language.String m(final .ceylon.language.String t) {
         return m.$call(t);
     }
