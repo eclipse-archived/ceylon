@@ -407,6 +407,20 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(Method method, int flags) {
+        if (method.isParameter()) {
+            if (Decl.isUnboxedVoid(method)) {
+                return resultType(gen.makeJavaTypeAnnotations(method, false), gen.make().Type(gen.syms().voidType));
+            } else {
+                Parameter parameter = method.getInitializerParameter();
+                ProducedType resultType;
+                if (Decl.isMpl(method)) {
+                    resultType = parameter.getType().getFullType();
+                } else {
+                    resultType = parameter.getType();
+                }
+                return resultType(gen.makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), method);
+            }
+        }
         ProducedTypedReference typedRef = gen.getTypedReference(method);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);

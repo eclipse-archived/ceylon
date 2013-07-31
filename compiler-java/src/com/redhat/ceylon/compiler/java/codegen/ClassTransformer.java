@@ -67,6 +67,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
@@ -649,7 +650,7 @@ public class ClassTransformer extends AbstractTransformer {
             List<JCAnnotation> annotations = expressionGen().transform(Decl.getAnnotations(def, param));
             transformParameter(classBuilder, paramModel, annotations);
             makeAttributeForValueParameter(classBuilder, param, annotations);
-            makeMethodForFunctionalParameter(classBuilder, paramModel, annotations);
+            makeMethodForFunctionalParameter(classBuilder, def, param, annotations);
             
             if (paramModel.isDefaulted()
                     || paramModel.isSequenced()
@@ -710,22 +711,17 @@ public class ClassTransformer extends AbstractTransformer {
 
     /**
      * Generate a method for a shared FunctionalParameter which delegates to the Callable 
+     * @param klass 
      * @param annotations */
     private void makeMethodForFunctionalParameter(
-            ClassDefinitionBuilder classBuilder, Parameter paramModel, List<JCAnnotation> annotations) {
+            ClassDefinitionBuilder classBuilder, AnyClass klass, Tree.Parameter paramTree, List<JCAnnotation> annotations) {
+        Parameter paramModel = paramTree.getParameterModel();
 
         if (Strategy.createMethod(paramModel)) {
+            Tree.MethodDeclaration methodDecl = (Tree.MethodDeclaration)Decl.getMemberDeclaration(klass, paramTree);
             makeFieldForParameter(classBuilder, paramModel);
             Method method = (Method)paramModel.getModel();
-            // TODO Rather than using our own MethodDefinitionBuilder here we should
-            // be calling transformMethod() with a given body, since that 
-            // understands about generating overload methods (e.g. for sequenced parameters)
-            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, naming.selector(paramModel.getModel()));
-            mdb.modifiers(transformMethodDeclFlags(method));
-            mdb.userAnnotations(annotations);
-            // Functional parameters can't have type parameters 
-            // Functional parameter are always declared literally as "T name()", not as "Callable<T,[]>" so they can't
-            // possibly be of any other type than Callable, so we don't need to unerase them when we call "$call" on them
+
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
                     naming.makeQualIdent(naming.makeName(method, Naming.NA_IDENT), 
                             Naming.getCallableMethodName()));
@@ -735,12 +731,11 @@ public class ClassTransformer extends AbstractTransformer {
                         !CodegenUtil.isUnBoxed(parameter.getModel()), BoxingStrategy.BOXED, 
                         parameter.getType());
                 callBuilder.argument(parameterExpr);
-                mdb.parameter(parameter, List.<JCAnnotation>nil(), 0, false);
             }
             JCExpression expr = callBuilder.build();
+            JCStatement body;
             if (Decl.isUnboxedVoid(method)) {
-                mdb.resultType(makeJavaTypeAnnotations(method, false), make().Type(syms().voidType));
-                mdb.body(make().Exec(expr));
+                body = make().Exec(expr);
             } else {
                 ProducedType resultType;
                 if (Decl.isMpl(method)) {
@@ -748,11 +743,14 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     resultType = paramModel.getType();
                 }
-                mdb.resultType(makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : JT_NO_PRIMITIVES), method);
+                
                 expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(method), paramModel.getType());
-                mdb.body(make().Return(expr));
+                body = make().Return(expr);
             }
-            classBuilder.method(mdb);
+            classBuilder.methods(transformMethod(method, null, methodDecl.getParameterLists(),
+                    methodDecl.getAnnotationList(),
+                    true, method.isActual(), true, 
+                    List.of(body), daoThis, false));
         }
     }
     
@@ -2007,8 +2005,24 @@ public class ClassTransformer extends AbstractTransformer {
             boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
             DaoBody daoTransformation, 
             boolean defaultValuesBody) {
+        return transformMethod(def.getDeclarationModel(), 
+                def.getTypeParameterList(),
+                def.getParameterLists(),
+                def.getAnnotationList(),
+                transformMethod, actual, includeAnnotations, body,
+                daoTransformation,
+                defaultValuesBody);
+    }
+    
+    private List<MethodDefinitionBuilder> transformMethod(
+            final Method methodModel,
+            Tree.TypeParameterList typeParameterList, 
+            java.util.List<Tree.ParameterList> parameterLists,
+            Tree.AnnotationList annotationList,
+            boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
+            DaoBody daoTransformation, 
+            boolean defaultValuesBody) {
         
-        final Method methodModel = def.getDeclarationModel();
         ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
         boolean needsRaw = false;
         Declaration refinedDeclaration = methodModel.getRefinedDeclaration();
@@ -2022,10 +2036,10 @@ public class ClassTransformer extends AbstractTransformer {
                 this, methodModel);
         
         // do the reified type param arguments
-        if(def.getTypeParameterList() != null && gen().supportsReified(methodModel))
-            methodBuilder.reifiedTypeParameters(def.getTypeParameterList().getTypeParameterDeclarations());
+        if(typeParameterList != null && gen().supportsReified(methodModel))
+            methodBuilder.reifiedTypeParameters(typeParameterList.getTypeParameterDeclarations());
         
-        Tree.ParameterList parameterList = def.getParameterLists().get(0);
+        Tree.ParameterList parameterList = parameterLists.get(0);
         for (final Tree.Parameter parameter : parameterList.getParameters()) {
             Parameter parameterModel = parameter.getParameterModel();
             List<JCAnnotation> annotations = null;
@@ -2048,12 +2062,12 @@ public class ClassTransformer extends AbstractTransformer {
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, methodModel);
                         MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTransformation, methodModel).makeOverload(
                                 overloadBuilder, 
-                                parameterList, parameter, def.getTypeParameterList());
+                                parameterList, parameter, typeParameterList);
                         lb.append(overloadedMethod);
                     }
                     
                     if (refinedDeclaration == methodModel) {
-                        lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, def.getTypeParameterList()));    
+                        lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter, typeParameterList));
                     }
                 }
             }
@@ -2066,13 +2080,10 @@ public class ClassTransformer extends AbstractTransformer {
                 methodBuilder.isOverride(methodModel.isActual());
             }
             if (includeAnnotations) {
-                methodBuilder.userAnnotations(expressionGen().transform(def.getAnnotationList()));
+                methodBuilder.userAnnotations(expressionGen().transform(annotationList));
                 methodBuilder.modelAnnotations(methodModel.getAnnotations());
             } else {
                 methodBuilder.noAnnotations();
-            }
-            if (CodegenUtil.hasCompilerAnnotation(def, "test")){
-                methodBuilder.userAnnotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
             }
             methodBuilder.resultType(methodModel, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {

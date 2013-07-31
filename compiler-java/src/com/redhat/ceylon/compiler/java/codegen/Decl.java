@@ -680,26 +680,30 @@ public class Decl {
         return null;
     }
     
-    public static Tree.AnnotationList getAnnotations(Tree.AnyClass def, final Tree.Parameter parameter) {
+    public static Tree.TypedDeclaration getMemberDeclaration(Tree.AnyClass def, final Tree.Parameter parameter) {
         if (parameter instanceof Tree.ParameterDeclaration) {
-            return ((Tree.ParameterDeclaration)parameter).getTypedDeclaration().getAnnotationList();
+            return ((Tree.ParameterDeclaration)parameter).getTypedDeclaration();
         } else if (parameter instanceof Tree.InitializerParameter) {
-            final Tree.AnnotationList[] annotationList = new Tree.AnnotationList[]{null};
+            final Tree.TypedDeclaration[] annotationList = new Tree.TypedDeclaration[]{null};
             def.visit(new Visitor() {
                 public void visit(Tree.MethodDeclaration that) {
                     if (that.getDeclarationModel().equals(parameter.getParameterModel().getModel())) {
-                        annotationList[0] = that.getAnnotationList();
-                    };
+                        annotationList[0] = that;
+                    }
                 }
                 public void visit(Tree.AttributeDeclaration that) {
                     if (that.getDeclarationModel().equals(parameter.getParameterModel().getModel())) {
-                        annotationList[0] = that.getAnnotationList();
-                    };
+                        annotationList[0] = that;
+                    }
                 }
             });
             return annotationList[0];
         }
         return null;
+    }
+    
+    public static Tree.AnnotationList getAnnotations(Tree.AnyClass def, final Tree.Parameter parameter) {
+        return getMemberDeclaration(def, parameter).getAnnotationList();
     }
     
     public static boolean isParameter(Declaration decl) {
