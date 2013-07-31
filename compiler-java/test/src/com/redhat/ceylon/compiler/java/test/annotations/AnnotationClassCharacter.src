@@ -19,8 +19,7 @@ class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runti
         this(anno.c());
     }
     
-    AnnotationClassCharacter(@.ceylon.language.Shared$annotation
-    final int c) {
+    AnnotationClassCharacter(final int c) {
         this.c = c;
         this.$ceylon$language$model$SequencedAnnotation$this = new .ceylon.language.model.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter>, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
@@ -28,6 +27,7 @@ class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runti
     }
     private final int c;
     
+    @.ceylon.language.Shared$annotation
     public final int getC() {
         return c;
     }
@@ -85,8 +85,7 @@ class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.j
         this(anno.c());
     }
     
-    AnnotationClassCharacterDefaulted(@.ceylon.language.Shared$annotation
-    final int c) {
+    AnnotationClassCharacterDefaulted(final int c) {
         this.c = c;
         this.$ceylon$language$model$OptionalAnnotation$this = new .ceylon.language.model.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
         this.$ceylon$language$model$ConstrainedAnnotation$this = new .ceylon.language.model.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor), .ceylon.language.model.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor, this);
@@ -94,6 +93,7 @@ class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.j
     }
     private final int c;
     
+    @.ceylon.language.Shared$annotation
     public final int getC() {
         return c;
     }

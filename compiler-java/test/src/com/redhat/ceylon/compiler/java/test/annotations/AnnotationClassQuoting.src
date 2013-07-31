@@ -25,13 +25,7 @@ class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.runtime
         this(anno.string(), anno.toString(), anno.hash(), anno.hashCode());
     }
     
-    AnnotationClassQuoting(@.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
-    final .java.lang.String string, @.ceylon.language.Shared$annotation
-    final .java.lang.String toString, @.ceylon.language.Shared$annotation
-    @.ceylon.language.Actual$annotation
-    final int hash, @.ceylon.language.Shared$annotation
-    final long hashCode) {
+    AnnotationClassQuoting(final .java.lang.String string, final .java.lang.String toString, final int hash, final long hashCode) {
         this.string = string;
         this.toString = toString;
         this.hash = hash;
@@ -43,23 +37,29 @@ class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.runtime
     }
     private final .java.lang.String string;
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     public final .java.lang.String toString() {
         return string;
     }
     private final .java.lang.String toString;
     
+    @.ceylon.language.Shared$annotation
     public final .java.lang.String getToString() {
         return toString;
     }
     private final int hash;
     
+    @.ceylon.language.Shared$annotation
+    @.ceylon.language.Actual$annotation
     @.java.lang.Override
     public final int hashCode() {
         return hash;
     }
     private final long hashCode;
     
+    @.ceylon.language.Shared$annotation
     public final long getHashCode() {
         return hashCode;
     }
