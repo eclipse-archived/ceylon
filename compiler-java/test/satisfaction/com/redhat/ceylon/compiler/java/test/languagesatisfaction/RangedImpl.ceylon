@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class RangedImpl<in Index, out Span>() satisfies Ranged<Index, Span> 
+class RangedImpl<in Index>() satisfies Ranged<Index, RangedImpl<Index>> 
         given Index satisfies Comparable<Index> {
 
-    shared actual Span span(Index from, Index to) {
+    shared actual RangedImpl<Index> span(Index from, Index to) {
         return nothing;
     }
     
-    shared actual Span spanFrom(Index from) {
+    shared actual RangedImpl<Index> spanFrom(Index from) {
         return nothing;
     }
     
-    shared actual Span spanTo(Index to) {
+    shared actual RangedImpl<Index> spanTo(Index to) {
         return nothing;
     }
     
-    shared actual Span segment(Index from, Integer length) {
+    shared actual RangedImpl<Index> segment(Index from, Integer length) {
         return nothing;
     }
 
