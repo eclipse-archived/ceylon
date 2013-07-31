@@ -917,6 +917,18 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override
     @Ignore
+    public Iterable<? extends Integer,?> occurrencesIn(List<?> element) {
+        return $ceylon$language$List$this.occurrencesIn(element);
+    }
+
+    @Override
+    @Ignore
+    public boolean occursAt(long index, List<?> element) {
+        return $ceylon$language$List$this.occursAt(index, element);
+    }
+
+    @Override
+    @Ignore
     public boolean occursAtStart(List<?> element) {
         return $ceylon$language$List$this.occursAtStart(element);
     }

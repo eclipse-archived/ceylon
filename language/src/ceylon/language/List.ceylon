@@ -177,21 +177,55 @@ shared interface List<out Element>
         return seq;
     }
     
-    "Determine if this sequence occurs at the start of 
-     the given sequence."
-    shared default Boolean occursAtStart(List<Anything> sequence) 
-            => equals(sequence[0:size]);
+    "Determine if this list occurs at the start of the 
+     given list."
+    shared default Boolean occursAtStart(List<Anything> list)
+            => occursAt(0, list);
     
-    "Determine if this sequence occurs as a subsequence
-     of the given sequence."
-    shared default Boolean occursIn(List<Anything> sequence) {
-        for (i in 0:sequence.size) {
-            if (occursAtStart(sequence[i...])) {
+    "Determine if this list occurs at the given index 
+     in the given list."
+    shared default Boolean occursAt(
+            "The index at which this list might occur"
+            Integer index, 
+            List<Anything> list) {
+        for (i in index:size) {
+            value x = this[i];
+            value y = list[i];
+            if (exists x) {
+                if (exists y) {
+                    if (x!=y) {
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (exists y) {
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+    
+    "Determine if this list occurs as a sublist of the 
+     given list."
+    shared default Boolean occursIn(List<Anything> list) {
+        for (i in 0:list.size) {
+            if (occursAtStart(list[i...])) {
                 return true;
             }
         }
         return false;
     }
+    
+    "The indexes in the given list at which this list 
+     occurs."
+    shared default {Integer*} occurrencesIn(List<Anything> list) =>
+            { for (index in 0:list.size) 
+                    if (occursAt(index,list)) index };
     
     /*"Select the elements between the given indices. If 
          the start index is the same as the end index,

@@ -471,6 +471,40 @@ public final class String
 //    }
 
     @Ignore
+    public static Iterable<? extends Integer,?> occurrencesIn(java.lang.String value, List<?> element) {
+        return instance(value).occurrencesIn(element);
+    }
+    
+    @Override
+    @Ignore
+    public Iterable<? extends Integer,?> occurrencesIn(List<?> element) {
+        return $ceylon$language$List$this.occurrencesIn(element);
+    }
+    
+    @Ignore
+    public static boolean occursAt(java.lang.String value, int index, List<?> element) {
+        if (element instanceof String) {
+            java.lang.String str = ((String) element).value;
+            return value.regionMatches(0, str, index, value.length());
+        }
+        else {
+            return instance(value).occursAt(index, element);
+        }
+    }
+    
+    @Override
+    @Ignore
+    public boolean occursAt(long index, List<?> element) {
+        if (element instanceof String) {
+            java.lang.String str = ((String) element).value;
+            return value.regionMatches(0, str, (int) index, value.length());
+        }
+        else {
+            return $ceylon$language$List$this.occursAt(index, element);
+        }
+    }
+    
+    @Ignore
     public static boolean occursAtStart(java.lang.String value, List<?> element) {
         return instance(value).occursAtStart(element);
     }
