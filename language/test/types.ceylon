@@ -214,14 +214,14 @@ void types() {
     //if (is String[]? seq) {} else { fail("sequence type 3"); }
     //if (is Integer[] seq) { fail("sequence type 4 (required reified gens)"); } else {}
     
-    check(className(1)=="ceylon.language::Integer", "natural classname");
-    check(className(1.0)=="ceylon.language::Float", "float classname");
-    check("ceylon.language::String" == className("hello"), "string classname [1] " + className("hello"));
-    check("ceylon.language::String" == className(""), "string classname [2] " + className(""));
-    check(className(' ')=="ceylon.language::Character", "character classname");
-    check(className(1->"hello").startsWith("ceylon.language::Entry"), "entry classname");
-    check(className(true)=="ceylon.language::true", "true classname");
-    check(className(false)=="ceylon.language::false", "false classname");
+    check(className(1)=="ceylon.language.Integer", "natural classname");
+    check(className(1.0)=="ceylon.language.Float", "float classname");
+    check("ceylon.language.String" == className("hello"), "string classname [1] " + className("hello"));
+    check("ceylon.language.String" == className(""), "string classname [2] " + className(""));
+    check(className(' ')=="ceylon.language.Character", "character classname");
+    check(className(1->"hello").startsWith("ceylon.language.Entry"), "entry classname");
+    check(className(true)=="ceylon.language.true_", "true classname");
+    check(className(false)=="ceylon.language.false_", "false classname");
 
     //from ceylon-js
     value pair = TypesPair("hello", "world");
