@@ -1100,7 +1100,7 @@ else {
             </itemizedlist>
             
             <para>A forward-declared declaration is considered <emphasis>definitely initialized</emphasis> 
-            at a certain statement or declaration if its declaration has a specifier or initializer, 
+            at a certain statement or declaration if its declaration has a specifier, 
             if it is referenced by a parameter, or if it is definitely initialized by the sequence 
             of statements from its declaration to the given statement or declaration.</para>
             

@@ -363,156 +363,167 @@ TypeConstraints?
         
         <section id="requiredparameters">
             <title>Required parameters</title>
-        
-        <para>A required parameter is a value or callable parameter without a default 
-        argument.</para>
-        
-        <synopsis>Parameter: ValueParameter | CallableParameter | MemberName</synopsis>
-        
-        <para>Required parameters must occur before any other parameters in the parameter 
-        list.</para>
-        
+            
+            <para>A required parameter is a value or callable parameter without a default 
+            argument.</para>
+            
+            <synopsis>Parameter: ValueParameter | CallableParameter | MemberName</synopsis>
+            
+            <para>Required parameters must occur before any other parameters in the parameter 
+            list.</para>
+            
         </section>
         
         <section id="defaultedparameters">
             <title>Defaulted parameters</title>
-        
-        <para>A defaulted parameter is a value or callable parameter that specifies a 
-        default argument.</para>
-        
-        <synopsis>DefaultParameter: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
-        
-        <para>The <literal>=</literal> and <literal>=&gt;</literal> specifiers are used 
-        throughout the language.</para>
-        
-        <synopsis>Specifier: "=" Expression</synopsis>
-        <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
-        
-        <para>Defaulted parameters must occur after required parameters in the parameter 
-        list.</para>
-        
-        <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
-        
-        <para>The type of the default argument expression of a value parameter must be 
-        assignable to the declared type of the parameter. The type of the default argument
-        expression of a callable parameter must be assignable to the return type of the
-        callable parameter.</para>
-        
-        <para>A parameter of a method or class annotated <literal>actual</literal> may not 
-        specify a default argument. Instead, it inherits the default argument, if any, of 
-        the corresponding parameter of the method it refines.</para>
-        
-        <para>If two parameter lists are almost identical, differing only in that the first 
-        parameter of one list is defaulted, and the first parameter of the second list is 
-        not defaulted, and <literal>P</literal> is the the type of the second parameter list 
-        then the type of the first parameter list is <literal>[]|P</literal>.</para>
-        
-        <!--
-        <para>If the declared type of the parameter is an optional type (a subtype of
-        <literal>Null</literal>) then the default argument expression must be a value
-        reference to <literal>null</literal>.</para>
-        -->
-        
-        <comment><para>TODO: for consistency, we should support <literal>f(Float x) => x</literal> 
-        in a parameter list, when the callable parameter is declared in the body of 
-        the function or class.</para></comment>
+            
+            <para>A defaulted parameter is a value or callable parameter that specifies a 
+            default argument.</para>
+            
+            <synopsis>DefaultParameter: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
+            
+            <para>The <literal>=</literal> and <literal>=&gt;</literal> specifiers are used 
+            throughout the language.</para>
+            
+            <synopsis>Specifier: "=" Expression</synopsis>
+            <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
+            
+            <para>Defaulted parameters must occur after required parameters in the parameter 
+            list.</para>
+            
+            <programlisting>(Product product, Integer quantity=1, Price pricing(Product p) => p.price)</programlisting>
+            
+            <para>The type of the default argument expression of a value parameter must be 
+            assignable to the declared type of the parameter. The type of the default argument
+            expression of a callable parameter must be assignable to the return type of the
+            callable parameter.</para>
+            
+            <para>A parameter of a method or class annotated <literal>actual</literal> may not 
+            specify a default argument. Instead, it inherits the default argument, if any, of 
+            the corresponding parameter of the method it refines.</para>
+            
+            <para>If two parameter lists are almost identical, differing only in that the first 
+            parameter of one list is defaulted, and the first parameter of the second list is 
+            not defaulted, and <literal>P</literal> is the the type of the second parameter list 
+            then the type of the first parameter list is <literal>[]|P</literal>.</para>
+            
+            <!--
+            <para>If the declared type of the parameter is an optional type (a subtype of
+            <literal>Null</literal>) then the default argument expression must be a value
+            reference to <literal>null</literal>.</para>
+            -->
+            
+            <comment><para>TODO: for consistency, we should support <literal>f(Float x) => x</literal> 
+            in a parameter list, when the callable parameter is declared in the body of 
+            the function or class.</para></comment>
         
         </section>
         
         <section id="sequencedparameters">
             <title>Variadic parameters</title>
-        
-        <para>A <emphasis>variadic parameter</emphasis> of type <literal>T</literal>, accepts 
-        a sequence of arguments of type <literal>T</literal>. Inside the function or class, 
-        the variadic parameter has type <literal>T[]</literal>.</para>
-        
-        <synopsis>VariadicParameter: Annotations UnionType "*" MemberName</synopsis>
-        
-        <para>The variadic parameter must be the last parameter in a parameter list.</para>
-        
-        <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
-        
-        <para>The type of a parameter list containing just a variadic parameter of type
-        <literal>T</literal> is <literal>T[]</literal>.</para>
-        
-        <comment><para>TODO: should we allow nonempty variadic parameters? For example:</para>
-        <programlisting>Float max(Float+ floats)</programlisting>
-        </comment>
-        
+            
+            <para>A <emphasis>variadic parameter</emphasis> accepts multiple arguments:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A variadic parameter declared <literal>T*</literal> accepts zero or
+                    more arguments of type <literal>T</literal>, and has type <literal>[T*]</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>A variadic parameter declared <literal>T+</literal> accepts one or
+                    more arguments of type <literal>T</literal>, and has type <literal>[T+]</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
+                        
+            <synopsis>VariadicParameter: Annotations VariadicType MemberName</synopsis>
+            
+            <para>The variadic parameter must be the last parameter in a parameter list.</para>
+            
+            <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
+            
+            <programlisting>(Float+ floats)</programlisting>
+            
+            <para>The type of a parameter list containing just a variadic parameter of type
+            <literal>T*</literal> is <literal>[T*]</literal> The type of a parameter list 
+            containing just a variadic parameter of type <literal>T+</literal> is 
+            <literal>[T+]</literal>.</para>
+            
         </section>
         
         <section id="valueparameters">
             <title>Value parameters</title>
-        
-        <para>A <emphasis>value parameter</emphasis> is a value named or defined in a 
-        parameter list. Like any other value declaration, it has a name, type, and, 
-        optionally, annotations.</para>
-        
-        <synopsis>ValueParameter: Annotations Type MemberName</synopsis>
-        
-        <para>An argument to a value parameter must be an expression whose type is
-        assignable to the type of the value parameter.</para>
-        
-        <programlisting>(String label, Anything() onClick)</programlisting>
-        
-        <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
-        
-        <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
-        and a parameter list has type <literal>P</literal>, an invariant subtype of 
-        <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
-        formed by prepending <literal>x</literal> to the first parameter list is 
-        <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or 
-        <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> if <literal>x</literal> is defaulted.</para>
-        
-        <!--para>A parameter may not be be declared <literal>variable</literal>, and may not be 
-        assigned to within the body of the method or class.</para-->
-                
+            
+            <para>A <emphasis>value parameter</emphasis> is a value named or defined in 
+            a parameter list. Like any other value declaration, it has a name, type, and, 
+            optionally, annotations.</para>
+            
+            <synopsis>ValueParameter: Annotations Type MemberName</synopsis>
+            
+            <para>An argument to a value parameter must be an expression whose type is
+            assignable to the type of the value parameter.</para>
+            
+            <programlisting>(String label, Anything() onClick)</programlisting>
+            
+            <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
+            
+            <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
+            and a parameter list has type <literal>P</literal>, an invariant subtype of 
+            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
+            formed by prepending <literal>x</literal> to the first parameter list is 
+            <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> 
+            if <literal>x</literal> is defaulted.</para>
+            
+            <!--para>A parameter may not be be declared <literal>variable</literal>, and 
+            may not be assigned to within the body of the method or class.</para-->
+            
         </section>
         
         <section id="callableparameters">
             <title>Callable parameters</title>
-        
-        <para>A <emphasis>callable parameter</emphasis> is a function named or defined 
-        in a parameter list. Like any other function declaration, it has a name, type, 
-        one or more parameter lists, and, optionally, annotations.</para>
-        
-        <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
-        
-        <para>An argument to a callable parameter must be an expression whose type is
-        assignable to the callable type of the callable parameter.</para>
-                    
-        <programlisting>(String label, void onClick())</programlisting>
-        
-        <programlisting>({Value*} values, Comparison by(Value x, Value y))</programlisting>
-                
-        <para>If a callable parameter <literal>f</literal> has callable type 
-        <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type <literal>P</literal>, 
-        an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of 
-        a new parameter list formed by prepending <literal>f</literal> to the first parameter 
-        list is <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
-        or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
-        <literal>f</literal> is defaulted.</para>
-        
+            
+            <para>A <emphasis>callable parameter</emphasis> is a function named or defined 
+            in a parameter list. Like any other function declaration, it has a name, type, 
+            one or more parameter lists, and, optionally, annotations.</para>
+            
+            <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
+            
+            <para>An argument to a callable parameter must be an expression whose type is
+            assignable to the callable type of the callable parameter.</para>
+            
+            <programlisting>(String label, void onClick())</programlisting>
+            
+            <programlisting>({Value*} values, Comparison by(Value x, Value y))</programlisting>
+            
+            <para>If a callable parameter <literal>f</literal> has callable type 
+            <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type <literal>P</literal>, 
+            an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of 
+            a new parameter list formed by prepending <literal>f</literal> to the first parameter 
+            list is <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
+            or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
+            <literal>f</literal> is defaulted.</para>
+            
         </section>
         
         <!--section id="entrydestructuring">
             <title>Destructuring for parameters of type <literal>Entry</literal></title>
-        
-        <para>A parameter of type <literal>Entry</literal> may be specified in 
-        <emphasis>destructured</emphasis> form.</para>
-        
-        <synopsis>EntryParamPair: SimpleParam "->" SimpleParam</synopsis>
-        
-        <para>A destructured parameter declaration of form <literal>U u -> V v</literal> 
-        results in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>,
-        whose <literal>key</literal> and <literal>item</literal> attributes are assigned
-        to <literal>u</literal> and <literal>v</literal> within the body of the method. If
-        the method is invoked using a named argument list, it is considered to have two
-        separate parameters <literal>u</literal> and <literal>v</literal>.</para>
-        
-        <programlisting>(Key key -> Item item)</programlisting>
-        <programlisting>(String name -> String? password = "guest" -> null)</programlisting>
-        
+            
+            <para>A parameter of type <literal>Entry</literal> may be specified in 
+            <emphasis>destructured</emphasis> form.</para>
+            
+            <synopsis>EntryParamPair: SimpleParam "->" SimpleParam</synopsis>
+            
+            <para>A destructured parameter declaration of form <literal>U u -> V v</literal> 
+            results in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>,
+            whose <literal>key</literal> and <literal>item</literal> attributes are assigned
+            to <literal>u</literal> and <literal>v</literal> within the body of the method. If
+            the method is invoked using a named argument list, it is considered to have two
+            separate parameters <literal>u</literal> and <literal>v</literal>.</para>
+            
+            <programlisting>(Key key -> Item item)</programlisting>
+            <programlisting>(String name -> String? password = "guest" -> null)</programlisting>
+            
         </section-->
         
     </section>
@@ -587,8 +598,7 @@ TypeConstraints?
                 <para>a statement or control structure,</para>
             </listitem>
             <listitem>
-                <para>a method or attribute declaration with a specifier or initializer, 
-                or</para>
+                <para>a method or attribute declaration with a non-lazy specifier, or</para>
             </listitem>
             <listitem>
                 <para>an <literal>object</literal> declaration.</para>
@@ -978,8 +988,7 @@ TypeConstraints?
                 <para>a statement or control structure,</para>
             </listitem>
             <listitem>
-                <para>a method or attribute declaration with a specifier or 
-                initializer,</para>
+                <para>a method or attribute declaration with a non-lazy specifier,</para>
             </listitem>
             <listitem>
                 <para>a forward-declared method or attribute declaration not
@@ -1764,7 +1773,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             parameter, it is a <emphasis>forward-declared</emphasis> function.</para>
             
             <para>A forward-declared function may later be specified using a specification
-            statement. The specification statement for a forward-declared function may be:</para>
+            statement, as defined in <xref linkend="specificationstatements"/>. The 
+            specification statement for a forward-declared function may be:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1813,61 +1823,61 @@ case (hexadecimal) {
         <section id="multipleparameterlists">
             <title>Functions with multiple parameter lists</title>
             
-        <para>A function may declare multiple lists of parameters. A function with 
-        more than one parameter list returns instances of <literal>Callable</literal>
-        in <literal>ceylon.language</literal> when invoked. The compiler infers an 
-        anonymous function whose callable type is formed by taking the function with 
-        multiple parameter lists and eliminating the first parameter list.</para>
-        
-        <para>This function declaration:</para>
-        
-        <programlisting><![CDATA[Boolean greaterThan<Element>(Element val)(Element element)
+            <para>A function may declare multiple lists of parameters. A function with 
+            more than one parameter list returns instances of <literal>Callable</literal>
+            in <literal>ceylon.language</literal> when invoked. The compiler infers an 
+            anonymous function whose callable type is formed by taking the function with 
+            multiple parameter lists and eliminating the first parameter list.</para>
+            
+            <para>This function declaration:</para>
+            
+            <programlisting><![CDATA[Boolean greaterThan<Element>(Element val)(Element element)
         given Element satisfies Comparable<Element> => 
                 element>val;]]></programlisting>
 
-        <para>is equivalent to the following:</para>
-
-        <programlisting><![CDATA[Boolean(Element) greaterThan<Element>(Element val)
+            <para>is equivalent to the following:</para>
+            
+            <programlisting><![CDATA[Boolean(Element) greaterThan<Element>(Element val)
         given Element satisfies Comparable<Element> => 
                 (Element element) => element>val;]]></programlisting>
-
-        <para>For a function with <literal>n</literal> parameter lists, there are 
-        <literal>n-1</literal> inferred anonymous function.s The <literal>i</literal>th 
-        inferred function:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>has the same return type as the original declared method,</para>
-            </listitem>
-            <listitem>
-                <para>has the same parameter lists as the declared method, after 
-                eliminating the first <literal>i-1</literal> parameter lists, 
-                and</para>
-            </listitem>
-            <listitem>
-                <para>if <literal>i&lt;n</literal>, returns the <literal>i+1</literal>th 
-                inferred function, or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, if <literal>i==n</literal>, has the implementation 
-                of the original declared function.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Then the original function returns the first inferred anonymous function.</para>
-        
-        <para>This method declaration:</para>
-        
-        <programlisting>function fullName(String firstName)(String middleName)(String lastName)
+            
+            <para>For a function with <literal>n</literal> parameter lists, there are 
+            <literal>n-1</literal> inferred anonymous function.s The <literal>i</literal>th 
+            inferred function:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>has the same return type as the original declared method,</para>
+                </listitem>
+                <listitem>
+                    <para>has the same parameter lists as the declared method, after 
+                    eliminating the first <literal>i-1</literal> parameter lists, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>if <literal>i&lt;n</literal>, returns the <literal>i+1</literal>th 
+                    inferred function, or</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, if <literal>i==n</literal>, has the implementation 
+                    of the original declared function.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Then the original function returns the first inferred anonymous function.</para>
+            
+            <para>This method declaration:</para>
+            
+            <programlisting>function fullName(String firstName)(String middleName)(String lastName)
         => firstName + " " + middleName + " " + lastName;</programlisting>
-        
-        <para>Is equivalent to:</para>
-        
-        <programlisting>function fullName(String firstName) =>
+            
+            <para>Is equivalent to:</para>
+            
+            <programlisting>function fullName(String firstName) =>
         (String middleName) =>
                 (String lastName) =>
                         firstName + " " + middleName + " " + lastName;</programlisting>
-        
+            
         </section>
         
         <section id="formalmethods">
@@ -2022,99 +2032,99 @@ case (hexadecimal) {
         
         <itemizedlist>
             <listitem>
-                <para>A <emphasis>reference</emphasis> defines state.</para>
+                <para>A <emphasis>reference</emphasis> defines state. It has a persistent 
+                value, determined at the moment it is specified or assigned.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>getter</emphasis> defines how a value is evaluated.</para>
+                <para>A <emphasis>getter</emphasis> defines how a value is evaluated. It 
+                is defined using a block or lazy specifier, which is executed every time 
+                the value is evaluated.</para>
             </listitem>
         </itemizedlist>
-        
-        <para>A reference has a persistent value, determined at the moment it is specified 
-        or assigned. A getter is defined using a block or lazy specifier, which is executed 
-        every time the value is evaluated.</para>
         
         <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
         
         <para>If a value belongs to a type, it is called an <emphasis>attribute</emphasis>.</para>
         
         <para>All value declarations specify the attribute name. A value declaration may 
-        specify a type. A value may be <emphasis>variable</emphasis>, in which case its 
-        may be freely assigned using <literal>=</literal> and the compound assignment 
-        operators. This is the case for a reference annotated <literal>variable</literal>, 
-        or for a getter with a matching setter.</para>
+        specify a type. A value may be <emphasis>variable</emphasis>, in which case it
+        may be freely assigned using the assignment and compound assignment operators 
+        defined in <xref linkend="operators"/>. This is the case for a reference annotated 
+        <literal>variable</literal>, or for a getter with a matching setter.</para>
             
         <synopsis>ValueHeader: (Type | "value") MemberName</synopsis>
         
         <para>If a reference is a parameter, it must not specify a persistent value.</para>
         
-        <comment><para>Note: syntactically a value declaration is essentially a function 
+        <comment><para>Note: syntactically a value declaration looks like a function 
         declaration with zero parameter lists. It is often helpful, in thinking about the 
-        syntax and semantics of Ceylon, to be keep in mind the perspective that a value 
-        is a function with zero parameter lists, or, alternatively, that a function is a
-        value of type <literal>Callable</literal>.</para></comment>
+        syntax and semantics of Ceylon, to take the perspective that a value is a function 
+        with zero parameter lists, or, alternatively, that a function is a value of type 
+        <literal>Callable</literal>.</para></comment>
         
         <section id="references">
             <title>References</title>
             
-        <para>The persistent value of a reference may be specified or initialized as part 
-        of the declaration of the reference, or via a later specification statement or 
-        assignment expression, or, if it is a parameter, by an argument to an invocation 
-        expression.</para>
-        
-        <para>A reference annotated <literal>variable</literal> has a persistent value that 
-        can be assigned multiple times. A reference not annotated <literal>variable</literal> 
-        has a persistent value that can be specified exactly once and not subsequently 
-        modified.</para>
-        
-        <programlisting>variable Integer count = 0;</programlisting>
-        
-        <programlisting>shared Decimal pi = calculatePi();</programlisting>
-        
-        <programlisting>shared Integer[] evenDigits = [0,2,4,6,8];</programlisting>
-        
-        <para>A reference declared directly inside the body of a class represents a persistent 
-        value associated with every instance of the class. Repeated evaluation of the attribute 
-        of a particular instance of the class returns the same result until the attribute of 
-        the instance is assigned a new value.</para>
-        
-        <para>A block-local reference represents state associated with a particular execution 
-        of that block of code.</para> 
-        
-        <para>A toplevel reference may not be annotated <literal>variable</literal>.</para>
-        
-        <comment><para>TODO: this restriction is pretty ineffective, since you can just wrap
-        a variable up in a class instance and keep a reference to the instance. Should we just
-        drop this restriction, or should we simply disallow toplevel references 
-        altogether?</para></comment>
-        
-        <para>If a class declares or inherits a <literal>variable</literal> reference, it 
-        must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
-        <literal>ceylon.language</literal>.</para>
-        
-        <!--itemizedlist>
-            <listitem>
-                <para>A simple attribute declared inside a block (the body of a method, 
-                attribute getter, attribute setter, or control structure) is a local.</para>
-            </listitem>
-             <listitem>
-                <para>A simple attribute declared inside the body of a class is a local if it 
-                is not used inside a method, attribute setter or attribute getter 
-                declaration and if it is not annotated <literal>shared</literal>.</para>
-            </listitem>
-           <listitem>
-                <para>A parameter of a class is a local if it is not used inside a method, 
-                attribute setter, or attribute getter declaration.</para>
-            </listitem>
-            <listitem>
-                <para>A parameter of a method is a local.</para>
-            </listitem>
-        </itemizedlist-->
-        
-        <para>A reference belonging to a class may be annotated <literal>late</literal>, in 
-        which case the initializer of the class is not required to initialize its persistent
-        value. Furthermore, a self-reference to an instance being initialized may be
-        assigned to the reference. If the reference is evaluated before it is initialized,
-        or before its value has been completely initialized, an exception is thrown.</para>
+            <para>The persistent value of a reference may be specified or initialized as part 
+            of the declaration of the reference, or via a later specification statement, as
+            defined in <xref linkend="specificationstatements"/>, or assignment expression, as
+            defined in <xref linkend="operators"/>, or, if it is a parameter, by an argument 
+            to an invocation expression, as defined in <xref linkend="invocationexpressions"/>.</para>
+            
+            <para>A reference annotated <literal>variable</literal> has a persistent value that 
+            can be assigned multiple times. A reference not annotated <literal>variable</literal> 
+            has a persistent value that can be specified exactly once and not subsequently 
+            modified.</para>
+            
+            <programlisting>variable Integer count = 0;</programlisting>
+            
+            <programlisting>shared Decimal pi = calculatePi();</programlisting>
+            
+            <programlisting>shared Integer[] evenDigits = [0,2,4,6,8];</programlisting>
+            
+            <para>A reference declared directly inside the body of a class represents a persistent 
+            value associated with every instance of the class. Repeated evaluation of the attribute 
+            of a particular instance of the class returns the same result until the attribute of 
+            the instance is assigned a new value.</para>
+            
+            <para>A block-local reference represents state associated with a particular execution 
+            of that block of code.</para> 
+            
+            <para>A toplevel reference may not be annotated <literal>variable</literal>.</para>
+            
+            <comment><para>TODO: this restriction is pretty ineffective, since you can just wrap
+            a variable up in a class instance and keep a reference to the instance. Should we just
+            drop this restriction, or should we simply disallow toplevel references 
+            altogether?</para></comment>
+            
+            <para>If a class declares or inherits a <literal>variable</literal> reference, it 
+            must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
+            <literal>ceylon.language</literal>.</para>
+            
+            <!--itemizedlist>
+                <listitem>
+                    <para>A simple attribute declared inside a block (the body of a method, 
+                    attribute getter, attribute setter, or control structure) is a local.</para>
+                </listitem>
+                 <listitem>
+                    <para>A simple attribute declared inside the body of a class is a local if it 
+                    is not used inside a method, attribute setter or attribute getter 
+                    declaration and if it is not annotated <literal>shared</literal>.</para>
+                </listitem>
+               <listitem>
+                    <para>A parameter of a class is a local if it is not used inside a method, 
+                    attribute setter, or attribute getter declaration.</para>
+                </listitem>
+                <listitem>
+                    <para>A parameter of a method is a local.</para>
+                </listitem>
+            </itemizedlist-->
+            
+            <para>A reference belonging to a class may be annotated <literal>late</literal>, in 
+            which case the initializer of the class is not required to initialize its persistent
+            value. Furthermore, a self-reference to an instance being initialized may be
+            assigned to the reference. If the reference is evaluated before it is initialized,
+            or before its value has been completely initialized, an exception is thrown.</para>
         
         </section>
         
@@ -2195,36 +2205,36 @@ assign name {
         <section id="valuetypeinference">
             <title>Value type inference</title>
         
-        <para>A block-local value with a block, specifier, or lazy specifier may be declared 
-        using the keyword <literal>value</literal> in place of the explicit type declaration. 
-        Then the value's type is inferred:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if the value is a reference with a specifier, then the type of the 
-                value is the type of the specified expression,</para>
-            </listitem>
-            <listitem>
-                <para>if the value is a getter, and the getter implementation is a lazy 
-                specifier, then the type of the value is the type of the specified 
-                expression,</para>
-            </listitem>
-            <listitem>
-                <para>if the value is a getter, and the getter implementation is a block, 
-                and the getter contains no <literal>return</literal> directive, then the 
-                type of the value is <literal>Bottom</literal> (this is the case where 
-                the getter always terminates in a <literal>throw</literal> directive), or</para>
-            </listitem>
-            <listitem>
-                <para>otherwise, the type of the value is the union of all returned 
-                expression types of <literal>return</literal> directives of the getter 
-                body.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>value names = List&lt;String&gt;();</programlisting>
-        <programlisting>variable value count = 0;</programlisting>
-        <programlisting>value name => Name(firstName, initial, lastName);</programlisting>
+            <para>A block-local value with a block, specifier, or lazy specifier may be declared 
+            using the keyword <literal>value</literal> in place of the explicit type declaration. 
+            Then the value's type is inferred:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if the value is a reference with a specifier, then the type of the 
+                    value is the type of the specified expression,</para>
+                </listitem>
+                <listitem>
+                    <para>if the value is a getter, and the getter implementation is a lazy 
+                    specifier, then the type of the value is the type of the specified 
+                    expression,</para>
+                </listitem>
+                <listitem>
+                    <para>if the value is a getter, and the getter implementation is a block, 
+                    and the getter contains no <literal>return</literal> directive, then the 
+                    type of the value is <literal>Bottom</literal> (this is the case where 
+                    the getter always terminates in a <literal>throw</literal> directive), or</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, the type of the value is the union of all returned 
+                    expression types of <literal>return</literal> directives of the getter 
+                    body.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting>value names = List&lt;String&gt;();</programlisting>
+            <programlisting>variable value count = 0;</programlisting>
+            <programlisting>value name => Name(firstName, initial, lastName);</programlisting>
         
         </section>
         
@@ -2239,7 +2249,7 @@ assign name {
             value.</para>
             
             <para>A forward-declared value may later be specified using a specification
-            statement.</para>
+            statement, as defined in <xref linkend="specificationstatements"/>.</para>
             
             <itemizedlist>
                 <listitem>

@@ -204,7 +204,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     We might use it for:</para>
     <itemizedlist>
     <listitem>annotations available at compile time, and even perhaps</listitem>
-    <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
+    <listitem>specifier expressions in declaration section of class body.</listitem>
     </itemizedlist>
     <para>For example we could follow Java's very restrictive model, and say 
     that a constant expression must be anything formed from literals, metamodel 
@@ -640,6 +640,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <para>For a variadic parameter of type <literal>T*</literal>, the type 
                 of every corresponding argument expression must be assignable to 
                 <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>For a variadic parameter of type <literal>T+</literal>, the type 
+                of every corresponding argument expression must be assignable to 
+                <literal>T</literal>, and there must be at least one argument.</para>
             </listitem>
         </itemizedlist>
         
