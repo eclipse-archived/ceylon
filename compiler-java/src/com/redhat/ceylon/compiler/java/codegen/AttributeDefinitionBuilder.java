@@ -20,9 +20,11 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -77,9 +79,20 @@ public class AttributeDefinitionBuilder {
         int typeFlags = 0;
         ProducedTypedReference typedRef = owner.getTypedReference(attrType);
         ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
-        ProducedType nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
-        if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
-            typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
+        ProducedType nonWideningType = null;
+        // FIXME: super temporary hack
+        if(attrType.getContainer() instanceof Declaration
+                && Decl.isAnnotationClass((Declaration) attrType.getContainer())){
+            if(owner.isCeylonMetamodelDeclaration(attrType.getType()))
+                nonWideningType = owner.typeFact().getStringDeclaration().getType();
+            if(owner.isCeylonSequentialMetamodelDeclaration(attrType.getType()))
+                nonWideningType = owner.typeFact().getSequentialType(owner.typeFact().getStringDeclaration().getType());
+        }
+        if(nonWideningType == null){
+            nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
+            if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
+                typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
+            }
         }
         
         this.attrTypedDecl = attrType;

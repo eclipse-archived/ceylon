@@ -629,4 +629,8 @@ public class Decl {
                 || name.equals("java.lang::BooleanArray")
                 || name.equals("java.lang::CharArray");
     }
+
+    public static boolean isAnnotationClassOrConstructor(Declaration container) {
+        return isAnnotationClass(container) || isAnnotationConstructor(container);
+    }
 }

@@ -1028,6 +1028,14 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact().getDefiniteType(type).getDeclaration() == typeFact.getSequentialDeclaration();
     }
     
+    boolean isCeylonMetamodelDeclaration(ProducedType type) {
+        return type.isExactly(typeFact().getMetamodelDeclarationDeclaration().getType());
+    }
+
+    boolean isCeylonSequentialMetamodelDeclaration(ProducedType type) {
+        return type.isExactly(typeFact().getSequentialType(typeFact().getMetamodelDeclarationDeclaration().getType()));
+    }
+
     /*
      * Java Type creation
      */

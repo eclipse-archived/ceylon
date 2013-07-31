@@ -75,10 +75,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -258,7 +260,8 @@ public class ClassTransformer extends AbstractTransformer {
                     && !isCeylonString(parameterType)) {
                 // Convert from array to Sequential
                 ProducedType iteratedType = typeFact().getIteratedType(parameterType);
-                if (isCeylonBasicType(iteratedType)) {
+                if (isCeylonBasicType(iteratedType)
+                        || isCeylonMetamodelDeclaration(iteratedType)) {
                     argExpr = makeUtilInvocation("sequentialInstanceBoxed", 
                             List.<JCExpression>of(annoAttr), 
                             null);
@@ -442,6 +445,14 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)term;
             AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(expressionGen(), invocation);
             defaultLiteral = visitor.transform(invocation);
+        } else if (term instanceof Tree.MemberLiteral) {
+            // FIXME: this is all temporary
+            defaultLiteral = make().Literal(((Tree.MemberLiteral) term).getDeclaration().getQualifiedNameString());
+        } else if (term instanceof Tree.TypeLiteral) {
+            // FIXME: this is all temporary
+            Tree.TypeLiteral tl = (TypeLiteral) term;
+            if(tl.getType() != null && tl.getType().getTypeModel() != null)
+                defaultLiteral = make().Literal(tl.getType().getTypeModel().resolveAliases().getProducedTypeQualifiedName());
         }
         if (defaultLiteral == null) {
             defaultLiteral = makeErroneous(p, "Unsupported defaulted parameter expression");
@@ -473,7 +484,8 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean isMetamodelReference(ProducedType parameterType) {
         // TODO Handle metamodel references properly
-        return typeFact().getAnythingDeclaration().getType().isExactly(parameterType);
+        return isCeylonMetamodelDeclaration(parameterType)
+                || typeFact().getAnythingDeclaration().getType().isExactly(parameterType);
     }
 
 
@@ -628,8 +640,8 @@ public class ClassTransformer extends AbstractTransformer {
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel()));
             at(param);
 
-            transformParameter(classBuilder, param.getDeclarationModel(),
-            expressionGen().transform(param.getAnnotationList()));
+            transformParameter(classBuilder, paramModel,
+                    expressionGen().transform(param.getAnnotationList()));
             makeAttributeForValueParameter(classBuilder, paramModel);
             makeMethodForFunctionalParameter(classBuilder, paramModel);
             
@@ -745,6 +757,13 @@ public class ClassTransformer extends AbstractTransformer {
     JCExpression transformClassParameterType(Parameter decl) {
         Assert.that(decl.getContainer() instanceof Class);
         JCExpression type;
+        // FIXME: super temporary hack
+        if(Decl.isAnnotationClass((Class) decl.getContainer())){
+            if(isCeylonMetamodelDeclaration(decl.getType()))
+                return makeJavaType(typeFact().getStringDeclaration().getType());
+            if(isCeylonSequentialMetamodelDeclaration(decl.getType()))
+                return makeJavaType(typeFact().getSequentialType(typeFact().getStringDeclaration().getType()));
+        }
         MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
         if (Decl.isValue(attr)) {
             ProducedTypedReference typedRef = getTypedReference(attr);
@@ -2345,11 +2364,22 @@ public class ClassTransformer extends AbstractTransformer {
                 if (useDefault) {
                     JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
                     Naming.SyntheticName varName = naming.temp("$"+parameterModel.getName()+"$");
-                    final ProducedType paramType;
-                    if (parameterModel instanceof FunctionalParameter) {
-                        paramType = typeFact().getCallableType(parameterModel.getType());
-                    } else {
-                        paramType = parameterModel.getType();
+                    ProducedType paramType = null;
+                    // FIXME: super temporary hack
+                    if(parameterModel.getContainer() instanceof Declaration
+                            && Decl.isAnnotationClassOrConstructor((Declaration) parameterModel.getContainer())){
+                        if(isCeylonMetamodelDeclaration(parameterModel.getType())){
+                            paramType = typeFact().getStringDeclaration().getType();
+                        }else if(isCeylonSequentialMetamodelDeclaration(parameterModel.getType())){
+                            paramType = typeFact().getSequentialType(typeFact().getStringDeclaration().getType());
+                        }
+                    }
+                    if(paramType == null){
+                        if (parameterModel instanceof FunctionalParameter) {
+                            paramType = typeFact().getCallableType(parameterModel.getType());
+                        } else {
+                            paramType = parameterModel.getType();
+                        }
                     }
                     vars.append(makeVar(varName, 
                             makeJavaType(paramType), 
@@ -2864,13 +2894,36 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         // The method's return type is the same as the parameter's type
-        methodBuilder.resultType(parameter, parameter.getType(), 0);
+        ProducedType parameterType = null;
+        // FIXME: super temporary hack
+        if(container != null && Decl.isAnnotationClassOrConstructor(container)){
+            if(isCeylonMetamodelDeclaration(parameter.getType())){
+                parameterType = typeFact().getStringDeclaration().getType();
+                // make sure we go unboxed
+                parameter.setUnboxed(true);
+            }
+            else if(isCeylonSequentialMetamodelDeclaration(parameter.getType()))
+                parameterType = typeFact().getSequentialType(typeFact().getStringDeclaration().getType());
+        }
+        if(parameterType == null)
+            parameterType = parameter.getType();
+
+        methodBuilder.resultType(parameter, parameterType, 0);
 
         // The implementation of the method
         if (noBody) {
             methodBuilder.noBody();
         } else {
-            JCExpression expr = expressionGen().transform(currentParam);
+            JCExpression expr;
+            // FIXME: super temporary hack
+            if(currentParam.getDefaultArgument() != null
+                    && container instanceof com.redhat.ceylon.compiler.typechecker.model.Class
+                    && Decl.isAnnotationClass((com.redhat.ceylon.compiler.typechecker.model.Class)container)
+                    && (isCeylonMetamodelDeclaration(parameter.getType())
+                            || isCeylonSequentialMetamodelDeclaration(parameter.getType())))
+                expr = transformAnnotationParameterDefault(currentParam);
+            else
+                expr = expressionGen().transform(currentParam);
             JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
             methodBuilder.block(body);
         }
