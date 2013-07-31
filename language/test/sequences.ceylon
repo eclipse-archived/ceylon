@@ -555,5 +555,8 @@ shared void sequences() {
     check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
     check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}, "Sequence<String>.collect");
     
-    
+    check([1,2,3,4,5].longerThan(4), "Sequence.longerThan");
+    check(![1,2,3].longerThan(3), "Sequence.longerThan");
+    check([1,2,3,4,5].shorterThan(6), "Sequence.shorterThan");
+    check(![1,2,3].shorterThan(3), "Sequence.shorterThan");
 }

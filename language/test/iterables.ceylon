@@ -224,6 +224,9 @@ void testIterables() {
     } else { fail("Iterable.group 6"); }
     check(gr2.defines(false), "Iterable.group 8");*/
 
+    check({for (i in 1..10) i }.shorterThan(11), "Iterable.shorterThan");
+    check({for (i in 1..10) i }.longerThan(9), "Iterable.longerThan");
+
 	// string
 	value ia = {};
 	value ib = { 1, 2, 3, 4, 5 };
