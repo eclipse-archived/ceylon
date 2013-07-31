@@ -7,6 +7,10 @@ class ClassDefaultMemberClassSpecifier implements .com.redhat.ceylon.compiler.ja
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other;
     
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier getOther$priv() {
+        return other;
+    }
+    
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member Member$new() {
         return new Member();
     }
@@ -27,7 +31,7 @@ class ClassDefaultMemberClassSpecifier implements .com.redhat.ceylon.compiler.ja
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2$priv() {
-        return other.Member$new();
+        return getOther$priv().Member$new();
     }
     
     @.java.lang.Override

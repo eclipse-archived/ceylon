@@ -9,6 +9,10 @@ abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.com
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final T t;
     
+    private final T getT$priv() {
+        return t;
+    }
+    
     public final void notRefinable() {
     }
     
@@ -17,7 +21,7 @@ abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.com
     }
     
     public T getDefaultGetterT() {
-        return t;
+        return getT$priv();
     }
     
     public .java.lang.Object defaultReturnsvoidImplicit() {
@@ -37,7 +41,7 @@ abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.com
     }
     
     public T defaultReturnsT() {
-        return t;
+        return getT$priv();
     }
     
     public abstract .java.lang.Object getFormalGetterAnything();

@@ -69,12 +69,20 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         this.n1 = 0L;
         this.n2 = 0L;
         this.i1 = 0L;
-        this.boxedN1 = initN;
-        this.boxedN2 = initN;
-        this.boxedI1 = initI;
+        this.boxedN1 = getInitN$priv();
+        this.boxedN2 = getInitN$priv();
+        this.boxedI1 = getInitI$priv();
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getInitN$priv() {
+        return initN;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getInitI$priv() {
+        return initI;
+    }
     private long n1;
     
     public final long getN1() {
@@ -725,9 +733,9 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     private final void boxedLocals$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n1 = initN;
-        .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n2 = initN;
-        .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger i1 = initI;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n1 = getInitN$priv();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger n2 = getInitN$priv();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger i1 = getInitI$priv();
         (
             let
             {

@@ -9,6 +9,10 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final T t;
     
+    private final T getT$priv() {
+        return t;
+    }
+    
     private final void unary$priv(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m_ {
@@ -131,11 +135,11 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
             }
         }
         final m_ m = new m_();
-        m.m(t);
+        m.m(getT$priv());
         (
             let
             {
-                T $arg$5$0 = t;
+                T $arg$5$0 = getT$priv();
             }
             returning m.m($arg$5$0);
         );

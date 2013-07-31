@@ -15,9 +15,13 @@ class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> bar;
     
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getBar$priv() {
+        return bar;
+    }
+    
     private final void m$priv(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified c) {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.bar);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.bar);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.getBar$priv());
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.getBar$priv());
     }
     
     @.java.lang.Override

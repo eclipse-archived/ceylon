@@ -7,7 +7,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
         this.y = y;
         final .java.lang.String $x$38;
         .java.lang.Object $x$37 = null;
-        if (($x$37 = x) instanceof .ceylon.language.String) {
+        if (($x$37 = getX$priv()) instanceof .ceylon.language.String) {
             $x$38 = ((.ceylon.language.String)$x$37).toString();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
         .ceylon.language.String.terminal($x$38, 1L);
@@ -19,6 +19,10 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
         .ceylon.language.String.terminal($y$41, 1L);
     }
     private final .java.lang.Object x;
+    
+    private final .java.lang.Object getX$priv() {
+        return x;
+    }
     private final .java.lang.Object y;
     
     private final .java.lang.Object getY$priv() {
@@ -35,7 +39,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
             void m_local() {
                 final .java.lang.String $x$2;
                 .java.lang.Object $x$1 = null;
-                if (($x$1 = x) instanceof .ceylon.language.String) {
+                if (($x$1 = getX$priv()) instanceof .ceylon.language.String) {
                     $x$2 = ((.ceylon.language.String)$x$1).toString();
                 } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
                 .ceylon.language.String.terminal($x$2, 1L);
@@ -72,7 +76,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
         final masking_local_ masking_local = new masking_local_();
         final .java.lang.String $x$14;
         .java.lang.Object $x$13 = null;
-        if (($x$13 = x) instanceof .ceylon.language.String) {
+        if (($x$13 = getX$priv()) instanceof .ceylon.language.String) {
             $x$14 = ((.ceylon.language.String)$x$13).toString();
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
         .ceylon.language.String.terminal($x$14, 1L);

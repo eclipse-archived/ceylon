@@ -9,6 +9,10 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     private final X init;
     
+    private final X getInit$priv() {
+        return init;
+    }
+    
     public final <Y>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y) {
         (
             let
@@ -21,7 +25,7 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public final <Y>X m$x(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y) {
-        return init;
+        return getInit$priv();
     }
     
     public final <Y>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final Y y, final X x) {

@@ -5,7 +5,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1114(final boolean test) {
         this.test = test;
         .com.redhat.ceylon.compiler.java.language.GetterLong j$getter_;
-        if (test) {
+        if (getTest$priv()) {
             j$getter_ = (
                 let
                 {
@@ -40,7 +40,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 returning new j$getter_();
             );
         }
-        if (test) {
+        if (getTest$priv()) {
             g_ = (
                 let
                 {
@@ -77,6 +77,10 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     private final boolean test;
+    
+    private final boolean getTest$priv() {
+        return test;
+    }
     private final .com.redhat.ceylon.compiler.java.language.GetterDouble g_;
     
     @.ceylon.language.Shared$annotation
@@ -86,7 +90,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final void foo$priv() {
         .com.redhat.ceylon.compiler.java.language.GetterLong i$getter_;
-        if (test) {
+        if (getTest$priv()) {
             i$getter_ = (
                 let
                 {
@@ -183,7 +187,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                     
                     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114 $get() {
-                        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114(test);
+                        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1114(getTest$priv());
                     }
                 }
             }

@@ -8,8 +8,12 @@ class InitializerParamAccessWithExtends extends .java.lang.Object implements .co
     }
     private final boolean b;
     
-    private final boolean m$priv() {
+    private final boolean getB$priv() {
         return b;
+    }
+    
+    private final boolean m$priv() {
+        return getB$priv();
     }
     
     @.java.lang.Override
@@ -36,8 +40,12 @@ class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.jav
     }
     private final boolean b;
     
-    private final boolean m$priv() {
+    private final boolean getB$priv() {
         return b;
+    }
+    
+    private final boolean m$priv() {
+        return getB$priv();
     }
     
     @.java.lang.Override

@@ -7,6 +7,10 @@ class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compile
     }
     private final .java.lang.String s;
     
+    private final .java.lang.String getS$priv() {
+        return s;
+    }
+    
     private final .java.lang.String m$priv() {
         return (
             let
@@ -18,7 +22,7 @@ class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compile
     }
     
     private final .java.lang.String m$t() {
-        return s;
+        return getS$priv();
     }
     
     private final .java.lang.String m$priv(final .java.lang.String t) {

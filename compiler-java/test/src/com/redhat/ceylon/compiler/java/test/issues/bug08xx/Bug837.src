@@ -21,6 +21,10 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement;
     private final long length;
+    
+    private final long getLength$priv() {
+        return length;
+    }
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
     
     @.java.lang.Override
@@ -271,12 +275,12 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final .ceylon.language.Integer getLastIndex() {
-        return .ceylon.language.Integer.instance(length - 1L);
+        return .ceylon.language.Integer.instance(getLength$priv() - 1L);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> getRest() {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, getFirst().getSuccessor(), length - 1L);
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reifiedElement, getFirst().getSuccessor(), getLength$priv() - 1L);
     }
     
     @.java.lang.Override

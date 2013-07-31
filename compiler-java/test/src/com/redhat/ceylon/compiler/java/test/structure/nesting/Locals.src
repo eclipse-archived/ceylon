@@ -86,6 +86,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             }
             private final long j;
             
+            private final long getJ$priv() {
+                return j;
+            }
+            
             final class LCI$impl {
                 
                 LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI $this) {
@@ -94,7 +98,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI $this;
                 
                 public long m() {
-                    return mLocal$priv() + i + j;
+                    return mLocal$priv() + i + getJ$priv();
                 }
             }
             
@@ -120,6 +124,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this = new LC.LCI$impl(this);
                 }
                 private final long k;
+                
+                private final long getK$priv() {
+                    return k;
+                }
                 protected final LC.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this;
                 
                 @.java.lang.Override
@@ -129,7 +137,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 
                 @.java.lang.Override
                 public final long m() {
-                    return mLocal$priv() + i + j + k;
+                    return mLocal$priv() + i + getJ$priv() + getK$priv();
                 }
                 
                 @.java.lang.Override
@@ -185,6 +193,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this = LI$impl.this.new LII$impl(this);
                 }
                 private final long j;
+                
+                private final long getJ$priv() {
+                    return j;
+                }
                 protected final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;
                 
                 @.java.lang.Override
@@ -194,7 +206,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 
                 @.java.lang.Override
                 public final long m() {
-                    return mLocal$priv() + i + j;
+                    return mLocal$priv() + i + getJ$priv();
                 }
                 
                 @.java.lang.Override
@@ -226,6 +238,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             this.i = i;
         }
         private final long i;
+        
+        private final long getI$priv() {
+            return i;
+        }
         
         private final void local2$priv() {
             (
@@ -270,6 +286,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 }
                 private final long k;
                 
+                private final long getK$priv() {
+                    return k;
+                }
+                
                 final class LCI$impl {
                     
                     LCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI $this) {
@@ -278,7 +298,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI $this;
                     
                     public long m() {
-                        return mLocal$priv() + i + j + k;
+                        return mLocal$priv() + getI$priv() + j + getK$priv();
                     }
                 }
                 
@@ -304,6 +324,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                         this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this = new CL.LCI$impl(this);
                     }
                     private final long l;
+                    
+                    private final long getL$priv() {
+                        return l;
+                    }
                     protected final CL.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this;
                     
                     @.java.lang.Override
@@ -313,7 +337,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     
                     @.java.lang.Override
                     public final long m() {
-                        return mLocal$priv() + i + j + k + l;
+                        return mLocal$priv() + getI$priv() + j + getK$priv() + getL$priv();
                     }
                     
                     @.java.lang.Override
@@ -385,6 +409,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 }
                 private final long j;
                 
+                private final long getJ$priv() {
+                    return j;
+                }
+                
                 final class ICI$impl {
                     
                     ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI $this) {
@@ -393,7 +421,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI $this;
                     
                     public long m() {
-                        return mLocal$priv() + i + j;
+                        return mLocal$priv() + i + getJ$priv();
                     }
                 }
                 
@@ -419,6 +447,10 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                         this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this = new IL.ICI$impl(this);
                     }
                     private final long k;
+                    
+                    private final long getK$priv() {
+                        return k;
+                    }
                     protected final IL.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this;
                     
                     @.java.lang.Override
@@ -428,7 +460,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     
                     @.java.lang.Override
                     public final long m() {
-                        return mLocal$priv() + i + j + k;
+                        return mLocal$priv() + i + getJ$priv() + getK$priv();
                     }
                     
                     @.java.lang.Override

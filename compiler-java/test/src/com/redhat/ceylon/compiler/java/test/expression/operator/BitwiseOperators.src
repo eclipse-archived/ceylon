@@ -91,12 +91,20 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         this.n1 = 0L;
         this.n2 = 0L;
         this.i1 = 0L;
-        this.boxedN1 = initN;
-        this.boxedN2 = initN;
-        this.boxedI1 = initI;
+        this.boxedN1 = getInitN$priv();
+        this.boxedN2 = getInitN$priv();
+        this.boxedI1 = getInitI$priv();
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitN$priv() {
+        return initN;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitI$priv() {
+        return initI;
+    }
     private long n1;
     
     public final long getN1() {
@@ -325,9 +333,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     private final void boxedLocals$priv() {
-        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = initN;
-        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = initN;
-        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = initI;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = getInitN$priv();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = getInitN$priv();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = getInitI$priv();
         i1 = n1.getNot();
         n1 = n1.and(n2);
         i1 = n1.or(n2);

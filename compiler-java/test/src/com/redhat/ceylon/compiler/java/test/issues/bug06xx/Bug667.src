@@ -28,13 +28,17 @@ class Bug667BottomClass extends .com.redhat.ceylon.compiler.java.test.issues.bug
     }
     private final .java.lang.Object n;
     
+    private final .java.lang.Object getN$priv() {
+        return n;
+    }
+    
     @.java.lang.Override
     public final .ceylon.language.String getGet() {
-        return (.ceylon.language.String)n;
+        return (.ceylon.language.String)getN$priv();
     }
     
     public final .ceylon.language.String perhaps() {
-        return (.ceylon.language.String)n;
+        return (.ceylon.language.String)getN$priv();
     }
     
     @.java.lang.Override
@@ -75,6 +79,10 @@ class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedNada;
     private final Nada n;
+    
+    private final Nada getN$priv() {
+        return n;
+    }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
     
     @.java.lang.Override
@@ -84,7 +92,7 @@ class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     public final .ceylon.language.String getGet() {
-        return (.ceylon.language.String)n;
+        return (.ceylon.language.String)getN$priv();
     }
     
     @.java.lang.Override

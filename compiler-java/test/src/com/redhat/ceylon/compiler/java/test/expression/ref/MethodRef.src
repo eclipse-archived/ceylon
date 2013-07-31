@@ -1012,8 +1012,12 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         }
         private final .java.lang.String s;
         
+        private final .java.lang.String getS$priv() {
+            return s;
+        }
+        
         public final .java.lang.String m(final .java.lang.String s2) {
-            return new .java.lang.StringBuilder().append("Inner(").append(s).append(").m(").append(s2).append(")").toString();
+            return new .java.lang.StringBuilder().append("Inner(").append(getS$priv()).append(").m(").append(s2).append(")").toString();
         }
         
         @.java.lang.Override

@@ -269,11 +269,16 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(c.<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor));
+                return .ceylon.language.Integer.instance(getC$priv().<.ceylon.language.Integer>method2(.ceylon.language.Integer.$TypeDescriptor));
             }
         };
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass getC$priv() {
+        return c;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this;
     

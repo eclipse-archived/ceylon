@@ -9,6 +9,10 @@ class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.com
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
     private final T tt;
     
+    private final T getTt$priv() {
+        return tt;
+    }
+    
     public <U>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<T>.Member<U> Member$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedU, final T t, final U u) {
         return new Member<U>($reifiedU, t, u);
     }
@@ -31,12 +35,12 @@ class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.com
             let
             {
                 .ceylon.language.Integer $arg$0$1 = .ceylon.language.Integer.instance(1L);
-                T $arg$0$0 = tt;
+                T $arg$0$0 = getTt$priv();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor;
             }
             returning Member$new($arg$0$reified$0, $arg$0$0, $arg$0$1);
         );
-        return Member$new(.ceylon.language.Integer.$TypeDescriptor, tt, .ceylon.language.Integer.instance(1L));
+        return Member$new(.ceylon.language.Integer.$TypeDescriptor, getTt$priv(), .ceylon.language.Integer.instance(1L));
     }
     
     @.java.lang.Override
@@ -53,6 +57,10 @@ class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.co
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedX;
     private final X xx;
+    
+    private final X getXx$priv() {
+        return xx;
+    }
     
     @.java.lang.Override
     public <Y>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub<X>.Member<Y> Member$new(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedY, final X x, final Y y) {
@@ -78,12 +86,12 @@ class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.co
             let
             {
                 .ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("");
-                X $arg$1$0 = xx;
+                X $arg$1$0 = getXx$priv();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor;
             }
             returning Member$new($arg$1$reified$0, $arg$1$0, $arg$1$1);
         );
-        return Member$new(.ceylon.language.String.$TypeDescriptor, xx, .ceylon.language.String.instance(""));
+        return Member$new(.ceylon.language.String.$TypeDescriptor, getXx$priv(), .ceylon.language.String.instance(""));
     }
     
     @.java.lang.Override

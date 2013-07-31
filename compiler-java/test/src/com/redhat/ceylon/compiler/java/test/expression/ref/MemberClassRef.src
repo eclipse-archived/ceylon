@@ -36,9 +36,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
         private final .java.lang.String s;
         
+        private final .java.lang.String getS$priv() {
+            return s;
+        }
+        
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("unary(").append(s).append(")").toString();
+            return new .java.lang.StringBuilder().append("unary(").append(getS$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -58,11 +62,19 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s2 = s2;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("binary(").append(s1).append(", ").append(s2).append(")").toString();
+            return new .java.lang.StringBuilder().append("binary(").append(getS1$priv()).append(", ").append(getS2$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -83,12 +95,24 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s3 = s3;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .java.lang.String s3;
+        
+        private final .java.lang.String getS3$priv() {
+            return s3;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("ternary(").append(s1).append(", ").append(s2).append(", ").append(s3).append(")").toString();
+            return new .java.lang.StringBuilder().append("ternary(").append(getS1$priv()).append(", ").append(getS2$priv()).append(", ").append(getS3$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -110,13 +134,29 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s4 = s4;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .java.lang.String s3;
+        
+        private final .java.lang.String getS3$priv() {
+            return s3;
+        }
         private final .java.lang.String s4;
+        
+        private final .java.lang.String getS4$priv() {
+            return s4;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("nary(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append(")").toString();
+            return new .java.lang.StringBuilder().append("nary(").append(getS1$priv()).append(", ").append(getS2$priv()).append(", ").append(getS3$priv()).append(", ").append(getS4$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -243,9 +283,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
         private final .java.lang.String s;
         
+        private final .java.lang.String getS$priv() {
+            return s;
+        }
+        
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("unaryDefaulted(").append(s).append(")").toString();
+            return new .java.lang.StringBuilder().append("unaryDefaulted(").append(getS$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -294,11 +338,19 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s2 = s2;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("binaryDefaulted(").append(s1).append(", ").append(s2).append(")").toString();
+            return new .java.lang.StringBuilder().append("binaryDefaulted(").append(getS1$priv()).append(", ").append(getS2$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -364,12 +416,24 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s3 = s3;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .java.lang.String s3;
+        
+        private final .java.lang.String getS3$priv() {
+            return s3;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("ternaryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(")").toString();
+            return new .java.lang.StringBuilder().append("ternaryDefaulted(").append(getS1$priv()).append(", ").append(getS2$priv()).append(", ").append(getS3$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -453,13 +517,29 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s4 = s4;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .java.lang.String s3;
+        
+        private final .java.lang.String getS3$priv() {
+            return s3;
+        }
         private final .java.lang.String s4;
+        
+        private final .java.lang.String getS4$priv() {
+            return s4;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("naryDefaulted(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append(")").toString();
+            return new .java.lang.StringBuilder().append("naryDefaulted(").append(getS1$priv()).append(", ").append(getS2$priv()).append(", ").append(getS3$priv()).append(", ").append(getS4$priv()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -686,9 +766,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
         
+        private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv() {
+            return s;
+        }
+        
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("nullarySequenced(").append(s.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("nullarySequenced(").append(getS$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -722,11 +806,19 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s = s;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
+        
+        private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv() {
+            return s;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("unarySequenced(").append(s1).append("; ").append(s.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("unarySequenced(").append(getS1$priv()).append("; ").append(getS$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -761,12 +853,24 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s = s;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
+        
+        private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv() {
+            return s;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("binarySequenced(").append(s1).append(", ").append(s2).append("; ").append(s.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("binarySequenced(").append(getS1$priv()).append(", ").append(getS2$priv()).append("; ").append(getS$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -802,13 +906,29 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s = s;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .java.lang.String s3;
+        
+        private final .java.lang.String getS3$priv() {
+            return s3;
+        }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
+        
+        private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv() {
+            return s;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("ternarySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append("; ").append(s.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("ternarySequenced(").append(getS1$priv()).append(", ").append(getS2$priv()).append(", ").append(getS3$priv()).append("; ").append(getS$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -845,14 +965,34 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             this.s = s;
         }
         private final .java.lang.String s1;
+        
+        private final .java.lang.String getS1$priv() {
+            return s1;
+        }
         private final .java.lang.String s2;
+        
+        private final .java.lang.String getS2$priv() {
+            return s2;
+        }
         private final .java.lang.String s3;
+        
+        private final .java.lang.String getS3$priv() {
+            return s3;
+        }
         private final .java.lang.String s4;
+        
+        private final .java.lang.String getS4$priv() {
+            return s4;
+        }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
+        
+        private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv() {
+            return s;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("narySequenced(").append(getS1$priv()).append(", ").append(getS2$priv()).append(", ").append(getS3$priv()).append(", ").append(getS4$priv()).append("; ").append(getS$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -1074,9 +1214,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1;
         private final T1 s;
         
+        private final T1 getS$priv() {
+            return s;
+        }
+        
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("unary(").append(s.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("unary(").append(getS$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -1100,11 +1244,19 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT1;
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2;
         private final T1 s1;
+        
+        private final T1 getS1$priv() {
+            return s1;
+        }
         private final T2 s2;
+        
+        private final T2 getS2$priv() {
+            return s2;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("binary(").append(s1.toString()).append(", ").append(s2.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("binary(").append(getS1$priv().toString()).append(", ").append(getS2$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -1131,12 +1283,24 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT2;
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT3;
         private final T1 s1;
+        
+        private final T1 getS1$priv() {
+            return s1;
+        }
         private final T2 s2;
+        
+        private final T2 getS2$priv() {
+            return s2;
+        }
         private final T3 s3;
+        
+        private final T3 getS3$priv() {
+            return s3;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("ternary(").append(s1.toString()).append(", ").append(s2.toString()).append(", ").append(s3.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("ternary(").append(getS1$priv().toString()).append(", ").append(getS2$priv().toString()).append(", ").append(getS3$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -1166,13 +1330,29 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT3;
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT4;
         private final T1 s1;
+        
+        private final T1 getS1$priv() {
+            return s1;
+        }
         private final T2 s2;
+        
+        private final T2 getS2$priv() {
+            return s2;
+        }
         private final T3 s3;
+        
+        private final T3 getS3$priv() {
+            return s3;
+        }
         private final T4 s4;
+        
+        private final T4 getS4$priv() {
+            return s4;
+        }
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return new .java.lang.StringBuilder().append("nary(").append(s1.toString()).append(", ").append(s2.toString()).append(", ").append(s3.toString()).append(", ").append(s4.toString()).append(")").toString();
+            return new .java.lang.StringBuilder().append("nary(").append(getS1$priv().toString()).append(", ").append(getS2$priv().toString()).append(", ").append(getS3$priv().toString()).append(", ").append(getS4$priv().toString()).append(")").toString();
         }
         
         @.java.lang.Override
@@ -1318,6 +1498,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
         private final .java.lang.String s;
         
+        private final .java.lang.String getS$priv() {
+            return s;
+        }
+        
         public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Inner.M M$new(final .java.lang.String s2) {
             return new M(s2);
         }
@@ -1329,9 +1513,13 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
             private final .java.lang.String s2;
             
+            private final .java.lang.String getS2$priv() {
+                return s2;
+            }
+            
             @.java.lang.Override
             public final .java.lang.String toString() {
-                return new .java.lang.StringBuilder().append("Inner(").append(s).append(").M(").append(s2).append(")").toString();
+                return new .java.lang.StringBuilder().append("Inner(").append(getS$priv()).append(").M(").append(getS2$priv()).append(")").toString();
             }
             
             @.java.lang.Override

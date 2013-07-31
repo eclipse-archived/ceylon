@@ -9,6 +9,10 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
     }
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings;
+    
+    private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getStrings$priv() {
+        return strings;
+    }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
@@ -175,7 +179,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
-        return strings.iterator();
+        return getStrings$priv().iterator();
     }
     
     @.java.lang.Override
@@ -197,6 +201,10 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
         this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Collection.class, .ceylon.language.String.$TypeDescriptor), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends .ceylon.language.String>>)(.ceylon.language.Cloneable)this);
     }
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings;
+    
+    private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getStrings$priv() {
+        return strings;
+    }
     protected final .ceylon.language.Set$impl<.ceylon.language.String> $ceylon$language$Set$this;
     
     @.java.lang.Override
@@ -401,7 +409,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
-        return strings.iterator();
+        return getStrings$priv().iterator();
     }
     
     @.java.lang.Override

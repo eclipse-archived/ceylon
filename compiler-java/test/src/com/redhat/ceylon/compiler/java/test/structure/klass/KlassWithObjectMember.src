@@ -10,10 +10,14 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     }
     private final .java.lang.String x;
     
+    private final .java.lang.String getX$priv() {
+        return x;
+    }
+    
     final class localobj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private localobj_() {
-            this.f = x;
+            this.f = getX$priv();
         }
         private final .java.lang.String f;
         
@@ -22,7 +26,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
         }
         
         public final .java.lang.String m() {
-            return x;
+            return getX$priv();
         }
         
         @.java.lang.Override
@@ -35,7 +39,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     final class capturedobj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private capturedobj_() {
-            this.f = x;
+            this.f = getX$priv();
         }
         private final .java.lang.String f;
         
@@ -44,7 +48,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
         }
         
         public final .java.lang.String m() {
-            return x;
+            return getX$priv();
         }
         
         @.java.lang.Override
@@ -61,7 +65,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     public final class sharedobj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private sharedobj_() {
-            this.f = x;
+            this.f = getX$priv();
         }
         private final .java.lang.String f;
         
@@ -70,7 +74,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
         }
         
         public final .java.lang.String m() {
-            return x;
+            return getX$priv();
         }
         
         @.java.lang.Override

@@ -7,6 +7,10 @@ class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> strings;
     
+    private final .ceylon.language.Sequential<? extends .ceylon.language.String> getStrings$priv() {
+        return strings;
+    }
+    
     private final .java.lang.String join$priv() {
         return (
             let
@@ -27,7 +31,7 @@ class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return join$priv(strings);
+        return join$priv(getStrings$priv());
     }
     
     @.java.lang.Override

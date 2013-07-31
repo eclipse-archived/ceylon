@@ -7,8 +7,12 @@ class InitializerParamAccess implements .com.redhat.ceylon.compiler.java.runtime
     }
     private final boolean b;
     
-    private final boolean m$priv() {
+    private final boolean getB$priv() {
         return b;
+    }
+    
+    private final boolean m$priv() {
+        return getB$priv();
     }
     
     @.java.lang.Override

@@ -52,6 +52,10 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.attr8 = true;
     }
     private final long i;
+    
+    private final long getI$priv() {
+        return i;
+    }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
     
     private final boolean f() {
@@ -66,12 +70,12 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get1(final .ceylon.language.Integer j) {
-        return .ceylon.language.Integer.instance(i).equals(j) ? .ceylon.language.Boolean.instance(f()) : null;
+        return .ceylon.language.Integer.instance(getI$priv()).equals(j) ? .ceylon.language.Boolean.instance(f()) : null;
     }
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get2(final .ceylon.language.Integer j) {
-        return .ceylon.language.Integer.instance(i).equals(j) ? .ceylon.language.Boolean.instance(f()) : null;
+        return .ceylon.language.Integer.instance(getI$priv()).equals(j) ? .ceylon.language.Boolean.instance(f()) : null;
     }
     
     @.java.lang.Override

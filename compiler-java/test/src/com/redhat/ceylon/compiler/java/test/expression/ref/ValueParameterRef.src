@@ -152,8 +152,12 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         }
         private final .java.lang.String s;
         
+        private final .java.lang.String getS$priv() {
+            return s;
+        }
+        
         public final .java.lang.String getBar() {
-            return new .java.lang.StringBuilder().append("Inner(").append(s).append(")").toString();
+            return new .java.lang.StringBuilder().append("Inner(").append(getS$priv()).append(")").toString();
         }
         
         @.java.lang.Override

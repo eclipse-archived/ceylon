@@ -37,8 +37,12 @@ class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
     }
     private final .java.lang.String s;
     
-    private final .java.lang.String m$priv() {
+    private final .java.lang.String getS$priv() {
         return s;
+    }
+    
+    private final .java.lang.String m$priv() {
+        return getS$priv();
     }
     
     @.java.lang.Override

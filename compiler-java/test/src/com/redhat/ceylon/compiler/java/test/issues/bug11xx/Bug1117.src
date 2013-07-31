@@ -21,9 +21,13 @@ class Bug1117Constant extends .com.redhat.ceylon.compiler.java.test.issues.bug11
     }
     private final long val;
     
+    private final long getVal$priv() {
+        return val;
+    }
+    
     @.java.lang.Override
     public final long evaluate() {
-        return val;
+        return getVal$priv();
     }
     
     @.java.lang.Override
@@ -40,6 +44,10 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
         this.f = f;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree branch;
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getBranch$priv() {
+        return branch;
+    }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
     private final long f(final long i) {
@@ -48,7 +56,7 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
     
     @.java.lang.Override
     public final long evaluate() {
-        return f(branch.evaluate());
+        return f(getBranch$priv().evaluate());
     }
     
     @.java.lang.Override
@@ -66,7 +74,15 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
         this.f = f;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree left;
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getLeft$priv() {
+        return left;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right;
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getRight$priv() {
+        return right;
+    }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
     private final long f(final long i, final long j) {
@@ -75,7 +91,7 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
     
     @.java.lang.Override
     public final long evaluate() {
-        return f(left.evaluate(), right.evaluate());
+        return f(getLeft$priv().evaluate(), getRight$priv().evaluate());
     }
     
     @.java.lang.Override

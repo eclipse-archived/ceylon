@@ -255,6 +255,10 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     }
     private final .java.lang.Object n;
     
+    private final .java.lang.Object getN$priv() {
+        return n;
+    }
+    
     private final void takesTop$priv(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top top) {
     }
     
@@ -388,8 +392,8 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     
     private final void testArithmeticOperators$priv(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric unboxed = (.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1;
-        final .java.lang.Object boxed = this.n;
-        .java.lang.Object n = this.n;
+        final .java.lang.Object boxed = this.getN$priv();
+        .java.lang.Object n = this.getN$priv();
         .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric sync = null;
         sync = ((.ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Summable)n).plus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);

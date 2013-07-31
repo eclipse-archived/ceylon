@@ -37,11 +37,15 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return i == j ? .ceylon.language.Boolean.instance(f()) : null;
+                return getI$priv() == j ? .ceylon.language.Boolean.instance(f()) : null;
             }
         };
     }
     private final long i;
+    
+    private final long getI$priv() {
+        return i;
+    }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
     
     private final boolean f() {
@@ -56,12 +60,12 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get1(final .ceylon.language.Integer k) {
-        return .ceylon.language.Integer.instance(i).equals(k) ? .ceylon.language.Boolean.instance(f()) : null;
+        return .ceylon.language.Integer.instance(getI$priv()).equals(k) ? .ceylon.language.Boolean.instance(f()) : null;
     }
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get2(final .ceylon.language.Integer k) {
-        return .ceylon.language.Integer.instance(i).equals(k) ? .ceylon.language.Boolean.instance(f()) : null;
+        return .ceylon.language.Integer.instance(getI$priv()).equals(k) ? .ceylon.language.Boolean.instance(f()) : null;
     }
     
     @.java.lang.Override
@@ -71,7 +75,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .ceylon.language.Boolean $call(final .java.lang.Object $param$0) {
                 final long j = ((.ceylon.language.Integer)$param$0).longValue();
-                return i == j ? .ceylon.language.Boolean.instance(f()) : null;
+                return getI$priv() == j ? .ceylon.language.Boolean.instance(f()) : null;
             }
         };
     }

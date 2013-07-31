@@ -7,6 +7,10 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     private final .java.lang.String s;
     
+    private final .java.lang.String getS$priv() {
+        return s;
+    }
+    
     public final void print() {
     }
     
@@ -15,7 +19,7 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
         .java.lang.Object $that$1;
         if (($that$1 = that) instanceof .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding) {
             final .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding $that$2 = (.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding)$that$1;
-            return .ceylon.language.String.equals(s, .ceylon.language.String.instance($that$2.s));
+            return .ceylon.language.String.equals(getS$priv(), .ceylon.language.String.instance($that$2.getS$priv()));
         } else {
             return false;
         }
@@ -23,7 +27,7 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final int hashCode() {
-        return .ceylon.language.String.hashCode(s);
+        return .ceylon.language.String.hashCode(getS$priv());
     }
     
     @.java.lang.Override

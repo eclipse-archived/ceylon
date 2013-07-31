@@ -85,9 +85,9 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         this.$reifiedT = $reifiedT;
         this.param = param;
         this.param2 = param2;
-        this.attr = param;
+        this.attr = getParam$priv();
         .ceylon.language.String $s$4;
-        if (($s$4 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).param) != null) {
+        if (($s$4 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam$priv()) != null) {
             final .java.lang.String $s$5 = $s$4.toString();
         }
         .ceylon.language.String $s$7;
@@ -105,7 +105,16 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedT;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object param;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "T|ceylon.language::Null|ceylon.language::String",
+            erased = true)
+    private final .java.lang.Object getParam$priv() {
+        return param;
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object attr;
     
@@ -135,7 +144,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
     public final .java.lang.Object getGetter() {
-        return param;
+        return getParam$priv();
     }
     
     @.java.lang.Override
