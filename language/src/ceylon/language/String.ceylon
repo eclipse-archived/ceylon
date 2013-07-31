@@ -42,7 +42,6 @@
    `span()`, and `segment()` require iteration from the 
    beginning of the string to the given index."""
 by ("Gavin")
-see (`string`)
 shared native final class String(shared {Character*} characters)
         extends Object()
         satisfies List<Character> & 
