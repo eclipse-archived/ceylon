@@ -16,7 +16,7 @@ shared native class Exception(description=null, cause=null) {
     "A message describing the problem. This default 
      implementation returns the description, if any, or 
      otherwise the message of the cause, if any."
-    see (`description`, cause)
+    see (`cause`)
     shared default String message =>
             description else cause?.message else "";
     
