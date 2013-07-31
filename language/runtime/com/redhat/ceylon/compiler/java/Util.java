@@ -546,7 +546,7 @@ public class Util {
     
     public static <T> T checkNull(T t) {
         if(t == null)
-            throw new AssertionException("unexpected null value returned from native call");
+            throw new AssertionException("null value returned from native call not assignable to Object");
         return t;
     }
     
