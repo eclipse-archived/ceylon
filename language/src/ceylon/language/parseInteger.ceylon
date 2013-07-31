@@ -26,8 +26,8 @@ Integer maxRadix = 36;
  for bases 2, 10 and 16 as for `Integer` literal in the
  Ceylon language. For any other bases, no grouping is
  supported."
-//throws(`AssertionException`, 
-//        "if `radix` is not between `minRadix` and `maxRadix`")
+throws(AssertionException, 
+        "if `radix` is not between `minRadix` and `maxRadix`")
 shared Integer? parseInteger(String string, Integer radix = 10) {
     assert (radix >= minRadix, radix <= maxRadix); 
     variable Integer ii = 0;
@@ -189,8 +189,8 @@ Integer? parseDigit(Character digit, Integer radix) {
  `radix` must be between `minRadix` and `maxRadix` included.
  
  If `integer` is negative, returned string will start by character `-`"
-//throws(`AssertionException`, 
-//        "if `radix` is not between `minRadix` and `maxRadix`")
+throws(AssertionException, 
+        "if `radix` is not between `minRadix` and `maxRadix`")
 shared String formatInteger(Integer integer, Integer radix = 10) {
     assert (radix >= minRadix, radix <= maxRadix);
     if (integer == 0) {

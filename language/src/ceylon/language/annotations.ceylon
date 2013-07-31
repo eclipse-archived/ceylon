@@ -7,7 +7,7 @@ import ceylon.language.model.declaration {
     ClassOrInterfaceDeclaration,
     InterfaceDeclaration,
     FunctionDeclaration,
-    Declaration,
+    
     ValueDeclaration} 
 
 "The annotation class for [[annotation]]."
@@ -100,12 +100,12 @@ shared annotation class Doc(shared String description)
  element." 
 shared annotation Doc doc(String description) => Doc(description);
 
-//shared annotation class See(shared Declaration* programElements)
-//        satisfies SequencedAnnotation<See, Annotated> {}
-//
-//"Annotation to specify API references to other related 
-// program elements."
-//shared annotation See see(Declaration* programElements) => See(*programElements);
+shared annotation class See(shared Anything* programElements)
+        satisfies SequencedAnnotation<See, Annotated> {}
+
+"Annotation to specify API references to other related 
+ program elements."
+shared annotation See see(Anything* programElements) => See(*programElements);
 
 "The annotation class for [[by]]."
 shared annotation class Authors(shared String* authors)
@@ -114,12 +114,12 @@ shared annotation class Authors(shared String* authors)
 "Annotation to specify API authors."
 shared annotation Authors by(String* authors) => Authors(*authors);
 
-//shared annotation class ThrownException(shared Declaration type, shared String when) 
-//        satisfies SequencedAnnotation<ThrownException, ValueDeclaration|FunctionDeclaration|ClassDeclaration> {}
-//
-//"Annotation to mark a program element that throws an 
-// exception."
-//shared annotation ThrownException throws(Declaration type, String when="") => ThrownException(type, when);
+shared annotation class ThrownException(shared Anything type, shared String when) 
+        satisfies SequencedAnnotation<ThrownException, ValueDeclaration|FunctionDeclaration|ClassDeclaration> {}
+
+"Annotation to mark a program element that throws an 
+ exception."
+shared annotation ThrownException throws(Anything type, String when="") => ThrownException(type, when);
 
 "The annotation class for [[deprecated]]."
 shared annotation class Deprecation(shared String description)

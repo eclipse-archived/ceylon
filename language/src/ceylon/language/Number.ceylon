@@ -13,16 +13,16 @@ shared interface Number {
     shared formal Boolean negative;
 
     "The number, represented as a `Float`."
-    //throws (`OverflowException`,
-    //       "if the number is too large to be represented 
-    //        as a `Float`")
+    throws (OverflowException,
+           "if the number is too large to be represented 
+            as a `Float`")
     shared formal Float float;
         
     "The number, represented as an `Integer`, after 
      truncation of any fractional part."
-    //throws (`OverflowException`,
-    //       "if the number is too large to be represented 
-    //        as an `Integer`")
+    throws (OverflowException,
+           "if the number is too large to be represented 
+            as an `Integer`")
     shared formal Integer integer;
     
     "The magnitude of the number."
