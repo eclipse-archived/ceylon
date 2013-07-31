@@ -79,6 +79,12 @@ shared interface Sequence<out Element>
     
     shared actual default String string => (super of Sequential<Element>).string;
     
+    shared actual default Boolean shorterThan(Integer length) 
+            => (super of List<Element>).shorterThan(length);
+    
+    shared actual default Boolean longerThan(Integer length) 
+            => (super of List<Element>).longerThan(length);
+    
     //disabled because of compiler bug
     /*shared default actual Element? findLast(
             Boolean selecting(Element elem)) => 

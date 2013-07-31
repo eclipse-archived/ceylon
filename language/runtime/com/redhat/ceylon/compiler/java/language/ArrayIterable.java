@@ -242,12 +242,12 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     
     @Override @Ignore
     public boolean longerThan(long length) {
-        return $ceylon$language$Iterable$this.longerThan(length);
+        return array.length>length;
     }
 
     @Override @Ignore
     public boolean shorterThan(long length) {
-        return $ceylon$language$Iterable$this.shorterThan(length);
+        return array.length<length;
     }
 
     @Override @Ignore

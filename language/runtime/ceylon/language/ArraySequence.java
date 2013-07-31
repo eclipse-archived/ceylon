@@ -622,11 +622,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     @Override @Ignore
     public boolean longerThan(long length) {
-        return $ceylon$language$Iterable$this.longerThan(length);
+        return this.length>length;
     }
     @Override @Ignore
     public boolean shorterThan(long length) {
-        return $ceylon$language$Iterable$this.shorterThan(length);
+        return this.length<length;
     }
     @Override @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {

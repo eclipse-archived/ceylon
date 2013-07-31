@@ -34,6 +34,12 @@ shared interface List<out Element>
     see (`lastIndex`)
     shared actual default Integer size => (lastIndex else -1) + 1;
     
+    shared actual default Boolean shorterThan(Integer length) 
+            => size<length;
+    
+    shared actual default Boolean longerThan(Integer length) 
+            => size>length;
+    
     "The rest of the list, without the first element."
     shared actual formal List<Element> rest;
     
