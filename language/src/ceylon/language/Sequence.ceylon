@@ -85,9 +85,8 @@ shared interface Sequence<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => (super of List<Element>).longerThan(length);
     
-    //disabled because of compiler bug
-    /*shared default actual Element? findLast(
-            Boolean selecting(Element elem)) => 
-            List::findLast(selecting);*/
+    shared default actual Element? findLast(
+            Boolean selecting(Element elem))
+            => (super of List<Element>).findLast(selecting);
     
 }

@@ -125,9 +125,7 @@ shared interface List<out Element>
         return hash;
     }
     
-    //disabled because of compiler bug resolving
-    //ambiguity in Sequence
-    /*shared default actual Element? findLast(
+    shared default actual Element? findLast(
             Boolean selecting(Element elem)) {
         if (exists l=lastIndex) {
             variable value index = l;
@@ -140,7 +138,7 @@ shared interface List<out Element>
             }
         }
         return null;
-    }*/
+    }
     
     "Returns the first element of this `List`, if any."
     shared actual default Element? first => this[0];
