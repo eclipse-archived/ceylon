@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -61,31 +60,42 @@ public class ConstraintVisitor extends Visitor {
             if (term instanceof Tree.Literal) {
                 //ok
             }
-            else if (term instanceof Tree.NegativeOp && ((Tree.NegativeOp) term).getTerm() instanceof Tree.Literal) {
+            else if (term instanceof Tree.NegativeOp && 
+                    ((Tree.NegativeOp) term).getTerm() instanceof Tree.Literal) {
                 //ok
             }
             else if (term instanceof Tree.MetaLiteral) {
                 //ok
             }
             else if (term instanceof Tree.Tuple) {
-                for(PositionalArgument arg : ((Tree.Tuple) term).getSequencedArgument().getPositionalArguments()){
-                    if(arg instanceof Tree.ListedArgument){
-                        Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
-                        ProducedType typeModel = arg.getTypeModel();
-                        checkAnnotationArgument(a, expression, typeModel);
-                    }else{
-                        e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                Tree.SequencedArgument sa = ((Tree.Tuple) term).getSequencedArgument();
+                if (sa!=null) {
+                    for (PositionalArgument arg: sa.getPositionalArguments()) {
+                        if (arg instanceof Tree.ListedArgument){
+                            Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
+                            if (expression!=null) {
+                                checkAnnotationArgument(a, expression, arg.getTypeModel());
+                            }
+                        }
+                        else {
+                            e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                        }
                     }
                 }
             }
             else if (term instanceof Tree.SequenceEnumeration) {
-                for(PositionalArgument arg : ((Tree.SequenceEnumeration) term).getSequencedArgument().getPositionalArguments()){
-                    if(arg instanceof Tree.ListedArgument){
-                        Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
-                        ProducedType typeModel = arg.getTypeModel();
-                        checkAnnotationArgument(a, expression, typeModel);
-                    }else{
-                        e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                Tree.SequencedArgument sa = ((Tree.SequenceEnumeration) term).getSequencedArgument();
+                if (sa!=null) {
+                    for (Tree.PositionalArgument arg: sa.getPositionalArguments()){
+                        if (arg instanceof Tree.ListedArgument){
+                            Tree.Expression expression = ((Tree.ListedArgument) arg).getExpression();
+                            if (expression!=null) {
+                                checkAnnotationArgument(a, expression, arg.getTypeModel());
+                            }
+                        }
+                        else {
+                            e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                        }
                     }
                 }
             }
