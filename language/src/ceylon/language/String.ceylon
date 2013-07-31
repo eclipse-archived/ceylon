@@ -150,14 +150,14 @@ shared native final class String(shared {Character*} characters)
      length. If this string is shorter than the given
      length, return this string. Otherwise return a
      string of the given length."
-    shared native String initial(Integer length);
+    shared native actual String initial(Integer length);
     
     "Select the last characters of the string, 
      returning a string no longer than the given 
      length. If this string is shorter than the given
      length, return this string. Otherwise return a
      string of the given length."
-    shared native String terminal(Integer length);
+    shared native actual String terminal(Integer length);
     
     "The length of the string (the number of characters
      it contains). In the case of the empty string, the

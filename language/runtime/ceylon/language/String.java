@@ -868,10 +868,11 @@ public final class String
         return getTrimmed(result.toString());
     }
 
+    @Override
     @TypeInfo("ceylon.language::String")
-    public java.lang.String initial(@TypeInfo("ceylon.language::Integer")
+    public String initial(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
-    	return initial(value, length);
+    	return instance(initial(value, length));
     }
 
     @Ignore
@@ -886,10 +887,11 @@ public final class String
         }
     }
 
+    @Override
     @TypeInfo("ceylon.language::String")
-    public java.lang.String terminal(@TypeInfo("ceylon.language::Integer")
+    public String terminal(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
-    	return terminal(value, length);
+    	return instance(terminal(value, length));
     }
 
     @Ignore

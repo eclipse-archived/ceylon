@@ -970,6 +970,16 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         return $ceylon$language$List$this.trimTrailing(characters);
     }
     
+    @Override @Ignore
+    public List<? extends Element> initial(long length) {
+        return $ceylon$language$List$this.initial(length);
+    }
+    
+    @Override @Ignore
+    public List<? extends Element> terminal(long length) {
+        return $ceylon$language$List$this.terminal(length);
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

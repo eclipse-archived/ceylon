@@ -291,6 +291,26 @@ shared interface List<out Element>
         return [];
     }
     
+    "Select the first elements of this list, returning a 
+     list no longer than the given length. If this list is 
+     shorter than the given length, return this list. 
+     Otherwise return a list of the given length."
+    shared default List<Element> initial(Integer length)
+            => this[0:length];
+    
+    "Select the last elements of the list, returning a list 
+     no longer than the given length. If this list is 
+     shorter than the given length, return this list. 
+     Otherwise return a list of the given length."
+    shared default List<Element> terminal(Integer length) {
+        if (exists l = lastIndex, length>0) {
+            return this[l-length+1..l];
+        }
+        else {
+            return [];
+        }
+    }
+    
     /*"Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
