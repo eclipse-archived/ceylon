@@ -128,6 +128,14 @@ Array$proto.copyTo = function(other, srcpos, dstpos, length) {
         dstpos++;
     }
 }
+Array$proto.shorterThan = function(len) {
+  return this.size < len;
+}
+Array$proto.shorterThan.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterable']['$m']['shorterThan']};
+Array$proto.longerThan = function(len) {
+  return this.size > len;
+}
+Array$proto.longerThan.$$metamodel$$={mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Iterable']['$m']['longerThan']};
 
 exports.ArrayList=ArrayList;
 exports.array=function(elems, $$$ptypes) {
