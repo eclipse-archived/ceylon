@@ -96,14 +96,14 @@ public class MiscTest extends CompilerTest {
                 filename = filename.substring(0,  filename.lastIndexOf('.'));
                 for (String s : new String[]{"Array", "ArraySequence", "Boolean", "Callable", "Character", "className",
                         "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
-                        "language", "process", "integerRangeByIterable",
+                        "language", "metamodel", "modules", "process", "integerRangeByIterable",
                         "SequenceBuilder", "SequenceAppender", "String", "StringBuilder"}) {
                     if (s.equals(filename)) {
                         return true;
                     }
                 } 
                 if (filename.equals("annotations")
-                        && pathname.getParentFile().getName().equals("metamodel")) {
+                        && pathname.getParentFile().getName().equals("model")) {
                     return true;
                 }
                 return false;
@@ -112,6 +112,9 @@ public class MiscTest extends CompilerTest {
         String[] extras = new String[]{
                 "array", "arrayOfSize", "false", "infinity",
                 "parseFloat", "true", "integerRangeByIterable", "unflatten"
+        };
+        String[] modelExtras = new String[]{
+                "annotations", "modules", "type", "typeLiteral"
         };
         
         for(String pkg : ceylonPackages){
@@ -125,7 +128,7 @@ public class MiscTest extends CompilerTest {
                         if (!exceptions.accept(src)) {
                             sourceFiles.add(src);
                         } else {
-                            addJavaSourceFile(baseName, sourceFiles, javaPkgDir);
+                            addJavaSourceFile(baseName, sourceFiles, javaPkgDir, false);
                         }
                     }
                 }
@@ -134,7 +137,10 @@ public class MiscTest extends CompilerTest {
         // add extra files that are in Java
         File javaPkgDir = new File(javaSourcePath, "ceylon/language");
         for(String extra : extras)
-            addJavaSourceFile(extra, sourceFiles, javaPkgDir);
+            addJavaSourceFile(extra, sourceFiles, javaPkgDir, true);
+        File javaModelPkgDir = new File(javaSourcePath, "ceylon/language/model");
+        for(String extra : modelExtras)
+            addJavaSourceFile(extra, sourceFiles, javaModelPkgDir, true);
         
         String[] javaPackages = {
                 "com/redhat/ceylon/compiler/java", 
@@ -174,11 +180,19 @@ public class MiscTest extends CompilerTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
     }
 
-    private void addJavaSourceFile(String baseName, List<File> sourceFiles, File javaPkgDir) {
+    private void addJavaSourceFile(String baseName, List<File> sourceFiles, File javaPkgDir, boolean required) {
         if (Character.isLowerCase(baseName.charAt(0))) {
-            sourceFiles.add(new File(javaPkgDir, baseName + "_.java"));
+            File file = new File(javaPkgDir, baseName + "_.java");
+            if(file.exists())
+                sourceFiles.add(file);
+            else if(required)
+                Assert.fail("Required file not found: "+file);
         } else {
-            sourceFiles.add(new File(javaPkgDir, baseName + ".java"));
+            File file = new File(javaPkgDir, baseName + "_.java");
+            if(file.exists())
+                sourceFiles.add(file);
+            else if(required)
+                Assert.fail("Required file not found: "+file);
             File impl = new File(javaPkgDir, baseName + "$impl.java");
             if (impl.exists()) {
                 sourceFiles.add(impl);
