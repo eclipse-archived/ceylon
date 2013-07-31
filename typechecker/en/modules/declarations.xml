@@ -185,92 +185,95 @@ TypeConstraints?
         <section id="typeimports">
             <title>Type imports</title>
         
-        <para>An import element that specifies a type name imports the toplevel type 
-        with that name from the given package.</para>
-        
-        <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</synopsis>
-        
-        <para>A compilation unit may not import two types with the same name.</para>
-        
-        <programlisting>import java.util { Set, List, Map }</programlisting>
-        
-        <para>The import element may be followed by a list of nested import elements, 
-        which must specify aliases.</para>
-        
-        <comment><para>Note: as a special exception to the usual language rules, to 
-        support interoperation with Java, a nested import element which references a
-        <literal>static</literal> member of a Java type results in a Ceylon
-        <emphasis>toplevel</emphasis> reference to the <literal>static</literal> member. 
-        In this case, the import element may omit the explicit alias.</para></comment>
+            <para>An import element that specifies a type name imports the toplevel type 
+            with that name from the given package.</para>
+            
+            <synopsis>ImportTypeElement: TypeAlias? TypeName ("{" ImportElements? "}")?</synopsis>
+            
+            <para>A compilation unit may not import two types with the same name.</para>
+            
+            <programlisting>import java.util { Set, List, Map }</programlisting>
+            
+            <para>The import element may be followed by a list of nested import elements, 
+            which must specify aliases.</para>
+            
+            <comment><para>Note: as a special exception to the usual language rules, to 
+            support interoperation with Java, a nested import element which references a
+            <literal>static</literal> member of a Java type results in a Ceylon
+            <emphasis>toplevel</emphasis> reference to the <literal>static</literal> member. 
+            In this case, the import element may omit the explicit alias.</para></comment>
         
         </section>
         
         <section id="methodattributeimports">
             <title>Function and value imports</title>
         
-        <para>An import element that specifies a function or value name imports the 
-        toplevel function or value with that name from the given package.</para>
-        
-        <synopsis>ImportFunctionValueElement: FunctionValueAlias? MemberName</synopsis>
-        
-        <para>A compilation unit may not import two methods or attributes with the same 
-        name.</para>
-        
-        <programlisting>import ceylon.math { sqr, sqrt, e, pi }</programlisting>
+            <para>An import element that specifies a function or value name imports the 
+            toplevel function or value with that name from the given package.</para>
+            
+            <synopsis>ImportFunctionValueElement: FunctionValueAlias? MemberName</synopsis>
+            
+            <para>A compilation unit may not import two methods or attributes with the same 
+            name.</para>
+            
+            <programlisting>import ceylon.math { sqr, sqrt, e, pi }</programlisting>
         
         </section>
         
         <section id="aliasimports">
             <title>Alias imports</title>
                
-        <para>The optional alias clause in a fully-explicit import allows resolution 
-        of cross-namespace declaration name collisions.</para>
-        
-        <synopsis>TypeAlias: TypeName "="</synopsis>
-        
-        <synopsis>FunctionValueAlias: MemberName "="</synopsis>
-        
-        <para>An alias assigns a different name to the imported declaration, or to a
-        member of the imported declaration. This name is visible within the compilation
-        unit in which the <literal>import</literal> statement occurs.</para>
-        
-        <programlisting>import java.util { JavaMap = Map }</programlisting>
-        
-        <programlisting>import my.math { fib = fibonnacciNumber }</programlisting>
-        
-        <programlisting>import java.lang { 
+            <para>The optional alias clause in a fully-explicit import allows resolution 
+            of cross-namespace declaration name collisions.</para>
+            
+            <synopsis>TypeAlias: TypeName "="</synopsis>
+            
+            <synopsis>FunctionValueAlias: MemberName "="</synopsis>
+            
+            <para>An alias assigns a different name to the imported declaration, or to a
+            member of the imported declaration. This name is visible within the compilation
+            unit in which the <literal>import</literal> statement occurs.</para>
+            
+            <programlisting>import java.util { JavaMap = Map }</programlisting>
+            
+            <programlisting>import my.math { fib = fibonnacciNumber }</programlisting>
+            
+            <programlisting>import java.lang { 
     Math { sin, cos, ln=log }, 
     System { sysprops=properties },
     Char=Character { upper=toUpperCase, lower=toLowerCase, char=charValue } 
 }</programlisting>
         
-        <comment><para>TODO: Currently, inheritance of two members with the same name
-        from different unrelated types always results in a compile error. We could let 
-        you resolve this class of problem by aliasing a member of a type you're importing. 
-        This is a bit similar to what Eiffel does, but it would be a lexical thing, 
-        scoped to the compilation unit.</para></comment>
+            <comment><para>TODO: Currently, inheritance of two members with the same name
+            from different unrelated types always results in a compile error. We could let 
+            you resolve this class of problem by aliasing a member of a type you're importing. 
+            This is a bit similar to what Eiffel does, but it would be a lexical thing, 
+            scoped to the compilation unit.</para></comment>
         
         </section>
         
         <section id="wildcardimports">
             <title>Wildcard imports</title>
         
-        <para>The elipsis <literal>...</literal> acts as a wildcard in 
-        <literal>import</literal> statements. An <literal>import</literal> statement 
-        that specifies a wildcard imports all toplevel declarations of the package.</para>
-        
-        <synopsis>ImportWildcard: "..."</synopsis>
-        
-        <para>An <literal>import</literal> statement may specify a list of alias imports 
-        followed by a wildcard. In this case, the alias imports are imported with the 
-        specified names, and all other toplevel declarations are imported with their 
-        declared names.</para>
-        
-        <programlisting>import ceylon.collection { ... }</programlisting>
-        
-        <programlisting>import my.math { fib = fibonnacciNumber, ... }</programlisting>
-                
-        <comment><para>Note: overuse of wildcard imports is discouraged.</para></comment>
+            <para>The elipsis <literal>...</literal> acts as a wildcard in 
+            <literal>import</literal> statements. An <literal>import</literal> statement 
+            that specifies a wildcard imports every toplevel declaration of the imported 
+            package, except for any declaration whose name collides with the name of a 
+            toplevel declaration in the compilation unit in which the <literal>import</literal> 
+            statement appears.</para>
+            
+            <synopsis>ImportWildcard: "..."</synopsis>
+            
+            <para>An <literal>import</literal> statement may specify a list of alias imports 
+            followed by a wildcard. In this case, the alias imports are imported with the 
+            specified names, and all other toplevel declarations are imported with their 
+            declared names.</para>
+            
+            <programlisting>import ceylon.collection { ... }</programlisting>
+            
+            <programlisting>import my.math { fib = fibonnacciNumber, ... }</programlisting>
+                    
+            <comment><para>Note: overuse of wildcard imports is discouraged.</para></comment>
         
         </section>
         
