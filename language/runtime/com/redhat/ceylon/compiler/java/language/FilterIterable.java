@@ -1,26 +1,21 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Boolean;
-import ceylon.language.Category$impl;
-import ceylon.language.Container$impl;
-import ceylon.language.Iterable$impl;
-import ceylon.language.Iterator$impl;
-import ceylon.language.Null;
 import ceylon.language.Callable;
+import ceylon.language.Category$impl;
 import ceylon.language.Comparison;
+import ceylon.language.Container$impl;
 import ceylon.language.Entry;
 import ceylon.language.Finished;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
-import ceylon.language.Map;
-import ceylon.language.Sequence;
+import ceylon.language.Null;
 import ceylon.language.Sequential;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -93,6 +88,13 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     }
     public Iterator<? extends Element> iterator() { return new FilterIterator(); }
     public boolean getEmpty() { return iterator().next() instanceof Finished; }
+
+    @Override
+    @Ignore
+    public String toString() {
+        return $ceylon$language$Iterable$this.toString();
+    }
+
     @Override
     @Ignore
     public long getSize() {

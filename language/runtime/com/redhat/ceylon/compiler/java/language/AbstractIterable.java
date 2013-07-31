@@ -70,6 +70,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
     
     @Override
+    @Ignore
+    public String toString() {
+        return $ceylon$language$Iterable$this.toString();
+    }
+
+    @Override
     public long getSize() {
         return $ceylon$language$Iterable$this.getSize();
     }
