@@ -91,4 +91,11 @@ void lists() {
     check(!b.shorterThan(8), "List.shorterThan");
     check(b.initial(3) == [1,2,3], "List.initial");
     check(b.terminal(3) == [6,7,8], "List.terminal");
+    function trimmerFun(Integer i) => i<3 || i>5;
+    check(b.trim(trimmerFun) == [3,4,5], "List.trim ``b.trim(trimmerFun)`` - expected [3,4,5]");
+    check(b.trimLeading(trimmerFun) == [3,4,5,6,7,8], "List.trimLeading");
+    check(b.trimTrailing(trimmerFun) == [1,2,3,4,5], "List.trimTrailing ``b.trimTrailing(trimmerFun)`` - expected [1,2,3,4,5]");
+    check(b.trim((Integer i) => i>9) == b, "List.trim [2] differs from original: ``b.trim((Integer i) => i>9)``");
+    check(b.trimLeading((Integer i) => i<0) == b, "List.trimLeading [2] differs from original: ``b.trimLeading((Integer i) => i<0)``");
+    check(b.trimTrailing((Integer i) => i>9) == b, "List.trimTrailing [2] differs from original: ``b.trimTrailing((Integer i) => i>9)``");
 }
