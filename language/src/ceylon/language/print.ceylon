@@ -7,7 +7,8 @@
      process.writeLine(line?.string else \"\{#ab}null\{#bb}\")
  
  and is intended mainly for debugging purposes."
-see (`process.writeLine`)
+// FIXME: see https://github.com/ceylon/ceylon-spec/issues/694
+//see (`process.writeLine`)
 by ("Gavin")
 shared void print(Anything line) { 
     process.writeLine(line?.string else "\{#ab}null\{#bb}");
