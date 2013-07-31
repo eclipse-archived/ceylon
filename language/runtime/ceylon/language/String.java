@@ -564,27 +564,17 @@ public final class String
 
         return new StringIterator();
     }
-
+    
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     public Iterable<? extends Character, ?> getCharacters() {
-        return getCharacters(value);
+        return this;
     }
-
+    
     @Ignore
     public static Iterable<? extends Character,?> getCharacters(java.lang.String value) {
-        int length = value.length();
-        if (length == 0) {
-            return (Sequential)empty_.$get();
-        }
-        java.lang.Object[] chars = new java.lang.Object[(int)getSize(value)];
-        for (int offset = 0, i = 0; offset < length; i++) {
-            int codePoint = value.codePointAt(offset);
-            chars[i] = Character.instance(codePoint);
-            offset += java.lang.Character.charCount(codePoint);
-        }
-        return ceylon.language.ArraySequence.<Character>instance(Character.$TypeDescriptor, chars);
+        return instance(value);
     }
-
+    
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
