@@ -777,8 +777,9 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             <title>Type inference</title>
         
         <para>Certain declarations which usually require an explicit type may omit the type, 
-        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>
-        or <literal>function</literal> where the type usually appears.</para>
+        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>,
+        as defined in <xref linkend="valuetypeinference"/>, or <literal>function</literal>,
+        as defined in <xref linkend="returntypeinference"/>, where the type usually appears.</para>
                 
         <programlisting>value names = people*.name;</programlisting>
 
@@ -805,8 +806,9 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             </listitem>
         </itemizedlist>
         
-        <para>Nor may a parameter or forward-declared value or function have an inferred 
-        type.</para>
+        <para>Nor may a parameter or forward-declared value, as defined in 
+        <xref linkend="valueforwarddeclaration"/>, or of a forward-declared function, as 
+        defined in <xref linkend="functionforwarddeclaration"/>, have an inferred type.</para>
         
         <para>These restrictions allow the compiler to infer undeclared types in a single 
         pass of the code.</para>
@@ -829,13 +831,14 @@ else {
 }
 Float|Integer num = one;</programlisting></comment>
         
-        <para>An inferred type never involves an anonymous class. When an inferred type
-        would involve an anonymous class type, the anonymous class is replaced by the 
-        intersection of the class type it extends with all interface types it satisfies.</para>
+        <para>An inferred type never involves an anonymous class, as defined in
+        <xref linkend="anonymousclasses"/>. When an inferred type would involve an 
+        anonymous class type, the anonymous class is replaced by the intersection of the 
+        class type it extends with all interface types it satisfies.</para>
         
         <comment><para>TODO: properly define how expressions with no type occurring in a
         <literal>dynamic</literal> block affect type inference.</para></comment>
-            
+        
         </section>
         
     </section>

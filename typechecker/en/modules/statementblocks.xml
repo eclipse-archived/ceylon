@@ -20,11 +20,14 @@
     <section id="blockstructure">
         <title>Block structure</title>
     
-        <para>A <emphasis>body</emphasis> is a block, class body or interface body. Every 
-        body is list of semicolon-delimited statements, control structures, and declarations, 
-        surrounded by braces. Some bodies end in a control directive. Every program element 
-        in the list is said to <emphasis>directly occur</emphasis> in the body. A program 
-        element <emphasis>directly occurs earlier</emphasis> than a second program element 
+        <para>A <emphasis>body</emphasis> is a block, defined in 
+        <xref linkend="blocksandstatements"/>, class body, defined in 
+        <xref linkend="classes"/>, or interface body, defined in 
+        <xref linkend="interfaces"/>. Every body is list of semicolon-delimited statements, 
+        control structures, and declarations, surrounded by braces. Some bodies end in a 
+        control directive. Every program element in the list is said to 
+        <emphasis>directly occur</emphasis> in the body. A program element 
+        <emphasis>directly occurs earlier</emphasis> than a second program element 
         if both program elements directly occur in a body and the first program element 
         occurs (lexically) earlier in the list than the second program element.</para>
         
@@ -1265,8 +1268,8 @@ else {
             <title>Control structure variables</title>
        
             <para>Assertions and some control structures allow inline declaration of a 
-            <emphasis>variable</emphasis>. A variable declared by an assertion is a reference
-            scoped to the body in which the assertion occurs.</para>
+            <emphasis>variable</emphasis>. A variable is a reference, as defined by 
+            <xref linkend="references"/>.</para>
             
             <synopsis>TypedVariable: Type MemberName</synopsis>
             
@@ -1274,11 +1277,15 @@ else {
             
             <synopsis>Variable: Type? MemberName</synopsis>
             
-            <para>If the type is missing from the declaration, the type of the variables is 
-            inferred from the type of the expression that follows.</para>
+            <para>If the type is missing from the declaration, the type of the variable is 
+            inferred, according to rules that depend upon the control structure to which 
+            the variable belongs.</para>
             
-            <para>A variable declared by a control structure is a reference scoped to the block that
-            immediately follows the variable declaration:</para>
+            <para>A variable declared by an assertion is a reference scoped to the body in which 
+            the <literal>assert</literal> statement occurs.</para>
+            
+            <para>A variable declared by a control structure is a reference scoped to the block 
+            that immediately follows the variable declaration:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1294,12 +1301,12 @@ else {
                     variable is the <literal>for</literal> block.</para>
                 </listitem>
                 <listitem>
-                    <para>For a variable in a <literal>try</literal> clause, the scope of the variable 
-                    is the <literal>try</literal> block.</para>
+                    <para>For a variable in a <literal>try</literal> clause, the scope of the 
+                    variable is the <literal>try</literal> block.</para>
                 </listitem>
                 <listitem>
-                    <para>For a variable in a <literal>catch</literal> clause, the scope of the variable 
-                    is the <literal>catch</literal> block.</para>
+                    <para>For a variable in a <literal>catch</literal> clause, the scope of the 
+                    variable is the <literal>catch</literal> block.</para>
                 </listitem>
                 <listitem>
                     <para>For a variable in an <literal>assert</literal> statement, the scope of the 
@@ -1313,7 +1320,7 @@ else {
             <title>Iteration variables</title>
             
             <para>A <literal>for</literal> loop requires an <emphasis>iteration variable</emphasis> 
-            declaration. An iteration variable declaration must specify an iteration variable.</para>
+            declaration. An iteration variable is a reference scoped to the body of the loop.</para>
             
             <synopsis>IteratorVariable: Variable | CallableVariable | EntryVariablePair</synopsis>
             
@@ -1322,7 +1329,7 @@ else {
             
             <synopsis>EntryVariablePair: Variable "->" Variable</synopsis>
             
-            <para>If the type is missing from the declaration, the type of the callable variable is 
+            <para>If the type is missing from the declaration, the type of the iteration variable is 
             inferred:</para> 
             
             <itemizedlist>
