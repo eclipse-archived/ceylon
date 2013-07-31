@@ -2539,12 +2539,38 @@ public class GenerateJsVisitor extends Visitor
                     }, null);
                     out(";");
                 } else if (moval.isMember()) {
-                    //Solution to Issue 150 probably here
-                    // Specifier for a member attribute. This actually defines the
-                    // member (e.g. in shortcut refinement syntax the attribute
-                    // declaration itself can be omitted), so generate the attribute.
-                    generateAttributeGetter(null, moval,
-                            specStmt.getSpecifierExpression(), null);
+                    if (moval instanceof Method) {
+                        //same as fat arrow
+                        qualify(specStmt, bmeDecl);
+                        out(names.name(moval), "=function ", names.name(moval), "(");
+                        //Build the parameter list, we'll use it several times
+                        final StringBuilder paramNames = new StringBuilder();
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : ((Method) moval).getParameterLists().get(0).getParameters()) {
+                            if (paramNames.length() > 0) paramNames.append(",");
+                            paramNames.append(names.name(p));
+                        }
+                        out(paramNames.toString());
+                        out("){");
+                        initSelf(moval.getContainer());
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : ((Method) moval).getParameterLists().get(0).getParameters()) {
+                            if (p.isDefaulted()) {
+                                out("if (", names.name(p), "===undefined)", names.name(p),"=");
+                                qualify(specStmt, moval);
+                                out(names.name(moval), "$defs$", p.getName(), "(", paramNames.toString(), ")");
+                                endLine(true);
+                            }
+                        }
+                        out("return ");
+                        specStmt.getSpecifierExpression().visit(this);
+                        out("(", paramNames.toString(), ");}");
+                        endLine(true);
+                    } else {
+                        // Specifier for a member attribute. This actually defines the
+                        // member (e.g. in shortcut refinement syntax the attribute
+                        // declaration itself can be omitted), so generate the attribute.
+                        generateAttributeGetter(null, moval,
+                                specStmt.getSpecifierExpression(), null);
+                    }
                 } else {
                     // Specifier for some other attribute, or for a method.
                     if (opts.isOptimize() 
