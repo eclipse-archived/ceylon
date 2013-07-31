@@ -177,6 +177,22 @@ shared interface List<out Element>
         return seq;
     }
     
+    "Determine if this sequence occurs at the start of 
+     the given sequence."
+    shared default Boolean occursAtStart(List<Anything> sequence) 
+            => equals(sequence[0:size]);
+    
+    "Determine if this sequence occurs as a subsequence
+     of the given sequence."
+    shared default Boolean occursIn(List<Anything> sequence) {
+        for (i in 0:sequence.size) {
+            if (occursAtStart(sequence[i...])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /*"Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 

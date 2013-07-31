@@ -917,6 +917,18 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override
     @Ignore
+    public boolean occursAtStart(List<?> element) {
+        return $ceylon$language$List$this.occursAtStart(element);
+    }
+
+    @Override
+    @Ignore
+    public boolean occursIn(List<?> element) {
+        return $ceylon$language$List$this.occursIn(element);
+    }
+    
+    @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(Array.class, $reifiedElement);
     }

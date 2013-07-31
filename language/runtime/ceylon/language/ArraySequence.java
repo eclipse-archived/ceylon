@@ -542,6 +542,18 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 //
     @Override
     @Ignore
+    public boolean occursAtStart(List<?> element) {
+        return $ceylon$language$List$this.occursAtStart(element);
+    }
+
+    @Override
+    @Ignore
+    public boolean occursIn(List<?> element) {
+        return $ceylon$language$List$this.occursIn(element);
+    }
+
+    @Override
+    @Ignore
     public Sequence<? extends Element> getSequence() {
         return $ceylon$language$Sequence$this.getSequence();
     }

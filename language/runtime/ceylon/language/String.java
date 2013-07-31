@@ -470,6 +470,28 @@ public final class String
 //        return (Sequential)empty_.getEmpty$();
 //    }
 
+    @Ignore
+    public static boolean occursAtStart(java.lang.String value, List<?> element) {
+        return instance(value).occursAtStart(element);
+    }
+    
+    @Override
+    @Ignore
+    public boolean occursAtStart(List<?> element) {
+        return $ceylon$language$List$this.occursAtStart(element);
+    }
+
+    @Ignore
+    public static boolean occursIn(java.lang.String value, List<?> element) {
+        return instance(value).occursIn(element);
+    }
+
+    @Override
+    @Ignore
+    public boolean occursIn(List<?> element) {
+        return $ceylon$language$List$this.occursIn(element);
+    }
+    
     @Override
     @TypeInfo("ceylon.language::Iterator<ceylon.language::Character>")
     public Iterator<Character> iterator() {
