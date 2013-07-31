@@ -3329,6 +3329,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 qualExpr = naming.makeName((Method)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
+            } else if (!withinInvocation) {
+                selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
                 selector = naming.selector((Method)decl);
