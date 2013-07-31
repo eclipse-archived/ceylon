@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,7 +48,7 @@ public class JsCompiler {
     private boolean stopOnErrors = true;
     private int errCount = 0;
 
-    protected List<Message> errors = new ArrayList<Message>();
+    protected Set<Message> errors = new HashSet<Message>();
     protected Set<Message> unitErrors = new HashSet<Message>();
     protected List<String> files;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
@@ -162,8 +161,8 @@ public class JsCompiler {
         this.files = files;
     }
 
-    public List<Message> listErrors() {
-        return Collections.unmodifiableList(errors);
+    public Set<Message> listErrors() {
+        return getErrors();
     }
 
     /** Compile one phased unit.
@@ -192,6 +191,7 @@ public class JsCompiler {
     /** Indicates if compilation should stop, based on whether there were errors
      * in the last compilation unit and the stopOnErrors flag is set. */
     protected boolean stopOnError() {
+        errCount = 0;
         for (Message err : unitErrors) {
             if (err instanceof AnalysisError || !(err instanceof AnalysisWarning || err instanceof UsageWarning)) {
                 errCount++;
@@ -393,8 +393,8 @@ public class JsCompiler {
     }
 
     /** Returns the list of errors found during compilation. */
-    public List<Message> getErrors() {
-        return Collections.unmodifiableList(errors);
+    public Set<Message> getErrors() {
+        return Collections.unmodifiableSet(errors);
     }
 
     public void printErrorsAndCount(PrintStream out) {
