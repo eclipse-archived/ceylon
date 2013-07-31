@@ -580,13 +580,9 @@ public class ClassTransformer extends AbstractTransformer {
     private void makeAttributeForValueParameter(ClassDefinitionBuilder classBuilder, Parameter decl) {
         if ((decl instanceof ValueParameter && (decl.isShared() || decl.isCaptured()))) {
             makeFieldForParameter(classBuilder, decl);
-            
-            if (decl instanceof ValueParameter && decl.isShared()) {
-                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl);
-                adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl, false));
-                classBuilder.attribute(adb);
-            }
-            
+            AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl);
+            adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl, false));
+            classBuilder.attribute(adb);
         } else if (decl.isHidden()
                         && (decl.getContainer() instanceof TypeDeclaration)) {
             Declaration member = CodegenUtil.findMethodOrValueForParam(decl);

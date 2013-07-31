@@ -167,10 +167,12 @@ public class Naming implements LocalId {
     private static String getErasedGetterName(Declaration decl) {
         String property = decl.getName();
         // ERASURE
-        if ("hash".equals(property)) {
-            return "hashCode";
-        } else if ("string".equals(property)) {
-            return "toString";
+        if (!(decl instanceof Parameter) || ((Parameter)decl).isShared()) {
+            if ("hash".equals(property)) {
+                return "hashCode";
+            } else if ("string".equals(property)) {
+                return "toString";
+            }
         }
         
         String getterName = getGetterName(property);
@@ -973,7 +975,7 @@ public class Naming implements LocalId {
     }
     public static String selector(TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 &&
-                (Decl.isGetter(decl) || Decl.isValueOrSharedParam(decl))) {
+                (Decl.isGetter(decl) || Decl.isValueOrSharedOrCapturedParam(decl))) {
             if ((namingOptions & NA_SETTER) != 0) {
                 return getSetterName(decl);
             } else {
@@ -989,11 +991,6 @@ public class Naming implements LocalId {
             }
             return quoteMethodName((Method)decl, namingOptions);
         } else if (decl instanceof Parameter) {
-            Assert.that(
-                    decl.getContainer() instanceof Declaration
-                    && (Decl.isAnnotationClass((Declaration)decl.getContainer())
-                            || Decl.isAnnotationConstructor((Declaration)decl.getContainer())),
-                    "Not an annotation class parameter");
             return getMethodName(decl, namingOptions);
         }
         Assert.fail();

@@ -211,7 +211,7 @@ abstract class Invocation {
                     && getPrimaryDeclaration() != null
                     && (Decl.isGetter(getPrimaryDeclaration())
                             || Decl.isToplevel(getPrimaryDeclaration())
-                            || (Decl.isValueOrSharedParam(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
+                            || (Decl.isValueOrSharedOrCapturedParam(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
                             && !Decl.isLocal(getPrimaryDeclaration()))) {
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.naming.makeQualIdent(primaryExpr, selector), 

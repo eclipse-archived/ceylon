@@ -3266,7 +3266,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 selector = naming.selector((Value)decl);
             }
-        } else if (Decl.isValueOrSharedParam(decl)) {
+        } else if (Decl.isValueOrSharedOrCapturedParam(decl)) {
             if (decl.isToplevel()) {
                 // ERASURE
                 if ("null".equals(decl.getName())) {
