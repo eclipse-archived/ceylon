@@ -240,6 +240,57 @@ shared interface List<out Element>
                     //TODO: fix this awful hack
                     if (selecting(this[index] else nothing)) index };
     
+    shared default List<Element> trim(Boolean trimming(Element elem)) {
+        if (exists l=lastIndex) {
+            variable Integer from=-1;
+            variable Integer to=-1;
+            for (index in 0..l) {
+                if (!trimming(this[index] else nothing)) {
+                    from = index;
+                    break;
+                }
+            }
+            else {
+                return [];
+            }
+            for (index in l..0) {
+                if (!trimming(this[index] else nothing)) {
+                    to = index;
+                    break;
+                }
+            }
+            else {
+                return [];
+            }
+            return this[from:to];
+        }
+        else {
+            return [];
+        }
+    }
+    
+    shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
+        if (exists l=lastIndex) {
+            for (index in 0..l) {
+                if (!trimming(this[index] else nothing)) {
+                    return this[index:l];
+                }
+            }
+        }
+        return [];
+    }
+    
+    shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
+        if (exists l=lastIndex) {
+            for (index in l..0) {
+                if (!trimming(this[index] else nothing)) {
+                    return this[0:index];
+                }
+            }
+        }
+        return [];
+    }
+    
     /*"Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 

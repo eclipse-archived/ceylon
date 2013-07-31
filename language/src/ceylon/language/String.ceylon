@@ -96,15 +96,15 @@ shared native final class String(shared {Character*} characters)
     "This string, after discarding the given 
      characters from the beginning and end 
      of the string"
-    shared native String trimCharacters(Category characters);
+    shared actual native String trim(Boolean trimming(Character elem));
     
     "This string, after discarding the given 
      characters from the beginning of the string"
-    shared native String trimLeadingCharacters(Category characters);
+    shared actual native String trimLeading(Boolean trimming(Character elem));
     
     "This string, after discarding the given 
      characters from the end of the string"
-    shared native String trimTrailingCharacters(Category characters);
+    shared actual native String trimTrailing(Boolean trimming(Character elem));
 
     "This string, after collapsing strings of 
      [[whitespace|Character.whitespace]]

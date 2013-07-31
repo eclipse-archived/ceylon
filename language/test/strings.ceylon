@@ -375,20 +375,20 @@ shared void strings() {
     //check("123" == StringBuilder("1", "2", "3").string, "StringBuilder(1, 2, 3)");
     //check("" == StringBuilder{}.appendAll{}.string, "StringBuilder{}");
     
-    check("" == "abccba".trimLeadingCharacters("abc"), "trimLeadingCharacters(abc) ``"abccba".trimLeadingCharacters("abc")``");
-    check("ccba" == "abccba".trimLeadingCharacters("ab"), "trimLeadingCharacters(ab) ``"abccba".trimLeadingCharacters("ab")``");
-    check("bccba" == "abccba".trimLeadingCharacters("ac"), "trimLeadingCharacters(ac) ``"abccba".trimLeadingCharacters("ac")``");
-    check("abccba" == "abccba".trimLeadingCharacters("x"), "trimLeadingCharacters(x) ``"abccba".trimLeadingCharacters("x")``");
+    check("" == "abccba".trimLeading("abc".contains), "trimLeadingCharacters(abc) ``"abccba".trimLeading("abc".contains)``");
+    check("ccba" == "abccba".trimLeading("ab".contains), "trimLeadingCharacters(ab) ``"abccba".trimLeading("ab".contains)``");
+    check("bccba" == "abccba".trimLeading("ac".contains), "trimLeadingCharacters(ac) ``"abccba".trimLeading("ac".contains)``");
+    check("abccba" == "abccba".trimLeading("x".contains), "trimLeadingCharacters(x) ``"abccba".trimLeading("x".contains)``");
     
-    check("" == "abccba".trimTrailingCharacters("abc"), "trimTrailingCharacters(abc)");
-    check("abcc" == "abccba".trimTrailingCharacters("ab"), "trimTrailingCharacters(ab)");
-    check("abccb" == "abccba".trimTrailingCharacters("ac"), "trimTrailingCharacters(ac)");
-    check("abccba" == "abccba".trimTrailingCharacters("x"), "trimTrailingCharacters(x)");
+    check("" == "abccba".trimTrailing("abc".contains), "trimTrailingCharacters(abc)");
+    check("abcc" == "abccba".trimTrailing("ab".contains), "trimTrailingCharacters(ab)");
+    check("abccb" == "abccba".trimTrailing("ac".contains), "trimTrailingCharacters(ac)");
+    check("abccba" == "abccba".trimTrailing("x".contains), "trimTrailingCharacters(x)");
     
-    check("" == "abccba".trimCharacters("abc"), "trimCharacters(abc) ``"abccba".trimCharacters("abc")``");
-    check("cc" == "abccba".trimCharacters("ab"), "trimCharacters(ab) ``"abccba".trimCharacters("ab")``");
-    check("bccb" == "abccba".trimCharacters("ac"), "trimCharacters(ac) ``"abccba".trimCharacters("ac")``");
-    check("abccba" == "abccba".trimCharacters("x"), "trimCharacters(x) ``"abccba".trimCharacters("x")``");
+    check("" == "abccba".trim("abc".contains), "trimCharacters(abc) ``"abccba".trim("abc".contains)``");
+    check("cc" == "abccba".trim("ab".contains), "trimCharacters(ab) ``"abccba".trim("ab".contains)``");
+    check("bccb" == "abccba".trim("ac".contains), "trimCharacters(ac) ``"abccba".trim("ac".contains)``");
+    check("abccba" == "abccba".trim("x".contains), "trimCharacters(x) ``"abccba".trim("x".contains)``");
     
     check(String({'a', 'b', 'c'})=="abc", "String() of Character iterable");
 }

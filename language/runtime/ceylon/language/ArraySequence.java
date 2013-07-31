@@ -679,7 +679,22 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
+    
+    @Override @Ignore
+    public List<? extends Element> trim(Callable<? extends Boolean> characters) {
+        return $ceylon$language$List$this.trim(characters);
+    }
 
+    @Override @Ignore
+    public List<? extends Element> trimLeading(Callable<? extends Boolean> characters) {
+        return $ceylon$language$List$this.trimLeading(characters);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> trimTrailing(Callable<? extends Boolean> characters) {
+        return $ceylon$language$List$this.trimTrailing(characters);
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

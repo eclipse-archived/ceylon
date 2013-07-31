@@ -756,22 +756,29 @@ public final class String
     public static java.lang.String getTrimmed(java.lang.String value) {
         // Don't use value.trim() because that has a definition of ws that is 
         // inconsistent with ceylon.language::Character.whitespace
-        return trimCharacters(value, Character.WHITESPACE);
+        return internalTrim(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
+                "whitespace", (short)-1) {
+            public Boolean $call(java.lang.Object c) {
+                return Boolean.instance(((Character) c).getWhitespace());
+            }
+        });
     }
     
+    @Override
     @TypeInfo("ceylon.language::String")
-    public java.lang.String trimLeadingCharacters(
-            @TypeInfo("ceylon.language::Category<ceylon.language::Character>")
+    public String trimLeading(
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Name("characters")
-            ceylon.language.Category characters) {
-        return trimLeadingCharacters(value, characters);
+            Callable<? extends Boolean> characters) {
+        return instance(trimLeading(value, characters));
     }
     @Ignore
-    public static java.lang.String trimLeadingCharacters(java.lang.String value, ceylon.language.Category characters) {
+    public static java.lang.String trimLeading(java.lang.String value, Callable<? extends Boolean> characters) {
         int from = 0;
         while (from < value.length()) {
             int c = java.lang.Character.codePointAt(value, from);
-            if (!characters.contains(Character.instance(c))) {
+            if (!characters.$call(Character.instance(c)).booleanValue()) {
                 break;
             }
             from += java.lang.Character.charCount(c);
@@ -779,19 +786,20 @@ public final class String
         return value.substring(from);
     }
     
+    @Override
     @TypeInfo("ceylon.language::String")
-    public java.lang.String trimTrailingCharacters(
-            @TypeInfo("ceylon.language::Category<ceylon.language::Character>")
+    public String trimTrailing(
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Name("characters")
-            ceylon.language.Category characters) {
-        return trimTrailingCharacters(value, characters);
+            Callable<? extends Boolean> characters) {
+        return instance(trimTrailing(value, characters));
     }
     @Ignore
-    public static java.lang.String trimTrailingCharacters(java.lang.String value, ceylon.language.Category characters) {
+    public static java.lang.String trimTrailing(java.lang.String value, Callable<? extends Boolean> characters) {
         int to = value.length();
         while (to > 0) {
             int c = java.lang.Character.codePointBefore(value, to);
-            if (!characters.contains(Character.instance(c))) {
+            if (!characters.$call(Character.instance(c)).booleanValue()) {
                 break;
             }
             to -= java.lang.Character.charCount(c);
@@ -799,19 +807,27 @@ public final class String
         return value.substring(0, to);
     }
     
+    @Override
     @TypeInfo("ceylon.language::String")
-    public java.lang.String trimCharacters(
-            @TypeInfo("ceylon.language::Category<ceylon.language::Character>")
+    public String trim(
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Name("characters")
-            ceylon.language.Category characters) {
-        return trimCharacters(value, characters);
+            Callable<? extends Boolean> characters) {
+        return instance(trim(value, characters));
     }
+    
     @Ignore
-    public static java.lang.String trimCharacters(java.lang.String value, ceylon.language.Category characters) {
+    public static java.lang.String trim(java.lang.String value, Callable<? extends Boolean> characters) {
+        return internalTrim(value, characters);
+    }
+    
+    @Ignore
+    private static java.lang.String internalTrim(java.lang.String value,
+            Callable<? extends Boolean> characters) {
         int from = 0;
         while (from < value.length()) {
             int c = java.lang.Character.codePointAt(value, from);
-            if (!characters.contains(Character.instance(c))) {
+            if (!characters.$call(Character.instance(c)).booleanValue()) {
                 break;
             }
             from += java.lang.Character.charCount(c);
@@ -819,7 +835,7 @@ public final class String
         int to = value.length();
         while (to > from) {
             int c = java.lang.Character.codePointBefore(value, to);
-            if (!characters.contains(Character.instance(c))) {
+            if (!characters.$call(Character.instance(c)).booleanValue()) {
                 break;
             }
             to -= java.lang.Character.charCount(c);

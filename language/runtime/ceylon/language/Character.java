@@ -109,30 +109,6 @@ public final class Character
     public static boolean getLetter(int codePoint) {
         return java.lang.Character.isLetter(codePoint);
     }
-
-    /** 
-     * A Category containing {@linkplain #getWhitespace() whitespace} 
-     * characters.
-     */
-    static final Category WHITESPACE = new Category() {
-        private final Category$impl c = new Category$impl(this);
-        public boolean contains(java.lang.Object o) {
-            return o instanceof Character
-                    && getWhitespace(((Character)o).intValue());
-        }
-        
-        public boolean containsEvery(Iterable i) {
-            return c.containsEvery(i);
-        }
-        
-        public boolean containsAny(Iterable i) {
-            return c.containsAny(i);
-        }
-        
-        public Category$impl $ceylon$language$Category$impl() {
-            return c;
-        }
-    };
     
     public boolean getWhitespace(){
         return java.lang.Character.isWhitespace(codePoint);

@@ -955,6 +955,21 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         return $ceylon$language$List$this.occursIn(element);
     }
     
+    @Override @Ignore
+    public List<? extends Element> trim(Callable<? extends Boolean> characters) {
+        return $ceylon$language$List$this.trim(characters);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> trimLeading(Callable<? extends Boolean> characters) {
+        return $ceylon$language$List$this.trimLeading(characters);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> trimTrailing(Callable<? extends Boolean> characters) {
+        return $ceylon$language$List$this.trimTrailing(characters);
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {
