@@ -84,4 +84,11 @@ void lists() {
     //#197
     value nulled197 = TestList(1,2,3,null,5,6,7);
     check(nulled197.count((Integer? i) => i exists) == 6, "list with nulls (see #197)");
+
+    check(b.longerThan(7), "List.longerThan");
+    check(!b.longerThan(8), "List.longerThan");
+    check(b.shorterThan(9), "List.shorterThan");
+    check(!b.shorterThan(8), "List.shorterThan");
+    check(b.initial(3) == [1,2,3], "List.initial");
+    check(b.terminal(3) == [6,7,8], "List.terminal");
 }
