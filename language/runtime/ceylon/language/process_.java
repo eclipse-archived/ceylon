@@ -1,6 +1,8 @@
 package ceylon.language;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -358,6 +360,14 @@ public final class process_ {
     
     public java.lang.String getOsVersion() {
         return System.getProperty("os.version");
+    }
+    
+    public java.lang.String getLocale() {
+        return Locale.getDefault().toLanguageTag();
+    }
+    
+    public int getTimezoneOffset() {
+        return TimeZone.getDefault().getOffset(getMilliseconds());
     }
     
     @Override

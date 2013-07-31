@@ -77,6 +77,14 @@ shared native object process {
      process is running on."
     shared native String osVersion;
     
+    "Returns the IETF language tag representing the
+     default locale for this virtual machine."
+    shared native String locale;
+    
+    "Returns the offset from UTC, in milliseconds, of
+     the default timezone for this virtual machine."
+    shared native Integer timezoneOffset;
+    
     shared actual String string => "process";
     
 }
