@@ -1,6 +1,6 @@
 "Produces elements of an `Iterable` object. Classes that 
  implement this interface should be immutable."
-//see (`Iterable`)
+see (`Iterable`)
 by ("Gavin")
 shared interface Iterator<out Element> {
     "The next element, or `finished` if there are no 

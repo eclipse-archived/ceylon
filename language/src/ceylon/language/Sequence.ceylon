@@ -18,7 +18,7 @@
  `sort()`, which polymorphically produce a nonempty or 
  non-null output when given a nonempty input are called 
  _emptiness-preserving_."
-//see (`Empty`)
+see (`Empty`)
 by ("Gavin")
 shared interface Sequence<out Element>
         satisfies Element[] & 
@@ -26,7 +26,7 @@ shared interface Sequence<out Element>
                   Cloneable<[Element+]> {
     
     "The index of the last element of the sequence."
-    //see (`size`)
+    see (`size`)
     shared actual formal Integer lastIndex;
     
     "The first element of the sequence, that is, the

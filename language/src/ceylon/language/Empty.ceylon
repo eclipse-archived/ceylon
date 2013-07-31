@@ -9,7 +9,7 @@ import ceylon.language { e=empty }
  
  (Whether the syntax `[]` refers to the type or the 
  value depends upon how it occurs grammatically.)"
-//see (`Sequence`)
+see (`Sequence`)
 shared interface Empty of e
            satisfies Nothing[] &
                      Ranged<Integer,[]> &

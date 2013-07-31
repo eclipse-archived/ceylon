@@ -20,6 +20,6 @@
      value four = add(*twoAndTwo);
  
  This interface may not be implemented by user code."
-//see (`Tuple`)
+see (`Tuple`)
 shared interface Callable<out Return, in Arguments> 
         given Arguments satisfies Anything[] {}

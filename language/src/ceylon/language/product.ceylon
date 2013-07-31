@@ -1,6 +1,6 @@
 "Given a nonempty stream of `Numeric` values, return 
  the product of the values."
-//see (`sum`)
+see (`sum`)
 shared Value product<Value>({Value+} values) 
         given Value satisfies Numeric<Value> {
     variable value product = values.first;

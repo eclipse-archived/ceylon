@@ -2,7 +2,7 @@
  by the subtype `Numeric`. This type defines operations
  which can be expressed without reference to the self
  type `Other` of `Numeric`."
-//see (`Numeric`)
+see (`Numeric`)
 by ("Gavin")
 shared interface Number {
     

@@ -18,7 +18,7 @@
    operator:
    
        String lang = settings["lang"] else "en_US";"""
-//see (`Entry`, `forKey`, `forItem`, `byItem`, `byKey`)
+see (`Entry`, `forKey`, `forItem`, `byItem`, `byKey`)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item> &
