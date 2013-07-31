@@ -680,21 +680,21 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
          <section id="defaultarguments">
             <title>Default arguments</title>
         
-        <para>When no argument is assigned to a defaulted parameter by the caller, 
-        the default argument defined by the parameter declaration is used. The default 
-        argument expression is evaluated every time the method is invoked with no 
-        argument specified for the defaulted parameter.</para>
-        
-        <para>This class:</para>
-        
-        <programlisting>shared class Counter(Integer initialCount=0) { ... }</programlisting>
-        
-        <para>May be instantiated using any of the following invocations:</para>
-        
-        <programlisting>Counter()</programlisting>
-        <programlisting>Counter(1)</programlisting>
-        <programlisting>Counter {}</programlisting>
-        <programlisting>Counter { initialCount=10; }</programlisting>
+            <para>When no argument is assigned to a defaulted parameter by the caller, 
+            the default argument defined by the parameter declaration is used. The default 
+            argument expression is evaluated every time the method is invoked with no 
+            argument specified for the defaulted parameter.</para>
+            
+            <para>This class:</para>
+            
+            <programlisting>shared class Counter(Integer initialCount=0) { ... }</programlisting>
+            
+            <para>May be instantiated using any of the following invocations:</para>
+            
+            <programlisting>Counter()</programlisting>
+            <programlisting>Counter(1)</programlisting>
+            <programlisting>Counter {}</programlisting>
+            <programlisting>Counter { initialCount=10; }</programlisting>
         
         </section>
         

@@ -56,19 +56,21 @@ TypeConstraints?
                 value, or function definitions.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>module descriptor</emphasis> contains a 
+                <para>A <emphasis>module descriptor</emphasis>, defined in
+                <xref linkend="packagedescriptors"/>, contains a 
                 <literal>module</literal> declaration. The file must be named
                 <literal>module.ceylon</literal>.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>package descriptor</emphasis> contains a 
+                <para>A <emphasis>package descriptor</emphasis>, defined in
+                <xref linkend="packagedescriptors"/>, contains a 
                 <literal>package</literal> declaration. The file must be named
                 <literal>package.ceylon</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <comment><para>Note: it is recommended that source file names contain only characters
-        from the ASCII character set.</para></comment>
+        <comment><para>Note: it is recommended that source file names contain only 
+        characters from the ASCII character set.</para></comment>
         
         <para>Any compilation unit may begin with a list of imported types, values, 
         and functions.</para>
@@ -2760,7 +2762,7 @@ shared deprecated</programlisting>
     </section>
     
     <section id="visibility">
-        <title>Visibility and name resolution</title>
+        <title>Visibility</title>
         
         <para>Classes, interfaces, functions, values, aliases, and type parameters 
         have names. Occurrence of a name in code implies a hard dependency from the 
@@ -2768,7 +2770,7 @@ shared deprecated</programlisting>
         that a class, interface, value, function, alias, or type parameter is 
         <emphasis>visible</emphasis> to a certain program element if its name may 
         occur in the code that belongs to that program element.</para>
-                
+        
         <para>The visibility of a declaration depends upon where it occurs, and upon 
         whether it is annotated <literal>shared</literal>. A toplevel or member 
         declaration may be annotated <literal>shared</literal>:</para>

@@ -632,20 +632,25 @@
         
         <synopsis>TypeNameWithArguments: TypeName TypeArguments?</synopsis>
         
+        <para>Type names are resolved to type declarations according to 
+        <xref linkend="unqualifiedreferenceresolution"/> and 
+        <xref linkend="qualifiedreferenceresolution"/>.</para>
+        
         <para>If the type is a class or interface nested inside a containing class or 
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
         <synopsis>QualifiedType: TypeNameWithArguments ("." TypeNameWithArguments)*</synopsis>
         
-        <para>If a type has type parameters or a sequenced type parameter, a type argument 
-        list must be specified. If a type has no type parameters, and no sequenced type 
-        parameter, no type argument list may be specified.</para>
+        <para>If a type declaration is generic, a type argument list must be specified. 
+        If a type declaration is not generic, no type argument list may be specified.</para>
         
         <programlisting>BufferedReader.Buffer</programlisting>
         <programlisting>Entry&lt;Integer,Element&gt;</programlisting>
         
-        <para>The name of a type may not be qualified by the package name.</para>
+        <comment><para>Note: the name of a type may not be qualified by its package name.
+        Alias imports, as defined in <xref linkend="aliasimports"/> may be used to 
+        disambiguate type names.</para></comment>
         
         </section>
         
@@ -786,14 +791,17 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         
         <itemizedlist>
             <listitem>
-                <para>be annotated <literal>shared</literal>,</para>
+                <para>be annotated <literal>shared</literal>, as defined in
+                <xref linkend="visibility"/>,</para>
             </listitem>
             <listitem>
-                <para>occur as a toplevel declaration in a compilation unit, or</para>
+                <para>occur as a toplevel declaration in a compilation unit, as 
+                defined in <xref linkend="topleveldeclarations"/>, or</para>
             </listitem>
             <listitem>
                 <para>be referred to by statements or declarations that occur earlier in 
-                the body containing of the declaration.</para>
+                the body containing of the declaration, as defined in 
+                <xref linkend="blockstructure"/>.</para>
             </listitem>
         </itemizedlist>
         
@@ -2000,7 +2008,8 @@ Item item = comp of Item;</programlisting>
         <section id="typeargumentinference">
             <title>Type argument inference</title>
         
-        <para>When a direct invocation expression for a generic function or a direct 
+        <para>When a direct invocation expression, as defined by 
+        <xref linkend="invocationexpressions"/>, for a generic function or a direct 
         instantiation expression for a generic class does not explicitly specify type 
         arguments, the type arguments are inferred from the argument expression types. 
         The types of the argument expressions and the declared types of the corresponding 
