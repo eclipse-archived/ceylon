@@ -9,12 +9,12 @@ shared interface Ordinal<out Other> of Other
         given Other satisfies Ordinal<Other> {
     
     "The successor of this value."
-    throws (OverflowException,
+    throws (`OverflowException`,
            "if this is the maximum value")
     shared formal Other successor;
     
     "The predecessor of this value."
-    throws (OverflowException,
+    throws (`OverflowException`,
            "if this is the minimum value")
     shared formal Other predecessor;
     

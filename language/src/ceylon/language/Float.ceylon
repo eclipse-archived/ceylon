@@ -29,13 +29,13 @@ shared native final class Float(Float float)
      magnitude. Produces `true` for `infinity` and 
      `-infinity`. Produces `false` for a finite number, 
      `+0`, `-0`, or undefined."
-    see(infinity, finite)
+    see(`infinity`, `finite`)
     shared Boolean infinite => 
             this==infinity || this==-infinity;
     
     "Determines whether this value is finite. Produces
      `false` for `infinity`, `-infinity`, and undefined."
-    see(infinite, infinity)
+    see(`infinite`, `infinity`)
     shared Boolean finite =>
             this!=infinity && this!=-infinity 
                     && !this.undefined;
