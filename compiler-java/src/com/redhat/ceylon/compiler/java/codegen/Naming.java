@@ -848,7 +848,7 @@ public class Naming implements LocalId {
         } else if (decl instanceof Setter) {
             expr = makeQualIdent(expr, getSetterName(decl.getName()));
         } else if (decl instanceof Method
-                && !((Method)decl).isParameter()) {
+                && (!decl.isParameter() || decl.isShared() || decl.isCaptured())) {
             expr = makeQualIdent(expr, getMethodName((Method)decl, namingOptions));
         } else if (decl instanceof MethodOrValue
                 && ((MethodOrValue)decl).isParameter()) {
