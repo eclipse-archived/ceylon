@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -111,8 +112,9 @@ public class ConstraintVisitor extends Visitor {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
                 }
-                else if(d.equals(d.getUnit().getTrueValueDeclaration())
-                        || d.equals(d.getUnit().getFalseValueDeclaration())) {
+                else if (d instanceof Value && 
+                        (d.equals(d.getUnit().getTrueValueDeclaration())
+                      || d.equals(d.getUnit().getFalseValueDeclaration()))) {
                     //ok
                 }
                 else {
