@@ -769,7 +769,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public String trimLeading(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("characters")
+            @Name("trimming")
             Callable<? extends Boolean> characters) {
         return instance(trimLeading(value, characters));
     }
@@ -790,7 +790,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public String trimTrailing(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("characters")
+            @Name("trimming")
             Callable<? extends Boolean> characters) {
         return instance(trimTrailing(value, characters));
     }
@@ -811,7 +811,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public String trim(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("characters")
+            @Name("trimming")
             Callable<? extends Boolean> characters) {
         return instance(trim(value, characters));
     }
@@ -1100,7 +1100,7 @@ public final class String
     public Iterable<? extends String, ? extends java.lang.Object> split(
             @TypeInfo(value="ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>", erased=true)
             @Defaulted
-            @Name("separator") java.lang.Object separator,
+            @Name("splitting") Callable<? extends Boolean> separator,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
@@ -1113,7 +1113,7 @@ public final class String
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
-            java.lang.Object separator,
+            Callable<? extends Boolean> separator,
             boolean discardSeparators,
             boolean groupSeparators) {
         if (value.isEmpty()) {
@@ -1124,27 +1124,27 @@ public final class String
 
     @Ignore
     public Iterable<? extends String, ? extends java.lang.Object> split(
-            java.lang.Object separator,
+            Callable<? extends Boolean> separator,
             boolean discardSeparators) {
         return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
-            java.lang.Object separator,
+            Callable<? extends Boolean> separator,
             boolean discardSeparators) {
         return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public Iterable<? extends String, ? extends java.lang.Object> split(
-            java.lang.Object separator) {
+            Callable<? extends Boolean> separator) {
         return split(separator, split$discardSeparators(separator));
     }
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
-            java.lang.Object separator) {
+            Callable<? extends Boolean> separator) {
         return split(value, separator, split$discardSeparators(separator));
     }
 
@@ -1565,11 +1565,11 @@ public final class String
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
-        private final java.lang.Object separator;
+        private final Callable<? extends Boolean> separator;
         private final boolean keepSeparators;
         private final boolean groupSeparators;
 
-        public Tokens(java.lang.String str, java.lang.Object separator,
+        public Tokens(java.lang.String str, Callable<? extends Boolean> separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this);
             this.$ceylon$language$Container$this = new ceylon.language.Container$impl<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this);
@@ -1682,17 +1682,16 @@ public final class String
                 }
             }
 
-            if (separator instanceof Callable) {
+            //if (separator instanceof Callable) {
                 return new TokenIterator() {
-                    @SuppressWarnings("unchecked")
                     protected final boolean peekSeparator() {
                         if(eof())
                             return false;
                         int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                        return ((Callable<Boolean>)separator).$call(Character.instance(charCodePoint)).booleanValue();
+                        return separator.$call(Character.instance(charCodePoint)).booleanValue();
                     }
                 };
-            } else if (separator instanceof java.lang.String) {
+            /*} else if (separator instanceof java.lang.String) {
                 return new TokenIterator() {
                     protected final boolean peekSeparator() {
                         if(eof())
@@ -1727,7 +1726,7 @@ public final class String
                         return false;
                     }
                 };
-            }
+            }*/
         }
 
         @Override

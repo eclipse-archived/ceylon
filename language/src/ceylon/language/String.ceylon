@@ -64,8 +64,7 @@ shared native final class String(shared {Character*} characters)
              is a separator characters at which to split.
              Default to split at any 
              [[whitespace|Character.whitespace]] character."
-            {Character*}|Boolean(Character) separator 
-                    = (Character ch) => ch.whitespace,
+            Boolean splitting(Character ch) => ch.whitespace,
             "Specifies that the separator characters
              occurring in the string should be discarded.
              If `false`, they will be included in the
