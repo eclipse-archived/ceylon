@@ -22,7 +22,7 @@ class Bug891_Class implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
     
-    private final void arg() {
+    private final void arg$priv() {
         arg.$call();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this;
@@ -37,7 +37,7 @@ class Bug891_Class implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return (
             let
             {
-                arg();
+                arg$priv();
             }
             returning null;
         );

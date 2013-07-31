@@ -10,12 +10,12 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> voidFp;
     
-    private final void voidFp(final .java.lang.String arg) {
+    private final void voidFp$priv(final .java.lang.String arg) {
         voidFp.$call(.ceylon.language.String.instance(arg));
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.String> stringFp;
     
-    private final .java.lang.String stringFp(final .java.lang.String arg) {
+    private final .java.lang.String stringFp$priv(final .java.lang.String arg) {
         return stringFp.$call(.ceylon.language.String.instance(arg)).toString();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidFp;
@@ -30,12 +30,12 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public final void callClassFps() {
-        voidFp("");
+        voidFp$priv("");
         (
             let
             {
                 .java.lang.String $arg$0$0 = "";
-                voidFp($arg$0$0);
+                voidFp$priv($arg$0$0);
             }
             returning null;
         );
@@ -49,13 +49,13 @@ class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.mod
             returning null;
         );
         .java.lang.String s = null;
-        s = stringFp("");
+        s = stringFp$priv("");
         s = (
             let
             {
                 .java.lang.String $arg$2$0 = "";
             }
-            returning stringFp($arg$2$0);
+            returning stringFp$priv($arg$2$0);
         );
         s = sharedStringFp("");
         s = (

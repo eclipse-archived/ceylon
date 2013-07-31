@@ -50,13 +50,13 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
-    private final long f(final long i) {
+    private final long f$priv(final long i) {
         return f.$call(.ceylon.language.Integer.instance(i)).longValue();
     }
     
     @.java.lang.Override
     public final long evaluate() {
-        return f(getBranch$priv().evaluate());
+        return f$priv(getBranch$priv().evaluate());
     }
     
     @.java.lang.Override
@@ -85,13 +85,13 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
-    private final long f(final long i, final long j) {
+    private final long f$priv(final long i, final long j) {
         return f.$call(.ceylon.language.Integer.instance(i), .ceylon.language.Integer.instance(j)).longValue();
     }
     
     @.java.lang.Override
     public final long evaluate() {
-        return f(getLeft$priv().evaluate(), getRight$priv().evaluate());
+        return f$priv(getLeft$priv().evaluate(), getRight$priv().evaluate());
     }
     
     @.java.lang.Override

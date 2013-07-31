@@ -89,7 +89,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
     
-    private final void arg() {
+    private final void arg$priv() {
         arg.$call();
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this;
@@ -130,7 +130,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return (
             let
             {
-                arg();
+                arg$priv();
             }
             returning null;
         );
@@ -141,7 +141,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return (
             let
             {
-                arg();
+                arg$priv();
             }
             returning null;
         );
@@ -152,7 +152,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return (
             let
             {
-                arg();
+                arg$priv();
             }
             returning null;
         );
@@ -160,13 +160,13 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     
     @.java.lang.Override
     public final .java.lang.Object f5() {
-        arg();
+        arg$priv();
         return null;
     }
     
     @.java.lang.Override
     public final .java.lang.Object f6() {
-        arg();
+        arg$priv();
         return null;
     }
     

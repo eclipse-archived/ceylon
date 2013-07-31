@@ -58,7 +58,7 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
     
-    private final boolean f() {
+    private final boolean f$priv() {
         return f.$call().booleanValue();
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this;
@@ -70,12 +70,12 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get1(final .ceylon.language.Integer j) {
-        return .ceylon.language.Integer.instance(getI$priv()).equals(j) ? .ceylon.language.Boolean.instance(f()) : null;
+        return .ceylon.language.Integer.instance(getI$priv()).equals(j) ? .ceylon.language.Boolean.instance(f$priv()) : null;
     }
     
     @.java.lang.Override
     public final .ceylon.language.Boolean get2(final .ceylon.language.Integer j) {
-        return .ceylon.language.Integer.instance(getI$priv()).equals(j) ? .ceylon.language.Boolean.instance(f()) : null;
+        return .ceylon.language.Integer.instance(getI$priv()).equals(j) ? .ceylon.language.Boolean.instance(f$priv()) : null;
     }
     
     @.java.lang.Override

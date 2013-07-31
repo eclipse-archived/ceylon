@@ -7,7 +7,7 @@ class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
-    private final long f(final long a) {
+    private final long f$priv(final long a) {
         return f.$call(.ceylon.language.Integer.instance(a)).longValue();
     }
     
@@ -17,7 +17,7 @@ class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.m
             {
                 long $arg$0$0 = 1L;
             }
-            returning f($arg$0$0);
+            returning f$priv($arg$0$0);
         );
     }
     

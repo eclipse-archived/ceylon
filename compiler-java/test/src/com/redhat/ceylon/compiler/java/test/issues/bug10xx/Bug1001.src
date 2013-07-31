@@ -83,7 +83,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRefCaptured;
     
-    private final long paramMethodRefCaptured() {
+    private final long paramMethodRefCaptured$priv() {
         return paramMethodRefCaptured.$call().longValue();
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> paramMethodRefCaptured2;
@@ -164,7 +164,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         .ceylon.language.print_.print(localLateCallableAttrib.$call());
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(localLateMethodRefCaptured.localLateMethodRefCaptured()));
         final long x = initLateMethodRefCaptured$priv();
-        final long y = paramMethodRefCaptured();
+        final long y = paramMethodRefCaptured$priv();
         
         final class n_ {
             
