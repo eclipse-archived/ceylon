@@ -552,26 +552,12 @@ shared interface Iterable<out Element, out Absent=Null>
         }
         else {
             String list = commaList(taking(30));
-            return "{ `` sizeExceeds(this, 30) 
+            return "{ `` longerThan(30) 
                         then list + ", ..." 
                         else list `` }"; 
         }
     }
     
-}
-
-//TODO: make this a method of Iterable
-Boolean sizeExceeds(Iterable<Anything> iterable, 
-        Integer size) {
-    variable Integer count=0;
-    for (x in iterable) {
-        if (size<count++) {
-            return true;
-        }
-    }
-    else {
-        return false;
-    }
 }
 
 String commaList({Anything*} elements) =>
