@@ -25,10 +25,10 @@ shared interface DocAnnotationsInterface{
 
 "Bla bla doc"
 by("Stef", "FroMage")
-see(DocAnnotations)
+see(`DocAnnotations`)
 shared class DocAnnotations() satisfies DocAnnotationsInterface {
     "Bla bla doc on field"
-    see(DocAnnotations)
+    see(`DocAnnotations`)
     shared Integer attr = 2;
 
     "Foo"
@@ -36,12 +36,12 @@ shared class DocAnnotations() satisfies DocAnnotationsInterface {
     assign getter {}
 
     "Bla bla doc on method"
-    see(DocAnnotations)
-    throws(Exception, "when things go kaboom")
+    see(`DocAnnotations`)
+    throws(`Exception`, "when things go kaboom")
     shared actual void m(){}
 
     "Bla bla doc on inner class"
-    see(InnerClass)
+    see(`InnerClass`)
     by("Stef", "FroMage")
     shared class InnerClass(){}
 }

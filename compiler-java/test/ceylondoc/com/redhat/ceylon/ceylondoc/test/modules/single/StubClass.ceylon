@@ -22,7 +22,7 @@ import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
 "This is `StubClass`"
 see(`StubInterface`, `stubTopLevelAttribute`, `stubTopLevelMethod`)
 tagged("stubTag1", "stubTag2")
-throws(StubException)
+throws(`StubException`)
 shared class StubClass(
   "Initializer parameter `a`" Integer a,
   "Initializer parameter `b`" Integer b,
@@ -30,11 +30,11 @@ shared class StubClass(
     satisfies StubInterface {
 
     "The stub attribute with `throws`."
-    throws(OverflowException, "if the number is too large to be represented as an integer")
+    throws(`OverflowException`, "if the number is too large to be represented as an integer")
     shared Integer attributeWithThrows = 0;
     
     "The stub attribute with `see`."
-    see(methodWithSee, stubObject.foo)
+    see(`methodWithSee`/* NOT SUPPORTED YET:, `stubObject.foo`*/)
     shared Integer attributeWithSee = 0;
     
     "The stub attribute with `tagged`."
@@ -47,7 +47,7 @@ shared class StubClass(
         "Method parameter `b`" Integer b) {}
     
     "The stub method with `throws`."
-    throws(StubException, "`when` with __WIKI__ syntax")
+    throws(`StubException`, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
     
     "The stub method with `see`."
