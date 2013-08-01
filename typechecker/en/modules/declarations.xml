@@ -2507,10 +2507,13 @@ shared deprecated</programlisting>
             <programlisting>"the name" String name;</programlisting>
             
             <para>Operator expressions, member expressions, self references, anonymous
-            functions, and string templates are not permitted in an annotation argument. 
-            Every base expression in an annotation argument must be a value reference to 
-            <literal>true</literal> or <literal>false</literal>, or must occur in a direct 
-            instantiation expression for an annotation type.</para>
+            functions, comprehensions, and string templates are not permitted in an 
+            annotation argument. Every base expression in an annotation argument must be 
+            a value reference to <literal>true</literal> or <literal>false</literal>, or 
+            must occur in a direct instantiation expression for an annotation type.</para>
+            
+            <para>A named argument to an annotation may not be an inline function, value,
+            or anonymous class.</para>
             
             <para>Every annotation is an invocation expression, as defined by
             <xref linkend="invocationexpressions"/>, of an annotation constructor.</para>
@@ -2553,11 +2556,14 @@ shared deprecated</programlisting>
             <para>An annotation constructor must simply instantiate and return an instance
             of an annotation type. The body of an annotation constructor may not contain
             multiple statements. Operator expressions, member expressions, self references,
-            anonymous functions, and string templates are not permitted in the definition of 
-            an annotation constructor. Every base expression in the body of an annotation 
-            constructor must be a reference to a parameter of the annotation constructor, to 
-            <literal>true</literal> or <literal>false</literal>, or must occur in a direct 
-            instantiation expression for an annotation type.</para>
+            anonymous functions, comprehensions, and string templates are not permitted in 
+            the definition of an annotation constructor. Every base expression in the body 
+            of an annotation constructor must be a reference to a parameter of the annotation 
+            constructor, to <literal>true</literal> or <literal>false</literal>, or must occur 
+            in a direct instantiation expression for an annotation type.</para>
+            
+            <para>A named argument appearing in the definition of an annotation constructor
+            may not be an inline function, value, or anonymous class.</para>
             
             <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
             <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
@@ -2578,8 +2584,9 @@ shared deprecated</programlisting>
             An annotation type may not be a generic type with type parameters. An 
             annotation type must have an empty initializer section.</para>
             
-            <comment><para>Note: in Ceylon 1.0 only <literal>final</literal> classes may 
-            be annotation types.</para></comment>
+            <comment><para>Note: in Ceylon 1.0 every annotation type must be a 
+            <literal>final</literal> class which directly extends <literal>Basic</literal>
+            in <literal>ceylon.language</literal>.</para></comment>
             
             <para>Each initializer parameter of an annotation type must have one of the 
             following types:</para>
@@ -2605,8 +2612,8 @@ shared deprecated</programlisting>
             
             <para>An initializer parameter of an annotation type may be variadic.</para>
             
-            <para>An initializer parameter of an annotation type parameter may have a 
-            default argument, which must be a legal annotation argument.</para>
+            <para>An initializer parameter of an annotation type may have a default argument, 
+            which must be a legal annotation argument.</para>
             
             <para>Every annotation type must be a subtype of <literal>Annotation</literal> 
             defined in the package <literal>ceylon.language.model</literal>.</para>
