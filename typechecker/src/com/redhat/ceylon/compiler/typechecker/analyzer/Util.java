@@ -375,10 +375,12 @@ public class Util {
                             Tree.Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
                             if (e!=null) {
                                 Tree.Term t = e.getTerm();
-                                String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
-                        		String text = toString(t);
-                        		if (text!=null) {
-                                    ann.addNamedArgument(param, text);
+                                Parameter p = ((Tree.SpecifiedArgument) na).getParameter();
+                                if (p!=null) {
+                                    String text = toString(t);
+                                    if (text!=null) {
+                                        ann.addNamedArgument(p.getName(), text);
+                                    }
                                 }
                             }
                         }                    
