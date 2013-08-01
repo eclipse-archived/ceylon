@@ -135,6 +135,11 @@ public class AnnotationsTest extends CompilerTest {
     }
     
     @Test
+    public void testNested(){
+        compareWithJavaSource("Nested");
+    }
+    
+    @Test
     public void testAnnotationModelLoading(){
         compile("AnnotationConstructor.ceylon");
         compile("AnnotationConstructorUse.ceylon");
