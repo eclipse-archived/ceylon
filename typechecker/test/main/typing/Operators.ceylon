@@ -152,8 +152,8 @@ class Operators() {
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
-    Callable<Null|Iterable<String>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
-    Callable<Sequence<Iterable<String>>,[Iterable<Character>|Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"]*.split;
+    Callable<Null|Iterable<String>,[Callable<Boolean,[Character]>,Boolean,Boolean]> mss = maybeString?.split;
+    Callable<Sequence<Iterable<String>>,[Callable<Boolean,[Character]>,Boolean,Boolean]> hws = ["hello", "world"]*.split;
     
     Sequence<String> helloworld = ["hello", "world"];
     @type:"Sequential<String>" value e45 = emp*.uppercased;
