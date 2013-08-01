@@ -161,8 +161,11 @@ public class ConstraintVisitor extends Visitor {
             if (c.isParameterized()) {
                 that.addError("annotation class may not be a parameterized type");
             }
-            if (c.isAbstract()) {
+            /*if (c.isAbstract()) {
                 that.addError("annotation class may not be abstract");
+            }*/
+            if (!c.isFinal()) {
+                that.addError("annotation class must be final");
             }
             if (!c.getExtendedTypeDeclaration()
                     .equals(that.getUnit().getBasicDeclaration())) {
@@ -228,9 +231,9 @@ public class ConstraintVisitor extends Visitor {
             Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
                 Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
-                if (!ie.getTypeModel().isExactly(pt)) {
+                /*if (!ie.getTypeModel().isExactly(pt)) {
                     ie.addError("annotation constructor must return exactly the annotation type");
-                }
+                }*/
                 if (!(ie.getPrimary() instanceof Tree.BaseTypeExpression)
                         && (!(ie.getPrimary() instanceof Tree.BaseMemberExpression)
                                 || !((Tree.BaseMemberExpression)ie.getPrimary()).getDeclaration().isAnnotation())) {
