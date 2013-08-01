@@ -84,12 +84,24 @@ public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.
         this.erased = erased;
         this.nonErased = nonErased;
         this.$com$redhat$ceylon$compiler$java$test$expression$erasure$CE_MethodInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface$impl(this);
-        this.m1$specifier = c.getErasedMethod();
-        this.m2$specifier = c.getNonErasedMethod();
+        this.m1$specifier = getC$priv().getErasedMethod();
+        this.m2$specifier = getC$priv().getNonErasedMethod();
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass c;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass getC$priv() {
+        return c;
+    }
     private final .java.lang.Object erased;
+    
+    private final .java.lang.Object getErased$priv() {
+        return erased;
+    }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErased;
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getNonErased$priv() {
+        return nonErased;
+    }
     protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$CE_MethodInterface$this;
     
     @.java.lang.Override
@@ -111,12 +123,12 @@ public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public final .java.lang.Object m3() {
-        return nonErased.$call();
+        return getNonErased$priv().$call();
     }
     
     @.java.lang.Override
     public final .java.lang.Object m4() {
-        return ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)erased).$call();
+        return ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)getErased$priv()).$call();
     }
     
     @.java.lang.Override
