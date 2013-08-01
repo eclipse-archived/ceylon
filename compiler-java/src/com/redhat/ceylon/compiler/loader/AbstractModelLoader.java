@@ -134,6 +134,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
     private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
+    
+    private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.Annotation$annotation";
 
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
@@ -748,6 +750,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
+        klass.setAnnotation(classMirror.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
         if(klass.isCeylon())
             klass.setAbstract(isAnnotated(classMirror, "abstract"));
         else
@@ -2166,6 +2169,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             markUnboxed(method, meth.getReturnType());
             markTypeErased(method, meth, meth.getReturnType());
 
+            method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
             setAnnotations(method, meth);
             
             setAnnotationConstructor(method, meth);

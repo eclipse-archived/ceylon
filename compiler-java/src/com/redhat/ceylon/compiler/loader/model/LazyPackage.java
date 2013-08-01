@@ -200,6 +200,7 @@ public class LazyPackage extends Package {
         klass.setContainer(this);
         klass.setName(iface.getName()+"$Proxy");
         klass.setShared(iface.isShared());
+        klass.setAnnotation(true);
         Annotation annotationAnnotation = new Annotation();
         annotationAnnotation.setName("annotation");
         klass.getAnnotations().add(annotationAnnotation);

@@ -388,6 +388,12 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
+    public boolean isAnnotation() {
+        load();
+        return super.isAnnotation();
+    }
+    
+    @Override
     public void addMember(Declaration decl) {
         // do this without lazy-loading
         super.getMembers().add(decl);

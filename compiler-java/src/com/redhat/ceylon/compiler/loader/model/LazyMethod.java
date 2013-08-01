@@ -349,6 +349,12 @@ public class LazyMethod extends Method implements LazyElement {
     }
 
     @Override
+    public boolean isAnnotation() {
+        load();
+        return super.isAnnotation();
+    }
+    
+    @Override
     public boolean isLoaded() {
         return isLoaded;
     }
