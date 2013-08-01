@@ -2946,7 +2946,8 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             JCExpression expr;
             // FIXME: super temporary hack
-            if(currentParam.getDefaultArgument() != null
+            if(currentParam instanceof Tree.InitializerParameter
+                    && ((Tree.InitializerParameter)currentParam).getSpecifierExpression() != null
                     && container instanceof com.redhat.ceylon.compiler.typechecker.model.Class
                     && Decl.isAnnotationClass((com.redhat.ceylon.compiler.typechecker.model.Class)container)
                     && (isCeylonMetamodelDeclaration(parameter.getType())
