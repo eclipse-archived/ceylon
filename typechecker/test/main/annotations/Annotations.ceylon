@@ -4,8 +4,9 @@ import ceylon.language.model.declaration { Declaration }
 annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
 
-Null table(String name, String schema) { return null; }
-Null persistent(String column, Anything type, Boolean update) { return null; }
+annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
+annotation Meta table(String name, String schema) { return Meta(name); }
+annotation Meta persistent(String column, Anything type, Boolean update) { return Meta(column); }
 
 "A class"
 by ("Gavin King",
@@ -40,7 +41,7 @@ class Annotations() {
         
         persistent { column = "fullName";
                      update = true;
-                     type = TrimmedString; }
+                     type = `TrimmedString`; }
         shared String name = "Gavin King";
         
     }
