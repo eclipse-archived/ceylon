@@ -83,7 +83,7 @@ defineAttr(JSNum$proto, 'negativeValue', function() {
 defineAttr(JSNum$proto, 'positiveValue', function() {
     return this.float$ ? this : this.valueOf();
 },undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:$$METAMODEL$$['ceylon.language']['Invertable']['$at']['positiveValue']});
-JSNum$proto.equals = function(other) { return other==this.valueOf(); }
+JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
