@@ -141,6 +141,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.Annotation$annotation";
     private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.Default$annotation";
     private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.Formal$annotation";
+    private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.Late$annotation";
     private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.Shared$annotation";
 
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
@@ -1858,6 +1859,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
         if(decl instanceof Value){
             ((Value)decl).setTransient(methodMirror.getAnnotation(CEYLON_TRANSIENT_ANNOTATION) != null);
+            ((Value)decl).setLate(methodMirror.getAnnotation(CEYLON_LANGUAGE_LATE_ANNOTATION) != null);
         }
         if(// for class members we rely on abstract bit
            (klass instanceof Class 

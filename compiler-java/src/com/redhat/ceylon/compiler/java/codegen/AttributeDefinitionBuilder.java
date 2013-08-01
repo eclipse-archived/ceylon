@@ -239,7 +239,8 @@ public class AttributeDefinitionBuilder {
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
-            setterBuilder.annotationFlags(annotationFlags);    
+            // mark it with @Ignore if it's late but not variable
+            setterBuilder.annotationFlags(annotationFlags | (late && !variable ? Annotations.IGNORE : 0));    
             if (this.userAnnotationsSetter != null) {
                 setterBuilder.userAnnotations(this.userAnnotationsSetter.toList());
             }
