@@ -480,6 +480,8 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [late]", validDeclaration.isLate(), modelDeclaration.isLate());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [transient]", validDeclaration.isTransient(), modelDeclaration.isTransient());
         // compare the types
         compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
     }

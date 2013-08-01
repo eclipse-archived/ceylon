@@ -80,6 +80,9 @@ shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
         value z = n5;
     }
 
+    shared late String lateString;
+    shared late variable String lateVariableString;
+
     // override all formal attrs
     shared actual Integer formalAttr2 = 3;
     shared actual Integer defaultAttr = 3;
