@@ -506,13 +506,23 @@ public final class String
     
     @Ignore
     public static boolean occursAtStart(java.lang.String value, List<?> element) {
-        return instance(value).occursAtStart(element);
+        if (element instanceof String) {
+            return ((String) element).startsWith(value);
+        }
+        else {
+            return instance(value).occursAtStart(element);
+        }
     }
     
     @Override
     @Ignore
     public boolean occursAtStart(List<?> element) {
-        return $ceylon$language$List$this.occursAtStart(element);
+        if (element instanceof String) {
+            return ((String) element).startsWith(value);
+        }
+        else {
+            return $ceylon$language$List$this.occursAtStart(element);
+        }
     }
 
     @Ignore
