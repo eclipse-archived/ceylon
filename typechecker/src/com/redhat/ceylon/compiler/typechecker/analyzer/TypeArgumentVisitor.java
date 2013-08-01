@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -64,8 +65,7 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = that.getParameterModel().getDeclaration();
         }
         super.visit(that);
-        //TODO!!!!!!!!
-//        check(that.getTypedDeclaration().getType(), false, parameterizedDeclaration);
+        check(that.getParameterModel().getType(), false, parameterizedDeclaration, that);
         if (topLevel) {
             parameterizedDeclaration = null;
         }
@@ -120,8 +120,13 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.FunctionArgument that) {}
 
     private void check(Tree.Type that, boolean variable, Declaration d) {
-        if (that!=null && (d==null || d.isShared() || d.getOtherInstanceAccess())) {
-            ProducedType type = that.getTypeModel();
+        if (that!=null) {
+            check(that.getTypeModel(), variable, d, that);
+        }
+    }
+
+    private void check(ProducedType type, boolean variable, Declaration d, Node that) {
+        if (d==null || d.isShared() || d.getOtherInstanceAccess()) {
             if (type!=null) {
                 List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
                         contravariant && !variable, parameterizedDeclaration);
@@ -130,7 +135,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
 
-    private void displayErrors(Tree.Type that, ProducedType type,
+    private void displayErrors(Node that, ProducedType type,
             List<TypeParameter> errors) {
         for (TypeParameter td: errors) {
             String var; String loc;
