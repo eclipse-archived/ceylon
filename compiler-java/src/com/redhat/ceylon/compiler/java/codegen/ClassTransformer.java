@@ -607,7 +607,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
             Parameter decl) {
         MethodOrValue model = decl.getModel();
-        classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(decl.getName()), 
+        classBuilder.defs(make().VarDef(make().Modifiers(FINAL | PRIVATE, makeAtIgnore()), names().fromString(decl.getName()), 
                 classGen().transformClassParameterType(decl), null));
         
         classBuilder.init(make().Exec(make().Assign(

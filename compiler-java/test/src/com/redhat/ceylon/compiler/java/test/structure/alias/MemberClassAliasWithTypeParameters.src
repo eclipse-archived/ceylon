@@ -36,6 +36,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedC;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final C c;
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")

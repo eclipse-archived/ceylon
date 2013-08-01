@@ -273,6 +273,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
             }
         };
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c;
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")

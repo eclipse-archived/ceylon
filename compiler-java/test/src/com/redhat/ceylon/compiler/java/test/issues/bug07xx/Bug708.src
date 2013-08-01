@@ -114,7 +114,6 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object getParam$priv() {
         return param;
     }
-    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object attr;
     

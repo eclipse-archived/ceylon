@@ -12,6 +12,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     final .java.lang.String name) {
         this.name = name;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String name;
     
     @.ceylon.language.Shared$annotation
@@ -46,18 +47,21 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             this.street = street;
             this.city = city;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String house;
         
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         private final .java.lang.String getHouse$priv() {
             return house;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String street;
         
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         private final .java.lang.String getStreet$priv() {
             return street;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String city;
         
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
