@@ -330,17 +330,24 @@ shared interface Iterable<out Element, out Absent=Null>
         object iterable satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
                 value iter = outer.iterator();
-                while (!is Finished elem=iter.next(), 
-                        skip(elem)) {}
-                return iter;
-            }
-            shared actual Element? first {
-                if (!is Finished first = iterator().next()) {
-                    return first;
+                while (!is Finished elem=iter.next()) {
+                    if (!skip(elem)) {
+                        object iterator satisfies Iterator<Element> {
+                            variable Boolean first=true;
+                            actual shared Element|Finished next() {
+                                if (first) {
+                                    first=false;
+                                    return elem;
+                                }
+                                else {
+                                    return iter.next();
+                                }
+                            }
+                        }
+                        return iterator;
+                    }
                 }
-                else {
-                    return null;
-                }
+                return emptyIterator;
             }
         }
         return iterable;
