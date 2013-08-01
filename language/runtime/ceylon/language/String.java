@@ -1100,9 +1100,9 @@ public final class String
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String, ? extends java.lang.Object> split(
-            @TypeInfo(value="ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>", erased=true)
+            @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Defaulted
-            @Name("splitting") Callable<? extends Boolean> separator,
+            @Name("splitting") Callable<? extends Boolean> splitting,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
@@ -1110,58 +1110,58 @@ public final class String
         if (value.isEmpty()) {
             return new Singleton<String>(String.$TypeDescriptor, this);
         }
-        return new Tokens(value, separator, !discardSeparators, groupSeparators);
+        return new Tokens(value, splitting, !discardSeparators, groupSeparators);
     }
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
-            Callable<? extends Boolean> separator,
+            Callable<? extends Boolean> splitting,
             boolean discardSeparators,
             boolean groupSeparators) {
         if (value.isEmpty()) {
             return new Singleton<String>(String.$TypeDescriptor, instance(value));
         }
-        return new Tokens(value, separator, !discardSeparators, groupSeparators);
+        return new Tokens(value, splitting, !discardSeparators, groupSeparators);
     }
 
     @Ignore
     public Iterable<? extends String, ? extends java.lang.Object> split(
-            Callable<? extends Boolean> separator,
+            Callable<? extends Boolean> splitting,
             boolean discardSeparators) {
-        return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
+        return split(splitting, discardSeparators, split$groupSeparators(splitting, discardSeparators));
     }
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
-            Callable<? extends Boolean> separator,
+            Callable<? extends Boolean> splitting,
             boolean discardSeparators) {
-        return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
+        return split(value, splitting, discardSeparators, split$groupSeparators(splitting, discardSeparators));
     }
 
     @Ignore
     public Iterable<? extends String, ? extends java.lang.Object> split(
-            Callable<? extends Boolean> separator) {
-        return split(separator, split$discardSeparators(separator));
+            Callable<? extends Boolean> splitting) {
+        return split(splitting, split$discardSeparators(splitting));
     }
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value,
-            Callable<? extends Boolean> separator) {
-        return split(value, separator, split$discardSeparators(separator));
+            Callable<? extends Boolean> splitting) {
+        return split(value, splitting, split$discardSeparators(splitting));
     }
 
     @Ignore
     public Iterable<? extends String, ? extends java.lang.Object> split() {
-        return split(split$separator());
+        return split(split$splitting());
     }
 
     @Ignore
     public static Iterable<? extends String, ? extends java.lang.Object> split(java.lang.String value) {
-        return split(value, split$separator());
+        return split(value, split$splitting());
     }
 
     @Ignore
-    public static Callable<? extends Boolean> split$separator(){
+    public static Callable<? extends Boolean> split$splitting(){
         return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor, Character.$TypeDescriptor, Empty.$TypeDescriptor),
                 "whitespace", (short)-1) {
