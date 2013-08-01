@@ -126,6 +126,7 @@ public class Naming implements LocalId {
     }
     
     private static String getMethodName(TypedDeclaration decl, int namingOptions) {
+        String methodName;
         if (decl.isClassOrInterfaceMember()) {
             String name = decl.getName();
             // ERASURE
@@ -141,10 +142,14 @@ public class Naming implements LocalId {
                             ((TypeDeclaration)decl.getUnit().getLanguageModuleDeclaration("Cloneable")).getType())) {
                 return "clone";    
             } 
-            return getMethodNameInternal(decl);
+            methodName = getMethodNameInternal(decl);
         } else {
-            return getMethodNameInternal(decl);
+            methodName = getMethodNameInternal(decl);
         }
+        if ((namingOptions & NA_CANONICAL_METHOD) != 0) {
+            methodName += "$";
+        }
+        return methodName;
     }
 
     private static String getMethodNameInternal(TypedDeclaration decl) {
@@ -979,6 +984,8 @@ public class Naming implements LocalId {
     static final int NA_ANNOTATION_MEMBER = 1<<9;
     /** Add a ".this" selector to the wrapper class */
     static final int NA_WRAPPER_WITH_THIS = 1<<10;
+    /** Add "$" to the end of the method name */
+    static final int NA_CANONICAL_METHOD = 1<<11;
 
     /**
      * Returns the name of the Java method/field for the given declaration 
