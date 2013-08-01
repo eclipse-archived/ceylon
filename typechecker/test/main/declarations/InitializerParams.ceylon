@@ -189,5 +189,7 @@ interface InitializerParams {
             Object s; String o; Integer i;
         }
     }
+    
+    @error class XXXX(i=1.0) { Integer i; }
 
 }
