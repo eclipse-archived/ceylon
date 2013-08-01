@@ -81,11 +81,10 @@ public class FreeAttribute
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations() {
         if(parameter != null
-                && parameter instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
-                && !((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)parameter).isHidden()){
+                && !parameter.getModel().isShared()){
             // get the annotations from the parameter itself
             Annotation[][] parameterAnnotations;
-            Scope container = parameter.getContainer();
+            Scope container = parameter.getModel().getContainer();
             if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
                 parameterAnnotations = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method)container).getParameterAnnotations();
             else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
@@ -98,9 +97,9 @@ public class FreeAttribute
             List<Parameter> parameters = ((com.redhat.ceylon.compiler.typechecker.model.Functional)container).getParameterLists().get(0).getParameters();
             int index = parameters.indexOf(parameter);
             if(index == -1)
-                throw new RuntimeException("Parameter "+parameter+" not found in container "+parameter.getContainer());
+                throw new RuntimeException("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());
             if(index >= parameterAnnotations.length)
-                throw new RuntimeException("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getContainer());
+                throw new RuntimeException("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getModel().getContainer());
             return parameterAnnotations[index];
         }else{
             Class<?> javaClass = Metamodel.getJavaClass(declaration);

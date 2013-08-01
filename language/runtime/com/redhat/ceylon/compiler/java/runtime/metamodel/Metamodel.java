@@ -179,8 +179,7 @@ public class Metamodel {
                         }
                     }else
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeInterface(interf);
-                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
-                        || declaration instanceof com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter){
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
                     com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
                     if(method.getContainer() instanceof Method == false
                        && !hasTypeParameters(method)){
@@ -201,9 +200,7 @@ public class Metamodel {
                     }else{
                         ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                     }
-                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
-                        || (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
-                                && !((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)declaration).isHidden())){
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
                     com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration value = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
                     // FIXME: other container types?
                     if(value.getContainer() instanceof Method == false
@@ -231,17 +228,6 @@ public class Metamodel {
                             ret = new FreeAttribute(value);
                         }
                     }
-                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter){
-                    // if the declaration is hidden by a member, return that member, which will be a member&parameter
-                    if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.ValueParameter
-                            && ((com.redhat.ceylon.compiler.typechecker.model.ValueParameter)declaration).isHidden()){
-                        // we have a corresponding Attribute or Method that is also a ParameterDeclaration, so just get it
-                        Declaration member = declaration.getContainer().getMember(declaration.getName(), null, false);
-                        if(member == null)
-                            throw new RuntimeException("Hidden parameter with no equivalent member: "+declaration);
-                        ret = Metamodel.getOrCreateMetamodel(member);
-                    }else// private non-hidden parameters are not reified as members, just as parameters
-                        throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }
@@ -737,7 +723,7 @@ public class Metamodel {
     public static com.redhat.ceylon.compiler.typechecker.model.Parameter getParameterFromTypedDeclaration(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.MethodOrValue)
             return ((com.redhat.ceylon.compiler.typechecker.model.MethodOrValue) declaration).getInitializerParameter();
-        return (com.redhat.ceylon.compiler.typechecker.model.Parameter)declaration;
+        return null;
     }
     
 }

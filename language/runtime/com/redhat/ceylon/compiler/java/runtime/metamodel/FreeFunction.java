@@ -63,7 +63,7 @@ public class FreeFunction
         ceylon.language.model.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.model.declaration.FunctionOrValueDeclaration[modelParameters.size()];
         i=0;
         for(Parameter modelParameter : modelParameters){
-            parameters[i] = (ceylon.language.model.declaration.FunctionOrValueDeclaration)Metamodel.getOrCreateMetamodel(modelParameter);
+            parameters[i] = (ceylon.language.model.declaration.FunctionOrValueDeclaration)Metamodel.getOrCreateMetamodel(modelParameter.getModel());
             i++;
         }
         this.parameterList = Util.sequentialInstance(ceylon.language.model.declaration.FunctionOrValueDeclaration.$TypeDescriptor, parameters);
