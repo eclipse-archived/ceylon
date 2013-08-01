@@ -140,6 +140,16 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
+    
+    @.java.lang.Override
+    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
+        return $ceylon$language$List$this.occursAtStart(sequence);
+    }
+    
+    @.java.lang.Override
+    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
+        return $ceylon$language$List$this.occursIn(sequence);
+    }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
     
     @.java.lang.Override

@@ -58,6 +58,16 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, element);
     }
+    
+    @.java.lang.Override
+    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
+        return $ceylon$language$List$this.occursAtStart(sequence);
+    }
+    
+    @.java.lang.Override
+    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
+        return $ceylon$language$List$this.occursIn(sequence);
+    }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
     @.java.lang.Override
@@ -326,6 +336,16 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public <Other>.ceylon.language.Sequence withTrailing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedOther, final Other element) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, element);
+    }
+    
+    @.java.lang.Override
+    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
+        return $ceylon$language$List$this.occursAtStart(sequence);
+    }
+    
+    @.java.lang.Override
+    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
+        return $ceylon$language$List$this.occursIn(sequence);
     }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
