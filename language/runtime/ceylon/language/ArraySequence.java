@@ -717,6 +717,12 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Override
     @Ignore
+    public Iterable<? extends Element,?> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
+    
+    @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(ArraySequence.class, $reifiedElement);
     }

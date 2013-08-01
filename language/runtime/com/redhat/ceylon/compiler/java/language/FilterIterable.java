@@ -231,6 +231,11 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     public boolean containsEvery(Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
+    @Override
+    @Ignore
+    public Iterable<? extends Element,? extends Absent> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
 //    @Override @Ignore
 //    public boolean containsEvery() {
 //        return $ceylon$language$Category$this.containsEvery();

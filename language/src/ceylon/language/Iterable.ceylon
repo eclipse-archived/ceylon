@@ -457,7 +457,7 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default {<Integer->Element&Object>*} indexed {
         object indexes
                 satisfies {<Integer->Element&Object>*} {
-                value orig = outer;
+            value orig => outer;
             shared actual Iterator<Integer->Element&Object> iterator() {
                 object iterator satisfies Iterator<Integer->Element&Object> {
                     value iter = orig.iterator();
@@ -556,6 +556,29 @@ shared interface Iterable<out Element, out Absent=Null>
                         then list + ", ..." 
                         else list `` }"; 
         }
+    }
+    
+    shared default Iterable<Element,Absent> repeated {
+        object iterable satisfies Iterable<Element,Absent> {
+            value orig => outer;
+            shared actual Iterator<Element> iterator() {
+                object iterator satisfies Iterator<Element> {
+                    variable Iterator<Element> iter = emptyIterator;
+                    shared actual Element|Finished next() {
+                        if (!is Finished next = iter.next()) {
+                            return next;
+                        }
+                        else {
+                            iter = orig.iterator();
+                            return iter.next();
+                        }
+                        
+                    }
+                }
+                return iterator;
+            }
+        }
+        return iterable;
     }
     
 }

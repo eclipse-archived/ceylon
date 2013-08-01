@@ -385,6 +385,11 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 //    }
     @Override
     @Ignore
+    public Iterable<? extends Element,? extends Absent> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
+    @Override
+    @Ignore
     public TypeDescriptor $getType() {
         return TypeDescriptor.klass(ArrayIterable.class, $reifiedElement);
     }

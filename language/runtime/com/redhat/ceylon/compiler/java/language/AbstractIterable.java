@@ -219,6 +219,11 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     public <Default>Iterable<?,? extends Absent> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
+    @Override
+    @Ignore
+    public Iterable<? extends Element,? extends Absent> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
     /*@Override @Ignore
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);

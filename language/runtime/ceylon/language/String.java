@@ -1799,6 +1799,12 @@ public final class String
         
         @Override
         @Ignore
+        public Iterable<? extends String,?> getRepeated() {
+            return $ceylon$language$Iterable$this.getRepeated();
+        }
+
+        @Override
+        @Ignore
         public Sequential<? extends String> getSequence() {
             return $ceylon$language$Iterable$this.getSequence();
         }
@@ -2014,6 +2020,12 @@ public final class String
         public boolean getEmpty() {
             return iterator().next() == finished_.$get();
         }
+        
+        @Override
+        @Ignore
+        public Iterable<? extends Integer,?> getRepeated() {
+            return $ceylon$language$Iterable$this.getRepeated();
+        }
 
         @Override
         @Ignore
@@ -2179,6 +2191,17 @@ public final class String
         }
     }
 
+    @Override
+    @Ignore
+    public Iterable<? extends Character,?> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character,?> getRepeated(java.lang.String value) {
+        return instance(value).getRepeated();
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

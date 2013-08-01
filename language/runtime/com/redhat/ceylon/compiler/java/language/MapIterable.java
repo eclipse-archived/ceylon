@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.language;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
-import ceylon.language.Character;
 import ceylon.language.Comparison;
 import ceylon.language.Container$impl;
 import ceylon.language.Entry;
@@ -235,6 +234,11 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     @Override @Ignore
     public boolean containsEvery(Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Result,? extends Absent> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
     }
 //    @Override @Ignore
 //    public boolean containsEvery() {
