@@ -1578,7 +1578,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setRealName(methodMirror.getName());
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded);
-        setMethodOrValueFlags(klass, methodMirror, method);
+        setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
         method.setName(Util.strip(methodMirror.getName(), isCeylon, method.isShared()));
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
@@ -1833,7 +1833,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
         value.setUnit(klass.getUnit());
-        setMethodOrValueFlags(klass, methodMirror, value);
+        setMethodOrValueFlags(klass, methodMirror, value, isCeylon);
         value.setName(Util.strip(methodName, isCeylon, value.isShared()));
 
         ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
@@ -1853,12 +1853,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unchecked != null && unchecked.booleanValue();
     }
 
-    private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
+    private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl, boolean isCeylon) {
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
         decl.setProtectedVisibility(methodMirror.isProtected());
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
         if(decl instanceof Value){
-            setValueTransientLateFlags((Value)decl, methodMirror);
+            setValueTransientLateFlags((Value)decl, methodMirror, isCeylon);
         }
         if(// for class members we rely on abstract bit
            (klass instanceof Class 
@@ -1892,9 +1892,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private void setValueTransientLateFlags(Value decl, MethodMirror methodMirror) {
-        ((Value)decl).setTransient(methodMirror.getAnnotation(CEYLON_TRANSIENT_ANNOTATION) != null);
-        ((Value)decl).setLate(methodMirror.getAnnotation(CEYLON_LANGUAGE_LATE_ANNOTATION) != null);
+    private void setValueTransientLateFlags(Value decl, MethodMirror methodMirror, boolean isCeylon) {
+        if(isCeylon)
+            decl.setTransient(methodMirror.getAnnotation(CEYLON_TRANSIENT_ANNOTATION) != null);
+        else
+            // all Java getters are transient, fields are not
+            decl.setTransient(decl instanceof FieldValue == false);
+        decl.setLate(methodMirror.getAnnotation(CEYLON_LANGUAGE_LATE_ANNOTATION) != null);
     }
 
     private void setExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
@@ -2118,7 +2122,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             value.setType(obtainType(meth.getReturnType(), meth, null, Decl.getModuleContainer(value.getContainer()), VarianceLocation.INVARIANT,
                           "toplevel attribute", value));
 
-            setValueTransientLateFlags(value, meth);
+            setValueTransientLateFlags(value, meth, true);
             setAnnotations(value, meth);
             markUnboxed(value, meth.getReturnType());
         }finally{
