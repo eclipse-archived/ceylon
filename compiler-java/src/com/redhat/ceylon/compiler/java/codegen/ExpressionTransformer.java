@@ -3033,19 +3033,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Do we *statically* know the result must be a Sequence 
         final boolean primaryIsSequence = expr.getPrimary().getTypeModel().isSubtypeOf(
                 typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()).getType());
-        int flags = 0;
+        
         // if we want a Sequence and SequenceBuilder returns a Sequential, we need to force the downcast
-        if(primaryIsSequence)
-            flags |= EXPR_DOWN_CAST;
-        spread = applyErasureAndBoxing(spread, 
-                typeFact().getSequentialType(returnElementType),// the type of SequenceBuilder.getSequence();
-                false,
-                true,
-                BoxingStrategy.BOXED, 
-                primaryIsSequence ? 
-                        typeFact().getSequenceType(returnElementType) 
-                        : typeFact().getSequentialType(returnElementType),
-                flags);
+        if(primaryIsSequence){
+            int flags = EXPR_DOWN_CAST;
+            spread = applyErasureAndBoxing(spread, 
+                    typeFact().getSequentialType(returnElementType),// the type of SequenceBuilder.getSequence();
+                    false,
+                    true,
+                    BoxingStrategy.BOXED, 
+                    primaryIsSequence ? 
+                            typeFact().getSequenceType(returnElementType) 
+                            : typeFact().getSequentialType(returnElementType),
+                            flags);
+        }
         
         return spread;
     }
