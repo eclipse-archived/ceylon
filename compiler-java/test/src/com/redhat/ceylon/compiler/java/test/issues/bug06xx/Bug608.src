@@ -15,7 +15,7 @@ final class bug608_ {
                 .java.lang.String $arg$0$callable$ = "";
                 .java.lang.String $arg$0$this$ = $arg$0$callable$;
                 boolean $arg$0$1 = true;
-                .java.lang.Object $arg$0$0 = .ceylon.language.String.instance($arg$0$this$).split$separator();
+                .ceylon.language.Callable $arg$0$0 = .ceylon.language.String.instance($arg$0$this$).split$splitting();
                 boolean $arg$0$2 = .ceylon.language.String.instance($arg$0$this$).split$groupSeparators($arg$0$0, $arg$0$1);
             }
             returning .ceylon.language.String.split($arg$0$callable$, $arg$0$0, $arg$0$1, $arg$0$2);

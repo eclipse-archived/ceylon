@@ -31,6 +31,16 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
+    public boolean longerThan(final long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+    
+    @.java.lang.Override
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+    
+    @.java.lang.Override
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
@@ -113,6 +123,16 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @.java.lang.Override
@@ -265,6 +285,16 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
+    public boolean longerThan(final long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+    
+    @.java.lang.Override
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.String getFirst() {
         return (.ceylon.language.String)$ceylon$language$Iterable$this.getFirst();
     }
@@ -342,6 +372,16 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @.java.lang.Override

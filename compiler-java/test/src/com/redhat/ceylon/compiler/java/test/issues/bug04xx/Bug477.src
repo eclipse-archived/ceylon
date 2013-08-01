@@ -30,6 +30,16 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$List$this.shorterThan(length);
+    }
+    
+    @.java.lang.Override
+    public boolean longerThan(final long length) {
+        return $ceylon$language$List$this.longerThan(length);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
     }
@@ -37,6 +47,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterator<? extends T> iterator() {
         return $ceylon$language$List$this.iterator();
+    }
+    
+    @.java.lang.Override
+    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -60,13 +75,53 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
-        return $ceylon$language$List$this.occursAtStart(sequence);
+    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occursAtStart(list);
     }
     
     @.java.lang.Override
-    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
-        return $ceylon$language$List$this.occursIn(sequence);
+    public boolean occursAt(final long index, final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occursAt(index, list);
+    }
+    
+    @.java.lang.Override
+    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occursIn(list);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrencesIn(final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occurrencesIn(list);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexes(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this.indexes(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> trim(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
+        return $ceylon$language$List$this.trim(trimming);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> trimLeading(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
+        return $ceylon$language$List$this.trimLeading(trimming);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> trimTrailing(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
+        return $ceylon$language$List$this.trimTrailing(trimming);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> initial(final long length) {
+        return $ceylon$language$List$this.initial(length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> terminal(final long length) {
+        return $ceylon$language$List$this.terminal(length);
     }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
@@ -117,11 +172,6 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.findLast(selecting);
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
@@ -154,6 +204,16 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @.java.lang.Override
@@ -309,6 +369,16 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$List$this.shorterThan(length);
+    }
+    
+    @.java.lang.Override
+    public boolean longerThan(final long length) {
+        return $ceylon$language$List$this.longerThan(length);
+    }
+    
+    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this.defines(index);
     }
@@ -316,6 +386,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterator<? extends T> iterator() {
         return $ceylon$language$List$this.iterator();
+    }
+    
+    @.java.lang.Override
+    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -339,13 +414,53 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
-        return $ceylon$language$List$this.occursAtStart(sequence);
+    public boolean occursAtStart(final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occursAtStart(list);
     }
     
     @.java.lang.Override
-    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> sequence) {
-        return $ceylon$language$List$this.occursIn(sequence);
+    public boolean occursAt(final long index, final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occursAt(index, list);
+    }
+    
+    @.java.lang.Override
+    public boolean occursIn(final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occursIn(list);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrencesIn(final .ceylon.language.List<? extends .java.lang.Object> list) {
+        return $ceylon$language$List$this.occurrencesIn(list);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexes(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this.indexes(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> trim(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
+        return $ceylon$language$List$this.trim(trimming);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> trimLeading(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
+        return $ceylon$language$List$this.trimLeading(trimming);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> trimTrailing(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
+        return $ceylon$language$List$this.trimTrailing(trimming);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> initial(final long length) {
+        return $ceylon$language$List$this.initial(length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> terminal(final long length) {
+        return $ceylon$language$List$this.terminal(length);
     }
     protected final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
@@ -396,11 +511,6 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.findLast(selecting);
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
@@ -433,6 +543,16 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @.java.lang.Override

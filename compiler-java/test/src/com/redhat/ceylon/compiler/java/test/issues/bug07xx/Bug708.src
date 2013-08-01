@@ -235,6 +235,18 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean longerThan(final long length) {
+        return $ceylon$language$Iterable$this.longerThan(length);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$Iterable$this.shorterThan(length);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getFirst() {
         return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this.getFirst();
     }
@@ -327,6 +339,18 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> taking(final long take) {
         return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @.java.lang.Override
