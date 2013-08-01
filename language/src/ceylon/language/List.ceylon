@@ -262,7 +262,7 @@ shared interface List<out Element>
             else {
                 return [];
             }
-            return this[from:to];
+            return this[from..to];
         }
         else {
             return [];
@@ -273,7 +273,7 @@ shared interface List<out Element>
         if (exists l=lastIndex) {
             for (index in 0..l) {
                 if (!trimming(this[index] else nothing)) {
-                    return this[index:l];
+                    return this[index..l];
                 }
             }
         }
@@ -284,7 +284,7 @@ shared interface List<out Element>
         if (exists l=lastIndex) {
             for (index in l..0) {
                 if (!trimming(this[index] else nothing)) {
-                    return this[0:index];
+                    return this[0..index];
                 }
             }
         }
