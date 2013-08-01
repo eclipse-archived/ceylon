@@ -1463,6 +1463,26 @@ public final class String
     }
     
     @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character, ? extends java.lang.Object> takingWhile(java.lang.String value, Callable<? extends Boolean> take) {
+        return instance(value).takingWhile(take);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character, ? extends java.lang.Object> skippingWhile(java.lang.String value, Callable<? extends Boolean> skip) {
+        return instance(value).skippingWhile(skip);
+    }
+    
+    @Override @Ignore
     public Iterable<? extends Character, ? extends java.lang.Object> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
@@ -1767,6 +1787,16 @@ public final class String
         	return $ceylon$language$Iterable$this.getRest();
         }
 
+        @Override @Ignore
+        public Iterable<? extends String, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+            return $ceylon$language$Iterable$this.takingWhile(take);
+        }
+        
+        @Override @Ignore
+        public Iterable<? extends String, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+            return $ceylon$language$Iterable$this.skippingWhile(skip);
+        }
+        
         @Override
         @Ignore
         public Sequential<? extends String> getSequence() {
@@ -2001,6 +2031,16 @@ public final class String
         	return $ceylon$language$Iterable$this.getRest();
         }
 
+        @Override @Ignore
+        public Iterable<? extends Integer, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+            return $ceylon$language$Iterable$this.takingWhile(take);
+        }
+        
+        @Override @Ignore
+        public Iterable<? extends Integer, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+            return $ceylon$language$Iterable$this.skippingWhile(skip);
+        }
+        
         @Override
         @Ignore
         public Sequential<? extends Integer> getSequence() {

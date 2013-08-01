@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.language;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
+import ceylon.language.Character;
 import ceylon.language.Comparison;
 import ceylon.language.Container$impl;
 import ceylon.language.Entry;
@@ -119,6 +120,16 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     	return $ceylon$language$Iterable$this.getRest();
     }
 
+    @Override @Ignore
+    public Iterable<? extends Result, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Result, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
     @Override
     @Ignore
     public Sequential<? extends Result> getSequence() {

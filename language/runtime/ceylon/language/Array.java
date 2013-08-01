@@ -980,6 +980,16 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         return $ceylon$language$List$this.terminal(length);
     }
     
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
     @Override
     @Ignore
     public TypeDescriptor $getType() {

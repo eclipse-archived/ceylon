@@ -346,6 +346,16 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     
     @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
+    @Override @Ignore
     public boolean contains(java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }

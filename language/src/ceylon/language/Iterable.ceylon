@@ -293,15 +293,6 @@ shared interface Iterable<out Element, out Absent=Null>
                     while (i++<skip && !iter.next() is Finished) {}
                     return iter;
                 }
-                shared actual Element? first {
-                    if (!is Finished first = iterator().next()) {
-                        return first;
-                    }
-                    else {
-                        return null;
-                    }
-                }
-                shared actual Element? last => outer.last;
             }
             return iterable;
         }
@@ -330,10 +321,56 @@ shared interface Iterable<out Element, out Absent=Null>
                     return iterator;
                 }
                 shared actual Element? first => outer.first;
-                shared actual Element? last => outer.last; //TODO!!!!
             }
             return iterable;
         }
+    }
+    
+    shared default {Element*} skippingWhile(Boolean skip(Element elem)) {
+        object iterable satisfies {Element*} {
+            shared actual Iterator<Element> iterator() {
+                value iter = outer.iterator();
+                while (!is Finished elem=iter.next(), 
+                        skip(elem)) {}
+                return iter;
+            }
+            shared actual Element? first {
+                if (!is Finished first = iterator().next()) {
+                    return first;
+                }
+                else {
+                    return null;
+                }
+            }
+        }
+        return iterable;
+    }
+    
+    shared default {Element*} takingWhile(Boolean take(Element elem)) {
+        object iterable satisfies {Element*} {
+            shared actual Iterator<Element> iterator() {
+                value iter = outer.iterator();
+                object iterator satisfies Iterator<Element> {
+                    variable Boolean alive = true;
+                    actual shared Element|Finished next() {
+                        if (alive) {
+                            value next = iter.next();
+                            if (!is Finished next) {
+                                if (take(next)) {
+                                    return next;
+                                }
+                                else {
+                                    alive = false;
+                                }
+                            }
+                        }
+                        return finished;
+                    }
+                }
+                return iterator;
+            }
+        }
+        return iterable;
     }
     
     "Produce an `Iterable` containing every `step`th 

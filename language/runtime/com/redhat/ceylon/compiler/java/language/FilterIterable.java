@@ -95,6 +95,16 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
         return $ceylon$language$Iterable$this.toString();
     }
 
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takingWhile(take);
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    }
+    
     @Override
     @Ignore
     public long getSize() {
