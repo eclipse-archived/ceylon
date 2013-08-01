@@ -115,7 +115,7 @@ public class Parameter {
 
     @Override
     public String toString() {
-        return super.toString().replaceFirst("\\[", 
+        return model.toString().replaceFirst("\\[", 
         		"[" + declaration.getName() + "#");
     }
     
