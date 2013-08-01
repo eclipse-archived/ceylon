@@ -425,6 +425,18 @@ void testSegments() {
     check(!1:-1 nonempty, "1:-1 empty");
 }
 
+void compareStringNumber() {
+    //This is pretty fucking basic and I just found out it's broken in js
+    Object n1 = 1;
+    Object s1 = "1";
+    Object n2 = 1.0;
+    Object s2 = "1.0";
+    check(n1 != s1, "Integer and String should NOT be equal!");
+    check(s1 != n1, "String and Integer should NOT be equal!");
+    check(n2 != s2, "Float and String sould NOT be equal");
+    check(s2 != n2, "String and Float should NOT be equal");
+}
+
 shared void test() {
     testIntegerOperators();
     testFloatOperators();
@@ -438,5 +450,6 @@ shared void test() {
     testAssignmentOperator();
     testSegments();
     testEnumerations();
+    compareStringNumber();
     results();
 }
