@@ -63,6 +63,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             private getter$getter_() {
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.Transient
             public .java.lang.Object $get() {
                 return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
             }
@@ -100,6 +101,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.Object getSharedGetter() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
@@ -259,6 +261,7 @@ final class toplevelGetter_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static .java.lang.Object $get() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
@@ -282,6 +285,7 @@ public final class toplevelSharedGetter_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static .java.lang.Object $get() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }

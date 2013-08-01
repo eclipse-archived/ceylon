@@ -15,6 +15,7 @@ interface Bug630 {
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public int hashCode();
     
     @.ceylon.language.Shared$annotation

@@ -56,6 +56,7 @@ final class attr3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static long $get() {
         return 1L;
     }
@@ -68,6 +69,7 @@ final class attr4_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static long $get() {
         return 1L;
     }

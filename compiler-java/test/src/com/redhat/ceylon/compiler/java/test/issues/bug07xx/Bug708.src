@@ -142,6 +142,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.Object getGetter() {
         return getParam$priv();
     }
@@ -464,6 +465,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final boolean getEmpty() {
         return true;
     }
@@ -475,6 +477,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final long getSize() {
         return 0L;
     }
@@ -527,6 +530,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<T>")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<T> getClone() {
         return this;
     }
@@ -551,6 +555,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getKeys() {
         return (.ceylon.language.Set).ceylon.language.nothing_.$get();
     }
@@ -564,6 +569,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Collection<ceylon.language::String|T>",
             erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Collection getValues() {
         return (.ceylon.language.Collection).ceylon.language.nothing_.$get();
     }
