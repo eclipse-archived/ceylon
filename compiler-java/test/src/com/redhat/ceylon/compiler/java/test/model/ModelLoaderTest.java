@@ -207,6 +207,7 @@ public class ModelLoaderTest extends CompilerTest {
         if(!(validDeclaration instanceof MethodOrValue) || !((MethodOrValue)validDeclaration).isParameter() || validDeclaration.isShared())
             Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
+        Assert.assertEquals(name+" [annotation]", validDeclaration.isAnnotation(), modelDeclaration.isAnnotation());
         // if they're not shared, stop at making sure they are the same type of object
         if(!validDeclaration.isShared() && !(validDeclaration instanceof TypeParameter)){
             boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
@@ -561,6 +562,11 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void loadJavaKeywords(){
         verifyClassLoading("JavaKeywords.ceylon");
+    }
+
+    @Test
+    public void loadAnnotations(){
+        verifyClassLoading("Annotations.ceylon");
     }
 
     @Test
