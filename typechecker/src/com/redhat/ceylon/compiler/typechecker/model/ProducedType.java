@@ -1,14 +1,19 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
@@ -26,7 +31,8 @@ public class ProducedType extends ProducedReference {
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
-    private Map<TypeDeclaration, ProducedType> superTypesCache = new HashMap<TypeDeclaration, ProducedType>();
+    private Map<TypeDeclaration, ProducedType> superTypesCache = 
+            new HashMap<TypeDeclaration, ProducedType>();
 
     ProducedType() {}
 
@@ -89,9 +95,23 @@ public class ProducedType extends ProducedReference {
                     for (ProducedType c: types) {
                         boolean found = false;
                         for (ProducedType oc: otherTypes) {
-                            if (c.isExactlyInternal(oc)) {
-                                found = true;
-                                break;
+                            if (c.getDeclaration().equals(oc.getDeclaration())) {
+                                if (c.isExactlyInternal(oc)) {
+                                    found = true;
+                                    break;
+                                }
+                                //given a covariant type Co, and interfaces
+                                //A satisfies Co<B&Co<A>> and 
+                                //B satisfies Co<A&Co<B>>, then
+                                //A&Co<B> is equivalent A&Co<B&Co<A>> as a 
+                                //consequence of principal instantiation 
+                                //inheritance
+                                ProducedType cst = getSupertype(c.getDeclaration());
+                                ProducedType ocst = type.getSupertype(oc.getDeclaration());
+                                if (cst.isExactlyInternal(ocst)) {
+                                    found = true;
+                                    break;
+                                }
                             }
                         }
                         if (!found) {
@@ -188,14 +208,19 @@ public class ProducedType extends ProducedReference {
      */
     public boolean isSubtypeOf(ProducedType type) {
         return type!=null && resolveAliases()
-        		.isSubtypeOfInternal(type.resolveAliases());
+                .isSubtypeOfInternal(type.resolveAliases());
     }
-    
+
     /**
      * Is this type a subtype of the given type? Ignore
      * a certain self type constraint.
      */
     public boolean isSubtypeOfInternal(ProducedType type) {
+        if (depth.get()>30) {
+            throw new RuntimeException("undecidable subtyping");
+        }
+        depth.set(depth.get()+1);
+        try {
         if (isNothing()) {
             return true;
         }
@@ -285,12 +310,12 @@ public class ProducedType extends ProducedReference {
                         return false;
                     }
                     else if (p.isCovariant()) {
-                        if (!arg.isSubtypeOf(otherArg)) {
+                        if (!arg.isSubtypeOfInternal(otherArg)) {
                             return false;
                         }
                     }
                     else if (p.isContravariant()) {
-                        if (!otherArg.isSubtypeOf(arg)) {
+                        if (!otherArg.isSubtypeOfInternal(arg)) {
                             return false;
                         }
                     }
@@ -303,6 +328,8 @@ public class ProducedType extends ProducedReference {
                 return true;
             }
         }
+        }
+        finally { depth.set(depth.get()-1); }
     }
 
     /**
@@ -505,7 +532,7 @@ public class ProducedType extends ProducedReference {
                     				}
                     			}
                     			if (include) {
-                    				Util.addToSupertypes(list, st);
+                    				addToSupertypes(list, st);
                     			}
                     		}
                     	}
@@ -556,7 +583,7 @@ public class ProducedType extends ProducedReference {
             	return false;
             }
         };
-        ProducedType superType = getSupertype(c, new ArrayList<ProducedType>());
+        ProducedType superType = getSupertype(c);
         if (!complexType) superTypesCache.put(dec, superType);
         return superType;
     }
@@ -566,9 +593,6 @@ public class ProducedType extends ProducedReference {
      * declaration satisfying the predicate, of which 
      * this type is an invariant subtype. 
      */
-    ProducedType getSupertype(Criteria c) {
-        return getSupertype(c, new ArrayList<ProducedType>());
-    }
     
     static interface Criteria {
         boolean satisfies(TypeDeclaration type);
@@ -579,26 +603,31 @@ public class ProducedType extends ProducedReference {
      * Search for the most-specialized supertype 
      * satisfying the given predicate. 
      */
-    private ProducedType getSupertype(final Criteria c, List<ProducedType> list) {
+    public ProducedType getSupertype(final Criteria c) {
+        if (depth.get()>30) {
+            throw new RuntimeException("undecidable canonicalization");
+        }
+        depth.set(depth.get()+1);
+        try {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
         }
-        if ( isWellDefined() && (getDeclaration() instanceof UnionType || 
-                                 getDeclaration() instanceof IntersectionType || 
-                                 Util.addToSupertypes(list, this)) ) {
+        if ( isWellDefined() ) {
             //now let's call the two most difficult methods
             //in the whole code base:
-            ProducedType result = getPrincipalInstantiation(c, list);
-            result = getPrincipalInstantiationFromCases(c, list, result);
+            ProducedType result = getPrincipalInstantiation(c);
+            result = getPrincipalInstantiationFromCases(c, result);
             return result;
         }
         else {
             return null;
         }
+        }
+        finally { depth.set(depth.get()-1); }
     }
     
     private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
-            List<ProducedType> list, ProducedType result) {
+            ProducedType result) {
         if (getDeclaration() instanceof UnionType) {
             //trying to infer supertypes of algebraic
             //types from their cases was resulting in
@@ -656,9 +685,14 @@ public class ProducedType extends ProducedReference {
 		}
 		return stc;
 	}
-
-    private ProducedType getPrincipalInstantiation(Criteria c,
-            List<ProducedType> list) {
+	
+	public static ThreadLocal<Integer> depth = new ThreadLocal<Integer>(){
+	    protected Integer initialValue() {
+	        return 0;
+	    }
+	};
+	
+    private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
         //for the given declaration
         
@@ -666,7 +700,7 @@ public class ProducedType extends ProducedReference {
         
         ProducedType extendedType = getInternalExtendedType();
         if (extendedType!=null) {
-            ProducedType possibleResult = extendedType.getSupertype(c, list);
+            ProducedType possibleResult = extendedType.getSupertype(c);
             if (possibleResult!=null) {
                 result = possibleResult;
             }
@@ -674,7 +708,7 @@ public class ProducedType extends ProducedReference {
         
         List<ProducedType> satisfiedTypes = getInternalSatisfiedTypes();
 		for (ProducedType dst: satisfiedTypes) {
-            ProducedType possibleResult = dst.getSupertype(c, list);
+            ProducedType possibleResult = dst.getSupertype(c);
             if (possibleResult!=null) {
                 if (result==null || possibleResult.isSubtypeOfInternal(result)) {
                     result = possibleResult;
@@ -736,7 +770,7 @@ public class ProducedType extends ProducedReference {
                         	caseTypes.add(result);
                         	caseTypes.add(possibleResult);
                         	ut.setCaseTypes(caseTypes);
-                        	result = ut.getType().getSupertype(c, list);
+                        	result = ut.getType().getSupertype(c);
                         	if (result==null) {
                             	return new UnknownType(unit).getType();
                         	}
@@ -1494,7 +1528,14 @@ public class ProducedType extends ProducedReference {
         // cache the resolved version
         if(resolvedAliases == null){
             // really compute it
+            if (depth.get()>50) {
+                throw new RuntimeException("undecidable canonicalization");
+            }
+            depth.set(depth.get()+1);
+            try {
             resolvedAliases = curriedResolveAliases();
+            }
+            finally { depth.set(depth.get()-1); }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
             if(resolvedAliases != this){
@@ -1600,34 +1641,129 @@ public class ProducedType extends ProducedReference {
 		return false;
     }*/
     
-    public boolean isRecursiveTypeAliasDefinition(TypeDeclaration ad) {
-        //TODO this method could overflow if one of the referenced
-        //     alias definitions is also recursive!
+    private Set<TypeDeclaration> extend(TypeDeclaration td, Set<TypeDeclaration> visited) {
+        HashSet<TypeDeclaration> set = new HashSet<TypeDeclaration>(visited);
+        set.add(td);
+        return set;
+    }
+    
+    private List<TypeDeclaration> extend(TypeDeclaration td, List<TypeDeclaration> results) {
+        if (!results.contains(td)) {
+            results.add(td);
+        }
+        return results;
+    }
+    
+    public List<TypeDeclaration> isRecursiveTypeAliasDefinition(Set<TypeDeclaration> visited) {
     	TypeDeclaration d = getDeclaration();
 		if (d instanceof TypeAlias||
 			d instanceof ClassAlias||
 			d instanceof InterfaceAlias) {
-			if (d.equals(ad)) return true;
-			if (d.getExtendedType().isRecursiveTypeAliasDefinition(ad)) return true;
+			if (visited.contains(d)) {
+			    return new ArrayList<TypeDeclaration>(singletonList(d));
+			}
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveTypeAliasDefinition(extend(d, visited));
+			    if (!l.isEmpty()) {
+			        return extend(d, l);
+			    }
+			}
+            for (ProducedType bt: d.getBrokenSupertypes()) {
+                List<TypeDeclaration> l = bt.isRecursiveTypeAliasDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
 		}
 		else if (d instanceof UnionType) {
 			for (ProducedType ct: getCaseTypes()) {
-				if (ct.isRecursiveTypeAliasDefinition(ad)) return true;
+	            List<TypeDeclaration> l = ct.isRecursiveTypeAliasDefinition(visited);
+	            if (!l.isEmpty()) return l;
 			}
 		}
 		else if (d instanceof IntersectionType) {
 			for (ProducedType st: getSatisfiedTypes()) {
-				if (st.isRecursiveTypeAliasDefinition(ad)) return true;
+                List<TypeDeclaration> l = st.isRecursiveTypeAliasDefinition(visited);
+                if (!l.isEmpty()) return l;
 			}
 		}
 		else {
 			for (ProducedType at: getTypeArgumentList()) {
-				if (at!=null && at.isRecursiveTypeAliasDefinition(ad)) return true;
+				if (at!=null) {
+				    List<TypeDeclaration> l = at.isRecursiveTypeAliasDefinition(visited);
+				    if (!l.isEmpty()) return l;
+				}
 			}
 			ProducedType qt = getQualifyingType();
-			if (qt!=null && qt.isRecursiveTypeAliasDefinition(ad)) return true;
+            if (qt!=null) {
+                List<TypeDeclaration> l = qt.isRecursiveTypeAliasDefinition(visited);
+                if (!l.isEmpty()) return l;
+            }
 		}
-		return false;
+		return emptyList();
+    }
+    
+    public List<TypeDeclaration> isRecursiveRawTypeDefinition(Set<TypeDeclaration> visited) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof TypeAlias||
+            d instanceof ClassAlias||
+            d instanceof InterfaceAlias) {
+            if (visited.contains(d)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
+            }
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> l = d.getExtendedType()
+                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+            for (ProducedType bt: d.getBrokenSupertypes()) {
+                List<TypeDeclaration> l = bt.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getCaseTypes()) {
+                List<TypeDeclaration> l = ct.isRecursiveRawTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getSatisfiedTypes()) {
+                List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(visited);
+                if (!l.isEmpty()) return l;
+            }
+        }
+        else {
+            if (visited.contains(d)) {
+                return new ArrayList<TypeDeclaration>(singletonList(d));
+            }
+            if (d.getExtendedType()!=null) {
+                List<TypeDeclaration> i = d.getExtendedType()
+                        .isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!i.isEmpty()) {
+                    i.add(0, d);
+                    return i;
+                }
+            }
+            for (ProducedType bt: d.getBrokenSupertypes()) {
+                List<TypeDeclaration> l = bt.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+            for (ProducedType st: getSatisfiedTypes()) {
+                List<TypeDeclaration> l = st.isRecursiveRawTypeDefinition(extend(d, visited));
+                if (!l.isEmpty()) {
+                    return extend(d, l);
+                }
+            }
+        }
+        return emptyList();
     }
     
     @Deprecated

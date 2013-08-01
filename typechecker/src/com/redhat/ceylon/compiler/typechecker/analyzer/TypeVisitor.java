@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -43,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -97,12 +100,29 @@ public class TypeVisitor extends Visitor {
             if (dec.isShared() && !dec.isAnonymous() && 
                     !ignoredMembers.contains(dec.getName()) &&
                     !isNonimportable(importedPackage, dec.getName())) {
-                Import i = new Import();
-                i.setAlias(dec.getName());
-                i.setDeclaration(dec);
-                i.setWildcardImport(true);
-                addWildcardImport(il, dec, i);
+                addWildcardImport(il, dec);
             }
+        }
+    }
+
+    private void importAllMembers(TypeDeclaration importedType, 
+            Set<String> ignoredMembers, ImportList til) {
+        for (Declaration dec: importedType.getMembers()) {
+            if (dec.isShared() && dec.isStaticallyImportable() && 
+                    !dec.isAnonymous() && 
+                    !ignoredMembers.contains(dec.getName())) {
+                addWildcardImport(til, dec);
+            }
+        }
+    }
+
+    private void addWildcardImport(ImportList il, Declaration dec) {
+        if (!hidesToplevel(dec)) {
+            Import i = new Import();
+            i.setAlias(dec.getName());
+            i.setDeclaration(dec);
+            i.setWildcardImport(true);
+            addWildcardImport(il, dec, i);
         }
     }
 
@@ -172,97 +192,49 @@ public class TypeVisitor extends Visitor {
     
     private boolean findModuleInTransitiveImports(Module moduleToVisit, 
             Module moduleToFind, Set<Module> visited) {
-        if(!visited.add(moduleToVisit))
+        if (!visited.add(moduleToVisit))
             return false;
-        if(moduleToVisit.equals(moduleToFind))
+        if (moduleToVisit.equals(moduleToFind))
             return true;
-        for(ModuleImport imp : moduleToVisit.getImports()){
+        for (ModuleImport imp : moduleToVisit.getImports()) {
             // skip non-exported modules
-            if(!imp.isExport())
+            if (!imp.isExport())
                 return false;
-            if(findModuleInTransitiveImports(imp.getModule(), moduleToFind, visited))
+            if (findModuleInTransitiveImports(imp.getModule(), moduleToFind, visited))
                 return true;
         }
         return false;
     }
 
-    private void importAllMembers(TypeDeclaration importedType, 
-            Set<String> ignoredMembers, ImportList til) {
-        for (Declaration dec: importedType.getMembers()) {
-            if (dec.isShared() && dec.isStaticallyImportable() && 
-                    !dec.isAnonymous() && 
-                    !ignoredMembers.contains(dec.getName())) {
-                Import i = new Import();
-                i.setAlias(dec.getName());
-                i.setDeclaration(dec);
-                i.setWildcardImport(true);
-                addWildcardImport(til, dec, i);
+    private boolean hidesToplevel(Declaration dec) {
+        for (Declaration d: unit.getDeclarations()) {
+            String n = d.getName();
+            if (d.isToplevel() && n!=null && 
+                    dec.getName().equals(n)) {
+                return true;
             }
         }
+        return false;
     }
 
-    private String importMember(Tree.ImportMemberOrType member,
-            Package importedPackage, ImportList il) {
-        Tree.Identifier id = member.getIdentifier();
-		if (id==null) {
-            return null;
-        }
-        Import i = new Import();
-        member.setImportModel(i);
-        Tree.Alias alias = member.getAlias();
-        String name = name(id);
-        if (alias==null) {
-            i.setAlias(name);
-        }
-        else {
-            i.setAlias(name(alias.getIdentifier()));
-        }
-        if (isNonimportable(importedPackage, name)) {
-            id.addError("root type may not be imported");
-            return name;
-        }
+    private boolean checkForHiddenToplevel(Tree.Identifier id, Import i, Tree.Alias alias) {
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
             if (d.isToplevel() && n!=null && 
                     i.getAlias().equals(n)) {
                 if (alias==null) {
-                    id
-                        .addError("toplevel declaration with this name declared in this unit: " + n);
+                    id.addError("toplevel declaration with this name declared in this unit: " + n);
                 }
                 else {
                     alias.addError("toplevel declaration with this name declared in this unit: " + n);
                 }
+                return true;
             }
         }
-        Declaration d = importedPackage.getMember(name, null, false);
-        if (d==null) {
-            id.addError("imported declaration not found: " + 
-                    name, 100);
-            unit.getUnresolvedReferences().add(id);
-        }
-        else {
-            if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
-                id.addError("imported declaration is not shared: " +
-                        name, 400);
-            }
-            if (d.isProtectedVisibility() || d.isPackageVisibility()) {
-                id.addError("imported declaration is not visible: " +
-                        name);
-            }
-            i.setDeclaration(d);
-            member.setDeclarationModel(d);
-            if (il.hasImport(d)) {
-                id.addError("already imported: " +
-                        name);
-            }
-            addImport(member, il, i);
-            checkAliasCase(alias, d);
-        }
-        importMembers(member, d);
-        return name;
+        return false;
     }
 
-    public void importMembers(Tree.ImportMemberOrType member, Declaration d) {
+    private void importMembers(Tree.ImportMemberOrType member, Declaration d) {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
         	if (d instanceof TypeDeclaration) {
@@ -302,8 +274,58 @@ public class TypeVisitor extends Visitor {
         }
     }
 
+    private String importMember(Tree.ImportMemberOrType member,
+            Package importedPackage, ImportList il) {
+        Tree.Identifier id = member.getIdentifier();
+        if (id==null) {
+            return null;
+        }
+        Import i = new Import();
+        member.setImportModel(i);
+        Tree.Alias alias = member.getAlias();
+        String name = name(id);
+        if (alias==null) {
+            i.setAlias(name);
+        }
+        else {
+            i.setAlias(name(alias.getIdentifier()));
+        }
+        if (isNonimportable(importedPackage, name)) {
+            id.addError("root type may not be imported");
+            return name;
+        }        
+        Declaration d = importedPackage.getMember(name, null, false);
+        if (d==null) {
+            id.addError("imported declaration not found: " + 
+                    name, 100);
+            unit.getUnresolvedReferences().add(id);
+        }
+        else {
+            if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
+                id.addError("imported declaration is not shared: " +
+                        name, 400);
+            }
+            if (d.isProtectedVisibility() || d.isPackageVisibility()) {
+                id.addError("imported declaration is not visible: " +
+                        name);
+            }
+            i.setDeclaration(d);
+            member.setDeclarationModel(d);
+            if (il.hasImport(d)) {
+                id.addError("already imported: " +
+                        name);
+            }
+            if (!checkForHiddenToplevel(id, i, alias)) {
+                addImport(member, il, i);
+            }
+            checkAliasCase(alias, d);
+        }
+        importMembers(member, d);
+        return name;
+    }
+
     private String importMember(Tree.ImportMemberOrType member, 
-            TypeDeclaration d, ImportList il) {
+            TypeDeclaration td, ImportList il) {
     	Tree.Identifier id = member.getIdentifier();
 		if (id==null) {
             return null;
@@ -318,23 +340,23 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        Declaration m = d.getMember(name, null, false);
+        Declaration m = td.getMember(name, null, false);
         if (m==null) {
             id.addError("imported declaration not found: " + 
-                    name + " of " + d.getName(), 100);
+                    name + " of " + td.getName(), 100);
             unit.getUnresolvedReferences().add(id);
         }
         else {
             if (!m.isShared()) {
                 id.addError("imported declaration is not shared: " +
-                        name + " of " + d.getName(), 400);
+                        name + " of " + td.getName(), 400);
             }
             if (m.isProtectedVisibility() || m.isPackageVisibility()) {
                 id.addError("imported declaration is not visible: " +
-                        name + " of " + d.getName());
+                        name + " of " + td.getName());
             }
             if (!m.isStaticallyImportable()) {
-                i.setTypeDeclaration(d);
+                i.setTypeDeclaration(td);
                 if (alias==null) {
                     member.addError("does not specify an alias");
                 }
@@ -343,10 +365,12 @@ public class TypeVisitor extends Visitor {
             member.setDeclarationModel(m);
             if (il.hasImport(m)) {
                 id.addError("already imported: " +
-                        name + " of " + d.getName());
+                        name + " of " + td.getName());
             }
             if (m.isStaticallyImportable()) {
-                addImport(member, il, i);
+                if (!checkForHiddenToplevel(id, i, alias)) {
+                    addImport(member, il, i);
+                }
             }
             else {
                 addMemberImport(member, il, i);
@@ -358,6 +382,27 @@ public class TypeVisitor extends Visitor {
         return name;
     }
 
+    private void addImport(Tree.ImportMemberOrType member, ImportList il,
+            Import i) {
+        String alias = i.getAlias();
+        if (alias!=null) {
+            Import o = unit.getImport(alias);
+            if (o==null) {
+                unit.getImports().add(i);
+                il.getImports().add(i);
+            }
+            else if (o.isWildcardImport()) {
+                unit.getImports().remove(o);
+                il.getImports().remove(o);
+                unit.getImports().add(i);
+                il.getImports().add(i);
+            }
+            else {
+                member.addError("duplicate import alias: " + alias);
+            }
+        }
+    }
+        
     private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
             Import i) {
     	String alias = i.getAlias();
@@ -379,27 +424,6 @@ public class TypeVisitor extends Visitor {
                  "Exception".equals(name)*/);
     }
 
-    private void addImport(Tree.ImportMemberOrType member, ImportList il,
-    		Import i) {
-    	String alias = i.getAlias();
-		if (alias!=null) {
-    		Import o = unit.getImport(alias);
-    		if (o==null) {
-    			unit.getImports().add(i);
-    			il.getImports().add(i);
-    		}
-    		else if (o.isWildcardImport()) {
-    			unit.getImports().remove(o);
-    			il.getImports().remove(o);
-    			unit.getImports().add(i);
-    			il.getImports().add(i);
-    		}
-    		else {
-    			member.addError("duplicate import alias: " + alias);
-    		}
-    	}
-    }
-        
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
@@ -530,7 +554,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = getBaseDeclaration(that);
+        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
+                name(that.getIdentifier()), null, false, that.getUnit());
         String name = name(that.getIdentifier());
         if (type==null) {
             that.addError("type declaration does not exist: " + name, 102);
@@ -559,14 +584,39 @@ public class TypeVisitor extends Visitor {
             }
         //}
     }
-
+    
+    @Override
+    public void visit(MemberLiteral that) {
+        super.visit(that);
+        if (that.getType()!=null) {
+            ProducedType pt = that.getType().getTypeModel();
+            if (pt!=null) {
+                if (that.getTypeArgumentList()!=null &&
+                        isTypeUnknown(pt) && !pt.isUnknown()) {
+                    that.getTypeArgumentList()
+                            .addError("qualifying type does not fully-specify type arguments");
+                }
+            }
+        }
+    }
+    
+    @Override
     public void visit(Tree.QualifiedType that) {
+        if (that.getMetamodel()) {
+            that.getOuterType().setMetamodel(true);
+        }
         super.visit(that);
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
+            if (that.getMetamodel() && 
+                    that.getTypeArgumentList()!=null &&
+                    isTypeUnknown(pt) && !pt.isUnknown()) {
+                that.getTypeArgumentList()
+                        .addError("qualifying type does not fully-specify type arguments");
+            }
             TypeDeclaration d = pt.getDeclaration();
 			String name = name(that.getIdentifier());
-            TypeDeclaration type = (TypeDeclaration) d.getMember(name, unit, null, false);
+            TypeDeclaration type = getTypeMember(d, name, null, false, unit);
             if (type==null) {
                 if (d.isMemberAmbiguous(name, unit, null, false)) {
                     that.addError("member type declaration is ambiguous: " + 
@@ -955,9 +1005,6 @@ public class TypeVisitor extends Visitor {
                     		type.getDeclaration().getName(unit));
                     continue;
                 }
-                if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {
-                    st.addError("directly satisfies Callable");
-                }
                 if (td instanceof TypeParameter) {
             		if (foundTypeParam) {
             			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
@@ -1038,7 +1085,8 @@ public class TypeVisitor extends Visitor {
         else {
         	for (Tree.BaseMemberExpression bme: bmes) {
         		//bmes have not yet been resolved
-        		TypedDeclaration od = getBaseDeclaration(bme, null, false);
+        		TypedDeclaration od = getTypedDeclaration(bme.getScope(), 
+        		        name(bme.getIdentifier()), null, false, bme.getUnit());
         		if (od!=null) {
         			ProducedType type = od.getType();
         			if (type!=null) {
@@ -1195,7 +1243,7 @@ public class TypeVisitor extends Visitor {
 
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
-        Tree.Primary p = that.getPrimary();
+        Tree.Term p = Util.unwrapExpressionUntilTerm(that.getPrimary());
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             mte.setDirectlyInvoked(true);

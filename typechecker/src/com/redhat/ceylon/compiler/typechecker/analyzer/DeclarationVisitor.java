@@ -951,6 +951,17 @@ public class DeclarationVisitor extends Visitor {
         if (hasAnnotation(al, "deprecated")) {
         	model.setDeprecated(true);
         }
+        if (hasAnnotation(al, "annotation")) {
+            if (!(model instanceof Method) && !(model instanceof Class)) {
+                that.addError("declaration is not a function or class, and may not be annotated annotation");
+            }
+            else if (!model.isToplevel()) {
+                that.addError("declaration is not toplevel, and may not be annotated annotation");
+            }
+            else {
+                model.setAnnotation(true);
+            }
+        }
         
         buildAnnotations(al, model.getAnnotations());        
     }

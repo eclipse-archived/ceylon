@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanFalse;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanTrue;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import java.util.ArrayList;
+
 import com.redhat.ceylon.compiler.typechecker.model.AnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.model.AnnotationInstantiation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -16,7 +17,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterAnnotationArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -48,20 +48,7 @@ public class AnnotationVisitor extends Visitor {
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
                 && def instanceof Method
-                && containsAnnotationAnnotation(def);
-    }
-
-    private static boolean containsAnnotationAnnotation(
-            Declaration decl) {
-        List<Annotation> annotations = decl.getAnnotations();
-        if (annotations != null) {
-            for (Annotation ann : annotations) {
-                if ("annotation".equals(ann.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+                && def.isAnnotation();
     }
 
     public static boolean isAnnotationClass(Tree.ClassOrInterface def) {
@@ -70,7 +57,7 @@ public class AnnotationVisitor extends Visitor {
 
     public static boolean isAnnotationClass(Declaration declarationModel) {
         return (declarationModel instanceof Class)
-                && containsAnnotationAnnotation(declarationModel);
+                && declarationModel.isAnnotation();
     }
     
     @Override
@@ -131,8 +118,8 @@ public class AnnotationVisitor extends Visitor {
     /*@Override
     public void visit(Tree.DefaultArgument d) {
         if (annotationConstructor != null) {
-            Declaration t = d.getUnit().getLanguageModuleDeclaration("true");
-            Declaration f = d.getUnit().getLanguageModuleDeclaration("false");
+            Declaration t = d.getUnit().getTrueValueDeclaration();
+            Declaration f = d.getUnit().getFalseValueDeclaration();
             Term term = d.getSpecifierExpression().getExpression().getTerm();
             if (!(term instanceof Tree.Literal
                     || term instanceof Tree.BaseMemberExpression
@@ -208,8 +195,8 @@ public class AnnotationVisitor extends Visitor {
                     a.setTargetParameter(classParameter);
                     a.setSourceParameter(constructorParameter);
                     instantiation.getArguments().add(a);
-                } else if ("ceylon.language::true".equals(declaration.getQualifiedNameString())
-                        || "ceylon.language::false".equals(declaration.getQualifiedNameString())) {
+                } else if (isBooleanTrue(declaration)
+                        || isBooleanFalse(declaration)) {
                     appendStaticArgument(bme);
                 }
             } else {
@@ -285,4 +272,3 @@ public class AnnotationVisitor extends Visitor {
         }
     }   
 }
-

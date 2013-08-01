@@ -2,9 +2,8 @@ class OnOffGraph() extends Graph<Node,Edge>() {
     
     shared actual class Node() 
             extends super.Node() {
-        shared actual Boolean touches(Edge edge) {
-            return edge.enabled && super.touches(edge);
-        }
+        shared actual Boolean touches(Edge edge) =>
+                edge.enabled && super.touches(edge);
     }
     
     shared abstract class OnOffEdge(Node n1, Node n2, Boolean initiallyEnabled) 

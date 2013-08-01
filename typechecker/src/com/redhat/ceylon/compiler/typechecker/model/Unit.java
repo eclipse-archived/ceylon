@@ -213,14 +213,14 @@ public class Unit {
     }
     
     /**
-     * Search for a declaration in {@code ceylon.language.metamodel} 
+     * Search for a declaration in {@code ceylon.language.model} 
      */
-    public Declaration getLanguageModuleMetamodelDeclaration(String name) {
+    public Declaration getLanguageModuleModelDeclaration(String name) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
-            Package languageScope = languageModule.getPackage("ceylon.language.metamodel");
+            Package languageScope = languageModule.getPackage("ceylon.language.model");
             if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
@@ -232,14 +232,14 @@ public class Unit {
     }
     
     /**
-     * Search for a declaration in {@code ceylon.language.metamodel.declaration} 
+     * Search for a declaration in {@code ceylon.language.model.declaration} 
      */
-    public Declaration getLanguageModuleMetamodelDeclarationDeclaration(String name) {
+    public Declaration getLanguageModuleModelDeclarationDeclaration(String name) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         Module languageModule = getPackage().getModule().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
-            Package languageScope = languageModule.getPackage("ceylon.language.metamodel.declaration");
+            Package languageScope = languageModule.getPackage("ceylon.language.model.declaration");
             if (languageScope != null) {
                 Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
@@ -348,6 +348,14 @@ public class Unit {
     
     public TypeDeclaration getBooleanDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Boolean");
+    }
+    
+    public Value getTrueValueDeclaration() {
+        return (Value) getLanguageModuleDeclaration("true");
+    }
+    
+    public Value getFalseValueDeclaration() {
+        return (Value) getLanguageModuleDeclaration("false");
     }
     
     public TypeDeclaration getStringDeclaration() {
@@ -844,5 +852,12 @@ public class Unit {
             }
         }
         return null;
+    }
+
+    public TypeDeclaration getLanguageModuleModelTypeDeclaration(String name) {
+        return (TypeDeclaration) getLanguageModuleModelDeclaration(name);
+    }
+    public TypeDeclaration getLanguageModuleModelDeclarationTypeDeclaration(String name) {
+        return (TypeDeclaration) getLanguageModuleModelDeclarationDeclaration(name);
     }
 }

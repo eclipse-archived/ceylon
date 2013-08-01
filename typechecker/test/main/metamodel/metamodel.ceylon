@@ -36,7 +36,7 @@ void test<T>() {
     value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
     @type:"ClassDeclaration"
     value memberParameterisedClassDecl = `ParameterisedContainer.InnerClass`;
-    @error:"mixed type and declaration literal"
+    @type:"ClassDeclaration"
     value memberParameterisedClassTypeErr1 = `ParameterisedContainer<String>.InnerClass`;
     @error:"mixed type and declaration literal"
     value memberParameterisedClassTypeErr2 = `ParameterisedContainer.InnerClass<Integer>`;
@@ -45,7 +45,7 @@ void test<T>() {
     value memberParameterisedInterfaceType = `ParameterisedContainer<String>.InnerInterface<Integer>`;
     @type:"InterfaceDeclaration"
     value memberParameterisedInterfaceDecl = `ParameterisedContainer.InnerInterface`;
-    @error:"mixed type and declaration literal"
+    @type:"InterfaceDeclaration"
     value memberParameterisedInterfaceTypeErr1 = `ParameterisedContainer<String>.InnerInterface`;
     @error:"mixed type and declaration literal"
     value memberParameterisedInterfaceTypeErr2 = `ParameterisedContainer.InnerInterface<Integer>`;
@@ -73,13 +73,13 @@ void test<T>() {
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
     @type:"FunctionDeclaration"
     value parameterisedContainerMethodDecl = `ParameterisedContainer.method`;
-    @error
+    @type:"FunctionDeclaration"
     value parameterisedContainerMethodErr1 = `ParameterisedContainer<String>.method`;
     @error
     value parameterisedContainerMethodErr2 = `ParameterisedContainer.method<Integer>`;
     
     // toplevel attributes
-    @type:"AttributeDeclaration&Value<Integer>"
+    @type:"ValueDeclaration&Value<Integer>"
     value toplevelAttribute = `attribute`;
     @error:"does not accept type arguments: attribute"
     value toplevelAttributeErr = `attribute<String>`;
@@ -87,13 +87,13 @@ void test<T>() {
     value toplevelVariableAttribute = `variableAttribute`;
 
     // qualified attributes
-    @type:"AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"ValueDeclaration&Attribute<Container,Integer>"
     value containerAttribute = `Container.attribute`;
     @type:"VariableDeclaration&VariableAttribute<Container,Integer>"
     value containerVariableAttribute = `Container.variableAttribute`;
     @type:"Attribute<ParameterisedContainer<String>,String>"
     value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
-    @type:"AttributeDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedContainerAttributeDecl = `ParameterisedContainer.attribute`;
     @type:"VariableAttribute<ParameterisedContainer<String>,String>"
     value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
@@ -101,45 +101,58 @@ void test<T>() {
     value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
     
     // class parameters
-    @type:"ParameterDeclaration"
+    @error
     value classParameter = `Container.parameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"ValueDeclaration&Attribute<Container,Integer>"
     value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
-    @type:"ParameterDeclaration"
+    @error
     value classParameterMethod = `Container.parameterAndMethod`;
-    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classParameterAndSharedMethod = `Container.parameterAndSharedMethod`;
 
-    @type:"ParameterDeclaration"
+    @error
     value parameterisedClassParameter = `ParameterisedContainer.parameter`;
     @error
     value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
-    @type:"ParameterDeclaration&AttributeDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedClassParameterAndSharedAttributeDecl = `ParameterisedContainer.parameterAndSharedAttribute`;
     
     // class attributes that are parameters too
-    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    @type:"ValueDeclaration&Attribute<Container,Integer>"
     value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration&Attribute<Container,Integer>"
+    @error
     value classAttributeAndParameter = `Container.attributeAndParameter`;
 
     @type:"Attribute<ParameterisedContainer<String>,Integer>"
     value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedClassSharedAttributeAndParameterDecl = `ParameterisedContainer.sharedAttributeAndParameter`;
 
-    @type:"Attribute<ParameterisedContainer<String>,Integer>"
+    @error
     value parameterisedClassAttributeAndParameter = `ParameterisedContainer<String>.attributeAndParameter`;
-    @type:"ParameterDeclaration&AttributeDeclaration"
+    @error
     value parameterisedClassAttributeAndParameterDecl = `ParameterisedContainer.attributeAndParameter`;
 
     // class methods that are parameters too
-    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    @type:"FunctionDeclaration&Method<Container,Integer,Empty>"
     value classSharedMethodAndParameter = `Container.sharedMethodAndParameter`;
-    @type:"ParameterDeclaration&FunctionDeclaration&Method<Container,Integer,Empty>"
+    @error
     value classMethodAndParameter = `Container.methodAndParameter`;
+    
+    // private attributes
+    @error:"metamodel references to non-shared attributes not supported yet"
+    value privateAttribute = `Container.privateAttribute`;
+    
+    // local values and methods
+    value localValue = 2;
+    void localFunction(){}
+    
+    @error:"metamodel references to local values not supported"
+    value localValueDecl = `localValue`;
+    @error:"metamodel references to local functions not supported"
+    value localFunctionDecl = `localFunction`;
 }
 
 
@@ -177,6 +190,7 @@ class Container(shared Integer parameterAndSharedAttribute,
     shared void method(){}
     shared Integer attribute = 2;
     shared variable Integer variableAttribute = 2;
+    Integer privateAttribute = 2;
 }
 
 class ParameterisedContainer<Outer>(Outer a,
@@ -192,3 +206,62 @@ class ParameterisedContainer<Outer>(Outer a,
     shared Outer attribute = a;
     shared variable Outer variableAttribute = a;
 }
+
+
+[T+] singletonList<T>(T t) given T satisfies Object => [t];
+
+class Foo<S>() {
+    shared class Bar<T>() {
+        shared void x<X>() {}
+    }
+}
+
+void meta() {
+    @type:"Function<Sequence<String>,Tuple<String,String,Empty>>" 
+    value fd1 = `singletonList<String>`;
+    @type:"FunctionDeclaration" 
+    value fd2 = `singletonList`;
+    @error value ut1 = `List|String`; 
+    @type:"UnionType" 
+    value ut2 = `List<String>|String`; 
+    @error value it1 = `List&String`; 
+    @type:"Basic&Type"
+    value it2 = `List<String>&Integer`; 
+    @type:"Interface<List<Character>>"
+    value it3 = `List<Character>&{Character*}`; 
+    @type:"IntersectionType" 
+    value it4 = `Category&Foo<Object>`; 
+    @type:"InterfaceDeclaration" 
+    value id1 = `List`;
+    @type:"FunctionDeclaration" 
+    value md1 = `List.defines`;
+    @type:"Method<List<Integer>,Boolean,Tuple<Integer,Integer,Empty>>" 
+    value md2 = `List<Integer>.defines`; 
+    @type:"ClassDeclaration"
+    value cd1 = `Foo.Bar`;
+    @type:"FunctionDeclaration"
+    value md3 = `Foo.Bar.x`;
+    @type:"Method<Foo<Object>.Bar<Object>,Anything,Empty>"
+    value md4 = `Foo<Object>.Bar<Object>.x<Integer>`;
+    @error
+    value md5 = `Foo.Bar<Object>.x<Integer>`;
+    @error
+    value md6 = `Foo<Object>.Bar.x<Integer>`;
+    @error
+    value md7 = `Foo<Object>.Bar<String>.x<List>`;
+    @type:"ClassDeclaration"
+    value cd2 = `Foo<List<String>>.Bar`;
+    @type:"ClassDeclaration"
+    value cd3 = `Foo`;
+    @type:"Class<Foo<Object>,Empty>"
+    value cd4 = `Foo<Object>`;
+    @type:"MemberClass<Foo<Anything>,Foo<Anything>.Bar<Anything>,Empty>"
+    value cd5 = `Foo<Anything>.Bar<Anything>`;
+    @error
+    value cd6 = `Foo.Bar<Object>`;
+    @error
+    value cd7 = `Foo<List>.Bar<Object>`;
+    @error
+    value cd8 = `Foo<Object>.Bar<List>`;
+}
+

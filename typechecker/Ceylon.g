@@ -720,14 +720,14 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
       { $satisfiedTypes = new SatisfiedTypes($SATISFIES); }
       ( 
         t1=abbreviatedType 
-        { $satisfiedTypes.addType($t1.type); }
+        { if ($t1.type!=null) $satisfiedTypes.addType($t1.type); }
       )
       (
         i=INTERSECTION_OP
         { $satisfiedTypes.setEndToken($i); }
         (
           t2=abbreviatedType
-          { $satisfiedTypes.addType($t2.type); 
+          { if ($t2.type!=null) $satisfiedTypes.addType($t2.type); 
             $satisfiedTypes.setEndToken(null); }
         )
       )*
@@ -2414,7 +2414,8 @@ metaLiteral returns [MetaLiteral meta]
       { ml = new MemberLiteral($d1);
         $meta = ml; }
       at=abbreviatedType
-      { ml.setType($at.type); }
+      { ml.setType($at.type); 
+        $at.type.setMetamodel(true); }
       o1=MEMBER_OP
       { ml.setEndToken($o1); }
       m1=memberName
@@ -2428,7 +2429,8 @@ metaLiteral returns [MetaLiteral meta]
       { ml = new MemberLiteral($d1);
         $meta = ml; }
       gt=groupedType
-      { ml.setType($gt.type); }
+      { ml.setType($gt.type); 
+        $gt.type.setMetamodel(true); }
       o2=MEMBER_OP
       { ml.setEndToken($o2); }
       m2=memberName
@@ -2441,7 +2443,8 @@ metaLiteral returns [MetaLiteral meta]
     | t=type
       { tl = new TypeLiteral($d1);
         $meta = tl;
-        tl.setType($t.type); }
+        tl.setType($t.type); 
+        $t.type.setMetamodel(true); }
     | m3=memberName
       { ml = new MemberLiteral($d1);
         $meta = ml;

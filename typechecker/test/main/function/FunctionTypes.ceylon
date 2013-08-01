@@ -375,3 +375,13 @@ void parameterToFunction(void parameter(String s)) {
     void function1(String s) => parameter(s);
     Anything function2(String s) => parameter(s);
 }
+
+T indirectInvocationWhichIsNotReallyIndirect<T>(T t){
+    @type:"Integer"
+    indirectInvocationWhichIsNotReallyIndirect(2);
+    @type:"Integer"
+    (indirectInvocationWhichIsNotReallyIndirect)(2);
+    @type:"Integer"
+    (indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
+    return t;
+}

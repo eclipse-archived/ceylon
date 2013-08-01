@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -13,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -140,6 +142,12 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.MetaLiteral that) {
+        super.visit(that);
+        visitReference(that);
+    }
+
+    @Override
     public void visit(Tree.ExtendedTypeExpression that) {
         super.visit(that);
         visitReference(that);
@@ -183,56 +191,67 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private void visitReference(Tree.Primary that) {
+        Declaration member;
+        boolean assigned;
         if (that instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that;
-            Declaration member = mte.getDeclaration();
-            //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
-            //TODO: check superclass members are not in declaration section!
-            if ( member==declaration && 
-                    member.isDefinedInScope(that.getScope()) ) {
-                if (!declared) {
-                    //you are allowed to refer to later 
-                    //declarations in a class declaration
-                    //section or interface
-                    if (!isForwardReferenceable() && !hasParameter) {
-                        if (declaration.getContainer() instanceof Class) {
-                            that.addError("forward reference to class member in initializer: " + 
-                                    member.getName() + " is not yet declared (forward references must occur in declaration section)");
+            member = mte.getDeclaration();
+            assigned = mte.getAssigned();
+        }
+        else if (that instanceof Tree.MetaLiteral) {
+            Tree.MetaLiteral ml = (Tree.MetaLiteral) that;
+            member = ml.getDeclaration();
+            assigned = false;
+        }
+        else {
+            return;
+        }
+        //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
+        //TODO: check superclass members are not in declaration section!
+        if ( member==declaration && 
+                member.isDefinedInScope(that.getScope()) ) {
+            if (!declared) {
+                //you are allowed to refer to later 
+                //declarations in a class declaration
+                //section or interface
+                if (!isForwardReferenceable() && !hasParameter) {
+                    if (declaration.getContainer() instanceof Class) {
+                        that.addError("forward reference to class member in initializer: " + 
+                                member.getName() + " is not yet declared (forward references must occur in declaration section)");
+                    }
+                    else {
+                        that.addError("forward reference to local declaration: " + 
+                                member.getName() + " is not yet declared");
+                    }
+                }
+            }
+            else if (!specified.definitely) {
+                //you are allowed to refer to formal
+                //declarations in a class declaration
+                //section or interface
+                if (declaration.isFormal()) {
+                    if (!isForwardReferenceable()) {
+                        that.addError("formal member may not be used in initializer: " + 
+                                member.getName());                    
+                    }
+                }
+                else if (!declaration.isNative()) {
+                    if (!isLate() || !isForwardReferenceable()) {
+                        if (isVariable()) {
+                            that.addError("not definitely initialized: " + 
+                                    member.getName());                    
                         }
                         else {
-                            that.addError("forward reference to local declaration: " + 
-                                    member.getName() + " is not yet declared");
+                            that.addError("not definitely specified: " + 
+                                    member.getName());
                         }
                     }
                 }
-                else if (!specified.definitely) {
-                    //you are allowed to refer to formal
-                    //declarations in a class declaration
-                    //section or interface
-                    if (declaration.isFormal()) {
-						if (!isForwardReferenceable()) {
-						    that.addError("formal member may not be used in initializer: " + 
-						            member.getName());                    
-						}
-					}
-                    else if (!declaration.isNative()) {
-                        if (!isLate() || !isForwardReferenceable()) {
-                            if (isVariable()) {
-                                that.addError("not definitely initialized: " + 
-                                        member.getName());                    
-                            }
-                            else {
-                                that.addError("not definitely specified: " + 
-                                        member.getName());
-                            }
-                        }
-                    }
-                }
-                if (!mte.getAssigned() && member.isDefault() && 
-                        !isForwardReferenceable()) {
-                    that.addError("default member may not be used in initializer: " + 
-                            member.getName());                    
-                }
+            }
+            if (!assigned && member.isDefault() && 
+                    !isForwardReferenceable()) {
+                that.addError("default member may not be used in initializer: " + 
+                        member.getName());                    
             }
         }
     }
@@ -271,7 +290,8 @@ public class SpecificationVisitor extends Visitor {
         assign(lt);
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getBaseDeclaration(m, null, false);
+            Declaration member = getTypedDeclaration(m.getScope(), 
+                    name(m.getIdentifier()), null, false, m.getUnit());
             if (member==declaration) {
                 if (that.getRightTerm()!=null) {
                     that.getRightTerm().visit(this);
@@ -313,7 +333,8 @@ public class SpecificationVisitor extends Visitor {
         //      completely in ExpressionVisitor.checkAssignable()
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getBaseDeclaration(m, null, false);
+            Declaration member = getTypedDeclaration(m.getScope(), 
+                    name(m.getIdentifier()), null, false, m.getUnit());
             if (member==declaration) {
                 if (!isVariable() && !isLate()) {
                     if (node instanceof Tree.AssignOp) {
@@ -416,7 +437,9 @@ public class SpecificationVisitor extends Visitor {
         }
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
-	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression) m, null, false);
+	        BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
+            Declaration member = getTypedDeclaration(bme.getScope(), 
+                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        if (member==declaration) {
                 boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
             	if (declaration instanceof Value && 

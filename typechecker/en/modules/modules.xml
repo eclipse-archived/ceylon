@@ -186,7 +186,8 @@
 
         <screen>ceylon.language</screen>
         <screen>ceylon.language.assertion</screen>
-        <screen>ceylon.language.metamodel</screen>
+        <screen>ceylon.language.model</screen>
+        <screen>ceylon.language.model.declaration</screen>
         
         <para>belong to the module <literal>ceylon.language</literal>. The 
         packages:</para>
@@ -304,7 +305,7 @@
         <screen>ceylon.language-1.0.1.zip</screen>
         <screen>org.hibernate-3.0.0.beta.zip</screen>
 
-        <para>The default module has no version, its source archive name is <literal>default.zip</literal></para>
+        <para>The default module has no version, its documentation archive name is <literal>default.zip</literal></para>
         
     </section>
     
@@ -465,10 +466,10 @@
         <para>Inside a documentation archive, HTML source is located in the 
         <literal>module-doc</literal> directory.</para>
         
-        <para>Thus, the structure of the source archive for the module
+        <para>Thus, the structure of the documentation archive for the module
         <literal>org.hello</literal> might be the following:</para>
         
-        <screen><![CDATA[org.hello-1.0.0.src
+        <screen><![CDATA[org.hello-1.0.0.zip
     module-doc/
         .resources/
             ...

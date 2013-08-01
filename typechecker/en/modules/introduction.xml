@@ -271,11 +271,11 @@
     <title>Metaprogramming</title>
     
     <para>
-    Ceylon provides sophisticated support for meta-programming, including a 
-    typesafe <emphasis>metamodel</emphasis> and <emphasis>events</emphasis>. 
-    Generic code may invoke members reflectively and intercept member invocations. 
-    This facility is more powerful, and much more typesafe, than reflection in 
-    Java.
+    Ceylon provides sophisticated support for meta-programming, including program
+    element <emphasis>annotations</emphasis>, a typesafe <emphasis>metamodel</emphasis>, 
+    and <emphasis>events</emphasis>. Generic code may invoke members reflectively 
+    and intercept member invocations. This facility is more powerful, and much more 
+    typesafe, than reflection in Java.
     </para>
     
     </section>
@@ -393,10 +393,10 @@
     <title>First-class functions and higher-order programming</title>
     
     <para>
-    Ceylon supports first-class function types and higher-order functions, 
-    with minimal extensions to the traditional C syntax. A method declaration 
-    may specify a <emphasis>callable parameter</emphasis> that accepts 
-    references to other methods with a certain signature. 
+    Ceylon supports first-class function types and higher-order functions, with 
+    minimal extensions to the traditional C syntax. A function declaration may 
+    specify a <emphasis>callable parameter</emphasis> that accepts references to 
+    other functions with a certain signature. 
     </para>
     
     <programlisting>String find(Boolean where(String string)) { ... }</programlisting>
@@ -420,6 +420,15 @@
     <literal>Callable&lt;Boolean,[String]&gt;</literal>, which may be 
     abbreviated to <literal>Boolean(String)</literal>.
     </para>
+    
+    <para>
+    Methods and attributes may also be used as functions.
+    </para>
+
+    <programlisting>value names = people.map(Person.name);</programlisting>
+    
+    <programlisting>value values = keys.map(keyedValues.get);</programlisting>
+    
     
     </section>
     
@@ -589,7 +598,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     <para><emphasis>Comprehensions</emphasis> are an expressive syntax for
     filtering and transforming streams of values. For example, they may be 
-    used when instantiating a sequence or collection:</para>
+    used when instantiating an iterable object or collection:</para>
     
     <programlisting>value adults = { for (p in people) if (p.age>18) p.name };</programlisting>
     <programlisting>value peopleByName = HashMap { for (p in people) p.name->p };</programlisting>

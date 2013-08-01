@@ -561,10 +561,10 @@ class Invariance() {
     interface O<T> {}
     interface I satisfies O<I> {}
     void f1<E>() @error given E satisfies O<E> & O<I> {}
-    void f2<E>() @error given E satisfies O<E&I> {}
+    void f2<E>() given E satisfies O<E&I> {}
     void f3<E>() @error given E satisfies O<E> & I {}
     @error interface F1<E> satisfies O<E> & O<I> {}
-    @error interface F2<E> satisfies O<E&I> {}
+    interface F2<E> satisfies O<E&I> {}
     @error interface F3<E> satisfies O<E> & I {}
     
     void m<E>(O<E> & O<I> val) 
@@ -578,7 +578,7 @@ class Invariance() {
     
     void n<E>(F1<E> f1, F2<E> f2, F3<E> f3) 
             given E satisfies O<E> {
-        @error O<E&I> g2 = f2;
+        O<E&I> g2 = f2;
         //fail because F1/F2 are not well-defined
         //and the subtype algo can't calculate
         //the principal type
@@ -639,6 +639,26 @@ class MoreInvariance() {
         @error Num<Int>&Num<T> nnn = mm;
         @error n.X();
     }
+}
+
+void intersectionsAndExtension() {
+    interface A {}
+    interface B {}
+    class Co<out T>() {}
+    class Contra<in T>() {}
+    class X() extends Co<A&B>() {}
+    class Y() extends Contra<A&B>() {}
+    class M() extends Co<A|B>() {}
+    class N() extends Contra<A|B>() {}
+    Co<A> coa = X();
+    @error Contra<A> contraa = Y();
+    Contra<B> cob = N();
+    @error Co<B> contrab = M();
+    class W() extends Co<List<A&B>>() {}
+    Co<List<A>> cola1 = W();
+    Co<List<B>> colb2 = W();
+    Co<List<A&B>> colab3 = W();
+    Co<List<A|B>> colab4 = W();
 }
 
 interface Bound1 {}

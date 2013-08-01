@@ -6,7 +6,8 @@
     define any primitive or compound types that cannot, in principle, be expressed within 
     the language itself.</para>
     
-    <para>A class is a recipe for producing new values, called <emphasis>instances</emphasis>
+    <para>A class, fully defined in <xref linkend="classes"/>, is a recipe for producing 
+    new values, called <emphasis>instances</emphasis>
     of the class (or simply <emphasis>objects</emphasis>), and defines the operations and 
     attributes of the resulting values. A class instance may hold references to other 
     objects, and has an identity distinct from these references.</para>
@@ -40,29 +41,32 @@
     
     <itemizedlist>
         <listitem>
-            <para>An <emphasis>interface</emphasis> is an abstract type schema that cannot
-            itself be directly instantiated. An interface may define concrete members, but
-            these members may not hold references to other objects. A class may inherit one 
-            or more interfaces. An instance of a class that inherits an interface is also 
-            considered an instance of the interface.</para>
+            <para>An <emphasis>interface</emphasis>, defined in <xref linkend="interfaces"/>, 
+            is an abstract type schema that cannot itself be directly instantiated. An 
+            interface may define concrete members, but these members may not hold references 
+            to other objects. A class may inherit one or more interfaces. An instance of a 
+            class that inherits an interface is also considered an instance of the interface.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>generic type parameter</emphasis> is considered a type
-            within the declaration that it parameterizes. In fact, it is an abstraction
-            over many types: it generalizes the declaration to all types which could be 
-            assigned to the parameter.</para>
+            <para>A <emphasis>generic type parameter</emphasis>, defined in 
+            <xref linkend="generictypeparameters"/>, is considered a type within the 
+            declaration that it parameterizes. In fact, it is an abstraction over many types: 
+            it generalizes the declaration to all types which could be assigned to the 
+            parameter.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>produced type</emphasis> is formed by specifying arguments
-            for the generic type parameters of a parameterized type.</para>
+            <para>A <emphasis>produced type</emphasis>, defined in 
+            <xref linkend="generictypearguments"/>, is formed by specifying arguments for the 
+            generic type parameters of a parameterized type.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>union type</emphasis> is a type to which each of an 
-            enumerated list of produced types is assignable.</para>
+            <para>A <emphasis>union type</emphasis>, defined in <xref linkend="uniontypes"/>, 
+            is a type to which each of an enumerated list of produced types is assignable.</para>
         </listitem>
         <listitem>
-            <para>An <emphasis>intersection type</emphasis> is a type which is assignable 
-            to each of an enumerated list of produced types.</para>
+            <para>An <emphasis>intersection type</emphasis>, defined in 
+            <xref linkend="intersectiontypes"/>, is a type which is assignable to each of an 
+            enumerated list of produced types.</para>
         </listitem>
     </itemizedlist>
     
@@ -78,9 +82,10 @@
     
     <itemizedlist>
         <listitem>
-            <para>A <emphasis>type alias</emphasis> is a synonym for an expression 
-            involving other types or generic types. A type alias may itself be
-            parameterized.</para>
+            <para>A <emphasis>type alias</emphasis>, defined in <xref linkend="typealiases"/>,
+            in <xref linkend="classaliases"/>, and in <xref linkend="interfacealiases"/> is 
+            a synonym for an expression involving other types or generic types. A type alias 
+            may itself be parameterized.</para>
         </listitem>
     </itemizedlist>
     
@@ -158,7 +163,9 @@
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
         be named with an initial uppercase letter. Methods, attributes, parameters, 
-        and locals must be named with an initial lowercase letter or underscore.</para>
+        and locals must be named with an initial lowercase letter or underscore.
+        The grammar for identifiers is defined by 
+        <xref linkend="identifiersandkeywords"/>.</para>
         
         <synopsis>TypeName: UIdentifier</synopsis>
         <synopsis>MemberName: LIdentifier</synopsis>
@@ -444,7 +451,7 @@
         <emphasis>intersection</emphasis>, or <emphasis>conjunction</emphasis>,
         <literal>X&amp;Y</literal>, of the types may be formed. An intersection type is a subtype 
         of both of the given types <literal>X</literal> and <literal>Y</literal>, and any object
-        which is an instance of both types is an instance of the union type.</para>
+        which is an instance of both types is an instance of the intersection type.</para>
         
         <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
         of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
@@ -625,20 +632,25 @@
         
         <synopsis>TypeNameWithArguments: TypeName TypeArguments?</synopsis>
         
+        <para>Type names are resolved to type declarations according to 
+        <xref linkend="unqualifiedreferenceresolution"/> and 
+        <xref linkend="qualifiedreferenceresolution"/>.</para>
+        
         <para>If the type is a class or interface nested inside a containing class or 
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
         <synopsis>QualifiedType: TypeNameWithArguments ("." TypeNameWithArguments)*</synopsis>
         
-        <para>If a type has type parameters or a sequenced type parameter, a type argument 
-        list must be specified. If a type has no type parameters, and no sequenced type 
-        parameter, no type argument list may be specified.</para>
+        <para>If a type declaration is generic, a type argument list must be specified. 
+        If a type declaration is not generic, no type argument list may be specified.</para>
         
         <programlisting>BufferedReader.Buffer</programlisting>
         <programlisting>Entry&lt;Integer,Element&gt;</programlisting>
         
-        <para>The name of a type may not be qualified by the package name.</para>
+        <comment><para>Note: the name of a type may not be qualified by its package name.
+        Alias imports, as defined in <xref linkend="aliasimports"/> may be used to 
+        disambiguate type names.</para></comment>
         
         </section>
         
@@ -659,7 +671,7 @@
         
         <itemizedlist>
             <listitem>
-                <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
+                <para><literal>X?</literal> means <literal>Null|X</literal> for any 
                 type <literal>X</literal>,</para>
             </listitem>
             <listitem>
@@ -765,8 +777,9 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
             <title>Type inference</title>
         
         <para>Certain declarations which usually require an explicit type may omit the type, 
-        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>
-        or <literal>function</literal> where the type usually appears.</para>
+        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>,
+        as defined in <xref linkend="valuetypeinference"/>, or <literal>function</literal>,
+        as defined in <xref linkend="returntypeinference"/>, where the type usually appears.</para>
                 
         <programlisting>value names = people*.name;</programlisting>
 
@@ -779,19 +792,23 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
         
         <itemizedlist>
             <listitem>
-                <para>be annotated <literal>shared</literal>,</para>
+                <para>be annotated <literal>shared</literal>, as defined in
+                <xref linkend="visibility"/>,</para>
             </listitem>
             <listitem>
-                <para>occur as a toplevel declaration in a compilation unit, or</para>
+                <para>occur as a toplevel declaration in a compilation unit, as 
+                defined in <xref linkend="topleveldeclarations"/>, or</para>
             </listitem>
             <listitem>
                 <para>be referred to by statements or declarations that occur earlier in 
-                the body containing of the declaration.</para>
+                the body containing of the declaration, as defined in 
+                <xref linkend="blockstructure"/>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Nor may a parameter or forward-declared value or function have an inferred 
-        type.</para>
+        <para>Nor may a parameter or forward-declared value, as defined in 
+        <xref linkend="valueforwarddeclaration"/>, or of a forward-declared function, as 
+        defined in <xref linkend="functionforwarddeclaration"/>, have an inferred type.</para>
         
         <para>These restrictions allow the compiler to infer undeclared types in a single 
         pass of the code.</para>
@@ -814,13 +831,14 @@ else {
 }
 Float|Integer num = one;</programlisting></comment>
         
-        <para>An inferred type never involves an anonymous class. When an inferred type
-        would involve an anonymous class type, the anonymous class is replaced by the 
-        intersection of the class type it extends with all interface types it satisfies.</para>
+        <para>An inferred type never involves an anonymous class, as defined in
+        <xref linkend="anonymousclasses"/>. When an inferred type would involve an 
+        anonymous class type, the anonymous class is replaced by the intersection of the 
+        class type it extends with all interface types it satisfies.</para>
         
         <comment><para>TODO: properly define how expressions with no type occurring in a
         <literal>dynamic</literal> block affect type inference.</para></comment>
-            
+        
         </section>
         
     </section>
@@ -833,18 +851,21 @@ Float|Integer num = one;</programlisting></comment>
         
         <itemizedlist>
             <listitem>
-                <para>a class may <emphasis>extend</emphasis> another class,</para>
+                <para>a class may <emphasis>extend</emphasis> another class, as defined
+                by <xref linkend="classinheritance"/>,</para>
             </listitem>
             <listitem>
-                <para>a class may <emphasis>satisfy</emphasis> one or more interfaces,</para>
+                <para>a class may <emphasis>satisfy</emphasis> one or more interfaces, 
+                as defined by <xref linkend="classinheritance"/>,</para>
             </listitem>
             <listitem>
                 <para>an interface may <emphasis>satisfy</emphasis> one or more other 
-                interfaces, or</para>
+                interfaces, as defined by <xref linkend="interfaceinheritance"/>, or</para>
             </listitem>
             <listitem>
                 <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
-                more interfaces or type parameters.</para>
+                more interfaces or type parameters, as defined by 
+                <xref linkend="generictypeconstraints"/>.</para>
             </listitem>
             <!--listitem>
                 <para>a type parameter may <emphasis>abstract</emphasis> a class, interface or 
@@ -921,17 +942,33 @@ Float|Integer num = one;</programlisting></comment>
             </itemizedlist>
             
             <para>It further follows that if <literal>X</literal> and <literal>Y</literal>
-            are distinct types, and <literal>B&lt;T&gt;</literal> is invariant in 
-            <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
-            is the empty type <literal>Nothing</literal>.</para>
+            are distinct types that do not involve type parameters, and <literal>B&lt;T&gt;</literal> 
+            is invariant in <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
+            is the bottom type <literal>Nothing</literal>.</para>
             
+            <para>These identities result from principal instantiation inheritance, for any
+            types <literal>X</literal> and <literal>Y</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal> is exactly equivalent 
+                    to <literal>B&lt;X&amp;Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
+                    is covariant in <literal>T</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal> is exactly equivalent
+                    to <literal>B&lt;X|Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
+                    is contravariant in <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+        
             <comment><para>Note: in fact, the type checker actually enforces an additional
             condition, that might be strictly stronger than this one: that the intersection
             between the direct supertypes of a type must not be equivalent to 
             <literal>Nothing</literal>. However, in order to prove this, it must first prove
             that the above condition holds, or the simplification algorithm runs the risk of 
             not terminating.</para></comment>
-        
+            
         </section>
         
     <section id="extendedclass">
@@ -1028,11 +1065,14 @@ Float|Integer num = one;</programlisting></comment>
         <listitem>
             <para>An <literal>abstract</literal> class or interface may be an 
             <emphasis>enumerated type</emphasis>, with an enumerated list of 
-            disjoint subtypes called <emphasis>cases</emphasis>.</para>
+            disjoint subtypes called <emphasis>cases</emphasis>, as defined by
+            <xref linkend="classeswithcases"/> and 
+            <xref linkend="interfaceswithcases"/>.</para>
         </listitem>
         <listitem>
             <para>A type parameter may have an <emphasis>enumerated bound</emphasis>,
-            with an enumerated list possible type arguments.</para>
+            with an enumerated list possible type arguments, as defined by
+            <xref linkend="generictypeconstraints"/>.</para>
         </listitem>
         <listitem>
             <para>An <literal>abstract</literal> class or interface may have a 
@@ -1240,6 +1280,12 @@ Item item = comp of Item;</programlisting>
                 <literal>Y</literal> is an interface,</para>
             </listitem>
             <listitem>
+                <para><literal>X</literal> is an anonymous class or a <literal>final</literal> 
+                class with no type parameters and <literal>Y</literal> is a type in 
+                which no type parameter reference occurs, and <literal>X</literal> 
+                is not a suptype of <literal>Y</literal>,</para>
+            </listitem>
+            <listitem>
                 <para><literal>X</literal> is a type parameter and <literal>Y</literal> 
                 and the intersection of the upper bounds of <literal>X</literal> are 
                 disjoint,</para>
@@ -1263,12 +1309,6 @@ Item item = comp of Item;</programlisting>
                 <literal>A</literal> nor <literal>B</literal> involve type parameters.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: In addition, the compiler does some reasoning about classes
-        that are "effectively final", that is, anonymous classes, <literal>final</literal> 
-        Java classes, and the special classes in the language module which can't be 
-        extended. We should probably add a <literal>final</literal> annotation and make
-        the notional of finality part of the type system.</para></comment>
         
     </section>
         
@@ -1971,7 +2011,8 @@ Item item = comp of Item;</programlisting>
         <section id="typeargumentinference">
             <title>Type argument inference</title>
         
-        <para>When a direct invocation expression for a generic function or a direct 
+        <para>When a direct invocation expression, as defined by 
+        <xref linkend="invocationexpressions"/>, for a generic function or a direct 
         instantiation expression for a generic class does not explicitly specify type 
         arguments, the type arguments are inferred from the argument expression types. 
         The types of the argument expressions and the declared types of the corresponding 
@@ -2154,7 +2195,7 @@ value result = prepend(null, {"hello", "world"});]]></programlisting>
         
         <itemizedlist>
             <listitem>
-                <para><literal>Element abstracts Nothing</literal>, and</para>
+                <para><literal>Element abstracts Null</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>Element abstracts String</literal>.</para>

@@ -12,7 +12,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -84,6 +86,13 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        final TypeParameter typeParameter = that.getDeclarationModel();
+        sortDAGAndBuildMetadata(typeParameter, that);
     }
     
     @Override
@@ -304,8 +313,9 @@ public class TypeHierarchyVisitor extends Visitor {
         return sortedDag;
     }
 
-    private void visitDAGNode(TypeDeclaration declaration, List<Type> sortedDag, Set<TypeDeclaration> visited,
-            List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
+    private void visitDAGNode(TypeDeclaration declaration, List<Type> sortedDag, 
+            Set<TypeDeclaration> visited, List<TypeDeclaration> stackOfProcessedType, 
+            Node errorReporter) {
         if (declaration == null) {
             return;
         }
@@ -324,14 +334,18 @@ public class TypeHierarchyVisitor extends Visitor {
         for (TypeDeclaration superSatisfiedType : declaration.getSatisfiedTypeDeclarations()) {
             visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
         }
+        for (ProducedType superSatisfiedType : declaration.getBrokenSupertypes()) {
+            visitDAGNode(superSatisfiedType.getDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
+        }
         stackOfProcessedType.remove(stackOfProcessedType.size()-1);
         sortedDag.add(type);
     }
 
-    private boolean checkCyclicInheritance(TypeDeclaration declaration, List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
+    private boolean checkCyclicInheritance(TypeDeclaration declaration, 
+            List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
         final int matchingIndex = stackOfProcessedType.indexOf(declaration);
         if (matchingIndex!=-1) {
-            StringBuilder sb = new StringBuilder("cyclical inheritance in ");
+            /*StringBuilder sb = new StringBuilder("cyclical inheritance in ");
             sb.append(declaration.getName());
             sb.append(" (involving ");
             for (int index = stackOfProcessedType.size()-1;index>matchingIndex;index--) {
@@ -340,15 +354,15 @@ public class TypeHierarchyVisitor extends Visitor {
             removeTrailing(", ", sb);
             sb.append(")");
             errorReporter.addError(sb.toString());
-            return true;
+            return true;*/
         }
         return false;
     }
 
-    private void removeTrailing(String trailingString, StringBuilder sb) {
+    /*private void removeTrailing(String trailingString, StringBuilder sb) {
         final int length = sb.length();
         sb.delete(length-trailingString.length(), length);
-    }
+    }*/
 
     private Type getOrBuildType(TypeDeclaration declaration) {
         Type type = types.get(declaration);

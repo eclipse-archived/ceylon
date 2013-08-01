@@ -23,6 +23,7 @@ public abstract class Declaration
 	private boolean actual;
 	private boolean deprecated;
 	private boolean def;
+	private boolean annotation;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
@@ -101,6 +102,14 @@ public abstract class Declaration
             }
         }
         return qualifiedNameAsStringCache;
+    }
+    
+    public boolean isAnnotation() {
+        return annotation;
+    }
+    
+    public void setAnnotation(boolean annotation) {
+        this.annotation = annotation;
     }
 
     public boolean isActual() {

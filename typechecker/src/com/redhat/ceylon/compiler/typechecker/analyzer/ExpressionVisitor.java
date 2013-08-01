@@ -6,9 +6,12 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypesAsTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
@@ -29,9 +32,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.MISSING_NAME;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -66,7 +69,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberLiteral;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -82,15 +84,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class ExpressionVisitor extends Visitor {
     
-    public enum TypeLiteralMode {
-        Unknown, Type, Declaration;
-    }
-
     private Tree.Type returnType;
     private Tree.Expression switchExpression;
     private Declaration returnDeclaration;
     private boolean isCondition;
     private boolean dynamic;
+    private boolean inExtendsClause = false;
 
     private Unit unit;
     
@@ -1645,29 +1644,30 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitInvocationPrimary(Tree.InvocationExpression that,
             Tree.Primary pr) {
-        if (pr instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
+        Tree.Term term = Util.unwrapExpressionUntilTerm(pr);
+        if (term instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) term;
             Declaration dec = mte.getDeclaration();
             if ( mte.getTarget()==null && dec instanceof Functional && 
                     mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 mte.getTypeArguments().setTypeModels(typeArgs);
-                if (pr instanceof Tree.BaseTypeExpression) {
-                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr,
+                if (term instanceof Tree.BaseTypeExpression) {
+                    visitBaseTypeExpression((Tree.BaseTypeExpression) term,
                             (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
-                else if (pr instanceof Tree.QualifiedTypeExpression) {
-                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr,
-                            ((Tree.QualifiedTypeExpression) pr).getPrimary().getTypeModel(),
+                else if (term instanceof Tree.QualifiedTypeExpression) {
+                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) term,
+                            ((Tree.QualifiedTypeExpression) term).getPrimary().getTypeModel(),
                             (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
-                else if (pr instanceof Tree.BaseMemberExpression) {
-                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr,
+                else if (term instanceof Tree.BaseMemberExpression) {
+                    visitBaseMemberExpression((Tree.BaseMemberExpression) term,
                             (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
-                else if (pr instanceof Tree.QualifiedMemberExpression) {
-                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr,
-                            ((Tree.QualifiedMemberExpression) pr).getPrimary().getTypeModel(),
+                else if (term instanceof Tree.QualifiedMemberExpression) {
+                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) term,
+                            ((Tree.QualifiedMemberExpression) term).getPrimary().getTypeModel(),
                             (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
             }
@@ -2074,7 +2074,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitDirectInvocation(Tree.InvocationExpression that) {
-        Tree.Primary p = that.getPrimary();
+        Tree.Term p = Util.unwrapExpressionUntilTerm(that.getPrimary());
         Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
         ProducedReference prf = mte.getTarget();
         Functional dec = (Functional) mte.getDeclaration();
@@ -2690,14 +2690,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.Annotation that) {
-        super.visit(that);
-        Declaration dec = ((Tree.MemberOrTypeExpression) that.getPrimary()).getDeclaration();
-        if (dec!=null && !dec.isToplevel()) {
-            that.getPrimary().addError("annotation must be a toplevel function reference");
-        }
-    }
-    
     private boolean involvesUnknownTypes(Tree.ElementOrRange eor) {
         if (eor instanceof Tree.Element) {
             return isTypeUnknown(((Tree.Element) eor).getExpression().getTypeModel());
@@ -3608,26 +3600,21 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
-        TypedDeclaration member = getBaseDeclaration(that, that.getSignature(), 
-                that.getEllipsis());
+        String name = name(that.getIdentifier());
+        TypedDeclaration member = getTypedDeclaration(that.getScope(), 
+                name(that.getIdentifier()), 
+                that.getSignature(), that.getEllipsis(), 
+                that.getUnit());
         if (member==null) {
             if (!dynamic) {
                 that.addError("function or value does not exist: " +
-                        name(that.getIdentifier()), 100);
+                        name, 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
         else {
             that.setDeclaration(member);
-            if (!member.isVisible(that.getScope())) {
-                that.addError("function or value is not visible: " +
-                        name(that.getIdentifier()), 400);
-            }
-            if (member.isPackageVisibility() && 
-                    !declaredInPackage(member, unit)) {
-                that.addError("package private function or value is not visible: " +
-                        name(that.getIdentifier()));
-            }
+            checkBaseVisibility(that, member, name);
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal, that)) {
                 List<ProducedType> ta = getTypeArguments(tal, 
@@ -3636,9 +3623,8 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseMemberExpression(that, member, ta, tal);
                 //otherwise infer type arguments later
             }
-            else if (!that.getDirectlyInvoked()) {
-                that.addError("missing type arguments to: " + 
-                        member.getName(unit));
+            else  {
+                typeArgumentsImplicit(that);
             }
             /*if (defaultArgument) {
                 if (member.isClassOrInterfaceMember()) {
@@ -3646,6 +3632,19 @@ public class ExpressionVisitor extends Visitor {
                 }
             }*/
             checkOverloadedReference(that);
+        }
+    }
+
+    private void checkBaseVisibility(Node that, TypedDeclaration member, 
+            String name) {
+        if (!member.isVisible(that.getScope())) {
+            that.addError("function or value is not visible: " +
+                    name, 400);
+        }
+        if (member.isPackageVisibility() && 
+                !declaredInPackage(member, unit)) {
+            that.addError("package private function or value is not visible: " +
+                    name);
         }
     }
     
@@ -3673,20 +3672,27 @@ public class ExpressionVisitor extends Visitor {
             String name = name(that.getIdentifier());
             String container;
             boolean ambiguous;
+            List<ProducedType> signature = that.getSignature();
+            boolean ellipsis = that.getEllipsis();
             if (packageQualified) {
                 container = "package " + unit.getPackage().getNameAsString();
-                member = (TypedDeclaration) unit.getPackage()
-                        .getMember(name, that.getSignature(), that.getEllipsis());
+                Declaration pm = unit.getPackage()
+                        .getMember(name, signature, ellipsis);
+                if (pm instanceof TypedDeclaration) {
+                    member = (TypedDeclaration) pm;
+                }
+                else {
+                    member = null;
+                }
                 ambiguous = false;
             }
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type " + d.getName(unit);
-                member = (TypedDeclaration) d.getMember(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                member = getTypedMember(d, name, signature, ellipsis, unit);
                 ambiguous = member==null && d.isMemberAmbiguous(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                        signature, ellipsis);
             }
             if (member==null) {
                 if (ambiguous) {
@@ -3701,23 +3707,10 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setDeclaration(member);
-                if (!member.isVisible(that.getScope())) {
-                    that.addError("method or attribute is not visible: " +
-                            name + " of " + container, 400);
-                }
                 boolean selfReference = p instanceof Tree.This ||
                         p instanceof Tree.Super;
-                if (member.isProtectedVisibility() && 
-                        !selfReference && 
-                        !declaredInPackage(member, unit)) {
-                    that.addError("protected method or attribute is not visible: " +
-                            name + " of " + container);
-                }
-                if (member.isPackageVisibility() && 
-                        !declaredInPackage(member, unit)) {
-                    that.addError("package private method or attribute is not visible: " +
-                            name + " of " + container);
-                }
+                checkQualifiedVisibility(that, member, name, container,
+                        selfReference);
                 if (!selfReference && !member.isShared()) {
                     member.setOtherInstanceAccess(true);
                 }
@@ -3735,11 +3728,30 @@ public class ExpressionVisitor extends Visitor {
                     //otherwise infer type arguments later
                 }
                 else {
-                    typeArgumentsImplicit(member, that);
+                    typeArgumentsImplicit(that);
                 }
                 checkOverloadedReference(that);
             }
             checkSuperMember(that);
+        }
+    }
+
+    private void checkQualifiedVisibility(Node that, TypedDeclaration member, 
+            String name, String container, boolean selfReference) {
+        if (!member.isVisible(that.getScope())) {
+            that.addError("method or attribute is not visible: " +
+                    name + " of " + container, 400);
+        }
+        if (member.isProtectedVisibility() && 
+                !selfReference && 
+                !declaredInPackage(member, unit)) {
+            that.addError("protected method or attribute is not visible: " +
+                    name + " of " + container);
+        }
+        if (member.isPackageVisibility() && 
+                !declaredInPackage(member, unit)) {
+            that.addError("package private method or attribute is not visible: " +
+                    name + " of " + container);
         }
     }
 
@@ -3750,12 +3762,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void typeArgumentsImplicit(Declaration dec,
-            Tree.MemberOrTypeExpression that) {
-        if (!that.getDirectlyInvoked() ||
-             that.getStaticMethodReference()) {
-            that.addError("missing type arguments to: " + 
-                    dec.getName(unit));
+    private void typeArgumentsImplicit(Tree.MemberOrTypeExpression that) {
+        if (!that.getDirectlyInvoked()) {
+            that.addError("missing type arguments to generic declaration: " + 
+                    that.getDeclaration().getName(unit) + " declares type parameters");
         }
     }
     
@@ -3764,7 +3774,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType receiverType = accountForStaticReferenceReceiverType(that, 
                 unwrap(receivingType, that));
-        if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
+        if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that, false)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             /*if (ptr==null) {
                 that.addError("member method or attribute does not exist: " + 
@@ -3822,7 +3832,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitBaseMemberExpression(Tree.StaticMemberOrTypeExpression that, 
             TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        if (acceptsTypeArguments(member, typeArgs, tal, that)) {
+        if (acceptsTypeArguments(member, typeArgs, tal, that, false)) {
             ProducedType outerType = that.getScope().getDeclaringType(member);
             ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
             that.setTarget(pr);
@@ -3843,8 +3853,10 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
-        TypeDeclaration type = getBaseDeclaration(that, that.getSignature(), 
-                that.getEllipsis());
+        TypeDeclaration type = getTypeDeclaration(that.getScope(), 
+                name(that.getIdentifier()), 
+                that.getSignature(), that.getEllipsis(), 
+                that.getUnit());
         if (type==null) {
             if (!dynamic) {
                 that.addError("type does not exist: " + 
@@ -3872,9 +3884,8 @@ public class ExpressionVisitor extends Visitor {
                 visitBaseTypeExpression(that, type, ta, tal);
                 //otherwise infer type arguments later
             }
-            else if (!that.getDirectlyInvoked()) {
-                that.addError("missing type arguments to: " + 
-                        type.getName(unit));
+            else {
+                typeArgumentsImplicit(that);
             }
             checkOverloadedReference(that);
         }
@@ -3884,26 +3895,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
             if (!(type instanceof ClassOrInterface)) {
-                that.addError("type is not a class or interface: " +
-                        type.getName(unit));
+                that.addError("type cannot be instantiated: " +
+                        type.getName(unit) + " is not a class or interface");
             }
         }
         else {
             if (type instanceof Class) {
                 if (((Class) type).isAbstract()) {
-                    that.addError("class is abstract: " +
-                            type.getName(unit));
+                    that.addError("class cannot be instantiated: " +
+                            type.getName(unit) + " is abstract");
                 }
             }
             else if (type instanceof TypeParameter) {
                 if (((TypeParameter) type).getParameterList()==null) {
-                    that.addError("type parameter is abstract: " +
+                    that.addError("type parameter cannot be instantiated: " +
                             type.getName(unit));
                 }
             }
             else {
-                that.addError("type is not a class: " +
-                        type.getName(unit));
+                that.addError("type cannot be instantiated: " +
+                        type.getName(unit) + " is not a class");
             }
         }
     }
@@ -3960,20 +3971,27 @@ public class ExpressionVisitor extends Visitor {
             String name = name(that.getIdentifier());
             String container;
             boolean ambiguous;
+            List<ProducedType> signature = that.getSignature();
+            boolean ellipsis = that.getEllipsis();
             if (packageQualified) {
                 container = "package " + unit.getPackage().getNameAsString();
-                type = (TypeDeclaration) unit.getPackage()
-                        .getMember(name, that.getSignature(), that.getEllipsis());
+                Declaration pm = unit.getPackage()
+                        .getMember(name, signature, ellipsis);
+                if (pm instanceof TypeDeclaration) {
+                    type = (TypeDeclaration) pm;
+                }
+                else {
+                    type = null;
+                }
                 ambiguous = false;
             }
             else {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type " + d.getName(unit);
-                type = (TypeDeclaration) d.getMember(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                type = getTypeMember(d, name, signature, ellipsis, unit);
                 ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
-                        that.getSignature(), that.getEllipsis());
+                        signature, ellipsis);
             }
             if (type==null) {
                 if (ambiguous) {
@@ -4023,7 +4041,7 @@ public class ExpressionVisitor extends Visitor {
                     //otherwise infer type arguments later
                 }
                 else {
-                    typeArgumentsImplicit(type, that);
+                    typeArgumentsImplicit(that);
                 }
                 checkOverloadedReference(that);
             }
@@ -4075,7 +4093,7 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 List<ProducedType> ta = getTypeArguments(tal, 
                         type.getTypeParameters());
-                acceptsTypeArguments(type, ta, tal, that);
+                acceptsTypeArguments(type, ta, tal, that, that.getMetamodel());
                 //the type has already been set by TypeVisitor
             }
         }
@@ -4094,14 +4112,14 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType receiverType =  accountForStaticReferenceReceiverType(that, 
                 unwrap(receivingType, that));
-        if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
+        if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that, false)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
             ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
                     new UnknownType(unit).getType() : //TODO: set the correct metatype
                     t.getFullType(wrap(t, receivingType, that));
             that.setTarget(t);
             if (isTypeUnknown(ft)) {
-                if (!dynamic) {
+                if (!dynamic && !that.getStaticMethodReference()) {
                     that.addError("could not determine type of member class reference: " +
                             type.getName(unit)  + " of " + 
                             receiverType.getDeclaration().getName(unit));
@@ -4123,7 +4141,7 @@ public class ExpressionVisitor extends Visitor {
             //      with sequenced type parameters
             type = t.getDeclaration();
 //        }
-        if (acceptsTypeArguments(type, typeArgs, tal, that)) {
+        if (acceptsTypeArguments(type, typeArgs, tal, that, false)) {
             ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
                     new UnknownType(unit).getType() : //TODO: set the correct metatype
                     t.getFullType();
@@ -4162,25 +4180,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.SpecifierOrInitializerExpression that) {
-        //i.e. this is a parenthesized expression
-        super.visit(that);
-        Tree.Term term = that.getExpression()==null ? 
-                null : that.getExpression().getTerm();
-        if (term!=null) {
-            //TODO: it seems a bit fragile to handle this here
-            if (term instanceof Tree.StaticMemberOrTypeExpression) {
-                Tree.StaticMemberOrTypeExpression smte = (Tree.StaticMemberOrTypeExpression) term;
-                if (isGeneric(smte.getDeclaration())) {
-                    if (smte.getTypeArguments() instanceof Tree.InferredTypeArguments) {
-                        smte.addError("missing type arguments to: " + 
-                                smte.getDeclaration().getName(unit));
-                    }
-                }
-            }
-        }
-    }
-    
     @Override public void visit(Tree.Outer that) {
         ProducedType ci = getOuterClassOrInterface(that.getScope());
         if (ci==null) {
@@ -4193,10 +4192,6 @@ public class ExpressionVisitor extends Visitor {
             that.addError("reference to outer from default argument expression");
         }*/
     }
-
-    private boolean inExtendsClause = false;
-    private boolean inTypeLiteral;
-    private TypeLiteralMode typeLiteralMode;
 
     @Override public void visit(Tree.Super that) {
         ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
@@ -4662,8 +4657,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
-            Tree.TypeArguments tal, Node parent) {
-        return acceptsTypeArguments(null, member, typeArguments, tal, parent);
+            Tree.TypeArguments tal, Node parent, boolean metamodel) {
+        return acceptsTypeArguments(null, member, typeArguments, tal, parent, metamodel);
     }
     
     private static boolean isGeneric(Declaration member) {
@@ -4672,7 +4667,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private boolean acceptsTypeArguments(ProducedType receiver, Declaration dec, 
-            List<ProducedType> typeArguments, Tree.TypeArguments tal, Node parent) {
+            List<ProducedType> typeArguments, Tree.TypeArguments tal, Node parent,
+            boolean metamodel) {
         if (dec==null) return false;
         if (isGeneric(dec)) {
             List<TypeParameter> params = ((Generic) dec).getTypeParameters();
@@ -4682,23 +4678,6 @@ public class ExpressionVisitor extends Visitor {
             }
             int max = params.size();
             int args = typeArguments.size();
-            if(inTypeLiteral){
-                if(args > 0){
-                    if(typeLiteralMode == TypeLiteralMode.Unknown)
-                        typeLiteralMode = TypeLiteralMode.Type;
-                    else if(typeLiteralMode != TypeLiteralMode.Type){
-                        tal.addError("mixed type and declaration literal");
-                    }
-                }else{
-                    // FIXME: check how that works with all-defaulted type parameters or inference
-                    if(typeLiteralMode == TypeLiteralMode.Unknown)
-                        typeLiteralMode = TypeLiteralMode.Declaration;
-                    else if(typeLiteralMode != TypeLiteralMode.Declaration){
-                        // can't put it on tal since it may be null if we have no type arguments
-                        parent.addError("mixed type and declaration literal");
-                    }
-                }
-            }
             if (args<=max && args>=min) {
                 for (int i=0; i<args; i++) {
                     TypeParameter param = params.get(i);
@@ -4744,10 +4723,10 @@ public class ExpressionVisitor extends Visitor {
                             }
                             else {
                                 ((Tree.TypeArgumentList) tal).getTypes()
-                                .get(i).addError("type parameter " + param.getName() 
-                                        + " of declaration " + dec.getName(unit)
-                                        + " has argument " + argType.getProducedTypeName(unit) 
-                                        + " not one of the enumerated cases of " + param.getName());
+                                        .get(i).addError("type parameter " + param.getName() 
+                                                + " of declaration " + dec.getName(unit)
+                                                + " has argument " + argType.getProducedTypeName(unit) 
+                                                + " not one of the enumerated cases of " + param.getName());
                             }
                         }
                         return false;
@@ -4757,18 +4736,20 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 if (tal==null || tal instanceof Tree.InferredTypeArguments) {
-                    if(!inTypeLiteral || typeLiteralMode == TypeLiteralMode.Type)
-                        parent.addError("requires type arguments: " + dec.getName(unit));
+                    if (!metamodel) {
+                        parent.addError("missing type arguments to generic type: " + 
+                                dec.getName(unit) + " declares type parameters");
+                    }
                 }
                 else {
                     String help="";
                     if (args<min) {
-                        help = " (requires at least " + min + " type arguments)";
+                        help = " requires at least " + min + " type arguments";
                     }
                     else if (args>max) {
-                        help = " (allows at most " + max + " type arguments)";
+                        help = " allows at most " + max + " type arguments";
                     }
-                    tal.addError("wrong number of type arguments to: " + 
+                    tal.addError("wrong number of type arguments: " + 
                             dec.getName(unit) + help);
                 }
                 return false;
@@ -4915,6 +4896,9 @@ public class ExpressionVisitor extends Visitor {
         Set<TypeDeclaration> set = new HashSet<TypeDeclaration>();
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
+            if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {
+                t.addError("directly satisfies Callable");
+            }
             if (type!=null && type.getDeclaration()!=null) {
                 type = type.resolveAliases();
                 if (!set.add(type.getDeclaration())) {
@@ -5237,348 +5221,318 @@ public class ExpressionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeLiteral that) {
-        inTypeLiteral = true;
-        typeLiteralMode = TypeLiteralMode.Unknown;
-        try{
-            super.visit(that);
-        }finally{
-            inTypeLiteral = false;
-        }
-        // grammar will catch that error
-        if(that.getType() == null)
-            return;
-        // FIXME: should we disallow type parameters in there?
-        ProducedType literalType = that.getType().getTypeModel();
-        if(literalType == null)
-            return;
-        // FIXME: should we really resolve aliases? I guess since they are not present in the runtime metamodel
-        literalType = literalType.resolveAliases();
-        TypeDeclaration declaration = literalType.getDeclaration();
-        if(declaration == null)
-            return;
-        that.setDeclaration(declaration);
-        if(declaration instanceof Class){
-            boolean isParameterised = isParameterised(declaration);
-            if(!isParameterised){
-                ProducedType classType = getTypeLiteralClassType(declaration, literalType);
-                ProducedType classDeclarationType = getTypeLiteralDeclarationType("ClassDeclaration");
-                IntersectionType it = new IntersectionType(unit);
-                it.getSatisfiedTypes().add(classDeclarationType);
-                it.getSatisfiedTypes().add(classType);
-                that.setTypeModel(it.getType());
-            }else if(typeLiteralMode == TypeLiteralMode.Declaration){
-                ProducedType classDeclarationType = getTypeLiteralDeclarationType("ClassDeclaration");
-                that.setWantsDeclaration(true);
-                that.setTypeModel(classDeclarationType);
-            }else if(typeLiteralMode == TypeLiteralMode.Type){
-                ProducedType classType = getTypeLiteralClassType(declaration, literalType);
-                that.setTypeModel(classType);
-            }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
-        }else if(declaration instanceof Interface){
-            boolean isParameterised = isParameterised(declaration);
-            if(!isParameterised){
-                ProducedType interfaceType = getTypeLiteralInterfaceType(declaration, literalType);
-                ProducedType interfaceDeclarationType = getTypeLiteralDeclarationType("InterfaceDeclaration");
-                IntersectionType it = new IntersectionType(unit);
-                it.getSatisfiedTypes().add(interfaceDeclarationType);
-                it.getSatisfiedTypes().add(interfaceType);
-                that.setTypeModel(it.getType());
-            }else if(typeLiteralMode == TypeLiteralMode.Declaration){
-                ProducedType interfaceDeclarationType = getTypeLiteralDeclarationType("InterfaceDeclaration");
-                that.setWantsDeclaration(true);
-                that.setTypeModel(interfaceDeclarationType);
-            }else if(typeLiteralMode == TypeLiteralMode.Type){
-                ProducedType interfaceType = getTypeLiteralInterfaceType(declaration, literalType);
-                that.setTypeModel(interfaceType);
-            }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
-        }else if(declaration instanceof UnionType){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("UnionType");
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
-        }else if(declaration instanceof IntersectionType){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("IntersectionType");
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
-        }else if(declaration instanceof NothingType){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("nothingType");
-            if(metamodelDecl instanceof TypedDeclaration){
-                that.setTypeModel(((TypedDeclaration) metamodelDecl).getType());
-            }
-        }else if(declaration instanceof TypeParameter){
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Type");
-            that.setTypeModel(metamodelDecl.getProducedReference(null, Collections.<ProducedType>emptyList()).getType());
-        }else{
-            // FIXME: we get there for UnknownType too, but I'm not sure if we need to add an error or if getting an UnknownType
-            // means we already logged an error?
-            that.addError("Type literal not supported yet: " + declaration);
-        }
-    }
-    
-    private ProducedType getTypeLiteralDeclarationType(String name) {
-        return unit.getLanguageModuleMetamodelDeclarationDeclaration(name).getProducedReference(null, Collections.<ProducedType>emptyList()).getType();
-    }
-
-    private ProducedType getTypeLiteralClassType(TypeDeclaration declaration, ProducedType literalType) {
-        ParameterList parameterList = ((Class) declaration).getParameterList();
-        ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
-        if(declaration.isMember()){
-            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("MemberClass");
-            ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), literalType, parameterTuple)).getType();
-            return memberType;
-        }else{
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Class");
-            ProducedType classType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType, parameterTuple)).getType();
-            return classType;
-        }
-    }
-    
-    private ProducedType getTypeLiteralInterfaceType(TypeDeclaration declaration, ProducedType literalType) {
-        if(declaration.isMember()){
-            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("MemberInterface");
-            ProducedType memberType = memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType.getQualifyingType(), literalType)).getType();
-            return memberType;
-        }else{
-            Declaration metamodelDecl = unit.getLanguageModuleMetamodelDeclaration("Interface");
-            ProducedType interfaceType = metamodelDecl.getProducedReference(null, Arrays.<ProducedType>asList(literalType)).getType();
-            return interfaceType;
-        }
-    }
-
-    private boolean isParameterised(Declaration declaration) {
-        if(declaration instanceof Generic && !((Generic)declaration).getTypeParameters().isEmpty())
-            return true;
-        if(declaration.isClassOrInterfaceMember())
-            return isParameterised((ClassOrInterface) declaration.getContainer());
-        return false;
-    }
-
-    public void visit(Tree.MemberLiteral that) {
-        inTypeLiteral = true;
-        typeLiteralMode = TypeLiteralMode.Unknown;
-        try{
-            super.visit(that);
-
-            if(that.getIdentifier() == null)
-                return;
-            String name = that.getIdentifier().getText();
-
-            if(that.getType() != null){
-                ProducedType qualifyingType = that.getType().getTypeModel();
-                if(qualifyingType == null)
-                    return;
-
-                qualifyingType = qualifyingType.resolveAliases();
-                TypeDeclaration d = qualifyingType.getDeclaration();
-                String container = "type " + d.getName(unit);
-                Declaration member = d.getMember(name, unit, null, false);
-                if(member instanceof TypedDeclaration){
-                    that.setDeclaration(member);
-                    setMetamodelType(that, member, qualifyingType);
-                }else{
-                    that.addError("member method or attribute is ambiguous: " +
-                            name + " for " + container);
+        super.visit(that);
+        if (that.getType() != null) {
+            // FIXME: should we disallow type parameters in there?
+            ProducedType literalType = that.getType().getTypeModel();
+            if (literalType != null) {
+                literalType = literalType.resolveAliases();
+                TypeDeclaration declaration = literalType.getDeclaration();
+                if (declaration != null) {
+                    that.setDeclaration(declaration);
+                    checkNonlocalType(that.getType(), declaration);
+                    ProducedType metatype;
+                    if (declaration instanceof Class) {
+                        metatype = getClassMetaType(that, literalType, declaration);
+                    }
+                    else if (declaration instanceof Interface) {
+                        metatype = getInterfaceMetaType(that, literalType, declaration);
+                    }
+                    else {
+                        metatype = getTypeMetaType(that, literalType, declaration);
+                    }
+                    that.setTypeModel(metatype);
                 }
-            }else{
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.MemberLiteral that) {
+        super.visit(that);
+        if (that.getIdentifier() != null) {
+            String name = name(that.getIdentifier());
+            if (that.getType() != null) {
+                ProducedType qualifyingType = that.getType().getTypeModel();
+                if (qualifyingType != null) {
+                    qualifyingType = qualifyingType.resolveAliases();
+                    TypeDeclaration d = qualifyingType.getDeclaration();
+                    if (d instanceof UnknownType) {
+                        // let it go, we already logged an error for the missing type
+                        return;
+                    }
+                    checkNonlocalType(that.getType(), d);
+                    String container = "type " + d.getName(unit);
+                    TypedDeclaration member = getTypedMember(d, name, null, false, unit);
+                    if (member==null) {
+                        if (d.isMemberAmbiguous(name, unit, null, false)) {
+                            that.addError("method or attribute is ambiguous: " +
+                                    name + " for " + container);
+                        }
+                        else {
+                            that.addError("method or attribute does not exist: " +
+                                    name + " in " + container);
+                        }
+                    }
+                    else {
+                        checkQualifiedVisibility(that, (TypedDeclaration) member, name, container, false);
+                        that.setDeclaration(member);
+                        setMetamodelType(that, member, qualifyingType);
+                    }
+                }
+            }
+            else {
                 Declaration result = that.getScope().getMemberOrParameter(unit, name, null, false);
                 if (result instanceof TypedDeclaration) {
+                    checkBaseVisibility(that, (TypedDeclaration) result, name);
                     that.setDeclaration(result);
                     setMetamodelType(that, result, that.getScope().getDeclaringType(result));
-                }else{
+                }
+                else {
                     that.addError("function or value does not exist: " +
                             name(that.getIdentifier()), 100);
                     unit.getUnresolvedReferences().add(that.getIdentifier());
                 }
             }
-        }finally{
-            inTypeLiteral = false;
         }
     }
 
     private void setMetamodelType(MemberLiteral that, Declaration result, ProducedType outerType) {
-        boolean isParameterised = isParameterised(result);
-        if(result instanceof Method){
-            Method method = (Method) result;
-            ParameterList parameterList = method.getParameterLists().get(0);
-
-            TypeArgumentList tal = that.getTypeArgumentList();
+        if (result instanceof Method) {
+            TypedDeclaration method = (TypedDeclaration) result;
+            ParameterList parameterList = ((Functional) method).getParameterLists().get(0);
+            Tree.TypeArgumentList tal = that.getTypeArgumentList();
+            // there's no model for local values that are not parameters
+            if ((!result.isClassOrInterfaceMember()||!result.isShared())
+                    && !result.isToplevel()) {
+                if (result.isParameter()) {
+                    that.addWarning("metamodel reference to function parameter not yet supported");
+                }
+                else {
+                    that.addError("metamodel reference to local function");
+                }
+            }
             if (explicitTypeArguments(method, tal, null)) {
                 List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method));
-                if(tal != null)
+                if (tal != null) {
                     tal.setTypeModels(ta);
-                
-                if (acceptsTypeArguments(method, ta, tal, that)) {
+                }
+                if (acceptsTypeArguments(method, ta, tal, that, false)) {
                     ProducedTypedReference pr = method.getProducedTypedReference(outerType, ta);
                     that.setTarget(pr);
-
-                    if(!isParameterised){
-                        ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
-                        ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
-                        IntersectionType it = new IntersectionType(unit);
-                        if(method.getInitializerParameter() != null){
-                            ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                            it.getSatisfiedTypes().add(parameterDeclarationType);
-                        }
-                        it.getSatisfiedTypes().add(functionDeclarationType);
-                        it.getSatisfiedTypes().add(functionType);
-                        that.setTypeModel(it.getType());
-                    }else if(typeLiteralMode == TypeLiteralMode.Declaration){
-                        ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
-                        if(method.getInitializerParameter() != null){
-                            IntersectionType it = new IntersectionType(unit);
-                            ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                            it.getSatisfiedTypes().add(parameterDeclarationType);
-                            it.getSatisfiedTypes().add(functionDeclarationType);
-                            that.setTypeModel(it.getType());
-                        }else{
-                            that.setTypeModel(functionDeclarationType);
-                        }
-                        that.setWantsDeclaration(true);
-                    }else if(typeLiteralMode == TypeLiteralMode.Type){
-                        ProducedType functionType = getTypeLiteralFunctionType(pr, parameterList);
-                        that.setTypeModel(functionType);
-                    }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
+                    that.setTypeModel(getFunctionMetaType(that, result, outerType,
+                            parameterList, pr));
                 }
-            } else if(typeLiteralMode == TypeLiteralMode.Declaration
-                    || typeLiteralMode == TypeLiteralMode.Unknown) {
-                ProducedType functionDeclarationType = getTypeLiteralDeclarationType("FunctionDeclaration");
-                if(method.getInitializerParameter() != null){
-                    IntersectionType it = new IntersectionType(unit);
-                    ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                    it.getSatisfiedTypes().add(parameterDeclarationType);
-                    it.getSatisfiedTypes().add(functionDeclarationType);
-                    that.setTypeModel(it.getType());
-                }else{
-                    that.setTypeModel(functionDeclarationType);
-                }
+            }
+            else {
+                that.setTypeModel(getTypeLiteralFunctionDeclarationType());
                 that.setWantsDeclaration(true);
-            } else {
+            }
+            /*else {
                 that.addError("missing type arguments to: " + method.getName(unit));
-            }
-        }else if(result instanceof Value){
-            Value value = (Value) result;
-
-            if(that.getTypeArgumentList() != null){
-                that.addError("does not accept type arguments: " + result.getName(unit));
-            }else{
-                ProducedTypedReference pr = value.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
-                that.setTarget(pr);
-
-                if(!isParameterised){
-                    ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
-                    ProducedType attributeDeclarationType = getTypeLiteralValueDeclarationType(value);
-                    IntersectionType it = new IntersectionType(unit);
-                    if(value.getInitializerParameter() != null){
-                        ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                        it.getSatisfiedTypes().add(parameterDeclarationType);
-                    }
-                    it.getSatisfiedTypes().add(attributeDeclarationType);
-                    it.getSatisfiedTypes().add(attributeType);
-                    that.setTypeModel(it.getType());
-                }else if(typeLiteralMode == TypeLiteralMode.Declaration){
-                    ProducedType attributeDeclarationType = getTypeLiteralValueDeclarationType(value);
-                    if(value.getInitializerParameter() != null){
-                        IntersectionType it = new IntersectionType(unit);
-                        ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                        it.getSatisfiedTypes().add(parameterDeclarationType);
-                        it.getSatisfiedTypes().add(attributeDeclarationType);
-                        that.setTypeModel(it.getType());
-                    }else
-                        that.setTypeModel(attributeDeclarationType);
-                    that.setWantsDeclaration(true);
-                }else if(typeLiteralMode == TypeLiteralMode.Type){
-                    ProducedType attributeType = getTypeLiteralAttributeType(pr, value);
-                    that.setTypeModel(attributeType);
-                }// else we should have seen an error, since the type is parameterised and we log errors when looking at parameterised types
-
-            }
+            }*/
         }
-        else if (result.isParameter()) {
-            MethodOrValue mov = (MethodOrValue) result;
-            Parameter param = mov.getInitializerParameter();
-
-            if(that.getTypeArgumentList() != null){
+        else if (result instanceof Value) {
+            TypedDeclaration value = (TypedDeclaration) result;
+            // there's no model for local values that are not parameters
+            if ((!result.isClassOrInterfaceMember()||!result.isShared())
+                    && !result.isToplevel()){
+                if (result.isParameter()) {
+                    that.addWarning("metamodel reference to function parameter not yet supported");
+                }
+                else{
+                    that.addError("metamodel reference to local value");
+                }
+            }
+            if (that.getTypeArgumentList() != null) {
                 that.addError("does not accept type arguments: " + result.getName(unit));
             }
-            else{
-                ProducedTypedReference pr = mov.getProducedTypedReference(outerType, Collections.<ProducedType>emptyList());
+            else {
+                ProducedTypedReference pr = value.getProducedTypedReference(outerType, 
+                        Collections.<ProducedType>emptyList());
                 that.setTarget(pr);
-
-                if (!isParameterised && mov.isShared()){
-                    ProducedType parameterType = getTypeLiteralParameterType(pr, param);
-                    ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                    ProducedType attributeDeclarationType = getTypeLiteralParameterDeclarationType(param);
-                    IntersectionType it = new IntersectionType(unit);
-                    it.getSatisfiedTypes().add(parameterDeclarationType);
-                    it.getSatisfiedTypes().add(attributeDeclarationType);
-                    it.getSatisfiedTypes().add(parameterType);
-                    that.setTypeModel(it.getType());
-                }
-                else if(typeLiteralMode == TypeLiteralMode.Declaration
-                        || (!isParameterised && !mov.isShared())){
-                    ProducedType parameterDeclarationType = getTypeLiteralDeclarationType("ParameterDeclaration");
-                    if(mov.isShared()){
-                        IntersectionType it = new IntersectionType(unit);
-                        ProducedType attributeDeclarationType = getTypeLiteralParameterDeclarationType(param);
-                        it.getSatisfiedTypes().add(parameterDeclarationType);
-                        it.getSatisfiedTypes().add(attributeDeclarationType);
-                        that.setTypeModel(it.getType());
-                    }else{
-                        that.setTypeModel(parameterDeclarationType);
-                    }
-                    that.setWantsDeclaration(true);
-                }
-                else if (typeLiteralMode == TypeLiteralMode.Type){
-                    if (mov.isShared()){
-                        ProducedType attributeType = getTypeLiteralParameterType(pr, param);
-                        that.setTypeModel(attributeType);
-                    }
-                    else{
-                        that.addError("non-shared parameters are not reified in the metamodel: "+ result.getName(unit));
-                    }
-                }
+                that.setTypeModel(getValueMetaType(that, result, outerType, value, pr));
             }
         }
     }
 
-    private ProducedType getTypeLiteralParameterDeclarationType(Parameter param) {
-        if (param.getModel() instanceof Method)
-            return getTypeLiteralDeclarationType("FunctionDeclaration");
-        return getTypeLiteralValueDeclarationType(param.getModel());
+    private ProducedType getTypeMetaType(Tree.TypeLiteral that,
+            ProducedType literalType, TypeDeclaration declaration) {
+        if (declaration instanceof UnionType) {
+            return unit.getLanguageModuleModelTypeDeclaration("UnionType").getType();
+        }
+        else if (declaration instanceof IntersectionType) {
+            return unit.getLanguageModuleModelTypeDeclaration("IntersectionType").getType();
+        }
+        else if (declaration instanceof NothingType) {
+            return ((TypedDeclaration) unit.getLanguageModuleModelDeclaration("nothingType")).getType();
+        }
+        else if (declaration instanceof TypeParameter) {
+            return unit.getLanguageModuleModelTypeDeclaration("Type").getType();
+        }
+        else {
+            return new UnknownType(unit).getType();
+        }
+    }
+
+    private ProducedType getInterfaceMetaType(Tree.TypeLiteral that,
+            ProducedType literalType, TypeDeclaration declaration) {
+        if (!isParameterised(declaration)) {
+            return intersectionType(getTypeLiteralInterfaceType(declaration, literalType), 
+                    unit.getLanguageModuleModelDeclarationTypeDeclaration("InterfaceDeclaration").getType(), unit);
+        }
+        else if (isTypeUnknown(literalType)) {
+            that.setWantsDeclaration(true);
+            return unit.getLanguageModuleModelDeclarationTypeDeclaration("InterfaceDeclaration").getType();
+        }
+        else {
+            return getTypeLiteralInterfaceType(declaration, literalType);
+        }
+    }
+
+    private ProducedType getClassMetaType(Tree.TypeLiteral that,
+            ProducedType literalType, TypeDeclaration declaration) {
+        if (!isParameterised(declaration)) {
+            return intersectionType(getTypeLiteralClassType(declaration, literalType), 
+                    unit.getLanguageModuleModelDeclarationTypeDeclaration("ClassDeclaration").getType(), unit);
+        }
+        else if (isTypeUnknown(literalType)) {
+            that.setWantsDeclaration(true);
+            return unit.getLanguageModuleModelDeclarationTypeDeclaration("ClassDeclaration").getType();
+        }
+        else {
+            return getTypeLiteralClassType(declaration, literalType);
+        }
+    }
+    
+    private void checkNonlocalType(Node that, TypeDeclaration declaration) {
+        if (declaration instanceof UnionType) {
+            for (TypeDeclaration ctd: declaration.getCaseTypeDeclarations()) {
+                checkNonlocalType(that, ctd);
+            }
+        }
+        if (declaration instanceof IntersectionType) {
+            for (TypeDeclaration std: declaration.getSatisfiedTypeDeclarations()) {
+                checkNonlocalType(that, std);
+            }
+        }
+        else if (declaration instanceof ClassOrInterface &&
+                (!declaration.isClassOrInterfaceMember()||!declaration.isShared())
+                        && !declaration.isToplevel()) {
+            that.addWarning("metamodel reference to local type not yet supported");
+        }
+        else if (declaration.getContainer() instanceof TypeDeclaration) {
+            checkNonlocalType(that, (TypeDeclaration) declaration.getContainer());
+        }
+    }
+    
+    private ProducedType getTypeLiteralClassType(TypeDeclaration declaration, ProducedType literalType) {
+        ParameterList parameterList = ((Class) declaration).getParameterList();
+        ProducedType parameterTuple = getParameterTypesAsTupleType(unit, parameterList.getParameters(), literalType);
+        if (declaration.isMember()) {
+            return unit.getLanguageModuleModelTypeDeclaration("MemberClass")
+                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType, parameterTuple));
+        }
+        else {
+            return unit.getLanguageModuleModelTypeDeclaration("Class")
+                    .getProducedType(null, asList(literalType, parameterTuple));
+        }
+    }
+    
+    private ProducedType getTypeLiteralInterfaceType(TypeDeclaration declaration, ProducedType literalType) {
+        if (declaration.isMember()) {
+            return unit.getLanguageModuleModelTypeDeclaration("MemberInterface")
+                    .getProducedType(null, asList(literalType.getQualifyingType(), literalType));
+        }
+        else {
+            return unit.getLanguageModuleModelTypeDeclaration("Interface")
+                    .getProducedType(null, asList(literalType));
+        }
+    }
+
+    private boolean isParameterised(Declaration declaration) {
+        if (declaration instanceof Generic && 
+                !((Generic) declaration).getTypeParameters().isEmpty()) {
+            return true;
+        }
+        if (declaration.isClassOrInterfaceMember()) {
+            return isParameterised((ClassOrInterface) declaration.getContainer());
+        }
+        return false;
+    }
+
+    private ProducedType getValueMetaType(MemberLiteral that,
+            Declaration result, ProducedType outerType, TypedDeclaration value,
+            ProducedTypedReference pr) {
+        if (!isParameterised(result)) {
+            return intersectionType(getTypeLiteralAttributeType(pr, value), 
+                    getTypeLiteralValueDeclarationType(value), unit);
+        } 
+        else if (isTypeUnknown(pr.getType()) ||
+                that.getType()!=null && isTypeUnknown(outerType)) {
+            that.setWantsDeclaration(true);
+            return getTypeLiteralValueDeclarationType(value);
+        } 
+        else {
+            return getTypeLiteralAttributeType(pr, value);
+        }
+    }
+
+    private ProducedType getFunctionMetaType(MemberLiteral that,
+            Declaration result, ProducedType outerType,
+            ParameterList parameterList, ProducedTypedReference pr) {
+        if (!isParameterised(result)) {
+            return intersectionType(getTypeLiteralFunctionType(pr, parameterList), 
+                    getTypeLiteralFunctionDeclarationType(), unit);
+        }
+        else if (isTypeUnknown(pr.getFullType()) ||
+                that.getType()!=null && isTypeUnknown(outerType)) {
+            that.setWantsDeclaration(true);
+            return getTypeLiteralFunctionDeclarationType();
+        }
+        else {
+            return getTypeLiteralFunctionType(pr, parameterList);
+        }
+    }
+
+    private ProducedType getTypeLiteralFunctionDeclarationType() {
+        return unit.getLanguageModuleModelDeclarationTypeDeclaration("FunctionDeclaration").getType();
     }
 
     // should really be a Value|Parameter but hey ;)
     private ProducedType getTypeLiteralValueDeclarationType(TypedDeclaration param) {
-        return getTypeLiteralDeclarationType(param.isVariable() ? "VariableDeclaration" : "AttributeDeclaration");
-    }
-
-    private ProducedType getTypeLiteralParameterType(ProducedTypedReference pr, Parameter param) {
-        if (param.getModel() instanceof Method)
-            return getTypeLiteralFunctionType(pr, ((Method)param.getModel()).getParameterLists().get(0));
-        return getTypeLiteralAttributeType(pr, param.getModel());
+        return unit.getLanguageModuleModelDeclarationTypeDeclaration(param.isVariable() ? "VariableDeclaration" : "ValueDeclaration")
+                .getType();
     }
 
     // should really be a Value|Parameter but hey ;)
     private ProducedType getTypeLiteralAttributeType(ProducedTypedReference pr, TypedDeclaration value) {
-        if(pr.getQualifyingType() != null){
-            Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "VariableAttribute" : "Attribute");
-            return memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getQualifyingType(), pr.getType())).getType();
-        }else{
-            Declaration attributeDecl = unit.getLanguageModuleMetamodelDeclaration(value.isVariable() ? "Variable" : "Value");
-            return attributeDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getType())).getType();
+        if (pr.getQualifyingType() != null) {
+            return unit.getLanguageModuleModelTypeDeclaration(value.isVariable() ? "VariableAttribute" : "Attribute")
+                    .getProducedType(null, asList(pr.getQualifyingType(), pr.getType()));
+        }
+        else {
+            return unit.getLanguageModuleModelTypeDeclaration(value.isVariable() ? "Variable" : "Value")
+                    .getProducedType(null, asList(pr.getType()));
         }
     }
 
     private ProducedType getTypeLiteralFunctionType(ProducedTypedReference pr, ParameterList parameterList) {
-        ProducedType parameterTuple = Util.getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
+        ProducedType parameterTuple = getParameterTypesAsTupleType(unit, parameterList.getParameters(), pr);
         ProducedType returnType = unit.getCallableReturnType(pr.getFullType());
-        if (returnType != null) {
-            
-            if(pr.getQualifyingType() != null){
-                Declaration memberDecl = unit.getLanguageModuleMetamodelDeclaration("Method");
-                return memberDecl.getProducedReference(null, Arrays.<ProducedType>asList(pr.getQualifyingType(), returnType, parameterTuple)).getType();
-            }else{
-                Declaration functionDecl = unit.getLanguageModuleMetamodelDeclaration("Function");
-                return functionDecl.getProducedReference(null, Arrays.<ProducedType>asList(returnType, parameterTuple)).getType();
+        if (returnType == null) {
+            return null;
+        }
+        else {
+            if (pr.getQualifyingType() != null) {
+                return unit.getLanguageModuleModelTypeDeclaration("Method")
+                        .getProducedType(null, asList(pr.getQualifyingType(), returnType, parameterTuple));
+            }
+            else {
+                return unit.getLanguageModuleModelTypeDeclaration("Function")
+                        .getProducedType(null, asList(returnType, parameterTuple));
             }
         }
-        return null;
     }
+    
 }

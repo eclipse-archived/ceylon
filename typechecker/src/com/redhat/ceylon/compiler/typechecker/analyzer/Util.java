@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -33,10 +33,29 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class Util {
     
-    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
-            List<ProducedType> signature, boolean ellipsis) {
-        Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
-                name(bme.getIdentifier()), signature, ellipsis);
+    static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
+            List<ProducedType> signature, boolean ellipsis, Unit unit) {
+        Declaration member = d.getMember(name, unit, signature, ellipsis);
+        if (member instanceof TypedDeclaration)
+            return (TypedDeclaration) member;
+        else
+            return null;
+    }
+
+    static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
+            List<ProducedType> signature, boolean ellipsis, Unit unit) {
+        Declaration member = d.getMember(name, unit, signature, ellipsis);
+        if (member instanceof TypeDeclaration)
+            return (TypeDeclaration) member;
+        else
+            return null;
+    }
+
+    static TypedDeclaration getTypedDeclaration(Scope scope,
+            String name, List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = scope.getMemberOrParameter(unit, 
+                name, signature, ellipsis);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -45,21 +64,11 @@ public class Util {
         }
     }
     
-    static TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
-        Declaration result = bt.getScope().getMemberOrParameter(bt.getUnit(), 
-                name(bt.getIdentifier()), null, false);
-        if (result instanceof TypeDeclaration) {
-        	return (TypeDeclaration) result;
-        }
-        else {
-        	return null;
-        }
-    }
-    
-    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte, 
-            List<ProducedType> signature, boolean ellipsis) {
-        Declaration result = bte.getScope().getMemberOrParameter(bte.getUnit(), 
-                name(bte.getIdentifier()), signature, ellipsis);
+    static TypeDeclaration getTypeDeclaration(Scope scope,
+            String name, List<ProducedType> signature, boolean ellipsis,
+            Unit unit) {
+        Declaration result = scope.getMemberOrParameter(unit, 
+                name, signature, ellipsis);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
@@ -521,7 +530,7 @@ public class Util {
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
                         Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
-                        if (d!=null && d.getQualifiedNameString().equals("ceylon.language::true")) {
+                        if (isBooleanTrue(d)) {
                             continue;
                         }
                     }
@@ -530,6 +539,16 @@ public class Util {
             return false;
         }
         return true;
+    }
+
+    static boolean isBooleanTrue(Declaration d) {
+        return d!=null && d.getQualifiedNameString()
+                .equals("ceylon.language::true");
+    }
+
+    static boolean isBooleanFalse(Declaration d) {
+        return d!=null && d.getQualifiedNameString()
+                .equals("ceylon.language::false");
     }
 
     static boolean isNeverSatisfied(Tree.ConditionList cl) {
@@ -543,7 +562,7 @@ public class Util {
                     //TODO: take into account conjunctions/disjunctions
                     if (t instanceof Tree.BaseMemberExpression) {
                         Declaration d = ((Tree.BaseMemberExpression) t).getDeclaration();
-                        if (d!=null && d.getQualifiedNameString().equals("ceylon.language::false")) {
+                        if (isBooleanFalse(d)) {
                             return true;
                         }
                     }
@@ -557,8 +576,15 @@ public class Util {
         return member.getUnit().getPackage().equals(unit.getPackage());
     }
 
+    public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
+        while (term instanceof Tree.Expression) {
+            term = ((Tree.Expression)term).getTerm();
+        }
+        return term;
+    }
+    
     public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
-        Tree.Primary p = that.getPrimary();
+        Tree.Term p = unwrapExpressionUntilTerm(that.getPrimary());
         if (p instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) p;
             ProducedReference prf = mte.getTarget();
