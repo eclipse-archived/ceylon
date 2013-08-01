@@ -26,7 +26,7 @@ public class Bug1135 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .ceylon.language.Callable<? extends .java.lang.Object> listener = (.ceylon.language.Callable<? extends .java.lang.Object>)$param$0;
+                final .ceylon.language.Callable<? extends .java.lang.Object> listener = (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)$param$0;
                 return listener.$call();
             }
         });

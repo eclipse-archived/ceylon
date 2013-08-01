@@ -510,7 +510,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             }
             returning $ceylontmp37 instanceof .ceylon.language.Sequence;
         );
-        final .ceylon.language.Sequential spreadMember = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequence)(
+        final .ceylon.language.Sequential spreadMember = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$38$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
@@ -524,7 +524,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             returning $spread$38$sequenceBuilder.getSequence();
         );
         .ceylon.language.Sequential spreadInvocation = null;
-        spreadInvocation = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequence)(
+        spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$39$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
@@ -538,7 +538,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             }
             returning $spread$39$sequenceBuilder.getSequence();
         );
-        spreadInvocation = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequence)(
+        spreadInvocation = (.ceylon.language.Sequential)(.ceylon.language.Sequence)(
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> $spread$41$iterable = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
