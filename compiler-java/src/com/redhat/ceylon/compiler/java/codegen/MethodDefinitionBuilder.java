@@ -63,6 +63,7 @@ public class MethodDefinitionBuilder {
 
     private boolean isOverride;
     private boolean isAbstract;
+    private boolean isTransient;
     
     private JCExpression resultTypeExpr;
     private List<JCAnnotation> resultTypeAnnos;
@@ -141,6 +142,9 @@ public class MethodDefinitionBuilder {
             }
             if(!typeParamAnnotations.isEmpty()) {
                 result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+            }
+            if (isTransient) {
+                result.appendList(gen.makeAtTransient());
             }
         }
         return result;
@@ -378,6 +382,11 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
+    public MethodDefinitionBuilder isTransient(boolean trans) {
+        this.isTransient = trans;
+        return this;
+    }
+
     public MethodDefinitionBuilder body(JCStatement statement) {
         if (statement != null) {
             this.body.append(statement);
@@ -503,5 +512,4 @@ public class MethodDefinitionBuilder {
     public void defaultValue(JCExpression defaultValue) {
         this.defaultValue = defaultValue;
     }
-    
 }

@@ -112,6 +112,7 @@ public class AttributeDefinitionBuilder {
             .method2(owner, Naming.getGetterName(attrType, indirect))
             .block(generateDefaultGetterBlock())
             .isOverride(attrType.isActual())
+            .isTransient(Decl.isTransient(attrType))
             .modelAnnotations(attrType.getAnnotations())
             .resultType(this.attrType, attrType);
         

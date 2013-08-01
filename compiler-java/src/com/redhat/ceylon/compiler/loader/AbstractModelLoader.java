@@ -133,6 +133,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
     private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
+    private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
     private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.Abstract$annotation";
@@ -1418,7 +1419,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Declaration decl = klass.getMember(name, null, false);
             boolean foundGetter = false;
             // skip Java fields, which we only get if there is no getter method, in that case just add the setter method
-            if (decl != null && Decl.isNonTransientValue(decl) && decl instanceof FieldValue == false) {
+            if (decl instanceof Value && decl instanceof FieldValue == false) {
                 Value value = (Value)decl;
                 VariableMirror setterParam = setter.getParameters().get(0);
                 ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
@@ -1855,6 +1856,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
         decl.setProtectedVisibility(methodMirror.isProtected());
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
+        if(decl instanceof Value){
+            ((Value)decl).setTransient(methodMirror.getAnnotation(CEYLON_TRANSIENT_ANNOTATION) != null);
+        }
         if(// for class members we rely on abstract bit
            (klass instanceof Class 
                    && methodMirror.isAbstract())

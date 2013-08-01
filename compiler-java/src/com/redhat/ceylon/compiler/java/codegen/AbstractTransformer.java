@@ -1998,6 +1998,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
 
+    List<JCAnnotation> makeAtTransient() {
+        return makeModelAnnotation(syms().ceylonAtTransientType);
+    }
+
     List<JCAnnotation> makeAtAnnotations(java.util.List<Annotation> annotations) {
         if(annotations == null || annotations.isEmpty())
             return List.nil();

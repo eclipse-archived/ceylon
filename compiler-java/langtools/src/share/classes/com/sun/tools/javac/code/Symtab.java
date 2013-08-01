@@ -233,6 +233,7 @@ public class Symtab {
     public final Type ceylonAtValueTypeType;
     public final Type ceylonAtAliasType;
     public final Type ceylonAtTypeAliasType;
+    public final Type ceylonAtTransientType;
 
     public final Type ceylonUtilType;
     public final Type ceylonMetamodelType;
@@ -608,6 +609,7 @@ public class Symtab {
         ceylonAtValueTypeType = enterClass("com.redhat.ceylon.compiler.java.metadata.ValueType");
         ceylonAtAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.Alias");
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
+        ceylonAtTransientType = enterClass("com.redhat.ceylon.compiler.java.metadata.Transient");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
         ceylonMetamodelType = enterClass("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel");
