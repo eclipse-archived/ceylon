@@ -32,7 +32,9 @@ class JsOutput {
         return writer;
     }
     protected File close() throws IOException {
-        writer.close();
+        if (writer != null) {
+            writer.close();
+        }
         return outfile;
     }
     void addSource(String src) {

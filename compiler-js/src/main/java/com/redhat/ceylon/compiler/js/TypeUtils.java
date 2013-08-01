@@ -300,7 +300,7 @@ public class TypeUtils {
         return pt == null || pt.isUnknown();
     }
     static boolean isUnknown(Parameter param) {
-        return param == null || param.getTypeDeclaration() == null || param.getTypeDeclaration().getQualifiedNameString().equals("UnknownType");
+        return param == null || isUnknown(param.getType());
     }
     static boolean isUnknown(Declaration d) {
         return d == null || d.getQualifiedNameString().equals("UnknownType");
@@ -321,7 +321,7 @@ public class TypeUtils {
         gen.out("[");
         for (Parameter p : plist.getParameters()) {
             if (first) first=false; else gen.out(",");
-            gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getNameAsString(), "',");
+            gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getName(), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
             if (p.isSequenced()) {
                 gen.out("seq:1,");
@@ -579,7 +579,7 @@ public class TypeUtils {
             if (et == null) {
                 et = p.getType();
             } else {
-                UnionType ut = new UnionType(p.getUnit());
+                UnionType ut = new UnionType(p.getModel().getUnit());
                 ArrayList<ProducedType> types = new ArrayList<>();
                 if (et.getCaseTypes() == null || et.getCaseTypes().isEmpty()) {
                     types.add(et);

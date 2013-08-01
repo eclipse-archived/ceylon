@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -30,7 +29,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Package {
 
@@ -325,55 +323,59 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         ParameterList plist = new ParameterList();
         if (params != null) {
             for (Map<String,Object> p : params) {
-                Parameter param = null;
+                Parameter param = new Parameter();
                 final String paramtype = (String)p.get("$pt");
+                param.setHidden(p.containsKey("$hdn"));
+                param.setName((String)p.get(MetamodelGenerator.KEY_NAME));
+                param.setDeclaration(owner);
+                param.setDefaulted(p.containsKey(MetamodelGenerator.KEY_DEFAULT));
+                param.setSequenced(p.containsKey("seq"));
+                param.setAtLeastOne(p.containsKey("$min1"));
                 if ("v".equals(paramtype)) {
-                    param = new ValueParameter();
-                    ((ValueParameter)param).setHidden(p.containsKey("$hdn"));
+                    Value _v = new Value();
+                    param.setModel(_v);
                 } else if ("f".equals(paramtype)) {
-                    param = new FunctionalParameter();
                     @SuppressWarnings("unchecked")
                     List<List<Map<String,Object>>> paramLists = (List<List<Map<String,Object>>>)p.get(MetamodelGenerator.KEY_PARAMS);
+                    Method _m = new Method();
+                    param.setModel(_m);
                     if (paramLists == null) {
-                        ((FunctionalParameter)param).addParameterList(new ParameterList());
+                        _m.addParameterList(new ParameterList());
                     } else {
                         boolean first = true;
                         for (List<Map<String,Object>> subplist : paramLists) {
-                            ParameterList _params = parseParameters(subplist, param, typeParameters);
+                            ParameterList _params = parseParameters(subplist, _m, typeParameters);
                             if (first) {
                                 first = false;
                             } else {
                                 _params.setNamedParametersSupported(false);
                             }
-                            ((FunctionalParameter)param).addParameterList(_params);
+                            _m.addParameterList(_params);
                         }
                     }
-                } else if ("p".equals(paramtype)) {
-                    param = new Parameter();
-                    param.setHidden(true);
                 } else {
                     throw new IllegalArgumentException("Unknown parameter type " + paramtype);
                 }
-                param.setName((String)p.get(MetamodelGenerator.KEY_NAME));
-                param.setUnit(unit);
-                param.setDeclaration(owner);
-                param.setDefaulted(p.containsKey(MetamodelGenerator.KEY_DEFAULT));
-                param.setSequenced(p.containsKey("seq"));
-                if (owner instanceof Scope) {
-                    param.setContainer((Scope)owner);
-                }
-                owner.getMembers().add(param);
-                if (p.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
-                    param.setType(getTypeFromJson((Map<String,Object>)p.get(MetamodelGenerator.KEY_TYPE), owner, typeParameters));
-                } else {
-                    //parameter type
-                    for (TypeParameter tp : typeParameters) {
-                        if (tp.getName().equals(p.get(MetamodelGenerator.KEY_TYPE))) {
-                            param.setType(tp.getType());
+                if (param.getModel() != null) {
+                    param.getModel().setInitializerParameter(param);
+                    param.getModel().setName(param.getName());
+                    param.getModel().setUnit(unit);
+                    if (owner instanceof Scope) {
+                        param.getModel().setContainer((Scope)owner);
+                    }
+                    if (p.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
+                        param.getModel().setType(getTypeFromJson((Map<String,Object>)p.get(MetamodelGenerator.KEY_TYPE), owner, typeParameters));
+                    } else {
+                        //parameter type
+                        for (TypeParameter tp : typeParameters) {
+                            if (tp.getName().equals(p.get(MetamodelGenerator.KEY_TYPE))) {
+                                param.getModel().setType(tp.getType());
+                            }
                         }
                     }
+                    setAnnotations(param.getModel(), (Map<String,List<String>>)p.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 }
-                setAnnotations(param, (Map<String,List<String>>)p.get(MetamodelGenerator.KEY_ANNOTATIONS));
+                //owner.getMembers().add(param);
                 plist.getParameters().add(param);
             }
         }

@@ -9,7 +9,6 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -25,7 +24,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 /** Generates the metamodel for all objects in a module.
  * This is used by the MetamodelVisitor.
@@ -253,7 +251,10 @@ public class MetamodelGenerator {
                 if (parm.isDefaulted()) {
                     pm.put(KEY_DEFAULT, "1");
                 }
-                final TypeDeclaration parmtype = parm.getTypeDeclaration();
+                if (parm.isAtLeastOne()) {
+                    pm.put("$min1", "1");
+                }
+                final MethodOrValue parmtype = parm.getModel();
                 if (parmtype != null && parmtype.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parmtype.getName());
                 } else if (parm.getType() != null) {
@@ -262,16 +263,16 @@ public class MetamodelGenerator {
                     //Most likely a dynamic type, set it to Anything
                     pm.put(KEY_TYPE, typeMap(((TypeDeclaration)module.getLanguageModule().getDirectPackage("ceylon.language").getDirectMember("Anything", null, false)).getType()));
                 }
-                if (parm instanceof ValueParameter) {
+                if (parm.isHidden()) {
+                    pm.put("$hdn", "1");
+                }
+                if (parmtype instanceof Value) {
                     pm.put("$pt", "v");
-                    if (((ValueParameter) parm).isHidden()) {
-                        pm.put("$hdn", "1");
-                    }
-                } else if (parm instanceof FunctionalParameter) {
+                } else if (parmtype instanceof Method) {
                     pm.put("$pt", "f");
                     List<List<Map<String, Object>>> _paramLists = new ArrayList<List<Map<String,Object>>>(
-                            ((FunctionalParameter)parm).getParameterLists().size());
-                    for (ParameterList subplist : ((FunctionalParameter)parm).getParameterLists()) {
+                            ((Method)parmtype).getParameterLists().size());
+                    for (ParameterList subplist : ((Method)parmtype).getParameterLists()) {
                         List<Map<String,Object>> params = parameterListMap(subplist);
                         if (params == null) {
                             params = Collections.emptyList();
@@ -281,16 +282,13 @@ public class MetamodelGenerator {
                     if (_paramLists.size() > 1 || !_paramLists.get(0).isEmpty()) {
                         pm.put(KEY_PARAMS, _paramLists);
                     }
-                } else {
-                    pm.put("$pt", "p");
-                    pm.put("$hdn", "1");
                 }
                 //TODO do these guys need anything else?
                 /*if (parm.getDefaultArgument() != null) {
                     //This could be compiled to JS...
                     pm.put(ANN_DEFAULT, parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
                 }*/
-                encodeAnnotations(parm, pm);
+                encodeAnnotations(parm.getModel(), pm);
                 p.add(pm);
             }
             return p;

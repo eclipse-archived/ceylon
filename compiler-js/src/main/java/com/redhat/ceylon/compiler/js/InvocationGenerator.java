@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -253,7 +254,8 @@ public class InvocationGenerator {
                         argvars.add(argvar);
                         gen.out(argvar, "=");
                     }
-                    int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
+                    TypedDeclaration decl = arg.getParameter() == null ? null : arg.getParameter().getModel();
+                    int boxType = gen.boxUnboxStart(expr.getTerm(), decl);
                     if (dyncheck) {
                         TypeUtils.generateDynamicCheck(((Tree.ListedArgument) arg).getExpression(),
                                 arg.getParameter().getType(), gen);
@@ -283,7 +285,8 @@ public class InvocationGenerator {
                         gen.out(",");
                     }
                     if (arg instanceof Tree.SpreadArgument) {
-                        int boxType = gen.boxUnboxStart(expr.getTerm(), arg.getParameter());
+                        TypedDeclaration td = arg.getParameter() == null ? null : arg.getParameter().getModel();
+                        int boxType = gen.boxUnboxStart(expr.getTerm(), td);
                         arg.visit(gen);
                         if (boxType == 4) {
                             gen.out(",");
