@@ -248,39 +248,48 @@ public class ConstraintVisitor extends Visitor {
         Tree.PositionalArgumentList pal = ie.getPositionalArgumentList();
         Tree.NamedArgumentList nal = ie.getNamedArgumentList();
         if (pal!=null) {
-            for (Tree.PositionalArgument pa: pal.getPositionalArguments()) {
-                if (pa!=null && pa.getParameter()!=null) {
-                    if (pa instanceof Tree.ListedArgument) {
-                        checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
-                                pa.getParameter().getType());
+            checkPositionalArguments(a, pal.getPositionalArguments());
+        }
+        else {
+            checkNamedArguments(a, nal);
+            if (nal.getSequencedArgument()!=null) {
+                nal.getSequencedArgument().addError("illegal annotation argument");
+//                checkPositionlArgument(a, nal.getSequencedArgument().getPositionalArguments());
+            }
+        }
+    }
+
+    private void checkNamedArguments(Method a, Tree.NamedArgumentList nal) {
+        for (Tree.NamedArgument na: nal.getNamedArguments()) {
+            if (na!=null) {
+                if (na instanceof Tree.SpecifiedArgument) {
+                    Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
+                    if (se!=null && na.getParameter()!=null) {
+                        checkAnnotationArgument(a, se.getExpression(),
+                                na.getParameter().getType());
                     }
-                    else if (pa instanceof Tree.SpreadArgument) {
-                        checkAnnotationArgument(a, ((Tree.SpreadArgument) pa).getExpression(),
-                                pa.getParameter().getType());
-                    }
-                    else {
-                        pa.addError("illegal annotation argument");
-                    }
+                }
+                else {
+                    na.addError("illegal annotation argument");
                 }
             }
         }
-        else {
-            for (Tree.NamedArgument na: nal.getNamedArguments()) {
-                if (na!=null) {
-                    if (na instanceof Tree.SpecifiedArgument) {
-                        Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) na).getSpecifierExpression();
-                        if (se!=null && na.getParameter()!=null) {
-                            checkAnnotationArgument(a, se.getExpression(),
-                                    na.getParameter().getType());
-                        }
-                    }
-                    else {
-                        na.addError("illegal annotation argument");
-                    }
+    }
+
+    private void checkPositionalArguments(Method a, List<Tree.PositionalArgument> pal) {
+        for (Tree.PositionalArgument pa: pal) {
+            if (pa!=null && pa.getParameter()!=null) {
+                if (pa instanceof Tree.ListedArgument) {
+                    checkAnnotationArgument(a, ((Tree.ListedArgument) pa).getExpression(),
+                            pa.getParameter().getType());
                 }
-            }
-            if (nal.getSequencedArgument()!=null) {
-                nal.getSequencedArgument().addError("illegal annotation argument");
+                else if (pa instanceof Tree.SpreadArgument) {
+                    checkAnnotationArgument(a, ((Tree.SpreadArgument) pa).getExpression(),
+                            pa.getParameter().getType());
+                }
+                else {
+                    pa.addError("illegal annotation argument");
+                }
             }
         }
     }
