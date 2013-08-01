@@ -135,7 +135,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_ANNOTATION_INSTANTIATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
+    private static final String CEYLON_LANGUAGE_ABSTRACT_ANNOTATION = "ceylon.language.Abstract$annotation";
+    private static final String CEYLON_LANGUAGE_ACTUAL_ANNOTATION = "ceylon.language.Actual$annotation";
     private static final String CEYLON_LANGUAGE_ANNOTATION_ANNOTATION = "ceylon.language.Annotation$annotation";
+    private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.Default$annotation";
+    private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.Formal$annotation";
+    private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.Shared$annotation";
 
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
@@ -752,12 +757,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
         klass.setAnnotation(classMirror.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
         if(klass.isCeylon())
-            klass.setAbstract(isAnnotated(classMirror, "abstract"));
+            klass.setAbstract(classMirror.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null);
         else
             klass.setAbstract(classMirror.isAbstract());
-        klass.setFormal(isAnnotated(classMirror, "formal"));
-        klass.setDefault(isAnnotated(classMirror, "default"));
-        klass.setActual(isAnnotated(classMirror, "actual"));
+        klass.setFormal(classMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null);
+        klass.setDefault(classMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null);
+        klass.setActual(classMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null);
         klass.setFinal(classMirror.isFinal());
         return klass;
     }
@@ -1857,7 +1862,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
            || (klass instanceof Interface
                    && !((LazyInterface)klass).isCeylon())
            // For Ceylon interfaces we rely on annotation
-           || isAnnotated(methodMirror, "formal")) {
+           || methodMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null) {
             decl.setFormal(true);
         } else {
             if (// for class members we rely on final/static bits
@@ -1868,7 +1873,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || (klass instanceof Interface
                         && !((LazyInterface)klass).isCeylon())
                 // For Ceylon interfaces we rely on annotation
-                || isAnnotated(methodMirror, "default")){
+                || methodMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null){
                 decl.setDefault(true);
             }
         }
@@ -1877,24 +1882,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // For Ceylon interfaces we rely on annotation
                 || (klass instanceof LazyInterface 
                         && ((LazyInterface)klass).isCeylon()
-                        && isAnnotated(methodMirror, "actual"))){
+                        && methodMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null)){
             decl.setActual(true);
         }
     }
     
-    private boolean isAnnotated(AnnotatedMirror annotatedMirror, String name) {
-        AnnotationMirror annotations = annotatedMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION);
-        if(annotations == null)
-            return false;
-        @SuppressWarnings("unchecked")
-        List<AnnotationMirror> annotationsList = (List<AnnotationMirror>)annotations.getValue();
-        for(AnnotationMirror annotation : annotationsList){
-            if(name.equals(annotation.getValue()))
-                return true;
-        }
-        return false;
-    }
-
     private void setExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
         // look at its super type
         TypeMirror superClass = classMirror.getSuperclass();
