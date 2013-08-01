@@ -1355,11 +1355,9 @@ TypeConstraints?
          <para>An <literal>object</literal> class:</para>
          
          <itemizedlist>
-             <!-- 
              <listitem>
                  <para>is implicitly <literal>final</literal>,</para>
              </listitem>
-             -->
              <listitem>
                  <para>may not be extended by another class,</para>
              </listitem>
@@ -1373,9 +1371,7 @@ TypeConstraints?
          </itemizedlist>
          
          <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-         the class is <literal>shared</literal>.<!-- If the <literal>object</literal> 
-         is annotated <literal>variable</literal>, the class is a <literal>variable</literal> 
-         class.--></para>
+         the class is <literal>shared</literal>.</para>
          
          <para>This class never appears in types inferred by local declaration type 
          inference or generic type argument inference. Instead, occurrences of the class 
@@ -1406,7 +1402,7 @@ TypeConstraints?
 
          <para>Is exactly equivalent to:</para>
          
-         <programlisting>class Color_red extends Color('FF0000') {
+         <programlisting>final class Color_red extends Color('FF0000') {
      string => "Red";
 }
 
