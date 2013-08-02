@@ -1702,27 +1702,26 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType constrainInferredType(Functional dec,
             TypeParameter tp, ProducedType ta) {
-        if (tp.isContravariant()) { 
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            addToIntersection(list, ta, unit);
-            //Intersect the inferred type with any 
-            //upper bound constraints on the type.
-            for (ProducedType st: tp.getSatisfiedTypes()) {
-                //TODO: substitute in the other inferred type args
-                //      of the invocation
-                //TODO: st.getProducedType(receiver, dec, typeArgs);
-                if (!st.containsTypeParameters()) {
-                    addToIntersection(list, st, unit);
-                }
+        //Note: according to the language spec we should only 
+        //      do this for contravariant  parameters, but in
+        //      fact it also helps for special cases like
+        //      emptyOrSingleton(null)
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        addToIntersection(list, ta, unit);
+        //Intersect the inferred type with any 
+        //upper bound constraints on the type.
+        for (ProducedType st: tp.getSatisfiedTypes()) {
+            //TODO: substitute in the other inferred type args
+            //      of the invocation
+            //TODO: st.getProducedType(receiver, dec, typeArgs);
+            if (!st.containsTypeParameters()) {
+                addToIntersection(list, st, unit);
             }
-            IntersectionType it = new IntersectionType(unit);
-            it.setSatisfiedTypes(list);
-            ProducedType type = it.canonicalize().getType();
-            return type;
         }
-        else {
-            return ta;
-        }
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(list);
+        ProducedType type = it.canonicalize().getType();
+        return type;
     }
 
     private ProducedType inferTypeArgument(Tree.InvocationExpression that,

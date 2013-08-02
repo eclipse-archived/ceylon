@@ -24,5 +24,9 @@ class LanguageModule() {
     Null n3 = min({});
     @type:"Null|Integer" min(ints1);
     @type:"Null|Integer" min(ints2);
+    
+    @type:"Sequential<Integer>" emptyOrSingleton(1);
+    @type:"Sequential<Nothing>" emptyOrSingleton(null);
+    @type:"Sequential<Integer>" emptyOrSingleton(1==1 then 1);
 
 }
