@@ -1702,32 +1702,27 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType constrainInferredType(Functional dec,
             TypeParameter tp, ProducedType ta) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        addToIntersection(list, ta, unit);
-        //Intersect the inferred type with any 
-        //upper bound constraints on the type. This
-        //helps with cases like passing an arg of
-        //type String? to a parameter of type T?
-        for (ProducedType st: tp.getSatisfiedTypes()) {
-            //TODO: st.getProducedType(receiver, dec, typeArgs);
-            if (//if the upper bound is a type parameter, ignore it
-                !dec.getTypeParameters().contains(st.getDeclaration()) &&
-                (st.getQualifyingType()==null ||
-                !dec.getTypeParameters().contains(st.getQualifyingType().getDeclaration())) &&
-                //TODO: remove this awful hack that 
-                //tries to work around the possibility 
-                //that a type parameter appears in the 
-                //upper bound!
-                !st.getDeclaration().isParameterized() &&
-                (st.getQualifyingType()==null || 
-                !st.getQualifyingType().getDeclaration().isParameterized())) {
-                addToIntersection(list, st, unit);
+        if (tp.isContravariant()) { 
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToIntersection(list, ta, unit);
+            //Intersect the inferred type with any 
+            //upper bound constraints on the type.
+            for (ProducedType st: tp.getSatisfiedTypes()) {
+                //TODO: substitute in the other inferred type args
+                //      of the invocation
+                //TODO: st.getProducedType(receiver, dec, typeArgs);
+                if (!st.containsTypeParameters()) {
+                    addToIntersection(list, st, unit);
+                }
             }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+            ProducedType type = it.canonicalize().getType();
+            return type;
         }
-        IntersectionType it = new IntersectionType(unit);
-        it.setSatisfiedTypes(list);
-        ProducedType type = it.canonicalize().getType();
-        return type;
+        else {
+            return ta;
+        }
     }
 
     private ProducedType inferTypeArgument(Tree.InvocationExpression that,

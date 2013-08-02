@@ -2055,10 +2055,9 @@ Item item = comp of Item;</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: This does not quite do justice the the compiler's handling 
-            of type parameters which have upper bounds involving other type parameters.
-            In fact, the compiler is also able to infer a type for the type parameter 
-            that appears in the upper bound type constraint.</para></comment>
+            <comment><para>TODO: What should we do about upper bound constraints that involve
+            other type parameters? Currently the typechecker simply ignores any upper bound 
+            that involves any type parameter.</para></comment>
             
             <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
             the <emphasis>inferred lower bound</emphasis> <literal>A</literal> on 
@@ -2224,15 +2223,8 @@ Item item = comp of Item;</programlisting>
             <comment><para>Note that the basis for this algorithm is:</para>
             <programlisting>T abstracts A &amp;&amp; T abstracts B => T abstracts A|B</programlisting>
             <programlisting>T abstracts A || T abstracts B => T abstracts A&amp;B</programlisting></comment>
-            -->
-        
-            <!--        
-            <comment><para>TODO: This incorrectly describes the algorithm used by the 
-            actual compiler for union and intersection types. Actually what happens is 
-            that the compiler always reduces any union or intersection type to a simplest 
-            canonical form. This affects the result of the algorithm in some very rare 
-            cases, due to the weirdness of the fourth and fifth rules. (In which case 
-            the compiler's approach is better!)</para></comment>
+            <programlisting>T satisfies A &amp;&amp; T satisfies B => T abstracts A&amp;B</programlisting>
+            <programlisting>T satisfies A || T satisfies B => T abstracts A|B</programlisting></comment>
             -->
             
             <para>The inferred type argument to a covariant or invariant type parameter 
