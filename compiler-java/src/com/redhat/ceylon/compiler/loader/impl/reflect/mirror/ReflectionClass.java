@@ -229,4 +229,9 @@ public class ReflectionClass implements ClassMirror {
         enclosingClassSet = true;
         return enclosingClass;
     }
+
+    @Override
+    public boolean isEnum() {
+        return klass.isEnum();
+    }
 }

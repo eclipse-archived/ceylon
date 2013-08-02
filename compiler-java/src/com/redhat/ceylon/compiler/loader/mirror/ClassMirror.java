@@ -63,6 +63,11 @@ public interface ClassMirror extends AnnotatedMirror {
     boolean isAnonymous();
     
     /**
+     * Returns true if this class is an enum class
+     */
+    boolean isEnum();
+
+    /**
      * Returns the fully-qualified class name
      */
     String getQualifiedName();

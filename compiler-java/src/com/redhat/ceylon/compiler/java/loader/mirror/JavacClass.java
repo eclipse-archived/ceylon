@@ -244,4 +244,9 @@ public class JavacClass implements ClassMirror {
         }
         return enclosingClass;
     }
+
+    @Override
+    public boolean isEnum() {
+        return (classSymbol.flags() & Flags.ENUM) != 0;
+    }
 }
