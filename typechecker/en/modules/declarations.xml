@@ -77,7 +77,7 @@ TypeConstraints?
         
         <programlisting>Import* (ModuleDescriptor | PackageDescriptor | Declaration*)</programlisting>
         
-        <synopsis>Declaration: FunctionValueDeclaration | TypeDeclaration</synopsis>
+        <synopsis>Declaration: FunctionValueDeclaration | TypeDeclaration | ParameterDeclaration</synopsis>
         
         <synopsis>FunctionValueDeclaration: FunctionDeclaration | ValueDeclaration | SetterDeclaration</synopsis>
         
@@ -107,8 +107,8 @@ TypeConstraints?
         
     </section>
     
-        <section id="imports">
-            <title>Imports</title>
+    <section id="imports">
+        <title>Imports</title>
         
         <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
         Code in one compilation unit may refer to a toplevel declaration in another 
@@ -295,7 +295,7 @@ TypeConstraints?
             
         </section>
         
-        </section>
+    </section>
     
     <section id="parameters">
         <title>Parameters</title>
@@ -329,37 +329,56 @@ TypeConstraints?
         <comment><para>TODO: are parameters really allowed to be <literal>variable</literal>?
         Currently the typechecker rejects this, but it's hard to see why it should.</para></comment>
         
-        <para>A parameter list may include, optionally:</para>
+        <para>A parameter declaration may only occur in a parameter list, or directly, as
+        defined by <xref linkend="blockstructure"/>, in the body of a class or function. A 
+        parameter declaration may not occur directly in the body of a getter or in a body of 
+        a control structure. Nor may a parameter declaration appear as a toplevel declaration 
+        in a compilation unit.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>one or more <emphasis>required parameters</emphasis>,</para>
-            </listitem>
-            <listitem>
-                <para>one or more <emphasis>defaulted parameters</emphasis> (parameters with 
-                default values), and/or</para>
-            </listitem>
-            <listitem>
-                <para>a <emphasis>variadic parameter</emphasis>.</para>
-            </listitem>
-        </itemizedlist>
+        <synopsis>ParameterDeclaration: ValueParameter | CallableParameter | VariadicParameter</synopsis>
         
-        <para>In a parameter list, parameters with default values, if any, must occur after 
-        required parameters, if any. The variadic parameter, if any, must occur last.</para>
+        <para>Every parameter declaration that occurs outside a parameter list must be named
+        in the parameter list of the class or function in whose body it directly occurs, and
+        its default argument, if any, must be specified in the parameter list.</para>
         
-        <synopsis>Parameters: "(" ( (Parameter ",")* ( Parameter | (DefaultParameter ",")* (DefaultParameter | VariadicParameter) ) )? ")"</synopsis>
+        <section>
+            <title>Parameter lists</title>
         
-        <para>Every parameter list has a type, which captures the types of the individual 
-        parameters in the list, whether they are defaulted, and whether the last parameter 
-        is variadic. This type is always an subtype of <literal>Anything[]</literal>. The 
-        type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
+            <para>A parameter list is a list of parameter declarations and of names of parameters
+            declared in the body of the class or function to which the parameter list belongs. A 
+            parameter list may include, optionally:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>one or more <emphasis>required parameters</emphasis>,</para>
+                </listitem>
+                <listitem>
+                    <para>one or more <emphasis>defaulted parameters</emphasis> (parameters with 
+                    default values), and/or</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>variadic parameter</emphasis>.</para>
+                </listitem>
+            </itemizedlist>
         
-        <para>A parameter may not be annotated <literal>formal</literal>, but it may be
-        annotated <literal>default</literal>.</para>
-        
-        <comment><para>TODO: inside a <literal>dynamic</literal> block, a parameter may
-        declared using the syntax <literal>value name</literal>, to indicate that it has
-        no static type.</para></comment>
+            <para>In a parameter list, defaulted parameters, if any, must occur after required 
+            parameters, if any. The variadic parameter, if any, must occur last.</para>
+            
+            <synopsis>Parameters: "(" ( (Required ",")* ( Required | (Defaulted ",")* (Defaulted | Variadic) ) )? ")"</synopsis>
+            
+            <para>Every parameter list has a type, which captures the types of the individual 
+            parameters in the list, whether they are defaulted, and whether the last parameter 
+            is variadic. This type is always an subtype of <literal>Anything[]</literal>. The 
+            type of an empty parameter list with no parameters is <literal>[]</literal>.</para>
+            
+            <para>A parameter may not be annotated <literal>formal</literal>, but it may be
+            annotated <literal>default</literal>.</para>
+            
+            <comment><para>TODO: inside a <literal>dynamic</literal> block, a parameter may
+            declared using the syntax <literal>value name</literal>, to indicate that it has
+            no static type.</para></comment>
+            
+        </section>
         
         <section id="requiredparameters">
             <title>Required parameters</title>
@@ -367,7 +386,11 @@ TypeConstraints?
             <para>A required parameter is a value or callable parameter without a default 
             argument.</para>
             
-            <synopsis>Parameter: ValueParameter | CallableParameter | MemberName</synopsis>
+            <para>A required parameter in a parameter list may be a parameter declaration, 
+            or the name of a non-variadic parameter declared in the body of the function or 
+            class.</para>
+            
+            <synopsis>Required: ValueParameter | CallableParameter | MemberName</synopsis>
             
             <para>Required parameters must occur before any other parameters in the parameter 
             list.</para>
@@ -380,10 +403,15 @@ TypeConstraints?
             <para>A defaulted parameter is a value or callable parameter that specifies a 
             default argument.</para>
             
-            <synopsis>DefaultParameter: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
+            <para>A defaulted parameter in a parameter list may be a parameter declaration, 
+            together with a default argument, or the name of a non-variadic parameter 
+            declared in the body of the function or class, together with its default argument.</para>
+            
+            <synopsis>Defaulted: ValueParameter Specifier | CallableParameter LazySpecifier | MemberName Specifier</synopsis>
             
             <para>The <literal>=</literal> and <literal>=&gt;</literal> specifiers are used 
-            throughout the language.</para>
+            throughout the language. In a parameter list they are used to specify a default
+            argument.</para>
             
             <synopsis>Specifier: "=" Expression</synopsis>
             <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
@@ -419,45 +447,13 @@ TypeConstraints?
         
         </section>
         
-        <section id="sequencedparameters">
-            <title>Variadic parameters</title>
-            
-            <para>A <emphasis>variadic parameter</emphasis> accepts multiple arguments:</para> 
-            
-            <itemizedlist>
-                <listitem>
-                    <para>A variadic parameter declared <literal>T*</literal> accepts zero or
-                    more arguments of type <literal>T</literal>, and has type <literal>[T*]</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para>A variadic parameter declared <literal>T+</literal> accepts one or
-                    more arguments of type <literal>T</literal>, and has type <literal>[T+]</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
-                        
-            <synopsis>VariadicParameter: Annotations VariadicType MemberName</synopsis>
-            
-            <para>The variadic parameter must be the last parameter in a parameter list.</para>
-            
-            <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
-            
-            <programlisting>(Float+ floats)</programlisting>
-            
-            <para>The type of a parameter list containing just a variadic parameter of type
-            <literal>T*</literal> is <literal>[T*]</literal> The type of a parameter list 
-            containing just a variadic parameter of type <literal>T+</literal> is 
-            <literal>[T+]</literal>.</para>
-            
-        </section>
-        
         <section id="valueparameters">
             <title>Value parameters</title>
             
-            <para>A <emphasis>value parameter</emphasis> is a value named or defined in 
-            a parameter list. Like any other value declaration, it has a name, type, and, 
-            optionally, annotations.</para>
+            <para>A <emphasis>value parameter</emphasis> is a value, as specified in
+            <xref linkend="values"/>, that is named or defined in a parameter list. 
+            Like any other value declaration, it has a name, type, and, optionally, 
+            annotations.</para>
             
             <synopsis>ValueParameter: Annotations Type MemberName</synopsis>
             
@@ -483,14 +479,15 @@ TypeConstraints?
         <section id="callableparameters">
             <title>Callable parameters</title>
             
-            <para>A <emphasis>callable parameter</emphasis> is a function named or defined 
-            in a parameter list. Like any other function declaration, it has a name, type, 
-            one or more parameter lists, and, optionally, annotations.</para>
+            <para>A <emphasis>callable parameter</emphasis> is a function, as specified 
+            in <xref linkend="functions"/>, named or defined in a parameter list. Like 
+            any other function declaration, it has a name, type, one or more parameter 
+            lists, and, optionally, annotations.</para>
             
             <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
             
-            <para>An argument to a callable parameter must be an expression whose type is
-            assignable to the callable type of the callable parameter.</para>
+            <para>An argument to a callable parameter must be an expression whose type 
+            is assignable to the callable type of the callable parameter.</para>
             
             <programlisting>(String label, void onClick())</programlisting>
             
@@ -503,6 +500,47 @@ TypeConstraints?
             list is <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
             or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
             <literal>f</literal> is defaulted.</para>
+            
+        </section>
+        
+        <section id="sequencedparameters">
+            <title>Variadic parameters</title>
+            
+            <para>A <emphasis>variadic parameter</emphasis> is a value parameter that accepts 
+            multiple arguments:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A variadic parameter declared <literal>T*</literal> accepts zero or
+                    more arguments of type <literal>T</literal>, and has type <literal>[T*]</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>A variadic parameter declared <literal>T+</literal> accepts one or
+                    more arguments of type <literal>T</literal>, and has type <literal>[T+]</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
+                        
+            <synopsis>VariadicParameter: Annotations VariadicType MemberName</synopsis>
+            
+            <para>A variadic parameter in a parameter list may be a variadic parameter 
+            declaration, or the name of a variadic parameter declared in the body of
+            the function or class.</para>
+            
+            <synopsis>Variadic: VariadicParameter | MemberName</synopsis>
+            
+            <para>The variadic parameter must be the last parameter in a parameter list. A
+            variadic parameter may not have a default argument.</para>
+            
+            <programlisting>(Name name, Organization? org=null, Address* addresses)</programlisting>
+            
+            <programlisting>(Float+ floats)</programlisting>
+            
+            <para>The type of a parameter list containing just a variadic parameter of type
+            <literal>T*</literal> is <literal>[T*]</literal> The type of a parameter list 
+            containing just a variadic parameter of type <literal>T+</literal> is 
+            <literal>[T+]</literal>.</para>
             
         </section>
         
