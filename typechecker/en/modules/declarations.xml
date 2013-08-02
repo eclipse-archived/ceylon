@@ -2539,6 +2539,9 @@ shared deprecated</programlisting>
             a value reference to <literal>true</literal> or <literal>false</literal>, or 
             must occur in a direct instantiation expression for an annotation type.</para>
             
+            <comment><para>TODO: support values of enumerated classes as annotation
+            arguments.</para></comment>
+            
             <para>A named argument to an annotation may not be an inline function, value,
             or anonymous class.</para>
             
