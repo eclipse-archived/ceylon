@@ -11,6 +11,7 @@ public class Value extends MethodOrValue {
     private boolean variable;
     private boolean trans;
     private boolean late;
+    private boolean enumValue;
 
     private Setter setter;
 
@@ -49,5 +50,13 @@ public class Value extends MethodOrValue {
     public void setLate(boolean late) {
 		this.late = late;
 	}
+
+    public boolean isEnumValue() {
+        return enumValue;
+    }
+
+    public void setEnumValue(boolean enumValue) {
+        this.enumValue = enumValue;
+    }
 
 }
