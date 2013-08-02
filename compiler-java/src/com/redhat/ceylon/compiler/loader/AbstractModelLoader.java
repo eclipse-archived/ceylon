@@ -1748,6 +1748,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: figure this out: (default)
         // FIXME: for the same reason, can it be an overriding field? (actual)
         value.setVariable(!fieldMirror.isFinal());
+        // figure out if it's an enum subtype in a final static field
+        if(fieldMirror.getType().getKind() == TypeKind.DECLARED
+                && fieldMirror.getType().getDeclaredClass() != null
+                && fieldMirror.getType().getDeclaredClass().isEnum()
+                && fieldMirror.isFinal()
+                && fieldMirror.isStatic())
+            value.setEnumValue(true);
         
         ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
                 "field '"+value.getName()+"'", klass);
