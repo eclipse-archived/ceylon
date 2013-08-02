@@ -17,10 +17,10 @@
     semantics, including common notions such as object identity, primitive value
     types, exceptions, garbage collection, dynamic dispatch, and pass by reference.</para>
     
-    <para>Ceylon abstracts away from the differences between these platforms, and
-    reuses what is common between them.</para>
-    
-    <comment><para>TODO: this chapter is woefully incomplete.</para></comment>
+    <para>Ceylon abstracts away many of the differences between these platforms, and
+    reuses what is common between them. Inevitably there are some differences that
+    can't reasonably be hidden from the Ceylon program, and the programmer must take 
+    these differences into consideration.</para>
     
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
@@ -158,16 +158,14 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>For example:</para>
-            
+            <para>Here, <literal>innerObject</literal> is the current instance of 
+            <literal>Inner</literal> when <literal>member()</literal> is executed, and
+            <literal>outerObject</literal> is the current instance of <literal>Outer</literal>:</para>
+        
             <programlisting>Outer outerObject = Outer();
 Inner innerObject = outerObject.Inner();
 innerObject.member();</programlisting>
             
-            <para>In this example, <literal>innerObject</literal> is the current instance of 
-            <literal>Inner</literal> when <literal>member()</literal> is executed, and
-            <literal>outerObject</literal> is the current instance of <literal>Outer</literal>.</para>
-        
         </section>
         
         <section id="closureofablock">
@@ -189,12 +187,13 @@ innerObject.member();</programlisting>
                     <para>if the nested declaration is contained inside the body of another
                     nested declaration, the current frame is the current frame of the 
                     containing declaration at the point of execution of the value reference 
-                    expression or callable reference expression that refers to the nested 
-                    declaration.</para>
+                    expression or callable reference expression that first produced a reference 
+                    to the nested declaration.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>For example:</para>
+            <para>In each of the following code fragments, <literal>result</literal> refers 
+            to the value <literal>"hello"</literal>:</para>
             
             <programlisting>String()() outerMethod(String s) {
     String() middleMethod() {
@@ -218,9 +217,6 @@ String result = innerMethod();</programlisting>
 Object middleObject = outerMethod("hello");
 String result = middleObject.string;</programlisting>
 
-            <para>In both examples, <literal>result</literal> refers to the value 
-            <literal>"hello"</literal>.</para>
-            
         </section>
         
         <section id="toplevelinitialization">
@@ -482,7 +478,7 @@ String result = middleObject.string;</programlisting>
             <para>The resulting value is the persistent value retrieved, or the return value 
             of the getter, as specified by the <literal>return</literal> directive.</para>
             
-            <comment><para>TODO: evaluation of callable references constructs a callable
+            <comment><para>TODO: evaluation of a callable reference constructs a callable
             object that packages a reference to the receiving instance with a reference to
             the function to be invoked or class to be instantiated.</para></comment>
             
@@ -570,16 +566,37 @@ String result = middleObject.string;</programlisting>
             
         </section>
     
+        <section id="spreadevaluation">
+            <title>Evaluation of spread arguments</title>
+            
+            <comment><para>TODO: define the runtime semantics of the spread operator.</para></comment>
+                
+        </section>
+        
+        <section id="enumerationevaluation">
+            <title>Evaluation of enumerations</title>
+            
+            <comment><para>TODO: define the runtime semantics of tuple and iterable enumerations.</para></comment>
+                
+        </section>
+        
+        <section id="exceptions">
+            <title>Exceptions</title>
+            
+            <comment><para>TODO: define how exceptions affect execution of a program.</para></comment>
+        
+        </section>
+        
     </section>
     
     <section id="operatorexpressions">
         <title>Operator expressions</title>
         
         <para>Most operator expression are defined in terms of function invocation, value 
-        evaluation, or a combination of invocations and evaluations. The semantics of 
-        evaluation of an operator expression therefore follows from the above definitions 
-        of evaluation and invocation and from of its definition in terms of evaluation and 
-        invocation.</para>
+        evaluation, or a combination of invocations and evaluations, as specified in
+        <xref linkend="operators"/>. The semantics of evaluation of an operator expression 
+        therefore follows from the above definitions of evaluation and invocation and from 
+        its definition in terms of evaluation and invocation.</para>
         
         <para>However, this specification allows the compiler to take advantage of the
         optimized support for primitive value types provided by the virtal machine
@@ -735,7 +752,7 @@ String result = middleObject.string;</programlisting>
         </section>
         
         <section>
-            <title>expression clause</title>
+            <title>Expression clause</title>
             
             <para>An expression clause produces a single value for each frame 
             produced by its parent clause, by evaluating the expression in the
@@ -744,27 +761,6 @@ String result = middleObject.string;</programlisting>
         
         </section>
             
-    </section>
-    
-    <section id="spreadevaluation">
-        <title>Evaluation of spread arguments</title>
-        
-        <comment><para>TODO: define the runtime semantics of the spread operator.</para></comment>
-            
-    </section>
-    
-    <section id="enumerationevaluation">
-        <title>Evaluation of enumerations</title>
-        
-        <comment><para>TODO: define the runtime semantics of tuple and iterable enumerations.</para></comment>
-            
-    </section>
-    
-    <section id="exceptions">
-        <title>Exceptions</title>
-        
-        <comment><para>TODO: define how exceptions affect execution of a program.</para></comment>
-    
     </section>
     
     <section id="reification">
