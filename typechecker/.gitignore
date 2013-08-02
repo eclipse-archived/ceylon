@@ -9,8 +9,11 @@ bin
 gensrc
 output
 out
+treegen/*.java
+treegen/*.tokens
 
 #IDEs
+.settings
 .idea
 *.iml
 
