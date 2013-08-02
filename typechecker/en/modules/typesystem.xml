@@ -733,16 +733,19 @@
                 </listitem>
             </itemizedlist>
             
-            <para>More precisely, the type meant by a tuple type abbreviation is
-            <literal>Tuple&lt;X|Y,X,T&gt;</literal> where <literal>T</literal> is the type 
-            of the tuple type abbreviation formed by removing the first type from the list 
-            of types in the original tuple type abbreviation, and <literal>T</literal> is 
-            an invariant subtype of <literal>Y[]</literal>. The type meant by a tuple type 
-            abbreviation with no types, <literal>[]</literal> is <literal>Empty</literal>.</para>
+            <para>More precisely:</para>
             
-            <comment><para>TODO: this definition does not cover variadic tuple types like
-            <literal>[X,Y*]</literal> and <literal>[X,Y+]</literal>.</para></comment>
-            
+            <itemizedlist>
+                <listitem>
+                    <para>A tuple type abbreviation of form <literal>[X, ... ]</literal>
+                    means the type <literal>Tuple&lt;X|Y,X,T&gt;</literal> where 
+                    <literal>T</literal> is the type meant by the type abbreviation formed 
+                    by removing the first type <literal>X</literal> from the list of types 
+                    in the original tuple type abbreviation, and <literal>T</literal> is an 
+                    invariant subtype of <literal>Y[]</literal>.</para>
+                </listitem>
+            </itemizedlist>
+                        
             <para>Finally, an <emphasis>entry type</emphasis> may be abbreviated using
             an arrow.</para>
                     
