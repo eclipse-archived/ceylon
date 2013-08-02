@@ -353,6 +353,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
     protected final .ceylon.language.Container$impl<T, .java.lang.Object> $ceylon$language$Container$this;
     
     @.java.lang.Override

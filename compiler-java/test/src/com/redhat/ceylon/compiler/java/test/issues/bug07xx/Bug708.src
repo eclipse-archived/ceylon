@@ -395,6 +395,12 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedDefault, final Default defaultValue) {
         return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getRepeated() {
+        return $ceylon$language$Iterable$this.getRepeated();
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Container$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Container$this;
     
