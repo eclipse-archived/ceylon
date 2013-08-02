@@ -86,22 +86,22 @@ TypeConstraints?
         <section id="topleveldeclarations">
             <title>Toplevel and nested declarations</title>
         
-        <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class 
-        or interface&mdash;or a type alias, or a function or value.</para>
-        
-        <para>A toplevel declaration is not polymorphic and so may not be annotated 
-        <literal>formal</literal>, <literal>default</literal>, or 
-        <literal>actual</literal>.</para>
-        
-        <comment><para>Note: in a future version of the language, we might relax this 
-        restriction and support package extension with toplevel member refinement. This
-        can be viewed as a regularization of the language. The practical application is
-        that it would make toplevel invocations and instantiations polymorphic, obviating
-        the need for things like dependency injection.</para></comment>
-        
-        <para>Most toplevel declarations contain nested declarations.</para>
-        
-        <para>Nested declarations are often mixed together with executable statements.</para>
+            <para>A <emphasis>toplevel declaration</emphasis> defines a type&mdash;a class 
+            or interface&mdash;or a type alias, or a function or value.</para>
+            
+            <para>A toplevel declaration is not polymorphic and so may not be annotated 
+            <literal>formal</literal>, <literal>default</literal>, or 
+            <literal>actual</literal>.</para>
+            
+            <comment><para>Note: in a future version of the language, we might relax this 
+            restriction and support package extension with toplevel member refinement. This
+            can be viewed as a regularization of the language. The practical application is
+            that it would make toplevel invocations and instantiations polymorphic, obviating
+            the need for things like dependency injection.</para></comment>
+            
+            <para>Most toplevel declarations contain nested declarations.</para>
+            
+            <para>Nested declarations are often mixed together with executable statements.</para>
             
         </section>
         
@@ -2618,7 +2618,7 @@ shared deprecated</programlisting>
             An annotation type may not be a generic type with type parameters. An 
             annotation type must have an empty initializer section.</para>
             
-            <comment><para>Note: in Ceylon 1.0 every annotation type must be a 
+            <comment><para>Note: currently every annotation type must be a 
             <literal>final</literal> class which directly extends <literal>Basic</literal>
             in <literal>ceylon.language</literal>.</para></comment>
             
