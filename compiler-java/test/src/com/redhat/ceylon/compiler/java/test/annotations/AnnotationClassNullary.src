@@ -4,8 +4,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassNullary$annotation {
 }
+@.ceylon.language.Final$annotation
 @.ceylon.language.Annotation$annotation
-class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassNullary(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary$annotation anno) {
         this();
@@ -61,8 +62,9 @@ class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation[] value();
 }
+@.ceylon.language.Final$annotation
 @.ceylon.language.Annotation$annotation
-class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+final class AnnotationClassNullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassNullarySequenced(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullarySequenced$annotation anno) {
         this();

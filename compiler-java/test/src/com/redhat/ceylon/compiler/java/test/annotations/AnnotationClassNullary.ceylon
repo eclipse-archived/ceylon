@@ -2,9 +2,9 @@ import ceylon.language.model{OptionalAnnotation, SequencedAnnotation}
 import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassNullary() satisfies OptionalAnnotation<AnnotationClassNullary, ClassOrInterfaceDeclaration>{}
+final annotation class AnnotationClassNullary() satisfies OptionalAnnotation<AnnotationClassNullary, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassNullarySequenced() satisfies SequencedAnnotation<AnnotationClassNullarySequenced, ClassOrInterfaceDeclaration>{}
+final annotation class AnnotationClassNullarySequenced() satisfies SequencedAnnotation<AnnotationClassNullarySequenced, ClassOrInterfaceDeclaration>{}
 @nomodel
 annotation AnnotationClassNullary annotationClassNullary() => AnnotationClassNullary();
 @nomodel
