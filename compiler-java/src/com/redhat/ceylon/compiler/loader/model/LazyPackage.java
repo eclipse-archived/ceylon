@@ -211,6 +211,7 @@ public class LazyPackage extends Package {
         
         Method ctor = new Method();
         ctor.setContainer(this);
+        ctor.setAnnotation(true);
         ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
         ctor.setShared(iface.isShared());
         Annotation annotationAnnotation2 = new Annotation();
