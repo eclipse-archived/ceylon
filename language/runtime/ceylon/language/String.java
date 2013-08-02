@@ -1578,6 +1578,9 @@ public final class String
         }
     }
 
+    @Ceylon(major = 5)
+    @Class
+    @SatisfiedTypes("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
     private static final class Tokens implements Iterable<String,java.lang.Object>, ReifiedType {
         @Ignore
         private final ceylon.language.Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$this;
@@ -1591,7 +1594,9 @@ public final class String
         private final boolean keepSeparators;
         private final boolean groupSeparators;
 
-        public Tokens(java.lang.String str, Callable<? extends Boolean> separator,
+        public Tokens(java.lang.String str, 
+                @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+                Callable<? extends Boolean> separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this);
             this.$ceylon$language$Container$this = new ceylon.language.Container$impl<String,java.lang.Object>(String.$TypeDescriptor, Null.$TypeDescriptor, this);
@@ -1602,6 +1607,12 @@ public final class String
             this.groupSeparators = groupSeparators;
         }
 
+        // this one is just here to satisfy the runtime Declaration otherwise the type of separator is lost
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+        private final Callable<? extends Boolean> getSeparator$priv(){
+            return separator;
+        }
+        
         @Ignore
         @Override
         public Category$impl $ceylon$language$Category$impl(){
