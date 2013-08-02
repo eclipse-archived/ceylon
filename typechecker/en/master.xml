@@ -21,14 +21,14 @@
     <bookinfo>
         <title>The Ceylon Language</title>
         <subtitle>Say more, more clearly</subtitle>
-        <releaseinfo>Community review draft (M5)</releaseinfo>
+        <releaseinfo>Community review draft (M6)</releaseinfo>
         <author><firstname>Gavin</firstname><surname>King</surname></author>        
     </bookinfo>
 
     <toc/>
     
     <preface>
-    <title>A work in progress</title>
+    <title>Welcome to Ceylon</title>
     
     <para>This project is the work of a team of people who are fans of Java
     and of the Java ecosystem, of its practical orientation, of its culture of 
@@ -113,21 +113,24 @@
     <para>Unlike other alternative JVM languages, Ceylon aims to completely replace 
     the legacy Java SE class libraries.</para>
     
-    <para>Therefore, the Ceylon SDK will provide:</para>
+    <para>Therefore, the Ceylon SDK provides:</para>
     
     <itemizedlist>
-        <listitem>
-            <para>the OpenJDK virtual machine,</para>
-        </listitem>
         <listitem>
             <para>a compiler that compiles Ceylon and Java source to Java 
             bytecode, and cross-compiles Ceylon to JavaScript,</para>
         </listitem>
         <listitem>
-            <para>Eclipse-based tooling,</para>
+            <para>command-line tooling for compiling modules and 
+            documentation, and managing modules in module repositories,</para>
         </listitem>
         <listitem>
-            <para>a module runtime, and</para>
+            <para>Eclipse-based tooling for developing, compiling, testing, and 
+            debugging programs written in Ceylon,</para>
+        </listitem>
+        <listitem>
+            <para>a module runtime for modular programs that execute on the Java
+            Virtual Machine, and</para>
         </listitem>
         <listitem>
             <para>a set of class libraries that provides much of the functionality
