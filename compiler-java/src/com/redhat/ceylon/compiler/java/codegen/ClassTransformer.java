@@ -484,8 +484,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean isMetamodelReference(ProducedType parameterType) {
         // TODO Handle metamodel references properly
-        return isCeylonMetamodelDeclaration(parameterType)
-                || typeFact().getAnythingDeclaration().getType().isExactly(parameterType);
+        return isCeylonMetamodelDeclaration(parameterType);
     }
 
 
