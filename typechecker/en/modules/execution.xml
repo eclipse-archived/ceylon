@@ -681,7 +681,7 @@ String result = middleObject.string;</programlisting>
         <title>Evaluation of comprehensions</title>
         
         <para>Each clause of a comprehension produces a stream of 
-        <emphasis>contexts</emphasis>. A context is a set of values for iteration 
+        <emphasis>frames</emphasis>. A frame is a set of values for iteration 
         variables and condition variables declared by the clause and its
         parent clauses.</para>
         
@@ -694,23 +694,23 @@ String result = middleObject.string;</programlisting>
             considered <emphasis>correlated</emphasis>. Otherwise it is considered a 
             <emphasis>uncorrelated</emphasis>.</para>
             
-            <para>In either case, the child clause produces a stream of contexts. 
-            For each context produced by the parent clause, and for each value
+            <para>In either case, the child clause produces a stream of frames. 
+            For each frame produced by the parent clause, and for each value
             produced by the source stream of the child clause, the child clause
-            produces a context consisting of the parent clause context extended
+            produces a frame consisting of the parent clause frame extended
             by the iteration variable value defined by the child clause.</para>
             
             <para>This comprehension has a correlated <literal>for</literal> clause. 
             For each character <literal>c</literal> in each string <literal>w</literal> 
             in <literal>words</literal>, the child <literal>for</literal> clause 
-            produces the context <literal>{ String word=w; Character char=c; }</literal>.</para>
+            produces the frame <literal>{ String word=w; Character char=c; }</literal>.</para>
             
             <programlisting>for (word in words) for (char in word) char</programlisting>
             
             <para>This comprehension has an uncorrelated <literal>for</literal> clause. 
             For each string <literal>n</literal> in <literal>nouns</literal>, and each 
             string <literal>a</literal> in <literal>adjectives</literal>, the child 
-            <literal>for</literal> clause produces the context 
+            <literal>for</literal> clause produces the frame 
             <literal>{ String noun=n; String adj=a; }</literal>.</para>
             
             <programlisting>for (noun in nouns) for (adj in adjectives) adj + " " + noun</programlisting>
@@ -720,16 +720,15 @@ String result = middleObject.string;</programlisting>
         <section>
         <title><literal>if</literal> clause</title>
         
-            <para>A child <literal>if</literal> clause filters its parent clause
-            contexts. For every context produced by the parent clause which 
-            satisfies the condition list of the child clause, the child clause
-            produces that context, extended by any condition variable defined by 
-            the child clause.</para>
+            <para>A child <literal>if</literal> clause filters its parent clause frames. 
+            For every frame produced by the parent clause which satisfies the condition 
+            list of the child clause, the child clause produces that frame, extended by 
+            any condition variable defined by the child clause.</para>
             
             <para>This comprehension has an <literal>if</literal> clause. For
             each object <literal>o</literal> in <literal>objects</literal> that
             is a nonempty <literal>String</literal>, the <literal>if</literal> clause 
-            produces the context <literal>{ Object obj=o; String str=o; }</literal>.</para>
+            produces the frame <literal>{ Object obj=o; String str=o; }</literal>.</para>
             
             <programlisting>for (obj in objects) if (is String str=obj, !str.empty) str</programlisting>
         
@@ -738,9 +737,10 @@ String result = middleObject.string;</programlisting>
         <section>
             <title>expression clause</title>
             
-            <para>An expression clause produces a single value for each context 
-            produced by its parent clause. These values are the values returned
-            by the resulting comprehension.</para>
+            <para>An expression clause produces a single value for each frame 
+            produced by its parent clause, by evaluating the expression in the
+            frame. These resulting values are the values returned by the whole 
+            comprehension.</para>
         
         </section>
             
