@@ -169,15 +169,7 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private boolean isMemberNameOnAncestor(Type currentType, String name) {
         //retrieve inherited members (shared)
-        List<Declaration> inheritedMembers = currentType.declaration.getInheritedMembers(name);
-        boolean sameMemberInherited = false;
-        for (Declaration d:inheritedMembers) {
-//            if (!(d instanceof Parameter)) {
-                sameMemberInherited = true;
-                break;
-//            }
-        }
-        return sameMemberInherited;
+        return !currentType.declaration.getInheritedMembers(name).isEmpty();
     }
 
     private void checkForDoubleMemberInheritanceNotOverridden(Tree.StatementOrArgument that, List<Type> orderedTypes) {
