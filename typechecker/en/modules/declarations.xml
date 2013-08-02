@@ -2123,14 +2123,7 @@ case (hexadecimal) {
             
             <para>A block-local reference represents state associated with a particular execution 
             of that block of code.</para> 
-            
-            <para>A toplevel reference may not be annotated <literal>variable</literal>.</para>
-            
-            <comment><para>TODO: this restriction is pretty ineffective, since you can just wrap
-            a variable up in a class instance and keep a reference to the instance. Should we just
-            drop this restriction, or should we simply disallow toplevel references 
-            altogether?</para></comment>
-            
+                        
             <para>If a class declares or inherits a <literal>variable</literal> reference, it 
             must (directly or indirectly) extend the class <literal>Basic</literal> defined in 
             <literal>ceylon.language</literal>.</para>
