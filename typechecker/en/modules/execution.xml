@@ -702,7 +702,8 @@ String result = middleObject.string;</programlisting>
             <title>expression clause</title>
             
             <para>An expression clause produces a single value for each context 
-            produced by its parent clause.</para>
+            produced by its parent clause. These values are the values returned
+            by the resulting comprehension.</para>
         
         </section>
             
