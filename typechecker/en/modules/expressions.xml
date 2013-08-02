@@ -2734,6 +2734,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
+            <para>If a type alias occurs inside a typed metamdel expression, it 
+            is replaced by its definition, after substituting type arguments, 
+            before determining the type of the metamodel expression.</para>
+            
         </section>
         
         <section>
