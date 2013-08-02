@@ -22,14 +22,16 @@
     
         <para>A <emphasis>body</emphasis> is a block, defined in 
         <xref linkend="blocksandstatements"/>, class body, defined in 
-        <xref linkend="classes"/>, or interface body, defined in 
-        <xref linkend="interfaces"/>. Every body is list of semicolon-delimited statements, 
-        control structures, and declarations, surrounded by braces. Some bodies end in a 
-        control directive. Every program element in the list is said to 
-        <emphasis>directly occur</emphasis> in the body. A program element 
-        <emphasis>directly occurs earlier</emphasis> than a second program element 
-        if both program elements directly occur in a body and the first program element 
-        occurs (lexically) earlier in the list than the second program element.</para>
+        <xref linkend="classes"/>, an interface body, defined in 
+        <xref linkend="interfaces"/>, or a comprehension clause, defined in
+        <xref linkend="comprehensions"/>. Every body (except for a comprehension clause) 
+        is list of semicolon-delimited statements, control structures, and declarations, 
+        surrounded by braces. Some bodies end in a control directive. Every program 
+        element in the list is said to <emphasis>directly occur</emphasis> in the body. 
+        A program element <emphasis>directly occurs earlier</emphasis> than a second 
+        program element if both program elements directly occur in a body and the first 
+        program element occurs (lexically) earlier in the list than the second program 
+        element.</para>
         
         <!--
         <para>As a special case, the <literal>while</literal> condition of a <literal>do/while</literal> 
