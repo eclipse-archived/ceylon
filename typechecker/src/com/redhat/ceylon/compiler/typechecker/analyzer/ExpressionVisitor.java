@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -1049,7 +1048,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
-        Getter dec = that.getDeclarationModel();
+        Value dec = that.getDeclarationModel();
         Declaration od = beginReturnDeclaration(dec);
         super.visit(that);
         endReturnScope(rt, dec);

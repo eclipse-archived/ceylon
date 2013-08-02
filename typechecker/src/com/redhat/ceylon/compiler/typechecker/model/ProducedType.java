@@ -1766,7 +1766,6 @@ public class ProducedType extends ProducedReference {
         return emptyList();
     }
     
-    @Deprecated
     public boolean isUnknown() {
         return getDeclaration() instanceof UnknownType;
     }
