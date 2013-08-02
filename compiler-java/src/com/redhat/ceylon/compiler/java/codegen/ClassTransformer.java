@@ -238,7 +238,8 @@ public class ClassTransformer extends AbstractTransformer {
         Class klass = def.getDeclarationModel();
         MethodDefinitionBuilder annoCtor = classBuilder.addConstructor();
         annoCtor.ignoreModelAnnotations();
-        annoCtor.modifiers(transformClassDeclFlags(klass));
+        // constructors are never final
+        annoCtor.modifiers(transformClassDeclFlags(klass) & ~FINAL);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "anno");
         pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
         annoCtor.parameter(pdb);
@@ -339,7 +340,8 @@ public class ClassTransformer extends AbstractTransformer {
         Class klass = (Class)def.getDeclarationModel();
         String annotationName = klass.getName()+"$annotation";
         ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null);
-        annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
+        // annotations are never explicitely final in Java
+        annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
         
         
@@ -352,7 +354,8 @@ public class ClassTransformer extends AbstractTransformer {
             result = annoBuilder.annotations(makeAtAnnotationTarget()).build();
             String wrapperName = klass.getName()+"$annotations";
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null);
-            sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | transformClassDeclFlags(def));
+            // annotations are never explicitely final in Java
+            sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method2(this, "value");
             mdb.modifiers(PUBLIC | ABSTRACT);
