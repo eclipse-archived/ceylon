@@ -767,17 +767,41 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="comprehensions">
             <title>Comprehensions</title>
             
-            <para>Every comprehension begins with a <literal>for</literal> clause, 
-            and ends with an expression. There may be any number of intervening 
-            <literal>for</literal> or <literal>if</literal> clauses.</para>
+            <para>A <emphasis>comprehension</emphasis> accepts one or more streams of values 
+            and produces a new stream of values. Any instance of <literal>Iterable</literal>
+            is considered a stream of values. The comprehension has two or more
+            <emphasis>clauses</emphasis>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A <literal>for</literal> clause specifies a source stream and an 
+                    iteration variable, as defined in <xref linkend="iterationvariables"/>, 
+                    representing the values produced by the stream.</para>
+                </listitem>
+                <listitem>
+                    <para>An <literal>if</literal> clause specifies a condition list, as
+                    defined in <xref linkend="controlstructureconditions"/>, used to filter
+                    the values produced by the source stream or streams.</para>
+                </listitem>
+                <listitem>
+                    <para>An expression clause produces the values of the resulting stream.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Every comprehension begins with a <literal>for</literal> clause, and 
+            ends with an expression clause. There may be any number of intervening 
+            <literal>for</literal> or <literal>if</literal> clauses. Each clause in the
+            comprehension is considered a child of the clause that immediately precedes 
+            it.</para>
             
             <synopsis>Comprehension: ForComprehensionClause</synopsis>
             <synopsis>ForComprehensionClause: "for" ForIterator ComprehensionClause</synopsis>
             <synopsis>IfComprehensionClause: "if" ConditionList ComprehensionClause</synopsis>
             <synopsis>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</synopsis>
             
-            <para>A child comprehension clause may refer to iteration variables 
-            and condition variables declared by outer clauses of the comprehension.</para>
+            <para>An expression that occurs in a child clause may refer to iteration 
+            variables and condition variables declared by parent clauses. The types
+            of such variables are specified in <xref linkend="controlstructures"/>.</para>
             
             <para>The type of an argument list containing only a comprehension is 
             <literal>[T*]</literal> where <literal>T</literal> is the type of the

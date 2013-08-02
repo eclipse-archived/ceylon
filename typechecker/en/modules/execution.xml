@@ -644,8 +644,74 @@ String result = middleObject.string;</programlisting>
     <section id="comprehensionevaluation">
         <title>Evaluation of comprehensions and spread arguments</title>
         
-        <comment><para>TODO: define the runtime semantics of comprehensions and the spread
-        operator.</para></comment>
+        <para>Each clause of a comprehension produces a stream of 
+        <emphasis>contexts</emphasis>. A context is a set of values for iteration 
+        variables and condition variables declared by the clause and its
+        parent clauses.</para>
+        
+        <section>
+        <title><literal>for</literal> clause</title>
+        
+            <para>The expression which produces the source stream for a child 
+            <literal>for</literal> clause may refer to an iteration variable of a
+            parent <literal>for</literal> clause. In this case the child clause is 
+            considered a <emphasis>join</emphasis>. Otherwise it is considered a 
+            <emphasis>product</emphasis>.</para>
+            
+            <para>In either case, the child clause produces a stream of contexts. 
+            For each context produced by the parent clause, and for each value
+            produced by the source stream of the child clause, the child clause
+            produces a context consisting of the parent clause context extended
+            by the iteration variable value defined by the child clause.</para>
+            
+            <para>This comprehension has a join. For each character <literal>c</literal> 
+            in each string <literal>w</literal> in <literal>words</literal>, the 
+            child <literal>for</literal> clause produces the context 
+            <literal>{ String word=w; Character char=c; }</literal>.</para>
+            
+            <programlisting>for (word in words) for (char in word) char</programlisting>
+            
+            <para>This comprehension has a product. For each string <literal>n</literal>
+            in <literal>nouns</literal>, and each string <literal>a</literal> in 
+            <literal>adjectives</literal>, the child <literal>for</literal> clause 
+            produces the context <literal>{ String noun=n; String adj=a; }</literal>.</para>
+            
+            <programlisting>for (noun in nouns) for (adj in adjectives) adj + " " + noun</programlisting>
+        
+        </section>
+        
+        <section>
+        <title><literal>if</literal> clause</title>
+        
+            <para>A child <literal>if</literal> clause filters its parent clause
+            contexts. For every context produced by the parent clause which 
+            satisfies the condition list of the child clause, the child clause
+            produces that context, extended by any condition variable defined by 
+            the child clause.</para>
+            
+            <para>This comprehension has an <literal>if</literal> clause. For
+            each object <literal>o</literal> in <literal>objects</literal> that
+            is a nonempty <literal>String</literal>, the <literal>if</literal> clause 
+            produces the context <literal>{ Object obj=o; String str=o; }</literal>.</para>
+            
+            <programlisting>for (obj in objects) if (is String str=obj, !str.empty) str</programlisting>
+        
+        </section>
+        
+        <section>
+            <title>expression clause</title>
+            
+            <para>An expression clause produces a single value for each context 
+            produced by its parent clause.</para>
+        
+        </section>
+            
+    </section>
+    
+    <section id="spreadevaluation">
+        <title>Evaluation of spread arguments</title>
+        
+        <comment><para>TODO: define the runtime semantics of the spread operator.</para></comment>
             
     </section>
     
