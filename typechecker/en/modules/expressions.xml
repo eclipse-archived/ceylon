@@ -604,7 +604,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 interface: the names of the parameters of the function or class, and</para>
             </listitem>
             <listitem>
-                <para>type argument inference is possible, since the compiler has access to the 
+                <para>type argument inference is possible, as defined in 
+                <xref linkend="typeargumentinference"/>, since the compiler has access to the 
                 type parameters and constraints of the function or class.</para>
             </listitem>
         </itemizedlist>
