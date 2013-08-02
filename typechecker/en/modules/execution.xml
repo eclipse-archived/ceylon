@@ -634,8 +634,44 @@ String result = middleObject.string;</programlisting>
         <section id="numericoperations">
             <title>Numeric operations</title>
             
-            <comment><para>TODO: define the semantics of integer and floating point numeric
-            operations, and specify the differences between the two platforms.</para></comment>
+            <para>The arithmetic operations defined in <xref linkend="arithmetic"/> for
+            values of type <literal>Integer</literal> and <literal>Float</literal> are
+            defined in terms of methods of the interface <literal>Numeric</literal>. 
+            However, these methods themselves make use of the native operations of the 
+            underlying virtual machine. Likewise, values of type <literal>Integer</literal> 
+            and <literal>Float</literal> are actually represented in terms of a format 
+            native to the virtual machine.</para>
+            
+            <para>It follows that the precise behavior of numeric operations depends 
+            upon the virtual machine upon which the program executes. However, certain 
+            behaviours are common to supported virtual machines:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Values of type <literal>Float</literal> are represented 
+                    according to the IEEE 754 specification, <emphasis>IEEE Standard for 
+                    Binary Floating-Point Arithmetic</emphasis>, and floating point
+                    numeric operations conform to this specification. Where possible,
+                    a double-precision 64-bit representation is used. Note that even 
+                    though <literal>Float</literal> has a 64-bit representation on 
+                    both Java and JavaScript virtual machines, the actual range of 
+                    representable values differs.</para>
+                </listitem>
+                <listitem>
+                    <para>Where possible, values of type <literal>Integer</literal> are 
+                    represented in two's complement form using a fixed bit length. Where 
+                    possible, a 64-bit representation is used. Overflow and underflow wrap 
+                    silently.  This is the case the JavaScript Virtual Machine.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, values of type <literal>Integer</literal> are 
+                    represented according to the IEEE 754 specification. This is the 
+                    case for JavaScript virtual machines.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Platform-dependent behavior of numeric operations is defined in the
+            Java Language Specification, and the ECMAScript Language Specification.</para>
             
         </section>
     
