@@ -122,8 +122,9 @@ public class ConstraintVisitor extends Visitor {
                         e.addError("illegal annotation argument: must be a reference to a parameter of the annotation");
                     }
                 }
-                else if (d instanceof Value && 
-                        (d.equals(d.getUnit().getTrueValueDeclaration())
+                else if (d instanceof Value &&
+                        (((Value) d).isEnumValue()
+                      || d.equals(d.getUnit().getTrueValueDeclaration())
                       || d.equals(d.getUnit().getFalseValueDeclaration()))) {
                     //ok
                 }
