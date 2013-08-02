@@ -484,6 +484,42 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
+        <section id="assignment">
+            <title>Assignment</title>
+                
+            <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
+            assigns it a new value.</para>
+            
+            <programlisting>person.name = "Gavin"</programlisting>
+            
+            <para>When an assignment expression is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first, the receiver expression of the value reference expression 
+                    is executed to obtain the receiving instance, then</para>
+                </listitem>
+                <listitem>
+                    <para>the actual declaration to be assigned is determined by considering 
+                    the runtime type of the receiving instance, and then</para>
+                </listitem>
+                <listitem>
+                    <para>if the member is a reference, its persistent value is updated in 
+                    the receiving instance, or</para>
+                </listitem>
+                <listitem>
+                    <para>otherwise, execution of the calling context pauses while the body 
+                    of its setter is executed by the receiving instance with the assigned 
+                    value, then,</para>
+                </listitem>
+                <listitem>
+                    <para>finally, when execution of the setter ends, execution of the calling 
+                    context resumes.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+    
         <section id="invocation">
             <title>Invocation</title>
             
@@ -530,57 +566,115 @@ String result = middleObject.string;</programlisting>
                  
         </section>
         
-        <section id="assignment">
-            <title>Assignment</title>
+       <section id="enumerationevaluation">
+            <title>Evaluation of enumerations</title>
+            
+            <para>Evaluation of an enumeration expression results in an iterable object or
+            tuple.</para>
                 
-            <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
-            assigns it a new value.</para>
-            
-            <programlisting>person.name = "Gavin"</programlisting>
-            
-            <para>When an assignment expression is executed:</para>
-            
             <itemizedlist>
                 <listitem>
-                    <para>first, the receiver expression of the value reference expression 
-                    is executed to obtain the receiving instance, then</para>
+                    <para>first, each argument is evaluated in turn in the calling context, 
+                    then</para>
                 </listitem>
                 <listitem>
-                    <para>the actual declaration to be assigned is determined by considering 
-                    the runtime type of the receiving instance, and then</para>
+                    <para>the resulting values are packaged into an instance of 
+                    <literal>Iterable</literal> or <literal>Sequence</literal>, unless</para>
                 </listitem>
                 <listitem>
-                    <para>if the member is a reference, its persistent value is updated in 
-                    the receiving instance, or</para>
-                </listitem>
-                <listitem>
-                    <para>otherwise, execution of the calling context pauses while the body 
-                    of its setter is executed by the receiving instance with the assigned 
-                    value, then,</para>
-                </listitem>
-                <listitem>
-                    <para>finally, when execution of the setter ends, execution of the calling 
-                    context resumes.</para>
+                    <para>there are no arguments, in which case the resulting value is
+                    the object <literal>empty</literal>.</para>
                 </listitem>
             </itemizedlist>
             
         </section>
-    
+        
         <section id="spreadevaluation">
-            <title>Evaluation of spread arguments</title>
+            <title>Evaluation of spread arguments and comprehensions</title>
             
-            <comment><para>TODO: define the runtime semantics of the spread operator.</para></comment>
+            <para>A spread argument produces multiple values by iterating the iterable object
+            to which the spread operator is applied.</para>
+            
+            <para>When a spread argument expression type is a subtype of <literal>Sequential</literal>,
+            the behavior does not depend upon where the spread argument occurs:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If it occurs as an argument, the sequence produced by evaluating 
+                    the expression is passed directly to the parameter.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs in an enumeration expression, the sequence produced 
+                    by evaluating the expression is appended directly to the resulting
+                    iterable object or tuple.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>On the other hand, when a spread argument expression type is not a subtype of 
+            <literal>Sequential</literal>, the behavior depends upon where spread argument
+            occurs:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If it occurs as an argument to a variadic parameter in a positional
+                    argument list, the values produced by a spread argument are evaluated 
+                    immediately and packaged into an instance of <literal>Sequence</literal>
+                    and passed to the variadic parameter, unless there are no values, in 
+                    which case the object <literal>empty</literal> is passed to the variadic 
+                    parameter.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs as an argument to a parameter of type 
+                    <literal>Iterable</literal> at the end of a named argument list, the
+                    iterable object produced by evaluating the expression is passed directly 
+                    to the parameter.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs in a tuple enumeration, the values produced by a 
+                    spread argument are evaluated immediately and packaged into an instance 
+                    of <literal>Sequence</literal> and appended to the resulting tuple.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs in an iterable enumeration, the iterable object 
+                    produced by evaluating the expression is chained directly to the 
+                    resulting iterable object.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Likewise, a comprehension produces multiple values, as specified by 
+            <xref linkend="comprehensionevaluation"/>. The behavior depends upon where the
+            comprehension occurs:</para>
                 
+            <itemizedlist>
+                <listitem>
+                    <para>If it occurs as an argument to a variadic parameter in a positional
+                    argument list, the values produced by the comprehension are evaluated 
+                    immediately and packaged into an instance of <literal>Sequence</literal>
+                    and passed to the variadic parameter, unless there are no values, in 
+                    which case the object <literal>empty</literal> is passed to the variadic 
+                    parameter.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs as an argument to a parameter of type 
+                    <literal>Iterable</literal> at the end of a named argument list, an
+                    iterable object that produces the comprehension's values on demand is 
+                    passed directly to the parameter.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs in a tuple enumeration, the values produced by the 
+                    comprehension are evaluated immediately and packaged into an instance 
+                    of <literal>Sequence</literal> and appended to the resulting tuple.</para>
+                </listitem>
+                <listitem>
+                    <para>If it occurs in an iterable enumeration, an iterable object that 
+                    produces the comprehension's values on demand is chained directly to the 
+                    resulting iterable object.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
         
-        <section id="enumerationevaluation">
-            <title>Evaluation of enumerations</title>
-            
-            <comment><para>TODO: define the runtime semantics of tuple and iterable enumerations.</para></comment>
-                
-        </section>
-        
-        <section id="exceptions">
+         <section id="exceptions">
             <title>Exceptions</title>
             
             <comment><para>TODO: define how exceptions affect execution of a program.</para></comment>
