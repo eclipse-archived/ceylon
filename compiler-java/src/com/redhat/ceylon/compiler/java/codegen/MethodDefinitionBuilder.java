@@ -26,6 +26,8 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
+import java.util.Collections;
+
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -364,8 +366,16 @@ public class MethodDefinitionBuilder {
         if(canWiden){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel());
             if(refinedParameter != param.getDeclaration()){
+                ProducedType refinedParameterType;
+                // we don't have to use produced typed references with type params applied here because we want to know the
+                // erasure status of the compilation of the refined parameter, so it's OK if we end up with unbound type parameters
+                // in the refined parameter type
+                if(refinedParameter instanceof Method)
+                    refinedParameterType = refinedParameter.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
+                else
+                    refinedParameterType = refinedParameter.getType();
                 // if the supertype method itself got erased to Object, we can't do better than this
-                if(gen.willEraseToObject(refinedParameter.getType()) && !gen.willEraseToBestBounds(param))
+                if(gen.willEraseToObject(refinedParameterType) && !gen.willEraseToBestBounds(param))
                     nonWideningType = gen.typeFact().getObjectDeclaration().getType();
             }
         }
