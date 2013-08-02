@@ -642,7 +642,7 @@ String result = middleObject.string;</programlisting>
     </section>
     
     <section id="comprehensionevaluation">
-        <title>Evaluation of comprehensions and spread arguments</title>
+        <title>Evaluation of comprehensions</title>
         
         <para>Each clause of a comprehension produces a stream of 
         <emphasis>contexts</emphasis>. A context is a set of values for iteration 
@@ -655,8 +655,8 @@ String result = middleObject.string;</programlisting>
             <para>The expression which produces the source stream for a child 
             <literal>for</literal> clause may refer to an iteration variable of a
             parent <literal>for</literal> clause. In this case the child clause is 
-            considered a <emphasis>join</emphasis>. Otherwise it is considered a 
-            <emphasis>product</emphasis>.</para>
+            considered <emphasis>correlated</emphasis>. Otherwise it is considered a 
+            <emphasis>uncorrelated</emphasis>.</para>
             
             <para>In either case, the child clause produces a stream of contexts. 
             For each context produced by the parent clause, and for each value
@@ -664,17 +664,18 @@ String result = middleObject.string;</programlisting>
             produces a context consisting of the parent clause context extended
             by the iteration variable value defined by the child clause.</para>
             
-            <para>This comprehension has a join. For each character <literal>c</literal> 
-            in each string <literal>w</literal> in <literal>words</literal>, the 
-            child <literal>for</literal> clause produces the context 
-            <literal>{ String word=w; Character char=c; }</literal>.</para>
+            <para>This comprehension has a correlated <literal>for</literal> clause. 
+            For each character <literal>c</literal> in each string <literal>w</literal> 
+            in <literal>words</literal>, the child <literal>for</literal> clause 
+            produces the context <literal>{ String word=w; Character char=c; }</literal>.</para>
             
             <programlisting>for (word in words) for (char in word) char</programlisting>
             
-            <para>This comprehension has a product. For each string <literal>n</literal>
-            in <literal>nouns</literal>, and each string <literal>a</literal> in 
-            <literal>adjectives</literal>, the child <literal>for</literal> clause 
-            produces the context <literal>{ String noun=n; String adj=a; }</literal>.</para>
+            <para>This comprehension has an uncorrelated <literal>for</literal> clause. 
+            For each string <literal>n</literal> in <literal>nouns</literal>, and each 
+            string <literal>a</literal> in <literal>adjectives</literal>, the child 
+            <literal>for</literal> clause produces the context 
+            <literal>{ String noun=n; String adj=a; }</literal>.</para>
             
             <programlisting>for (noun in nouns) for (adj in adjectives) adj + " " + noun</programlisting>
         
