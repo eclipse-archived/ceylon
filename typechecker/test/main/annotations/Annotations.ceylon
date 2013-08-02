@@ -1,12 +1,12 @@
 import ceylon.language.model { ... }
-import ceylon.language.model.declaration { Declaration }
+import ceylon.language.model.declaration { Declaration, ClassDeclaration }
 
 annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
 
 annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
 annotation Meta table(String name, String schema) { return Meta(name); }
-annotation Meta persistent(String column, Anything type, Boolean update) { return Meta(column); }
+annotation Meta persistent(String column, ClassDeclaration type, Boolean update) { return Meta(column); }
 
 "A class"
 by ("Gavin King",
