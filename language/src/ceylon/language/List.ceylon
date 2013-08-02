@@ -26,12 +26,12 @@ shared interface List<out Element>
     
     "The index of the last element of the list, or
      null if the list is empty."
-    see (`size`)
+    see (`List.size`)
     shared formal Integer? lastIndex;
     
     "The number of elements in this sequence, always
      `sequence.lastIndex+1`."
-    see (`lastIndex`)
+    see (`List.lastIndex`)
     shared actual default Integer size => (lastIndex else -1) + 1;
     
     shared actual default Boolean shorterThan(Integer length) 

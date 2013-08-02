@@ -89,7 +89,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Determines if this iterable object has more elements
      than the given length. This is an efficient operation 
      for iterable objects with many elements."
-    see (`size`)
+    see (`Iterable.size`)
     shared default Boolean longerThan(Integer length) {
         if (length<0) {
             return true;
@@ -106,7 +106,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "Determines if this iterable object has fewer elements
      than the given length. This is an efficient operation 
      for iterable objects with many elements."
-    see (`size`)
+    see (`Iterable.size`)
     shared default Boolean shorterThan(Integer length) {
         if (length<=0) {
             return false;
@@ -153,7 +153,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "An `Iterable` containing the results of applying
      the given mapping to the elements of to this 
      container."
-    see (`collect`)
+    see (`Iterable.collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
             Result collecting(Element elem)) =>
@@ -167,7 +167,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "An `Iterable` containing the elements of this 
      container that satisfy the given predicate."
-    see (`select`)
+    see (`Iterable.select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) =>
@@ -233,7 +233,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the results of applying the
      given mapping to the elements of this container. An 
      eager counterpart to `map()`."
-    see (`map`)
+    see (`Iterable.map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) =>
@@ -242,7 +242,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "A sequence containing the elements of this 
      container that satisfy the given predicate. An 
      eager counterpart to `filter()`."
-    see (`filter`)
+    see (`Iterable.filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) =>

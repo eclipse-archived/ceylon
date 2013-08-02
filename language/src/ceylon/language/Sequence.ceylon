@@ -26,7 +26,7 @@ shared interface Sequence<out Element>
                   Cloneable<[Element+]> {
     
     "The index of the last element of the sequence."
-    see (`size`)
+    see (`Sequence.size`)
     shared actual formal Integer lastIndex;
     
     "The first element of the sequence, that is, the

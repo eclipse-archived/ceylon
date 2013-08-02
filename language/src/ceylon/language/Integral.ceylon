@@ -12,7 +12,7 @@ shared interface Integral<Other> of Other
 
     "The remainder, after dividing this number by the 
      given number."
-    see (`divided`)
+    see (`Numeric.divided`)
     shared formal Other remainder(Other other);
 
     "Determine if the number is zero."
