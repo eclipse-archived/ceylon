@@ -2076,7 +2076,7 @@ Item item = comp of Item;</programlisting>
                     <literal>T</literal> is the disjunction of the lower bound 
                     <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
                     with the lower bound <literal>A</literal> on <literal>R</literal> 
-                    for <literal>T</literal>.</para>
+                    for <literal>T</literal>. <emphasis>Note: this case is special.</emphasis></para>
                 </listitem>
                 <listitem>
                     <para>If <literal>P</literal> is an intersection type <literal>Q&amp;R</literal>, 
@@ -2156,7 +2156,7 @@ Item item = comp of Item;</programlisting>
                     <literal>T</literal> is the disjunction of the upper bound 
                     <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
                     with the upper bound <literal>A</literal> on <literal>R</literal> 
-                    for <literal>T</literal>.</para>
+                    for <literal>T</literal>. <emphasis>Note: this case is special.</emphasis></para>
                 </listitem>
                 <listitem>
                     <para>If <literal>P</literal> is an intersection type <literal>Q&amp;R</literal>, 
@@ -2169,14 +2169,14 @@ Item item = comp of Item;</programlisting>
                 <listitem>
                     <para>If <literal>A</literal> is a union type <literal>B|C</literal>, 
                     the upper bound <literal>A</literal> on <literal>P</literal> for 
-                    <literal>T</literal> is the conjunction of the upper bound <literal>B</literal> 
+                    <literal>T</literal> is the disjunction of the upper bound <literal>B</literal> 
                     on <literal>P</literal> for <literal>T</literal> with the upper bound 
                     <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>If <literal>A</literal> is an intersection type <literal>B&amp;C</literal>, 
                     the upper bound <literal>A</literal> on <literal>P</literal> for 
-                    <literal>T</literal> is the disjunction of the upper bound <literal>B</literal> 
+                    <literal>T</literal> is the conjunction of the upper bound <literal>B</literal> 
                     on <literal>P</literal> for <literal>T</literal> with the upper bound 
                     <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
                 </listitem>
