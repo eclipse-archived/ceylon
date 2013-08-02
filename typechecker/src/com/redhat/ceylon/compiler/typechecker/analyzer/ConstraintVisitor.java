@@ -163,9 +163,9 @@ public class ConstraintVisitor extends Visitor {
             /*if (c.isAbstract()) {
                 that.addError("annotation class may not be abstract");
             }*/
-            /*if (!c.isFinal()) {
+            if (!c.isFinal()) {
                 that.addError("annotation class must be final");
-            }*/
+            }
             if (!c.getExtendedTypeDeclaration()
                     .equals(that.getUnit().getBasicDeclaration())) {
                 that.addError("annotation class must directly extend Basic");

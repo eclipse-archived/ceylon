@@ -1,10 +1,10 @@
 import ceylon.language.model { ... }
 import ceylon.language.model.declaration { Declaration, ClassDeclaration }
 
-annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
+final annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
 
-annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
+final annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta,Annotated> {}
 annotation Meta table(String name, String schema) { return Meta(name); }
 annotation Meta persistent(String column, ClassDeclaration type, Boolean update) { return Meta(column); }
 
@@ -13,10 +13,10 @@ by ("Gavin King",
     "Emmanuel Bernard")
 class ToplevelClass() {}
 
-annotation class TypeDescription(String desc) 
+final annotation class TypeDescription(String desc) 
     satisfies OptionalAnnotation<TypeDescription,Annotated> {}
 
-annotation class SequencedDescription(String desc) 
+final annotation class SequencedDescription(String desc) 
     satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
 
 class Annotations() {
