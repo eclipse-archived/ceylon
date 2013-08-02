@@ -197,24 +197,24 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     </section>
     
-    <section id="constantexpressions">
+    <!--section id="constantexpressions">
         <title>Constant expressions</title>
 
-    <comment><para>TODO: We need a definition of a "constant expression".
-    We might use it for:</para>
-    <itemizedlist>
-    <listitem>annotations available at compile time, and even perhaps</listitem>
-    <listitem>specifier expressions in declaration section of class body.</listitem>
-    </itemizedlist>
-    <para>For example we could follow Java's very restrictive model, and say 
-    that a constant expression must be anything formed from literals, metamodel 
-    references, the <literal>..</literal> and <literal>-></literal> operators.
-    Or we could be much less restrictive and just say that it is any expression 
-    that could be used to initialize a toplevel attribute of the package.</para>
-    <para>At the very least, we need to properly define the scope in which the 
-    above things are actually evaluated.</para></comment>
+        <comment><para>TODO: We need a definition of a "constant expression".
+        We might use it for:</para>
+        <itemizedlist>
+        <listitem>annotations available at compile time, and even perhaps</listitem>
+        <listitem>specifier expressions in declaration section of class body.</listitem>
+        </itemizedlist>
+        <para>For example we could follow Java's very restrictive model, and say 
+        that a constant expression must be anything formed from literals, metamodel 
+        references, the <literal>..</literal> and <literal>-></literal> operators.
+        Or we could be much less restrictive and just say that it is any expression 
+        that could be used to initialize a toplevel attribute of the package.</para>
+        <para>At the very least, we need to properly define the scope in which the 
+        above things are actually evaluated.</para></comment>
     
-    </section>
+    </section-->
     
     <section id="stringtemplates">
         <title>String templates</title>
