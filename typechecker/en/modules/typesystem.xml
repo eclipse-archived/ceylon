@@ -1755,8 +1755,9 @@ Item item = comp of Item;</programlisting>
     }
 }]]></programlisting>
     
-            <comment><para>TODO: do we need lower bound type constraints? With union types
-            they don't appear to be anywhere near as useful. Howver, perhaps they are useful
+            <comment><para>TODO: Do we need lower bound type constraints? The syntax would be:</para>
+            <programlisting>given T abstracts One|Two</programlisting><para>With union types
+            they don't appear to be anywhere near as useful. However, perhaps they are useful
             when combined with contravariant types. (A lower bound on a parameter which occurs 
             as the argument of a contravariant type is more like an upper bound).</para></comment>
             
@@ -2019,8 +2020,8 @@ Item item = comp of Item;</programlisting>
             instantiation expression for a generic class does not explicitly specify type 
             arguments, the type arguments are inferred from the argument expression types. 
             The types of the argument expressions and the declared types of the corresponding 
-            parameters determine an <emphasis>inferred lower bound</emphasis> for each type 
-            parameter.</para>
+            parameters determine an <emphasis>inferred lower bound</emphasis> or 
+            <emphasis>inferred upper bound</emphasis> for each type parameter.</para>
             
             <para>If a list of argument expressions has types <literal>A1,A2,...</literal> 
             and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>, 
@@ -2028,16 +2029,36 @@ Item item = comp of Item;</programlisting>
             declaration is the conjunction of:</para>
             
             <itemizedlist>
-                <listitem>
+                <!--listitem>
                     <para>the lower bound <literal>X</literal> explicitly declared by a type 
                     constraint on <literal>T</literal> of form <literal>given T abstracts X</literal>, 
                     if any, with</para>
-                </listitem>
+                </listitem-->
                 <listitem>
                     <para>all inferred lower bounds <literal>Ai</literal> on <literal>Pi</literal> 
                     for <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>The inferred upper bound for a type parameter <literal>T</literal> of the generic
+            declaration is the conjunction of:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>all upper bounds <literal>Xi</literal> explicitly declared by a type 
+                    constraint on <literal>T</literal> of form <literal>given T satisfies Xi</literal>, 
+                    if any, with</para>
+                </listitem>
+                <listitem>
+                    <para>all inferred upper bounds <literal>Ai</literal> on <literal>Pi</literal> 
+                    for <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>TODO: This does not quite do justice the the compiler's handling 
+            of type parameters which have upper bounds involving other type parameters.
+            In fact, the compiler is also able to infer a type for the type parameter 
+            that appears in the upper bound type constraint.</para></comment>
             
             <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
             the <emphasis>inferred lower bound</emphasis> <literal>A</literal> on 
@@ -2101,12 +2122,12 @@ Item item = comp of Item;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>the conjunction a lower bound <literal>T abstracts A</literal>
+                    <para>the conjunction of a lower bound <literal>T abstracts A</literal>
                     with a lower bound <literal>T abstracts B</literal> is the lower bound 
                     <literal>T abstracts A|B</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>the disjunction a lower bound <literal>T abstracts A</literal>
+                    <para>the disjunction of a lower bound <literal>T abstracts A</literal>
                     with a lower bound <literal>T abstracts B</literal> is the lower bound 
                     <literal>T abstracts A&amp;B</literal>,</para>
                 </listitem>
@@ -2116,6 +2137,86 @@ Item item = comp of Item;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the conjunction or disjunction of two null lower bounds is null.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
+            the <emphasis>inferred upper bound</emphasis> <literal>A</literal> on 
+            <literal>P</literal> for <literal>T</literal> according to the nature of 
+            <literal>A</literal> and <literal>P</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
+                    inferred upper bound <literal>A</literal> on <literal>P</literal> for 
+                    <literal>T</literal> is <literal>T satisfies A</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
+                    the upper bound <literal>A</literal> on <literal>P</literal> for 
+                    <literal>T</literal> is the disjunction of the upper bound 
+                    <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
+                    with the upper bound <literal>A</literal> on <literal>R</literal> 
+                    for <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>P</literal> is an intersection type <literal>Q&amp;R</literal>, 
+                    the upper bound <literal>A</literal> on <literal>P</literal> for 
+                    <literal>T</literal> is the conjunction of the upper bound 
+                    <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
+                    with the upper bound <literal>A</literal> on <literal>R</literal> 
+                    for <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a union type <literal>B|C</literal>, 
+                    the upper bound <literal>A</literal> on <literal>P</literal> for 
+                    <literal>T</literal> is the conjunction of the upper bound <literal>B</literal> 
+                    on <literal>P</literal> for <literal>T</literal> with the upper bound 
+                    <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is an intersection type <literal>B&amp;C</literal>, 
+                    the upper bound <literal>A</literal> on <literal>P</literal> for 
+                    <literal>T</literal> is the disjunction of the upper bound <literal>B</literal> 
+                    on <literal>P</literal> for <literal>T</literal> with the upper bound 
+                    <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>P</literal> is a produced type <literal>Q&lt;P1,P2,...&gt;</literal> 
+                    of a parameterized type <literal>Q</literal>, and <literal>A</literal> 
+                    is a subtype of a produced type <literal>Q&lt;A1,A2,..&gt;</literal>, 
+                    the upper bound <literal>A</literal> on <literal>P</literal> for 
+                    <literal>T</literal> is the conjunction of all upper bounds <literal>Ai</literal> 
+                    on <literal>Pi</literal> for <literal>T</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, if <literal>A</literal> is not a union or intersection, 
+                    and if <literal>P</literal> is neither a produced type, a union, or an
+                    intersection, nor exactly <literal>T</literal>, the upper bound 
+                    <literal>A</literal> on <literal>P</literal> for <literal>T</literal>
+                    is <emphasis>null</emphasis>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Where:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the conjunction of an upper bound <literal>T satisfies A</literal>
+                    with an upper bound <literal>T satisfies B</literal> is the upper bound 
+                    <literal>T satisfies A&amp;B</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>the disjunction of an upper bound <literal>T satisfies A</literal>
+                    with an upper bound <literal>T satisfies B</literal> is the upper bound 
+                    <literal>T satisfies A|B</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>the conjunction or disjunction of an upper bound <literal>T satisfies A</literal>
+                    with a null upper bound is <literal>T satisfies A</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>the conjunction or disjunction of two null upper bounds is null.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2134,44 +2235,8 @@ Item item = comp of Item;</programlisting>
             the compiler's approach is better!)</para></comment>
             -->
             
-            <comment><para>TODO: This does not do justice the the compiler's handling 
-            of type parameters which have upper bounds involving other type parameters.
-            In fact, the compiler is also able to infer a type for the type parameter 
-            that appears in the upper bound.</para></comment>
-            
-            <comment><para>TODO: Actually the compiler is even cleverer than this.
-            The algorithm described above works great for type parameters that appear 
-            covariantly in the "output" types, and even okay for type parameters that 
-            appear invariantly. It doesn't really work very well for type parameters 
-            that appear contravariantly, where the constraints are really of form 
-            <literal>A satisfies T</literal>, and they should be combined using 
-            intersection, not union, and where the default should be
-            <literal>Anything</literal> not <literal>Nothing</literal>. Therefore,
-            the compiler's algorithm is engineered to make the following work, where 
-            both <literal>Consumer</literal> and <literal>Delegate</literal> are 
-            contravariant types:</para>
-            <programlisting><![CDATA[Delegate<String> delegate1 = ... ;
-Delegate<Object> delegate2 = ... ; 
-Consumer<String> consumer = Consumer(delegate1, delegate2);]]></programlisting>
-            <!--para>Note also that there is something a bit conceptually funny about 
-            a type parameter that appears covariantly in a parameter type, and 
-            contravariantly in the return type (or vice-versa), so we probably don't 
-            really need to bother about the case where a type parameter appears both 
-            covariantly <emphasis>and</emphasis> contravariantly.</para-->
-            </comment>
-            
-            <!--
-            <para>The <emphasis>full lower bound for an inferred type parameter</emphasis> 
-            <literal>T</literal> of the generic declaration is the union of the lower 
-            bound for <literal>T</literal> with the lower bound specified by each
-            type constraint on <literal>T</literal> of form <literal>T abstracts X</literal> 
-            for every lower bound <literal>X</literal> on <literal>T</literal> in the 
-            generic type constraints on <literal>T</literal> (after substitution of 
-            type arguments into <literal>X</literal>).</para>
-            -->
-            
-            <para>The inferred type argument to a type parameter <literal>T</literal> 
-            of the generic declaration is:</para>
+            <para>The inferred type argument to a covariant or invariant type parameter 
+            <literal>T</literal> of the generic declaration is:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2181,6 +2246,20 @@ Consumer<String> consumer = Consumer(delegate1, delegate2);]]></programlisting>
                 <listitem>
                     <para>the type <literal>A</literal>, where the inferred lower bound for 
                     <literal>T</literal> is <literal>T abstracts A</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The inferred type argument to a contravariant type parameter 
+            <literal>T</literal> of the generic declaration is:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Anything</literal>, if the inferred upper bound for 
+                    <literal>T</literal> is null, or, otherwise,</para>
+                </listitem>
+                <listitem>
+                    <para>the type <literal>A</literal>, where the inferred upper bound for 
+                    <literal>T</literal> is <literal>T satisfies A</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2240,6 +2319,17 @@ value biggerBag = bag.with(1, 2, 5.0);]]></programlisting>
             <para>The inferred type of <literal>ExtraElement</literal> is the union 
             type <literal>Integer|Float|String</literal>.</para>
             
+            <para>Finally consider:</para>
+            
+            <programlisting><![CDATA[interface Delegate<in Value> { ... }
+class Consumer<in Value>(Delegate<Value>* delegates) { ... }
+Delegate<String> delegate1 = ... ;
+Delegate<Object> delegate2 = ... ; 
+value consumer = Consumer(delegate1, delegate2);]]></programlisting>
+            
+            <para>The inferred type of <literal>Value</literal> is 
+            <literal>Consumer&lt;String&gt;</literal>.</para>
+
             <comment><para>TODO: What about upper bounds in which the type parameter 
             itself appears (the infamous self-type problem with
             <literal>Comparable</literal> and <literal>Numeric</literal>) or in which 
