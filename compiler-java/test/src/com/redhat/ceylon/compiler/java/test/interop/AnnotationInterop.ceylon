@@ -42,14 +42,14 @@ javaAnnotationPrimitives {
     stra={""};
 }
 javaAnnotationClass {
-    clas=String;
-    classRaw=String;
-    classWithBound=Exception;
-    classExact=String;
-    classes={String, Boolean};
-    classesRaw={String, Boolean};
-    classesWithBound={Exception, AssertionException};
-    classesExact={String};
+    clas=`String`;
+    classRaw=`String`;
+    classWithBound=`Exception`;
+    classExact=`String`;
+    classes={`String`, `Boolean`};
+    classesRaw={`String`, `Boolean`};
+    classesWithBound={`Exception`, `AssertionException`};
+    classesExact={`String`};
 }
 javaAnnotationEnum {
     threadState=new;
@@ -70,7 +70,7 @@ class AnnotationInterop() {
     resource{
         name="tom";
         authenticationType=application;
-        type=AnnotationInterop;
+        type=`AnnotationInterop`;
     }
     shared variable String tom = "";
     
