@@ -335,8 +335,15 @@ class AnnotationInvocationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeLiteral tl){
         // FIXME: this is all temporary
-        if(tl.getType() != null && tl.getType().getTypeModel() != null)
-            append(exprGen.make().Literal(tl.getType().getTypeModel().resolveAliases().getProducedTypeQualifiedName()));
+        if(tl.getType() != null && tl.getType().getTypeModel() != null){
+            if (Decl.isInteropAnnotationClass(annotationClass)) {
+                append(exprGen.naming.makeQualIdent(
+                        exprGen.makeJavaType(tl.getType().getTypeModel()),
+                        "class"));
+            } else {
+                append(exprGen.make().Literal(tl.getType().getTypeModel().resolveAliases().getProducedTypeQualifiedName()));
+            }
+        }
     }
     
     @Override
