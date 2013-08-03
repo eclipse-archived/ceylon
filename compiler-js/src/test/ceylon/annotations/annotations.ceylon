@@ -18,7 +18,7 @@ shared annotation AnnoTest1 annotest1(String text="") => AnnoTest1(text);
 shared annotation AnnoTest1 annotest2(Integer count) => AnnoTest1("With Count", count);
 
 shared final annotation class AnnoTest3(text)
-    satisfies SequencedAnnotation<AnnoTest3,ClassOrInterfaceDeclaration> {
+    satisfies SequencedAnnotation<AnnoTest3,ClassOrInterfaceDeclaration|ValueDeclaration> {
   shared String text;
 }
 shared annotation AnnoTest3 annotest3(String text) => AnnoTest3(text);
@@ -61,13 +61,13 @@ shared void test() {
   }
   check(annotations(`AnnoTest1`, `Example3`) exists, "Annotation on interface");
   
-  /*value a4 = annotations(`AnnoTest3`, `testSingleton`);
+  value a4 = annotations(`AnnoTest3`, `testSingleton`);
   if (nonempty a4) {
     check(a4.size==3, "Annotations 4 size");
   } else {
     fail("Annotations 4 (top-level attribute)");
   }
-  check(!annotations(`AnnoTest1`, `testSingleton`) exists, "testSingleton shouldn't have AnnoTest1");*/
+  check(!annotations(`AnnoTest1`, `testSingleton`) exists, "testSingleton shouldn't have AnnoTest1");
   value a5 = annotations(`AnnoTest1`, `Example2.string`);
   if (exists a5) {
     check(a5.text=="named call", "Annotations 5 text");
