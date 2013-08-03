@@ -1685,7 +1685,7 @@ else {
                     <para>a list of value references of form <literal>case (x, y, z)</literal> 
                     where each value reference <literal>x</literal>, <literal>y</literal>, and 
                     <literal>z</literal> refers to an anonymous class that is a subtype of 
-                    <literal>U&amp;Identifiable</literal>, or</para>
+                    <literal>U&amp;&lt;Identifiable|Null&gt;</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>an assignability condition of form <literal>case (is V)</literal> 
