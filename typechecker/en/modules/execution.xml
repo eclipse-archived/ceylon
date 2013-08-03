@@ -654,16 +654,22 @@ String result = middleObject.string;</programlisting>
         
         <itemizedlist>
             <listitem><para>invocation of a function or instantiation of a class,</para></listitem>
-            <listitem><para>evaluation of a value, or</para></listitem>
+            <listitem><para>evaluation of a value,</para></listitem>
+            <listitem><para>instantiation of an instance of <literal>Callable</literal> 
+            that packages a callable reference, or</para></listitem>
             <listitem><para>assignment to a variable value.</para></listitem>
         </itemizedlist>
             
         <section id="evaluation">
             <title>Evaluation</title>
             
-            <para>Evaluation of a value reference produces its current value.</para> 
+            <para>Evaluation of a value reference produces its current value. Evaluation of
+            a callable reference that does not occur as the primary of a direct invocation
+            results in a new instance of <literal>Callable</literal> that packages the 
+            callable reference.</para> 
             
             <programlisting>person.name</programlisting>
+            <programlisting>'/'.equals</programlisting>
             
             <para>When a value reference expression is executed:</para>
             
@@ -693,9 +699,26 @@ String result = middleObject.string;</programlisting>
             <para>The resulting value is the persistent value retrieved, or the return value 
             of the getter, as specified by the <literal>return</literal> directive.</para>
             
-            <comment><para>TODO: evaluation of a callable reference constructs a callable
-            object that packages a reference to the receiving instance with a reference to
-            the function to be invoked or class to be instantiated.</para></comment>
+            <para>When a callable reference expression that does not occur as the primary of
+            a direct invocation expression is executed:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first, the receiver expression, if any, is evaluated to obtain a 
+                    receiving instance for the evaluation, then</para>
+                </listitem>
+                <!--listitem>
+                    <para>the actual declaration to be invoked is determined by considering 
+                    the runtime type of the receiving instance, if any, and then</para>
+                </listitem-->
+                <listitem>
+                    <para>the receiving instance and a reference to the declaration to be
+                    invoked are packaged together into an instance of 
+                    <literal>Callable</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The resulting value is the instance of <literal>Callable</literal>.</para>
             
         </section>
         
@@ -738,10 +761,24 @@ String result = middleObject.string;</programlisting>
         <section id="invocation">
             <title>Invocation</title>
             
-            <para>Evaluation of an invocation expression for a callable reference invokes the 
-            underlying callable reference. This is called <emphasis>invocation</emphasis> in
-            the case of a function reference, or <emphasis>instantiation</emphasis> in the case
-            of a class reference.</para>
+            <para>Evaluation of an invocation expression in invocation of a function of class. 
+            This is called <emphasis>invocation</emphasis> in the case of a function, or 
+            <emphasis>instantiation</emphasis> in the case of a class. Every invocation has
+            a callable expression:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>in a direct invocation, the callable expression is a callable 
+                    reference, and</para>
+                </listitem>
+                <listitem>
+                    <para>in an indirect invocation, the callable expression is an instance of
+                    <literal>Callable</literal> that packages an underlying callable reference.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>In either case, the callable expression determines the instance and member 
+            to be invoked.</para>
             
             <programlisting>print("Hello world!")</programlisting>
             <programlisting>Entry(person.name, person)</programlisting>
@@ -750,8 +787,8 @@ String result = middleObject.string;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>first, the callable expression is evaluated to obtain the callable 
-                    object, then</para>
+                    <para>first, the callable expression is evaluated to obtain the receiving
+                    instance, then</para>
                 </listitem>
                 <listitem>
                     <para>each argument is evaluated in turn in the calling context, then</para>
