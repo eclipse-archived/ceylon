@@ -281,3 +281,16 @@ class ControlStructures() {
     @error try {}
 
 }
+
+abstract class EX() of ex|ey extends Object() {
+    equals(Object that) => true;
+    hash => 0;
+}
+object ey extends EX() {}
+object ex extends EX() {}
+
+void exy(EX val) {
+    @error switch (val)
+    case (ex) { print("x"); }
+    case (ey) { print("y"); }
+}

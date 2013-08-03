@@ -4456,18 +4456,23 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.MatchCase that) {
         super.visit(that);
         for (Tree.Expression e: that.getExpressionList().getExpressions()) {
-            ProducedType t = e.getTypeModel();
-            if (!isTypeUnknown(t)) {
-                TypeDeclaration dec = t.getDeclaration();
-                if (!dec.isToplevel() || !dec.isAnonymous()) {
-                    e.addError("case must refer to a toplevel object declaration");
-                }
-                if (switchExpression!=null) {
-                    ProducedType st = switchExpression.getTypeModel();
-                    if (!isTypeUnknown(st)) {
-                        if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
-                            checkAssignable(t, st, e, 
-                                    "case must be assignable to switch expression type");
+            if (e!=null) {
+                ProducedType t = e.getTypeModel();
+                if (!isTypeUnknown(t)) {
+                    ProducedType ut = unionType(unit.getNullDeclaration().getType(), 
+                            unit.getIdentifiableDeclaration().getType(), unit);
+                    checkAssignable(t, ut, e, "case must be a identifiable or null");
+                    TypeDeclaration dec = t.getDeclaration();
+                    if (!dec.isToplevel() || !dec.isAnonymous()) {
+                        e.addError("case must refer to a toplevel object declaration");
+                    }
+                    if (switchExpression!=null) {
+                        ProducedType st = switchExpression.getTypeModel();
+                        if (!isTypeUnknown(st)) {
+                            if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
+                                checkAssignable(t, st, e, 
+                                        "case must be assignable to switch expression type");
+                            }
                         }
                     }
                 }
