@@ -117,24 +117,39 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
         executed sequentially and have access to declarations in their surrounding 
         context and persistent values referenced by those declarations.</para>
         
-        <para>The principle of <emphasis>closure</emphasis> states a that nested body
-        always has access to a set of values for all references declared by containing 
-        bodies. The set of <emphasis>current instances</emphasis> of containing classes 
-        and interfaces and <emphasis>current frames</emphasis> of containing blocks 
-        forms the closure of a nested declaration.</para>           
-            
-        <section>
-            <title>Sequential execution of a body</title>
-            
-            <para>The statements and reference specifiers that directly occur in a block 
-            or initializer section of a class body are executed sequentially in the lexical 
-            order in which they occcur. Execution of a block or initializer begins at the 
-            first statement or reference specifier. Execution of a block terminates when the 
-            last statement or reference specifier of the block finishes executing, or when a 
-            control directive that terminates the block is executed, or when an exception is 
-            thrown by an evaluation, invocation, or instantiation.</para>
+        <para>The statements and non-lazy specifiers that directly occur in a body are 
+        executed sequentially in the lexical order in which they occcur. Execution of 
+        a body begins at the first statement or non-lazy specifier. Execution of a block 
+        terminates when the last statement or non-lazy specifier of the body finishes 
+        executing, or when a control directive that terminates the block is executed, or 
+        when an exception is thrown by an evaluation, assignment, invocation, or 
+        instantiation.</para>
         
-        </section>
+        <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
+        For each reference whose declaration directly occurs in the body, the frame
+        has a value, which may or may not be initialized. The value may be initialized
+        or assigned during execution of the body.</para>
+        
+        <para>While a body is executing, all values held in the frame are considered 
+        accessible. An evaluation, assignment, invocation, or instantiation may result 
+        in a pause in execution of the body while the called getter, setter, function, 
+        or class is executed or instantiated. However, the frame associated with the 
+        calling body is retained and values held in the frame are still considered 
+        accessible.</para>
+        
+        <para>When execution of a body terminates, the frame may or may not become
+        inaccessible. In the case of a class body, the frame and its values become a
+        new instance of the class, and remain accessible while this object is itself
+        accessible. In the case of any other kind of body, the frame and its values
+        may remain accessible if a reference to a function of class declared within
+        the body is accessible, or if an instance of a class declared within the body
+        is accessible. When execution of the body resumes, the frame is restored.</para>
+        
+        <para>The principle of <emphasis>closure</emphasis> states that a nested body
+        always has access to a frame for every containing body. The set of 
+        <emphasis>current instances</emphasis> of containing classes and 
+        <emphasis>current frames</emphasis> of containing blocks forms the closure of a 
+        nested declaration.</para>           
         
         <section id="closureofaclassorinterface">
             <title>Closure of a class or interface</title>
@@ -233,7 +248,7 @@ String result = middleObject.string;</programlisting>
    <section id="executionofcontrolstructures">
         <title>Execution of control structures and assertions</title>
         
-        <para>Control structures are used to organize nonlinear within a block.</para>
+        <para>Control structures are used to organize nonlinear code within a body.</para>
         
         <section id="evaluationofconditions">
             <title>Evaluation of condition lists</title>
