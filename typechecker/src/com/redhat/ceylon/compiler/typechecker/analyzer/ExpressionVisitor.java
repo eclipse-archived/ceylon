@@ -4461,7 +4461,7 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(t)) {
                     ProducedType ut = unionType(unit.getNullDeclaration().getType(), 
                             unit.getIdentifiableDeclaration().getType(), unit);
-                    checkAssignable(t, ut, e, "case must be a identifiable or null");
+                    checkAssignable(t, ut, e, "case must be identifiable or null");
                     TypeDeclaration dec = t.getDeclaration();
                     if (!dec.isToplevel() || !dec.isAnonymous()) {
                         e.addError("case must refer to a toplevel object declaration");
