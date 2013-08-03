@@ -738,6 +738,11 @@ String result = middleObject.string;</programlisting>
             
             <para>Evaluation of an enumeration expression results in an iterable object or
             tuple.</para>
+            
+            <programlisting>{ "hello", "world" }</programlisting>
+            <programlisting>[ new, *elements ]</programlisting>
+            
+            <para>When an enumeration expression is executed:</para>
                 
             <itemizedlist>
                 <listitem>
