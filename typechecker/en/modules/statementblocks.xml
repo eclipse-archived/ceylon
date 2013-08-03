@@ -1685,7 +1685,7 @@ else {
                     <para>a list of value references of form <literal>case (x, y, z)</literal> 
                     where each value reference <literal>x</literal>, <literal>y</literal>, and 
                     <literal>z</literal> refers to an anonymous class that is a subtype of 
-                    <literal>U</literal>, or</para>
+                    <literal>U&amp;Identifiable</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>an assignability condition of form <literal>case (is V)</literal> 
@@ -1716,12 +1716,12 @@ else {
             
             <comment><para>Note: an assignability condition <literal>case</literal> may narrow to 
             an intersection or union type.</para>
-            <programlisting>case (is Format &amp; IdentifiableObject) { ... }</programlisting>
+            <programlisting>case (is Persistent &amp; Serializable) { ... }</programlisting>
             <programlisting>case (is Integer | Float) { ... }</programlisting></comment>
 
             <para>If a <literal>switch</literal> has an assignability condition <literal>case</literal>,
-            then the <literal>switch</literal> expression must be an unqualified value reference to 
-            a non-<literal>variable</literal>, non-<literal>default</literal> reference.</para>
+            then the <literal>switch</literal> expression must be an unqualified value reference 
+            to a non-<literal>variable</literal>, non-<literal>default</literal> reference.</para>
             
             <para>For an assignability condition <literal>case</literal>, the value referred by the
             <literal>switch</literal> expression will be treated by the compiler as having the 
