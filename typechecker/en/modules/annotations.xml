@@ -428,5 +428,12 @@ shared deprecated</programlisting>
         </section>
     
     </section>
+    
+    <section>
+        <title>Serialization</title>
+        
+        <comment><para>TODO: Define how serialization works.</para></comment>
+    
+    </section>
 
 </chapter>
