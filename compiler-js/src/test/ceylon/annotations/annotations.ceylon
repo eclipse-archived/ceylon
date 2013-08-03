@@ -9,7 +9,7 @@ import ceylon.language.model.declaration{
   FunctionDeclaration
 }
 
-shared annotation class AnnoTest1(text,count=1)
+shared final annotation class AnnoTest1(text,count=1)
     satisfies OptionalAnnotation<AnnoTest1,ClassOrInterfaceDeclaration|ValueDeclaration|FunctionDeclaration>{
   shared String text;
   shared Integer count;
@@ -17,7 +17,7 @@ shared annotation class AnnoTest1(text,count=1)
 shared annotation AnnoTest1 annotest1(String text="") => AnnoTest1(text);
 shared annotation AnnoTest1 annotest2(Integer count) => AnnoTest1("With Count", count);
 
-shared annotation class AnnoTest3(text)
+shared final annotation class AnnoTest3(text)
     satisfies SequencedAnnotation<AnnoTest3,ClassOrInterfaceDeclaration> {
   shared String text;
 }
