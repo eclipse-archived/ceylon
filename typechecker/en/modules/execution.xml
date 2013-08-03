@@ -114,6 +114,57 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
             
         </section>
         
+    <section id="reification">
+        <title>Type argument reification</title>
+        
+        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
+        generic type holds a reference to its type arguments. Therefore, the following are 
+        legal in Ceylon:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>testing the runtime value of a type argument of an instance, for 
+                example, <literal>objectList is List&lt;Person&gt;</literal> or 
+                <literal>case (is List&lt;Person&gt;)</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>filtering exceptions based on type arguments, for example,
+                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>testing the runtime value of an instance against a type parameter,
+                for example <literal>x is Key</literal>, or against a type with a type 
+                parameter as an argument, for example, 
+                <literal>objectList is List&lt;Element&gt;</literal>.</para>
+            </listitem>
+            <!--
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing a type with 
+                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the runtime 
+                value of a type parameter, for example, <literal>Element</literal>, or of 
+                a type with a type parameter as an argument, for example, 
+                <literal>List&lt;Element&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>obtaining a <literal>Type</literal> object representing the
+                runtime value of a type argument of an instance using reflection, for 
+                example, <literal>objectList.type.arguments.first</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>instantiating a type parameter with an initialization parameter
+                specification, for example, <literal>Result(parent)</literal>.</para>
+            </listitem>
+            -->
+        </itemizedlist>
+        
+        <comment><para>TODO: much more information about reification and optimization
+        of reified generics.</para></comment>
+        
+    </section>
+        
     </section>
     
     <section id="sequentialexecutionandclosure">
@@ -312,14 +363,20 @@ String result = middleObject.string;</programlisting>
                     the body of a function, getter, setter, or class initializer terminates
                     execution of the body of the function, getter, setter, or class 
                     initializer and of all intervening bodies, and, furthermore, the exception 
-                    propagates to the caller, as defined in <xref linkend="exceptions"/>, 
-                    unless there is an intervening <literal>try</literal> with a 
-                    <literal>catch</literal> clause matching the thrown exception, in which 
-                    case it terminates execution of the body of the <literal>try</literal> 
-                    statement and all intervening bodies, and execution continues from the 
-                    body of the <literal>catch</literal> clause.</para>
+                    propagates to the caller, as defined below, unless there is an intervening 
+                    <literal>try</literal> with a <literal>catch</literal> clause matching the 
+                    thrown exception, in which case it terminates execution of the body of the 
+                    <literal>try</literal> statement and all intervening bodies, and execution 
+                    continues from the body of the <literal>catch</literal> clause.</para>
                 </listitem>
             </itemizedlist>
+        
+        </section>
+        
+        <section id="exceptionpropagation">
+            <title>Exception propagation</title>
+            
+            <comment><para>TODO: define how exceptions propagate to callers.</para></comment>
         
         </section>
         
@@ -784,13 +841,6 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
-         <section id="exceptions">
-            <title>Exceptions</title>
-            
-            <comment><para>TODO: define how exceptions affect execution of a program.</para></comment>
-        
-        </section>
-        
     </section>
     
     <section id="operatorexpressions">
@@ -967,57 +1017,6 @@ String result = middleObject.string;</programlisting>
             
     </section>
     
-    <section id="reification">
-        <title>Reification</title>
-        
-        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
-        generic type holds a reference to its type arguments. Therefore, the following are 
-        legal in Ceylon:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>testing the runtime value of a type argument of an instance, for 
-                example, <literal>objectList is List&lt;Person&gt;</literal> or 
-                <literal>case (is List&lt;Person&gt;)</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>filtering exceptions based on type arguments, for example,
-                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>testing the runtime value of an instance against a type parameter,
-                for example <literal>x is Key</literal>, or against a type with a type 
-                parameter as an argument, for example, 
-                <literal>objectList is List&lt;Element&gt;</literal>.</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing a type with 
-                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the runtime 
-                value of a type parameter, for example, <literal>Element</literal>, or of 
-                a type with a type parameter as an argument, for example, 
-                <literal>List&lt;Element&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the
-                runtime value of a type argument of an instance using reflection, for 
-                example, <literal>objectList.type.arguments.first</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>Result(parent)</literal>.</para>
-            </listitem>
-            -->
-        </itemizedlist>
-        
-        <comment><para>TODO: much more information about reification and optimization
-        of reified generics.</para></comment>
-        
-    </section>
-        
     <section id="concurrency">
         <title>Concurrency</title>
         
