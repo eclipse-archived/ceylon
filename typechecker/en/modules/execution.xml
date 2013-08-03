@@ -375,7 +375,7 @@ String result = middleObject.string;</programlisting>
             <title>Control directives</title>
             
             <para>Execution of a control directive terminates execution of the body in which 
-            it occurs, and possibly other surrounding bodies.</para>
+            it occurs, and possibly of other containing bodies.</para>
             
             <itemizedlist>
                 <listitem>
@@ -409,14 +409,23 @@ String result = middleObject.string;</programlisting>
                     continues from the body of the <literal>catch</literal> clause.</para>
                 </listitem>
             </itemizedlist>
-        
+            
         </section>
         
         <section id="exceptionpropagation">
             <title>Exception propagation</title>
             
-            <comment><para>TODO: define how exceptions propagate to callers.</para></comment>
-        
+            <para>If execution of an evaluation, assignment, invocation, or instantiation
+            terminates with an exception thrown, the exception propagates to the calling 
+            code, and terminates execution of the body of the function, getter, setter, or 
+            class initializer in which the expression involving the evaluation, assignment, 
+            invocation, or instantiation sequentially occurs, and of all intervening bodies, 
+            and, furthermore, the exception propagates to the caller unless there is an 
+            intervening <literal>try</literal> with a <literal>catch</literal> clause 
+            matching the thrown exception, in which case it terminates execution of the body 
+            of the <literal>try</literal> statement and all intervening bodies, and execution 
+            continues from the body of the <literal>catch</literal> clause.</para>
+            
         </section>
         
         <section id="toplevelinitialization">
