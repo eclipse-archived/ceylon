@@ -202,8 +202,6 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: formally define "immediately containing class or interface".</para></comment>
-            
             <para>Here, <literal>innerObject</literal> is the current instance of 
             <literal>Inner</literal> when <literal>member()</literal> is executed, and
             <literal>outerObject</literal> is the current instance of <literal>Outer</literal>:</para>
