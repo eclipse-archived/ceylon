@@ -228,10 +228,16 @@ innerObject.member();</programlisting>
                     frame is the frame associated with the current execution of the block.</para>
                 </listitem>
                 <listitem>
-                    <para>Otherwise, the statement occurs sequentially inside the body of 
-                    a declaration that occurs in the block, and the current frame is the frame 
-                    that was the current frame when the base member expression that resulted 
-                    in a reference to the declaration was executed.</para>
+                    <para>For a statement that occurs sequentially in the body of a nested 
+                    class or interface that occurs in the block, the current frame is the same 
+                    frame that was the current frame when the initializer of the current 
+                    instance of the nested class or interface was executed.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, for any other statement that occurs sequentially inside 
+                    the body of a declaration that occurs in the block, and the current frame 
+                    is the frame that was the current frame when the base member expression 
+                    that resulted in a reference to the declaration was executed.</para>
                 </listitem>
             </itemizedlist>
             
