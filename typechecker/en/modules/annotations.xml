@@ -1,0 +1,432 @@
+<chapter id="annotations">
+    <title>Annotations</title>
+    
+    <para><emphasis>Annotations</emphasis> allow information to be attached to a
+    declaration or assertion, and recovered at runtime via the use of the Ceylon
+    metamodel. Annotations are used to specify:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>information used by the compiler while typechecking the program,</para>
+        </listitem>
+        <listitem>
+            <para>API documentation for the documentation compiler,</para>
+        </listitem>
+        <listitem>
+            <para>serialization of a class, and</para>
+        </listitem>
+        <listitem>
+            <para>information needed by generic frameworks and libraries.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <section id="programelementannotations">
+        <title>Annotations of program elements</title>
+        
+        <para>Annotations occur at the very beginning of a declaration or assertion, 
+        in an <emphasis>annotation list</emphasis>.</para>
+        
+        <programlisting>"The user login action"
+by ("Gavin King",
+    "Andrew Haley")
+throws (`DatabaseException`,
+        "if database access fails")
+see (`LogoutAction.logout`)
+scope (session) 
+action { description="Log In"; url="/login"; }
+shared deprecated</programlisting>
+        
+        <section>
+            <title>Annotation lists</title>
+            
+            <para>An annotation is an initial lowercase identifier, optionally 
+            followed by an argument list.</para>
+        
+            <synopsis>Annotation: MemberName Arguments?</synopsis>
+            
+            <para>The annotation name is a reference to an annotation constructor,
+            resolved according to <xref linkend="unqualifiedreferenceresolution"/>.</para>
+            
+            <para>A list of annotations does not require punctuation between the 
+            individual annotations in the list. An annotation list may begin with a 
+            string literal, in which case it is interpreted as the argument of a 
+            <literal>doc</literal> annotation.</para>
+            
+            <synopsis>Annotations: StringLiteral? Annotation*</synopsis>
+            
+        </section>
+        
+        <section>
+            <title>Annotation arguments</title>
+            
+            <para>For an annotation with no arguments, the argument list may be 
+            omitted, in which case the annotation is interpreted as having an empty 
+            positional argument list. Otherwise, the annotation argument list may be 
+            specified using one of two forms:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Using a positional argument list, as defined in 
+                    <xref linkend="positionalarguments"/>:</para>
+                    <programlisting>doc ("the name") String name;</programlisting>
+                </listitem>
+                <listitem>
+                    <para>Using a named argument list, as defined in 
+                    <xref linkend="namedarguments"/>:</para>
+                    <programlisting>doc { description="the name"; } String name;</programlisting>
+                </listitem>
+            </itemizedlist>
+            
+            <para>As a special case, the name of the <literal>doc</literal> annotation
+            and the parenthesis around its argument may be ommitted if it is the first 
+            annotation in an annotation list.</para>
+            
+            <programlisting>"the name" String name;</programlisting>
+            
+            <para>Operator expressions, member expressions, self references, anonymous
+            functions, comprehensions, and string templates are not permitted in an 
+            annotation argument. Every base expression in an annotation argument must be 
+            a value reference to <literal>true</literal> or <literal>false</literal>, or 
+            must occur in a direct instantiation expression for an annotation type.</para>
+            
+            <comment><para>TODO: support values of enumerated classes as annotation
+            arguments.</para></comment>
+            
+            <para>A named argument to an annotation may not be an inline function, value,
+            or anonymous class.</para>
+            
+            <para>Every annotation is an invocation expression, as defined by
+            <xref linkend="invocationexpressions"/>, of an annotation constructor.</para>
+            
+        </section>
+        
+    </section>
+    
+    <section id="annotationdefinition">
+        <title>Annotation definition</title>
+        
+        <para>Annotations are typesafe.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>An <emphasis>annotation constructor</emphasis> defines the
+                schema of an annotation as it appears at a program element.</para>
+            </listitem>
+            <listitem>
+                <para>An <emphasis>annotation type</emphasis> defines constraints 
+                upon which program elements can bear the annotation, and an API for 
+                accessing the information carried by an annotation.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <section>
+            <title>Annotation constructors</title>
+            
+            <para>An <emphasis>annotation constructor</emphasis> is a toplevel function
+            that defines an annotation schema. An annotation constructor must be annotated 
+            <literal>annotation</literal>. An annotation constructor may not declare type 
+            parameters.</para>
+            
+            <para>Each parameter of an annotation constructor must have one of the following
+            types:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Integer</literal>, <literal>Float</literal>,
+                    <literal>Character</literal>, <literal>String</literal>, or
+                    <literal>Boolean</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>a subtype of <literal>Declaration</literal> in
+                    <literal>ceylon.language.model.declaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an annotation type, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <literal>T</literal> is a legal annotation constructor parameter 
+                    type.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A parameter of an annotation constructor may be variadic.</para>
+            
+            <para>An annotation constructor must simply instantiate and return an instance
+            of an annotation type. The body of an annotation constructor may not contain
+            multiple statements. Operator expressions, member expressions, self references,
+            anonymous functions, comprehensions, and string templates are not permitted in 
+            the definition of an annotation constructor. Every base expression in the body 
+            of an annotation constructor must be a reference to a parameter of the annotation 
+            constructor, to <literal>true</literal> or <literal>false</literal>, or must occur 
+            in a direct instantiation expression for an annotation type.</para>
+            
+            <para>A named argument appearing in the definition of an annotation constructor
+            may not be an inline function, value, or anonymous class.</para>
+            
+            <programlisting>shared annotation Scope scope(Scope s) => s;</programlisting>
+            <programlisting>shared annotation Todo todo(String text) => Todo(text);</programlisting>
+            
+            <para>An annotation constructor parameter may have a default argument, which must
+            be a legal annotation argument.</para>
+            
+            <para>The return type of an annotation constructor must be a constrained annotation 
+            type.</para>
+            
+        </section>
+        
+        <section id="annotationtypes">
+            <title>Annotation types</title>
+            
+            <para>Annotation constructors produce instances of <emphasis>annotation 
+            types</emphasis>. An annotation type is a class annotated <literal>annotation</literal>. 
+            An annotation type may not be a generic type with type parameters. An 
+            annotation type must have an empty initializer section.</para>
+            
+            <comment><para>Note: currently every annotation type must be a 
+            <literal>final</literal> class which directly extends <literal>Basic</literal>
+            in <literal>ceylon.language</literal>.</para></comment>
+            
+            <para>Each initializer parameter of an annotation type must have one of the 
+            following types:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Integer</literal>, <literal>Float</literal>,
+                    <literal>Character</literal>, <literal>String</literal>, or
+                    <literal>Boolean</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>a subtype of <literal>Declaration</literal> in
+                    <literal>ceylon.language.model.declaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an annotation type, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <literal>T</literal> is a legal annotation parameter type.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>An initializer parameter of an annotation type may be variadic.</para>
+            
+            <para>An initializer parameter of an annotation type may have a default argument, 
+            which must be a legal annotation argument.</para>
+            
+            <para>Every annotation type must be a subtype of <literal>Annotation</literal> 
+            defined in the package <literal>ceylon.language.model</literal>.</para>
+            
+            <para>A <emphasis>constrained annotation type</emphasis> is an annotation type 
+            that is a subtype of <literal>OptionalAnnotation</literal> or 
+            <literal>SequencedAnnotation</literal> defined in the package 
+            <literal>ceylon.language.model</literal>.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>OptionalAnnotation</literal>, at most one annotation of 
+                    annotation type <literal>A</literal> may occur at a given program 
+                    element.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>SequencedAnnotation</literal>, multiple annotations of 
+                    annotation type <literal>A</literal> may occur at a given program 
+                    element.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
+                    or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
+                    of annotation type <literal>A</literal> may not occur at a program 
+                    element whose metamodel expression type is not assignable to 
+                    <literal>P</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting><![CDATA[shared annotation class Scope()
+        of request | session | application
+        satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
+            
+            <programlisting><![CDATA[shared annotation class Todo(String text)
+        satisfies SequencedAnnotation<Todo,Annotated> {
+    string => text;
+}]]></programlisting>
+            
+            <comment><para>Note: it is perfectly acceptable for multiple annotation constructors 
+            to return the same annotation type.</para></comment>
+            
+            <comment><para>TODO: should we let an annotation return multiple instances of an
+            annotation type (<literal>A[]</literal> where <literal>A</literal> is an annotation
+            type).</para></comment>
+            
+        </section>
+        
+    </section>
+    
+    <section id="annotationvalues">
+        <title>Annotation values</title>
+        
+        <para>An <emphasis>annotation value</emphasis> is the value returned when an
+        annotation constructor is invoked. We may obtain the annotation values of all 
+        annotations of a given annotation type that occur at a given program element by 
+        passing the annotation type and program element metamodel reference to the method
+        <literal>annotations()</literal> defined in the package
+        <literal>ceylon.language.model</literal>.</para>
+        
+        <programlisting>Scope scope = annotations(`Scope`, `Person`) ? request;</programlisting>
+        <programlisting>Todo[] todos = annotations(`Todo`, `method`);</programlisting>
+        
+    </section>
+    
+    <section id="languageannotations">
+        <title>Language annotations</title>
+        
+        <para>Certain important annotations are predefined in the module 
+        <literal>ceylon.language</literal>.</para>
+                
+        <section id="declarationmodifiers">
+            <title>Declaration modifiers</title>
+            
+            <para>The following annotations, called <emphasis>modifiers</emphasis>, 
+            are compiler instructions that affect the compilation process:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>shared</literal> specifies that a 
+                    declaration is visible outside of the package or body in 
+                    which it occurs, or that a package is visible outside the
+                    module it belongs to.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>abstract</literal> specifies that a class
+                    cannot be instantiated.</para>
+                </listitem>
+                 <listitem>
+                    <para><literal>formal</literal> specifies that a member 
+                    does not specify an implementation and must therefore be 
+                    refined by every concrete subclass.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>default</literal> specifies that a method, 
+                    attribute, or member class may be refined by subtypes.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>actual</literal> indicates that a method,
+                    attribute, or member type refines a method, attribute, 
+                    or member type defined by a supertype.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>variable</literal> specifies that a value 
+                    may be assigned multiple times.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>late</literal> disables definite 
+                    initialization checking for a reference, allowing the 
+                    reference to be initialized after the initializer of
+                    the class to which it belongs has already completed.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>native</literal> specifies that a program
+                    element is actually implemented in a different language, 
+                    and that the program element should be ignored by the
+                    Ceylon compiler backend.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>deprecated</literal> indicates that a value, 
+                    function or type is deprecated. It accepts an optional
+                    <literal>String</literal> argument. The compiler produces a
+                    warning when compiling code that depends upon a deprecated
+                    program element.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>final</literal> specifies that a class may not 
+                    be extended.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>annotation</literal> specifies that a class is
+                    an annotation type, or that a toplevel function is an annotation
+                    constructor.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The following annotation is a hint to the compiler that lets 
+            the compiler optimize compiled bytecode for non-64 bit architectures:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>small</literal> specifies that a value of type
+                    <literal>Integer</literal>, <literal>Integer</literal> or
+                    <literal>Float</literal> contains 32-bit values.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>By default, <literal>Integer</literal> and <literal>Float</literal> 
+            are assumed to represent 64-bit values.</para>
+            
+            <!--
+            <comment><para>TODO: should we make <literal>actual</literal> a keyword, 
+            to save the effort of redeclaring the attribute type or method return 
+            type?</para></comment>
+            -->
+            
+            <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>
+            annotation to force the compiler to optimize a tail-recursive method or
+            getter?</para></comment>
+                        
+            <para>A declaration may not be annotated both <literal>formal</literal> 
+            and <literal>default</literal>.</para>
+            
+            <para>If a declaration is annotated <literal>formal</literal>, 
+            <literal>default</literal>, or <literal>actual</literal> then it must 
+            also be annotated <literal>shared</literal>.</para>
+            
+        </section>
+        
+        <section id="documentation">
+            <title>Documentation</title>
+            
+            <para>The following annotations are instructions to the documentation
+            compiler:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>doc</literal> specifies the description of a 
+                    program element, in Markdown format text.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>by</literal> specifies the authors of a program 
+                    element.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>license</literal> specifies the URL of the
+                    license under which a module or package is distributed.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>see</literal> specifies a related member or 
+                    type.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>throws</literal> specifies a thrown exception
+                    type.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>tagged</literal> specifies classifying named 
+                    tags.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The <literal>String</literal> arguments to the <literal>deprecated</literal>, 
+            <literal>doc</literal>, <literal>throws</literal> and <literal>by</literal> 
+            annotations are parsed by the documentation compiler as Markdown-format
+            content.</para>
+            
+            <para>These annotations are defined in the package 
+            <literal>ceylon.language.documentation</literal>.</para>
+           
+        </section>
+    
+    </section>
+
+</chapter>

@@ -17,6 +17,89 @@
     just make it a block.</para></comment>
     -->
     
+    <section id="visibility">
+        <title>Visibility</title>
+        
+        <para>Classes, interfaces, functions, values, aliases, and type parameters 
+        have names. Occurrence of a name in code implies a hard dependency from the 
+        code in which the name occurs to the schema of the named declaration. We say 
+        that a class, interface, value, function, alias, or type parameter is 
+        <emphasis>visible</emphasis> to a certain program element if its name may 
+        occur in the code that belongs to that program element.</para>
+        
+        <para>The visibility of a declaration depends upon where it occurs, and upon 
+        whether it is annotated <literal>shared</literal>. A toplevel or member 
+        declaration may be annotated <literal>shared</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If a toplevel declaration is annotated <literal>shared</literal>, 
+                it is visible wherever the package that contains it is visible.
+                Otherwise, a toplevel declaration is visible only to code in the 
+                package containing its compilation unit.</para>
+            </listitem>
+            <listitem>
+                <para>If a member declaration is annotated <literal>shared</literal>, 
+                it is visible wherever the class or interface that contains it is 
+                visible. Otherwise, a declaration that occurs directly inside a class 
+                or interface body is visible only inside the class or interface 
+                declaration.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A type parameter or a declaration that occurs directly inside a block 
+        (the body of a function, getter, setter, or control structure) may not be 
+        annotated <literal>shared</literal>.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type parameter is visible only inside the declaration to which 
+                it belongs.</para> 
+            </listitem>
+            <listitem>
+                <para>A declaration that occurs directly inside a block is visible 
+                only inside the block.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A nested declaration not annotated <literal>shared</literal> is called 
+        a <emphasis>block local</emphasis> declaration.</para>
+        
+        <comment><para>TODO: Should we allow you to limit the effect of the 
+        <literal>shared</literal> annotation by specifying a containing program 
+        element or package?</para></comment>
+        
+        <para>We say that a produced type is <emphasis>visible</emphasis> to a
+        certain program element if it is formed from type parameters and types 
+        whose declarations are visible to the program element. For 
+        <literal>shared</literal> declarations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The type of a value must be visible everywhere the value 
+                itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The return type of a function must be visible everywhere 
+                the function itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The satisfied interfaces of a class or interface must be 
+                visible everywhere the class or interface itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The superclass of a class must be visible everywhere the 
+                class itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The aliased type of a class alias, interface alias, or 
+                type alias must be visible everywhere the alias itself is 
+                visible.</para>
+            </listitem>
+        </itemizedlist>
+        
+    </section>
+        
     <section id="blockstructure">
         <title>Block structure</title>
     

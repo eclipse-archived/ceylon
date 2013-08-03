@@ -9,6 +9,7 @@
 <!ENTITY declarations              SYSTEM "modules/declarations.xml">
 <!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
 <!ENTITY expressions               SYSTEM "modules/expressions.xml">
+<!ENTITY annotations               SYSTEM "modules/annotations.xml">
 <!ENTITY execution                 SYSTEM "modules/execution.xml">
 <!ENTITY modules                   SYSTEM "modules/modules.xml">
 <!ENTITY equals                    "==">
@@ -147,6 +148,7 @@
     &declarations;
     &statementblocks;
     &expressions;
+    &annotations;
     &execution;
     &modules;
 

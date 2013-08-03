@@ -2623,35 +2623,37 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         method of the type. The member is resolved as a member of the type 
         according to <xref linkend="qualifiedreferenceresolution"/>.</para>
         
+        <comment><para>TODO: define the syntax for package and module references.</para></comment>
+        
         <section>
             <title>Typed and untyped metamodel expressions</title>
             
-        <para>Metamodel expressions may or may not include type arguments to 
-        generic types or generic functions. However:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if a parameterized type occurs inside a union or intersection, 
-                type arguments must be supplied,</para>
-            </listitem>
-            <listitem>
-                <para>if a parameterized type occurs inside a type argument list, 
-                type arguments must be supplied,</para>
-            </listitem>
-            <listitem>
-                <para>if a parameterized type qualifies a type with type arguments, 
-                type arguments must be supplied, or</para>
-            </listitem>
-            <listitem>
-                <para>if a parameterized type qualifies a function reference with 
-                type arguments, type arguments must be supplied.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If a generic type or generic function with no type arguments occurs 
-        in a metamodel expression, the metamodel expression is called an
-        <emphasis>uptyped metamodel expression</emphasis>. Otherwise, the metamodel
-        expression is called a <emphasis>typed metamodel expression</emphasis>.</para>
+            <para>Metamodel expressions may or may not include type arguments to 
+            generic types or generic functions. However:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if a parameterized type occurs inside a union or intersection, 
+                    type arguments must be supplied,</para>
+                </listitem>
+                <listitem>
+                    <para>if a parameterized type occurs inside a type argument list, 
+                    type arguments must be supplied,</para>
+                </listitem>
+                <listitem>
+                    <para>if a parameterized type qualifies a type with type arguments, 
+                    type arguments must be supplied, or</para>
+                </listitem>
+                <listitem>
+                    <para>if a parameterized type qualifies a function reference with 
+                    type arguments, type arguments must be supplied.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a generic type or generic function with no type arguments occurs 
+            in a metamodel expression, the metamodel expression is called an
+            <emphasis>uptyped metamodel expression</emphasis>. Otherwise, the metamodel
+            expression is called a <emphasis>typed metamodel expression</emphasis>.</para>
         
         </section>
         
