@@ -47,6 +47,7 @@ public class MetamodelGenerator {
     public static final String KEY_PACKAGE      = "$pk";
     public static final String KEY_PARAMS       = "$ps";
     public static final String KEY_SELF_TYPE    = "$st";
+    public static final String KEY_IS_ANNOTATION= "$annot";
 
     public static final String KEY_DEFAULT      = "$def";
 
@@ -533,7 +534,7 @@ public class MetamodelGenerator {
     /** Encodes all annotations as a map which is then stored under the
      * {@link #KEY_ANNOTATIONS} key in the specified map. */
     private void encodeAnnotations(Declaration d, Map<String, Object> m) {
-        HashMap<String, List<String>> anns = new HashMap<String, List<String>>();
+        HashMap<String, List<String>> anns = new HashMap<>();
         for (Annotation a : d.getAnnotations()) {
             String name = a.getName();
             List<String> args = a.getPositionalArguments();
@@ -541,6 +542,9 @@ public class MetamodelGenerator {
                 args = Collections.emptyList();
             }
             anns.put(name, args);
+        }
+        if (d.isAnnotation()) {
+            m.put(KEY_IS_ANNOTATION, "1");
         }
         if (!anns.isEmpty()) {
             m.put(KEY_ANNOTATIONS, anns);

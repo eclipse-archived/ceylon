@@ -131,6 +131,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 cls.setName(name);
                 cls.setUnit(unit);
                 setAnnotations(cls, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
+                if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
+                    cls.setAnnotation(true);
+                }
                 if (parent == this) {
                     unit.addDeclaration(cls);
                 } else {
@@ -389,6 +392,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         md.setContainer(parent);
         setAnnotations(md, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
         md.setUnit(unit);
+        if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
+            md.setAnnotation(true);
+        }
         if (parent == this) {
             //Top-level declarations are directly added to the unit
             unit.addDeclaration(md);
