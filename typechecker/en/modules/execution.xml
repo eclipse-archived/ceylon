@@ -114,54 +114,93 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
             
         </section>
         
-    <section id="reification">
-        <title>Type argument reification</title>
-        
-        <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
-        generic type holds a reference to its type arguments. Therefore, the following are 
-        legal in Ceylon:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>testing the runtime value of a type argument of an instance, for 
-                example, <literal>objectList is List&lt;Person&gt;</literal> or 
-                <literal>case (is List&lt;Person&gt;)</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>filtering exceptions based on type arguments, for example,
-                <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>testing the runtime value of an instance against a type parameter,
-                for example <literal>x is Key</literal>, or against a type with a type 
-                parameter as an argument, for example, 
-                <literal>objectList is List&lt;Element&gt;</literal>.</para>
-            </listitem>
+        <section id="reification">
+            <title>Type argument reification</title>
+            
+            <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
+            generic type holds a reference to its type arguments. Therefore, the following are 
+            legal in Ceylon:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>testing the runtime value of a type argument of an instance, for 
+                    example, <literal>objectList is List&lt;Person&gt;</literal> or 
+                    <literal>case (is List&lt;Person&gt;)</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>filtering exceptions based on type arguments, for example,
+                    <literal>catch (NotFoundException&lt;Person&gt; pnfe)</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>testing the runtime value of an instance against a type parameter,
+                    for example <literal>x is Key</literal>, or against a type with a type 
+                    parameter as an argument, for example, 
+                    <literal>objectList is List&lt;Element&gt;</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>obtaining a <literal>Type</literal> object representing a type with 
+                    type arguments, for example, <literal>`List&lt;Person&gt;`</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>obtaining a <literal>Type</literal> object representing the runtime 
+                    value of a type parameter, for example, <literal>`Element`</literal>, or of 
+                    a type with a type parameter as an argument, for example, 
+                    <literal>`List&lt;Element&gt;`</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>obtaining a <literal>Type</literal> object representing the
+                    runtime value of a type argument of an instance using reflection, for 
+                    example, <literal>type(objectList).typeArguments.first</literal>.</para>
+                </listitem>
+                <!--
+                <listitem>
+                    <para>instantiating a type parameter with an initialization parameter
+                    specification, for example, <literal>Result(parent)</literal>.</para>
+                </listitem>
+                -->
+            </itemizedlist>
+            
+            <para>At runtime, all types are <emphasis>concrete types</emphasis> formed by:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>recursively replacing all type aliases with their definitions and</para>
+                </listitem>
+                <listitem>
+                    <para>recursively replacing all type parameters with their type arguments</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>in any type that appears in an expression or condition.</para>
+            
+            <para>Therefore, every type parameter refers, at runtime, to a concrete type that
+            involves no type aliases or type parameters. In particular, the type arguments
+            held by an instance of a generic class are concrete types.</para>
+            
+            <para>This program prints <literal>String[]</literal>.</para>
+            
+            <programlisting><![CDATA[class Generic<out T>(T t) { string=>`T`.string; }
+Generic<{S*}> gen<S>(S* ss) => Generic(ss);
+void run() {
+    print(gen("hello", "world"));
+}]]></programlisting>
+            
             <!--
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing a type with 
-                type arguments, for example, <literal>List&lt;Person&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the runtime 
-                value of a type parameter, for example, <literal>Element</literal>, or of 
-                a type with a type parameter as an argument, for example, 
-                <literal>List&lt;Element&gt;</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>obtaining a <literal>Type</literal> object representing the
-                runtime value of a type argument of an instance using reflection, for 
-                example, <literal>objectList.type.arguments.first</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>Result(parent)</literal>.</para>
-            </listitem>
+            <para>Notice that the runtime type argument may be a more precise type than the
+            compile time type argument. (In this case, <literal>[String*]</literal> instead of
+            <literal>{String*}</literal>.) This is perfectly sound.</para>
             -->
-        </itemizedlist>
-        
-        <comment><para>TODO: much more information about reification and optimization
-        of reified generics.</para></comment>
+            
+            <para>The runtime is generally permitted, as an optimization, to return a more 
+            precise type in place of a less precise type when a type parameter is evaluated.
+            This program may print <literal>String</literal> instead of <literal>Object</literal>,
+            even though <literal>Object</literal> is the type argument inferred at compile time.</para>
+            
+            <programlisting><![CDATA[class Generic<out T>(T t) { string=>`T`.string; }
+Generic<Object> gen(Object o) => Generic(o);
+void run() {
+    print(gen("hello"));
+}]]></programlisting>
         
     </section>
         
