@@ -12,15 +12,20 @@
         </listitem>
     </itemizedlist>
     
-    <para>Despite the obvious differences between languages that these virtual 
-    machines were designed for, they share very much in common in terms of runtime
-    semantics, including common notions such as object identity, primitive value
-    types, exceptions, garbage collection, dynamic dispatch, and pass by reference.</para>
+    <para>In future, other virtual machine architectures may be supported.</para>
+    
+    <para>Despite the obvious differences between the respective languages that these 
+    virtual machines were designed for, they share very much in common in terms of 
+    runtime semantics, including common notions such as object identity, primitive 
+    value types, exceptions, garbage collection, dynamic dispatch, and pass by 
+    reference.</para>
     
     <para>Ceylon abstracts away many of the differences between these platforms, and
     reuses what is common between them. Inevitably there are some differences that
     can't reasonably be hidden from the Ceylon program, and the programmer must take 
     these differences into consideration.</para>
+    
+    <para>In Ceylon, every value is a reference to an instance of a class.</para>
     
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
@@ -40,10 +45,11 @@
         <para>Two values are said to be <emphasis>identical</emphasis> if they are
         references to the same object&mdash;if they hold the same unique identifier. 
         The program may determine if two values of type <literal>Identifiable</literal> 
-        are identical using the <literal>&identical;</literal> operator. It may not 
-        directly obtain the unique identifier (which is a purely abstract construct). 
-        The program has no way of determining the identity of a value which is not of 
-        type <literal>Identifiable</literal>.</para>
+        are identical using the <literal>&identical;</literal> operator defined in
+        <xref linkend="operatordefinition"/>. It may not directly obtain the unique 
+        identifier (which is a purely abstract construct). The program has no way of 
+        determining the identity of a value which is not of type 
+        <literal>Identifiable</literal>.</para>
         
         <para>Given a value, the program may determine if the referenced object is an
         instance of a certain type using the <literal>is</literal> operator. The class
@@ -113,9 +119,15 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
     <section id="sequentialexecutionandclosure">
         <title>Sequential execution and closure</title>
         
-        <para>Ceylon programs are organized into bodies containing statements which are
-        executed sequentially and have access to declarations in their surrounding 
-        context and persistent values referenced by those declarations.</para>
+        <para>Ceylon programs are organized into bodies, as defined in 
+        <xref linkend="blockstructure"/>, containing statements which are executed 
+        sequentially and have access to declarations in their surrounding lexical context 
+        and persistent values referenced by those declarations.</para> 
+        
+        <comment><para>Note: for the purposes of this section, an interface body is, 
+        strictly speaking, a trivial case of a body which contains no statements or 
+        persistent values, but we're primarily concerned with blocks and class bodies.
+        </para></comment>
         
         <para>The statements and non-lazy specifiers that directly occur in a body are 
         executed sequentially in the lexical order in which they occcur. Execution of 
@@ -135,43 +147,62 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
         in a pause in execution of the body while the called getter, setter, function, 
         or class is executed or instantiated. However, the frame associated with the 
         calling body is retained and values held in the frame are still considered 
-        accessible.</para>
+        accessible. When execution of the body resumes, the frame is restored.</para>
         
         <para>When execution of a body terminates, the frame may or may not become
-        inaccessible. In the case of a class body, the frame and its values become a
-        new instance of the class, and remain accessible while this object is itself
-        accessible. In the case of any other kind of body, the frame and its values
-        may remain accessible if a reference to a function of class declared within
-        the body is accessible, or if an instance of a class declared within the body
-        is accessible. When execution of the body resumes, the frame is restored.</para>
+        inaccessible. In the case of a class body, if the initializer terminates with
+        no thrown exception, the frame and its values become a new instance of the 
+        class, are associated with the newly created unique identifier, and remain 
+        accessible while this object is itself accessible. In the case of any other 
+        kind of body, or in the case that an initializer throws an exception, the 
+        frame and its values may remain accessible if a reference to a function of 
+        class declared within the body is accessible, or if an instance of a class 
+        declared within the body is accessible. Otherwise, the frame becomes 
+        inaccessible and may be destroyed.</para>
         
         <para>The principle of <emphasis>closure</emphasis> states that a nested body
         always has access to a frame for every containing body. The set of 
         <emphasis>current instances</emphasis> of containing classes and 
         <emphasis>current frames</emphasis> of containing blocks forms the closure of a 
-        nested declaration.</para>           
+        nested declaration.</para>
         
         <section id="closureofaclassorinterface">
             <title>Closure of a class or interface</title>
             
-            <para>If a declaration is nested directly or indirectly inside a class or interface 
-            declaration, then there is always a <emphasis>current instance</emphasis> of the 
-            class or interface when the nested declaration body is executed. The current 
-            instance is determined as follows:</para>
+            <para>If a statement is occurs directly or indirectly inside a class or interface 
+            body, then there is always a <emphasis>current instance</emphasis> of the class or 
+            interface when the statement is executed. The current instance is determined as 
+            follows:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>for the innermost class or interface declaration that contains the 
-                    nested declaration, the current instance is the receiving instance of the
-                    invocation, evaluation, or assignment, and</para>
+                    <para>For a statement that occurs sequentially, as defined by 
+                    <xref linkend="blockstructure"/>, in the body of the class, the current 
+                    instance is the new instance being initialized.</para>
                 </listitem>
                 <listitem>
-                    <para>for any other class or interface that contains the nested declaration,
-                    the current instance is the same object that was the current instance when
-                    the initializer of the current instance of the innermost class or interface 
-                    declaration was executed.</para>
+                    <para>For a statement that occurs sequentially in the body of a member
+                    of the class or interface, the current instance is the receiving instance 
+                    of the base or member expression that resulted in a reference to the 
+                    member.</para>
+                </listitem>
+                <listitem>
+                    <para>For a statement that occurs sequentially in the body of a nested 
+                    class or interface that occurs in the body of the class or interface, 
+                    the current instance is the same object that was the current instance 
+                    when the initializer of the current instance of the nested class or 
+                    interface was executed.</para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, for any other statement that occurs sequentially in the 
+                    body of a declaration that occurs in the body of the class or interface, 
+                    the current instance is the same object that was the current instance when 
+                    the base member expression that resulted in a reference to the declaration 
+                    was executed.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>TODO: formally define "immediately containing class or interface".</para></comment>
             
             <para>Here, <literal>innerObject</literal> is the current instance of 
             <literal>Inner</literal> when <literal>member()</literal> is executed, and
@@ -186,24 +217,21 @@ innerObject.member();</programlisting>
         <section id="closureofablock">
             <title>Closure of a block</title>
             
-            <para>If a declaration is nested directly or indirectly inside a block, then there 
-            is always a <emphasis>current frame</emphasis> of the block when the nested 
-            declaration is executed. The current frame contains the values of all references 
-            declared by the block. The current frame is determined as follows:</para>
+            <para>If a statement occurs directly or indirectly inside a block, then there 
+            is always a <emphasis>current frame</emphasis> of the block when the statement 
+            is executed. The current frame is determined as follows:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the nested declaration is nested directly inside a block,
-                    the current frame contains the current values at the point of execution
-                    of the value reference expression or callable reference expression that
-                    refers to the nested declaration, or, otherwise,</para>
+                    <para>If the statement occurs sequentially, as defined by 
+                    <xref linkend="blockstructure"/>, in the block, the current frame is the
+                    frame is the frame associated with the current execution of the block.</para>
                 </listitem>
                 <listitem>
-                    <para>if the nested declaration is contained inside the body of another
-                    nested declaration, the current frame is the current frame of the 
-                    containing declaration at the point of execution of the value reference 
-                    expression or callable reference expression that first produced a reference 
-                    to the nested declaration.</para>
+                    <para>Otherwise, the statement occurs sequentially inside the body of 
+                    a declaration that occurs in the block, and the current frame is the frame 
+                    that was the current frame when the base member expression that resulted 
+                    in a reference to the declaration was executed.</para>
                 </listitem>
             </itemizedlist>
             
@@ -231,15 +259,39 @@ String result = innerMethod();</programlisting>
 
 Object middleObject = outerMethod("hello");
 String result = middleObject.string;</programlisting>
-
+            
+        </section>
+        
+        <section>
+            <title>Class instance optimization</title>
+            
+            <para>As an exception to the above, the compiler is permitted to destroy a 
+            persistent value associated with a class instance when the class initializer 
+            terminates, potentially rendering inaccessible the instance identified by the 
+            value, if it can determine that the persistent value will never be subsequently
+            accessed by the program.</para>
+            
+            <comment><para>This is optimization is the only source of a distinction between
+            a "field" of a class and a "local variable" of its initializer. There is no way
+            for a program to observe this distinction.</para></comment>
+            
         </section>
         
         <section id="toplevelinitialization">
             <title>Initialization of toplevel references</title>
             
-            <comment><para>TODO: specify the semantics surrounding initialization of 
-            toplevels, the exceptions that can occur, and the differences between the
-            two platforms!</para></comment>
+            <para>A toplevel reference has no associated frame. Instead, the lifecycle of 
+            its persistent value is associated with the loading and unloading of a module 
+            by the module runtime. The first time a toplevel reference is accessed, its 
+            initializer expression is evaluated, and the resulting value is associated 
+            with the reference. This association survives until the toplevel reference is 
+            reassigned, or until the module is unloaded by the module runtime.</para>
+            
+            <para>Initialization of a toplevel reference may result in recursive 
+            initialization of other toplevel references. Therefore, it is possible that
+            a cycle could occur where evaluation of a toplevel reference occurs while
+            evaluating its initializer expression. When this occurs, an 
+            <literal>InitializationException</literal> is thrown.</para>
             
         </section>
         

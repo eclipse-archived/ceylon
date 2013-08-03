@@ -263,19 +263,21 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     <section>
         <title><literal>this</literal></title>
             
-        <para>The keyword <literal>this</literal> refers to the current instance, 
-        and is assignable to the type of the current class or interface (the class 
-        or interface in which the expression appears).</para>
+        <para>The keyword <literal>this</literal> refers to the current instance,
+        as defined in <xref linkend="closureofaclassorinterface"/>, of the 
+        immediately containing class or interface (the class or interface in which 
+        the expression appears). Its type is the type of the current class or 
+        interface.</para>
         
     </section>
    
     <section>
         <title><literal>outer</literal></title>
             
-        <para>The keyword <literal>outer</literal> refers to the current instance
-        of the class or interface which immediately contains the current class or 
-        interface and is assignable to the type of this containing class or 
-        interface.</para>
+        <para>The keyword <literal>outer</literal> refers to the current instance,
+        as defined in <xref linkend="closureofaclassorinterface"/>, of the class or 
+        interface which immediately contains the immediately containing class or 
+        interface. Its type is assignable to the type of this class or interface.</para>
         
     </section>
                 
@@ -283,13 +285,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title><literal>super</literal></title>
             
         <para>The keyword <literal>super</literal> refers to the current instance 
-        (the instance that is being invoked), and has the same members as the 
-        intersection of the immediate superclass and all immediate superinterfaces
-        of the class, except for <literal>formal</literal> members, and except for
-        any member inherited from more than one supertype of the class. Any 
-        invocation of this reference is processed by the member defined or inherited 
-        by the supertype, bypassing any method declaration that refines the method 
-        on the current class or any subclass of the current class. The 
+        of the immediately containing class or interface, and has the same members 
+        as the intersection of the immediate superclass and all immediate 
+        superinterfaces of the class, except for <literal>formal</literal> members, 
+        and except for any member inherited from more than one supertype of the 
+        class. Any invocation of this reference is processed by the member defined 
+        or inherited by the supertype, bypassing any method declaration that refines 
+        the method on the current class or any subclass of the current class. The 
         <literal>super</literal> reference is not assignable to any type. Nor may 
         it be narrowed to any type using <literal>if (is ...)</literal>.</para>
         
@@ -303,14 +305,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         expression is processed by the member defined or inherited by 
         <literal>Type</literal>, bypassing any method declaration that refines the 
         method on the current class or any subclass of the current class. An 
-        expression of this form is not assignable to any type. Nor may it be narrowed 
-        to any type using <literal>if (is ...)</literal>.</para>
+        expression of this form is not assignable to any type. Nor may it be 
+        narrowed to any type using <literal>if (is ...)</literal>.</para>
         
-        <comment><para>TODO: In fact, the compiler treats <literal>super</literal> as
-        a value having the intersection type indicated, and uses separate checks to 
-        prevent the reference from leaking. That is probably a better formulation to
-        use here, and the restrictions would be defined along with the restrictions on
-        use of <literal>this</literal> in initializer/declaration sections.</para></comment>
+        <comment><para>TODO: In fact, the compiler treats <literal>super</literal> 
+        as a value having the intersection type indicated, and uses separate checks 
+        to prevent the reference from leaking. That is probably a better formulation 
+        to use here, and the restrictions would be defined along with the restrictions 
+        on use of <literal>this</literal> in initializer/declaration sections.</para></comment>
         
     </section>
         
@@ -428,8 +430,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         reference as defined by <xref linkend="unqualifiedreferenceresolution"/>.</para>
         
         <para>If a base expression is a reference to an attribute, method, or 
-        member class of a class, the receiving instance is the current instance 
-        of that class, as defined by <xref linkend="sequentialexecutionandclosure"/>.</para>
+        member class of a class, the receiving instance is the current instance of 
+        that class, as defined by <xref linkend="closureofaclassorinterface"/>.
+        Otherwise, there is no receiving instance.</para>
     
     </section>
     
@@ -449,20 +452,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         reference as defined by <xref linkend="qualifiedreferenceresolution"/>.</para>
         
         <para>The receiver expression produces the instance upon which the member 
-        is invoked or evaluated. The type of the receiver expression must have a 
-        member with the specified name.</para>
-        
-        <para>When a member expression is executed, the receiver expresson is 
-        evaluated and then held until the member is invoked or evaluated.</para>
-        
-        <para>If a base expression or member expression does not reference any 
-        statically typed declaration, and occurs within a <literal>dynamic</literal> 
-        block, then it is considered a value reference.</para>
+        is invoked or evaluated. When a member expression is executed, the receiver 
+        expresson is evaluated to produce the receiving instance which is held 
+        until the member is invoked or evaluated, as defined in 
+        <xref linkend="evaluationinvocationandassignment"/>.</para>
         
     </section>
                 
     <section id="valuereferences">
-            <title>Value references</title>
+        <title>Value references</title>
         
         <para>A <emphasis>value reference</emphasis> is a base expression or 
         member expression that references a value declaration.</para>
@@ -476,6 +474,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>A value declaration is never generic, so a value reference never
         has a type argument list.</para>
+        
+        <para>If a base expression or member expression does not reference any 
+        statically typed declaration, and occurs within a <literal>dynamic</literal> 
+        block, then it is considered a value reference.</para>
         
     </section>
     
@@ -542,7 +544,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section id="staticvaluereferences">
-            <title>Static value references</title>
+        <title>Static value references</title>
         
         <para>A <emphasis>static value reference</emphasis> is a static 
         expression that references an attribute declaration.</para>
