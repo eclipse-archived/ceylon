@@ -1344,7 +1344,7 @@ public class GenerateJsVisitor extends Visitor
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$$metamodel$$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-        out(";");
+        endLine(true);
     }
 
     @Override

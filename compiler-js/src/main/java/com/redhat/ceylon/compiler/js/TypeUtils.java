@@ -65,8 +65,12 @@ public class TypeUtils {
                 gen.out(",");
             }
             gen.out(e.getKey().getName(), ":");
-            ProducedType pt = e.getValue();
-            TypeDeclaration d = pt.getDeclaration();
+            final ProducedType pt = e.getValue();
+            if (pt == null) {
+                gen.out("'", e.getKey().getName(), "'");
+                continue;
+            }
+            final TypeDeclaration d = pt.getDeclaration();
             boolean composite = d instanceof UnionType || d instanceof IntersectionType;
             boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
             boolean closeBracket = false;
