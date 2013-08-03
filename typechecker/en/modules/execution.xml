@@ -117,9 +117,10 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
         <section id="reification">
             <title>Type argument reification</title>
             
-            <para>Type arguments are <emphasis>reified</emphasis> in Ceylon. An instance of a 
-            generic type holds a reference to its type arguments. Therefore, the following are 
-            legal in Ceylon:</para>
+            <para>Type arguments, as defined in <xref linkend="generictypearguments"/>, are 
+            <emphasis>reified</emphasis> in Ceylon. An instance of a generic type holds a 
+            reference to each of its type arguments. Therefore, the following are possible in 
+            Ceylon:</para>
             
             <itemizedlist>
                 <listitem>
@@ -211,8 +212,9 @@ void run() {
         
         <para>Ceylon programs are organized into bodies, as defined in 
         <xref linkend="blockstructure"/>, containing statements which are executed 
-        sequentially and have access to declarations in their surrounding lexical context 
-        and persistent values referenced by those declarations.</para> 
+        sequentially and have access to declarations which occur in the surrounding 
+        lexical context and to persistent values held by references, as defined in 
+        <xref linkend="references"/>, declared in the surrounding lexical context.</para> 
         
         <comment><para>Note: for the purposes of this section, an interface body is, 
         strictly speaking, a trivial case of a body which contains no statements or 
@@ -220,11 +222,11 @@ void run() {
         </para></comment>
         
         <para>The statements and non-lazy specifiers that directly occur in a body are 
-        executed sequentially in the lexical order in which they occcur. Execution of 
-        a body begins at the first statement or non-lazy specifier. Execution of a block 
+        executed sequentially in the lexical order in which they occcur. Execution of a 
+        body begins at the first statement or non-lazy specifier. Execution of a block 
         terminates when the last statement or non-lazy specifier of the body finishes 
-        executing, or when a control directive that terminates the block is executed, or 
-        when an exception is thrown by an evaluation, assignment, invocation, or 
+        executing, or when a control directive that terminates the block is executed, 
+        or when an exception is thrown by an evaluation, assignment, invocation, or 
         instantiation.</para>
         
         <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
@@ -374,8 +376,9 @@ String result = middleObject.string;</programlisting>
         <section>
             <title>Control directives</title>
             
-            <para>Execution of a control directive terminates execution of the body in which 
-            it occurs, and possibly of other containing bodies.</para>
+            <para>Execution of a control directive, as specified in 
+            <xref linkend="controldirectives"/>, terminates execution of the body in which it 
+            occurs, and possibly of other containing bodies.</para>
             
             <itemizedlist>
                 <listitem>
@@ -452,9 +455,10 @@ String result = middleObject.string;</programlisting>
    <section id="executionofcontrolstructures">
         <title>Execution of control structures, control directives, and assertions</title>
         
-        <para>Control structures are used to organize conditional and repetitive code within 
-        a body. Assertions are essentially a sophisticated sort of control directive, but
-        for convenience are categorized together with control structures.</para>
+        <para>Control structures, as specified in <xref linkend="controlstructures"/>, are 
+        used to organize conditional and repetitive code within a body. Assertions are 
+        essentially a sophisticated sort of control directive, but for convenience are 
+        categorized together with control structures.</para>
         
         <section id="evaluationofconditions">
             <title>Evaluation of condition lists</title>
@@ -463,10 +467,10 @@ String result = middleObject.string;</programlisting>
             <literal>assert</literal> requires evaluation of a condition list, as defined
             in <xref linkend="controlstructureconditions"/>.</para>
             
-            <para>To determine if a condition list is satisfied, its constituent conditions are 
-            evaluated in the lexical order in which they occur in the condition list. If any 
-            condition is not satisfied, none of the subsequent conditions in the list are 
-            evaluated.</para>
+            <para>To determine if a condition list is satisfied, its constituent conditions 
+            are evaluated in the lexical order in which they occur in the condition list. 
+            If any condition is not satisfied, none of the subsequent conditions in the list 
+            are evaluated.</para>
             
             <itemizedlist>
                 <listitem>
@@ -510,8 +514,9 @@ String result = middleObject.string;</programlisting>
         <section id="validationofassertions">
             <title>Validation of assertions</title>
             
-            <para>When an assertion is executed, its condition list is evaluated. If the condition 
-            list is not satisfied, an exception of type <literal>AssertionFailure</literal> in 
+            <para>When an assertion, as specified in <xref linkend="assertions"/>, is 
+            executed, its condition list is evaluated. If the condition list is not satisfied, 
+            an exception of type <literal>AssertionFailure</literal> in 
             <literal>ceylon.language</literal> is thrown.</para>
             
             <para>The information carried by the <literal>AssertionFailure</literal> includes:</para>
@@ -534,20 +539,37 @@ String result = middleObject.string;</programlisting>
             <para>The <literal>if/else</literal> and <literal>switch/case/else</literal> 
             constructs control conditional execution.</para>
             
-            <para>When the <literal>if/else</literal> construct is executed, its condition list 
-            is evaluated. If the condition list is satisfied, the <literal>if</literal> block is 
-            executed. Otherwise, the <literal>else</literal> block, if any, is executed, or, if
-            the construct has an <literal>else if</literal>, the child <literal>if</literal>
+            <para>When the <literal>if/else</literal> construct, specified in 
+            <xref linkend="ifelse"/>, is executed, its condition list is evaluated. If the 
+            condition list is satisfied, the <literal>if</literal> block is executed. 
+            Otherwise, the <literal>else</literal> block, if any, is executed, or, if the 
+            construct has an <literal>else if</literal>, the child <literal>if</literal>
             construct is executed.</para>
             
-            <para>When a <literal>switch/case/else</literal> construct is executed, its 
-            <literal>switch</literal> expression is evaluated to produce a value. The value is
-            guaranteed to <emphasis>match</emphasis> at most one <literal>case</literal> of the 
-            <literal>switch</literal>. If it matches a certain case, then that <literal>case</literal>
-            block is executed. Otherwise, <literal>switch</literal> is guaranteed to have an 
-            <literal>else</literal>, and so the <literal>else</literal> block is executed.</para>
+            <para>When a <literal>switch/case/else</literal> construct, specified in 
+            <xref linkend="switchcaseelse"/>, is executed, its <literal>switch</literal> 
+            expression is evaluated to produce a value. The value is guaranteed to 
+            <emphasis>match</emphasis> at most one <literal>case</literal> of the 
+            <literal>switch</literal>. If it matches a certain case, then that 
+            <literal>case</literal> block is executed. Otherwise, <literal>switch</literal> 
+            is guaranteed to have an <literal>else</literal>, and so the 
+            <literal>else</literal> block is executed.</para>
             
-            <comment><para>TODO: formally define what it means for a value to match a case!</para></comment>
+            <para>The value produced by the <literal>switch</literal> expression matches
+            a case if either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the case is a list of value references of form 
+                    <literal>case (x, y, z)</literal> and the value is identical to
+                    one of the values in the list, or if</para>
+                </listitem>
+                <listitem>
+                    <para>the case is an assignability condition of form 
+                    <literal>case (is V)</literal> and the value is an instance of
+                    <literal>V</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
         </section>
         
@@ -557,13 +579,15 @@ String result = middleObject.string;</programlisting>
             <para>The <literal>for/else</literal> and <literal>while</literal> loops control
             repeated execution.</para>
             
-            <para>When a <literal>while</literal> construct is executed, the loop condition list 
-            is evaluated repeatedly until the first time the condition list is not satisfied, or 
-            until a <literal>break</literal>, <literal>return</literal>, or <literal>throw</literal> 
-            directive is executed. Each time the condition is satisfied, the <literal>while</literal> 
+            <para>When a <literal>while</literal> construct, specified in <xref linkend="while"/>, 
+            is executed, the loop condition list is evaluated repeatedly until the first time 
+            the condition list is not satisfied, or until a <literal>break</literal>, 
+            <literal>return</literal>, or <literal>throw</literal> directive that terminates the
+            loop is executed. Each time the condition is satisfied, the <literal>while</literal> 
             block is executed.</para>
             
-            <para>When a <literal>for/else</literal> construct is executed:</para>
+            <para>When a <literal>for/else</literal> construct, specified in <xref linkend="forelse"/>, 
+            is executed:</para>
             
             <itemizedlist>
                 <listitem>
@@ -572,14 +596,14 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>an <literal>Iterator</literal> is obtained by calling 
-                    <literal>iterator</literal> on the iterable object, and then</para>
+                    <literal>iterator()</literal> on the iterable object, and then</para>
                 </listitem>
                 <listitem>
                     <para>the <literal>for</literal> block is executed once for each value 
-                    of produced by repeatedly calling <literal>next()</literal> on iterator, 
-                    until the iterator produces the value <literal>finished</literal>, or 
-                    until a <literal>break</literal>, <literal>return</literal>, or 
-                    <literal>throw</literal> directive is executed.</para>
+                    of produced by repeatedly invoking the <literal>next()</literal> method 
+                    of the iterator, until the iterator produces the value <literal>finished</literal>, 
+                    or until a <literal>break</literal>, <literal>return</literal>, or 
+                    <literal>throw</literal> directive that terminates the loop is executed.</para>
                 </listitem>
             </itemizedlist>
             
@@ -610,7 +634,8 @@ String result = middleObject.string;</programlisting>
         <section id="exceptionhandling">
              <title>Exception handling</title>
              
-             <para>When a <literal>try/catch/finally</literal> construct is executed:</para>
+             <para>When a <literal>try/catch/finally</literal> construct, specified in 
+             <xref linkend="trycatchfinally"/>, is executed:</para>
              
              <itemizedlist>
                  <listitem>
@@ -663,10 +688,11 @@ String result = middleObject.string;</programlisting>
         <section id="evaluation">
             <title>Evaluation</title>
             
-            <para>Evaluation of a value reference produces its current value. Evaluation of
-            a callable reference that does not occur as the primary of a direct invocation
-            results in a new instance of <literal>Callable</literal> that packages the 
-            callable reference.</para> 
+            <para>Evaluation of a value reference, as defined in <xref linkend="valuereferences"/>, 
+            produces its current value. Evaluation of a callable reference, as defined in
+            <xref linkend="callablereferences"/>, that does not occur as the primary of a 
+            direct invocation results in a new instance of <literal>Callable</literal> that 
+            packages the callable reference.</para> 
             
             <programlisting>person.name</programlisting>
             <programlisting>'/'.equals</programlisting>
@@ -725,8 +751,9 @@ String result = middleObject.string;</programlisting>
         <section id="assignment">
             <title>Assignment</title>
                 
-            <para>Given a value reference to a variable, the assignment operator <literal>=</literal> 
-            assigns it a new value.</para>
+            <para>Given a value reference, as defined in <xref linkend="valuereferences"/>, 
+            to a variable, the assignment operator <literal>=</literal> assigns it a new 
+            value.</para>
             
             <programlisting>person.name = "Gavin"</programlisting>
             
@@ -761,10 +788,10 @@ String result = middleObject.string;</programlisting>
         <section id="invocation">
             <title>Invocation</title>
             
-            <para>Evaluation of an invocation expression in invocation of a function of class. 
-            This is called <emphasis>invocation</emphasis> in the case of a function, or 
-            <emphasis>instantiation</emphasis> in the case of a class. Every invocation has
-            a callable expression:</para>
+            <para>Evaluation of an invocation expression, as defined in 
+            <xref linkend="invocationexpressions"/>, results in <emphasis>invocation</emphasis>
+            of a function, or <emphasis>instantiation</emphasis> of a class. Every invocation 
+            has a callable expression:</para>
             
             <itemizedlist>
                 <listitem>
@@ -821,7 +848,8 @@ String result = middleObject.string;</programlisting>
        <section id="enumerationevaluation">
             <title>Evaluation of enumerations</title>
             
-            <para>Evaluation of an enumeration expression results in an iterable object or
+            <para>Evaluation of an enumeration expression, as defined in 
+            <xref linkend="enumeration"/>, results in creation of an iterable object or 
             tuple.</para>
             
             <programlisting>{ "hello", "world" }</programlisting>
@@ -836,7 +864,8 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the resulting values are packaged into an instance of 
-                    <literal>Iterable</literal> or <literal>Sequence</literal>, unless</para>
+                    <literal>Iterable</literal> or <literal>Sequence</literal> and this
+                    object is the resulting value, unless</para>
                 </listitem>
                 <listitem>
                     <para>there are no arguments, in which case the resulting value is
@@ -849,8 +878,9 @@ String result = middleObject.string;</programlisting>
         <section id="spreadevaluation">
             <title>Evaluation of spread arguments and comprehensions</title>
             
-            <para>A spread argument produces multiple values by iterating the iterable object
-            to which the spread operator is applied.</para>
+            <para>A spread argument, as defined in <xref linkend="spreadargs"/>, produces 
+            multiple values by iterating the iterable object to which the spread operator 
+            is applied.</para>
             
             <para>When a spread argument expression type is a subtype of <literal>Sequential</literal>,
             the behavior does not depend upon where the spread argument occurs:</para>
@@ -898,9 +928,9 @@ String result = middleObject.string;</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>Likewise, a comprehension produces multiple values, as specified by 
-            <xref linkend="comprehensionevaluation"/>. The behavior depends upon where the
-            comprehension occurs:</para>
+            <para>Likewise, a comprehension, as defined in <xref linkend="comprehensions"/>, 
+            produces multiple values, as specified by <xref linkend="comprehensionevaluation"/>. 
+            The behavior depends upon where the comprehension occurs:</para>
                 
             <itemizedlist>
                 <listitem>

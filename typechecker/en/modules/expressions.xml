@@ -234,22 +234,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>A string template is an expression of type <literal>String</literal>.</para>
         
-        <!--
-        <para>An interpolated expression in a string template may invoke or evaluate:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any class member that is visible to the containing scope in 
-                which the literal appears, and</para>
-            </listitem>
-            <listitem>
-                <para>any non-<literal>variable</literal> local, block local attribute 
-                getter or block local method declared earlier within the containing 
-                scope.</para>
-            </listitem>
-        </itemizedlist>
-        -->
-        
     </section>
     
     <section id="selfreferences">
@@ -758,9 +742,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>Anything[]</literal> is evaluated, the elements of the iterable
             automatically are packaged into a sequence.</para>
             
-            <comment><para>Note: the spread operator is not truly an operator, and so 
-            a spread argument is not an expresson. It is more correct to view the spread
-            operator as part of the syntax of an argument list.</para></comment>
+            <comment><para>Note: the spread "operator" is not truly an operator in the
+            sense of <xref linkend="operators"/>, and so a spread argument is not an 
+            expresson. An expression, when evaluated, produces a single value. The
+            spread operator produces multiple values. It is therefore more correct to 
+            view the spread operator as simply part of the syntax of an argument list.
+            </para></comment>
             
             <para>The type of an argument list containing only a spread argument of 
             sequential type <literal>S</literal> is simply <literal>S</literal>.</para>
@@ -805,6 +792,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>An expression that occurs in a child clause may refer to iteration 
             variables and condition variables declared by parent clauses. The types
             of such variables are specified in <xref linkend="controlstructures"/>.</para>
+            
+            <comment><para>Note: each child clause can be viewed as a body nested inside 
+            the parent clause. The scoping rules for variables declared by comprehension
+            clauses reflects this model.</para></comment>
             
             <para>The type of an argument list containing only a comprehension is 
             <literal>[T*]</literal> where <literal>T</literal> is the type of the
