@@ -1041,10 +1041,15 @@ String result = middleObject.string;</programlisting>
     <section id="comprehensionevaluation">
         <title>Evaluation of comprehensions</title>
         
-        <para>Each clause of a comprehension produces a stream of 
-        <emphasis>frames</emphasis>. A frame is a set of values for iteration 
-        variables and condition variables declared by the clause and its
+        <para>A comprehension, as specified in <xref linkend="comprehensions"/>, 
+        consists of a series of clauses. Each clause of a comprehension produces 
+        a stream of <emphasis>frames</emphasis>. A frame is a set of values for 
+        iteration variables and condition variables declared by the clause and its
         parent clauses.</para>
+        
+        <comment><para>Note: each child clause can be viewed as a body nested inside 
+        the parent clause. The lifecycle of comprehension frames reflects this model.
+        </para></comment>
         
         <section>
         <title><literal>for</literal> clause</title>
