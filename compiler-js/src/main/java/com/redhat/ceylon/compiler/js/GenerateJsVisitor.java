@@ -1556,11 +1556,13 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             else {
-                if ((specInitExpr != null) || (classParam != null) || !d.isMember()
-                            || d.isVariable() || isLate) {
+                final boolean addGetter = (specInitExpr != null) || (classParam != null) || !d.isMember()
+                        || d.isVariable() || isLate;
+                if (addGetter) {
                     generateAttributeGetter(that, d, specInitExpr, classParam);
                 }
-                if ((d.isVariable() || isLate) && !defineAsProperty(d)) {
+                final boolean addSetter = (d.isVariable() || isLate) && !defineAsProperty(d);
+                if (addSetter) {
                     final String varName = names.name(d);
                     String paramVarName = names.createTempVariable(d.getName());
                     out("var ", names.setter(d), "=function(", paramVarName, "){");
@@ -1570,6 +1572,23 @@ public class GenerateJsVisitor extends Visitor
                     out("return ", varName, "=", paramVarName, ";};");
                     endLine();
                     shareSetter(d);
+                }
+                if (d.isToplevel()) {
+                    out("$prop$", names.name(d), "={$$metamodel$$:");
+                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+                    out(",get:");
+                    if (addGetter && isCaptured(d) && !defineAsProperty(d)) {
+                        out(names.getter(d));
+                    } else {
+                        out("function(){return ", names.name(d), "}");
+                    }
+                    if (addSetter) {
+                        out(",set:", names.setter(d));
+                    }
+                    out("}");
+                    endLine(true);
+                    out("exports.$prop$", names.name(d), "=$prop$", names.name(d));
+                    endLine(true);
                 }
             }
         }
