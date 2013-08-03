@@ -354,6 +354,10 @@ String result = middleObject.string;</programlisting>
         <section id="evaluationofconditions">
             <title>Evaluation of condition lists</title>
             
+            <para>Execution of an <literal>if</literal>, <literal>while</literal>, or
+            <literal>assert</literal> requires evaluation of a condition list, as defined
+            in <xref linkend="controlstructureconditions"/>.</para>
+            
             <para>To determine if a condition list is satisfied, its constituent conditions are 
             evaluated in the lexical order in which they occur in the condition list. If any 
             condition is not satisfied, none of the subsequent conditions in the list are 
@@ -401,7 +405,7 @@ String result = middleObject.string;</programlisting>
         <section id="validationofassertions">
             <title>Validation of assertions</title>
             
-            <para>When the assertion is executed, the condition list is evaluated. If the condition 
+            <para>When an assertion is executed, its condition list is evaluated. If the condition 
             list is not satisfied, an exception of type <literal>AssertionFailure</literal> in 
             <literal>ceylon.language</literal> is thrown.</para>
             
@@ -535,17 +539,7 @@ String result = middleObject.string;</programlisting>
              from the <literal>try</literal> block?</para></comment>
              
         </section>
-        
-        <section id="assertionfailure">
-            <title>Assertion failure</title>
-            
-            <para>When an <literal>assert</literal> statement is executed, its condition
-            list is evaluated. If the condition list is not satisfied, an exception of
-            type <literal>AssertionException</literal> in <literal>ceylon.language</literal>
-            occurs.</para>
-            
-        </section>
-        
+                
     </section>
     
     <section id="evaluationinvocationandassignment">
