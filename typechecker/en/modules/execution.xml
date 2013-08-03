@@ -281,15 +281,58 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
+        <section>
+            <title>Control directives</title>
+            
+            <para>Execution of a control directive terminates execution of the body in which 
+            it occurs, and possibly other surrounding bodies.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A <literal>return</literal> directive that occurs sequentially in
+                    the body of a function, getter, setter, or class initializer terminates
+                    execution of the body of the function, getter, setter, or class initializer 
+                    and of all intervening bodies. Optionally, it determines the return value of
+                    the function or getter.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>break</literal> directive terminates execution of the
+                    body of the most nested containing loop in which it occurs sequentially,
+                    and of all intervening bodies. Additionally, it terminates execution of
+                    the loop.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>continue</literal> directive terminates execution of the
+                    body of the most nested containing loop in which it occurs sequentially,
+                    and of all intervening bodies. It does not terminate execution of the 
+                    loop.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>throw</literal> directive that occurs sequentially in
+                    the body of a function, getter, setter, or class initializer terminates
+                    execution of the body of the function, getter, setter, or class 
+                    initializer and of all intervening bodies, and, furthermore, the exception 
+                    propagates to the caller, as defined in <xref linkend="exceptions"/>, 
+                    unless there is an intervening <literal>try</literal> with a 
+                    <literal>catch</literal> clause matching the thrown exception, in which 
+                    case it terminates execution of the body of the <literal>try</literal> 
+                    statement and all intervening bodies, and execution continues from the 
+                    body of the <literal>catch</literal> clause.</para>
+                </listitem>
+            </itemizedlist>
+        
+        </section>
+        
         <section id="toplevelinitialization">
             <title>Initialization of toplevel references</title>
             
             <para>A toplevel reference has no associated frame. Instead, the lifecycle of 
             its persistent value is associated with the loading and unloading of a module 
-            by the module runtime. The first time a toplevel reference is accessed, its 
-            initializer expression is evaluated, and the resulting value is associated 
-            with the reference. This association survives until the toplevel reference is 
-            reassigned, or until the module is unloaded by the module runtime.</para>
+            by the module runtime. The first time a toplevel reference is accessed 
+            following the loading of its containing module, its initializer expression is 
+            evaluated, and the resulting value is associated with the reference. This 
+            association survives until the toplevel reference is reassigned, or until the 
+            module is unloaded by the module runtime.</para>
             
             <para>Initialization of a toplevel reference may result in recursive 
             initialization of other toplevel references. Therefore, it is possible that
@@ -302,14 +345,16 @@ String result = middleObject.string;</programlisting>
    </section>
    
    <section id="executionofcontrolstructures">
-        <title>Execution of control structures and assertions</title>
+        <title>Execution of control structures, control directives, and assertions</title>
         
-        <para>Control structures are used to organize nonlinear code within a body.</para>
+        <para>Control structures are used to organize conditional and repetitive code within 
+        a body. Assertions are essentially a sophisticated sort of control directive, but
+        for convenience are categorized together with control structures.</para>
         
         <section id="evaluationofconditions">
             <title>Evaluation of condition lists</title>
             
-            <para>To determine if a condition list is satsfied, its constituent conditions are 
+            <para>To determine if a condition list is satisfied, its constituent conditions are 
             evaluated in the lexical order in which they occur in the condition list. If any 
             condition is not satisfied, none of the subsequent conditions in the list are 
             evaluated.</para>
@@ -764,7 +809,7 @@ String result = middleObject.string;</programlisting>
         its definition in terms of evaluation and invocation.</para>
         
         <para>However, this specification allows the compiler to take advantage of the
-        optimized support for primitive value types provided by the virtal machine
+        optimized support for primitive value types provided by the virtual machine
         environment.</para>
         
         <section id="operatorexpressionoptimization">
