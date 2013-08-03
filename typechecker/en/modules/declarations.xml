@@ -57,7 +57,7 @@ TypeConstraints?
             </listitem>
             <listitem>
                 <para>A <emphasis>module descriptor</emphasis>, defined in
-                <xref linkend="packagedescriptors"/>, contains a 
+                <xref linkend="moduledescriptors"/>, contains a 
                 <literal>module</literal> declaration. The file must be named
                 <literal>module.ceylon</literal>.</para>
             </listitem>
@@ -105,13 +105,38 @@ TypeConstraints?
             
         </section>
         
+        <section id="packages">
+            <title>Packages</title>
+            
+            <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
+            The package is identified by the location of the text file on the file system,
+            relative to a <emphasis>root source directory</emphasis>.</para>
+            
+            <para>A package is a namespace. A full package name is a period-separated list of 
+            all-lowercase identifiers.</para>
+            
+            <synopsis>FullPackageName: PackageName ("." PackageName)*</synopsis>
+            
+            <comment><para>Note: it is recommended that package names contain only characters
+            from the ASCII character set.</para></comment>
+            
+            <para>The <emphasis>package source directory</emphasis> for a package is formed
+            by replacing each period in the fully qualified package name with the directory 
+            separator character and prepending the path of the root source directory.
+            Compilation units belonging to the package must be located in the package source
+            directory.</para>
+            
+            <para>Every package belongs to exactly one module, as specified in 
+            <xref linkend="modules"/>.</para> 
+            
+        </section>
+        
     </section>
     
     <section id="imports">
         <title>Imports</title>
         
-        <para>Each compilation unit belongs to exactly one <emphasis>package</emphasis>.
-        Code in one compilation unit may refer to a toplevel declaration in another 
+        <para>Code in one compilation unit may refer to a toplevel declaration in another 
         compilation unit in the same package without explicitly importing the declaration. 
         It may refer to a declaration defined in a compilation unit in another package 
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
@@ -119,20 +144,11 @@ TypeConstraints?
         
         <synopsis>Import: "import" FullPackageName "{" ImportElements "}"</synopsis>
         
-        <para>A package is a namespace. A full package name is a period-separated list of 
-        all-lowercase identifiers.</para>
-        
-        <synopsis>FullPackageName: PackageName ("." PackageName)*</synopsis>
-        
-        <comment><para>Note: it is recommended that package names contain only characters
-        from the ASCII character set.</para></comment>
-        
         <para>For a given package, there may be at most one <literal>import</literal>
         statement per compilation unit.</para>
         
-        <para>Every package belongs to a <emphasis>module</emphasis>, as defined in
-        <xref linkend="modulesystem"/>. An <literal>import</literal> statement may 
-        import from a package if and only if:</para>
+        <para>An <literal>import</literal> statement may import from a package if and 
+        only if:</para>
         
         <itemizedlist>
             <listitem>
@@ -176,7 +192,7 @@ TypeConstraints?
         <para>An <literal>import</literal> statement may not contain two import elements
         which refer to the same declaration.</para>
         
-        <para>Note that toplevel declarations in the module <literal>ceylon.language</literal> 
+        <para>Note that toplevel declarations in the package <literal>ceylon.language</literal> 
         never need to be explicitly imported. They are implicitly imported by every 
         compilation unit.</para>
         
