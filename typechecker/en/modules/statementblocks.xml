@@ -1144,7 +1144,8 @@ else {
                     one of the statements is a specification statement or assigment 
                     expression for the declaration or a control structure that definitely 
                     initializes the declaration, or if the sequence of statements ends in 
-                    a <literal>return</literal> or <literal>throw</literal> directive.</para>
+                    a <literal>return</literal> or <literal>throw</literal> directive, or 
+                    contains an assertion with a condition list that is never satisfied.</para>
                 </listitem>
                 <listitem>
                     <para>An <literal>if</literal> conditional definitely initializes a 
