@@ -96,28 +96,32 @@
     
     <itemizedlist>
         <listitem>
-            <para>What is the type of a function which accepts a non-null value and returns a 
-            <literal>String</literal>?</para>
-        </listitem>
-        <listitem>
-            <para>What is the type of a local that may or may not hold a value of 
+            <para>What is the type of a variable that may or may not hold a value of 
             type <literal>Element</literal>?</para>
         </listitem>
         <listitem>
             <para>What is the type of a parameter that accepts either an 
-            <literal>Integer</literal> or a <literal>Float</literal>s?</para>
-        </listitem>
-        <listitem>
-            <para>What is the type of a parameter that accepts one or more
-            <literal>String</literal>s?</para>
+            <literal>Integer</literal> or a <literal>Float</literal>?</para>
         </listitem>
         <listitem>
             <para>What is the type of a parameter that accepts values which are instances 
             of both <literal>Persistent</literal> and <literal>Printable</literal>?</para>
         </listitem>
         <listitem>
+            <para>What is the type of a function which accepts any non-null value and 
+            returns a <literal>String</literal>?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type of a function that accepts one or more
+            <literal>String</literal>s and returns an iterable object producing at least 
+            one <literal>String</literal>?</para>
+        </listitem>
+        <listitem>
             <para>What is the type of a sequence consisting of a <literal>String</literal>
             followed by two <literal>Float</literal>s?</para>
+        </listitem>
+        <listitem>
+            <para>What is the type of a list with no elements?</para>
         </listitem>
         <!--listitem>
             <para>What is the type that represents methods that accept two <literal>Float</literal>
@@ -130,9 +134,10 @@
         </listitem-->
     </itemizedlist>
     
-    <para>The answers, as we shall see, are: <literal>String(Object)</literal>, 
-    <literal>Element?</literal>, <literal>Integer|Float</literal>, <literal>{String+}</literal>,
-    <literal>Persistent&amp;Printable</literal>, and <literal>[String,Float,Float]</literal>.</para>
+    <para>The answers, as we shall see, are: <literal>Element?</literal>, 
+    <literal>Integer|Float</literal>, <literal>Persistent&amp;Printable</literal>, 
+    <literal>String(Object)</literal>, <literal>{String+}(String+)</literal>,   
+    <literal>[String,Float,Float]</literal>, and <literal>List&lt;Nothing&gt;</literal>.</para>
     <!--<literal>Method&lt;Object,Anything,Float,Float&gt;</literal>,
     <literal>Class&lt;Renderer,String(Object)&gt;</literal>-->
         
@@ -769,7 +774,7 @@ String? firstWord = words[0];
 
 String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
 
-[Float+](Float x, Float[] xs) add = (Float x, Float[] xs) => append(xs, x);</programlisting>
+[Float+](Float x, Float[] xs) add = (Float x, Float[] xs) => [x, *xs];</programlisting>
             
             <para>When a type appears in a value expression, these abbreviations cannot be used 
             (they cannot be disambiguated from operator expressions).</para>
@@ -786,7 +791,7 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
                     
             <programlisting>value names = people*.name;</programlisting>
     
-            <programlisting>function parse(String text) => text.split(" .!?,:;()\n\f\r\t");</programlisting>
+            <programlisting>function parse(String text) => text.split(" .!?,:;()\n\f\r\t".contains);</programlisting>
     
             <para>Type inference is only allowed for block local declarations which are are 
             referred to only by statements and declarations that occur within the lexical scope 
