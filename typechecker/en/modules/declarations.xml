@@ -940,7 +940,7 @@ TypeConstraints?
         <para>A statement or declaration contained in the initializer of a class may 
         not evaluate an attribute, invoke a method, or instantiate a member class upon 
         the instance being initialized, including upon a self reference to the instance 
-        being initialized if the attribute, method, or member class:</para>
+        being initialized, if the attribute, method, or member class:</para>
         
         <itemizedlist>
            <listitem>
