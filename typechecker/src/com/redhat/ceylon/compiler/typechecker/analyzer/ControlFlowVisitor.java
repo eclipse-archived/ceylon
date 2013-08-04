@@ -407,17 +407,17 @@ public class ControlFlowVisitor extends Visitor {
         
         definitelyReturns = d || definitelyReturnsFromFor;
         
-        boolean definitelyReturnsFromFail;
+        boolean definitelyReturnsFromElse;
         if (that.getElseClause()!=null) {
             that.getElseClause().visit(this);
-            definitelyReturnsFromFail = definitelyReturns;
+            definitelyReturnsFromElse = definitelyReturns;
         }
         else {
-            definitelyReturnsFromFail = false;
+            definitelyReturnsFromElse = false;
         }
         
         definitelyReturns = d || definitelyReturnsFromFor || 
-        		(definitelyReturnsFromFail && definitelyDoesNotExitFromFor);
+        		(definitelyReturnsFromElse && definitelyDoesNotExitFromFor);
     }
 
     @Override
