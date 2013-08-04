@@ -1082,7 +1082,8 @@ else {
                 <listitem>
                     <para>A sequence of statements definitely returns if it ends in a 
                     <literal>return</literal> or <literal>throw</literal> directive, or 
-                    in a control structure that definitely returns.</para>
+                    in a control structure that definitely returns, or contains an
+                    assertion with a condition list that is never satisfied.</para>
                 </listitem>
                 <listitem>
                     <para>A body definitely returns if it contains a list of statements
@@ -1091,7 +1092,10 @@ else {
                 <listitem>
                     <para>An <literal>if</literal> conditional definitely returns if it has
                     an <literal>else</literal> block and both the <literal>if</literal>
-                    and <literal>else</literal> blocks definitely return.</para>
+                    and <literal>else</literal> blocks definitely return, or if its 
+                    condition list is always satisfied and the <literal>if</literal> block
+                    definitely returns, or if its condition list is never satisfied and it 
+                    has an <literal>else</literal> block that definitely returns.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>switch</literal> conditional definitely returns if all
@@ -1106,12 +1110,10 @@ else {
                     the <literal>for</literal> block definitely returns.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>while</literal> loop does not definitely return.</para>
+                    <para>A <literal>while</literal> loop definitely returns if its
+                    condition list is always satisfied and the <literal>while</literal> 
+                    block definitely returns.</para>
                 </listitem>
-                <!--listitem>
-                    <para>A <literal>do/while</literal> loop definitely returns if the 
-                    <literal>do</literal> block definitely returns.</para>
-                </listitem-->
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager definitely 
                     returns if the <literal>try</literal> block definitely returns and
@@ -1148,7 +1150,11 @@ else {
                     <para>An <literal>if</literal> conditional definitely initializes a 
                     declaration if it has an <literal>else</literal> block and both the 
                     <literal>if</literal> and <literal>else</literal> blocks definitely
-                    initialize the declaration.</para>
+                    initialize the declaration, of if its condition list is always satisfied
+                    and the <literal>if</literal> block definitely initializes the declaration,
+                    of if its condition list is never satisfied and it has an 
+                    <literal>else</literal> block that definitely initializes the 
+                    declaration.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>switch</literal> conditional definitely initializes a
@@ -1165,16 +1171,10 @@ else {
                     initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>while</literal> loop does not definitely initialize a 
-                    declaration.</para>
+                    <para>A <literal>while</literal> loop definitely initializes a declaration
+                    if its condition list is always satisfied and the <literal>while</literal>
+                    block definitely initializes the declaration.</para>
                 </listitem>
-                <!-- 
-                <listitem>
-                    <para>A <literal>do/while</literal> loop definitely initializes a local or 
-                    simple attribute if the <literal>do</literal> block definitely initializes
-                    the local or simple attribute.</para>
-                </listitem>
-                -->
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager definitely initializes 
                     a declaration if the <literal>try</literal> block definitely initializes the 
@@ -1229,8 +1229,9 @@ else {
                 <listitem>
                     <para>An <literal>if</literal> conditional possibly initializes a declaration 
                     if either the <literal>if</literal> block possibly initializes the declaration 
-                    or if the <literal>else</literal> block, if any, possibly initializes the 
-                    declaration.</para>
+                    and the condition list is not never satisfied, or if the <literal>else</literal> 
+                    block, if any, possibly initializes the declaration and the condition list is 
+                    not always satisfied.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>switch</literal> conditional possibly initializes a declaration 
@@ -1245,7 +1246,8 @@ else {
                 </listitem>
                 <listitem>
                     <para>A <literal>while</literal> loop possibly initializes a declaration if the 
-                    <literal>while</literal> block possibly initializes the declaration.</para>
+                    <literal>while</literal> block possibly initializes the declaration and the
+                    condition list is not never satisfied.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager possibly initializes a 
@@ -1481,6 +1483,10 @@ else {
             
             <para>A condition in the list may refer to a condition variable defined earlier in the list.</para>
             
+            <para>A condition list is considered to be <emphasis>always satisfied</emphasis> if
+            every condition in the list is always satisfied. A condition list is considered to be 
+            <emphasis>never satisfied</emphasis> if some condition in the list is never satisfied.</para>
+            
             <comment><para>TODO: are we going to support <literal>satisfies</literal> conditions on 
             type parameters, for example, <literal>if (Element satisfies Object)</literal>, to allow
             refinement of its upper bounds?</para></comment>
@@ -1495,6 +1501,14 @@ else {
             <synopsis>BooleanCondition: Expression</synopsis>
             
             <para>The expression must be of type <literal>Boolean</literal>.</para>
+            
+            <para>A boolean condition is considered to be <emphasis>always satisfied</emphasis>
+            if it is a value reference to <literal>true</literal>. A boolean condition is 
+            considered to be <emphasis>never satisfied</emphasis> if it is a value reference 
+            to <literal>false</literal>.</para>
+            
+            <comment><para>TODO: Should we do some more sophisticated static analysis to determine
+            if a condition is always/never satisfied?</para></comment>
                 
         </section>
         
