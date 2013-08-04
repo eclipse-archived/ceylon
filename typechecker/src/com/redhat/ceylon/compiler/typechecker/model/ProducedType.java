@@ -106,8 +106,8 @@ public class ProducedType extends ProducedReference {
                                 //A&Co<B> is equivalent A&Co<B&Co<A>> as a 
                                 //consequence of principal instantiation 
                                 //inheritance
-                                ProducedType cst = getSupertype(c.getDeclaration());
-                                ProducedType ocst = type.getSupertype(oc.getDeclaration());
+                                ProducedType cst = getSupertypeInternal(c.getDeclaration());
+                                ProducedType ocst = type.getSupertypeInternal(oc.getDeclaration());
                                 if (cst.isExactlyInternal(ocst)) {
                                     found = true;
                                     break;
@@ -169,9 +169,9 @@ public class ProducedType extends ProducedReference {
                     }
                     else {
                         TypeDeclaration totd = (TypeDeclaration) type.getDeclaration().getContainer();
-                        ProducedType tqts = tqt.getSupertype(totd);
+                        ProducedType tqts = tqt.getSupertypeInternal(totd);
                         TypeDeclaration otd = (TypeDeclaration) getDeclaration().getContainer();
-                        ProducedType qts = qt.getSupertype(otd);
+                        ProducedType qts = qt.getSupertypeInternal(otd);
                         if ( !qts.isExactlyInternal(tqts) ) {
                             return false;
                         }
@@ -253,7 +253,7 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof IntersectionType) {
         	if (type.getDeclaration() instanceof ClassOrInterface) {
-        		ProducedType pst = getSupertype(type.getDeclaration());
+        		ProducedType pst = getSupertypeInternal(type.getDeclaration());
         		if (pst!=null && pst.isSubtypeOfInternal(type)) {
         			return true;
         		}
@@ -266,7 +266,7 @@ public class ProducedType extends ProducedReference {
             return false;
         }
         else {
-            ProducedType st = getSupertype(type.getDeclaration());
+            ProducedType st = getSupertypeInternal(type.getDeclaration());
             if (st==null) {
                 return false;
             }
@@ -294,7 +294,7 @@ public class ProducedType extends ProducedReference {
                         //type, as long as it doesn't refine the
                         //member type
                         TypeDeclaration totd = (TypeDeclaration) type.getDeclaration().getContainer();
-                        ProducedType tqts = tqt.getSupertype(totd);
+                        ProducedType tqts = tqt.getSupertypeInternal(totd);
                         if (!stqt.isSubtypeOf(tqts)) {
                             return false;
                         }
@@ -401,7 +401,7 @@ public class ProducedType extends ProducedReference {
      * type. 
      */
     public ProducedType substitute(Map<TypeParameter, ProducedType> substitutions) {
-        return new Substitution().substitute(this, substitutions);
+        return new Substitution().substitute(this, substitutions).simple();
     }
 
     private ProducedType substituteInternal(Map<TypeParameter, ProducedType> substitutions) {
@@ -565,28 +565,39 @@ public class ProducedType extends ProducedReference {
      *         which is a supertype of this type, or null if
      *         there is no such supertype
      */
-    public ProducedType getSupertype(final TypeDeclaration dec) {
+    public ProducedType getSupertype(TypeDeclaration dec) {
+        //TODO: do I need to call resolveAliases() here?
+        return /*resolveAliases().*/getSupertypeInternal(dec);
+    }
+    
+    private ProducedType getSupertypeInternal(TypeDeclaration dec) {
         boolean complexType = dec instanceof UnionType 
         		|| dec instanceof IntersectionType;
         if (!complexType && superTypesCache.containsKey(dec)) {
             return superTypesCache.get(dec);
         }
-        Criteria c = new Criteria() {
-            @Override
-            public boolean satisfies(TypeDeclaration type) {
-                return !(type instanceof UnionType) && 
-                       !(type instanceof IntersectionType) && 
-                       type.equals(dec);
-            }
-            @Override
-            public boolean isMemberLookup() {
-            	return false;
-            }
-        };
-        ProducedType superType = getSupertype(c);
+        ProducedType superType = getSupertype(new SupertypeCriteria(dec));
         if (!complexType) superTypesCache.put(dec, superType);
         return superType;
     }
+    
+    private static final class SupertypeCriteria implements Criteria {
+        private TypeDeclaration dec;
+        private SupertypeCriteria(TypeDeclaration dec) {
+            this.dec = dec;
+        }
+        @Override
+        public boolean satisfies(TypeDeclaration type) {
+            return !(type instanceof UnionType) && 
+                   !(type instanceof IntersectionType) && 
+                   type.equals(dec);
+        }
+        @Override
+        public boolean isMemberLookup() {
+            return false;
+        }
+    };
+
     
     /**
      * Given a predicate, return a produced type for a 
@@ -603,7 +614,7 @@ public class ProducedType extends ProducedReference {
      * Search for the most-specialized supertype 
      * satisfying the given predicate. 
      */
-    public ProducedType getSupertype(final Criteria c) {
+    public ProducedType getSupertype(Criteria c) {
         if (depth.get()>30) {
             throw new RuntimeException("undecidable canonicalization");
         }
@@ -626,7 +637,7 @@ public class ProducedType extends ProducedReference {
         finally { depth.set(depth.get()-1); }
     }
     
-    private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
+    private ProducedType getPrincipalInstantiationFromCases(Criteria c,
             ProducedType result) {
         if (getDeclaration() instanceof UnionType) {
             //trying to infer supertypes of algebraic
@@ -799,7 +810,7 @@ public class ProducedType extends ProducedReference {
             //the supertype of the qualifying 
             //type that declares this nested
             //type, substituting type arguments
-            ProducedType declaringType = qt.getSupertype((TypeDeclaration) getDeclaration().getContainer());
+            ProducedType declaringType = qt.getSupertypeInternal((TypeDeclaration) getDeclaration().getContainer());
             pt.setQualifyingType(declaringType);
             return pt;
         }
@@ -819,7 +830,7 @@ public class ProducedType extends ProducedReference {
                     if (pt==null) {
                         return null;
                     }
-                    ProducedType st = pt.getSupertype(dec);
+                    ProducedType st = pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
@@ -834,7 +845,7 @@ public class ProducedType extends ProducedReference {
                     if (pt==null) {
                         return null;
                     }
-                    ProducedType st = pt.getSupertype(dec);
+                    ProducedType st = pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
@@ -866,7 +877,7 @@ public class ProducedType extends ProducedReference {
                 if (pt==null) {
                     return null;
                 }
-                ProducedType st = pt.getQualifyingType().getSupertype(outer);
+                ProducedType st = pt.getQualifyingType().getSupertypeInternal(outer);
                 list.add(st);
             }
             outerType = getCommonSupertype(list, outer);
@@ -1587,6 +1598,25 @@ public class ProducedType extends ProducedReference {
     	else {
     		return d.getProducedType(aliasedQualifyingType, aliasedArgs);
     	}
+    }
+    
+    private ProducedType simple() {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof UnionType && d.getCaseTypes().size()==1) {
+            return d.getCaseTypes().get(0);
+        }
+        if (d instanceof IntersectionType && d.getSatisfiedTypes().size()==1) {
+            return d.getSatisfiedTypes().get(0);
+        }
+        List<ProducedType> args = getTypeArgumentList();
+        List<ProducedType> simpleArgs = new ArrayList<ProducedType>(args.size());
+        for (ProducedType arg: args) {
+            simpleArgs.add(arg==null ? null : arg.simple());
+        }
+        ProducedType qt = getQualifyingType();
+        ProducedType simpleQualifyingType = qt==null ? 
+                null : qt.simple();
+        return d.getProducedType(simpleQualifyingType, simpleArgs);
     }
     
     public boolean containsTypeParameters() {
