@@ -365,8 +365,7 @@ public class SpecificationVisitor extends Visitor {
         boolean continueInSomeBranchOfCurrentConditional = 
                 lastContinue!=null && 
                 lastContinueStatement==null;
-        boolean blockEndsInBreakReturnThrow;
-        blockEndsInBreakReturnThrow = blockEndsInBreakReturnThrow(that);
+        boolean blockEndsInBreakReturnThrow = blockEndsInBreakReturnThrow(that);
         endsInBreakReturnThrow = endsInBreakReturnThrow || 
                 blockEndsInBreakReturnThrow;
         Tree.Continue last = null;
