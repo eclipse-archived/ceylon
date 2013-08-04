@@ -1314,6 +1314,47 @@ Item item = comp of Item;</programlisting>
             
         </section>
     
+        <section id="genericenumeratedtypes">
+            <title>Generic enumerated types</title>
+        
+            <para>If an enumerated type <literal>X&lt;*Ts&gt;</literal> has a case type 
+            <literal>C</literal> then <literal>C</literal> must be an invariant subtype
+            of <literal>X&lt;*As&gt;</literal> for some list of type arguments 
+            <literal>As</literal> involving the type parameters <literal>Ts</literal> of
+            <literal>X</literal>, and for each <literal>T</literal> in <literal>Ts</literal>
+            and corresponding <literal>A</literal> in <literal>As</literal>, either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>X</literal> is covariant in <literal>T</literal> and 
+                    <literal>A</literal> is exactly <literal>Nothing</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X</literal> is contravariant in <literal>T</literal> 
+                    and <literal>A</literal> is exactly the intersection of all upper 
+                    bounds on <literal>T</literal>, or <literal>Anything</literal> if 
+                    <literal>T</literal> has not upper bounds, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>A</literal> is exactly <literal>T</literal>, and 
+                    <literal>C</literal> is exactly <literal>Y&lt;*Bs&gt;</literal>
+                    for some generic type <literal>Y&lt;*Ss&gt;</literal> and list of
+                    type arguments <literal>Bs</literal> involving the type parameters 
+                    <literal>Ts</literal> of <literal>X</literal>, and, furthermore, 
+                    <literal>Y&lt;*Ss&gt;</literal> must directly inherit
+                    <literal>X&lt;*Ds&gt;</literal> for some list of type arguments 
+                    <literal>Ds</literal> involving the type parameters 
+                    <literal>Ss</literal> of <literal>Y</literal>. Then the argument
+                    <literal>D</literal> in <literal>Ds</literal> of the type parameter
+                    <literal>T</literal> of <literal>X</literal> must be exactly 
+                    <literal>S</literal> for some type parameter <literal>S</literal> 
+                    in <literal>Ss</literal>, and <literal>S</literal> must
+                    have the same variance as <literal>T</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+    
         <section id="disjointtypes">
             <title>Disjoint types</title>
             
@@ -1651,52 +1692,6 @@ Item item = comp of Item;</programlisting>
         
         </section>
         
-        <section id="typeparametersandenumeratedtypes">
-            <title>Type parameters and enumerated types</title>
-        
-            <para>If an enumerated type <literal>T&lt;X&gt;</literal> has a case type 
-            which is a produced type of a type schema <literal>U</literal> then either:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para><literal>U</literal> is parameterized by a type parameter
-                    <literal>X</literal> and <literal>U&lt;X&gt;</literal> obeys the
-                    rules enumerated below, or
-                    </para>
-                </listitem>
-                <listitem>
-                    <para><literal>T&lt;X&gt;</literal> is covariant in 
-                    <literal>X</literal> and <literal>U</literal> is an invariant 
-                    subtype of <literal>T&lt;Nothing&gt;</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para><literal>T&lt;X&gt;</literal> is contravariant in 
-                    <literal>X</literal> and <literal>U</literal> is an invariant 
-                    subtype of <literal>T&lt;I&gt;</literal> where <literal>I</literal>
-                    is the intersection of all upper bounds on <literal>X</literal>, or
-                    <literal>Anything</literal> if <literal>X</literal> has not upper
-                    bounds.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>If <literal>U&lt;X&gt;</literal> is a case of an enumerated type
-            <literal>T&lt;X&gt;</literal>, then <literal>U&lt;X&gt;</literal> must be 
-            an invariant subtype of <literal>T&lt;X&gt;</literal> and:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>if <literal>T&lt;X&gt;</literal> is covariant in <literal>X</literal>
-                    then <literal>U&lt;Y&gt;</literal> must be covariant in <literal>Y</literal>, 
-                    and</para>
-                </listitem>
-                <listitem>
-                    <para>if <literal>T&lt;X&gt;</literal> is contravariant in <literal>X</literal>
-                    then <literal>U&lt;Y&gt;</literal> must be contravariant in <literal>Y</literal>.</para>
-                </listitem>
-            </itemizedlist>
-        
-        </section>
-    
         <section id="generictypeconstraints">
             <title>Generic type constraints</title>
 
