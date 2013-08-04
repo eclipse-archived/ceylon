@@ -5169,11 +5169,11 @@ public class ExpressionVisitor extends Visitor {
                 //check that the variance of the argument type parameter is
                 //the same as the type parameter of the enumerated supertype
                 if (p.isCovariant() && !tp.isCovariant()) {
-                    that.addError("argument to covariant type parameter of supertype must be covariant: " + 
+                    that.addError("argument to covariant type parameter of enumerated supertype must be covariant: " + 
                             typeDescription(p, unit));
                 }
                 if (p.isContravariant() && !tp.isContravariant()) {
-                    that.addError("argument to contravariant type parameter of supertype must be contravariant: " + 
+                    that.addError("argument to contravariant type parameter of enumerated supertype must be contravariant: " + 
                             typeDescription(p, unit));
                 }
             }
