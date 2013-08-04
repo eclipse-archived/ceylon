@@ -1019,12 +1019,14 @@ public class SpecificationVisitor extends Visitor {
             inLoop = c;
         }
         boolean possiblyAssignedByWhileClause = specified.possibly;
+        boolean definitelyAssignedByWhileClause = specified.definitely;
         
         endDeclarationScope(d);
         endSpecificationScope(as);
         
-        specified.possibly = specified.possibly || 
-                (possiblyAssignedByWhileClause && 
+        specified.definitely = specified.definitely || (definitelyAssignedByWhileClause && 
+                 isAlwaysSatisfied(that.getWhileClause().getConditionList()));
+        specified.possibly = specified.possibly || (possiblyAssignedByWhileClause && 
                  !isNeverSatisfied(that.getWhileClause().getConditionList()));
         
         checkDeclarationSection(that);

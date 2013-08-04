@@ -11,7 +11,19 @@ class ConstantConditions() {
     }
     String whileTrue() {
         while (true) {
+            return "definitely";
+        }
+    }
+    @error String whileTrueIf() {
+        while (true) {
             if (1==0) {
+                return "definitely";
+            }
+        }
+    }
+    String whileTrueIfTrue() {
+        while (true) {
+            if (true) {
                 return "definitely";
             }
         }

@@ -40,4 +40,12 @@ class ConstantConditions() {
         }
         s = "definitely";
     }
+    void whileTrue() {
+        variable String s;
+        while (true) {
+            s = "xxx";
+            break;
+        }
+        print(s);
+    }
 }
