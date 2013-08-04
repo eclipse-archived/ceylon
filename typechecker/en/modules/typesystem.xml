@@ -841,11 +841,11 @@ Float|Integer num = one;</programlisting></comment>
             
             <para>An inferred type never involves an anonymous class, as defined in
             <xref linkend="anonymousclasses"/>. When an inferred type would involve an 
-            anonymous class type, the anonymous class is replaced by the intersection of the 
-            class type it extends with all interface types it satisfies.</para>
+            anonymous class type, the anonymous class is replaced by the intersection 
+            of the class type it extends with all interface types it satisfies.</para>
             
-            <comment><para>TODO: properly define how expressions with no type occurring in a
-            <literal>dynamic</literal> block affect type inference.</para></comment>
+            <comment><para>TODO: properly define how expressions with no type occurring 
+            in a <literal>dynamic</literal> block affect type inference.</para></comment>
         
         </section>
         
@@ -871,102 +871,150 @@ Float|Integer num = one;</programlisting></comment>
                 interfaces, as defined by <xref linkend="interfaceinheritance"/>, or</para>
             </listitem>
             <listitem>
-                <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
-                more interfaces or type parameters, as defined by 
+                <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one 
+                or more interfaces or type parameters, as defined by 
                 <xref linkend="generictypeconstraints"/>.</para>
             </listitem>
             <!--listitem>
-                <para>a type parameter may <emphasis>abstract</emphasis> a class, interface or 
-                type parameter.</para>
+                <para>a type parameter may <emphasis>abstract</emphasis> a class, interface 
+                or type parameter.</para>
             </listitem-->
         </itemizedlist>
         
         <para>If a type declaration extends or satisfies a type, we say it 
-        <emphasis>inherits</emphasis> the type. Inheritance results in a relationship
-        called <emphasis>invariant subtyping</emphasis> between produced types.</para>
+        <emphasis>inherits</emphasis> the type. To formalize the definition of inheritance,
+        we'll need some special notation.</para>
         
-        <itemizedlist>
-        <listitem>
-            <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
-            then <literal>X</literal> is an invariant subtype of <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a type 
-            <literal>Y</literal>, then the produced type <literal>X&lt;B&gt;</literal> 
-            is an invariant subtype of <literal>Y</literal> for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
-            produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
-            parameter <literal>T</literal>, then the produced type <literal>X&lt;B&gt;</literal> 
-            is an invariant subtype of the produced type <literal>Y&lt;B&gt;</literal> 
-            formed by substituting <literal>B</literal> for <literal>T</literal> for 
-            any type <literal>B</literal>.</para>
-        </listitem>
-        </itemizedlist>
+        <section id="spreadnotation">
+            <title>Spread notation</title>
+            
+            <para>If <literal>X</literal> is a type constructor (a generic type), and
+            <literal>As</literal> is a list of type arguments, then, as a notational
+            convenience, we will write <literal>X&lt;*As&gt;</literal> to mean the 
+            type produced by application of <literal>X</literal> to the type arguments 
+            <literal>As</literal>, as defined in <xref linkend="generictypearguments"/>. 
+            For example, if <literal>As</literal> is the list 
+            <literal>String, Float</literal>, then <literal>Entry&lt;*As&gt;</literal> 
+            is the type <literal>Entry&lt;String, Float&gt;</literal>.</para>
+            
+            <para>This notation is not part of the syntax of the language.</para>
+            
+        </section>
         
-        <para>If a type is an invariant subtype of a second type then it is also a 
-        subtype of the second type.</para>
-        
-        <comment><para>TODO: these rules need to be formalized into the language of
-        <emphasis>type constructors</emphasis>.</para></comment>
-        
-        <comment>
-        <para>Note: when a type declaration specifies a relationship to other types, 
-        Ceylon visually distinguishes between a list of types which conceptually 
-        represents a combination of (intersection of) the types, and a list of types 
-        which represents a choice between (union of) the types. For example, when a 
-        class <literal>C</literal> satisfies multiple interfaces, they are written as 
-        <literal>X&amp;Y&amp;Z</literal>. On the other hand, the cases of an 
-        enumerated class <literal>E</literal> are written as <literal>X|Y|Z</literal>.
-        This syntax emphasizes that <literal>C</literal> is also a subtype of the 
-        intersection type <literal>X&amp;Y&amp;Z</literal>, and that <literal>E</literal> 
-        may be narrowed to the union type <literal>X|Y|Z</literal> using a 
-        <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
-        </comment>
+        <section id="inheritanceandsubtyping">
+            <title>Inheritance and subtyping</title>
+                
+            <para>Inheritance results in a relationship
+            called <emphasis>invariant subtyping</emphasis> between produced types:</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
+                then <literal>X</literal> is an invariant subtype of <literal>Y</literal>.</para>
+            </listitem>
+            <listitem>  
+                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a type 
+                <literal>Y</literal> that does not inolve the type parameters <literal>Ts</literal> 
+                of <literal>X</literal>, then the produced type <literal>X&lt;*As&gt;</literal> 
+                for any list of type arguments <literal>As</literal> is an invariant subtype 
+                of <literal>Y</literal>.</para>
+            </listitem>
+            <listitem>  
+                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a 
+                type <literal>Y&lt;*Ts&gt;</literal> that involves the type parameters 
+                <literal>Ts</literal> of <literal>X</literal>, then the produced type 
+                <literal>X&lt;*As&gt;</literal> for any list of type arguments 
+                <literal>As</literal> is an invariant subtype of the produced type 
+                <literal>Y&lt;*As&gt;</literal> formed by substituting <literal>As</literal> 
+                for <literal>Ts</literal>.</para>
+            </listitem>
+            </itemizedlist>
+            
+            <para>If a type is an invariant subtype of a second type then it is also a 
+            subtype of the second type.</para>
+            
+            <comment>
+            <para>Note: when a type declaration specifies a relationship to other types, 
+            Ceylon visually distinguishes between a list of types which conceptually 
+            represents a combination of (intersection of) the types, and a list of types 
+            which represents a choice between (union of) the types. For example, when a 
+            class <literal>C</literal> satisfies multiple interfaces, they are written as 
+            <literal>X&amp;Y&amp;Z</literal>. On the other hand, the cases of an 
+            enumerated class <literal>E</literal> are written as <literal>X|Y|Z</literal>.
+            This syntax emphasizes that <literal>C</literal> is also a subtype of the 
+            intersection type <literal>X&amp;Y&amp;Z</literal>, and that <literal>E</literal> 
+            may be narrowed to the union type <literal>X|Y|Z</literal> using a 
+            <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
+            </comment>
+            
+        </section>
         
         <section id="pii">
             <title>Principal instantiation inheritance</title>
             
-            <para>If a class or interface <literal>A</literal> is a subtype of the types
-            <literal>B&lt;X&gt;</literal> and <literal>B&lt;Y&gt;</literal> for some
-            parameterized type <literal>B&lt;T&gt;</literal>, and distinct types <literal>X</literal> 
-            and <literal>Y</literal>, then <literal>A</literal> must also be a subtype of 
-            <literal>B&lt;Z&gt;</literal> for some type <literal>Z</literal> such that 
-            <literal>B&lt;Z&gt;</literal> is a subtype of <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>.</para>
+            <para>If a class or interface <literal>X</literal> is a subtype of the types
+            <literal>Y&lt;*As&gt;</literal> and <literal>Y&lt;*Bs&gt;</literal> for some
+            generic type <literal>Y&lt;*Ts&gt;</literal>, and distinct type argument lists 
+            <literal>As</literal> and <literal>Bs</literal> which do not involve any type
+            parameters, then <literal>X</literal> must also be a subtype of 
+            <literal>Y&lt;*Cs&gt;</literal> for some list of type arguments 
+            <literal>Cs</literal> such that <literal>Y&lt;*Cs&gt;</literal> is a subtype 
+            of <literal>Y&lt;*As&gt;&amp;Y&lt;*Bs&gt;</literal>.</para>
             
-            <para>Or, equivalently, <literal>B&lt;T&gt;</literal> must not be invariant in 
-            <literal>T</literal> and <literal>A</literal> must also be a subtype of:</para>
+            <para>Or, restated equivalently:</para>
             
             <itemizedlist>
+            
+            <listitem>
+            <para>if for some <literal>T</literal> in <literal>Ts</literal>, the 
+            corresponding <literal>A</literal> in <literal>As</literal> and 
+            <literal>B</literal> in <literal>Bs</literal> are distinct types, and 
+            <literal>Y&lt;*Ts&gt;</literal> is invariant in <literal>T</literal>, then the 
+            type <literal>Y&lt;*As&gt;&amp;Y&lt;*Bs&gt;</literal> is the bottom type 
+            <literal>Nothing</literal>, or, otherwise,</para>
+            </listitem>
+            
+            <listitem>
+            <para><literal>X</literal> must be a subtype of <literal>Y&lt;*Cs&gt;</literal>
+            where <literal>Cs</literal> is a type argument list formed by taking each
+            type parameter <literal>T</literal> in <literal>Ts</literal>, and constructing
+            a type <literal>C</literal> from the corresponding <literal>A</literal> in
+            <literal>As</literal> and <literal>B</literal> in <literal>Bs</literal>:</para>
+            <itemizedlist>
                 <listitem>
-                    <para><literal>B&lt;X&amp;Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
-                    is covariant in <literal>T</literal>, or</para>
+                    <para>if <literal>Y</literal> is invariant in <literal>T</literal>, 
+                    then <literal>C</literal> is the same type as <literal>A</literal>
+                    and <literal>B</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para><literal>B&lt;X|Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
-                    is contravariant in <literal>T</literal>.</para>
+                    <para>if <literal>Y</literal> is covariant in <literal>T</literal>, 
+                    then <literal>C</literal> is <literal>A&amp;B</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>if <literal>Y</literal> is contravariant in <literal>T</literal>,
+                    then <literal>C</literal> is <literal>A|B</literal>.</para>
                 </listitem>
             </itemizedlist>
+            </listitem>
             
-            <para>It further follows that if <literal>X</literal> and <literal>Y</literal>
-            are distinct types that do not involve type parameters, and <literal>B&lt;T&gt;</literal> 
-            is invariant in <literal>T</literal>, then the type <literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal>
-            is the bottom type <literal>Nothing</literal>.</para>
-            
+            </itemizedlist>
+             
             <para>These identities result from principal instantiation inheritance, for any
-            types <literal>X</literal> and <literal>Y</literal>:</para>
+            generic type <literal>X&lt;T&gt;</literal>, and for any types <literal>A</literal> 
+            and <literal>B</literal>:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal> is exactly equivalent 
-                    to <literal>B&lt;X&amp;Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
-                    is covariant in <literal>T</literal>, and</para>
+                    <para><literal>X&lt;A&gt;&amp;X&lt;B&gt;</literal> is exactly equivalent 
+                    to <literal>X&lt;A&amp;B&gt;</literal> if <literal>X&lt;T&gt;</literal>
+                    is covariant in <literal>T</literal>, unless either <literal>A</literal>
+                    or <literal>B</literal> involves type parameters, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>B&lt;X&gt;&amp;B&lt;Y&gt;</literal> is exactly equivalent
-                    to <literal>B&lt;X|Y&gt;</literal> if <literal>B&lt;T&gt;</literal>
-                    is contravariant in <literal>T</literal>.</para>
+                    <para><literal>X&lt;A&gt;&amp;X&lt;B&gt;</literal> is exactly equivalent
+                    to <literal>X&lt;A|B&gt;</literal> if <literal>X&lt;T&gt;</literal>
+                    is contravariant in <literal>T</literal>, unless either <literal>A</literal>
+                    or <literal>B</literal> involves type parameters.</para>
                 </listitem>
             </itemizedlist>
         
@@ -1314,7 +1362,8 @@ Item item = comp of Item;</programlisting>
                     <literal>X</literal> is an invariant subtype of <literal>Z&lt;A&gt;</literal> 
                     and <literal>Y</literal> is an invariant subtype of <literal>Z&lt;B&gt;</literal> 
                     and <literal>A</literal> is not exactly <literal>B</literal>, and neither
-                    <literal>A</literal> nor <literal>B</literal> involve type parameters.</para>
+                    <literal>A</literal> nor <literal>B</literal> involve type parameters,
+                    as shown above, in <xref linkend="pii"/>.</para>
                 </listitem>
             </itemizedlist>
             
