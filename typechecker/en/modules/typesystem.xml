@@ -849,6 +849,22 @@ Float|Integer num = one;</programlisting></comment>
         
         </section>
         
+        <section id="spreadnotation">
+            <title>Spread notation</title>
+            
+            <para>If <literal>X</literal> is a type constructor (a generic type), and
+            <literal>As</literal> is a list of type arguments, then, as a notational
+            convenience, we will write <literal>X&lt;*As&gt;</literal> to mean the 
+            type produced by application of <literal>X</literal> to the type arguments 
+            <literal>As</literal>, as defined in <xref linkend="generictypearguments"/>. 
+            For example, if <literal>As</literal> is the list 
+            <literal>String, Float</literal>, then <literal>Entry&lt;*As&gt;</literal> 
+            is the type <literal>Entry&lt;String, Float&gt;</literal>.</para>
+            
+            <para>This notation is not part of the syntax of the language.</para>
+            
+        </section>
+        
     </section>
         
     <section id="inheritance">
@@ -882,24 +898,7 @@ Float|Integer num = one;</programlisting></comment>
         </itemizedlist>
         
         <para>If a type declaration extends or satisfies a type, we say it 
-        <emphasis>inherits</emphasis> the type. To formalize the definition of inheritance,
-        we'll need some special notation.</para>
-        
-        <section id="spreadnotation">
-            <title>Spread notation</title>
-            
-            <para>If <literal>X</literal> is a type constructor (a generic type), and
-            <literal>As</literal> is a list of type arguments, then, as a notational
-            convenience, we will write <literal>X&lt;*As&gt;</literal> to mean the 
-            type produced by application of <literal>X</literal> to the type arguments 
-            <literal>As</literal>, as defined in <xref linkend="generictypearguments"/>. 
-            For example, if <literal>As</literal> is the list 
-            <literal>String, Float</literal>, then <literal>Entry&lt;*As&gt;</literal> 
-            is the type <literal>Entry&lt;String, Float&gt;</literal>.</para>
-            
-            <para>This notation is not part of the syntax of the language.</para>
-            
-        </section>
+        <emphasis>inherits</emphasis> the type.</para>
         
         <section id="inheritanceandsubtyping">
             <title>Inheritance and subtyping</title>
