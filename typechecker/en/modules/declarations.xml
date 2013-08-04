@@ -990,8 +990,8 @@ TypeConstraints?
                </listitem>
                <listitem>
                   <para>use a self reference to the instance being initialized as an 
-                  operand of any operator except the member selection operator, 
-                  the <literal>of</literal> operator, or the identity operator,</para>
+                  operand of any operator except the member selection operator, or
+                  the <literal>of</literal> operator,</para>
                </listitem>
                <listitem>
                   <para>return a self reference to the instance being initialized, or</para>
