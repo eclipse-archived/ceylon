@@ -661,6 +661,11 @@ TypeConstraints?
                   the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
+                  <para>use a super reference as an operand of any operator except the
+                  member selection operator, or the <literal>of</literal> operator as 
+                  specified in <xref linkend="super"/>,</para>
+               </listitem>
+               <listitem>
                   <para>return a super reference, or</para>
                </listitem>
                <listitem>
@@ -984,6 +989,11 @@ TypeConstraints?
                   clause expression or as the value of a value assignment or specification,</para>
                </listitem>
                <listitem>
+                  <para>use a self reference to the instance being initialized as an 
+                  operand of any operator except the member selection operator, 
+                  the <literal>of</literal> operator, or the identity operator,</para>
+               </listitem>
+               <listitem>
                   <para>return a self reference to the instance being initialized, or</para>
                </listitem>
                <listitem>
@@ -1085,6 +1095,11 @@ TypeConstraints?
                   <para>pass a super reference as an argument of an instantiation, 
                   method invocation, or <literal>extends</literal> clause expression or as 
                   the value of a value assignment or specification,</para>
+               </listitem>
+               <listitem>
+                  <para>use a super reference as an operand of any operator except the
+                  member selection operator, or the <literal>of</literal> operator as 
+                  specified in <xref linkend="super"/>,</para>
                </listitem>
                <listitem>
                   <para>return a super reference, or</para>
