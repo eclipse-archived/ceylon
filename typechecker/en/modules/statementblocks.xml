@@ -886,116 +886,116 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <section id="expressionstatements">
             <title>Expression statements</title>
         
-        <para>Only certain expressions are valid statements:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>assignment,</para>
-            </listitem>
-            <listitem>
-                <para>prefix or postfix increment or decrement,</para>
-            </listitem>
-            <listitem>
-                <para>invocation of a method,</para>
-            </listitem>
-            <listitem>
-                <para>instantiation of a class.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <synopsis>ExpressionStatement: ( Assignment | IncrementOrDecrement | Invocation ) ";"</synopsis>
-        
-        <para>For example:</para>
-        
-        <programlisting>x += 1;</programlisting>
-        <programlisting>x++;</programlisting>
-        <programlisting>print("Hello");</programlisting>
-        <programlisting>Main(process.arguments);</programlisting>
+            <para>Only certain expressions are valid statements:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>assignment,</para>
+                </listitem>
+                <listitem>
+                    <para>prefix or postfix increment or decrement,</para>
+                </listitem>
+                <listitem>
+                    <para>invocation of a method,</para>
+                </listitem>
+                <listitem>
+                    <para>instantiation of a class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <synopsis>ExpressionStatement: ( Assignment | IncrementOrDecrement | Invocation ) ";"</synopsis>
+            
+            <para>For example:</para>
+            
+            <programlisting>x += 1;</programlisting>
+            <programlisting>x++;</programlisting>
+            <programlisting>print("Hello");</programlisting>
+            <programlisting>Main(process.arguments);</programlisting>
         
         </section>
         
         <section id="controldirectives">
             <title>Control directives</title>
             
-        <para>A <emphasis>control directive</emphasis> statement ends execution of the 
-        current block and forces the flow of execution to resume in some outer scope. 
-        They may only occur as the lexically last statement of a block.</para>
-
-        <synopsis>DirectiveStatement: Directive ";"</synopsis>
-        
-        <para>There are four control directives:</para>
-        
-        <itemizedlist>
-            <listitem>the <literal>return</literal> directive&mdash;to return a value from 
-            a getter or non-<literal>void</literal> function or terminate execution of a 
-            setter, class initializer, or <literal>void</literal> method,</listitem>
-            <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
-            <listitem>the <literal>continue</literal> directive&mdash;to jump to the next 
-            iteration of a loop, and</listitem>
-            <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
-        </itemizedlist>
-                
-        <synopsis>Directive: Return | Throw | Break | Continue</synopsis>
-
-        <para>For example:</para>
-        
-        <programlisting>throw Exception();</programlisting>
-        <programlisting>return x+y;</programlisting>
-        <programlisting>break;</programlisting>
-        <programlisting>continue;</programlisting>
-        
-        <para>The <literal>return</literal> directive must sequentially occur in the body 
-        of a function, getter, setter, or class initializer. In the case of a 
-        setter, class initializer, or <literal>void</literal> function, no expression may 
-        be specified. In the case of a getter or non-<literal>void</literal> function, an 
-        expression must be specified. The expression type must be assignable to the return 
-        type of the function or the type of the value. When the directive is executed, the 
-        expression is evaluated to determine the return value of the function or getter.</para>
-        
-        <synopsis>Return: "return" Expression?</synopsis>
-        
-        <para>The <literal>break</literal> directive must sequentially occur in the body 
-        of a loop.</para>
-        
-        <synopsis>Break: "break"</synopsis>
-        
-        <para>The <literal>continue</literal> directive must sequentially occur in the body 
-        of a loop.</para>
-        
-        <synopsis>Continue: "continue"</synopsis>
-        
-        <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
-        expression, whose type must be a subtype of type <literal>Exception</literal> 
-        defined in <literal>ceylon.language</literal>. When the directive is executed, the 
-        expression is evaluated and the resulting exception is thrown. If no expression is 
-        specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
-        
-        <synopsis>Throw: "throw" Expression?</synopsis>
-        
+            <para>A <emphasis>control directive</emphasis> statement ends execution of the 
+            current block and forces the flow of execution to resume in some outer scope. 
+            They may only occur as the lexically last statement of a block.</para>
+    
+            <synopsis>DirectiveStatement: Directive ";"</synopsis>
+            
+            <para>There are four control directives:</para>
+            
+            <itemizedlist>
+                <listitem>the <literal>return</literal> directive&mdash;to return a value from 
+                a getter or non-<literal>void</literal> function or terminate execution of a 
+                setter, class initializer, or <literal>void</literal> method,</listitem>
+                <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
+                <listitem>the <literal>continue</literal> directive&mdash;to jump to the next 
+                iteration of a loop, and</listitem>
+                <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
+            </itemizedlist>
+                    
+            <synopsis>Directive: Return | Throw | Break | Continue</synopsis>
+    
+            <para>For example:</para>
+            
+            <programlisting>throw Exception();</programlisting>
+            <programlisting>return x+y;</programlisting>
+            <programlisting>break;</programlisting>
+            <programlisting>continue;</programlisting>
+            
+            <para>The <literal>return</literal> directive must sequentially occur in the body 
+            of a function, getter, setter, or class initializer. In the case of a 
+            setter, class initializer, or <literal>void</literal> function, no expression may 
+            be specified. In the case of a getter or non-<literal>void</literal> function, an 
+            expression must be specified. The expression type must be assignable to the return 
+            type of the function or the type of the value. When the directive is executed, the 
+            expression is evaluated to determine the return value of the function or getter.</para>
+            
+            <synopsis>Return: "return" Expression?</synopsis>
+            
+            <para>The <literal>break</literal> directive must sequentially occur in the body 
+            of a loop.</para>
+            
+            <synopsis>Break: "break"</synopsis>
+            
+            <para>The <literal>continue</literal> directive must sequentially occur in the body 
+            of a loop.</para>
+            
+            <synopsis>Continue: "continue"</synopsis>
+            
+            <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
+            expression, whose type must be a subtype of type <literal>Exception</literal> 
+            defined in <literal>ceylon.language</literal>. When the directive is executed, the 
+            expression is evaluated and the resulting exception is thrown. If no expression is 
+            specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
+            
+            <synopsis>Throw: "throw" Expression?</synopsis>
+            
         </section>
         
         <section id="specificationstatements">
             <title>Specification statements</title>
             
-        <para>A <emphasis>specification</emphasis> statement may specify or initialize the 
-        persistent value of a forward-declared reference, or specify the implementation of 
-        a forward-declared getter or function.</para>
-        
-        <synopsis>Specification: ValueSpecification | LazySpecification</synopsis>
-        
-        <para>The persistent value of a forward-declared reference or the 
-        implementation of a forward-declared function may be specified using 
-        <literal>=</literal>. The specification statement consists of an unqualified 
-        value reference and a specifier. The value reference must refer to a 
-        declaration which sequentially occurs earlier in the body in which the 
-        specification statement occurs.</para>
-        
-        <synopsis>ValueSpecification: MemberName Specifier ";"</synopsis>
-        
-        <para>The type of the specified expression must be assignable to the type of 
-        the reference, or to the callable type of the function.</para>
-        
-        <programlisting>String greeting;
+            <para>A <emphasis>specification</emphasis> statement may specify or initialize the 
+            persistent value of a forward-declared reference, or specify the implementation of 
+            a forward-declared getter or function.</para>
+            
+            <synopsis>Specification: ValueSpecification | LazySpecification</synopsis>
+            
+            <para>The persistent value of a forward-declared reference or the 
+            implementation of a forward-declared function may be specified using 
+            <literal>=</literal>. The specification statement consists of an unqualified 
+            value reference and a specifier. The value reference must refer to a 
+            declaration which sequentially occurs earlier in the body in which the 
+            specification statement occurs.</para>
+            
+            <synopsis>ValueSpecification: MemberName Specifier ";"</synopsis>
+            
+            <para>The type of the specified expression must be assignable to the type of 
+            the reference, or to the callable type of the function.</para>
+            
+            <programlisting>String greeting;
 if (exists name) {
     greeting = "hello ``name``";
 }
@@ -1011,51 +1011,51 @@ else {
     process = (String s) => s;
 }</programlisting>
         
-        <comment><para>Note: there is an apparent ambiguity here. Is the statement
-        <literal>x=1;</literal> a value specification statement, or an assignment 
-        expression statement? The language resolves this ambiguity by favoring the
-        interpretation as a specification statement whenever that interpretation is
-        viable. This is a transparent solution, since it accepts strictly more code 
-        than the alternative interpretation, and for ambiguous cases the actual 
-        semantics are identical between the two interpretations.</para></comment>
-        
-        <para>The implementation of forward-declared getter or function may be
-        specified using <literal>=&gt;</literal>. The specification statement 
-        consists of either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>an unqualified value reference and a lazy specifier, or</para>
-            </listitem>
-            <listitem>
-                <para>a unqualified callable reference, one or more parameter lists, 
-                and a lazy specifier.</para>
-            </listitem>
-        </itemizedlist>
-        
-        
-        <para>The value reference or callable reference must refer to a declaration 
-        which sequentially occurs earlier in the body in which the specification 
-        statement occurs.</para>
-        
-        <para>A callable reference followed by a parameter list is itself considered 
-        a callable reference, called a <emphasis>parameterized reference</emphasis>. 
-        If the parameter list has type <literal>P</literal> then the callable reference 
-        must have the exact type <literal>Callable&lt;R,P&gt;</literal> for some type 
-        <literal>R</literal>. Then the type of the parameterized reference is
-        <literal>R</literal>.</para>
-        
-        <synopsis>ParameterizedReference: MemberName Parameters+</synopsis>
-        
-        <para>Thus, the specification statement consists of a parameterized reference
-        followed by a lazy specifier.</para>
-        
-        <synopsis>LazySpecification: (MemberName | ParameterizedReference) LazySpecifier ";"</synopsis>
-        
-        <para>The type of the specified expression must be assignable to the type of 
-        the parameterized reference, or to the type of the value reference.</para>
-        
-        <programlisting>String greeting;
+            <comment><para>Note: there is an apparent ambiguity here. Is the statement
+            <literal>x=1;</literal> a value specification statement, or an assignment 
+            expression statement? The language resolves this ambiguity by favoring the
+            interpretation as a specification statement whenever that interpretation is
+            viable. This is a transparent solution, since it accepts strictly more code 
+            than the alternative interpretation, and for ambiguous cases the actual 
+            semantics are identical between the two interpretations.</para></comment>
+            
+            <para>The implementation of forward-declared getter or function may be
+            specified using <literal>=&gt;</literal>. The specification statement 
+            consists of either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>an unqualified value reference and a lazy specifier, or</para>
+                </listitem>
+                <listitem>
+                    <para>a unqualified callable reference, one or more parameter lists, 
+                    and a lazy specifier.</para>
+                </listitem>
+            </itemizedlist>
+            
+            
+            <para>The value reference or callable reference must refer to a declaration 
+            which sequentially occurs earlier in the body in which the specification 
+            statement occurs.</para>
+            
+            <para>A callable reference followed by a parameter list is itself considered 
+            a callable reference, called a <emphasis>parameterized reference</emphasis>. 
+            If the parameter list has type <literal>P</literal> then the callable reference 
+            must have the exact type <literal>Callable&lt;R,P&gt;</literal> for some type 
+            <literal>R</literal>. Then the type of the parameterized reference is
+            <literal>R</literal>.</para>
+            
+            <synopsis>ParameterizedReference: MemberName Parameters+</synopsis>
+            
+            <para>Thus, the specification statement consists of a parameterized reference
+            followed by a lazy specifier.</para>
+            
+            <synopsis>LazySpecification: (MemberName | ParameterizedReference) LazySpecifier ";"</synopsis>
+            
+            <para>The type of the specified expression must be assignable to the type of 
+            the parameterized reference, or to the type of the value reference.</para>
+            
+            <programlisting>String greeting;
 if (exists name) {
     greeting => "hello ``name``";
 }
@@ -1070,7 +1070,7 @@ if (normalize) {
 else {
     process(String s) => s;
 }</programlisting>
-        
+            
         </section>
         
         <section id="definitereturn">
