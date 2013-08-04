@@ -1672,7 +1672,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         type parameters declared on the left of the specifier are in scope on the right
         of the specifier. An alias is in general a type constructor.</para></comment>
         
-        <para>A class or interface may not extend of satisfy a type alias.</para>
+        <para>A class or interface may not extend or satisfy a type alias.</para>
         
     </section>
         
