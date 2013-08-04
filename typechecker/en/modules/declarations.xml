@@ -798,6 +798,9 @@ TypeConstraints?
             <para>If the aliased interface is a parameterized type, the aliased type must
             explicitly specify type arguments.</para>
             
+            <para>A class or interface may satisfy an interface alias, in which case, the
+            class or interface inherits the aliased interface type.</para>
+            
             <!--para>Interface aliases are not reified types. The metamodel reference for an 
             interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
             the metamodel object for the aliased interface&mdash;in this case, 
@@ -1632,6 +1635,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <literal>abstract</literal>, it is considered an abstract nested class of
         the containing class or interface.</para>
         
+        <para>A class or interface may extend a class alias, in which case, the 
+        class inherits the aliased class type.</para>
+            
         <!--para>Class aliases are not reified types. The metamodel reference for a class 
         alias&mdash;for example, <literal>People</literal>&mdash;returns the metamodel 
         object for the aliased class&mdash;in this case, 
@@ -1665,6 +1671,8 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         specifier <literal>=&gt;</literal> instead of <literal>=</literal> because the
         type parameters declared on the left of the specifier are in scope on the right
         of the specifier. An alias is in general a type constructor.</para></comment>
+        
+        <para>A class or interface may not extend of satisfy a type alias.</para>
         
     </section>
         
