@@ -684,6 +684,42 @@ String result = middleObject.string;</programlisting>
             that packages a callable reference, or</para></listitem>
             <listitem><para>assignment to a variable value.</para></listitem>
         </itemizedlist>
+        
+        <section id="dynamicdispatch">
+            <title>Dynamic dispatch</title>
+            
+            <para><emphasis>Dynamic dispatch</emphasis> is the process of determing
+            at runtime a member declaration based upon the runtime type of an object,
+            which, as a result of subtype polymorphism, may be different to its static 
+            type known at compile time.</para>
+            
+            <para>Any concrete class is guaranteed to have exactly one declaration of
+            a member, either declared or inherited by the class, which refines all other 
+            declarations of the member declared or inherited by the class. At runtime,
+            this member is selected.</para>
+            
+            <para>There is one exception to this rule: member expressions where the 
+            receiver expression is of form <literal>super</literal> or
+            <literal>(super of Type)</literal>, as defined in <xref linkend="super"/>,
+            are dispatched based on the static type of the receiver expression:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Any invocation of a member of <literal>super</literal> is 
+                    processed by the member defined or inherited by the supertype, 
+                    bypassing any member declaration that refines the member on the 
+                    current class or any subclass of the current class.</para>
+                </listitem>
+                <listitem>
+                    <para>Any invocation of a member of an expression of form 
+                    <literal>(super of Type)</literal> is processed by the member 
+                    defined or inherited by <literal>Type</literal>, bypassing any 
+                    member declaration that refines the member on the current class 
+                    or any subclass of the current class.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
             
         <section id="evaluation">
             <title>Evaluation</title>

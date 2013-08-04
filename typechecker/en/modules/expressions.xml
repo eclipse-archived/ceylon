@@ -228,7 +228,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A self reference expression may not occur outside of a class or 
         interface body.</para>
         
-        <section>
+        <section id="this">
             <title><literal>this</literal></title>
                 
             <para>The keyword <literal>this</literal> refers to the current instance,
@@ -239,7 +239,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
        
-        <section>
+        <section id="outer">
             <title><literal>outer</literal></title>
                 
             <para>The keyword <literal>outer</literal> refers to the current instance,
@@ -249,7 +249,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
                     
-        <section>
+        <section id="super">
             <title><literal>super</literal></title>
                 
             <para>The keyword <literal>super</literal> refers to the current instance 
@@ -261,11 +261,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             to a <literal>formal</literal> declaration, nor to any member inherited 
             from more than one supertype of the intersection type.</para>
             
-            <para>Any invocation of a member of <literal>super</literal> is processed 
-            by the member defined or inherited by the supertype, bypassing any member 
-            declaration that refines the member on the current class or any subclass 
-            of the current class.</para>
-            
             <para>The keyword <literal>super</literal> may accur as the first operand
             of an <literal>of</literal> operator, in which case the second operand is
             any supertype of the class. The expression <literal>(super of Type)</literal>
@@ -276,11 +271,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             inherited from more than one supertype of <literal>Type</literal>, nor to 
             any member that is refined by the class or any intermediate supertype of 
             the class.</para> 
-            
-            <para>Any invocation of this expression is processed by the member defined 
-            or inherited by <literal>Type</literal>, bypassing any member declaration 
-            that refines the member on the current class or any subclass of the current 
-            class.</para>
             
         </section>
             
