@@ -1213,6 +1213,19 @@ else {
             or <literal>while</literal> block unless the declaration itself occurs within the same
             <literal>for</literal> or <literal>while</literal> block.</para>
             
+            <comment><para>TODO: Furthermore, the typechecker does some tricky analysis to
+            determine that code like the following can be accepted:</para>
+            <programlisting>Boolean minors;
+for (p in people) {
+    if (p.age&lt;18) {
+        minors = true;
+        break;
+    }
+}
+else {
+    minors = false;
+}</programlisting></comment>
+            
         </section>
             
         <section id="definiteuninitialization">
