@@ -1941,10 +1941,12 @@ Item item = comp of Item;</programlisting>
             of the parameterized type together with the type argument list is itself a type,
             called a <emphasis>produced type</emphasis>.</para>
             
-            <para>For a generic type <literal>T&lt;X&gt;</literal>, the types 
-            <literal>T&lt;A&gt;</literal> and <literal>T&lt;B&gt;</literal> represent the 
-            same type if and only if <literal>A</literal> and <literal>B</literal> are the 
-            same type.</para>
+            <para>For a generic type <literal>X&lt;*Ts&gt;</literal>, the types 
+            <literal>X&lt;*As&gt;</literal> and <literal>X&lt;*Bs&gt;</literal> represent the 
+            same type if and only if for every <literal>A</literal> in the list of type arguments
+            <literal>As</literal> and corresponding <literal>B</literal> in the list of type 
+            arguments <literal>Bs</literal>, <literal>A</literal> is exactly the same type as
+            <literal>B</literal>.</para>
             
             <!--
             <para>For a generic type <literal>T&lt;n&gt;</literal>, the types 
@@ -1953,75 +1955,87 @@ Item item = comp of Item;</programlisting>
             equivalent dimension expressions.</para>
             -->
             
-            <para>For a generic type <literal>T&lt;X&gt;</literal>, a type <literal>A</literal>,
-            and a subtype <literal>B</literal> of <literal>A</literal>:</para>
+            <para>For a generic type <literal>X&lt;*Ts&gt;</literal>, a list of type arguments
+            <literal>As</literal>, and a list of type arguments <literal>Bs</literal>,
+            <literal>X&lt;*As&gt;</literal> is a subtype of <literal>X&lt;*Bs&gt;</literal>
+            if and only if, for every type parameter <literal>T</literal> in <literal>Ts</literal>,
+            corresponding <literal>A</literal> in <literal>As</literal> and 
+            corresponding <literal>B</literal> in <literal>Bs</literal>:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>
-                        If <literal>X</literal> is a covariant type parameter, 
-                        <literal>T&lt;B&gt;</literal> is a subtype of <literal>T&lt;A&gt;</literal>.
+                        <literal>T</literal> is a covariant type parameter, and
+                        <literal>A</literal> is a subtype of <literal>B</literal>, or
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        If <literal>X</literal> is a contravariant type parameter, 
-                        <literal>T&lt;A&gt;</literal> is a subtype of <literal>T&lt;B&gt;</literal>.
+                        <literal>T</literal> is a contravariant type parameter, and
+                        <literal>B</literal> is a subtype of <literal>A</literal>, or
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        If <literal>X</literal> is invariant (neither covariant nor contravariant), 
-                        there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
-                        <literal>T&lt;B&gt;</literal> unless <literal>A</literal> and <literal>B</literal> 
-                        are the same type.
+                        <literal>T</literal> is an invariant type parameter (neither 
+                        covariant nor contravariant), and <literal>A</literal> and
+                        <literal>B</literal> are exactly the same type.
                     </para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note that if <literal>X</literal> is an invariant type parameter, 
-            then a produced type <literal>S</literal> is a subtype of <literal>T&lt;A&gt;</literal> 
-            if and only if <literal>S</literal> is an invariant subtype of 
-            <literal>T&lt;A&gt;</literal>.</para></comment>
+            <comment><para>Note that if <literal>T</literal> is an invariant type parameter
+            of <literal>X&lt;T&gt;</literal>, then a produced type <literal>Z</literal> is 
+            a subtype of <literal>X&lt;A&gt;</literal> if and only if <literal>Z</literal> 
+            is an invariant subtype of <literal>X&lt;A&gt;</literal>.</para></comment>
             
-            <para>A produced type is a subtype of the type argument to any type parameter 
-            that appears in the <literal>of</literal> clause of the type declaration. If 
-            <literal>X</literal> is a type parameter of the parameterized type 
-            <literal>T&lt;X&gt; of X</literal>, then <literal>T&lt;A&gt;</literal> is 
+            <!--
+            <para>A produced type is a subtype of the type argument to any self type 
+            parameter that appears in the <literal>of</literal> clause of the type declaration. 
+            If <literal>T</literal> is a type parameter of the parameterized type 
+            <literal>X&lt;T&gt; of T</literal>, then <literal>X&lt;A&gt;</literal> is 
             assignable to <literal>A</literal> for every type argument <literal>A</literal> 
-            which satisfies the other type constraints on <literal>X</literal>.</para>
-        
+            which satisfies the other type constraints on <literal>T</literal>.</para>
+            -->
+            
         </section>
         
         <section id="qualifiedtypes">
             <title>Qualified types</title>
             
-            <para>If a class or interface declaration <literal>X&lt;P1,P2,...&gt;</literal> 
-            with type parameters <literal>P1,P2,...</literal> has a nested type declaration 
-            <literal>M&lt;Q1,Q2,...&gt;</literal>, then:</para>
+            <para>If a class or interface declaration <literal>X&lt;*Ts&gt;</literal> 
+            with type parameters <literal>Ts</literal> has a nested type declaration 
+            <literal>M&lt;*Ss&gt;</literal>, then:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>U.M&lt;A1,A2,...&gt;</literal> is a subtype of 
-                    <literal>V.M&lt;B1,B2,...&gt;</literal> if <literal>U</literal> is a subtype 
-                    of <literal>X&lt;C1,C2,...&gt;</literal> and <literal>V</literal> is an 
-                    invariant subtype of <literal>X&lt;C1,C2,...&gt;</literal> and <literal>V</literal> 
+                    <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype 
+                    of <literal>X&lt;*Cs&gt;</literal> and <literal>V</literal> is an 
+                    invariant subtype of <literal>X&lt;*Cs&gt;</literal>, and <literal>V</literal> 
                     directly inherits <literal>M</literal> from <literal>X</literal> without 
-                    refining <literal>M</literal> and if <literal>M&lt;A1,A2,...&gt;</literal> 
-                    is a subtype of <literal>M&lt;B1,B2,...&gt;</literal>.</para>
+                    refining <literal>M</literal>, and <literal>M&lt;*As&gt;</literal> 
+                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para><literal>M&lt;A1,A2,...&gt;</literal> is a subtype of 
-                    <literal>V.M&lt;B1,B2,...&gt;</literal> if <literal>U</literal> is a subtype 
-                    of <literal>X&lt;C1,C2,...&gt;</literal>and <literal>V</literal> is an 
-                    invariant subtype of <literal>X&lt;P1,P2,...&gt;</literal> and <literal>V</literal> 
+                    <para><literal>M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>V</literal> is an 
+                    invariant subtype of <literal>X&lt;*Ts&gt;</literal>, and <literal>V</literal> 
                     directly inherits <literal>M</literal> from <literal>X</literal> without 
-                    refining <literal>M</literal> and if <literal>M&lt;A1,A2,...&gt;</literal> 
-                    is a subtype of <literal>M&lt;B1,B2,...&gt;</literal>.</para>
+                    refining <literal>M</literal>, and <literal>M&lt;*As&gt;</literal> 
+                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.
+                    <emphasis>TODO: check this!</emphasis></para>
+                </listitem>
+                <listitem>
+                    <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype of
+                    <literal>X&lt;*Ts&gt;</literal>, and <literal>M&lt;*As&gt;</literal> 
+                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.
+                    <emphasis>TODO: check this!</emphasis></para>
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note that an unqualified type like <literal>M&lt;A1,A2,...&gt;</literal>
+            <comment><para>Note that an unqualified type like <literal>M&lt;*As&gt;</literal>
             where <literal>M</literal> is a nested type declaration is only well-formed inside the 
             scope in which <literal>M</literal> is declared or inherited. Outside this scope, 
             references to <literal>M</literal> must be qualified by the containing type.</para></comment>
