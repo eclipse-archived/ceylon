@@ -1010,10 +1010,7 @@ TypeConstraints?
             <para>As a special exception to these rules, a statement contained in an 
             initializer may assign a self-reference to the instance being initialized
             to a reference annotated <literal>late</literal>.</para>
-            
-            <para>The initializer of a class is executed after the initializer of its 
-            superclass.</para>
-                    
+                                
             <para>For example, the following code fragments are not legal:</para>
             
             <programlisting>class Graph() {

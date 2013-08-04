@@ -359,6 +359,48 @@ String result = middleObject.string;</programlisting>
         </section>
         
         <section>
+            <title>Initialization</title>
+            
+            <para>When an instance is instantiated, its initializer is executed, and the
+            initializer for every class it inherits is executed. For a class
+            <literal>C</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>First, the initializer of <literal>Object</literal> defined in
+                    <literal>ceylon.language</literal> is executed. (This initializer is
+                    empty and does no work.)</para>
+                </listitem>
+                <listitem>
+                    <para>For each superclass <literal>X</literal> of <literal>C</literal>, 
+                    there is exactly one other superclass <literal>Y</literal> of 
+                    <literal>C</literal> that directly extends <literal>X</literal>. When
+                    execution of the initializer of <literal>X</literal> terminates without
+                    a thrown exception, execution of the initializer of <literal>Y</literal>
+                    begins.</para>
+                </listitem>
+                <listitem>
+                    <para>Finally, when execution of the initializer of <literal>C</literal>
+                    terminates without a thrown exception, the new instance of <literal>C</literal>
+                    is fully-initialized and made accessible to the calling code.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If any initializer in the class heirarchy terminates with a thrown exception,
+            initialization terminates and the incompletely-initialized instance never becomes
+            accessible.</para>
+            
+            <para>Each initializer produces a frame containing values for each reference declared
+            be the corresponding class. These frames are aggregated together to form the new
+            instance of the class <literal>C</literal>.</para>
+            
+            <comment><para>Note: since interfaces don't have initializers, the issue of 
+            "linearization" of supertypes simply never arises in Ceylon. There is a natural,
+            well-defined initialization ordering.</para></comment>
+            
+        </section>
+        
+        <section>
             <title>Class instance optimization</title>
             
             <para>As an exception to the above, the compiler is permitted to destroy a 
@@ -367,8 +409,8 @@ String result = middleObject.string;</programlisting>
             value, if it can determine that the persistent value will never be subsequently
             accessed by the program.</para>
             
-            <comment><para>This is optimization is the only source of a distinction between
-            a "field" of a class and a "local variable" of its initializer. There is no way
+            <comment><para>This optimization is the only source of a distinction between a 
+            "field" of a class and a "local variable" of its initializer. There is no way
             for a program to observe this distinction.</para></comment>
             
         </section>
