@@ -388,12 +388,13 @@
                      |refsect1|refsect2|refsect3|refsection" mode="xref-to">
   <xsl:param name="referrer"/>
   <xsl:param name="xrefstyle"/>
-
+  <fo:inline text-decoration="underline" color="blue">
   <xsl:apply-templates select="." mode="object.xref.markup">
     <xsl:with-param name="purpose" select="'xref'"/>
     <xsl:with-param name="xrefstyle" select="$xrefstyle"/>
     <xsl:with-param name="referrer" select="$referrer"/>
   </xsl:apply-templates>
+  </fo:inline>
   <!-- What about "in Chapter X"? -->
 </xsl:template>
 

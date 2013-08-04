@@ -427,7 +427,7 @@
       <l:template name="sect3" text="Section&#160;%n"/>
       <l:template name="sect4" text="Section&#160;%n"/>
       <l:template name="sect5" text="Section&#160;%n"/>
-      <l:template name="section" text="Section&#160;%n"/>
+      <l:template name="section" text="&#167;&#160;%n"/>
       <l:template name="table" text="Table&#160;%n"/>
    </l:context>
 
@@ -451,7 +451,7 @@
       <l:template name="sect3" text="Section&#160;%n, &#8220;%t&#8221;"/>
       <l:template name="sect4" text="Section&#160;%n, &#8220;%t&#8221;"/>
       <l:template name="sect5" text="Section&#160;%n, &#8220;%t&#8221;"/>
-      <l:template name="section" text="Section&#160;%n, &#8220;%t&#8221;"/>
+      <l:template name="section" text="&#167;%n %t"/>
       <l:template name="simplesect" text="the section called &#8220;%t&#8221;"/>
       <l:template name="table" text="Table&#160;%n, &#8220;%t&#8221;"/>
    </l:context>
