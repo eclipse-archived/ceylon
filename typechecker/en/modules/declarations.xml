@@ -597,9 +597,6 @@ TypeConstraints?
         define and instantiate a class that satisfies the interface, or define 
         an anonymous class that satisfies the interface.</para>
         
-        <!--<section id="interfacebodies">
-            <title>Interface bodies</title>-->
-            
         <para>The body of an interface contains:</para>
         
         <itemizedlist>
@@ -637,21 +634,42 @@ TypeConstraints?
         <section id="interfacebodies">
             <title>Interface bodies</title>
             
-        <para>The body of an interface consists purely of declarations. The following 
-        constructs may not occur sequentially in the body of an interface:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a statement or control structure,</para>
-            </listitem>
-            <listitem>
-                <para>a method or attribute declaration with a non-lazy specifier, or</para>
-            </listitem>
-            <listitem>
-                <para>an <literal>object</literal> declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
+            <para>The body of an interface consists purely of declarations. The following 
+            constructs may not occur sequentially in the body of an interface:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a statement or control structure,</para>
+                </listitem>
+                <listitem>
+                    <para>a method or attribute declaration with a non-lazy specifier, or</para>
+                </listitem>
+                <listitem>
+                    <para>an <literal>object</literal> declaration.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Within an interface body, a <emphasis>super reference</emphasis> 
+            is any occurrence of the expression <literal>super</literal>, unless it also
+            occurs in the body of a nested class or interface declaration. A statement or 
+            declaration contained in the interface body may not:</para>
+            
+            <itemizedlist>
+               <listitem>
+                  <para>pass a super reference as an argument of an instantiation, 
+                  method invocation, or <literal>extends</literal> clause expression or as 
+                  the value of a value assignment or specification,</para>
+               </listitem>
+               <listitem>
+                  <para>return a super reference, or</para>
+               </listitem>
+               <listitem>
+                  <para>narrow the type of a super reference using the 
+                  <literal>if (is ...)</literal> construct or 
+                  <literal>case (is ...)</literal>.</para>
+               </listitem>
+            </itemizedlist>
+                    
         </section>
         
         <!--section id="interfacemembervisibility">
@@ -734,54 +752,54 @@ TypeConstraints?
              
         </section>
         
-    <section id="interfaceswithcases">
-        <title>Interfaces with enumerated cases</title>
+        <section id="interfaceswithcases">
+            <title>Interfaces with enumerated cases</title>
+            
+            <para>An interface declaration may enumerate a list of cases of the interface.</para>
+            
+            <programlisting>shared interface Node&lt;Element&gt; 
+            of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
+            
+            <para>The cases may be interfaces, classes, or toplevel anonymous classes. A 
+            case may be an <literal>abstract</literal> class. Each case must be a subtype 
+            of the interface type. An interface may not be a case of itself. An interface 
+            declaration may not list the same case twice.</para>
+                    
+            <para>If an interface has an <literal>of</literal> clause, then every interface 
+            or class which is a subtype of the interface must be subtype of exactly one of 
+            the enumerated cases.</para>
+                    
+        </section>
         
-        <para>An interface declaration may enumerate a list of cases of the interface.</para>
-        
-        <programlisting>shared interface Node&lt;Element&gt; 
-        of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
-        
-        <para>The cases may be interfaces, classes, or toplevel anonymous classes. A 
-        case may be an <literal>abstract</literal> class. Each case must be a subtype 
-        of the interface type. An interface may not be a case of itself. An interface 
-        declaration may not list the same case twice.</para>
-                
-        <para>If an interface has an <literal>of</literal> clause, then every interface 
-        or class which is a subtype of the interface must be subtype of exactly one of 
-        the enumerated cases.</para>
-                
-    </section>
+        <section id="interfacealiases">
+            <title>Interface aliases</title>
+            
+            <para>An interface declaration which specifies a reference to another interface
+            type defines an <emphasis>interface alias</emphasis> of the specified interface 
+            type.</para>
+            
+            <synopsis>TypeSpecifier: "=>" Type</synopsis>
     
-    <section id="interfacealiases">
-        <title>Interface aliases</title>
+            <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
+            a reference to an interface with no type parameters, or a produced type formed by 
+            a reference to a parameterized interface and type arguments. A class alias simply 
+            assigns an alternative name to the original class type. A reference to the alias 
+            may be used anywhere a reference to an interface may be used.</para>
+            
+            <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
+            
+            <programlisting>interface Compare&lt;Value&gt; => Comparison(Value,Value);</programlisting>
+            
+            <para>If the aliased interface is a parameterized type, the aliased type must
+            explicitly specify type arguments.</para>
+            
+            <!--para>Interface aliases are not reified types. The metamodel reference for an 
+            interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
+            the metamodel object for the aliased interface&mdash;in this case, 
+            <literal>Map&lt;String,Person&gt;</literal>.</para-->
         
-        <para>An interface declaration which specifies a reference to another interface
-        type defines an <emphasis>interface alias</emphasis> of the specified interface 
-        type.</para>
-        
-        <synopsis>TypeSpecifier: "=>" Type</synopsis>
-
-        <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
-        a reference to an interface with no type parameters, or a produced type formed by 
-        a reference to a parameterized interface and type arguments. A class alias simply 
-        assigns an alternative name to the original class type. A reference to the alias 
-        may be used anywhere a reference to an interface may be used.</para>
-        
-        <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
-        
-        <programlisting>interface Compare&lt;Value&gt; => Comparison(Value,Value);</programlisting>
-        
-        <para>If the aliased interface is a parameterized type, the aliased type must
-        explicitly specify type arguments.</para>
-        
-        <!--para>Interface aliases are not reified types. The metamodel reference for an 
-        interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
-        the metamodel object for the aliased interface&mdash;in this case, 
-        <literal>Map&lt;String,Person&gt;</literal>.</para-->
-    
-    </section>
-        
+        </section>
+            
     </section>
     
     <section id="classes">
@@ -803,10 +821,7 @@ TypeConstraints?
         
         <para>To obtain an instance of a class, it is necessary to instantiate the
         class, or a subclass of the class.</para> 
-        
-    <!--<section id="classbodies">
-        <title>Class bodies</title>-->
-        
+                
         <para>The body of a class contains:</para>
         
         <itemizedlist>
@@ -846,9 +861,6 @@ TypeConstraints?
         <literal>abstract</literal> class declaration is not part of the schema of the 
         class type, and is therefore not considered a member of the class.</para>
         
-    <!-- section id="initializerparameters">
-        <title>Initializer parameters</title-->
-        
         <para>Ceylon classes do not have seperate nested constructor declarations. 
         Instead, the body of the class declares <emphasis>initializer parameters</emphasis>. 
         An initializer parameter may be used anywhere in the class body, including in 
@@ -875,37 +887,37 @@ TypeConstraints?
     shared void increment() => count++;
 }</programlisting>
         
-    <section id="callabletypeofclass">
-        <title>Callable type of a class</title>
-        
-        <para>The <emphasis>callable type</emphasis> of a class captures the type and parameter 
-        types of the class. The callable type is <literal>Callable&lt;T,P&gt;</literal>, where
-        <literal>T</literal> is the class and <literal>P</literal> is the type of the initializer
-        parameter list of the class.</para>
-        
-        <para>An <literal>abstract</literal> class is not callable, except from the 
-        <literal>extends</literal> clause of a subclass, or the class specifier of a class alias.</para>
-        
-    </section>
+        <section id="callabletypeofclass">
+            <title>Callable type of a class</title>
+            
+            <para>The <emphasis>callable type</emphasis> of a class captures the type and parameter 
+            types of the class. The callable type is <literal>Callable&lt;T,P&gt;</literal>, where
+            <literal>T</literal> is the class and <literal>P</literal> is the type of the initializer
+            parameter list of the class.</para>
+            
+            <para>An <literal>abstract</literal> class is not callable, except from the 
+            <literal>extends</literal> clause of a subclass, or the class specifier of a class alias.</para>
+            
+        </section>
     
-    <section id="initializersection">
-        <title>Initializer section</title>
-    
-        <para>The initial part of the body of a class is called the 
-        <emphasis>initializer</emphasis> of the class and contains a mix of declarations, 
-        statements and control structures. The initializer is executed every time the 
-        class is instantiated.</para>
-           
-        <para>A class initializer is responsible for initializing the state of the new 
-        instance of the class, before a reference to the new instance is available to 
-        clients.</para>
+        <section id="initializersection">
+            <title>Initializer section</title>
         
-        <programlisting>shared abstract class Point() {
+            <para>The initial part of the body of a class is called the 
+            <emphasis>initializer</emphasis> of the class and contains a mix of declarations, 
+            statements and control structures. The initializer is executed every time the 
+            class is instantiated.</para>
+               
+            <para>A class initializer is responsible for initializing the state of the new 
+            instance of the class, before a reference to the new instance is available to 
+            clients.</para>
+            
+            <programlisting>shared abstract class Point() {
     shared formal Float x;
     shared formal Float y;
 }</programlisting>
-        
-        <programlisting>shared class DiagonalPoint(Float distance) 
+            
+            <programlisting>shared class DiagonalPoint(Float distance) 
         extends Point() {
     
     value d = distance / 2^0.5;
@@ -916,90 +928,92 @@ TypeConstraints?
     assert (x^2 + y^2 &equals; distance^2);
     
 }</programlisting>
-        
-        <programlisting>shared object origin 
+            
+            <programlisting>shared object origin 
         extends Point() {
     x => 0.0;
     y => 0.0;
 }</programlisting>
-        
-        <para>Within a class initializer, a <emphasis>self reference to the instance 
-        being initialized</emphasis> is either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the expression <literal>this</literal>, unless contained in a
-                nested class declaration, or</para>
-            </listitem>
-            <listitem>
-                <para>the expression <literal>outer</literal>, contained in a directly
-                nested class declaration.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A statement or declaration contained in the initializer of a class may 
-        not evaluate an attribute, invoke a method, or instantiate a member class upon 
-        the instance being initialized, including upon a self reference to the instance 
-        being initialized, if the attribute, method, or member class:</para>
-        
-        <itemizedlist>
-           <listitem>
-              <para>occurs later in the body of the class,</para>
-           </listitem>
-           <listitem>
-              <para>is annotated <literal>formal</literal> or <literal>default</literal>,
-              or</para>
-           </listitem>
-           <listitem>
-              <para>is inherited from an interface or superclass, and is not refined 
-              by a declaration occurring earlier in the body of the class.</para>
-           </listitem>
-        </itemizedlist>
-        
-        <para>A member class contained in the initializer of a class may not 
-        <literal>extend</literal> a member or nested class of an interface or 
-        superclass of the class.</para>
-        
-        <para>Furthermore, a statement or declaration contained in the initializer 
-        of a class may not:</para>
-        
-        <itemizedlist>
-           <listitem>
-              <para>pass a self reference to the instance being initialized as an 
-              argument of an instantiation, method invocation, or <literal>extends</literal> 
-              clause expression or as the value of an attribute assignment or 
-              specification, or</para>
-           </listitem>
-           <listitem>
-              <para>return a self reference to the instance being initialized.</para>
-           </listitem>
-        </itemizedlist>
-        
-        <para>Nor may the class pass a self reference to the instance being 
-        initialized as an argument of its own <literal>extends</literal> clause 
-        expression, if any.</para>
-        
-        <para>As a special exception to these rules, a statement contained in an 
-        initializer may assign a self-reference to the instance being initialized
-        to a reference annotated <literal>late</literal>.</para>
-        
-        <para>Finally, the initializer of a class may not attempt to narrow the type 
-        of a self reference to the instance being initialized using the 
-        <literal>if (is ...)</literal> construct or <literal>case (is ...)</literal>.</para>
-        
-        <para>The initializer of a class is executed after the initializer of its 
-        superclass.</para>
-                
-        <para>For example, the following code fragments are not legal:</para>
-        
-        <programlisting>class Graph() {
+            
+            <para>Within a class initializer, a <emphasis>self reference to the instance 
+            being initialized</emphasis> is:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>any occurrence of the expression <literal>this</literal> or
+                    <literal>super</literal>, unless it also occurs in the body of a 
+                    nested class or interface declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>any occurrence of the expression <literal>outer</literal> in 
+                    the body of a class or interface declaration immediately contained 
+                    by the class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A statement or declaration contained in the initializer of a class may 
+            not evaluate an attribute, invoke a method, or instantiate a member class upon 
+            the instance being initialized, including upon a self reference to the instance 
+            being initialized, if the attribute, method, or member class:</para>
+            
+            <itemizedlist>
+               <listitem>
+                  <para>occurs later in the body of the class,</para>
+               </listitem>
+               <listitem>
+                  <para>is annotated <literal>formal</literal> or <literal>default</literal>,
+                  or</para>
+               </listitem>
+               <listitem>
+                  <para>is inherited from an interface or superclass, and is not refined 
+                  by a declaration occurring earlier in the body of the class.</para>
+               </listitem>
+            </itemizedlist>
+            
+            <para>A member class contained in the initializer of a class may not 
+            <literal>extend</literal> a member or nested class of an interface or 
+            superclass of the class.</para>
+            
+            <para>Furthermore, a statement or declaration contained in the initializer 
+            of a class may not:</para>
+            
+            <itemizedlist>
+               <listitem>
+                  <para>pass a self reference to the instance being initialized as an 
+                  argument of an instantiation, method invocation, or <literal>extends</literal> 
+                  clause expression or as the value of a value assignment or specification,</para>
+               </listitem>
+               <listitem>
+                  <para>return a self reference to the instance being initialized, or</para>
+               </listitem>
+               <listitem>
+                  <para>attempt to narrow the type of a self reference to the instance 
+                  being initialized using the <literal>if (is ...)</literal> construct 
+                  or <literal>case (is ...)</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Nor may the class pass a self reference to the instance being 
+            initialized as an argument of its own <literal>extends</literal> clause 
+            expression, if any.</para>
+            
+            <para>As a special exception to these rules, a statement contained in an 
+            initializer may assign a self-reference to the instance being initialized
+            to a reference annotated <literal>late</literal>.</para>
+            
+            <para>The initializer of a class is executed after the initializer of its 
+            superclass.</para>
+                    
+            <para>For example, the following code fragments are not legal:</para>
+            
+            <programlisting>class Graph() {
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
     class Node() {
         nodes.add(this);    //compiler error (this reference in initializer)
     }
 }</programlisting>
-        
-        <programlisting>class Graph() {
+            
+            <programlisting>class Graph() {
     class Node() {}
     Node createNode() {
         Node node = Node();
@@ -1008,10 +1022,10 @@ TypeConstraints?
     }
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
 }</programlisting>
-
-        <para>But this code fragment is legal:</para>
-        
-        <programlisting>class Graph() {
+    
+            <para>But this code fragment is legal:</para>
+            
+            <programlisting>class Graph() {
     OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
     Node createNode() {
         Node node = Node();
@@ -1021,69 +1035,91 @@ TypeConstraints?
     class Node() {}
 }</programlisting>
 
-    </section>
+        </section>
     
-    <section id="declarationsection">
-        <title>Declaration section</title>
+        <section id="declarationsection">
+            <title>Declaration section</title>
+            
+            <para>The remainder of the body of the class consists purely of declarations, 
+            similar to the body of an interface. The following constructs may not occur 
+            sequentially in the declaration section:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a statement or control structure,</para>
+                </listitem>
+                <listitem>
+                    <para>a method or attribute declaration with a non-lazy specifier,</para>
+                </listitem>
+                <listitem>
+                    <para>a forward-declared method or attribute declaration not
+                    annotated <literal>late</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>an <literal>object</literal> declaration with a non-empty 
+                    initializer section, or</para>
+                </listitem>
+                <listitem>
+                    <para>an <literal>object</literal> declaration that directly extends 
+                    a class other than <literal>Object</literal> or <literal>Basic</literal> 
+                    in <literal>ceylon.language</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>However, the declarations in this second section may freely use 
+            <literal>this</literal> and <literal>super</literal>, and may invoke any method,
+            evaluate any attribute, or instantiate any member class of the class or its 
+            superclasses. <!--Furthermore, the usual restriction that a declaration may only 
+            be used within the lexical scope of the declaration is relaxed unless it is a 
+            <literal>value</literal> or <literal>function</literal> declaration with an 
+            inferred type.--></para>
         
-        <para>The remainder of the body of the class consists purely of declarations, 
-        similar to the body of an interface. The following constructs may not occur 
-        sequentially in the declaration section:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a statement or control structure,</para>
-            </listitem>
-            <listitem>
-                <para>a method or attribute declaration with a non-lazy specifier,</para>
-            </listitem>
-            <listitem>
-                <para>a forward-declared method or attribute declaration not
-                annotated <literal>late</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>an <literal>object</literal> declaration with a non-empty 
-                initializer section, or</para>
-            </listitem>
-            <listitem>
-                <para>an <literal>object</literal> declaration that directly extends 
-                a class other than <literal>Object</literal> or <literal>Basic</literal> 
-                in <literal>ceylon.language</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>However, the declarations in this second section may freely use 
-        <literal>this</literal> and <literal>super</literal>, and may invoke any method,
-        evaluate any attribute, or instantiate any member class of the class or its 
-        superclasses. <!--Furthermore, the usual restriction that a declaration may only be 
-        used within the lexical scope of the declaration is relaxed unless it is a 
-        <literal>value</literal> or <literal>function</literal> declaration with an 
-        inferred type.--></para>
-        
-    </section>
+            <para>Within the declaration section of a class body, a <emphasis>super 
+            reference</emphasis> is any occurrence of the expression <literal>super</literal>, 
+            unless it also occurs in the body of a nested class or interface declaration. A 
+            statement or declaration contained in the declaration section of a class body may 
+            not:</para>
+            
+            <itemizedlist>
+               <listitem>
+                  <para>pass a super reference as an argument of an instantiation, 
+                  method invocation, or <literal>extends</literal> clause expression or as 
+                  the value of a value assignment or specification,</para>
+               </listitem>
+               <listitem>
+                  <para>return a super reference, or</para>
+               </listitem>
+               <listitem>
+                  <para>narrow the type of a super reference using the 
+                  <literal>if (is ...)</literal> construct or 
+                  <literal>case (is ...)</literal>.</para>
+               </listitem>
+            </itemizedlist>
+                    
+        </section>
            
-    <!--section id="classmembervisibility">
-        <title>Class member visibility</title>
-        
-        <para>Ordinarily, a declaration that occurs in a block of code is a block local
-        declaration&mdash;it is visible only to statements and declarations that occur
-        within the lexical scope of the declaration. This rule is relaxed for certain 
-        declarations that occur directly inside the body of a class:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any declaration annotated <literal>shared</literal> is visible 
-                wherever the class itself is visible, and</para>
-            </listitem>
-            <listitem>
-                <para>any declaration that occurs in the declaration section of the body 
-                of the class and is not declared using the <literal>value</literal> 
-                or <literal>function</literal> keywords is visible to all other 
-                declarations in the declaration section.</para>
-            </listitem>
-        </itemizedlist>
-        
-    </section-->
+        <!--section id="classmembervisibility">
+            <title>Class member visibility</title>
+            
+            <para>Ordinarily, a declaration that occurs in a block of code is a block local
+            declaration&mdash;it is visible only to statements and declarations that occur
+            within the lexical scope of the declaration. This rule is relaxed for certain 
+            declarations that occur directly inside the body of a class:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>any declaration annotated <literal>shared</literal> is visible 
+                    wherever the class itself is visible, and</para>
+                </listitem>
+                <listitem>
+                    <para>any declaration that occurs in the declaration section of the body 
+                    of the class and is not declared using the <literal>value</literal> 
+                    or <literal>function</literal> keywords is visible to all other 
+                    declarations in the declaration section.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section-->
 
         <section id="classinheritance">
              <title>Class inheritance</title>

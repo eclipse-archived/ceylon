@@ -48,34 +48,34 @@
     <section id="literalvalues">
         <title>Literal values</title>
     
-    <para>Ceylon supports literal values of the following types:</para>
-    
-    <itemizedlist>
-        <listitem>
-            <para><literal>Integer</literal> and <literal>Float</literal>,</para>
-        </listitem>
-        <listitem>
-            <para><literal>Character</literal>, and</para>
-        </listitem>
-        <listitem>
-            <para><literal>String</literal>.</para>
-        </listitem>
-    </itemizedlist>
-    
-    <para>The types <literal>Integer</literal>, <literal>Float</literal>, 
-    <literal>Character</literal>, and <literal>String</literal> are defined in the 
-    module <literal>ceylon.language</literal>.</para>
-    
-    <comment><para>Note: Ceylon does not need a special syntax for <literal>Boolean</literal> 
-    literal values, since <literal>Boolean</literal> is just a class with the cases 
-    <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
-    is just the singleton value of an anonymous class.</para></comment>
-    
-    <synopsis>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
-    
-    <para>All literal values are instances of immutable types. The value of a literal 
-    expression is an instance of the type. How this instance is produced is not specified 
-    here.</para>
+        <para>Ceylon supports literal values of the following types:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>Integer</literal> and <literal>Float</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>Character</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>String</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The types <literal>Integer</literal>, <literal>Float</literal>, 
+        <literal>Character</literal>, and <literal>String</literal> are defined in the 
+        module <literal>ceylon.language</literal>.</para>
+        
+        <comment><para>Note: Ceylon does not need a special syntax for <literal>Boolean</literal> 
+        literal values, since <literal>Boolean</literal> is just a class with the cases 
+        <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
+        is just the singleton value of an anonymous class.</para></comment>
+        
+        <synopsis>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
+        
+        <para>All literal values are instances of immutable types. The value of a literal 
+        expression is an instance of the type. How this instance is produced is not specified 
+        here.</para>
     
     <!--section id="datetime">
         <title><literal>Date</literal> and <literal>Time</literal> literals</title>
@@ -142,79 +142,60 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         -->
         
-    <section id="naturalnumber">
-        <title>Integer number literals</title>
+        <section id="naturalnumber">
+            <title>Integer number literals</title>
+            
+            <para>An integer literal, as defined in 
+            <xref linkend="numericliterals"/>, is an expression 
+            of type <literal>Integer</literal>.</para>
+            
+            <programlisting>Integer five = 5;</programlisting>
+            <programlisting>Integer mask = $1111_0000;</programlisting>
+            <programlisting>Integer white = #FFFF;</programlisting>
+                    
+        </section>
         
-        <para>An integer literal, as defined in 
-        <xref linkend="numericliterals"/>, is an expression 
-        of type <literal>Integer</literal>.</para>
+        <section id="floatnumber">
+            <title>Floating point number literals</title>
+            
+            <para>A floating point literal, as defined in 
+            <xref linkend="numericliterals"/>, is an expression 
+            of type <literal>Float</literal>.</para>
+            
+            <programlisting>shared Float pi = 3.14159;</programlisting>
+            
+        </section>
         
-        <programlisting>Integer five = 5;</programlisting>
-        <programlisting>Integer mask = $1111_0000;</programlisting>
-        <programlisting>Integer white = #FFFF;</programlisting>
-                
+        <section id="character">
+            <title>Character literals</title>
+            
+            <para>A single character literal, as defined in 
+            <xref linkend="characterliterals"/>, is an expression of 
+            type <literal>Character</literal>.</para>
+                    
+            <programlisting>if (exists ch=string[i], ch &equals; '+') { ... }</programlisting>
+            
+        </section>
+        
+        <section id="string">
+            <title>Character string literals</title>
+            
+            <para>A character string literal, as defined in 
+            <xref linkend="stringliterals"/>, is an expression of type
+            <literal>String</literal>.</para>
+            
+            <programlisting>person.name = "Gavin King";</programlisting>
+            
+            <programlisting>print("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
+            
+            <para>A verbatim string is also an expression of type
+            <literal>String</literal>.</para>
+            
+            <programlisting>String multiline = """A verbatim string can have \ or a " in it."""";</programlisting>
+            
+        </section>
+    
     </section>
-    
-    <section id="floatnumber">
-        <title>Floating point number literals</title>
-        
-        <para>A floating point literal, as defined in 
-        <xref linkend="numericliterals"/>, is an expression 
-        of type <literal>Float</literal>.</para>
-        
-        <programlisting>shared Float pi = 3.14159;</programlisting>
-        
-    </section>
-    
-    <section id="character">
-        <title>Character literals</title>
-        
-        <para>A single character literal, as defined in 
-        <xref linkend="characterliterals"/>, is an expression of 
-        type <literal>Character</literal>.</para>
-                
-        <programlisting>if (exists ch=string[i], ch &equals; '+') { ... }</programlisting>
-        
-    </section>
-    
-    <section id="string">
-        <title>Character string literals</title>
-        
-        <para>A character string literal, as defined in 
-        <xref linkend="stringliterals"/>, is an expression of type
-        <literal>String</literal>.</para>
-        
-        <programlisting>person.name = "Gavin King";</programlisting>
-        
-        <programlisting>print("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
-        
-        <para>A verbatim string is also an expression of type
-        <literal>String</literal>.</para>
-        
-        <programlisting>String multiline = """A verbatim string can have \ or a " in it."""";</programlisting>
-        
-    </section>
-    
-    </section>
-    
-    <!--section id="constantexpressions">
-        <title>Constant expressions</title>
-
-        <comment><para>TODO: We need a definition of a "constant expression".
-        We might use it for:</para>
-        <itemizedlist>
-        <listitem>annotations available at compile time, and even perhaps</listitem>
-        <listitem>specifier expressions in declaration section of class body.</listitem>
-        </itemizedlist>
-        <para>For example we could follow Java's very restrictive model, and say 
-        that a constant expression must be anything formed from literals, metamodel 
-        references, the <literal>..</literal> and <literal>-></literal> operators.
-        Or we could be much less restrictive and just say that it is any expression 
-        that could be used to initialize a toplevel attribute of the package.</para>
-        <para>At the very least, we need to properly define the scope in which the 
-        above things are actually evaluated.</para></comment>
-    
-    </section-->
     
     <section id="stringtemplates">
         <title>String templates</title>
@@ -244,74 +225,77 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <synopsis>SelfReference: "this" | "super" | "outer" | "package"</synopsis>
         
-    <section>
-        <title><literal>this</literal></title>
-            
-        <para>The keyword <literal>this</literal> refers to the current instance,
-        as defined in <xref linkend="closureofaclassorinterface"/>, of the 
-        immediately containing class or interface (the class or interface in which 
-        the expression appears). Its type is the type of the current class or 
-        interface.</para>
+        <para>A self reference expression may not occur outside of a class or 
+        interface body.</para>
         
-    </section>
-   
-    <section>
-        <title><literal>outer</literal></title>
-            
-        <para>The keyword <literal>outer</literal> refers to the current instance,
-        as defined in <xref linkend="closureofaclassorinterface"/>, of the class or 
-        interface which immediately contains the immediately containing class or 
-        interface. Its type is assignable to the type of this class or interface.</para>
-        
-    </section>
+        <section>
+            <title><literal>this</literal></title>
                 
-    <section>
-        <title><literal>super</literal></title>
+            <para>The keyword <literal>this</literal> refers to the current instance,
+            as defined in <xref linkend="closureofaclassorinterface"/>, of the 
+            immediately containing class or interface (the class or interface in which 
+            the expression appears). Its type is the type of the current class or 
+            interface.</para>
             
-        <para>The keyword <literal>super</literal> refers to the current instance 
-        of the immediately containing class or interface, and has the same members 
-        as the intersection of the immediate superclass and all immediate 
-        superinterfaces of the class, except for <literal>formal</literal> members, 
-        and except for any member inherited from more than one supertype of the 
-        class. Any invocation of this reference is processed by the member defined 
-        or inherited by the supertype, bypassing any method declaration that refines 
-        the method on the current class or any subclass of the current class. The 
-        <literal>super</literal> reference is not assignable to any type. Nor may 
-        it be narrowed to any type using <literal>if (is ...)</literal>.</para>
-        
-        <para>The keyword <literal>super</literal> may accur as the first operand
-        of an <literal>of</literal> operator, in which case the second operand is
-        any supertype of the class. Then the expression <literal>(super of Type)</literal>
-        has the same members as <literal>Type</literal>, except for <literal>formal</literal> 
-        members, except for any member inherited from more than one supertype 
-        of <literal>Type</literal>, and except for any member that is refined by
-        the class or any intermediate supertype of the class. Any invocation of this 
-        expression is processed by the member defined or inherited by 
-        <literal>Type</literal>, bypassing any method declaration that refines the 
-        method on the current class or any subclass of the current class. An 
-        expression of this form is not assignable to any type. Nor may it be 
-        narrowed to any type using <literal>if (is ...)</literal>.</para>
-        
-        <comment><para>TODO: In fact, the compiler treats <literal>super</literal> 
-        as a value having the intersection type indicated, and uses separate checks 
-        to prevent the reference from leaking. That is probably a better formulation 
-        to use here, and the restrictions would be defined along with the restrictions 
-        on use of <literal>this</literal> in initializer/declaration sections.</para></comment>
-        
-    </section>
-        
-    <section>
-        <title><literal>package</literal></title>
-        
-        <para>The keyword <literal>package</literal> is not an expression, and
-        does not have a well-defined type. However, it may be used to qualify 
-        and disambiguate a value reference or callable reference. A value
-        reference or callable reference qualified by the keyword 
-        <literal>package</literal> always refers to a toplevel member of the
-        containing package, never to an imported declaration or nested 
-        declaration.</para>
-        
-    </section>
+        </section>
+       
+        <section>
+            <title><literal>outer</literal></title>
+                
+            <para>The keyword <literal>outer</literal> refers to the current instance,
+            as defined in <xref linkend="closureofaclassorinterface"/>, of the class or 
+            interface which immediately contains the immediately containing class or 
+            interface. Its type is assignable to the type of this class or interface.</para>
+            
+        </section>
+                    
+        <section>
+            <title><literal>super</literal></title>
+                
+            <para>The keyword <literal>super</literal> refers to the current instance 
+            of the immediately containing class or interface. Its type is the 
+            intersection of the immediate superclass and all immediate superinterfaces 
+            of the class.</para>
+            
+            <para>A member reference such as <literal>super.x</literal> may not resolve 
+            to a <literal>formal</literal> declaration, nor to any member inherited 
+            from more than one supertype of the intersection type.</para>
+            
+            <para>Any invocation of a member of <literal>super</literal> is processed 
+            by the member defined or inherited by the supertype, bypassing any member 
+            declaration that refines the member on the current class or any subclass 
+            of the current class.</para>
+            
+            <para>The keyword <literal>super</literal> may accur as the first operand
+            of an <literal>of</literal> operator, in which case the second operand is
+            any supertype of the class. The expression <literal>(super of Type)</literal>
+            has type <literal>Type</literal></para> 
+            
+            <para>Then a member reference such as <literal>(super of Type).x</literal>
+            may not resolve to a <literal>formal</literal> member, nor to any member 
+            inherited from more than one supertype of <literal>Type</literal>, nor to 
+            any member that is refined by the class or any intermediate supertype of 
+            the class.</para> 
+            
+            <para>Any invocation of this expression is processed by the member defined 
+            or inherited by <literal>Type</literal>, bypassing any member declaration 
+            that refines the member on the current class or any subclass of the current 
+            class.</para>
+            
+        </section>
+            
+        <section>
+            <title><literal>package</literal></title>
+            
+            <para>The keyword <literal>package</literal> is not an expression, and
+            does not have a well-defined type. However, it may be used to qualify 
+            and disambiguate a value reference or callable reference. A value
+            reference or callable reference qualified by the keyword 
+            <literal>package</literal> always refers to a toplevel member of the
+            containing package, never to an imported declaration or nested 
+            declaration.</para>
+            
+        </section>
     
     </section>
     
