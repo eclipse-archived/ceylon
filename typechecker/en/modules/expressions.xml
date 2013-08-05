@@ -610,7 +610,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <literal>Callable&lt;R,P&gt;</literal>.</para>
         
         <comment><para>TODO: should we support an infix-operator-style syntax for 
-        method invocation like <literal>string split ",;"</literal>.</para></comment>
+        method invocation like <literal>string split ",;".contains</literal>? This
+        is especially nice for conceptually symmetric operations like 
+        <literal>a xor b</literal>, or when the argument is an anonymous function
+        like <literal>people map (Person p)=>p.firstName+p.lastName</literal>.
+        </para></comment>
         
         <section id="tupletypeofarglist">
             <title>The type of a list of arguments</title>
