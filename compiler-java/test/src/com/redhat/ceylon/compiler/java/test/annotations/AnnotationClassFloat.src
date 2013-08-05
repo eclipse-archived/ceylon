@@ -13,7 +13,8 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation[] value();
 }
 @.ceylon.language.Annotation$annotation
-class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+@.ceylon.language.Final$annotation
+final class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassFloat(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation anno) {
         this(anno.f());
@@ -67,7 +68,8 @@ class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.runtime.m
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted$annotation[] value();
 }
 @.ceylon.language.Annotation$annotation
-class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
+@.ceylon.language.Final$annotation
+final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration> {
     
     AnnotationClassFloatDefaulted() {
         (

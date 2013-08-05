@@ -2,7 +2,7 @@ import ceylon.language.model{SequencedAnnotation}
 import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassQuoting(
+annotation final class AnnotationClassQuoting(
     shared actual String string,
     shared String toString,
     shared actual Integer hash,

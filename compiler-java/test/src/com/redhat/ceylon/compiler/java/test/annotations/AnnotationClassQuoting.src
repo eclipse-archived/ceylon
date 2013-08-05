@@ -19,7 +19,8 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotation[] value();
 }
 @.ceylon.language.Annotation$annotation
-class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting> {
+@.ceylon.language.Final$annotation
+final class AnnotationClassQuoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting, .ceylon.language.model.declaration.ClassOrInterfaceDeclaration>, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting> {
     
     AnnotationClassQuoting(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassQuoting$annotation anno) {
         this(anno.string(), anno.toString(), anno.hash(), anno.hashCode());

@@ -7,7 +7,8 @@ public @interface AnnotationClass$annotation {
 }
 @.ceylon.language.Shared$annotation
 @.ceylon.language.Annotation$annotation
-public class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> {
+@.ceylon.language.Final$annotation
+public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.model.Annotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass> {
     
     public AnnotationClass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation anno) {
         this(anno.$strictfp());

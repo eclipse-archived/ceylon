@@ -19,6 +19,6 @@
  */
 import ceylon.language.model { Annotation }
 
-shared annotation class FooAnnotation() satisfies Annotation<FooAnnotation> {}
+shared annotation final class FooAnnotation() satisfies Annotation<FooAnnotation> {}
 
 shared annotation FooAnnotation fooAnnotation() => FooAnnotation();

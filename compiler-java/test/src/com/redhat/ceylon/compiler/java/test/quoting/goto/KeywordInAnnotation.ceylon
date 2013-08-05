@@ -20,6 +20,6 @@
 import ceylon.language.model { Annotation }
 
 @nomodel
-shared annotation class AnnotationClass(String strictfp) satisfies Annotation<AnnotationClass> {}
+shared annotation final class AnnotationClass(String strictfp) satisfies Annotation<AnnotationClass> {}
 @nomodel
 shared annotation AnnotationClass enum(String instanceof) => AnnotationClass(instanceof);

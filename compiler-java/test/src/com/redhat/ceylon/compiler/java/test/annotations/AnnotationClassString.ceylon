@@ -2,19 +2,19 @@ import ceylon.language.model{SequencedAnnotation, Annotation}
 import ceylon.language.model.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation class AnnotationClassString(String s) satisfies SequencedAnnotation<AnnotationClassString, ClassOrInterfaceDeclaration>{}
+annotation final class AnnotationClassString(String s) satisfies SequencedAnnotation<AnnotationClassString, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassStringDefaulted, ClassOrInterfaceDeclaration>{}
+annotation final class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassStringDefaulted, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation class AnnotationClassStringSequence(String[] s) satisfies Annotation<AnnotationClassStringSequence> {}
+annotation final class AnnotationClassStringSequence(String[] s) satisfies Annotation<AnnotationClassStringSequence> {}
 @nomodel
-annotation class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) satisfies Annotation<AnnotationClassStringSequenceDefaulted> {}
+annotation final class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) satisfies Annotation<AnnotationClassStringSequenceDefaulted> {}
 @nomodel
-annotation class AnnotationClassStringIterable({String*} s) satisfies Annotation<AnnotationClassStringIterable> {}
+annotation final class AnnotationClassStringIterable({String*} s) satisfies Annotation<AnnotationClassStringIterable> {}
 @nomodel
-annotation class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) satisfies Annotation<AnnotationClassStringIterableDefaulted> {}
+annotation final class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) satisfies Annotation<AnnotationClassStringIterableDefaulted> {}
 @nomodel
-annotation class AnnotationClassStringVariadic({String*} s) satisfies Annotation<AnnotationClassStringVariadic> {}
+annotation final class AnnotationClassStringVariadic({String*} s) satisfies Annotation<AnnotationClassStringVariadic> {}
 @nomodel
 annotation AnnotationClassString annotationClassString(String s) { return AnnotationClassString(s); }
 @nomodel
