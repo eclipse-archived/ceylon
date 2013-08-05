@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+public class Bug1236<P> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedP, final .ceylon.language.Callable<? extends .ceylon.language.String> parent) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.<P>$init$a($reifiedP, parent);
+                this($reifiedP, parent, $ceylontmp$a$0);
+            }
+            returning null;
+        );
+    }
+    
+    public Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedP, final .ceylon.language.Callable<? extends .ceylon.language.String> parent, final .java.lang.String a) {
+        this.$reifiedP = $reifiedP;
+        this.parent = parent;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedP;
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> parent;
+    
+    private final .java.lang.String parent$priv(final P p) {
+        return parent.$call(p).toString();
+    }
+    
+    public static <P>.java.lang.String $init$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedP, final .ceylon.language.Callable<? extends .ceylon.language.String> parent) {
+        return "";
+    }
+    
+    private final void f$priv(final P p) {
+        parent$priv(p);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.class, $reifiedP);
+    }
+}
