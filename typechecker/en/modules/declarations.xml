@@ -786,10 +786,10 @@ TypeConstraints?
             <synopsis>TypeSpecifier: "=>" Type</synopsis>
     
             <para>The specified type must be an <emphasis>interface type</emphasis>, that is,
-            a reference to an interface with no type parameters, or a produced type formed by 
-            a reference to a parameterized interface and type arguments. A class alias simply 
-            assigns an alternative name to the original class type. A reference to the alias 
-            may be used anywhere a reference to an interface may be used.</para>
+            a reference to an interface with no type parameters, or a produced type that
+            instantiates a generic interface. An interface alias simply assigns an alternative 
+            name to the original interface type. A reference to the alias may be used anywhere 
+            a reference to an interface may be used.</para>
             
             <programlisting>shared interface PeopleByName => Map&lt;String,Person&gt;;</programlisting>
             
@@ -1602,10 +1602,10 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <synopsis>ClassSpecifier: "=>" ("super" ".")? TypeNameWithArguments PositionalArguments</synopsis>
         
         <para>The specified type must be a <emphasis>class type</emphasis>, that is,
-        a reference to a class with no type parameters, or a produced type formed by 
-        a reference to a parameterized class and type arguments. A class alias simply 
-        assigns an alternative name to the original class type. A reference to the 
-        alias may be used anywhere a reference to a class may be used.</para>
+        a reference to a class with no type parameters, or a produced type that 
+        instantiates a generic class. A class alias simply assigns an alternative
+        name to the original class type. A reference to the alias may be used anywhere 
+        a reference to a class may be used.</para>
         
         <programlisting>shared class People(Person* people) => ArrayList&lt;Person&gt;(*people);</programlisting>
         

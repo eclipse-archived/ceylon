@@ -916,22 +916,21 @@ Float|Integer num = one;</programlisting></comment>
             <listitem>  
                 <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a type 
                 <literal>Y</literal> that does not inolve the type parameters <literal>Ts</literal> 
-                of <literal>X</literal>, then the produced type <literal>X&lt;*As&gt;</literal> 
-                for any list of type arguments <literal>As</literal> is an invariant subtype 
+                of <literal>X</literal>, then any instantiation <literal>X&lt;*As&gt;</literal> 
+                for a list of type arguments <literal>As</literal> is an invariant subtype 
                 of <literal>Y</literal>.</para>
             </listitem>
             <listitem>  
                 <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a produced 
                 type <literal>Y&lt;*As&gt;</literal> where <literal>As</literal> is a list 
                 of type arguments that involves the type parameters <literal>Ts</literal> 
-                of <literal>X</literal>, then the produced type 
-                <literal>X&lt;*Bs&gt;</literal> for any list of type arguments 
-                <literal>Bs</literal> is an invariant subtype of the produced type 
-                <literal>Y&lt;*Cs&gt;</literal> where <literal>Cs</literal> is the list 
-                of type arguments formed by substituting each argument <literal>B</literal> 
-                in <literal>Bs</literal> for the corresponding parameter <literal>T</literal> 
-                of <literal>Ts</literal> everywhere <literal>T</literal> appears in any type 
-                argument <literal>A</literal> in <literal>As</literal>.</para>
+                of <literal>X</literal>, then any instantiation <literal>X&lt;*Bs&gt;</literal> 
+                for a list of type arguments <literal>Bs</literal> is an invariant subtype of 
+                the produced type <literal>Y&lt;*Cs&gt;</literal> where <literal>Cs</literal> 
+                is the list of type arguments formed by substituting each argument 
+                <literal>B</literal> in <literal>Bs</literal> for the corresponding parameter 
+                <literal>T</literal> of <literal>Ts</literal> everywhere <literal>T</literal> 
+                appears in any type argument <literal>A</literal> in <literal>As</literal>.</para>
             </listitem>
             </itemizedlist>
             
@@ -1164,7 +1163,7 @@ Float|Integer num = one;</programlisting></comment>
                 <para>If a generic type <literal>X&lt;*Ts&gt;</literal> enumerates its 
                 cases, <literal>X1</literal>, <literal>X2</literal>, etc, which involve
                 the type parameters <literal>Ts</literal> of <literal>X,</literal>, then 
-                for any produced type <literal>X&lt;*As&gt;</literal> for a list of type 
+                for any instantiation <literal>X&lt;*As&gt;</literal> for a list of type 
                 arguments <literal>As</literal>, and for each case <literal>Xi</literal>, 
                 we can construct a type <literal>Yi</literal> by substituting every 
                 <literal>A</literal> in <literal>As</literal> for the corresponding 
@@ -1283,13 +1282,14 @@ Float|Integer num = one;</programlisting></comment>
                     body of the declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the type argument to the self type parameter in a produced type
-                     of the declared type covers the produced type, and</para>
+                    <para>the type argument to the self type parameter in an 
+                    instantiation of the declared type covers the instantiation, 
+                    and</para>
                 </listitem>
                 <listitem>
-                    <para>every type which extends or satisfies a produced type of the 
+                    <para>every type which extends or satisfies an instantiation of the 
                     declared type must also be covered by the type argument to the self
-                    type parameter in the produced type.</para>
+                    type parameter in the instantiation.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1957,7 +1957,8 @@ Item item = comp of Item;</programlisting>
             
             <para>If a type argument list conforms to a type parameter list, the combination
             of the parameterized type together with the type argument list is itself a type,
-            called a <emphasis>produced type</emphasis>.</para>
+            called a <emphasis>produced type</emphasis>. We also call the produced type an 
+            <emphasis>instantiation</emphasis> of the generic type.</para>
             
             <para>For a generic type <literal>X&lt;*Ts&gt;</literal>, the types 
             <literal>X&lt;*As&gt;</literal> and <literal>X&lt;*Bs&gt;</literal> represent the 
@@ -2063,9 +2064,11 @@ Item item = comp of Item;</programlisting>
                 
         <section id="typeargumentsubstitution">
             <title>Type argument substitution</title>
-        
-            <para>A type argument is substituted for every appearance of the corresponding
-            type parameter in the schema of the parameterized declaration, including:</para>
+            
+            <para>Given the schema of a generic type, we form the schema of a produced type 
+            that instantiates the generic type by <emphasis>type argument substitution</emphasis>.
+            A type argument is substituted for every appearance of the corresponding type 
+            parameter in the schema of the parameterized declaration, including:</para>
             
             <itemizedlist>
                 <listitem>
