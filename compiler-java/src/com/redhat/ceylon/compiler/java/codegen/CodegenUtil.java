@@ -220,6 +220,11 @@ class CodegenUtil {
                 while (c.isAlias()) {
                     c = c.getExtendedTypeDeclaration();
                 }
+                // be safe
+                if(c.getParameterList() == null
+                        || c.getParameterList().getParameters() == null
+                        || c.getParameterList().getParameters().size() <= index)
+                    return null;
                 decl = c.getParameterList().getParameters().get(index).getModel();
             }
             Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
