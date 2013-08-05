@@ -1671,7 +1671,15 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return elementType;
         }
-        if (type.getDeclaration() instanceof ClassOrInterface) {
+        // We must first check for that before we look at the type declaration, because it may have been simplified by
+        // the typechecker to something we think is a class, such as Empty when in reality the expected type will be Sequential
+        if (willEraseToSequential(declType)) {
+            // Erasure: If the declType would be Sequential<Element>
+            // treat the parameter type as Sequential<Element>, because that's all
+            // Java will see.
+            ProducedType erasedType = typeFact().getDefiniteType(declType).getSupertype(typeFact().getSequentialDeclaration());
+            return erasedType.substitute(producedReference.getTypeArguments());
+        } else if (type.getDeclaration() instanceof ClassOrInterface) {
             // Explicit type parameter
             return type;
         } else if (declTypeDecl instanceof ClassOrInterface) {
@@ -1689,12 +1697,6 @@ public abstract class AbstractTransformer implements Transformation {
                 // make sure we apply the type arguments
                 return upperBound.substitute(producedReference.getTypeArguments());
             }
-        } else if (willEraseToSequential(declType)) {
-            // Erasure: If the declType would be Sequential<Element>
-            // treat the parameter type as Sequential<Element>, because that's all
-            // Java will see.
-            ProducedType erasedType = typeFact().getDefiniteType(declType).getSupertype(typeFact().getSequentialDeclaration());
-            return erasedType.substitute(producedReference.getTypeArguments());
         }
         return type;
     }
