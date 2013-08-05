@@ -262,8 +262,8 @@ public class GenerateJsVisitor extends Visitor
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
         if (!JsCompiler.compilingLanguageModule) {
-            require(clm);
             setCLAlias(names.moduleAlias(clm));
+            require(clm);
         }
 
         for (CompilerAnnotation ca: that.getCompilerAnnotations()) {
@@ -289,6 +289,10 @@ public class GenerateJsVisitor extends Visitor
         if (jsout.requires.put(path, modAlias) == null) {
             out("var ", modAlias, "=require('", path, "');");
             endLine();
+            if (modAlias != null && !modAlias.isEmpty()) {
+                out(clAlias, "$addmod$(", modAlias, ");");
+                endLine();
+            }
         }
     }
 
