@@ -4846,12 +4846,17 @@ public class ExpressionVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.ClassSpecifier that) {
-        visitExtendedOrAliasedType(that.getType(), 
-                that.getInvocationExpression());
+        Tree.InvocationExpression ie = that.getInvocationExpression();
+        visitExtendedOrAliasedType(that.getType(), ie);
         
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
+        
+        if (ie!=null && 
+                ie.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+            checkOverloadedReference((Tree.MemberOrTypeExpression) ie.getPrimary());
+        }
     }
 
     @Override 
