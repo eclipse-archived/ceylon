@@ -2096,6 +2096,116 @@ Item item = comp of Item;</programlisting>
             -->
         
         </section>
+        
+        <section id="principalinstantiation">
+            <title>Principal instantiation of a supertype</title>
+            
+            <!--
+            <para>As a result of the principal instantiation inheritance restriction 
+            defined in <xref linkend="pii"/>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If a type <literal>X</literal> directly or indirectly inherits 
+                    an instantiation <literal>Y&lt;*Ts&gt;</literal> of a generic type 
+                    <literal>Y</literal>, then we can form a unique <emphasis>principal 
+                    instantiation of the supertype</emphasis> <literal>Y</literal> for 
+                    <literal>X</literal> that is a subtype of every instantiation of 
+                    <literal>Y</literal> to which <literal>X</literal> is assignable.</para>
+                </listitem>
+                <listitem>
+                    <para>Likewise, if a generic type <literal>X&lt;*Ts&gt;</literal> 
+                    directly or indirectly inherits an instantiation 
+                    <literal>Y&lt;*Ss&gt;</literal> of a generic type <literal>Y</literal>, 
+                    then we can form a unique <emphasis>principal instantiation of the 
+                    supertype</emphasis> <literal>Y</literal> for every instantiation
+                    <literal>X&lt;*As&gt;</literal> that is a subtype of every instantiation 
+                    of <literal>Y</literal> to which <literal>X&lt;*As&gt;</literal> is 
+                    assignable.</para>
+                </listitem>
+            </itemizedlist>
+            -->
+            
+            <para>If a type <literal>X</literal> is a subtype of some instantiation 
+            <literal>Y&lt;*Ts&gt;</literal> of a generic type <literal>Y</literal>, 
+            then, as a result of the principal instantiation inheritance restriction 
+            defined in <xref linkend="pii"/>, we can form a unique instantiation of 
+            <literal>Y</literal> that is a subtype of every instantiation of 
+            <literal>Y</literal> to which <literal>X</literal> is assignable. We call 
+            this type the <emphasis>principal instantiation of <literal>Y</literal> 
+            for <literal>X</literal></emphasis>.</para>
+            
+            <para>We compute principal instantiations by making use of the identities
+            observed above in <xref linkend="uniontypes"/>, <xref linkend="intersectiontypes"/>,
+            and <xref linkend="pii"/>. For a generic type <literal>X&lt;*Ts&gt;</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>The principal instantiation of 
+                    <literal>X&lt;*As&gt;|X&lt;*Bs&gt;</literal> is the type
+                    <literal>X&lt;*ABs&gt;</literal> where for each type parameter 
+                    <literal>T</literal> in <literal>Ts</literal>, and corresponding
+                    arguments <literal>A</literal> in <literal>As</literal> and
+                    <literal>B</literal> in <literal>Bs</literal>, the corresponding
+                    type argument <literal>AB</literal> in <literal>ABs</literal> is:
+                    </para>
+                    <itemizedlist>
+                    <listitem>
+                        <para><literal>A|B</literal> if <literal>X</literal> is 
+                        covariant in <literal>T</literal>,</para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>A&amp;B</literal> if <literal>X</literal> is 
+                        contravariant in <literal>T</literal>, or</para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>A</literal> if <literal>X</literal> is 
+                        invariant in <literal>T</literal>, and <literal>A</literal>
+                        and <literal>B</literal> are exactly the same type.</para>
+                    </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>The principal instantiation of 
+                    <literal>X&lt;*As&gt;&amp;X&lt;*Bs&gt;</literal> is the type
+                    <literal>X&lt;*ABs&gt;</literal> where for each type parameter 
+                    <literal>T</literal> in <literal>Ts</literal>, and corresponding
+                    arguments <literal>A</literal> in <literal>As</literal> and
+                    <literal>B</literal> in <literal>Bs</literal>, the corresponding
+                    type argument <literal>AB</literal> in <literal>ABs</literal> is:
+                    </para>
+                    <itemizedlist>
+                    <listitem>
+                        <para><literal>A&amp;B</literal> if <literal>X</literal> is 
+                        covariant in <literal>T</literal>,</para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>A|B</literal> if <literal>X</literal> is 
+                        contravariant in <literal>T</literal>, or</para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>A</literal> if <literal>X</literal> is 
+                        invariant in <literal>T</literal>, and <literal>A</literal>
+                        and <literal>B</literal> are exactly the same type.</para>
+                    </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>Finally, the principal instantiation of a generic type 
+                    <literal>X</literal> for a type <literal>Y</literal> which
+                    inherits an instantiation of <literal>X</literal> is the
+                    principal instantiation of the intersection of all 
+                    instantiations of <literal>X</literal> which are inherited by 
+                    <literal>Y</literal>, after recursively substituting type 
+                    arguments specified by subtypes into the inherited
+                    instantiations.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>TODO: define what "recursively substituting type arguments specified 
+            by subtypes means.</para>
+            
+        </section>
                 
         <section id="typeargumentinference">
             <title>Type argument inference</title>
