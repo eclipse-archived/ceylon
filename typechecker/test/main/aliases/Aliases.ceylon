@@ -185,3 +185,10 @@ void testQux() {
     @type:"Qux1<String>.Q" value q1 = Qux1("").q();
     @type:"Qux2<String>.Q" value q2 = Qux2("").q();
 }
+
+abstract class Person() { shared formal void x(); }
+abstract class P() => Person();
+class MrX() extends P() {
+    shared actual void x() {}
+}
+@error class MrY() extends P() {}
