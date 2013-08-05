@@ -1616,7 +1616,10 @@ public class ProducedType extends ProducedReference {
         ProducedType qt = getQualifyingType();
         ProducedType simpleQualifyingType = qt==null ? 
                 null : qt.simple();
-        return d.getProducedType(simpleQualifyingType, simpleArgs);
+        ProducedType ret = d.getProducedType(simpleQualifyingType, simpleArgs);
+        ret.setUnderlyingType(underlyingType);
+        ret.setRaw(isRaw);
+        return ret;
     }
     
     public boolean containsTypeParameters() {
