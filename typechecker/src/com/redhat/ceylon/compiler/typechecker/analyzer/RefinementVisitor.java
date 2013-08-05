@@ -276,7 +276,8 @@ public class RefinementVisitor extends Visitor {
 
 		        }
 		        if (td instanceof ClassOrInterface && 
-		                !((ClassOrInterface) td).isAbstract()) {
+		                !((ClassOrInterface) td).isAbstract() &&
+		                !((ClassOrInterface) td).isAlias()) {
 		            for (Declaration d: st.getDeclaration().getMembers()) {
 		                if (d.isShared() && isResolvable(d) && 
 		                		!errors.contains(d.getName())) {
