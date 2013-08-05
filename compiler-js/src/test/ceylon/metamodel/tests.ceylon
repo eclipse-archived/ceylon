@@ -39,5 +39,6 @@ shared void test() {
     print("Metamodel tests");
     literals<String>();
     typeTests();
+    modulesTests();
     results();
 }
