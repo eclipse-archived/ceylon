@@ -65,7 +65,21 @@ function Modulo(meta, $$modulo){
     var version=String(meta.$$METAMODEL$$['$mod-version']);
     defineAttr($$modulo,'version',function(){return version;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['version']});
     defineAttr($$modulo,'members',function(){
-        return getEmpty();
+      if (this.meta.$$METAMODEL$$['$pks$'] === undefined) {
+        this.meta.$$METAMODEL$$['$pks$'] = {};
+        for (mem in this.meta.$$METAMODEL$$) {
+          if (typeof(mem) === 'string' && mem[0]!=='$') {
+            this.meta.$$METAMODEL$$['$pks$'][mem] = Paquete(mem, this, this.meta.$$METAMODEL$$[mem]);
+          }
+        }
+      }
+      var m = [];
+      for (mem in this.meta.$$METAMODEL$$['$pks$']) {
+        if (typeof(mem) === 'string') {
+          m.push(this.meta.$$METAMODEL$$['$pks$'][mem]);
+        }
+      }
+      return m.reifyCeylonType({t:Sequential,a:{Element:{t:Package$model$declaration}}});
     },undefined,{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Package$model$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['members']});
     defineAttr($$modulo,'dependencies',function(){
       var deps = this.meta.$$METAMODEL$$['$mod-deps'];
@@ -82,15 +96,9 @@ function Modulo(meta, $$modulo){
       return deps;
     },undefined,{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Import$model$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['dependencies']});
     function findPackage(pknm){
-      var pk = this.meta.$$METAMODEL$$['$rt$'+pknm];
-      if (pk!==undefined) return pk;
-      pk = this.meta.$$METAMODEL$$[pknm];
-      if (pk!==undefined) {
-        pk = Paquete(pknm, this, pk);
-        this.meta.$$METAMODEL$$['$rt$'+pknm] = pk;
-        return pk;
-      }
-      return null;
+      if (this.meta.$$METAMODEL$$['$pks$'] === undefined) this.members;
+      var pk = this.meta.$$METAMODEL$$['$pks$'][pknm];
+      return pk===undefined ? null : pk;
     }
     $$modulo.findPackage=findPackage;
     findPackage.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$m']['findPackage']};
