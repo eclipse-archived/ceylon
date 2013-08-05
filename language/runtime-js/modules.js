@@ -68,10 +68,29 @@ function Modulo(meta, $$modulo){
         return getEmpty();
     },undefined,{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Package$model$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['members']});
     defineAttr($$modulo,'dependencies',function(){
-        return getEmpty();
+      var deps = this.meta.$$METAMODEL$$['$mod-deps'];
+      if (deps.length === 0) return getEmpty();
+      if (typeof(deps[0]) === 'string') {
+        var _d = [];
+        for (var i=0; i<deps.length;i++) {
+          var spos = deps[i].lastIndexOf('/');
+          _d.push(Importa(String$(deps[i].substring(0,spos)), String$(deps[i].substring(spos+1))));
+        }
+        deps = _d.reifyCeylonType({t:Sequential,a:{Element:{t:Import$model$declaration}}});
+        this.meta.$$METAMODEL$$['$mod-deps'] = deps;
+      }
+      return deps;
     },undefined,{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:Import$model$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['dependencies']});
-    function findPackage(name$2){
-        return null;
+    function findPackage(pknm){
+      var pk = this.meta.$$METAMODEL$$['$rt$'+pknm];
+      if (pk!==undefined) return pk;
+      pk = this.meta.$$METAMODEL$$[pknm];
+      if (pk!==undefined) {
+        pk = Paquete(pknm, this, pk);
+        this.meta.$$METAMODEL$$['$rt$'+pknm] = pk;
+        return pk;
+      }
+      return null;
     }
     $$modulo.findPackage=findPackage;
     findPackage.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$m']['findPackage']};
@@ -112,10 +131,11 @@ function $init$Importa(){
 }
 exports.$init$Importa=$init$Importa;
 $init$Importa();
-function Paquete(name, container, $$paquete){
+function Paquete(name, container, pkg, $$paquete){
     $init$Paquete();
     if ($$paquete===undefined)$$paquete=new Paquete.$$;
     Package$model$declaration($$paquete);
+    $$paquete.pkg=pkg;
     var name=name;
     defineAttr($$paquete,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$at']['name']});
     var container=container;
