@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+class Teste extends .javax.swing.JFrame implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Teste() {
+        super();
+    }
+    
+    private final void teste$priv() {
+        final .java.awt.Container container = .com.redhat.ceylon.compiler.java.Util.checkNull(getContentPane());
+        container.setSize((int)300L, (int)200L);
+        .com.redhat.ceylon.compiler.java.Util.checkNull(getContentPane()).setSize(new .java.awt.Dimension());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1238 java = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1238((int)1L);
+        java.m((int)1L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Teste();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Teste.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Teste.class);
+}
