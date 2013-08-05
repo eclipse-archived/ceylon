@@ -1153,11 +1153,24 @@ Float|Integer num = one;</programlisting></comment>
                 covers the first type.</para>
             </listitem>
             <listitem>
-                <para>If a type enumerates its cases, then the union of its cases
-                covers the type.</para>
+                <para>If a type has a self type, then its self type covers the type.</para>
             </listitem>
             <listitem>
-                <para>If a type has a self type, then its self type covers the type.</para>
+                <para>If a type <literal>X</literal> enumerates its cases 
+                <literal>X1</literal>, <literal>X2</literal>, etc, then the union 
+                <literal>X1|X2|...</literal> of its cases covers the type.</para>
+            </listitem>
+            <listitem>
+                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> enumerates its 
+                cases, <literal>X1</literal>, <literal>X2</literal>, etc, which involve
+                the type parameters <literal>Ts</literal> of <literal>X,</literal>, then 
+                for any produced type <literal>X&lt;*As&gt;</literal> for a list of type 
+                arguments <literal>As</literal>, and for each case <literal>Xi</literal>, 
+                we can construct a type <literal>Yi</literal> by substituting every 
+                <literal>A</literal> in <literal>As</literal> for the corresponding 
+                <literal>T</literal> in <literal>Ts</literal> everwhere <literal>T</literal> 
+                occurs in <literal>Xi</literal>, and then the union 
+                <literal>Y1|Y2|...</literal> covers <literal>X&lt;*As&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>If a type <literal>X</literal> covers two types <literal>A</literal> 
