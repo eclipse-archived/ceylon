@@ -956,7 +956,7 @@ String result = middleObject.string;</programlisting>
         <section id="spreadevaluation">
             <title>Evaluation of spread arguments and comprehensions</title>
             
-            <para>A spread argument, as defined in <xref linkend="spreadargs"/>, produces 
+            <para>A spread argument, as defined in <xref linkend="spreadarguments"/>, produces 
             multiple values by iterating the iterable object to which the spread operator 
             is applied.</para>
             

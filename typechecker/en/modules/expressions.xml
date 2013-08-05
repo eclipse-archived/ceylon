@@ -660,7 +660,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         </section>
         
-        <section id="listedargs">
+        <section id="listedarguments">
             <title>Listed arguments</title>
             
             <para>A listed argument is an expression.</para>
@@ -675,7 +675,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
         </section>
         
-        <section id="spreadargs">
+        <section id="spreadarguments">
             <title>Spread arguments</title>
             
             <para>A spread argument is an expression prefixed by the 

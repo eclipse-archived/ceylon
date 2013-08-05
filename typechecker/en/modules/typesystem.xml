@@ -861,7 +861,9 @@ Float|Integer num = one;</programlisting></comment>
             <literal>String, Float</literal>, then <literal>Entry&lt;*As&gt;</literal> 
             is the type <literal>Entry&lt;String, Float&gt;</literal>.</para>
             
-            <para>This notation is not part of the syntax of the language.</para>
+            <comment><para>This notation is not part of the syntax of the language, 
+            however, it reflects the spread notation for value arguments defined in 
+            <xref linkend="spreadarguments"/>.</para></comment>
             
         </section>
         
@@ -919,13 +921,17 @@ Float|Integer num = one;</programlisting></comment>
                 of <literal>Y</literal>.</para>
             </listitem>
             <listitem>  
-                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a 
-                type <literal>Y&lt;*Ts&gt;</literal> that involves the type parameters 
-                <literal>Ts</literal> of <literal>X</literal>, then the produced type 
-                <literal>X&lt;*As&gt;</literal> for any list of type arguments 
-                <literal>As</literal> is an invariant subtype of the produced type 
-                <literal>Y&lt;*As&gt;</literal> formed by substituting <literal>As</literal> 
-                for <literal>Ts</literal>.</para>
+                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a produced 
+                type <literal>Y&lt;*As&gt;</literal> where <literal>As</literal> is a list 
+                of type arguments that involves the type parameters <literal>Ts</literal> 
+                of <literal>X</literal>, then the produced type 
+                <literal>X&lt;*Bs&gt;</literal> for any list of type arguments 
+                <literal>Bs</literal> is an invariant subtype of the produced type 
+                <literal>Y&lt;*Cs&gt;</literal> where <literal>Cs</literal> is the list 
+                of type arguments formed by substituting each argument <literal>B</literal> 
+                in <literal>Bs</literal> for the corresponding parameter <literal>T</literal> 
+                of <literal>Ts</literal> everywhere <literal>T</literal> appears in any type 
+                argument <literal>A</literal> in <literal>As</literal>.</para>
             </listitem>
             </itemizedlist>
             
@@ -968,8 +974,8 @@ Float|Integer num = one;</programlisting></comment>
             <para>if for some <literal>T</literal> in <literal>Ts</literal>, the 
             corresponding <literal>A</literal> in <literal>As</literal> and 
             <literal>B</literal> in <literal>Bs</literal> are distinct types, and 
-            <literal>Y&lt;*Ts&gt;</literal> is invariant in <literal>T</literal>, then the 
-            type <literal>Y&lt;*As&gt;&amp;Y&lt;*Bs&gt;</literal> is the bottom type 
+            <literal>Y</literal> is invariant in <literal>T</literal>, then the type 
+            <literal>Y&lt;*As&gt;&amp;Y&lt;*Bs&gt;</literal> is the bottom type 
             <literal>Nothing</literal>, or, otherwise,</para>
             </listitem>
             
@@ -998,9 +1004,16 @@ Float|Integer num = one;</programlisting></comment>
             
             </itemizedlist>
              
-            <para>These identities result from principal instantiation inheritance, for any
-            generic type <literal>X&lt;T&gt;</literal>, and for any types <literal>A</literal> 
-            and <literal>B</literal>:</para>
+            <comment><para>Note: in fact, the type checker actually enforces an additional
+            condition, that might be strictly stronger than this one: that the intersection
+            between the direct supertypes of a type must not be equivalent to 
+            <literal>Nothing</literal>. However, in order to prove this, it must first prove
+            that the above condition holds, or the simplification algorithm runs the risk of 
+            not terminating.</para></comment>
+            
+            <para>The following identities result from principal instantiation inheritance, 
+            for any generic type <literal>X&lt;T&gt;</literal>, and for any types 
+            <literal>A</literal> and <literal>B</literal>:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1017,13 +1030,6 @@ Float|Integer num = one;</programlisting></comment>
                 </listitem>
             </itemizedlist>
         
-            <comment><para>Note: in fact, the type checker actually enforces an additional
-            condition, that might be strictly stronger than this one: that the intersection
-            between the direct supertypes of a type must not be equivalent to 
-            <literal>Nothing</literal>. However, in order to prove this, it must first prove
-            that the above condition holds, or the simplification algorithm runs the risk of 
-            not terminating.</para></comment>
-            
         </section>
         
         <section id="extendedclass">
@@ -2019,18 +2025,19 @@ Item item = comp of Item;</programlisting>
                 <listitem>
                     <para><literal>M&lt;*As&gt;</literal> is a subtype of 
                     <literal>V.M&lt;*Bs&gt;</literal> if <literal>V</literal> is an 
-                    invariant subtype of <literal>X&lt;*Ts&gt;</literal>, and <literal>V</literal> 
-                    directly inherits <literal>M</literal> from <literal>X</literal> without 
-                    refining <literal>M</literal>, and <literal>M&lt;*As&gt;</literal> 
-                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.
-                    <emphasis>TODO: check this!</emphasis></para>
+                    invariant subtype of <literal>X&lt;*Cs&gt;</literal>, where the current
+                    class is an invariant suptype of <literal>X&lt;*Cs&gt;</literal>, and 
+                    <literal>V</literal> directly inherits <literal>M</literal> from 
+                    <literal>X</literal> without refining <literal>M</literal>, and 
+                    <literal>M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
                     <literal>M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype of
-                    <literal>X&lt;*Ts&gt;</literal>, and <literal>M&lt;*As&gt;</literal> 
-                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.
-                    <emphasis>TODO: check this!</emphasis></para>
+                    <literal>X&lt;*Cs&gt;</literal>, where the current class is an invariant
+                    subtype of <literal>X&lt;*Cs&gt;</literal>, and <literal>M&lt;*As&gt;</literal> 
+                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             
