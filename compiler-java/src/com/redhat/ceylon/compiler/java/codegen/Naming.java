@@ -844,7 +844,11 @@ public class Naming implements LocalId {
         } else if (decl instanceof Setter) {
             expr = makeQualIdent(expr, getSetterName(decl.getName()));
         } else if (decl instanceof Method
-                && (!decl.isParameter() || decl.isShared() || decl.isCaptured())) {
+                && ((!decl.isParameter() || decl.isShared() || decl.isCaptured())
+                        // if we want it aliased, it means we're in a constructor and we don't want
+                        // the member name ever for parameters, so let's never fall into that branch and skip
+                        // to the next one
+                        && (namingOptions & NA_ALIASED) == 0)) {
             expr = makeQualIdent(expr, getMethodName((Method)decl, namingOptions));
         } else if (decl instanceof MethodOrValue
                 && ((MethodOrValue)decl).isParameter()) {
@@ -965,6 +969,10 @@ public class Naming implements LocalId {
      * will be used to determine the name to be generated) */
     static final int NA_SETTER = 1<<5;
     static final int NA_IDENT = 1<<7;
+    /**
+     * Reference the constructor parameter name directly, possibly aliased, rather
+     * than the member it will end up stored in.
+     */
     static final int NA_ALIASED = 1<<8;
     /** A shared parameter on an annotation class produces an annotation type 
      * method foo, not getFoo() */
