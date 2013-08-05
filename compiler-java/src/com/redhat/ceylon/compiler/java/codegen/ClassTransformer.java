@@ -2414,7 +2414,7 @@ public class ClassTransformer extends AbstractTransformer {
                         }
                     }
                     vars.append(makeVar(varName, 
-                            makeJavaType(paramType), 
+                            makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
                             make().Apply(makeTypeArguments(overloaded), 
                                     defaultValueMethodName, 
                                     ListBuffer.<JCExpression>lb().appendList(args).toList())));
