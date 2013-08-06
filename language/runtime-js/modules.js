@@ -191,6 +191,20 @@ function Paquete(name, container, pkg, $$paquete){
     $$paquete.getFunction=getFunction;
     getFunction.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:FunctionDeclaration$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Paquete,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Package']['$m']['getFunction']};
     function annotations($$$mptypes){
+      var _k = '$pkg$ans$' + this.name.replace(/\./g,'$');
+      var anns = this.container.meta[_k];
+      if (typeof(anns) === 'function') {
+        anns = anns();
+        this.container.meta[_k]=anns;
+      } else if (anns === undefined) {
+        anns = [];
+      }
+      var r = [];
+      for (var i=0; i < anns.length; i++) {
+        var an = anns[i];
+        if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
+      }
+      return r.reifyCeylonType({t:Sequential,a:{Element:$$$mptypes.Annotation}});
         return getEmpty();
     }
     $$paquete.annotations=annotations;
