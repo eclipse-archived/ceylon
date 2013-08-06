@@ -156,7 +156,7 @@ public class Stitcher {
                         clModel = JSONObject.toJSONString(mmg.getModel());
                         writer.print(clModel);
                         writer.println(";");
-                        writer.println("exports.$$METAMODEL$$=$$METAMODEL$$;");
+                        writer.println("exports.$$METAMODEL$$=function(){return $$METAMODEL$$;};");
                         writer.flush();
                     } else if (line.equals("//#COMPILED")) {
                         System.out.println("Compiling language module sources");

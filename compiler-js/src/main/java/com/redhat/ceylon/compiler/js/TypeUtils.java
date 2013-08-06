@@ -379,7 +379,7 @@ public class TypeUtils {
 
     /** Output a metamodel map for runtime use. */
     static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
-        gen.out("{mod:$$METAMODEL$$");
+        gen.out("function(){return{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = null;
         List<ProducedType> satisfies = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
@@ -501,7 +501,7 @@ public class TypeUtils {
                 gen.out("['", part, "']");
             }
         }
-        gen.out("}");
+        gen.out("};}");
     }
 
     /** Prints out an object with a type constructor under the property "t" and its type arguments under

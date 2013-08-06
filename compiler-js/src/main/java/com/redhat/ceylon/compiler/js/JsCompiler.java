@@ -228,7 +228,7 @@ public class JsCompiler {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
                     e.getValue().getWriter().write("var $$METAMODEL$$=");
                     e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
-                    e.getValue().getWriter().write(";\nexports.$$METAMODEL$$=$$METAMODEL$$;\n");
+                    e.getValue().getWriter().write(";\nexports.$$METAMODEL$$=function(){return $$METAMODEL$$;};\n");
                 }
             }
 

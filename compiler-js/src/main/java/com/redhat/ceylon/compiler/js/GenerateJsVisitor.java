@@ -301,7 +301,7 @@ public class GenerateJsVisitor extends Visitor
             out("var ", modAlias, "=require('", path, "');");
             endLine();
             if (modAlias != null && !modAlias.isEmpty()) {
-                out(clAlias, "$addmod$(", modAlias, ");");
+                out(clAlias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');");
                 endLine();
             }
         }
