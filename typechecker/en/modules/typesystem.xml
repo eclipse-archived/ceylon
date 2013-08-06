@@ -2326,33 +2326,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         
         <section id="principalinstantiation">
             <title>Principal instantiation of a supertype</title>
-            
-            <!--
-            <para>As a result of the principal instantiation inheritance restriction 
-            defined in <xref linkend="pii"/>:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>If a type <literal>X</literal> directly or indirectly inherits 
-                    an instantiation <literal>Y&lt;*Ts&gt;</literal> of a generic type 
-                    <literal>Y</literal>, then we can form a unique <emphasis>principal 
-                    instantiation of the supertype</emphasis> <literal>Y</literal> for 
-                    <literal>X</literal> that is a subtype of every instantiation of 
-                    <literal>Y</literal> to which <literal>X</literal> is assignable.</para>
-                </listitem>
-                <listitem>
-                    <para>Likewise, if a generic type <literal>X&lt;*Ts&gt;</literal> 
-                    directly or indirectly inherits an instantiation 
-                    <literal>Y&lt;*Ss&gt;</literal> of a generic type <literal>Y</literal>, 
-                    then we can form a unique <emphasis>principal instantiation of the 
-                    supertype</emphasis> <literal>Y</literal> for every instantiation
-                    <literal>X&lt;*As&gt;</literal> that is a subtype of every instantiation 
-                    of <literal>Y</literal> to which <literal>X&lt;*As&gt;</literal> is 
-                    assignable.</para>
-                </listitem>
-            </itemizedlist>
-            -->
-            
+                        
             <para>If a type <literal>X</literal> is a subtype of some instantiation 
             <literal>Y&lt;*Ts&gt;</literal> of a generic type <literal>Y</literal>, 
             then, as a result of the principal instantiation inheritance restriction, 
@@ -2434,6 +2408,45 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             covariance, which is non-denoteable in Ceylon. In such cases, don't allow
             references to members of the intersection type.</para></comment>
         
+        </section>
+        
+        <section id="referenceschemas">
+            <title>Reference schemas</title>
+            
+            <para>Given an unqualified reference, as defined in 
+            <xref linkend="unqualifiedreferenceresolution"/>, to a declaration, and, 
+            in the case of a generic declaration, a list of type arguments for the 
+            type parameters of the member, we can construct an <emphasis>unqualified 
+            reference schema</emphasis> by:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>substituting the type arguments into the declaration schema.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Given a qualified reference, as defined in 
+            <xref linkend="qualifiedreferenceresolution"/>, with a qualifying type 
+            <literal>X</literal>, to a member declared by <literal>Y</literal>, 
+            and, in the case of a generic member, a list of type arguments for the type 
+            parameters of the member, we can construct a <emphasis>qualified reference 
+            schema</emphasis> by:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first determining the principal instantiation of 
+                    <literal>Y</literal> for <literal>X</literal>, and then</para>
+                </listitem>
+                <listitem>
+                    <para>substituting the type arguments in this principal 
+                    instantiation into the member schema, and, finally,</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of a generic member, substituting the type 
+                    arguments into the member schema.</para>
+                </listitem>
+            </itemizedlist>
+            
         </section>
         
         <section id="qualifiedtypes">

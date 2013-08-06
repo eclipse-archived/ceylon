@@ -742,9 +742,8 @@ class Complex(Float x, Float y=0.0)
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: that's not true for intersection types! We need more detail
-        here about member resolution for intersection and union types, including how we
-        compute principal instantiations.</para></comment>
+        <comment><para>TODO: that's simply not true for intersection types! We need more 
+        detail here about member resolution for intersection and union types.</para></comment>
         
         <para>Then the given name refers to this unique member. If the program element 
         is contained in the body of a class or interface, and the member declaration 
