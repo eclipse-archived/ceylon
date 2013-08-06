@@ -2351,19 +2351,19 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     type argument <literal>AB</literal> in <literal>ABs</literal> is:
                     </para>
                     <itemizedlist>
-                    <listitem>
-                        <para><literal>A|B</literal> if <literal>X</literal> is 
-                        covariant in <literal>T</literal>,</para>
-                    </listitem>
-                    <listitem>
-                        <para><literal>A&amp;B</literal> if <literal>X</literal> is 
-                        contravariant in <literal>T</literal>, or</para>
-                    </listitem>
-                    <listitem>
-                        <para><literal>A</literal> if <literal>X</literal> is 
-                        invariant in <literal>T</literal>, and <literal>A</literal>
-                        and <literal>B</literal> are exactly the same type.</para>
-                    </listitem>
+                        <listitem>
+                            <para><literal>A|B</literal> if <literal>X</literal> is 
+                            covariant in <literal>T</literal>,</para>
+                        </listitem>
+                        <listitem>
+                            <para><literal>A&amp;B</literal> if <literal>X</literal> is 
+                            contravariant in <literal>T</literal>, or</para>
+                        </listitem>
+                        <listitem>
+                            <para><literal>A</literal> if <literal>X</literal> is 
+                            invariant in <literal>T</literal>, and <literal>A</literal>
+                            and <literal>B</literal> are exactly the same type.</para>
+                        </listitem>
                     </itemizedlist>
                 </listitem>
                 <listitem>
@@ -2376,19 +2376,19 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     type argument <literal>AB</literal> in <literal>ABs</literal> is:
                     </para>
                     <itemizedlist>
-                    <listitem>
-                        <para><literal>A&amp;B</literal> if <literal>X</literal> is 
-                        covariant in <literal>T</literal>,</para>
-                    </listitem>
-                    <listitem>
-                        <para><literal>A|B</literal> if <literal>X</literal> is 
-                        contravariant in <literal>T</literal>, or</para>
-                    </listitem>
-                    <listitem>
-                        <para><literal>A</literal> if <literal>X</literal> is 
-                        invariant in <literal>T</literal>, and <literal>A</literal>
-                        and <literal>B</literal> are exactly the same type.</para>
-                    </listitem>
+                        <listitem>
+                            <para><literal>A&amp;B</literal> if <literal>X</literal> is 
+                            covariant in <literal>T</literal>,</para>
+                        </listitem>
+                        <listitem>
+                            <para><literal>A|B</literal> if <literal>X</literal> is 
+                            contravariant in <literal>T</literal>, or</para>
+                        </listitem>
+                        <listitem>
+                            <para><literal>A</literal> if <literal>X</literal> is 
+                            invariant in <literal>T</literal>, and <literal>A</literal>
+                            and <literal>B</literal> are exactly the same type.</para>
+                        </listitem>
                     </itemizedlist>
                 </listitem>
                 <listitem>
@@ -2494,10 +2494,10 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             <literal>Y</literal>.</para>
             
         </section>
-                
+        
         <section id="genericenumeratedtypes">
             <title>Generic enumerated types</title>
-        
+            
             <para>If an enumerated type <literal>X&lt;*Ts&gt;</literal> has a case type 
             <literal>C</literal> then <literal>C</literal> must have an inherited 
             instantiation <literal>X&lt;*As&gt;</literal> of <literal>X</literal> for some 

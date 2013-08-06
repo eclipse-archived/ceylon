@@ -232,7 +232,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <section id="this">
             <title><literal>this</literal></title>
-                
+            
             <para>The keyword <literal>this</literal> refers to the current instance,
             as defined in <xref linkend="closureofaclassorinterface"/>, of the 
             immediately containing class or interface (the class or interface in which 
@@ -243,7 +243,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
        
         <section id="outer">
             <title><literal>outer</literal></title>
-                
+            
             <para>The keyword <literal>outer</literal> refers to the current instance,
             as defined in <xref linkend="closureofaclassorinterface"/>, of the class or 
             interface which immediately contains the immediately containing class or 
@@ -253,7 +253,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     
         <section id="super">
             <title><literal>super</literal></title>
-                
+            
             <para>The keyword <literal>super</literal> refers to the current instance 
             of the immediately containing class or interface. Its type is the 
             intersection of the immediate superclass and all immediate superinterfaces 
@@ -271,7 +271,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             any intermediate supertype of the class.</para> 
             
         </section>
-            
+        
         <section>
             <title><literal>package</literal></title>
             

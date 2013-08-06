@@ -1388,20 +1388,20 @@ TypeConstraints?
         
         <para>If a member class is annotated <literal>actual</literal>, it must 
         refine some member class of a supertype.</para>
-            
+        
         <para>A member class may not, directly or indirectly, refine two different
         member classes not themselves annotated <literal>actual</literal>.</para>
         
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
-                
+        
         <programlisting>shared abstract class Reader() {
     shared formal class Buffer(Character* chars) 
             satisfies Character[] {}
     ...
 }</programlisting>
-
+        
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
     shared actual class Buffer(Character* chars) 
@@ -1418,7 +1418,7 @@ TypeConstraints?
     shared formal class Buffer(Character* chars) => AbstractBuffer(*chars);
     ...
 }</programlisting>
-
+        
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
     shared actual class Buffer(Character* chars) => FileBuffer(*chars);
