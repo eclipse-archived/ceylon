@@ -215,7 +215,7 @@ public class CeylonCompileJsTool implements Tool {
     private static void addFilesToCompilationSet(File dir, List<String> onlyFiles, boolean verbose) {
         for (File e : dir.listFiles()) {
             String n = e.getName().toLowerCase();
-            if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js")) && !n.equals("module.ceylon")) {
+            if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
                 if (verbose) {
                     System.out.println("Adding to compilation set: " + e.getPath());
                 }
