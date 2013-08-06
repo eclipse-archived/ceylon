@@ -1578,7 +1578,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setRealName(methodMirror.getName());
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded);
-        setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
+        ProducedType type = null;
+        try{
+            setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
+        }catch(ModelResolutionException x){
+            // collect an error in its type
+            type = logModelResolutionException(x, klass, "method '"+methodMirror.getName()+"' (checking if it is an overriding method");
+        }
         method.setName(Util.strip(methodMirror.getName(), isCeylon, method.isShared()));
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
@@ -1592,8 +1598,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setParameters(method, methodMirror, isCeylon, klass);
         
         // and its return type
-        ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
-                "method '"+methodMirror.getName()+"'", klass);
+        // do not log an additional error if we had one from checking if it was overriding
+        if(type == null)
+            type = obtainType(methodMirror.getReturnType(), methodMirror, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
+                              "method '"+methodMirror.getName()+"'", klass);
         method.setType(type);
         method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         method.setDeclaredAnything(methodMirror.isDeclaredVoid());
@@ -1840,11 +1848,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
         value.setUnit(klass.getUnit());
-        setMethodOrValueFlags(klass, methodMirror, value, isCeylon);
+        ProducedType type = null;
+        try{
+            setMethodOrValueFlags(klass, methodMirror, value, isCeylon);
+        }catch(ModelResolutionException x){
+            // collect an error in its type
+            type = logModelResolutionException(x, klass, "getter '"+methodName+"' (checking if it is an overriding method");
+        }
         value.setName(Util.strip(methodName, isCeylon, value.isShared()));
 
-        ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
-                                       "getter '"+methodName+"'", klass);
+        // do not log an additional error if we had one from checking if it was overriding
+        if(type == null)
+            type = obtainType(methodMirror.getReturnType(), methodMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
+                              "getter '"+methodName+"'", klass);
         value.setType(type);
         value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
@@ -2628,7 +2644,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ProducedType getNonPrimitiveType(TypeMirror type, Scope scope, VarianceLocation variance) {
         TypeDeclaration declaration = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(type, scope, DeclarationType.TYPE);
         if(declaration == null){
-            throw new RuntimeException("Failed to find declaration for "+type);
+            throw new ModelResolutionException("Failed to find declaration for "+type);
         }
         return applyTypeArguments(declaration, type, scope, variance, TypeMappingMode.NORMAL, null);
     }
