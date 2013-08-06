@@ -28,11 +28,11 @@ function modules$2(){
           }
           lm = require(mpath);
         }
-        if (lm.getT$name === undefined) {
+        if (lm && lm.$$METAMODEL$$) {
           lm = Modulo(lm);
           $loadedModules$[modname] = lm;
         }
-        return lm;
+        return lm === undefined ? null : lm;
     }
     $$modules.find=find;
     find.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Module$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}},{$nm:'version',$mt:'prm',$t:{t:String$}}],$cont:modules$2,$an:function(){return[shared()];},pkg:'ceylon.language.model',d:$$METAMODEL$$['ceylon.language.model']['modules']['$m']['find']};
@@ -60,9 +60,9 @@ function Modulo(meta, $$modulo){
     if ($$modulo===undefined)$$modulo=new Modulo.$$;
     Module$model$declaration($$modulo);
     $$modulo.meta=meta;
-    var name=String(meta.$$METAMODEL$$['$mod-name']);
+    var name=String$(meta.$$METAMODEL$$['$mod-name']);
     defineAttr($$modulo,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['name']});
-    var version=String(meta.$$METAMODEL$$['$mod-version']);
+    var version=String$(meta.$$METAMODEL$$['$mod-version']);
     defineAttr($$modulo,'version',function(){return version;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['version']});
     defineAttr($$modulo,'members',function(){
       if (this.meta.$$METAMODEL$$['$pks$'] === undefined) {
@@ -103,7 +103,19 @@ function Modulo(meta, $$modulo){
     $$modulo.findPackage=findPackage;
     findPackage.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$model$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$m']['findPackage']};
     function annotations($$$mptypes){
-        return getEmpty();
+      var anns = this.meta.$mod$ans$;
+      if (typeof(anns) === 'function') {
+        anns = anns();
+        this.meta.$mod$ans$=anns;
+      } else if (anns === undefined) {
+        anns = [];
+      }
+      var r = [];
+      for (var i=0; i < anns.length; i++) {
+        var an = anns[i];
+        if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
+      }
+      return r.reifyCeylonType({t:Sequential,a:{Element:$$$mptypes.Annotation}});
     }
     $$modulo.annotations=annotations;
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation$model,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$m']['annotations']};
