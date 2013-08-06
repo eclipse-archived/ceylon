@@ -1724,6 +1724,36 @@ Item item = comp of Item;</programlisting>
         <para>Type arguments are assigned to type parameters according to the positions
         they occur in the list.</para>
          
+        <para>Given the schema of a generic declaration, we form the new schema by 
+        <emphasis>type argument substitution</emphasis>. Each type argument is substituted 
+        for every appearance of the corresponding type parameter in the schema of the 
+        generic declaration, including:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>attribute types,</para>
+            </listitem>
+            <listitem>
+                <para>method return types,</para>
+            </listitem>
+            <listitem>
+                <para>method parameter types,</para>
+            </listitem>
+            <listitem>
+                <para>initializer parameter types, and</para>
+            </listitem>
+            <listitem>
+                <para>type arguments of extended classes and satisfied interfaces.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <!--
+        <para>A dimension is substituted for every appearance of the corresponding 
+        dimensional type parameter in the schema of the parameterized declaration.
+        The dimension appears as a parenthesized expression in expressions involving
+        the dimensional type parameter.</para>
+        -->
+        
         <section>
             <title>Type arguments and type constraints</title>
         
@@ -1832,41 +1862,6 @@ Item item = comp of Item;</programlisting>
             of <literal>X&lt;A&gt;</literal> if and only if <literal>Z</literal> has the 
             principal instantiation <literal>X&lt;A&gt;</literal>.</para></comment>
             
-        </section>
-        
-        <section id="typeargumentsubstitution">
-            <title>Type argument substitution</title>
-            
-            <para>Given the schema of a generic type, we form the schema of an applied type 
-            that instantiates the generic type by <emphasis>type argument substitution</emphasis>.
-            A type argument is substituted for every appearance of the corresponding type 
-            parameter in the schema of the parameterized declaration, including:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>attribute types,</para>
-                </listitem>
-                <listitem>
-                    <para>method return types,</para>
-                </listitem>
-                <listitem>
-                    <para>method parameter types,</para>
-                </listitem>
-                <listitem>
-                    <para>initializer parameter types, and</para>
-                </listitem>
-                <listitem>
-                    <para>type arguments of extended classes and satisfied interfaces.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <!--
-            <para>A dimension is substituted for every appearance of the corresponding 
-            dimensional type parameter in the schema of the parameterized declaration.
-            The dimension appears as a parenthesized expression in expressions involving
-            the dimensional type parameter.</para>
-            -->
-        
         </section>
         
         <section id="typeargumentinference">
