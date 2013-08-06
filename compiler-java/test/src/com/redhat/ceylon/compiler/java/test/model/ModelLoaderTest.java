@@ -812,18 +812,8 @@ public class ModelLoaderTest extends CompilerTest {
         compile("BogusTopLevelClass.java", "BogusTopLevelClass2.java");
         assertErrors("bogusTopLevelClassUser",
                 new CompilerError(-1, "Constructor for 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping constructor."),
-                new CompilerError(-1, "Error while resolving type of getter 'getter' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of parameter 'arg0' of method 'method' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass.method: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of method 'method' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of setter 'setSetter' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of parameter 'arg0' of method 'setSetter' for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass.setSetter: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Error while resolving type of extended type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of self type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Invalid type signature for self type of com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: com.redhat.ceylon.compiler.java.test.model::MissingType is not a type parameter"),
-                new CompilerError(-1, "Error while resolving type of type parameter 'T' satisfied types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of type parameter 'T' case types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of type parameter 'T' defaultValue for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
-                new CompilerError(-1, "Error while resolving type of case types for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass2: Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Method 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass.params' should take 1 reified type arguments (TypeDescriptor) but has '0': method is invalid."),
 
                 // FIXME: I wish I knew how to get rid of that one...
