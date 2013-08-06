@@ -217,12 +217,9 @@ public class JsCompiler {
                 // platform-dependent too
                 String path = pathFromVFS.replace('/', File.separatorChar);
                 if (files == null || files.contains(path)) {
-                    String name = pu.getUnitFile().getName();
-                    if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                        pu.getCompilationUnit().visit(getOutput(pu).mmg);
-                        if (opts.isVerbose()) {
-                            System.out.println(pu.getCompilationUnit());
-                        }
+                    pu.getCompilationUnit().visit(getOutput(pu).mmg);
+                    if (opts.isVerbose()) {
+                        System.out.println(pu.getCompilationUnit());
                     }
                 }
             }
@@ -244,14 +241,7 @@ public class JsCompiler {
                     // platform-dependent too
                     String path = pathFromVFS.replace('/', File.separatorChar);
                     if (files == null || files.contains(path)) {
-                        String name = pu.getUnitFile().getName();
-                        if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                            compileUnit(pu, names);
-                        }
-                        else {
-                            unitErrors.clear();
-                            pu.getCompilationUnit().visit(unitVisitor);
-                        }
+                        compileUnit(pu, names);
                         if (stopOnError()) {
                             System.err.println("Errors found. Compilation stopped.");
                             break;
@@ -288,14 +278,7 @@ public class JsCompiler {
                         for (PhasedUnit pu : units) {
                             String unitPath = pu.getUnitFile().getPath().replace('/', File.separatorChar);
                             if (path.equals(unitPath)) {
-                                String name = pu.getUnitFile().getName();
-                                if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                                    compileUnit(pu, names);
-                                }
-                                else {
-                                    unitErrors.clear();
-                                    pu.getCompilationUnit().visit(unitVisitor);
-                                }
+                                compileUnit(pu, names);
                                 if (stopOnError()) {
                                     System.err.println("Errors found. Compilation stopped.");
                                     break;
