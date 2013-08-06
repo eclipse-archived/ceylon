@@ -292,8 +292,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1180() {
         compile("bug11xx/Bug1180_1.ceylon");
         assertErrors("bug11xx/Bug1180_2",
-                new CompilerError(25, "member containsAll is inherited ambiguously by Bug1180People from AbstractCollection and another subtype of List and so must be refined by Bug1180People"),
-                new CompilerError(25, "formal member containsAll of List not implemented in class hierarchy")
+                new CompilerError(25, "ambiguous reference to overloaded method or class: ArrayList")
         );
     }
     
