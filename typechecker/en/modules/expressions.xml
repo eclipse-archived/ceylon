@@ -424,7 +424,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         member expression that references a value declaration.</para>
         
         <para>The type of a value reference expression is the type of the 
-        referenced value in the realization for the value reference.</para>
+        referenced value in its realization.</para>
         
         <para>A value declaration is never generic, so a value reference never
         has a type argument list.</para>
@@ -454,8 +454,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         reference is invoked.</para>
         
         <para>The type of a callable reference expression is the callable type of
-        the referenced function or class in the realization for the callable
-        reference.</para>
+        the referenced function or class in its realization.</para>
         
         <para>If a callable reference expression refers to a generic declaration, 
         either:</para>
@@ -510,9 +509,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         expression that references an attribute declaration.</para>
         
         <para>The type of a static value reference expression for an attribute 
-        of type <literal>X</literal> in the realization for the static value 
-        reference, and with qualifying type <literal>T</literal>, is 
-        <literal>X(T)</literal>.</para>
+        whose realization is of type <literal>X</literal>, and with qualifying 
+        type <literal>T</literal>, is <literal>X(T)</literal>.</para>
         
         <para>A value declaration is never generic, so a static value reference 
         never ends in a type argument list.</para>
@@ -528,9 +526,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <emphasis>instantiated</emphasis>.</para>
         
         <para>The type of a static callable reference expression for a method
-        or member class of callable type <literal>C</literal> in the realization 
-        for the static callable reference, and with qualifying type 
-        <literal>T</literal>, is <literal>C(T)</literal>.</para>
+        or member class whose realization has callable type <literal>C</literal>, 
+        and with qualifying type <literal>T</literal>, is <literal>C(T)</literal>.</para>
         
         <para>If a callable reference expression refers to a generic declaration, 
         it must end in an explicit type argument list.</para>
