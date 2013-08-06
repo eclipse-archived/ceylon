@@ -27,7 +27,7 @@ public class MainForJsTest {
     public static void main(String[] args) throws Exception {
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
                 "-rep", "build/runtime",
-                "-out", "build/test/modules", "-module")));
+                "-out", "build/test/modules")));
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos())
@@ -56,7 +56,7 @@ public class MainForJsTest {
         }
         System.out.println("Compiling with optimization");
         opts = Options.parse(new ArrayList<String>(Arrays.asList("-optimize", "-out",
-                "build/test/opt_modules", "-module")));
+                "build/test/opt_modules")));
         jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
