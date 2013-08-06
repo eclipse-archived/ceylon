@@ -1202,10 +1202,6 @@ TypeConstraints?
         the member.</para>
         -->
         
-        <para>The initializer of the superclass of a class is always executed before the 
-        initializer of the class whenever the class or any one of its subclasses is 
-        instantiated.</para>
-        
         <para>A subclass must pass values to each superclass initialization parameter in 
         the <literal>extends</literal> clause.</para>
 
