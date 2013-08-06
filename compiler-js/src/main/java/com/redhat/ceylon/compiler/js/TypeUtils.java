@@ -465,14 +465,8 @@ public class TypeUtils {
             gen.out("]");
         }
         if (annotations != null && !annotations.getAnnotations().isEmpty()) {
-            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
-            boolean first = true;
-            for (Tree.Annotation a : annotations.getAnnotations()) {
-                //Filter out the obvious ones, FOR NOW
-                if (first) first=false; else gen.out(",");
-                gen.getInvoker().generateInvocation(a);
-            }
-            gen.out("];}");
+            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
+            outputAnnotationsFunction(annotations, gen);
         }
 
         gen.out(",pkg:'", d.getUnit().getPackage().getNameAsString(), "',d:$$METAMODEL$$['");
@@ -612,4 +606,19 @@ public class TypeUtils {
         return tt;
     }
 
+    /** Outputs a function that returns the specified annotations, so that they can be loaded lazily. */
+    static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
+        if (annotations == null || annotations.getAnnotations().isEmpty()) {
+            gen.out("[]");
+        } else {
+            gen.out("function(){return[");
+            boolean first = true;
+            for (Tree.Annotation a : annotations.getAnnotations()) {
+                if (first) first=false; else gen.out(",");
+                gen.getInvoker().generateInvocation(a);
+            }
+            gen.out("];}");
+        }
+    }
+   
 }
