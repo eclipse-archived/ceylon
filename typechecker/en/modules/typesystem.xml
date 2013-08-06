@@ -1708,7 +1708,7 @@ Item item = comp of Item;</programlisting>
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
         from a parameterized type schema, or a new function schema from a from a
         parameterized function schema. In the case of a type schema, this new schema is
-        the schema of an <emphasis>applied type</emphasis>.</para>
+        the schema of an applied type.</para>
         
         <para>A type argument list is a list of types.</para>
         
