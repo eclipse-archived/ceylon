@@ -2438,8 +2438,8 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                 <listitem>
                     <para>if the declaration is a member declared by a type 
                     <literal>Y</literal>, first determine the principal instantiation 
-                    of <literal>Y</literal> for the current class or interface, and 
-                    then</para>
+                    of <literal>Y</literal> for the inheriting or declaring class or 
+                    interface, and then</para>
                 </listitem>
                 <listitem>
                     <para>again, only if the declaration is a member declared by a 
@@ -2447,12 +2447,9 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     instantiation into the declaration schema, and, finally,</para>
                 </listitem>
                 <listitem>
-                    <para>substitute the type arguments into the declaration schema.</para>
+                    <para>substitute the type arguments into the declaration schema,</para>
                 </listitem>
             </itemizedlist>
-            
-            <comment><para>TODO: define "current class or interface", i.e. the innermost 
-            class or interface that declares or inherits the member.</para></comment>
             
             <para>Given a qualified reference, as defined in 
             <xref linkend="qualifiedreferenceresolution"/>, with a qualifying type 
@@ -2481,44 +2478,20 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <section id="qualifiedtypes">
             <title>Qualified types</title>
             
-            <para>If a class or interface declaration <literal>X&lt;*Ts&gt;</literal> 
-            with type parameters <literal>Ts</literal> has a nested type declaration 
-            <literal>M&lt;*Ss&gt;</literal>, then:</para>
+            <para>The qualified types <literal>X.U</literal> and <literal>Y.V</literal> 
+            are exactly the same types if and only if <literal>U</literal> is exactly 
+            the same type as <literal>V</literal>, and in the case that this type is
+            a member of a generic type <literal>Z</literal>, then the principal 
+            instantiation of <literal>Z</literal> for <literal>X</literal> is exactly
+            the same type as the principal instantiation of <literal>Z</literal> for
+            <literal>Y</literal>.</para>
             
-            <itemizedlist>
-                <listitem>
-                    <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>U</literal> has the 
-                    principal instantiation <literal>X&lt;*Cs&gt;</literal>, and 
-                    <literal>V</literal> directly inherits <literal>M</literal> from 
-                    <literal>X</literal> without refining <literal>M</literal>, and 
-                    <literal>M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>M&lt;*Bs&gt;</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para><literal>M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>V</literal> has the 
-                    principal instantiation <literal>X&lt;*Cs&gt;</literal>, where the 
-                    current class or interface has the principal instantiation 
-                    <literal>X&lt;*Cs&gt;</literal>, and <literal>V</literal> directly 
-                    inherits <literal>M</literal> from <literal>X</literal> without 
-                    refining <literal>M</literal>, and <literal>M&lt;*As&gt;</literal> 
-                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype 
-                    of <literal>X&lt;*Cs&gt;</literal>, where the current class or
-                    interface has the principal instantiation <literal>X&lt;*Cs&gt;</literal>, 
-                    and <literal>M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>M&lt;*Bs&gt;</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <comment><para>Note that an unqualified type like <literal>M&lt;*As&gt;</literal>
-            where <literal>M</literal> is a nested type declaration is only well-formed inside the 
-            scope in which <literal>M</literal> is declared or inherited. Outside this scope, 
-            references to <literal>M</literal> must be qualified by the containing type.</para></comment>
+            <para>A qualified type <literal>X.U</literal> is a subtype of a qualified
+            type <literal>Y.V</literal> if <literal>U</literal> is a subtype of 
+            <literal>V</literal>, and in the case that <literal>V</literal> is a member 
+            of a generic type <literal>Z</literal>, then <literal>X</literal> is a 
+            subtype of the principal instantiation of <literal>Z</literal> for 
+            <literal>Y</literal>.</para>
             
         </section>
                 

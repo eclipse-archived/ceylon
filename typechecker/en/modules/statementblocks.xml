@@ -679,6 +679,13 @@ class Complex(Float x, Float y=0.0)
         a <literal>dynamic</literal> block, then the unqualified reference does not refer 
         to any statically typed declaration.</para>
         
+        <para>If an unqualified reference refers to a member declaration of a type, then
+        there is a unique <emphasis>inheriting or declaring class or interface</emphasis> 
+        for the unqualified reference, that is, the unique class or interface in whose 
+        body the unqualified reference occurs, and which declares or inherits the member
+        declaration, and for which the member is not hidden at the program element where
+        the unqualified reference occurs.</para>
+        
     </section>
     
     <section id="qualifiedreferenceresolution">
