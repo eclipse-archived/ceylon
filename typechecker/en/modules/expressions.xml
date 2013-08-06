@@ -510,7 +510,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         expression that references an attribute declaration.</para>
         
         <para>The type of a static value reference expression for an attribute 
-        of type <literal>X</literal> in the realizationa for the static value 
+        of type <literal>X</literal> in the realization for the static value 
         reference, and with qualifying type <literal>T</literal>, is 
         <literal>X(T)</literal>.</para>
         
@@ -528,8 +528,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <emphasis>instantiated</emphasis>.</para>
         
         <para>The type of a static callable reference expression for a method
-        or member class of callable type <literal>C</literal> in the reference 
-        schema for the static callable reference, and with qualifying type 
+        or member class of callable type <literal>C</literal> in the realization 
+        for the static callable reference, and with qualifying type 
         <literal>T</literal>, is <literal>C(T)</literal>.</para>
         
         <para>If a callable reference expression refers to a generic declaration, 
