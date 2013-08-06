@@ -424,7 +424,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         member expression that references a value declaration.</para>
         
         <para>The type of a value reference expression is the type of the 
-        referenced value in its realization.</para>
+        realization of the referenced value.</para>
         
         <para>A value declaration is never generic, so a value reference never
         has a type argument list.</para>
@@ -454,7 +454,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         reference is invoked.</para>
         
         <para>The type of a callable reference expression is the callable type of
-        the referenced function or class in its realization.</para>
+        the realization of the referenced function or class.</para>
         
         <para>If a callable reference expression refers to a generic declaration, 
         either:</para>
