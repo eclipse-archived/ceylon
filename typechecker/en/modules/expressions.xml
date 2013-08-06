@@ -228,6 +228,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A self reference expression may not occur outside of a class or 
         interface body.</para>
         
+        <comment><para>TODO: define "immediately containing class or interface".</para></comment>
+        
         <section id="this">
             <title><literal>this</literal></title>
                 
