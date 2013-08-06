@@ -55,18 +55,18 @@
             parameter.</para>
         </listitem>
         <listitem>
-            <para>A <emphasis>produced type</emphasis>, defined in 
+            <para>An <emphasis>applied type</emphasis>, defined in 
             <xref linkend="generictypearguments"/>, is formed by specifying arguments for the 
             generic type parameters of a parameterized type.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>union type</emphasis>, defined in <xref linkend="uniontypes"/>, 
-            is a type to which each of an enumerated list of produced types is assignable.</para>
+            is a type to which each of an enumerated list of types is assignable.</para>
         </listitem>
         <listitem>
             <para>An <emphasis>intersection type</emphasis>, defined in 
             <xref linkend="intersectiontypes"/>, is a type which is assignable to each of an 
-            enumerated list of produced types.</para>
+            enumerated list of types.</para>
         </listitem>
     </itemizedlist>
     
@@ -74,11 +74,11 @@
     <emphasis>generic type</emphasis> to refer to a parameterized type definition, it is
     important to keep in mind that a parameterized type definition is not itself a type.
     Rather, it is a <emphasis>type constructor</emphasis>, a function that maps types 
-    to types. Given a list of type arguments, the function yields a produced type.</para>
+    to types. Given a list of type arguments, the function yields an applied type.</para>
     
     <para>In light of the fact that Ceylon makes it so easy to construct new types from
     existing types <emphasis>without the use of inheritance</emphasis>, by forming unions, 
-    intersections, and produced types, it's often useful to assign a name to such a type.</para>
+    intersections, and applied types, it's often useful to assign a name to such a type.</para>
     
     <itemizedlist>
         <listitem>
@@ -616,14 +616,14 @@
             
             <synopsis>Type: UnionType | EntryType</synopsis>
             
-            <para>Type expressions are formed by combining produced types using union,
-            intersection, and type abbreviations.</para>
+            <para>Type expressions are formed by combining types using union, intersection, 
+            and type abbreviations.</para>
             
             <para>Type expressions support grouping using angle brackets:</para>
             
             <synopsis>GroupedType: "&lt;" Type "&gt;"</synopsis>
             
-            <para>Produced types are identified by the name of the type (a class, interface, 
+            <para>Applied types are identified by the name of the type (a class, interface, 
             type alias, or type parameter), together with a list of type arguments if the 
             type declaration is generic.</para>
             
@@ -1707,13 +1707,15 @@ Item item = comp of Item;</programlisting>
         
         <para>A list of <emphasis>type arguments</emphasis> produces a new type schema 
         from a parameterized type schema, or a new function schema from a from a
-        parameterized function schema.</para>
+        parameterized function schema. In the case of a type schema, this new schema is
+        the schema of an <emphasis>applied type</emphasis>.</para>
         
         <para>A type argument list is a list of types.</para>
         
         <synopsis>TypeArguments: "&lt;" (Type ",")* Type "&gt;"</synopsis>
         
-        <para>A type argument may itself be a parameterized type or type parameter.</para>
+        <para>A type argument may itself be an applied type, or type parameter,
+        or may involve unions and intersections.</para>
         
         <programlisting>&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         <programlisting>&lt;String, Person?&gt;</programlisting>
@@ -1775,11 +1777,11 @@ Item item = comp of Item;</programlisting>
         </section>
         
         <section id="producedtypes">
-            <title>Produced types and and variance</title>
+            <title>Applied types and and variance</title>
             
             <para>If a type argument list conforms to a type parameter list, the combination
             of the parameterized type together with the type argument list is itself a type,
-            called a <emphasis>produced type</emphasis>. We also call the produced type an 
+            called an <emphasis>applied type</emphasis>. We also call the applied type an 
             <emphasis>instantiation</emphasis> of the generic type.</para>
             
             <para>For a generic type <literal>X</literal>, the instantiations <literal>Y</literal> 
@@ -1826,25 +1828,16 @@ Item item = comp of Item;</programlisting>
             </itemizedlist>
             
             <comment><para>Note that if <literal>T</literal> is an invariant type parameter
-            of <literal>X&lt;T&gt;</literal>, then a produced type <literal>Z</literal> is 
-            a subtype of <literal>X&lt;A&gt;</literal> if and only if <literal>Z</literal> 
-            has the principal instantiation <literal>X&lt;A&gt;</literal>.</para></comment>
-            
-            <!--
-            <para>A produced type is a subtype of the type argument to any self type 
-            parameter that appears in the <literal>of</literal> clause of the type declaration. 
-            If <literal>T</literal> is a type parameter of the parameterized type 
-            <literal>X&lt;T&gt; of T</literal>, then <literal>X&lt;A&gt;</literal> is 
-            assignable to <literal>A</literal> for every type argument <literal>A</literal> 
-            which satisfies the other type constraints on <literal>T</literal>.</para>
-            -->
+            of <literal>X&lt;T&gt;</literal>, then a type <literal>Z</literal> is a subtype 
+            of <literal>X&lt;A&gt;</literal> if and only if <literal>Z</literal> has the 
+            principal instantiation <literal>X&lt;A&gt;</literal>.</para></comment>
             
         </section>
         
         <section id="typeargumentsubstitution">
             <title>Type argument substitution</title>
             
-            <para>Given the schema of a generic type, we form the schema of a produced type 
+            <para>Given the schema of a generic type, we form the schema of an applied type 
             that instantiates the generic type by <emphasis>type argument substitution</emphasis>.
             A type argument is substituted for every appearance of the corresponding type 
             parameter in the schema of the parameterized declaration, including:</para>
@@ -1965,16 +1958,16 @@ Item item = comp of Item;</programlisting>
                     <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para>If <literal>P</literal> is a produced type <literal>Q&lt;P1,P2,...&gt;</literal> 
+                    <para>If <literal>P</literal> is an applied type <literal>Q&lt;P1,P2,...&gt;</literal> 
                     of a parameterized type <literal>Q</literal>, and <literal>A</literal> 
-                    is a subtype of a produced type <literal>Q&lt;A1,A2,..&gt;</literal>, 
+                    is a subtype of an applied type <literal>Q&lt;A1,A2,..&gt;</literal>, 
                     the lower bound <literal>A</literal> on <literal>P</literal> for 
                     <literal>T</literal> is the conjunction of all lower bounds <literal>Ai</literal> 
                     on <literal>Pi</literal> for <literal>T</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>Otherwise, if <literal>A</literal> is not a union or intersection, 
-                    and if <literal>P</literal> is neither a produced type, a union, or an
+                    and if <literal>P</literal> is neither an applied type, a union, or an
                     intersection, nor exactly <literal>T</literal>, the lower bound 
                     <literal>A</literal> on <literal>P</literal> for <literal>T</literal>
                     is <emphasis>null</emphasis>.</para>
@@ -2045,16 +2038,16 @@ Item item = comp of Item;</programlisting>
                     <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
                 </listitem>
                 <listitem>
-                    <para>If <literal>P</literal> is a produced type <literal>Q&lt;P1,P2,...&gt;</literal> 
+                    <para>If <literal>P</literal> is an applied type <literal>Q&lt;P1,P2,...&gt;</literal> 
                     of a parameterized type <literal>Q</literal>, and <literal>A</literal> 
-                    is a subtype of a produced type <literal>Q&lt;A1,A2,..&gt;</literal>, 
+                    is a subtype of an applied type <literal>Q&lt;A1,A2,..&gt;</literal>, 
                     the upper bound <literal>A</literal> on <literal>P</literal> for 
                     <literal>T</literal> is the conjunction of all upper bounds <literal>Ai</literal> 
                     on <literal>Pi</literal> for <literal>T</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>Otherwise, if <literal>A</literal> is not a union or intersection, 
-                    and if <literal>P</literal> is neither a produced type, a union, or an
+                    and if <literal>P</literal> is neither an applied type, a union, or an
                     intersection, nor exactly <literal>T</literal>, the upper bound 
                     <literal>A</literal> on <literal>P</literal> for <literal>T</literal>
                     is <emphasis>null</emphasis>.</para>

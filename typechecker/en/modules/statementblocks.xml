@@ -69,10 +69,10 @@
         <literal>shared</literal> annotation by specifying a containing program 
         element or package?</para></comment>
         
-        <para>We say that a produced type is <emphasis>visible</emphasis> to a
-        certain program element if it is formed from type parameters and types 
-        whose declarations are visible to the program element. For 
-        <literal>shared</literal> declarations:</para>
+        <para>We say that a type is <emphasis>visible</emphasis> to a certain 
+        program element if it is formed from references to classes, interfaces,
+        type parameters, and type aliases whose declarations are visible to the 
+        program element. For <literal>shared</literal> declarations:</para>
         
         <itemizedlist>
             <listitem>
