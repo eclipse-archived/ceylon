@@ -749,17 +749,14 @@ String result = middleObject.string;</programlisting>
                 <listitem>
                     <para>Any invocation of a member of <literal>super</literal> is 
                     processed by the member defined or inherited by the supertype, 
-                    bypassing any member declaration that refines the member on the 
-                    immediately containing class or any subclass of the immediately 
-                    containing class.</para>
+                    bypassing any member declaration that refines this member 
+                    declaration.</para>
                 </listitem>
                 <listitem>
                     <para>Any invocation of a member of an expression of form 
                     <literal>(super of Type)</literal> is processed by the member 
                     defined or inherited by <literal>Type</literal>, bypassing any 
-                    member declaration that refines the member on the immediately 
-                    containing class or any subclass of the immediately containing 
-                    class.</para>
+                    member declaration that refines this member declaration.</para>
                 </listitem>
             </itemizedlist>
             
