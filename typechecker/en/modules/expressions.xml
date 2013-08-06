@@ -382,8 +382,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>The referenced declaration is determined by resolving the unqualified 
         reference as defined by <xref linkend="unqualifiedreferenceresolution"/>.
-        The unqualified reference schema for the unqualified reference is determined
-        according to <xref linkend="referenceschemas"/>.</para>
+        The unqualified realization for the unqualified reference is determined
+        according to <xref linkend="realizations"/>.</para>
         
         <para>If a base expression is a reference to an attribute, method, or 
         member class of a class, the receiving instance is the current instance of 
@@ -406,8 +406,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <para>The referenced member is determined by resolving the qualified 
         reference as defined by <xref linkend="qualifiedreferenceresolution"/>.
-        The qualified reference schema for the qualified reference is determined
-        according to <xref linkend="referenceschemas"/>.</para>
+        The qualified realization for the qualified reference is determined
+        according to <xref linkend="realizations"/>.</para>
         
         <para>The receiver expression produces the instance upon which the member 
         is invoked or evaluated. When a member expression is executed, the receiver 
@@ -424,7 +424,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         member expression that references a value declaration.</para>
         
         <para>The type of a value reference expression is the type of the 
-        referenced value in the reference schema for the value reference.</para>
+        referenced value in the realization for the value reference.</para>
         
         <para>A value declaration is never generic, so a value reference never
         has a type argument list.</para>
@@ -454,7 +454,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         reference is invoked.</para>
         
         <para>The type of a callable reference expression is the callable type of
-        the referenced function or class in the reference schema for the callable
+        the referenced function or class in the realization for the callable
         reference.</para>
         
         <para>If a callable reference expression refers to a generic declaration, 
@@ -491,8 +491,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         or member class.</para>
         
         <para>The referenced member is determined by resolving the qualified reference as defined 
-        by <xref linkend="qualifiedreferenceresolution"/>. The qualified reference schema for the 
-        qualified reference is determined according to <xref linkend="referenceschemas"/>.</para>
+        by <xref linkend="qualifiedreferenceresolution"/>. The qualified realization for the 
+        qualified reference is determined according to <xref linkend="realizations"/>.</para>
         
         <para>Unlike member expressions, a static expression does not have a receiver expression. 
         All static expressions are callable expressions which accept an argument of the specified 
@@ -510,7 +510,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         expression that references an attribute declaration.</para>
         
         <para>The type of a static value reference expression for an attribute 
-        of type <literal>X</literal> in the reference schema for the static value 
+        of type <literal>X</literal> in the realizationa for the static value 
         reference, and with qualifying type <literal>T</literal>, is 
         <literal>X(T)</literal>.</para>
         

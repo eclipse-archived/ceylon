@@ -2410,30 +2410,44 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         
         </section>
         
-        <section id="referenceschemas">
-            <title>Reference schemas</title>
+        <section id="realizations">
+            <title>Realizations</title>
+            
+            <para>Given member declared by <literal>Y</literal>, and a declaration 
+            that refines it, we can construct a <emphasis>refined realization</emphasis> 
+            of the member:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>first determine the principal instantiation of <literal>Y</literal> 
+                    for the class or interface which refines the member, and then</para>
+                </listitem>
+                <listitem>
+                    <para>substitute the type arguments in this principal instantiation 
+                    into the member schema.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>Given an unqualified reference, as defined in 
-            <xref linkend="unqualifiedreferenceresolution"/>, to a declaration, or a 
-            member that refines the declaration, and, in the case of a generic 
-            declaration, a list of type arguments for the type parameters of the member, 
-            we can construct an <emphasis>unqualified reference schema</emphasis>, or
-            <emphasis>refined schema</emphasis>, by:</para>
+            <xref linkend="unqualifiedreferenceresolution"/>, to a declaration, and, in 
+            the case of a generic declaration, a list of type arguments for the type 
+            parameters of the declaration, we can construct an <emphasis>unqualified 
+            realization</emphasis> of the declaration:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>if the declaration is a member declared by a type 
-                    <literal>Y</literal>, first determining the principal instantiation 
+                    <literal>Y</literal>, first determine the principal instantiation 
                     of <literal>Y</literal> for the current class or interface, and 
                     then</para>
                 </listitem>
                 <listitem>
                     <para>again, only if the declaration is a member declared by a 
-                    type, substituting the type arguments in this principal 
+                    type, substitute the type arguments in this principal 
                     instantiation into the declaration schema, and, finally,</para>
                 </listitem>
                 <listitem>
-                    <para>substituting the type arguments into the declaration schema.</para>
+                    <para>substitute the type arguments into the declaration schema.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2444,8 +2458,8 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             <xref linkend="qualifiedreferenceresolution"/>, with a qualifying type 
             <literal>X</literal>, to a member declared by <literal>Y</literal>, 
             and, in the case of a generic member, a list of type arguments for the type 
-            parameters of the member, we can construct a <emphasis>qualified reference 
-            schema</emphasis> by:</para>
+            parameters of the member, we can construct a <emphasis>qualified 
+            realization</emphasis> of the member:</para>
             
             <itemizedlist>
                 <listitem>

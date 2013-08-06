@@ -1354,8 +1354,10 @@ TypeConstraints?
         first class is called the <emphasis>refining</emphasis> class, and the 
         second class is called the <emphasis>refined</emphasis> class.</para>
         
-        <para>Then, given the refined schema for the class it refines, as 
-        defined in <xref linkend="referenceschemas"/>, the refining class 
+        <para>Then, given the refined realization of the class it refines, as 
+        defined in <xref linkend="realizations"/>, and, after substituting the 
+        type parameters of the refined class for the type parameters of the 
+        refining class in the schema of the refining class, the refining class 
         must:</para>
             
         <itemizedlist>
@@ -1364,11 +1366,11 @@ TypeConstraints?
                 schema, and for each type parameter the intersection of its
                 upper bounds must be a supertype of the intersection of the 
                 upper bounds of the corresponding type parameter of the 
-                refined schema,</para>
+                realization,</para>
             </listitem>
             <listitem>
                 <para>have a parameter list with the same signature as the 
-                refined schema, and</para>
+                realization, and</para>
             </listitem>
              <listitem>
                 <para>directly or indirectly extend the class it refines.</para>
@@ -2056,8 +2058,10 @@ case (hexadecimal) {
             <emphasis>refining</emphasis> method, and the second method is called
             the <emphasis>refined</emphasis> method.</para>
             
-            <para>Then, given the refined schema for the method it refines, as 
-            defined in <xref linkend="referenceschemas"/>, the refining method 
+            <para>Then, given the refined realization of the method it refines, as 
+            defined in <xref linkend="realizations"/>, and, after substituting the
+            type parameters of the refined method for the type parameters of the
+            refining method in the schema of the refining method, the refining method 
             must:</para>
             
             <itemizedlist>
@@ -2066,15 +2070,15 @@ case (hexadecimal) {
                     schema, and for each type parameter the intersection of its 
                     upper bounds must be a supertype of the intersection of the 
                     upper bounds of the corresponding type parameter of the 
-                    refined schema,</para>
+                    realization,</para>
                 </listitem>
                 <listitem>
                     <para>have the same number of parameter lists, with the same
-                    signatures, as the refined schema, and</para>
+                    signatures, as the realization, and</para>
                 </listitem>
                  <listitem>
                     <para>have a return type that is assignable to the return type 
-                    of the refined schema.</para>
+                    of the realization.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2468,13 +2472,13 @@ print(greeting);</programlisting>
             <emphasis>refining</emphasis> attribute, and the second attribute is called 
             the <emphasis>refined</emphasis> attribute.</para>
             
-            <para>Then, given the refined schema for the attribute it refines, as defined 
-            in <xref linkend="referenceschemas"/>, the refining attribute must:</para>
+            <para>Then, given the refined realization of the attribute it refines, as 
+            defined in <xref linkend="realizations"/>, the refining attribute must:</para>
             
             <itemizedlist>
                  <listitem>
                     <para>have <emphasis>exactly the same type</emphasis> as the 
-                    refined schema, if the attribute it refines is variable, 
+                    realization, if the attribute it refines is variable, 
                     or</para>
                 </listitem>
                  <listitem>
