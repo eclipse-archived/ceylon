@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoaderFactory;
+import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
@@ -249,8 +250,14 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 // if we got a source symbol for something non-Java it's a slipery slope
                 if(Util.isLoadedFromSource(classSymbol) && !Util.isJavaSource(classSymbol))
                     return null;
-                if(outerName.length() != name.length())
-                    classSymbol = lookupInnerClass(classSymbol, name.substring(outerName.length()+1).split("\\."));
+                if(outerName.length() != name.length()){
+                    try{
+                        classSymbol = lookupInnerClass(classSymbol, name.substring(outerName.length()+1).split("\\."));
+                    }catch(CompletionFailure x){
+                        // something wrong, we will report it properly elsewhere
+                        classSymbol = null;
+                    }
+                }
                 if(classSymbol != null && classSymbol.classfile == null && classSymbol.sourcefile == null){
                     // try to complete it if that changes anything
                     try{
@@ -352,8 +359,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     }
                 }
             }
-            // in every other case, rethrow
-            throw x;
+            // in every other case, rethrow as a ModelLoaderExceptions
+            throw new ModelResolutionException("Failed to determine if "+method.name.toString()+" is overriding a super method", x);
         }
     }
 
