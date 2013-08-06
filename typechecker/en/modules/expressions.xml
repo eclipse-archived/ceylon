@@ -234,8 +234,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>The keyword <literal>this</literal> refers to the current instance,
             as defined in <xref linkend="closureofaclassorinterface"/>, of the 
             immediately containing class or interface (the class or interface in which 
-            the expression appears). Its type is the type of the current class or 
-            interface.</para>
+            the expression appears). Its type is the type of the immediately containing 
+            class or interface.</para>
             
         </section>
        
