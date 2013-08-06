@@ -1354,21 +1354,21 @@ TypeConstraints?
         first class is called the <emphasis>refining</emphasis> class, and the 
         second class is called the <emphasis>refined</emphasis> class.</para>
         
-        <para>Then the refining class must, after substitution of type arguments 
-        specified in the <literal>extends</literal> or <literal>satisfies</literal> 
-        clause of the class to which the member class belongs:</para>
+        <para>Then, given the refined schema for the class it refines, as 
+        defined in <xref linkend="referenceschemas"/>, the refining class 
+        must:</para>
             
         <itemizedlist>
             <listitem>
-                <para>have the same number of type parameters as the class it 
-                refines, and for each type parameter the intersection of its
+                <para>have the same number of type parameters as the refined 
+                schema, and for each type parameter the intersection of its
                 upper bounds must be a supertype of the intersection of the 
-                upper bounds of the corresponding type parameter of the class
-                it refines,</para>
+                upper bounds of the corresponding type parameter of the 
+                refined schema,</para>
             </listitem>
             <listitem>
                 <para>have a parameter list with the same signature as the 
-                class it refines, and</para>
+                refined schema, and</para>
             </listitem>
              <listitem>
                 <para>directly or indirectly extend the class it refines.</para>
@@ -2056,25 +2056,25 @@ case (hexadecimal) {
             <emphasis>refining</emphasis> method, and the second method is called
             the <emphasis>refined</emphasis> method.</para>
             
-            <para>Then the refining method must, after substitution of type arguments 
-            specified in the <literal>extends</literal> or <literal>satisfies</literal> 
-            clause of the class to which the method belongs:</para>
+            <para>Then, given the refined schema for the method it refines, as 
+            defined in <xref linkend="referenceschemas"/>, the refining method 
+            must:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>have the same number of type parameters as the method it 
-                    refines, and for each type parameter the intersection of its
+                    <para>have the same number of type parameters as the refined 
+                    schema, and for each type parameter the intersection of its 
                     upper bounds must be a supertype of the intersection of the 
-                    upper bounds of the corresponding type parameter of the method
-                    it refines,</para>
+                    upper bounds of the corresponding type parameter of the 
+                    refined schema,</para>
                 </listitem>
                 <listitem>
                     <para>have the same number of parameter lists, with the same
-                    signatures, as the method it refines, and</para>
+                    signatures, as the refined schema, and</para>
                 </listitem>
                  <listitem>
                     <para>have a return type that is assignable to the return type 
-                    of the method it refines.</para>
+                    of the refined schema.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2468,19 +2468,18 @@ print(greeting);</programlisting>
             <emphasis>refining</emphasis> attribute, and the second attribute is called 
             the <emphasis>refined</emphasis> attribute.</para>
             
-            <para>Then the refining attribute must, after substitution of type arguments 
-            specified in the <literal>extends</literal> or <literal>satisfies</literal> 
-            clause of the class to which the attribute belongs:</para>
+            <para>Then, given the refined schema for the attribute it refines, as defined 
+            in <xref linkend="referenceschemas"/>, the refining attribute must:</para>
             
             <itemizedlist>
                  <listitem>
                     <para>have <emphasis>exactly the same type</emphasis> as the 
-                    attribute it refines, if the attribute it refines is variable, 
+                    refined schema, if the attribute it refines is variable, 
                     or</para>
                 </listitem>
                  <listitem>
-                    <para>have a type that is assignable to the type of the attribute it 
-                    refines, if the attribute it refines is not variable, and</para>
+                    <para>have a type that is assignable to the type of the refined 
+                    schema, if the attribute it refines is not variable, and</para>
                 </listitem>
                 <listitem>
                     <para>be variable, if the attribute it refines is variable.</para>

@@ -2414,16 +2414,31 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             <title>Reference schemas</title>
             
             <para>Given an unqualified reference, as defined in 
-            <xref linkend="unqualifiedreferenceresolution"/>, to a declaration, and, 
-            in the case of a generic declaration, a list of type arguments for the 
-            type parameters of the member, we can construct an <emphasis>unqualified 
-            reference schema</emphasis> by:</para>
+            <xref linkend="unqualifiedreferenceresolution"/>, to a declaration, or a 
+            member that refines the declaration, and, in the case of a generic 
+            declaration, a list of type arguments for the type parameters of the member, 
+            we can construct an <emphasis>unqualified reference schema</emphasis>, or
+            <emphasis>refined schema</emphasis>, by:</para>
             
             <itemizedlist>
+                <listitem>
+                    <para>if the declaration is a member declared by a type 
+                    <literal>Y</literal>, first determining the principal instantiation 
+                    of <literal>Y</literal> for the current class or interface, and 
+                    then</para>
+                </listitem>
+                <listitem>
+                    <para>again, only if the declaration is a member declared by a 
+                    type, substituting the type arguments in this principal 
+                    instantiation into the declaration schema, and, finally,</para>
+                </listitem>
                 <listitem>
                     <para>substituting the type arguments into the declaration schema.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>TODO: define "current class or interface", i.e. the innermost 
+            class or interface that declares or inherits the member.</para></comment>
             
             <para>Given a qualified reference, as defined in 
             <xref linkend="qualifiedreferenceresolution"/>, with a qualifying type 
@@ -2470,18 +2485,18 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     <para><literal>M&lt;*As&gt;</literal> is a subtype of 
                     <literal>V.M&lt;*Bs&gt;</literal> if <literal>V</literal> has the 
                     principal instantiation <literal>X&lt;*Cs&gt;</literal>, where the 
-                    current class is an invariant suptype of <literal>X&lt;*Cs&gt;</literal>, 
-                    and <literal>V</literal> directly inherits <literal>M</literal> from 
-                    <literal>X</literal> without refining <literal>M</literal>, and 
-                    <literal>M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>M&lt;*Bs&gt;</literal>.</para>
+                    current class or interface has the principal instantiation 
+                    <literal>X&lt;*Cs&gt;</literal>, and <literal>V</literal> directly 
+                    inherits <literal>M</literal> from <literal>X</literal> without 
+                    refining <literal>M</literal>, and <literal>M&lt;*As&gt;</literal> 
+                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
                     <literal>M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype 
-                    of <literal>X&lt;*Cs&gt;</literal>, where the current class has the 
-                    principal instantiation <literal>X&lt;*Cs&gt;</literal>, and 
-                    <literal>M&lt;*As&gt;</literal> is a subtype of 
+                    of <literal>X&lt;*Cs&gt;</literal>, where the current class or
+                    interface has the principal instantiation <literal>X&lt;*Cs&gt;</literal>, 
+                    and <literal>M&lt;*As&gt;</literal> is a subtype of 
                     <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
