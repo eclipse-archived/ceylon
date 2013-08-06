@@ -1,8 +1,7 @@
 /* Metamodel module and package objects */
 var $loadedModules$={};
 exports.$loadedModules$=$loadedModules$;
-function $addmod$(mod) {
-  var modname = mod.$$METAMODEL$$['$mod-name'] + '/' + mod.$$METAMODEL$$['$mod-version'];
+function $addmod$(mod, modname) {
   $loadedModules$[modname] = mod;
 }
 exports.$addmod$=$addmod$;
@@ -60,6 +59,10 @@ function Modulo(meta, $$modulo){
     if ($$modulo===undefined)$$modulo=new Modulo.$$;
     Module$model$declaration($$modulo);
     $$modulo.meta=meta;
+    if (typeof(meta.$$METAMODEL$$)==='function') {
+      var mm = meta.$$METAMODEL$$();
+      meta.$$METAMODEL$$=mm;
+    }
     var name=String$(meta.$$METAMODEL$$['$mod-name']);
     defineAttr($$modulo,'name',function(){return name;},undefined,{mod:$$METAMODEL$$,$t:{t:String$},$cont:Modulo,$an:function(){return[shared(),actual()];},pkg:'ceylon.language.model.declaration',d:$$METAMODEL$$['ceylon.language.model.declaration']['Module']['$at']['name']});
     var version=String$(meta.$$METAMODEL$$['$mod-version']);

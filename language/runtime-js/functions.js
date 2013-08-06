@@ -27,14 +27,19 @@ function isOfType(obj, type) {
         }
         if (obj.getT$all === undefined) {
             if (obj.$$metamodel$$) {
+                var _mm = obj.$$metamodel$$;
+                if (typeof(_mm)==='function') {
+                  _mm=_mm();
+                  obj.$$metamodel$$=_mm;
+                }
                 //We can navigate the metamodel
-                if (obj.$$metamodel$$.d['$mt'] === 'mthd') {
+                if (_mm.d['$mt'] === 'mthd') {
                     if (type.t === Callable) { //It's a callable reference
-                        if (type.a && type.a.Return && obj.$$metamodel$$['$t']) {
+                        if (type.a && type.a.Return && _mm['$t']) {
                             //Check if return type matches
-                            if (extendsType(obj.$$metamodel$$['$t'], type.a.Return)) {
-                                if (type.a.Arguments && obj.$$metamodel$$['$ps'] !== undefined) {
-                                    var metaparams = obj.$$metamodel$$['$ps'];
+                            if (extendsType(_mm['$t'], type.a.Return)) {
+                                if (type.a.Arguments && _mm['$ps'] !== undefined) {
+                                    var metaparams = _mm['$ps'];
                                     if (metaparams.length == 0) {
                                         return type.a.Arguments.t === Empty;
                                     } else {
@@ -62,14 +67,20 @@ function isOfType(obj, type) {
                     var cmptype = type.a[i];
                     var tmpobj = obj;
                     var iance = null;
-                    if (type.t.$$metamodel$$ && type.t.$$metamodel$$.$tp && type.t.$$metamodel$$.$tp[i]) iance=type.t.$$metamodel$$.$tp[i]['var'];
+                    var _mm = type.t.$$metamodel$$;
+                    if (typeof(_mm)==='function') {
+                      _mm = _mm();
+                      type.t.$$metamodel$$=_mm;
+                    }
+                    if (_mm && _mm.$tp && _mm.$tp[i]) iance=_mm.$tp[i]['var'];
                     if (iance === null) {
                         //Type parameter may be in the outer type
                         while (iance===null && tmpobj.$$outer !== undefined) {
                             tmpobj=tmpobj.$$outer;
                             var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
-                            if (_tmpf.$$metamodel$$ && _tmpf.$$metamodel$$.$tp && _tmpf.$$metamodel$$.$tp[i]) {
-                                iance=_tmpf.$$metamodel$$.$tp[i]['var'];
+                            var _mmf = typeof(_tmpf.$$metamodel$$)==='function'?_tmpf.$$metamodel$$():_tmpf.$$metamodel$$;
+                            if (_mmf && _mmf.$tp && _mmf.$tp[i]) {
+                                iance=_mmf.$tp[i]['var'];
                             }
                         }
                     }

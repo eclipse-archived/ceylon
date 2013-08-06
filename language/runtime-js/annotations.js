@@ -1,6 +1,9 @@
 /*Native Implementation of annotations() */
 function annotations$model(anntype, progelem, $$targs$$) {
   var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.attr?progelem.attr.$$metamodel$$:progelem.$$metamodel$$;
+  if (typeof(mm) === 'function') {
+    mm = mm();
+  }
   if (mm && mm['$an']) {
     var anns = mm['$an'];
     if (typeof(anns) === 'function') {

@@ -3,7 +3,7 @@ function type$model(x) {
         return getNothingType$model();
     } else {
         //Search for metamodel
-        var mm = x.$$metamodel$$;
+        var mm = typeof(x.$$metamodel$$)==='function'?x.$$metamodel$$():x.$$metamodel$$;
         if (mm === undefined && x.constructor && x.constructor.T$name && x.constructor.T$all) {
             //It's probably an instance of a Ceylon type
             var _x = x.constructor.T$all[x.constructor.T$name];
@@ -12,7 +12,8 @@ function type$model(x) {
                 x=_x;
             }
         }
-        if (mm && mm.d['$mt']) {
+        if (typeof(mm) == 'function') mm = mm();
+        if (mm) {
             var metatype = mm.d['$mt'];
             if (metatype === 'ifc') { //Interface
                 //
@@ -42,10 +43,11 @@ function typeLiteral$model($$targs$$) {
         throw Exception("JS Interop not supported / incomplete metamodel for " + require('util').inspect($$targs$$.Type.t));
     } else {
         var mdl = $$targs$$.Type.t.$$metamodel$$;
+        if (typeof(mdl)==='function')mdl=mdl();
         if (mdl.d['$mt'] === 'cls') {
-            return AppliedClass$model($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
+            return AppliedClass$model($$targs$$.Type.t,mdl['$tp']);
         } else if (mdl.d['$mt'] === 'ifc') {
-            return AppliedInterface$model($$targs$$.Type.t,$$targs$$.Type.t['$$metamodel$$']['$tp']);
+            return AppliedInterface$model($$targs$$.Type.t,mdl['$tp']);
         } else if (mdl.d['$mt'] === 'mthd') {
             return AppliedFunction$model($$targs$$.Type.t,{Type:mdl.$t,Arguments:mdl.$ps});
         } else if (mdl.d['$mt'] === 'attr' || mdl.d['$mt'] === 'gttr') {
