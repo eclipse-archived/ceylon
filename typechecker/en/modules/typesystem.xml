@@ -2512,11 +2512,10 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                     <literal>X&lt;*Ds&gt;</literal> for some list of type arguments 
                     <literal>Ds</literal> involving the type parameters 
                     <literal>Ss</literal> of <literal>Y</literal>. Then the argument
-                    <literal>D</literal> in <literal>Ds</literal> of the type parameter
-                    <literal>T</literal> of <literal>X</literal> must be exactly 
-                    <literal>S</literal> for some type parameter <literal>S</literal> 
-                    in <literal>Ss</literal>, and <literal>S</literal> must
-                    have the same variance as <literal>T</literal>.</para>
+                    <literal>D</literal> in <literal>Ds</literal> of <literal>T</literal> 
+                    must be exactly <literal>S</literal> for some type parameter 
+                    <literal>S</literal> in <literal>Ss</literal>, and <literal>S</literal> 
+                    must have the same variance as <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
             
