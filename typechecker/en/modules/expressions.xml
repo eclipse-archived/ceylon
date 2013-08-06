@@ -672,7 +672,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <synopsis>ListedArgument: Expression</synopsis>
             
             <para>If a listed argument is an expression of type <literal>T</literal>, 
-            and an argument list has type <literal>P</literal>, an invariant subtype of 
+            and an argument list has type <literal>P</literal> with principal instantiation 
             <literal>Sequential&lt;Y&gt;</literal>, then the type of a new argument list 
             formed by prepending the expression to the first parameter list is 
             <literal>Tuple&lt;T|Y,T,P&gt;</literal>.</para>
@@ -687,9 +687,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>SpreadArgument: "* "Expression</synopsis>
             
-            <para>The expression type <literal>T</literal> must be an invariant subtype of 
-            <literal>{X*}</literal> for some type <literal>X</literal>. We form the
-            <emphasis>sequential type of a spread argument</emphasis> as follows:</para>
+            <para>The expression type <literal>T</literal> must have the principal 
+            instantiation <literal>{X*}</literal> for some type <literal>X</literal>. We 
+            form the <emphasis>sequential type of a spread argument</emphasis> as 
+            follows:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2054,7 +2055,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         </listitem>
         <listitem>
             <para>for every <literal>i&gt;0</literal>, if <literal>Xi</literal> 
-            is an invariant subtype of <literal>Tuple&lt;Ui,Fi,Yi&gt;</literal> 
+            has the principal instantiation <literal>Tuple&lt;Ui,Fi,Yi&gt;</literal> 
             then <literal>X(i+1)</literal> is <literal>Yi</literal>, or, 
             otherwise, <literal>X(i+1)</literal> is <literal>Xi</literal>.</para>
         </listitem>
@@ -2066,10 +2067,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
     <itemizedlist>
         <listitem>
-            <para>if <literal>Xn</literal> is an invariant subtype of 
+            <para>if <literal>Xn</literal> has the principal instantiation
             <literal>Tuple&lt;Un,Fn,Yn&gt;</literal> then <literal>En</literal> 
             is <literal>Fn</literal>, or, otherwise, <literal>Xn</literal>
-            is an invariant subtype of <literal>Sequential&lt;Fn&gt;</literal> 
+            has the principal instantiation <literal>Sequential&lt;Fn&gt;</literal> 
             and <literal>En</literal> is <literal>Fn?</literal>.</para>
         </listitem>
     </itemizedlist>

@@ -547,14 +547,6 @@
                 </listitem>
             </itemizedlist>
             
-            <comment><para>Note: an intersection <literal>X&lt;A&gt;&amp;X&lt;P&gt;</literal> of 
-            two instantiations of an invariant type, <literal>X&lt;T&gt;</literal> where 
-            one type argument <literal>P</literal> is a type parameter introduces a known hole in 
-            our type system. It is impossible to form a principal instantiation of <literal>X</literal>
-            for this intersection type without resorting to use-site covariance, which is 
-            non-denoteable in Ceylon. We're investigating how to reasonably prevent such types 
-            arising and produce meaningful errors.</para></comment>
-        
         </section>
         
         <section id="bottomtype">
@@ -733,8 +725,9 @@
                     for any type <literal>X</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>[X,Y]</literal> means <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal>
-                    where <literal>X,Y</literal> is a list of types of any length.</para>
+                    <para><literal>[X,Y]</literal> means 
+                    <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal> where 
+                    <literal>X,Y</literal> is a list of types of any length.</para>
                 </listitem>
             </itemizedlist>
             
@@ -746,8 +739,9 @@
                     means the type <literal>Tuple&lt;X|Y,X,T&gt;</literal> where 
                     <literal>T</literal> is the type meant by the type abbreviation formed 
                     by removing the first type <literal>X</literal> from the list of types 
-                    in the original tuple type abbreviation, and <literal>T</literal> is an 
-                    invariant subtype of <literal>Y[]</literal>.</para>
+                    in the original tuple type abbreviation, and <literal>T</literal> has 
+                    the principal instantiation <literal>Y[]</literal>, as defined in
+                    <xref linkend="principalinstantiations"/>.</para>
                 </listitem>
             </itemizedlist>
                         
@@ -898,6 +892,37 @@ Float|Integer num = one;</programlisting></comment>
         <literal>switch</literal> statement or the <literal>of</literal> operator.</para>
         </comment>
             
+        <section id="inheritanceandsubtyping">
+            <title>Inheritance and subtyping</title>
+                
+            <para>Inheritance relationships between classes, interfaces, and type parameters
+            result in subtyping relationships between types.</para>
+            
+            <itemizedlist>
+            <listitem>
+                <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
+                then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+            </listitem>
+            <!--listitem>  
+                <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal> 
+                that does not involve the type parameters of <literal>X</literal>, then any 
+                instantiation <literal>U</literal> of <literal>X</literal> is a subtype of 
+                <literal>Y</literal>.</para>
+            </listitem-->
+            <listitem>
+                <para>If a generic type <literal>X</literal> inherits a type <literal>Y</literal> 
+                that might involve the type parameters of <literal>X</literal>, then for any 
+                instantiation <literal>U</literal> of <literal>X</literal> we can construct 
+                a type <literal>V</literal> by, for every type parameter <literal>T</literal> 
+                of <literal>X</literal>, substituting the corresponding type argument of 
+                <literal>T</literal> given in <literal>U</literal> everywhere <literal>T</literal> 
+                occurs in <literal>Y</literal>, and then <literal>U</literal> is a subtype of
+                <literal>V</literal>.</para>
+            </listitem>
+            </itemizedlist>
+            
+        </section>
+        
         <section id="extendedclass">
             <title>Extension</title>
         
@@ -1030,13 +1055,14 @@ Float|Integer num = one;</programlisting></comment>
                 <para>If a generic type <literal>X</literal> enumerates its cases, 
                 <literal>X1</literal>, <literal>X2</literal>, etc, which might involve
                 the type parameters of <literal>X</literal>, then for any instantiation 
-                <literal>Y</literal> of <literal>X</literal>, and for each case 
-                <literal>Xi</literal>, we can construct a type <literal>Yi</literal> by,
+                <literal>U</literal> of <literal>X</literal>, and for each case 
+                <literal>Xi</literal>, we can construct a type <literal>Ui</literal> by,
                 for every type parameter <literal>T</literal> of <literal>X</literal>,
-                substituting the type argument of <literal>T</literal> given in 
-                <literal>Y</literal> everywhere <literal>T</literal> occurs in 
-                <literal>Xi</literal>, and then the union type <literal>Y1|Y2|...</literal> 
-                covers <literal>Y</literal>.</para>
+                substituting the corresponding type argument of <literal>T</literal> 
+                given in <literal>U</literal> everywhere <literal>T</literal> occurs in 
+                <literal>Xi</literal>, and then the union type <literal>U1|U2|...</literal>
+                of all the resulting types <literal>Ui</literal> covers 
+                <literal>Y</literal>.</para>
             </listitem>
             <listitem>
                 <para>If a type <literal>X</literal> covers two types <literal>A</literal> 
@@ -1110,34 +1136,7 @@ Float|Integer num = one;</programlisting></comment>
             <synopsis>CaseTypes: "of" CaseType ("|" CaseType)*</synopsis>
             
             <synopsis>CaseType: MemberName | PrimaryType</synopsis>
-            
-            <!--
-            <para>The compiler is able to infer certain subtyping relationships from the 
-            types listed in the <literal>of</literal> clause.</para>
-            
-            <itemizedlist>
-            <listitem>
-                <para>If every case of a type <literal>X</literal> is an invariant suptype 
-                of a type <literal>Y</literal>, then <literal>X</literal> is an invariant 
-                subtype of <literal>Y</literal>.</para>
-            </listitem>
-            <listitem>  
-                <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
-                is an invariant suptype of a type <literal>Y</literal>, then the produced 
-                type <literal>X&lt;B&gt;</literal> is an invariant subtype of <literal>Y</literal> 
-                for any type <literal>B</literal>.</para>
-            </listitem>
-            <listitem>  
-                <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
-                is an invariant suptype of a produced type <literal>Y&lt;T&gt;</literal> 
-                that depends upon the type parameter <literal>T</literal>, then the produced 
-                type <literal>X&lt;B&gt;</literal> is an invariant subtype of the produced 
-                type <literal>Y&lt;B&gt;</literal> formed by substituting <literal>B</literal> 
-                for <literal>T</literal> for any type <literal>B</literal>.</para>
-            </listitem>
-            </itemizedlist>
-            -->
-                   
+                               
             <para>If an interface of <literal>abstract</literal> class has exactly one 
             case, and it is a type parameter of the interface of <literal>abstract</literal> 
             class, or of the immediately containing type, if any, then that type parameter 
@@ -1242,13 +1241,10 @@ Item item = comp of Item;</programlisting>
                     <literal>Y</literal> and <literal>B</literal> are disjoint, or</para>
                 </listitem>
                 <listitem>
-                    <para>for some parameterized type <literal>Z&lt;T&gt;</literal> where 
-                    <literal>Z</literal> is invariant in <literal>T</literal>, 
-                    <literal>X</literal> is an invariant subtype of <literal>Z&lt;A&gt;</literal> 
-                    and <literal>Y</literal> is an invariant subtype of <literal>Z&lt;B&gt;</literal> 
-                    and <literal>A</literal> is not exactly <literal>B</literal>, and neither
-                    <literal>A</literal> nor <literal>B</literal> involve type parameters,
-                    as shown above, in <xref linkend="pii"/>.</para>
+                    <para><literal>X</literal> and <literal>Y</literal> inherit disjoint
+                    instantiations of a generic type <literal>Z</literal>, that is, two 
+                    instantiations of <literal>Z</literal> that have the intersection
+                    <literal>Nothing</literal>, as defined below, in <xref linkend="pii"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1832,7 +1828,7 @@ Item item = comp of Item;</programlisting>
             <comment><para>Note that if <literal>T</literal> is an invariant type parameter
             of <literal>X&lt;T&gt;</literal>, then a produced type <literal>Z</literal> is 
             a subtype of <literal>X&lt;A&gt;</literal> if and only if <literal>Z</literal> 
-            is an invariant subtype of <literal>X&lt;A&gt;</literal>.</para></comment>
+            has the principal instantiation <literal>X&lt;A&gt;</literal>.</para></comment>
             
             <!--
             <para>A produced type is a subtype of the type argument to any self type 
@@ -2226,48 +2222,31 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
         </section>
         
-        <section id="inheritanceandsubtyping">
-            <title>Inheritance and subtyping</title>
-                
-            <para>Inheritance relationships between classes, interfaces, and type parameters
-            result in subtyping relationships between types. For a generic type, inheritance
-            produces subtypes with <emphasis>inherited instantiations</emphasis> of the generic 
-            type.</para>
+        <section id="inheritedinstantiations">
+            <title>Inherited instantiations</title>
+            
+            <para>For a generic type <literal>Y</literal>, inheritance produces subtypes with 
+            <emphasis>inherited instantiations</emphasis> of the generic type.</para>
             
             <itemizedlist>
             <listitem>
-                <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
-                then <literal>X</literal> is a subtype of <literal>Y</literal>. If 
-                <literal>Y</literal> is an instantiation of a generic type
-                <literal>Z&lt;*Ts&gt;</literal>, we say that <literal>X</literal> has the 
-                inherited instantiation <literal>Y</literal> of <literal>Z</literal>.</para>
-            </listitem>
-            <listitem>  
-                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits a type 
-                <literal>Y</literal> that does not involve the type parameters <literal>Ts</literal> 
-                of <literal>X</literal>, then any instantiation <literal>X&lt;*As&gt;</literal> 
-                for a list of type arguments <literal>As</literal> is a subtype of 
-                <literal>Y</literal>. If <literal>Y</literal> is an instantiation of a generic 
-                type <literal>Z&lt;*Ts&gt;</literal>, we say that <literal>X&lt;*As&gt;</literal> 
-                has the inherited instantiation <literal>Y</literal> of <literal>Z</literal>.</para>
+                <para>If a type <literal>X</literal> extends or satisfies an instantiation 
+                <literal>Y&lt;*A&gt;</literal> of <literal>Y</literal>, then we say that 
+                <literal>X</literal> has the inherited instantiation <literal>Y&lt;*A&gt;</literal> 
+                of <literal>Y</literal>.</para>
             </listitem>
             <listitem>
-                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> inherits an 
-                instantiation <literal>Y&lt;*As&gt;</literal> of a generic type <literal>Y</literal> 
-                where <literal>As</literal> is a list of type arguments that involves the type 
-                parameters <literal>Ts</literal> of <literal>X</literal>, then any instantiation 
-                <literal>X&lt;*Bs&gt;</literal> for a list of type arguments <literal>Bs</literal> 
-                is a subtype of an instantiation <literal>Y&lt;*Cs&gt;</literal> of <literal>T</literal> 
-                for a type argument list <literal>Cs</literal> formed by substituting each 
-                occurrence of a <literal>T</literal> from <literal>Ts</literal> in 
-                <literal>As</literal> with the corresponding <literal>B</literal> from 
-                <literal>Bs</literal>, and we say that <literal>X&lt;*Bs&gt;</literal> has the 
-                inherited instantiation <literal>Y&lt;*Cs&gt;</literal> of <literal>Y</literal>.</para>
-                <!--where <literal>Cs</literal>
-                is the list of type arguments formed by substituting each argument 
-                <literal>B</literal> in <literal>Bs</literal> for the corresponding parameter 
-                <literal>T</literal> of <literal>Ts</literal> everywhere <literal>T</literal> 
-                appears in any type argument <literal>A</literal> in <literal>As</literal>.-->
+                <para>If a generic type <literal>X&lt;*Ts&gt;</literal> extends or satisfies 
+                an instantiation <literal>Y&lt;*As&gt;</literal> of <literal>Y</literal> that may 
+                involve the type parameters <literal>Ts</literal> of <literal>X</literal>, then 
+                for any instantiation <literal>X&lt;*Bs&gt;</literal> of <literal>X</literal>, 
+                with a list of type arguments <literal>Bs</literal>, we can construct a list of 
+                type arguments <literal>Cs</literal> by, for every type parameter <literal>T</literal> 
+                in <literal>Ts</literal>, substituting the type argument <literal>B</literal> 
+                of <literal>T</literal> given in <literal>Bs</literal> everywhere <literal>T</literal> 
+                occurs in <literal>As</literal>, and then we say that <literal>X&lt;*Bs&gt;</literal> 
+                has the inherited instantiation <literal>Y&lt;*Cs&gt;</literal> of 
+                <literal>Y</literal>.</para>
             </listitem>
             <listitem>
                 <para>If a type <literal>X</literal> is a subtype of a type <literal>Y</literal>,
@@ -2276,9 +2255,6 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                 inherited instantiation.</para>
             </listitem>
             </itemizedlist>
-            
-            <!--para>If a type is an invariant subtype of a second type then it is also a 
-            subtype of the second type.</para-->
             
         </section>
         
@@ -2298,46 +2274,46 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <itemizedlist>
             
-            <listitem>
-            <para>if for some <literal>T</literal> in <literal>Ts</literal>, the 
-            corresponding <literal>A</literal> in <literal>As</literal> and 
-            <literal>B</literal> in <literal>Bs</literal> are distinct types, and 
-            <literal>Y</literal> is invariant in <literal>T</literal>, then the type 
-            <literal>Y&lt;*As&gt;&amp;Y&lt;*Bs&gt;</literal> is the bottom type 
-            <literal>Nothing</literal>, or, otherwise,</para>
-            </listitem>
+                <listitem>
+                    <para>if for some <literal>T</literal> in <literal>Ts</literal>, the 
+                    corresponding <literal>A</literal> in <literal>As</literal> and 
+                    <literal>B</literal> in <literal>Bs</literal> are distinct types, and 
+                    <literal>Y</literal> is invariant in <literal>T</literal>, then the type 
+                    <literal>Y&lt;*As&gt;&amp;Y&lt;*Bs&gt;</literal> is the bottom type 
+                    <literal>Nothing</literal>, and we say that <literal>Y&lt;*As&gt;</literal> 
+                    and <literal>Y&lt;*Bs&gt;</literal> are <emphasis>disjoint 
+                    instantiations</emphasis> of <literal>Y</literal>, or, otherwise,</para>
+                </listitem>
+                
+                <listitem>
+                    <para><literal>X</literal> must be a subtype of <literal>Y&lt;*Cs&gt;</literal>
+                    where <literal>Cs</literal> is a type argument list formed by taking each
+                    type parameter <literal>T</literal> in <literal>Ts</literal>, and constructing
+                    a type <literal>C</literal> from the corresponding <literal>A</literal> in
+                    <literal>As</literal> and <literal>B</literal> in <literal>Bs</literal>:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>if <literal>Y</literal> is invariant in <literal>T</literal>, 
+                            then <literal>C</literal> is the same type as <literal>A</literal>
+                            and <literal>B</literal>, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>if <literal>Y</literal> is covariant in <literal>T</literal>, 
+                            then <literal>C</literal> is <literal>A&amp;B</literal>, or</para>
+                        </listitem>
+                        <listitem>
+                            <para>if <literal>Y</literal> is contravariant in <literal>T</literal>,
+                            then <literal>C</literal> is <literal>A|B</literal>.</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
             
-            <listitem>
-            <para><literal>X</literal> must be a subtype of <literal>Y&lt;*Cs&gt;</literal>
-            where <literal>Cs</literal> is a type argument list formed by taking each
-            type parameter <literal>T</literal> in <literal>Ts</literal>, and constructing
-            a type <literal>C</literal> from the corresponding <literal>A</literal> in
-            <literal>As</literal> and <literal>B</literal> in <literal>Bs</literal>:</para>
-            <itemizedlist>
-                <listitem>
-                    <para>if <literal>Y</literal> is invariant in <literal>T</literal>, 
-                    then <literal>C</literal> is the same type as <literal>A</literal>
-                    and <literal>B</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para>if <literal>Y</literal> is covariant in <literal>T</literal>, 
-                    then <literal>C</literal> is <literal>A&amp;B</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para>if <literal>Y</literal> is contravariant in <literal>T</literal>,
-                    then <literal>C</literal> is <literal>A|B</literal>.</para>
-                </listitem>
             </itemizedlist>
-            </listitem>
             
-            </itemizedlist>
-             
-            <comment><para>Note: in fact, the type checker actually enforces an additional
-            condition, that might be strictly stronger than this one: that the intersection
-            between the direct supertypes of a type must not be equivalent to 
-            <literal>Nothing</literal>. However, in order to prove this, it must first prove
-            that the above condition holds, or the simplification algorithm runs the risk of 
-            not terminating.</para></comment>
+            <para>The intersection of all types that directly inherited by a class or interface
+            may not be <literal>Nothing</literal>, taking disjoint instantiations into account.
+            That is, the class or interface may not inherit mutually disjoint instatiations
+            of any generic type.</para>
             
             <para>The following identities result from principal instantiation inheritance, 
             for any generic type <literal>X&lt;T&gt;</literal>, and for any types 
@@ -2456,15 +2432,22 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                 <listitem>
                     <para>Finally, the principal instantiation of a generic type 
                     <literal>X</literal> for a type <literal>Y</literal> which
-                    inherits an instantiation of <literal>X</literal> is the
-                    principal instantiation of the intersection of all 
-                    instantiations of <literal>X</literal> inherited by 
-                    <literal>Y</literal>.</para>
+                    has one or more inherited instantiations of <literal>X</literal> 
+                    is the principal instantiation of the intersection of all the
+                    inherited instantiations of <literal>X</literal>.</para>
                 </listitem>
             </itemizedlist>
             
+            <comment><para>Note: an intersection <literal>X&lt;A&gt;&amp;X&lt;P&gt;</literal> 
+            of two instantiations of an invariant type, <literal>X&lt;T&gt;</literal> where 
+            one type argument <literal>P</literal> is a type parameter introduces a known 
+            hole in our type system. It is impossible to form a principal instantiation of 
+            <literal>X</literal> for this intersection type without resorting to use-site 
+            covariance, which is non-denoteable in Ceylon. In such cases, don't allow
+            references to members of the intersection type.</para></comment>
+        
         </section>
-                
+        
         <section id="qualifiedtypes">
             <title>Qualified types</title>
             
@@ -2475,29 +2458,30 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             <itemizedlist>
                 <listitem>
                     <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype 
-                    of <literal>X&lt;*Cs&gt;</literal> and <literal>V</literal> is an 
-                    invariant subtype of <literal>X&lt;*Cs&gt;</literal>, and <literal>V</literal> 
-                    directly inherits <literal>M</literal> from <literal>X</literal> without 
-                    refining <literal>M</literal>, and <literal>M&lt;*As&gt;</literal> 
-                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para><literal>M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>V</literal> is an 
-                    invariant subtype of <literal>X&lt;*Cs&gt;</literal>, where the current
-                    class is an invariant suptype of <literal>X&lt;*Cs&gt;</literal>, and 
+                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>U</literal> has the 
+                    principal instantiation <literal>X&lt;*Cs&gt;</literal>, and 
                     <literal>V</literal> directly inherits <literal>M</literal> from 
                     <literal>X</literal> without refining <literal>M</literal>, and 
                     <literal>M&lt;*As&gt;</literal> is a subtype of 
                     <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
                 <listitem>
+                    <para><literal>M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>V.M&lt;*Bs&gt;</literal> if <literal>V</literal> has the 
+                    principal instantiation <literal>X&lt;*Cs&gt;</literal>, where the 
+                    current class is an invariant suptype of <literal>X&lt;*Cs&gt;</literal>, 
+                    and <literal>V</literal> directly inherits <literal>M</literal> from 
+                    <literal>X</literal> without refining <literal>M</literal>, and 
+                    <literal>M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>M&lt;*Bs&gt;</literal>.</para>
+                </listitem>
+                <listitem>
                     <para><literal>U.M&lt;*As&gt;</literal> is a subtype of 
-                    <literal>M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype of
-                    <literal>X&lt;*Cs&gt;</literal>, where the current class is an invariant
-                    subtype of <literal>X&lt;*Cs&gt;</literal>, and <literal>M&lt;*As&gt;</literal> 
-                    is a subtype of <literal>M&lt;*Bs&gt;</literal>.</para>
+                    <literal>M&lt;*Bs&gt;</literal> if <literal>U</literal> is a subtype 
+                    of <literal>X&lt;*Cs&gt;</literal>, where the current class has the 
+                    principal instantiation <literal>X&lt;*Cs&gt;</literal>, and 
+                    <literal>M&lt;*As&gt;</literal> is a subtype of 
+                    <literal>M&lt;*Bs&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
             

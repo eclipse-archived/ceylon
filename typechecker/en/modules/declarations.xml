@@ -474,7 +474,7 @@ TypeConstraints?
             <programlisting>({Value*} values, Comparison(Value,Value) by)</programlisting>
             
             <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
-            and a parameter list has type <literal>P</literal>, an invariant subtype of 
+            and a parameter list has type <literal>P</literal> with the principal instantiation 
             <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
             formed by prepending <literal>x</literal> to the first parameter list is 
             <literal>Tuple&lt;X|Y,X,P&gt;</literal>, or <literal>[]|Tuple&lt;X|Y,X,P&gt;</literal> 
@@ -503,12 +503,13 @@ TypeConstraints?
             <programlisting>({Value*} values, Comparison by(Value x, Value y))</programlisting>
             
             <para>If a callable parameter <literal>f</literal> has callable type 
-            <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type <literal>P</literal>, 
-            an invariant subtype of <literal>Sequential&lt;Y&gt;</literal>, then the type of 
-            a new parameter list formed by prepending <literal>f</literal> to the first parameter 
-            list is <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
-            or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> if
-            <literal>f</literal> is defaulted.</para>
+            <literal>Callable&lt;X,A&gt;</literal>, and a parameter list has type 
+            <literal>P</literal> with the principal instantiation 
+            <literal>Sequential&lt;Y&gt;</literal>, then the type of a new parameter list 
+            formed by prepending <literal>f</literal> to the first parameter list is 
+            <literal>Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
+            or <literal>[]|Tuple&lt;Y|Callable&lt;X,A&gt;,Callable&lt;X,A&gt;,P&gt;</literal> 
+            if <literal>f</literal> is defaulted.</para>
             
         </section>
         

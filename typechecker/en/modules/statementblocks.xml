@@ -1435,13 +1435,13 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>given an iterated expression which is an invariant subtype of 
-                    <literal>Iterable&lt;X&gt;</literal> the inferred type of the variable 
+                    <para>given an iterated expression which has the principal instantiation
+                    <literal>Iterable&lt;X&gt;</literal>, the inferred type of the variable 
                     is <literal>X</literal>, unless</para>
                 </listitem>
                 <listitem>
                     <para>the destructured form is used for an iterated expression which is 
-                    an invariant subtype of <literal>Iterable&lt;Entry&lt;X,Y&gt;&gt;</literal>,
+                    has the principal instantiation <literal>Iterable&lt;Entry&lt;X,Y&gt;&gt;</literal>,
                     in which case the inferred type of the first variable is <literal>X</literal>, 
                     and the inferred type of the second variable is <literal>Y</literal>.</para>
                 </listitem>
@@ -1591,8 +1591,8 @@ else {
                 </listitem>
                 <listitem>
                     <para><literal>nonempty x</literal> is equivalent to <literal>is [E+] x</literal>
-                    where <literal>x</literal> is an expression whose type is an invariant subtype of
-                    <literal>E[]?</literal>.</para>
+                    where <literal>x</literal> is an expression whose type has the principal 
+                    instantiation <literal>E[]?</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1647,16 +1647,16 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition declares a variable, the declared type of the variable must 
-                    be a supertype of <literal>T&amp;[E+]</literal>, where the specifier expression is 
-                    of type <literal>T</literal> and <literal>T</literal> is an invariant subtype of
-                    <literal>E[]?</literal>, or</para>
+                    <para>if the condition declares a variable, the declared type of the variable 
+                    must be a supertype of <literal>T&amp;[E+]</literal>, where the specifier 
+                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
+                    principal instantiation <literal>E[]?</literal>, or</para>
                 </listitem>
                 <listitem>
-                    <para>if the condition contains a value reference, the value will be treated by the 
-                    compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
+                    <para>if the condition contains a value reference, the value will be treated by 
+                    the compiler as having type <literal>T&amp;[E+]</literal> inside the block that 
                     immediately follows the condition, where the conditional expression is of type 
-                    <literal>T</literal> and <literal>T</literal> is an invariant subtype of 
+                    <literal>T</literal> and <literal>T</literal> has the principal instantiation
                     <literal>E[]?</literal>.</para>
                 </listitem>
             </itemizedlist>
@@ -1669,8 +1669,8 @@ else {
             
             <programlisting>if (exists String name = name) { ... }</programlisting>
             
-            <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
-            of <literal>name</literal> inside the block that follows.</para>
+            <para>Where the <literal>name</literal> declared by the condition hides the outer 
+            declaration of <literal>name</literal> inside the block that follows.</para>
         
         </section>
                 
