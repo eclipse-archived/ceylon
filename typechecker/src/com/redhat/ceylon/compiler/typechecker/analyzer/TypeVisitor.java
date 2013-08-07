@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
@@ -301,13 +302,19 @@ public class TypeVisitor extends Visitor {
             unit.getUnresolvedReferences().add(id);
         }
         else {
-            if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
-                id.addError("imported declaration is not shared: " +
-                        name, 400);
-            }
-            if (d.isProtectedVisibility() || d.isPackageVisibility()) {
-                id.addError("imported declaration is not visible: " +
-                        name);
+            if (!declaredInPackage(d, unit)) {
+                if (!d.isShared()) {
+                    id.addError("imported declaration is not shared: " +
+                            name, 400);
+                }
+                if (d.isPackageVisibility()) {
+                    id.addError("imported package private declaration is not visible: " +
+                            name);
+                }
+                if (d.isProtectedVisibility()) {
+                    id.addError("imported protected declaration is not visible: " +
+                            name);
+                }
             }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
@@ -351,9 +358,15 @@ public class TypeVisitor extends Visitor {
                 id.addError("imported declaration is not shared: " +
                         name + " of " + td.getName(), 400);
             }
-            if (m.isProtectedVisibility() || m.isPackageVisibility()) {
-                id.addError("imported declaration is not visible: " +
-                        name + " of " + td.getName());
+            if (!declaredInPackage(m, unit)) {
+                if (m.isPackageVisibility()) {
+                    id.addError("imported package private declaration is not visible: " +
+                            name + " of " + td.getName());
+                }
+                if (m.isProtectedVisibility()) {
+                    id.addError("imported protected declaration is not visible: " +
+                            name + " of " + td.getName());
+                }
             }
             if (!m.isStaticallyImportable()) {
                 i.setTypeDeclaration(td);

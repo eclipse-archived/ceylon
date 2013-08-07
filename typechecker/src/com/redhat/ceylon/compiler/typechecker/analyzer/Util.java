@@ -574,8 +574,8 @@ public class Util {
         return false;
     }
 
-    static boolean declaredInPackage(Declaration member, Unit unit) {
-        return member.getUnit().getPackage().equals(unit.getPackage());
+    static boolean declaredInPackage(Declaration dec, Unit unit) {
+        return dec.getUnit().getPackage().equals(unit.getPackage());
     }
 
     public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
