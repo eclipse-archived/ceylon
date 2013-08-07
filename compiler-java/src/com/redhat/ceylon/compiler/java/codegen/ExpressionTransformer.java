@@ -2649,6 +2649,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             InvocationExpression invocation = extendedType.getInvocationExpression();
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
+            if(paramLists.isEmpty()){
+                classBuilder.superCall(at(extendedType).Exec(makeErroneous(extendedType, "Super class is missing parameter list")));
+                return;
+            }
             SuperInvocation builder = new SuperInvocation(this,
                     classBuilder.getForDefinition(),
                     invocation,
