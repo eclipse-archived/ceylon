@@ -2263,27 +2263,41 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
             
             <para>If a type <literal>X</literal> is a subtype of the instantiations 
             <literal>V</literal> and <literal>W</literal> of some generic type 
-            <literal>Y</literal>, and the type argument lists of these instantiations 
-            do not involve any type parameters, then <literal>X</literal> must also 
+            <literal>Y</literal>, <!--and the type argument lists of these instantiations 
+            do not involve any type parameters,--> then <literal>X</literal> must also 
             be a subtype of an instantiation <literal>P</literal> of 
             <literal>Y</literal> such that <literal>P</literal> is a subtype of 
-            <literal>V&amp;W</literal>.</para>
+            <literal>V&amp;W</literal>, unless, for some type parameter <literal>T</literal>
+            of <literal>Y</literal>, the type argument <literal>A</literal> of 
+            <literal>T</literal> given in <literal>V</literal> and the type argument
+            <literal>B</literal> of <literal>T</literal> given in <literal>W</literal>
+            are distinct types, and either <literal>A</literal> or <literal>B</literal>
+            involves a type parameter.</para>
             
-            <para>Or, restated equivalently:</para>
+            <para>Or, restated equivalently, either:</para>
             
             <itemizedlist>
             
                 <listitem>
-                    <para>if for some type parameter <literal>T</literal> of 
+                    <para>for some invariant type parameter <literal>T</literal> of 
                     <literal>Y</literal>, the argument of <literal>A</literal> of 
                     <literal>T</literal> given in <literal>V</literal> and the argument
                     <literal>B</literal> of <literal>T</literal> given in 
-                    <literal>W</literal> are distinct types, and <literal>Y</literal> 
-                    is invariant in <literal>T</literal>, then the type 
-                    <literal>V&amp;W</literal> is the bottom type 
-                    <literal>Nothing</literal>, and we say that <literal>V</literal> and 
-                    <literal>W</literal> are <emphasis>disjoint instantiations</emphasis> 
-                    of <literal>Y</literal>, or, otherwise,</para>
+                    <literal>W</literal> are distinct types, and either <literal>A</literal>
+                    or <literal>B</literal> involves a type parameter, or</para>
+                </listitem>
+                
+                <listitem>
+                    <para>if, for some invariant type parameter <literal>T</literal> 
+                    of <literal>Y</literal>, the argument of <literal>A</literal> of 
+                    <literal>T</literal> given in <literal>V</literal> and the argument
+                    <literal>B</literal> of <literal>T</literal> given in 
+                    <literal>W</literal> are distinct types, and neither <literal>A</literal>
+                    nor <literal>B</literal> involve a type parameter, then the type 
+                    <literal>V&amp;W</literal> is the bottom type <literal>Nothing</literal>, 
+                    and we say that <literal>V</literal> and <literal>W</literal> are 
+                    <emphasis>disjoint instantiations</emphasis> of <literal>Y</literal>, 
+                    or, otherwise,</para>
                 </listitem>
                 
                 <listitem>
